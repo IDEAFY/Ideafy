@@ -1,13 +1,13 @@
 Ideafy
 ======
 
-Ideafy project
+Welcome to the Ideafy project
 
 Ideafy is a web-based idea management and idea generation application.
 
 It can be run on a client or deployed within an organization for internal use.
 
-The application itselft is multi-user but can also be run offline in single-user mode.
+The application itself is multi-user but can also be run offline in single-user mode.
 
 It contains three main interfaces:
 

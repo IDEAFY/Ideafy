@@ -1,0 +1,120 @@
+/* LOGIN SCREEN */
+
+#login, #signup{
+    background-image: -webkit-gradient(radial, center center, 0, center center, 212, from(#aeb9bf), to(#4d5d72));
+    background-image: -webkit-radial-gradient(center center, cover, #aeb9bf, #4d5d72);
+    text-align: center;
+    width: 100%;
+    min-height: 100%;
+}
+
+.invisible{
+    display: none;
+}
+
+#login img, #signup img{
+    margin-top: 147px;
+}
+
+.loginform, .signupform{
+    margin: auto;
+    width: 410px;
+    border-radius: 5px;
+    background: white;
+    -webkit-box-shadow: 0 0 10px rgba(37, 64, 102, 0.2), inset 0 0 6px 1px rgba(0, 0, 0, 0.4);
+}
+
+.signupform{
+    height: 310px;
+    margin-top: 30px;
+}
+
+.loginform{
+    height: 122px;
+    margin-top: 80px;
+}
+
+input.loginfield{
+    width: 378px;
+    height: 60px;
+    line-height: 30px;
+    padding-left: 30px;
+    font-family: Helvetica;
+    font-size: 14px;
+    color: #aeb9bf;
+    border:0;
+    padding: 0;
+    background: transparent;
+}
+
+input.loginfield:focus{
+    outline:none;
+}
+
+.loginseparator{
+    margin: 0;
+    width: 408px;
+    height: 1px;
+    background-color: #e6e6e6;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    border: 0;
+}
+
+.enter{
+    margin-top: 30px;
+    border-radius: 5px;
+    font-family: Helvetica;
+    font-size: 14px;
+    line-height: 40px;
+    font-weight: bold;
+    color: #4D4D4D;
+    height: 40px;
+    width: 400px;
+    margin: 20px auto 0;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #cccccc), color-stop(100%, #e6e6e6));
+    -webkit-box-shadow: 0 0 3px rgba(37, 64, 102, 0.5);
+}
+
+.pressed{
+    -webkit-box-shadow: none;
+    color: white;
+    border: 1px inset #CCCCCC;
+    height: 38px;
+    line-heigth: 38px;
+    text-shadow: 2px 2px 2px black;
+    background:none;
+}
+
+.loginalert, .signupalert{
+    margin: 0 auto;
+    width: 400px;
+    font-family: Helvetica;
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+}
+
+.loginalert{    
+    height: 154px;
+    line-height: 154px;
+}
+
+.signupalert{
+    height: 70px;
+    line-height: 70px;
+}
+
+.signupbutton{
+    margin: 0 auto;
+    width: 270px;
+    height: 30px;
+    line-height: 30px;
+    font-family: Helvetica;
+    font-weight: bold;
+    font-size: 12px;
+    color: #E6E6E6;
+    -webkit-box-shadow: 0 0 1px 1px rgba(37,64,102, 0.6);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #8c9aa8), color-stop(100%, #707e8e));
+    border-radius: 5px;
+}

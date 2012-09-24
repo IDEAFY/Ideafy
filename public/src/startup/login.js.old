@@ -1,0 +1,159 @@
+define("Login",["Config", "Map", "Olives/OObject", "Olives/Event-plugin", "Olives/Model-plugin", "CouchDBStore", "Olives/Transport", "Store", "Utils"],
+	function(Config, Map, OObject, EventPlugin, ModelPlugin, CouchDBStore, Transport, Store, Utils){
+		return function LoginConstructor(){
+			
+			var user = new Store({}),
+			     query = new CouchDBStore(),
+			     login = new OObject(user),
+			     errormsg = new Store({"errormessage": ""}),
+			     dom = Map.get("login"),
+			     email = null;
+			query.setTransport(Config.get("Transport"));
+			login.plugins.addAll({
+				"event": new EventPlugin(login),
+				"model": new ModelPlugin(user),
+				"info": new ModelPlugin(errormsg),
+				});
+			
+			var returningUser = function(email, firstname){
+			        var rank, title;
+				// show the returning user UI
+				user.set("firstname", firstname);
+				Map.get("newuser").classList.add("invisible");
+				// set config data and synchronize user
+				Config.set("uid", '"'+email+'"');
+	 			Config.get("user").setTransport(Config.get("Transport"));
+	 			Config.get("user").sync("taiaut", email).then(function(){
+                                        // retrieve user avatar
+                                        Utils.getAvatar(email, Config.get("user").get("picture_file"));
+                                        Map.get("returninguser").classList.remove("invisible");
+	 			});
+			};
+
+			// returning user events
+			login.check = function(event, node){
+				if (node.value.length < 3) {
+						node.classList.remove("validate");
+						Map.get("newuser").classList.add("invisible");
+						Map.get("returninguser").classList.add("invisible");
+				}
+				else if (event.keyCode == 13) {
+					email = null;
+					email = node.value.toLowerCase();
+					var emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+					if(email.length == 0) {
+						node.classList.remove("validate");
+						Map.get("newuser").classList.add("invisible");
+						Map.get("returninguser").classList.add("invisible");
+					}
+					validate = emailPattern.test(email);
+					if(!validate) {
+						node.classList.add("validate");
+					} 
+						else {
+						node.classList.remove("validate");
+						var queryString = '"'+email+'"';
+						query.reset();
+						query.unsync();
+						query.sync("taiaut", "users", "_view/short").then(function(){
+							var ok = false, firstname ="";
+							query.loop(function(v, i){if (v.id === email) {
+							        ok = true; firstname=v.value.firstname;
+							        }
+							});
+							ok ? returningUser(email, firstname) : newUser(email);
+						});
+					}
+				}
+			};
+			
+			login.next = function(){
+			        
+				// notify stack login is done
+				Config.get("observer").notify("login-completed");
+				// unsync query
+				query.unsync();
+			};
+			
+			var newUser = function(email){
+				var date = new Date();     			
+				// create a new user
+				user.reset({
+                                        "lastname": "",
+                                        "firstname": "",
+                                        "address": {"street1": "", "street2": "", "zip code": null, "city": "", "country": ""},
+                                        "gender": 1,
+                                        "lang": "US",
+                                        "birthdate": [],
+                                        "connections": [],
+                                        "taiaut_decks": ["INT"],
+                                        "custom_decks": [],
+                                        "occupation": { "description": "", "details": {"situation": "", "job": "", "organization": ""}},
+                                        "family": {"couple": null, "children": null},
+                                        "leisure_activities": [{"name": "", "comment": ""}, {"name": "", "comment": ""}, {"name": "", "comment": ""} ],
+                                        "interests": [{"name": "", "comment": ""}, {"name": "", "comment": "" }],
+                                        "useascharacter": 0,
+                                        "type": 7,
+                                        "notifications": [{
+                                                "type": "MSG",
+                                                "date": [
+                                                                date.getFullYear(),
+                                                                date.getMonth(),
+                                                        date.getDate(),
+                                                        date.getHours(),
+                                                        date.getMinutes(),
+                                                        date.getSeconds()
+                                                        ],
+                                                "object": "Welcome to Ideady",
+                                                "status": "unread",
+                                                "author": "IDEAFY",
+                                                "body": "Thank you for trying Ideafy. We hope you'll enjoy it. We designed it so you can manage ideas that matter to you or just play around. But don't keep what you're doing to yourself."
+                                                     }],
+                                        "facebook": "",
+                                        "twitter": "",
+                                        "username": "",
+                                        "sessionInProgress": {},
+                                        "organization": "",
+                                        "groups": [],
+                                        "rated": [],
+                                        "rated_ideas": [],
+                                        "favorites": [],
+                                        "ip": 0,
+                                        "picture_file": "images/userpics/deedee0.png",
+                                        "title": null,
+                                        "achievements": [],
+                                        "ideas_count": 0,
+                                        "su_sessions_count": 0,
+                                        "twocents_count": 0,
+                                        "twoquestions_count": 0,
+                                        "tutorial_complete": false,
+                                        "profile_complete": true,
+                                        "news": [],
+                                        "twocents": [],
+                                        "twoquestions": []
+                                });
+				// show the new user UI
+				Map.get("newuser").classList.remove("invisible");
+				Map.get("returninguser").classList.add("invisible");
+			};
+			
+			login.checknew = function(event){
+				if ((user.get("firstname") != "") && (event.target.value != "")) dom.querySelector(".enter").classList.remove("invisible")
+			};
+			
+			login.upload = function(event){
+				//set the default username to firstname lastname --> can be changed in profile settings
+				Config.get("user").reset(JSON.parse(user.toJSON()));
+				Config.set("uid", '"'+ email +'"');
+				Config.get("user").set("username", user.get("firstname") + " " + user.get("lastname"));
+				Config.get("user").setTransport(Config.get("Transport"));
+				Config.get("user").sync("taiaut", email);
+				Config.get("user").upload().then(function(){
+				      login.next(); 
+				});
+			};
+			
+			login.alive(dom);
+			return login;
+		}
+	});

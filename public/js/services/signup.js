@@ -22,6 +22,11 @@ define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Oli
                                 node.classList.add("pressed");
                         };
                         
+                        signUp.login = function(event, node){
+                                dom.classList.add("invisible");
+                                Config.get("observer").notify("show-loginscreen");        
+                        };
+                        
                         signUp.signup = function(event, node){
                                 var email = signUpData.get("email"),
                                     password = signUpData.get("pwd"),

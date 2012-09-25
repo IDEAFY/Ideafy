@@ -129,10 +129,10 @@
   }
 
   #public .lists .acorn {
+   display: inline-block;
     margin-left:5px;
     width: 15px;
     height: 15px;
-    display: inline-block;
     background-image: url('../img/wall/rateForList.png');
     background-size: 10px 10px;
   }

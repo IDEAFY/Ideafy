@@ -214,10 +214,10 @@
   background-size:40px 40px;
 }
 
-/*#public .lists.expand .truncate {
+#public .lists.expand .truncate {
     text-align:left;
-    height: auto;
-}*/
+    height: 60px;
+}
 
 #public .lists.expand .ideas li .date {
   float:none;

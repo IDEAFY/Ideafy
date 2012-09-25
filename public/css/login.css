@@ -47,6 +47,10 @@ input.loginfield{
     background: transparent;
 }
 
+#signup .loginfield{
+    height: 45px;
+}
+
 input.loginfield:focus{
     outline:none;
 }
@@ -74,13 +78,6 @@ input.loginfield:focus{
     margin: 20px auto 0;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #cccccc), color-stop(100%, #e6e6e6));
     -webkit-box-shadow: 0 0 3px rgba(37, 64, 102, 0.5);
-}
-
-#signup .enter{
-    width: 200px;
-    float: left;
-    margin-top: 30px;
-    margin: 0 auto;
 }
 
 .pressed{

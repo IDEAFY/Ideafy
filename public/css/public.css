@@ -116,13 +116,26 @@
     height:15px;
   }
 
+  #public .lists .type {
+      display:inline-block;
+      width: 15px;
+    background-image: url('../img/wall/rateForList.png');
+    background-size: 27,2727%;
+  }
+  
+  #public .lists .type.selected {
+    background-image: url('../img/wall/vote.png');
+  }
+
   #public .lists .acorn {
     margin-left:5px;
-    background-image: url('img/wall/rateForList.png');
+    display: inline-block;
+    background-image: url('../img/wall/rateForList.png');
+    background-size: 27,2727%;
   }
   
   #public .lists .acorn.selected {
-    background-image: url('img/wall/vote.png');
+    background-image: url('../img/wall/vote.png');
   }
 
   #public .lists .rating {

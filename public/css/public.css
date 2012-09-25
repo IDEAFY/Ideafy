@@ -118,6 +118,11 @@
 
   #public .lists .acorn {
     margin-left:5px;
+    background-image: url('img/wall/rateForList.png');
+  }
+  
+  #public .lists .acorn.selected {
+    background-image: url('img/wall/vote.png');
   }
 
   #public .lists .rating {

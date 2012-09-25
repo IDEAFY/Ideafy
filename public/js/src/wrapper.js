@@ -1,8 +1,8 @@
 /**
  * Define wrapper with dock and notifications.
  */
- require(["Map", "Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Ideafy/Public", "Olives/LocalStore", "Config", "SignUp", "Login"], 
- 	function(Map, Widget, StackPlugin, ControlPlugin, Public, LocalStore, Config, SignUp, Login){
+ require(["Map", "Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Olives/Model-plugin", "Ideafy/Public", "Olives/LocalStore", "Config", "SignUp", "Login"], 
+ 	function(Map, Widget, StackPlugin, ControlPlugin, ModelPlugin, Public, LocalStore, Config, SignUp, Login){
 
  		var wrapper = new Widget(),
  		    appData = new LocalStore({});

@@ -10,8 +10,8 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 		//setup;
 
 
-			idea.plugins.add(
-				"idea" ,new ModelPlugin(store, {
+			idea.plugins.addAll({
+				"idea" :new ModelPlugin(store, {
 					date : function date(date){
 						this.innerHTML = Utils.formatDate(date);
 					},
@@ -31,8 +31,9 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                                    });
                                            }     
                                         }
-				})
-			);
+				}),
+				"label" : new ModelPlugin(Config.get("labels"))
+			});
 			
 
 			idea.reset = function(data){

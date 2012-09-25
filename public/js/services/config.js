@@ -39,11 +39,28 @@ define("Config", ["Store", "Olives/Transport", "Observable", "CouchDBStore"], fu
                 "news": [],
                 "twocents": [],
                 "twoquestions": []
+                },
+           defaultLabels = {
+                language: "US",
+                emailplaceholder: "Email",
+                passwordplaceholder: "Password",
+                repeatpasswordplaceholder: "Confirm password",
+                loginbutton: "Log in",
+                newuserbutton: "New user",
+                signupbutton: "Sign up",
+                firstnameplaceholder: "First name",
+                lastnameplaceholder: "Last name",
+                publicideasheadertitle: "Public Ideas",
+                ideadetailsheadertitle: "Idea Overview"
                 };
 	
 	return new Store({
 		transport : new Transport(io, location.href),
 		userTemplate: userTemplate,
+		// language
+		language: "",
+		defaultLabels: defaultLabels,
+		labels: new Store({}),
 		// a store to save locally user pictures and avatars (key:userid / value: base64-encoded picture)
                 avatars : new Store({}),
                 observer : new Observable(),

@@ -1,12 +1,15 @@
-define("Ideafy/Public", ["Map", "Ideafy/Wall", "Ideafy/Idea", "Olives/OObject", "Amy/Control-plugin"],
-	function(Map, Wall, Idea, Widget, ControlPlugin){
+define("Ideafy/Public", ["Map", "Config", "Ideafy/Wall", "Ideafy/Idea", "Olives/OObject", "Amy/Control-plugin"],
+	function(Map, Config,Wall, Idea, Widget, ControlPlugin){
 		return function PublicConstructor(){
 			var publicIdeas = new Widget(),
 				wall = new Wall(),
 				idea = new Idea(),
 				dom = Map.get("publicIdeas");
 
-			publicIdeas.plugins.add("public", new ControlPlugin(publicIdeas));
+			publicIdeas.plugins.addAll({
+			        "public": new ControlPlugin(publicIdeas),
+			        "label" : new ModelPlugin(Config.get("labels"))
+			     });
 
 			publicIdeas.expand = function(){
 				Map.get("wall").classList.toggle("expand");

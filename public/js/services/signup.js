@@ -11,6 +11,7 @@ define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Oli
                             
                         signUp.plugins.addAll({
                                 "signup": new ModelPlugin(signUpData),
+                                "label" : new ModelPlugin(Config.get("labels")),
                                 "signupevent": new EventPlugin(signUp)     
                         });
                         

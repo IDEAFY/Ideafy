@@ -41,7 +41,8 @@ define("Ideafy/Wall", ["Map", "Config", "Ideafy/Utils", "CouchDBStore",
 					           });
 					   }     
 					}
-				})
+				}),
+                                "label" : new ModelPlugin(Config.get("labels"))
 			});
 
 			wall.getData = function(id){

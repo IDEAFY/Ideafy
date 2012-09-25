@@ -11,17 +11,26 @@
  			"stack" : new StackPlugin({
  				"#public" : wall
  			}),
+ 			"label" : new ModelPlugin(Config.get("labels")),
  			"control" : new ControlPlugin(wrapper)
  		});
 
  		//init
  		appData.sync("ideafy_appData");
  		
+ 		// check if this is the first launch to initialize the LocalStore
  		if (!appData.get("init")){
  		        appData.set("init", true);
  		        appData.set("currentLogin", "");
  		        appData.sync("ideafy_appData");
  		}
+ 		
+ 		// check device language and set labels accordingly
+ 		if (!addData.get("labels")){
+ 		     appData.set("labels", Config.get("defaultLabels"));
+ 		     appData.sync("ideafy_appData");        
+ 		}
+ 		Config.get("labels").reset(appData.get("labels"));
  		
  		
  		if (appData.get("currentLogin") === ""){

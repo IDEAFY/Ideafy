@@ -10,6 +10,7 @@ define("Login",["Config", "Map", "Olives/OObject", "Olives/Event-plugin", "Olive
 			
 			login.plugins.addAll({
 			        "login": new ModelPlugin(loginData),
+			        "label" : new ModelPlugin(Config.get("labels")),
 			        "loginevent":new EventPlugin(login)
 			        
 			});

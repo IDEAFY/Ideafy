@@ -49,9 +49,9 @@ In this interface user can add "acquaintances", read/send private messages (sess
 REQUIREMENTS
 ------------
 
-To install the ideafy client:
-All that is required is a recent browser
+To run the ideafy client:
+A recent version of Safari or Chrome
 
 To deploy ideafy:
-node.js and a couchdb database
-+ socket.io, require.js, connect.js, emily.js, olives.js and amy.js
+node.js, couchdb database, couchdb-lucene and postfix
++ socket.io, require.js, connect.js, nodemailer, emily.js, olives.js and amy.js

@@ -212,7 +212,7 @@
   border-radius:20px;
   float:left;
   background:url('../img/wall/60blueProfile.png');
-  background-size:40px 40px;
+  background-size:cover;
 }
 
 #public .lists.expand .truncate {

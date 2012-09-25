@@ -120,7 +120,7 @@
       display:inline-block;
       width: 15px;
     background-image: url('../img/wall/rateForList.png');
-    background-size: 27,2727%;
+    background-size: contain;
   }
   
   #public .lists .type.selected {
@@ -131,7 +131,7 @@
     margin-left:5px;
     display: inline-block;
     background-image: url('../img/wall/rateForList.png');
-    background-size: 27,2727%;
+    background-size: contain;
   }
   
   #public .lists .acorn.selected {

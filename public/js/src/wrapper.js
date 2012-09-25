@@ -16,17 +16,16 @@
 
  		//init
  		appData.sync("ideafy_appData");
- 		alert(appData.get("firstStart"));
  		
  		if (!appData.get("init")){
  		        appData.set("init", true);
- 		        appData.set("firstStart", true);
+ 		        appData.set("startMode", "signup")
  		        appData.set("currentLogin", "");
  		        appData.sync("ideafy_appData");
  		}
  		
  		
- 		if (appData.get("firstStart")){
+ 		if (appData.get("startMode") === "signup"){
                         SignUp();
                 }
                 else if (appData.get("currentLogin") === ""){

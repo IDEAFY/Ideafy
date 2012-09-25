@@ -107,8 +107,8 @@ define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Oli
                                                                         user.sync("ideafy", userid);
                                                                         user.upload().then(function(){
                                                                                 // alter appData
-                                                                                appData.set("firstStart", false);
                                                                                 appData.set("currentLogin", userid);
+                                                                                appData.set("startMode", "login");
                                                                                 appData.sync("ideafy_appData");
                                                                                 
                                                                                 Config.set("uid", '"'+userid+'"');

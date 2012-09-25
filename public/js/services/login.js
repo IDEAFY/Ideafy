@@ -38,7 +38,7 @@ define("Login",["Config", "Map", "Olives/OObject", "Olives/Event-plugin", "Olive
                                                         user.sync("ideafy", email).then(function(){
                                                                 // retrieve user avatar
                                                                 Utils.getAvatar(email, user.get("picture_file"));
-                                                                appData.set("currentLogin", email)
+                                                                appData.set("currentLogin", email);
                                                                 appData.sync("ideafy_appData");
                                                                 alert(appData.get("currentLogin"));
                                                                 //hide login screen

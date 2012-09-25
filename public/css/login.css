@@ -76,6 +76,11 @@ input.loginfield:focus{
     -webkit-box-shadow: 0 0 3px rgba(37, 64, 102, 0.5);
 }
 
+#signup .enter{
+    width: 180px;
+    margin-right: 20px;
+}
+
 .pressed{
     -webkit-box-shadow: none;
     color: white;

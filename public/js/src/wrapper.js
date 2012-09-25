@@ -26,7 +26,7 @@
  		}
  		
  		// check device language and set labels accordingly
- 		if (!addData.get("labels")){
+ 		if (!appData.get("labels")){
  		     appData.set("labels", Config.get("defaultLabels"));
  		     appData.sync("ideafy_appData");        
  		}

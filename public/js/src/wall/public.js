@@ -18,9 +18,6 @@ define("Ideafy/Public", ["Map", "Ideafy/Wall", "Ideafy/Idea", "Olives/OObject", 
 
 			};
 
-                       // init
-                       if (wall.getData(0)) { idea.reset(wall.getData(0));}
-
 			publicIdeas.alive(dom);
 
 

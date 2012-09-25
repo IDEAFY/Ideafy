@@ -77,8 +77,10 @@ input.loginfield:focus{
 }
 
 #signup .enter{
-    width: 180px;
-    margin-right: 20px;
+    width: 200px;
+    float: left;
+    margin-top: 30px;
+    margin: 0 auto;
 }
 
 .pressed{

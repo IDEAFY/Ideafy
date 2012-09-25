@@ -120,12 +120,13 @@
       display:inline-block;
       width: 15px;
       height: 15px;
-    background-image: url('../img/wall/rateForList.png');
-    background-size: 10px 10px;
+    background-image: url('../img/wall/publicForList.png');
+    background-size: 27,2727%;
+    background-position: bottom left;
   }
   
-  #public .lists .type.selected {
-    background-image: url('../img/wall/vote.png');
+  #public .lists .type .selected {
+    background-image: url('../img/wall/publicForList.png');
   }
 
   #public .lists .acorn {
@@ -134,10 +135,11 @@
     width: 15px;
     height: 15px;
     background-image: url('../img/wall/rateForList.png');
-    background-size: 10px 10px;
+    background-size: 27,2727%;
+    background-position: bottom left;
   }
   
-  #public .lists .acorn.selected {
+  #public .lists .acorn .selected {
     background-image: url('../img/wall/vote.png');
   }
 

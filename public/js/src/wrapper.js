@@ -16,6 +16,7 @@
 
  		//init
  		appData.sync("ideafy_appData");
+ 		alert(appData.get("firstStart"));
  		
  		if (!appData.get("init")){
  		        appData.set("init", true);

@@ -58,7 +58,6 @@
     #public .lists .ideas li.selected {
      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #88A5CC), color-stop(80%, #657B99));
      background: -webkit-linear-gradient(top, #88A5CC 0%, #657B99, 80%);
-     background: #657B99;
       color: white;
     /*-webkit-box-shadow: inset 0 -1px 5px 1px rgba(0,0,0,0.3);*/
   }

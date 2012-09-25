@@ -40,7 +40,6 @@ define("Login",["Config", "Map", "Olives/OObject", "Olives/Event-plugin", "Olive
                                                                 Utils.getAvatar(email, user.get("picture_file"));
                                                                 appData.set("currentLogin", email);
                                                                 appData.sync("ideafy_appData");
-                                                                alert(appData.get("currentLogin"));
                                                                 //hide login screen
                                                                 dom.classList.add("invisible");
                                                                 Config.get("observer").notify("login-completed");

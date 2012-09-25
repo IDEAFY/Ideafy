@@ -19,16 +19,12 @@
  		
  		if (!appData.get("init")){
  		        appData.set("init", true);
- 		        appData.set("startMode", "signup")
  		        appData.set("currentLogin", "");
  		        appData.sync("ideafy_appData");
  		}
  		
  		
- 		if (appData.get("startMode") === "signup"){
-                        SignUp();
-                }
-                else if (appData.get("currentLogin") === ""){
+ 		if (appData.get("currentLogin") === ""){
                         Login();
                 }
                 else {

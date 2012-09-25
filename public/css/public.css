@@ -118,10 +118,10 @@
 
   #public .lists .type {
       display:inline-block;
-      width: 15px;
-      height: 15px;
+      width: 10px;
+      height: 10px;
     background-image: url('../img/wall/publicForList.png');
-    background-size: 27,2727%;
+    background-size: contain;
     background-position: bottom left;
   }
   
@@ -132,10 +132,10 @@
   #public .lists .acorn {
    display: inline-block;
     margin-left:5px;
-    width: 15px;
-    height: 15px;
+    width: 10px;
+    height: 10px;
     background-image: url('../img/wall/rateForList.png');
-    background-size: 27,2727%;
+    background-size: contain;
     background-position: bottom left;
   }
   

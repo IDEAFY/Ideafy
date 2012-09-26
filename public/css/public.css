@@ -76,7 +76,7 @@
     /* put ... when author is too long */
     float:left;
     /*compresser ça? */
-    font-size: 16px;
+    font-size: 14px;
     text-overflow: ellipsis;
     font-family: Helvetica;
   }
@@ -206,6 +206,25 @@
 
   #public .details .header {
     background-color:#657B99;
+  }
+  
+  #public .details .twocent {
+    background:url('../img/wall/2cents.png') no-repeat center center;
+    background-size:15px 15px;
+    height:36px;
+    width:36px;
+    position:absolute;
+    left:0;
+  }
+
+    #public .details .rate {
+    background:url('../img/wall/vote.png') no-repeat center center;
+    background-size:12px 15px;
+    height:36px;
+    width:36px;
+    position:absolute;
+    right:0;
+    top:0;
   }
 
   #public .details .content {
@@ -351,9 +370,8 @@ margin-bottom:12px;
   display: inline;
 }
 
-.ratingExpand img {
+#public .details .ratingExpand img {
   margin-left:5px;
-  width: 20px;
   height: 20px;
 }
 

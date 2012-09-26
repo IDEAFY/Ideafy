@@ -34,25 +34,26 @@ define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Oli
                                     pwdConfirm = signUpData.get("pwdbis"),
                                     fn = signUpData.get("firstname"),
                                     ln = signUpData.get("lastname"),
-                                    transport = Config.get("transport");
+                                    transport = Config.get("transport"),
+                                    labels = Config.get("labels"),
                                     user = Config.get("user");
                                     
                                 node.classList.remove("pressed");
                                 
                                 if (email === ""){
-                                        signUpData.set("errormsg", "Please enter your email address in the field above");        
+                                        signUpData.set("errormsg", labels.get("signupmissingemail"));        
                                 }
                                 else if (password === ""){
-                                        signUpData.set("errormsg", "A password is required");
+                                        signUpData.set("errormsg", labels.get("signupmissingpwd"));
                                 }
                                 else if (pwdConfirm === ""){
-                                        signUpData.set("errormsg", "Please confirm your password");
+                                        signUpData.set("errormsg", labels.get("signupmissingpwdok"));
                                 }
                                 else if (fn === ""){
-                                        signUpData.set("errormsg", "Please enter your first name");
+                                        signUpData.set("errormsg", labels.get("signupmissingfn"));
                                 }
                                 else if (ln === ""){
-                                        signUpData.set("errormsg", "Please enter your last name");
+                                        signUpData.set("errormsg", labels.get("signupmissingln"));
                                 }
                                 
                                 else {
@@ -62,13 +63,13 @@ define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Oli
                                             emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
                                         
                                         if (!emailPattern.test(userid)){
-                                                signUpData.set("errormsg", "Invalid email address");        
+                                                signUpData.set("errormsg", labels.get("signupinvalidemail"));        
                                         }
                                         
                                         else {
                                                 // check if passwords match
                                                 if (password !== pwdConfirm){
-                                                        signUpData.set("errormsg", "Passwords do not match");        
+                                                        signUpData.set("errormsg", labels.get("signuppwdnomatch"));        
                                                 }
                                                 
                                                 else{
@@ -97,10 +98,10 @@ define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Oli
                                                                                         now.getMinutes(),
                                                                                         now.getSeconds()
                                                                                         ],
-                                                                                "object": "Welcome to Ideady",
+                                                                                "object": labels.get("signupwelcomeobject"),
                                                                                 "status": "unread",
                                                                                 "author": "IDEAFY",
-                                                                                "body": "Thank you for trying Ideafy. We hope you'll enjoy it. We designed it so you can manage ideas that matter to you or just play around. But don't keep what you're doing to yourself."
+                                                                                "body": labels.get("signupwelcomebody")
                                                                         }]);
                                                                         
                                                                         // upload in database

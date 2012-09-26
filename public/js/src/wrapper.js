@@ -5,7 +5,25 @@
  	function(Map, Widget, StackPlugin, ControlPlugin, ModelPlugin, Public, LocalStore, Config, SignUp, Login){
 
  		var wrapper = new Widget(),
- 		    appData = new LocalStore({});
+ 		    transport =  Config.get("transport"),
+ 		    appData = new LocalStore({"init": false, "currentLogin": ""}),
+ 		    updateLabels = function(lang){
+ 		             var json = {"lang": lang};
+ 		             transport.request("Lang", json, function(result){
+                             if (result === "nok"){
+                                     appData.set("labels", Config.get("defaultLabels"));
+                                     Config.get("language", "US"); 
+                             }
+                             else{
+                                     appData.set("labels", result);
+                                     Config.set("language", result.language);
+                             }
+                             // save labels to local storage
+                             appData.sync("ideafy_appData");
+                             // apply language
+                             Config.get("labels").reset(appData.get("labels"));       
+                        });                 
+ 		    };
 
  		wrapper.plugins.addAll({
  			"stack" : new StackPlugin({
@@ -21,24 +39,27 @@
  		// check if this is the first launch to initialize the LocalStore
  		if (!appData.get("init")){
  		        appData.set("init", true);
- 		        appData.set("currentLogin", "");
  		        appData.sync("ideafy_appData");
  		}
  		
+ 		// during development phase we expect to be adding many new labels, that's why localstorage is reset.
+ 		appData.set("labels", null);
+ 		
  		// check device language and set labels accordingly
  		if (!appData.get("labels")){
- 		     appData.set("labels", Config.get("defaultLabels"));
- 		     appData.sync("ideafy_appData");        
+ 		        updateLabels(navigator.language);     
  		}
- 		Config.get("labels").reset(appData.get("labels"));
+ 		else {
+ 		     // language already set
+ 		     Config.get("labels").reset(appData.get("labels"));
+ 		}
  		
  		
  		if (appData.get("currentLogin") === ""){
                         Login();
                 }
                 else {
-                        var transport =  Config.get("transport"),
-                            json = {"id": appData.get("currentLogin")};
+                        var json = {"id": appData.get("currentLogin")};
                         transport.request("CheckLogin", json, function(result){
                                 (result.authenticated) ? Config.get("observer").notify("login-completed") : Login();     
                         });

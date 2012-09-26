@@ -41,17 +41,28 @@ define("Config", ["Store", "Olives/Transport", "Observable", "CouchDBStore"], fu
                 "twoquestions": []
                 },
            defaultLabels = {
-                language: "US",
-                emailplaceholder: "Email",
-                passwordplaceholder: "Password",
-                repeatpasswordplaceholder: "Confirm password",
-                loginbutton: "Log in",
-                newuserbutton: "New user",
-                signupbutton: "Sign up",
-                firstnameplaceholder: "First name",
-                lastnameplaceholder: "Last name",
-                publicideasheadertitle: "Public Ideas",
-                ideadetailsheadertitle: "Idea Overview"
+                "language": "US",
+                "emailplaceholder": "Email",
+                "passwordplaceholder": "Password",
+                "repeatpasswordplaceholder": "Confirm password",
+                "loginbutton": "Log in",
+                "newuserbutton": "New user",
+                "invalidlogin": "Invalid username or password",
+                "missingloginparam": "Please enter both username and password or register",
+                "signupmissingemail": "Please enter your email address in the field above",
+                "signupmissingpwd": "A password is required",
+                "signupmissingpwdok": "Please confirm your password",
+                "signupmissingfn": "Please enter your first name",
+                "signupmisingln": "Please enter your last name",
+                "signupinvalidemail": "Invalid email address",
+                "signuppwdnomatch": "Passwords do not match",
+                "signupwelcomeobject": "Welcome to Ideady",
+                "signupwelcomebody": "Thank you for trying Ideafy. We hope you'll enjoy it. We designed it so you can manage ideas that matter to you or just play around. But don't keep what you're doing to yourself.",
+                "signupbutton": "Sign up",
+                "firstnameplaceholder": "First name",
+                "lastnameplaceholder": "Last name",
+                "publicideasheadertitle": "Public Ideas",
+                "ideadetailsheadertitle": "Idea Overview"
                 };
 	
 	return new Store({

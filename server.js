@@ -124,7 +124,19 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
         olives.registerSocketIO(io);
 
         olives.config.update("CouchDB", "sessionStore", sessionStore);
-
+        
+        olives.handlers.set("Lang", function(json, onEnd){
+                var path = __dirname+'/public/i8n/'+json.lang+'.json';
+                fs.exists(path, function(exists){
+                        if (exists){
+                                var labels=fs.readFileSync(path, 'utf8');
+                                onEnd(JSON.parse(labels));
+                        }
+                        else{
+                                onEnd("nok");
+                        }    
+                });
+        });
         
         olives.handlers.set("Signup", function (json, onEnd) {
                         var user = new CouchDBUser;

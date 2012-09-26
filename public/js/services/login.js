@@ -47,12 +47,12 @@ define("Login",["Config", "Map", "Olives/OObject", "Olives/Event-plugin", "Olive
                                                         });
                                                 }
                                                 else {
-                                                        loginData.set("errormsg", "Invalid username or password");
+                                                        loginData.set("errormsg", Config.get("labels").get("invalidlogin"));
                                                 }     
                                         });
                                 }
                                 else {
-                                        loginData.set("errormsg", "Please enter both username and password or register")
+                                        loginData.set("errormsg", Config.get("labels").get("missingloginparam"));
                                 }
                         };
                         

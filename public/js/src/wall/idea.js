@@ -15,6 +15,9 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 					date : function date(date){
 						this.innerHTML = Utils.formatDate(date);
 					},
+					setRating : function setRating(rating){
+                                                this.innerHTMl = Utils.setRating(this, rating);
+                                        },
 					setAvatar : function setAvatar(authors){
                                            var node = this;
                                            //check if more than one author and if so display mutli-deedee avatar

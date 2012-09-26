@@ -85,7 +85,9 @@
           			</ul>
           		</div>
         	  	<div id="ideaDetails" class="details">
-         		   	<div class="header" data-label="bind: innerHTML, ideadetailsheadertitle">Author's idea</div>
+         		   	<div class="header">
+         		   		<div class="headerTitle" data-label="bind: innerHTML, ideadetailsheadertitle">Author's idea</div>
+         		   	</div>
          		   	<div class="content">
               			<div class="detailsHeader">
              	   			<div class="detailsAvatar" data-idea="bind: setAvatar, value.doc.authors"></div>
@@ -96,8 +98,11 @@
                 			<hr>
                 			<p class="detailsDescription" data-idea="bind:innerHTML, value.doc.description">description</p>
                 			<p class="detailsSolution" data-idea="bind:innerHTML, value.doc.solution">solution</p>
-                			<div class="ratingExpand"></div>
+                			<div class="ratingExpand" data-idea="bind:setRating, value.rating"></div>
               			</div>
+            		</div>
+            		<div class="twocentStack">
+            			<div class="edittwocent"></div>
             		</div>
           		</div>
         	</div>

@@ -6,7 +6,7 @@
 
  		var wrapper = new Widget(),
  		    transport =  Config.get("transport"),
- 		    appData = new LocalStore({"init": false, "currentLogin": ""}),
+ 		    appData = new LocalStore({}),
  		    updateLabels = function(lang){
  		             var json = {"lang": lang};
  		             transport.request("Lang", json, function(result){
@@ -53,8 +53,7 @@
  		     // language already set
  		     Config.get("labels").reset(appData.get("labels"));
  		}
- 		
- 		
+
  		if (appData.get("currentLogin") === ""){
                         Login();
                 }

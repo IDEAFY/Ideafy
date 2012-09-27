@@ -51,29 +51,6 @@ define("Ideafy/Wall", ["Map", "Config", "Ideafy/Utils", "CouchDBStore",
 
 
 		//init
-		       // make sure all ideas in the database match the template
-		       var ideaCDB =  new CouchDBStore(),
-		           template = Config.get("ideaTemplate");
-		       ideaCDB.setTransport(Config.get("transport"));
-		       ideaCDB.sync("ideafy", "ideas", "_view/all").then(function(store){
-                              
-                              store.loop(function(v,i){
-                                 var idea = new CouchDBStore();
-                                 idea.setTransport(Config.get("transport")); 
-                                 
-                                 idea.sync("ideafy", v.id).then(function(){
-                                         alert(template);
-                                         for (property in template){
-                                                if (!idea.get(property)){
-                                                      idea.set(property, template[property]);
-                                                }
-                                         }
-                                         idea.upload().then(function(){
-                                                 alert("idea " + idea.get("_id") + " successfully updated");
-                                         });  
-                                 });
-                              });                              
-                      });
 		
 			wall.alive(dom);
 

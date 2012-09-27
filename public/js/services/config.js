@@ -63,11 +63,32 @@ define("Config", ["Store", "Olives/Transport", "Observable", "CouchDBStore"], fu
                 "lastnameplaceholder": "Last name",
                 "publicideasheadertitle": "Public Ideas",
                 "ideadetailsheadertitle": "Idea Overview"
+                },
+           ideaTemplate = {
+                "authors": [],
+                "character": "",
+                "context": "",
+                "creation_date": [],
+                "description": "",
+                "visibility": "",
+                "problem": "",
+                "sessionid": "",
+                "solution": "",
+                "techno": [],
+                "title": "",
+                "type": 6,
+                "modification_date": [],
+                "inspired_by": "",
+                "votes": [],
+                "rating": "",
+                "authornames": "",
+                "twocents": []
                 };
 	
 	return new Store({
 		transport : new Transport(io, location.href),
 		userTemplate: userTemplate,
+		ideaTemplate: ideaTemplate,
 		// language
 		language: "",
 		defaultLabels: defaultLabels,

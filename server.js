@@ -23,6 +23,7 @@ var connect = require("connect"),
         port : "6379"
     });
 
+
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
@@ -35,6 +36,7 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
                 pass : fs.readFileSync(".password", "utf8").trim()
         }
 });
+
 
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], function(CouchDBUser, Transport, CouchDBStore, Store) {
         var transport = new Transport(olives.handlers),
@@ -543,7 +545,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                 });
 
         });
-
 });
 
 process.on('uncaughtException', function(error) {

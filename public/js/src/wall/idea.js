@@ -1,11 +1,12 @@
-define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject", "Olives/Model-plugin"],
-	function(Map, Config, Utils, Store,  Widget, ModelPlugin){
+define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore"],
+	function(Map, Config, Utils, Store,  Widget, ModelPlugin, EventPlugin, CouchDBStore){
 		return function IdeaConstructor($data){
 
 		//definition
 			var idea = new Widget(),
-				dom = Map.get("idea"),
-				store = new Store($data);
+		            dom = Map.get("idea"),
+			    store = new Store($data),
+			    twocents = new Store();
 
 		//setup;
 
@@ -35,12 +36,22 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                            }     
                                         }
 				}),
-				"label" : new ModelPlugin(Config.get("labels"))
+				"label" : new ModelPlugin(Config.get("labels")),
+				"twocents" : new ModelPlugin(twocents),
+				"ideaevent" : new EventPlugin(idea)
 			});
 			
 
 			idea.reset = function(data){
+			        // build idea header with data available from the wall view
 				store.reset(data);
+				
+				// synchronize with idea document in couchDB to build twocents and ratings
+				var ideaCDB = new CouchDBStore();
+				ideaCDB.setTransport(Config.get("transport"));
+				ideaCDB.sync("ideafy", data.get()).then(function(){
+				        twocents.reset(ideaCDB.get("twocents"));
+				})
 			};
 
 		//init

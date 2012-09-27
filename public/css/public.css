@@ -334,11 +334,14 @@
 }
 
 #public .details .detailsTitle {
-  display:inline;
+  display:block;
   font-size:24px;
+  line-height: 24px;
+  margin-bottom: 10px;
   font-family:pacifico;
-  margin-left:10px;
-  margin-top:10px;
+  max-width: 450px;
+  text-overflow: ellipsis;
+  margin-left:70px;
 }
 
 #public .details .detailsAuthor {
@@ -347,6 +350,18 @@
   font-weight:bold;
   color:#F27B3D;
   margin-left:70px;
+  float: left;
+  max-width: 400px;
+  text-overflow: ellipsis;
+}
+
+#public .detailsHeader .commentLabel{
+    color: black;
+    margin-left: 2px;
+    float: left;
+    font-size: 14px;
+    font-family:Helvetica;
+    color: black;
 }
 
 #public .details .detailsDate {
@@ -356,7 +371,9 @@ position: absolute;
 }
 
 #public .details .detailsAvatar {
-  float:left;
+  position: absolute;
+  top:25px;
+  left: 20px;
   width:60px;
   height:60px;
   background-size: cover;

@@ -46,6 +46,24 @@
     /* for the expand back animation */
     width:301px;
   }
+  
+  #public .searchfield {
+      border: none;
+      background: #F2F2F2;
+      border-radius: 5px;
+      height: 25px;
+      width: 70%;
+      margin-top: 15px;
+      margin-left: 15px;
+      line-height: 25px;
+      color: black;
+      font-family: Helvetica;
+      font-size: 12px;
+      background-image: url('../img/wall/search.png');
+      background-size: 15px 15px;
+      background-position: 96%;
+      background-repeat: no-repeat;
+  }
 
   #public .lists .ideas li {
     min-height:85px;
@@ -208,7 +226,7 @@
     background-color:#657B99;
   }
   
-  #public .details .twocent {
+  #public .details .twocentbutton {
     background:url('../img/wall/2cents.png') no-repeat center center;
     background-size:15px 15px;
     height:36px;
@@ -299,7 +317,7 @@
 #public .lists.expand .ratingExpand {
   display:block;
   float: right;
-display: inline;
+ display: inline;
 }
 
 .ratingExpand img {
@@ -311,6 +329,8 @@ display: inline;
   padding:25px 40px 30px 20px;
   position:relative;
   -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+  height: 260px;
+  overflow-y:scroll;
 }
 
 #public .details .detailsTitle {
@@ -358,7 +378,7 @@ height: 15px;
 
 #public .details hr {
 height: 1px;
-margin: 30px 0;
+margin: 20px 0;
 background-color: #CCCCCC;
 border: 0;
 margin-bottom:12px;
@@ -366,7 +386,9 @@ margin-bottom:12px;
 
 #public .details .ratingExpand {
   display:block;
-  float: right;
+  position: absolute;
+  bottom: 25px;
+  right: 40px;
   display: inline;
 }
 
@@ -375,3 +397,72 @@ margin-bottom:12px;
   height: 20px;
 }
 
+/*two cents */
+#public .details .twocentList{
+    overflow-y: scroll;
+    font-family: Helvetica;
+}
+
+#public .details .twocent{
+    padding: 20px 40px 20px 30px;    
+}
+
+#public .twocentAvatar, #public .replyAvatar{
+  width:40px;
+  height:40px;
+  border-radius:20px;
+  float:left;
+  background-size:cover;
+}
+
+#public .twocentAvatar{
+  background:url('../img/wall/60redProfile.png'); 
+}
+
+#public .replyAvatar{
+  background:url('../img/wall/60yellowProfile.png'); 
+}
+
+#public .twocentAuthor, #public .twocent .commentLabel{
+    float: left;
+    font-size: 14px;
+}
+
+#public .twocentAuthor{
+    margin-left: 10px;
+    color: #657B99;
+}
+
+#public .twocent .commentLabel{
+    color: black;
+    margin-left: 2px;
+}
+
+#public .twocent .twocentDate{
+    float: none;
+    line-height: 15px;
+    margin-left: 50px;
+}
+
+#public .twocentMessage{
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+#public .replies{
+    max-height: 260px;
+    overflow-y: scroll;
+}
+
+#public .twocentReply{
+    padding: 20px 30px 20px 20px;
+    margin-top: 10px;
+    background-image: -webkit-gradient(linear, center top, center bottom, from(white 74%), to(#e5e5e5));
+    background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+}
+
+#public .replyMessage{
+    max-height: 50px;
+    font-size: 12px;
+}

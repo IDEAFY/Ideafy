@@ -63,6 +63,7 @@
          		   		<div class="headerTitle" data-label="bind:innerHTML, publicideasheadertitle">Public Ideas</div>
             			<div class="plus"></div>
           			</div>
+          			<input id="wallsearch" class="searchfield" type="search" data-label="bind:placeholder, searchplaceholder">
           			<!-- mettre une image deedee qui dit click sur + lorsqu'il n'y a pas d'idéees -->
           			<!-- display none is far faster -->
           			<ul class="ideas" data-wall="foreach" data-public="radio:selected,touchstart, select">
@@ -86,7 +87,7 @@
           		</div>
         	  	<div id="ideaDetails" class="details">
          		   	<div class="header">
-         		   		<div class="twocent" data-idea="listen: touchstart, add2cent"></div>
+         		   		<div class="twocentbutton" data-idea="listen: touchstart, add2cent"></div>
          		   		<div class="headerTitle" data-label="bind: innerHTML, ideadetailsheadertitle">Author's idea</div>
          		   		<div class="rate" data-idea="listen: touchstart, rate"></div>
          		   	</div>
@@ -103,9 +104,32 @@
                 			<p class="detailsSolution" data-idea="bind:innerHTML, value.doc.solution">solution</p>
                 			<div class="ratingExpand" data-idea="bind:setRating, value.rating"></div>
               			</div>
-            		</div>
-            		<div class="twocentStack">
-            			<div class="edittwocent"></div>
+              			<div id="twocents">
+            				<ul class="twocentList">
+            					<li class="twocent">
+            						<div class="twocentHeader">
+            							<div class="twocentAvatar"></div>
+            							<div class="twocentAuthor">Olivier</div> 
+            							<span class="commentLabel">commented:</span>
+            							<br/>
+            							<div class="twocentDate date">27/09/2012</div>
+            						</div>
+            						<hr/>
+            						<p class = "twocentMessage">Well I believe this is a really really cool idea</p>
+            						<ul class="replies">
+            							<li class="twocentReply">
+            								<div class="replyAvatar"></div>
+            								<div class="twocentAuthor">You</div> 
+            								<span class="commentLabel">said:</span>
+            								<br/>
+            								<div class="twocentDate date">27/09/2012</div>
+            								<hr/>
+            								<p class="replyMessage">Well you're free to believe what you want buddy</p>
+            							</li>
+            						</ul>
+            					</li>
+            				</ul>
+            			</div>
             		</div>
           		</div>
         	</div>

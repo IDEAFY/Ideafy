@@ -10,10 +10,10 @@ define("Ideafy/Wall", ["Map", "Config", "Ideafy/Utils", "CouchDBStore",
 
 		//setup
 			store.setTransport(Config.get("transport"));
-
+                        // the number of ideas to fetch from database in this veiw could be a user-defined parameter - perf related
 			store.sync("ideafy", "library", "_view/publicideas", {
 				descending : true,
-				limit : 100
+				limit : 30
 			});
 
 			wall.plugins.addAll({

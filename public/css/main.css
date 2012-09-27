@@ -15,11 +15,14 @@
     margin:0;
   }
   
-  p{
+  p, hr, ul{
       -webkit-margin-before: 0px;
       -webkit-margin-after: 0px;
   }
-
+  
+  ul{
+      -webkit-padding-start: 0px;
+  }
 
 
 

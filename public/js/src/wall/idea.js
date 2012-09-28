@@ -23,10 +23,9 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                                 this.innerHTMl = Utils.setRating(this, rating);
                                         },
 					setAvatar : function setAvatar(authors){
-                                           var node = this;
                                            //check if more than one author and if so display mutli-deedee avatar
                                            if (authors.length>1){
-                                                   node.setAttribute("style", "background:url('img/userpics/deedee4.png');")
+                                                   node.setAttribute("style", "background:url('img/userpics/deedee0.png');")
                                            }
                                            else {
                                                    if (authors[0] === Config.get("user").get("_id")){

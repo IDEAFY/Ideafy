@@ -98,6 +98,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                                         res.end();
                                         next();
                                 });
+                                req.on('error', function(err) { 
+                                        console.error(err.stack); 
+                                 }); 
                         }
                         else{
                                 res.setHeader("Ideady Server", "node.js/" + process.versions.node);

@@ -87,7 +87,7 @@
           		</div>
         	  	<div id="ideaDetails" class="details">
          		   	<div class="header">
-         		   		<div class="twocentbutton" data-idea="listen: touchstart, add2cent"></div>
+         		   		<div class="twocentbutton" data-ideaevent="listen: touchstart, addTwocent"></div>
          		   		<div class="headerTitle" data-label="bind: innerHTML, ideadetailsheadertitle">Author's idea</div>
          		   		<div class="rate" data-idea="listen: touchstart, rate"></div>
          		   	</div>
@@ -122,14 +122,13 @@
             				<ul class="twocentList" data-twocents="foreach">
             					<li class="twocent">
             						<div class="twocentHeader">
-            							<div class="twocentAvatar"></div>
-            							<div class="twocentAuthor">Olivier</div> 
+            							<div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div>
+            							<div class="twocentAuthor"data-twocents="bind: innerHTML, firstname">Olivier</div> 
             							<span class="commentLabel">commented:</span>
             							<br/>
-            							<div class="twocentDate date">27/09/2012</div>
+            							<div class="twocentDate date" data-twocents="bind: date, date">27/09/2012</div>
             						</div>
-            						<hr/>
-            						<p class = "twocentMessage">Well I believe this is a really really cool idea</p>
+            						<p class = "twocentMessage" data-twocents="bind: innerHTML, message">Well I believe this is a really really cool idea</p>
             						<ul class="replies">
             							<li class="twocentReply">
             								<div class="replyAvatar"></div>
@@ -165,6 +164,7 @@
      <!-- load application -->
     <script src="js/src/wall/wall.js"></script>
     <script src="js/src/wall/idea.js"></script>
+    <script src="js/src/wall/twocent.js"></script>
     <script src="js/src/wall/public.js"></script>
     <script src="js/services/login.js"></script>
     <script src="js/services/signup.js"></script>

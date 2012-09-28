@@ -1,12 +1,15 @@
-define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore"],
-	function(Map, Config, Utils, Store,  Widget, ModelPlugin, EventPlugin, CouchDBStore){
+define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "Twocent"],
+	function(Map, Config, Utils, Store,  Widget, ModelPlugin, EventPlugin, CouchDBStore, Twocent){
 		return function IdeaConstructor($data){
 
 		//definition
 			var idea = new Widget(),
 		            dom = Map.get("idea"),
+		            domWrite = Map.get("writePublicTwocent"),
+		            writeTwocent = new Twocent(domWrite),
 			    store = new Store($data),
-			    twocents = new Store([]);
+			    twocents = new Store([]),
+			    avatars = new Store();
 
 		//setup;
 
@@ -26,18 +29,41 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                                    node.setAttribute("style", "background:url('img/userpics/deedee4.png');")
                                            }
                                            else {
-                                                   var avatar = new Store({"uid": authors[0], "img": "", "status": null});
-                                                   Utils.getUserAvatar(avatar);
-                                                   avatar.watchValue("status", function(value){
-                                                           if (value === "ready"){
-                                                                   node.setAttribute("style", "background:url('"+avatar.get("img")+"') no-repeat center center; background-size: cover;");
-                                                           }       
-                                                   });
+                                                   if (authors[0] === Config.get("user").get("_id")){
+                                                        node.setAttribute("style", "background:url('"+Config.get("avatars").get(authors[0])+"') no-repeat center center; background-size: cover;");        
+                                                   }
+                                                   else{
+                                                        if (avatars.get(authors[0])){
+                                                                node.setAttribute("style", "background:url('"+avatars.get(authors[0]).img+"') no-repeat center center; background-size: cover;");        
+                                                        }
+                                                        else{
+                                                                Utils.getUserAvatar(authors[0], avatars);
+                                                                avatars.watchValue(authors[0], function(value){
+                                                                        if (value.status === "ready"){
+                                                                                node.setAttribute("style", "background:url('"+value.img+"') no-repeat center center; background-size: cover;");
+                                                                        }
+                                                                });       
+                                                        }
+                                                   }
                                            }     
                                         }
 				}),
 				"label" : new ModelPlugin(Config.get("labels")),
-				"twocents" : new ModelPlugin(twocents),
+				"twocents" : new ModelPlugin(twocents, {
+                                        date : function date(date){
+                                                this.innerHTML = Utils.formatDate(date);
+                                        },
+                                        setAvatar : function setAvatar(author){
+                                           var node = this;
+                                               avatar = new Store({"uid": author, "img": "", "status": null});
+                                           Utils.getUserAvatar(avatar);
+                                           avatar.watchValue("status", function(value){
+                                                if (value === "ready"){
+                                                        node.setAttribute("style", "background:url('"+avatar.get("img")+"') no-repeat center center; background-size: cover;");
+                                                }       
+                                           });
+                                         }
+                                     }),
 				"ideaevent" : new EventPlugin(idea)
 			});
 			
@@ -45,6 +71,8 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 			idea.reset = function(data){
 			        // build idea header with data available from the wall view
 				store.reset(data);
+				// reset avatars
+				avatars.reset({});
 				// synchronize with idea document in couchDB to build twocents and ratings
 				var ideaCDB = new CouchDBStore();
 				ideaCDB.setTransport(Config.get("transport"));
@@ -59,8 +87,12 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 				        }
 				});
 			};
+			
+			idea.addTwocent = function(){
+			     alert('add twocent');        
+			};
 
-		//init
+		      //init
 			idea.alive(dom);
 
 			return idea;

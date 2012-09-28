@@ -1,11 +1,12 @@
 /**
  * Define wrapper with dock and notifications.
  */
- require(["Map", "Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Olives/Model-plugin", "Ideafy/Public", "Olives/LocalStore", "Config", "SignUp", "Login"], 
- 	function(Map, Widget, StackPlugin, ControlPlugin, ModelPlugin, Public, LocalStore, Config, SignUp, Login){
+ require(["Map", "Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Olives/Model-plugin", "Ideafy/Public", "Olives/LocalStore", "Config", "SignUp", "Login", "Ideafy/Utils"], 
+ 	function(Map, Widget, StackPlugin, ControlPlugin, ModelPlugin, Public, LocalStore, Config, SignUp, Login, Utils){
 
  		var wrapper = new Widget(),
  		    transport =  Config.get("transport"),
+ 		    user = Config.get("user"),
  		    appData = new LocalStore({}),
  		    updateLabels = function(lang){
  		             var json = {"lang": lang};
@@ -67,6 +68,13 @@
  		wrapper.alive(Map.get("wrapper"));
  		
  		Config.get("observer").watch("login-completed", function(){
+ 		        // synchronize user with DB, retrieve and store user avatar
+ 		        user.setTransport(transport);
+ 		        user.sync("ideafy", appData.get("currentLogin")).then(function(){
+ 		             Utils.getAvatar(user.get("_id"), user.get("picture_file"));       
+ 		        });
+ 		        
+ 		        // show main interface
  		        document.getElementById("main").classList.remove("invisible");
                         Public();		        
  		});

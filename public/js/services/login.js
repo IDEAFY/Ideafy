@@ -27,7 +27,6 @@ define("Login",["Config", "Map", "Olives/OObject", "Olives/Event-plugin", "Olive
                                 var email = loginData.get("email").toLowerCase(),
                                     password = loginData.get("pwd"),
                                     transport = Config.get("transport");
-                                    user = Config.get("user");
                                 
                                 node.classList.remove("pressed");
                                     
@@ -35,16 +34,11 @@ define("Login",["Config", "Map", "Olives/OObject", "Olives/Event-plugin", "Olive
                                         transport.request("Login", {name: email, password: password}, function (result) {
                                                 if (result.login === "ok"){
                                                         Config.set("uid", '"'+email+'"');
-                                                        user.setTransport(transport);
-                                                        user.sync("ideafy", email).then(function(){
-                                                                // retrieve user avatar
-                                                                Utils.getAvatar(email, user.get("picture_file"));
-                                                                appData.set("currentLogin", email);
-                                                                appData.sync("ideafy_appData");
-                                                                //hide login screen
-                                                                dom.classList.add("invisible");
-                                                                Config.get("observer").notify("login-completed");
-                                                        });
+                                                        appData.set("currentLogin", email);
+                                                        appData.sync("ideafy_appData");
+                                                        //hide login screen
+                                                        dom.classList.add("invisible");
+                                                        Config.get("observer").notify("login-completed");
                                                 }
                                                 else {
                                                         loginData.set("errormsg", Config.get("labels").get("invalidlogin"));

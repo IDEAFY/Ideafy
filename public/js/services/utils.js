@@ -36,21 +36,17 @@ define("Ideafy/Utils", ["Observable", "Config", "CouchDBStore"], function(Observ
                         return elementid.innerHTML;
 		 },
 		 
-		 getUserAvatar : function(store){
+		 getUserAvatar : function(uid, store){
 		      var cdb = new CouchDBStore();
 		      
 		      cdb.setTransport(Config.get("transport"));
-		      
-		      cdb.sync("ideafy", "users", "_view/short", {key: '"'+store.get("uid")+'"'}).then(function(){
+		      cdb.sync("ideafy", "users", "_view/short", {key: '"'+uid+'"'}).then(function(){
 		              var file = cdb.get(0).value.picture_file;
-		              
 		              if (file === ""){
-		                      store.set("img", "img/userpics/deedee2.png");
-		                      store.set("status", "ready");
+		                      store.set(uid, {"img": "img/userpics/deedee2.png", "status": "ready"});
 		              }
 		              else if (file.search("img/userpics")>-1){
-		                      store.set("img", file);
-		                      store.set("status", "ready");
+		                      store.set(uid, {"img": file, "status": "ready"});
 		              }
 		              else{
 		                      var request = new XMLHttpRequest(),
@@ -67,8 +63,7 @@ define("Ideafy/Utils", ["Observable", "Config", "CouchDBStore"], function(Observ
                                                      // fallback in case of network error or download failure
                                                      image = "img/userpics/deedee0.png";
                                                 }
-                                                store.set("img", image);
-                                                store.set("status", "ready");
+                                                store.set(uid, {"img": image, "status": "ready"});
                                          }
                                        };
                                       request.send(null);                    
@@ -118,7 +113,6 @@ define("Ideafy/Utils", ["Observable", "Config", "CouchDBStore"], function(Observ
                                          image = "img/userpics/deedee"+filename+".png";
                                          Config.get("avatars").set(uid, image); 
                                  }
-                                 test = Config.get("avatars");
                                  
                                  dlOk.watch("avatar-loaded", function(uid){
                                          Config.get("avatars").set(uid, image);

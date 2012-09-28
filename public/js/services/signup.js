@@ -36,7 +36,7 @@ define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Oli
                                     ln = signUpData.get("lastname"),
                                     transport = Config.get("transport"),
                                     labels = Config.get("labels"),
-                                    user = Config.get("user");
+                                    user = new CouchDBStore();
                                     
                                 node.classList.remove("pressed");
                                 
@@ -77,7 +77,6 @@ define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Oli
                                                                 name: userid,
                                                                 password: password
                                                         }, function (result) {
-                                                                console.log(result);
                                                                 if (result.signup === "ok"){
                                                                         // create user
                                                                         user.reset(Config.get("userTemplate"));
@@ -118,6 +117,7 @@ define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Oli
                                                                                 dom.classList.add("invisible");
                                                                                 // notify login completed
                                                                                 Config.get("observer").notify("login-completed");
+                                                                                user.unsync();
                                                                         });
                                                                         
                                                                         

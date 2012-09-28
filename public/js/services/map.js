@@ -5,6 +5,7 @@ define("Map", ["Store"], function(Store){
 		signup : document.getElementById("signup"),
 		publicIdeas : document.getElementById('public'),
 		wall : document.getElementById("wall"),
-		idea : document.getElementById("ideaDetails")
+		idea : document.getElementById("ideaDetails"),
+		writePublicTwocent : document.getElementById("writePublicTwocent")
 	});
 });

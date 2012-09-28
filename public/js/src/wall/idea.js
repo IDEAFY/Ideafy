@@ -27,10 +27,10 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                         },
 					setAvatar : function setAvatar(authors){
 					   // reset
-					   this.setAttribute("style", "background:url('img/userpics/deedee3.png);")
+					   this.setAttribute("style", "background:url('../img/userpics/deedee0.png);")
                                            //check if more than one author and if so display mutli-deedee avatar
                                            if (authors.length>1){
-                                                   this.setAttribute("style", "background:url('img/userpics/deedee0.png');")
+                                                   this.setAttribute("style", "background:url('../img/userpics/deedee0.png');")
                                            }
                                            else {
                                                    if (authors[0] === Config.get("user").get("_id")){

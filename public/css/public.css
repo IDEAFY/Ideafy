@@ -66,7 +66,7 @@
   }
 
   #public .lists .ideas li {
-    min-height:85px;
+    min-height:80px;
     border-bottom:1px solid #CCCCCC;
 
     padding:20px;
@@ -120,7 +120,6 @@
   }
 
   #public .lists .ideas li p  {
-
     color:#808080;
     font-family:Helvetica;
     font-size:12px;
@@ -128,7 +127,7 @@
     -webkit-margin-after: 0px;
     margin-top:10px;
     margin-bottom:10px;
-    height: 30px;
+    max-height: 30px;
   }
 
   #public .lists img {
@@ -174,14 +173,14 @@
   .truncate {
     text-overflow:ellipsis;
     text-align:justify;
-
-    overflow: hidden
+    white-space: nowrap;
+    overflow: hidden;
   }
 
 
   #public .header {
     height:36px;
-        color:white;
+    color:white;
     font-size:16px;
     font-family:pacifico;
     text-align:center;
@@ -248,6 +247,7 @@
   #public .details .content {
     height:732px;
     background:white;
+    overflow-y: scroll;
     /*background-image: -webkit-gradient(linear, center top, center bottom, from(white 74%), to(#e5e5e5));
     background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);*/
     /*-webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);*/
@@ -273,6 +273,11 @@
 
 #public .lists.expand .author {
   font-size:14px;
+  width: 120px;
+  height: 18px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow: ellipsis;
   margin-left:10px;
 }
 
@@ -390,10 +395,18 @@ right: 40px;
 height: 15px;
 }
 
+#public .details .detailsDescription{
+    border-top: 1px solid #CCCCCC;
+    margin-top: 30px;
+    padding-top: 12px;
+}
+
 #public .details .detailsDescription, #public .details .detailsSolution {
-  font-size:12px;
+  font-size:13px;
+  line-height: 120%;
   font-family:Helvetica;
   margin-bottom:20px;
+  padding-left: 20px;
 }
 
 #public .details hr {
@@ -418,11 +431,15 @@ margin-bottom:12px;
 }
 
 /*two cents */
-#writeTwocent {
+.twocents{
+    overflow-y: scroll;
+}
+
+.writeTwocent {
     padding: 20px;
 }
 
-#writeTwocent textarea{
+.writeTwocent textarea{
     padding: 10px;
     width: 500px;
     margin-left: 20px;
@@ -433,37 +450,77 @@ margin-bottom:12px;
     font-family: Helvetica;
     font-size: 12px;
     color: #808080;
-    background-image: -webkit-gradient(linear, center top, center bottom, from(white 74%), to(#e5e5e5));
-    background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
-    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
-    margin-botton: 20px;    
+    /*background-image: -webkit-gradient(linear, center top, center bottom, from(white 74%), to(#e5e5e5))*/
+    background-image: -webkit-linear-gradient(top, #F2F2F2, #F2F2F2);
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3); 
 }
 
-#writeTwocent .twocentContext{
-    margin-left: 80px;
+.twocents .writeFooter{
+    width:520px;
+    height: 60px;
+    margin-top:15px;
+    margin-left: 60px;
 }
 
-#writeTwocent .twocentContext .userIcon{
-    width: 10px;
-    heigth: 10px;
-    background: url('../img/wall/authoredBy14.png');
+.writeTwocent .twocentContext{
+    width: 300px;
+    float: left;
+    text-overflow: ellipsis;
 }
 
-#writeTwocent .twocentContext .dateIcon{
-    width: 10px;
-    heigth: 10px;
-    background: url('../img/wall/creationDate14.png');
+
+.writeTwocent .twocentContext .user, .writeTwocent .twocentContext .creadate, .writeTwocent .twocentContext .moddate{
+    background-repeat:no-repeat;
+    background-position: left 0.2em;
+    line-height: 20px;
+    margin-bottom: 2px;
+    background-size: 12px 12px;
 }
 
-#writeTwocent .twocentContext .editIcon{
-    width: 10px;
-    heigth: 10px;
-    background: url('../img/wall/25modify.png');
+.writeTwocent .twocentContext .user{
+    background-image: url('../img/wall/authoredBy14.png');
 }
 
-#writeTwocent .twocentContext .userlbl, #writeTwocent .twocentContext .creadatelbl, #writeTwocent .twocentContext .moddatelbl{
-    margin-left: 10px;
+.writeTwocent .twocentContext .creadate{
+    background-image: url('../img/wall/creationDate14.png');
 }
+
+.writeTwocent .twocentContext .moddate{
+    background-image: url('../img/wall/lastModified14-01.png');
+}
+
+.writeTwocent .twocentContext .userlbl, .writeTwocent .twocentContext .creadatelbl, .writeTwocent .twocentContext .moddatelbl{
+    margin-left: 20px;
+    font-size: 12px;
+    font-family: Helvetica;
+}
+
+.writeTwocent .twocentContext .userlbl{
+    color: #F27B3D;
+}
+
+.writeTwocent .twocentPublish, .writeTwocent .twocentCancel{
+    height: 26px;
+    width: 92px;
+    border-radius: 5px;
+    font-family: Helvetica;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 26px;
+    text-align: center;
+    color: white;
+    float: right;
+}
+
+.writeTwocent .twocentPublish{
+    background: #8cab68;
+}
+
+.writeTwocent .twocentCancel{
+    margin-left: 15px;
+    background: #e69b73;
+}
+
 
 #public .details .twocentList{
     overflow-y: scroll;

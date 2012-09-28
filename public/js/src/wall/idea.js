@@ -6,7 +6,7 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 			var idea = new Widget(),
 		            dom = Map.get("idea"),
 			    store = new Store($data),
-			    twocents = new Store();
+			    twocents = new Store([]);
 
 		//setup;
 
@@ -45,13 +45,19 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 			idea.reset = function(data){
 			        // build idea header with data available from the wall view
 				store.reset(data);
-				
 				// synchronize with idea document in couchDB to build twocents and ratings
 				var ideaCDB = new CouchDBStore();
 				ideaCDB.setTransport(Config.get("transport"));
-				ideaCDB.sync("ideafy", data.get()).then(function(){
+				ideaCDB.sync("ideafy", data.id).then(function(){
 				        twocents.reset(ideaCDB.get("twocents"));
-				})
+				        //if there are no existing twocents, toggle display twocents writingUI
+				        if (!twocents.getNbItems()){
+				                document.getElementById("writePublicTwocent").classList.remove("invisible");
+				        }
+				        else{
+				                document.getElementById("writePublicTwocent").classList.add("invisible");
+				        }
+				});
 			};
 
 		//init

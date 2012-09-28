@@ -101,24 +101,25 @@
                 			<span class="commentLabel">wrote:</span>
                 			<br />
                 			<img class="detailsType" src="img/wall/publicForList.png">
-                			<hr>
                 			<p class="detailsDescription" data-idea="bind:innerHTML, value.doc.description">description</p>
                 			<p class="detailsSolution" data-idea="bind:innerHTML, value.doc.solution">solution</p>
                 			<div class="ratingExpand" data-idea="bind:setRating, value.rating"></div>
               			</div>
-              			<div id="twocents">
-              				<div id="writeTwocent">
+              			<div id="publicTwocents" class="twocents">
+              				<div id="writePublicTwocent" class="writeTwocent invisible">
               					<div class="userAvatar twocentAvatar"></div>
               					<textarea class="twocentText" placeholder="Add your two cents"></textarea>
-              					<ul class="twocentContext">
-              						<li><div class="userIcon"></div><span class="userlbl">Authored by </span><span>username</span></li>
-              						<li><div class="dateIcon"></div><span class="creadatelbl">Creation date: jj/mm/aaaa</span></li>
-              						<li><div class="editIcon"></div><span class="moddatelbl">Last modified: jj/mm/aaaa</span></li>
-              					</ul>
-              					<div class="twocentPublish">Publish</div>
-              					<div class="twocentCancel">Cancel</div>
+              					<div class="writeFooter">
+              						<ul class="twocentContext">
+              							<li class="user"><span class="userlbl">Authored by username</span></li>
+              							<li class="creadate"><span class="creadatelbl">Creation date: 27/09/2012</span></li>
+              							<li class="moddate"><span class="moddatelbl">Last modified: 27/09/2012</span></li>
+              						</ul>
+              						<div class="twocentCancel">Cancel</div>
+              						<div class="twocentPublish">Publish</div>            						
+              					</div>
               				</div>
-            				<ul class="twocentList">
+            				<ul class="twocentList" data-twocents="foreach">
             					<li class="twocent">
             						<div class="twocentHeader">
             							<div class="twocentAvatar"></div>

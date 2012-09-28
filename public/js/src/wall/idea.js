@@ -96,8 +96,6 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 			idea.reset = function(data){
 			        // build idea header with data available from the wall view
 				store.reset(data);
-				// reset avatars
-				avatars.reset({});
 				// synchronize with idea document in couchDB to build twocents and ratings
 				var ideaCDB = new CouchDBStore();
 				ideaCDB.setTransport(Config.get("transport"));

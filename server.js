@@ -88,7 +88,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                                                 res.charset = 'utf-8';
                                                 //the type should be contained in the repsonse
                                                 var encode = "data:image/"+ext+";base64," + new Buffer(data, 'binary').toString('base64');
-                                                console.log(encode);
                                                 res.write(encode, encoding='utf8');  
                                         }
                                         else {

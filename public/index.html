@@ -97,7 +97,7 @@
              	   			<div class="detailsAvatar" data-idea="bind: setAvatar, value.doc.authors"></div>
                	 			<div class="detailsTitle" data-idea="bind:innerHTML, value.doc.title">Title</div>
                 			<div class="detailsDate date" data-idea="bind:date, value.doc.creation_date">jj/mm/aa</div>
-                			<div class="detailsAuthor" data-idea="bind:innerHTML, value.doc.authornames">author</div>
+                			<div class="detailsAuthor" data-idea="bind:setNames, value.doc.authornames">author</div>
                 			<span class="commentLabel">wrote:</span>
                 			<br />
                 			<img class="detailsType" src="img/wall/publicForList.png">
@@ -123,7 +123,7 @@
             					<li class="twocent">
             						<div class="twocentHeader">
             							<div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div>
-            							<div class="twocentAuthor"data-twocents="bind: innerHTML, firstname">Olivier</div> 
+            							<div class="twocentAuthor"data-twocents="bind: setFirstName, firstname">Olivier</div> 
             							<span class="commentLabel">commented:</span>
             							<br/>
             							<div class="twocentDate date" data-twocents="bind: date, date">27/09/2012</div>

@@ -26,6 +26,8 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                                 (authornames ===  Config.get("user").get("username")) ? this.innerHTML="You" : this.innerHTML = authornames;        
                                         },
 					setAvatar : function setAvatar(authors){
+					   // reset
+					   this.setAttribute("style", "background:url('img/userpics/deedee3.png);")
                                            //check if more than one author and if so display mutli-deedee avatar
                                            if (authors.length>1){
                                                    this.setAttribute("style", "background:url('img/userpics/deedee0.png');")

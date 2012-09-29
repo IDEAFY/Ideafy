@@ -43,7 +43,7 @@ define("Ideafy/Utils", ["Observable", "Config", "CouchDBStore"], function(Observ
 		      cdb.sync("ideafy", "users", "_view/short", {key: '"'+uid+'"'}).then(function(){
 		              var file = cdb.get(0).value.picture_file;
 		              if (file === ""){
-		                      store.set(uid, {"img": "img/userpics/deedee2.png", "status": "ready"});
+		                      store.set(uid, {"img": "../img/userpics/deedee2.png", "status": "ready"});
 		              }
 		              else if (file.search("img/userpics")>-1){
 		                      store.set(uid, {"img": file, "status": "ready"});
@@ -61,7 +61,7 @@ define("Ideafy/Utils", ["Observable", "Config", "CouchDBStore"], function(Observ
                                                 }
                                                 else {
                                                      // fallback in case of network error or download failure
-                                                     image = "img/userpics/deedee0.png";
+                                                     image = "../img/userpics/deedee0.png";
                                                 }
                                                 store.set(uid, {"img": image, "status": "ready"});
                                          }

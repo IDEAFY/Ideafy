@@ -21,7 +21,8 @@ var connect = require("connect"),
     sessionStore = new RedisStore({
         hostname : "127.0.0.1",
         port : "6379"
-    });
+    }),
+    wrap = require("./wrap");
 
 
 // create reusable transport method (opens pool of SMTP connections)
@@ -40,6 +41,25 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
 
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], function(CouchDBUser, Transport, CouchDBStore, Store) {
         var transport = new Transport(olives.handlers),
+/*            download = function(filePath){
+                 var     ext, data,
+                         gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
+                         jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
+                         pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/;  
+                 
+                 if (filePath.match(pngPattern)) { ext = "png";}
+                 if (filePath.match(jpgPattern)) { ext = "jpg";}
+                 if (filePath.match(gifPattern)) { ext = "gif";}
+                 if (!ext) {
+                         data = "error";
+                 }
+                 else {
+                         var rawData = fs.readFileSync("public"+filePath);
+                         data = "data:image/"+ext+";base64," + rawData.toString('base64');
+                 }
+                 return data;
+                      
+    }, */
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -50,8 +70,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                             uid = Object.keys(avatarFile)[0],
                             avatarFileName=uid+"@@"+avatarFile[uid].name,
                             newFile = __dirname+'/public/attachments/'+avatarFileName;
-                
-                        console.log(uid, avatarFile, avatarFileName);
                     
                         fs.rename(avatarFile[uid].path, newFile, function(err){
                                 var updateAvatar = function(){
@@ -74,15 +92,18 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                             path = parse.pathname;
                   
                         if (req.method === 'GET' && path.search("/attachments")>-1){
+ /*                               res.charset='utf-8';
+                                res.write(download(path), encoding='utf8');
+                                res.end();  */      
                                 // get file extension
                                 var     ext,
                                         gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
                                         jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
                                         pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/;
 
-                                if (parse.pathname.match(pngPattern)) { ext = "png";}
-                                else if (parse.pathname.match(jpgPattern)) { ext = "jpg";}
-                                if (parse.pathname.match(gifPattern)) { ext = "gif";}                
+                                if (path.match(pngPattern)) { ext = "png";}
+                                if (path.match(jpgPattern)) { ext = "jpg";}
+                                if (path.match(gifPattern)) { ext = "gif";}                
                                 fs.readFile("public"+path, function (error, data){
                                         if (data){
                                                 res.charset = 'utf-8';
@@ -93,13 +114,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                                         else {
                                                 console.log(error);
                                         }
-                                
                                         res.end();
-                                        next();
                                 });
-                                req.on('error', function(err) { 
-                                        console.error(err.stack); 
-                                 }); 
                         }
                         else{
                                 res.setHeader("Ideady Server", "node.js/" + process.versions.node);
@@ -122,6 +138,17 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
         io = socketIO.listen(app, {
                 log : true
         });
+        io.enable('browser client minification');  // send minified client
+        io.enable('browser client etag');          // apply etag caching logic based on version number
+        io.enable('browser client gzip');          // gzip the file
+        io.set('log level', 3);                    // reduce logging
+        io.set('transports', [                     // enable all transports (optional if you want flashsocket)
+               'websocket'
+             , 'flashsocket'
+             , 'htmlfile'
+             , 'xhr-polling'
+             , 'jsonp-polling'
+             ]);
 
         http.globalAgent.maxSockets = Infinity;
 
@@ -181,12 +208,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
         olives.handlers.set("CheckLogin", function(json, onEnd){
                 var cookieJSON = cookie.parse(json.handshake.headers.cookie),
                     sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
-                    cdb = new CouchDBStore();
-                console.log(sessionID);    
+                    cdb = new CouchDBStore();    
                 // return false if document does not exist in database
                 cdb.setTransport(transport);
                 cdb.sync("ideafy", json.id).then(function(){
-                                console.log(cdb.toJSON(), sessionStore);
                                 sessionStore.get(sessionID, function(err, session){
                                         if(err){throw new Error(err);}
                                         else{

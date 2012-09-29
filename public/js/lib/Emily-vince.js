@@ -96,7 +96,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 			 * @private
 			 */
 			getDocument: function () {
-
 				_transport.request(_channel, {
 					method: "GET",
 					path: "/" + _syncInfo.database + "/" + _syncInfo.document,
@@ -193,6 +192,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
             	Tools.mixin({
 					feed: "continuous",
 					heartbeat: 20000,
+					descending: true,
 					since: update_seq
 				}, _syncInfo.query);
 
@@ -231,13 +231,12 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 			 * Subscribe to changes when synchronized with a document
 			 * @private
 			 */
-			subscribeToDocumentChanges: function () {
+			subscribeToDocumentChanges: function (update_seq) {
 
 				this.stopListening = _transport.listen(_channel, {
 					path: "/" + _syncInfo.database + "/_changes",
 					query: {
 						 feed: "continuous",
-						 limit: 400,
 						 descending: true,
 						 heartbeat: 20000
 						}
@@ -275,6 +274,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 					feed: "continuous",
 					heartbeat: 20000,
 					since: update_seq,
+					descending: true,
 					include_docs: true
 				}, _syncInfo.query);
 

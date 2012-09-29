@@ -40,6 +40,7 @@
  		// check if this is the first launch to initialize the LocalStore
  		if (!appData.get("init")){
  		        appData.set("init", true);
+ 		        appData.set("currentLogin", "");
  		        appData.sync("ideafy_appData");
  		}
  		
@@ -55,7 +56,8 @@
  		     Config.get("labels").reset(appData.get("labels"));
  		}
 
- 		if (appData.get("currentLogin") === ""){
+
+ 		if (appData.get("currentLogin") === "" || !appData.get("currentLogin")){
                         Login();
                 }
                 else {

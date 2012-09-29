@@ -1,5 +1,5 @@
-define("Ideafy/Public", ["Map", "Config", "Ideafy/Wall", "Ideafy/Idea", "Olives/OObject", "Amy/Control-plugin", "Olives/Model-plugin"],
-	function(Map, Config,Wall, Idea, Widget, ControlPlugin, ModelPlugin){
+define("Ideafy/Public", ["Map", "Config","Ideafy/Wall", "Ideafy/Idea", "Olives/OObject", "Amy/Control-plugin", "Olives/Model-plugin"],
+	function(Map, Config, Wall, Idea, Widget, ControlPlugin, ModelPlugin){
 		return function PublicConstructor(){
 			var publicIdeas = new Widget(),
 				wall = new Wall(),

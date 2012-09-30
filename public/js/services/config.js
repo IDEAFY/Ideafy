@@ -95,6 +95,7 @@ define("Config", ["Store", "Olives/Transport", "Observable", "CouchDBStore"], fu
 		labels: new Store({}),
 		// a store to save locally user pictures and avatars (key:userid / value: base64-encoded picture)
                 avatars : new Store({}),
+                publicAvatars : new Store({}),
                 observer : new Observable(),
                 user : new CouchDBStore()
 	});

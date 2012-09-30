@@ -73,9 +73,9 @@
 
   }
 
-    #public .lists .ideas li.selected {
+  #public .lists .ideas li.selected {
      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #88A5CC), color-stop(80%, #657B99));
-     background: -webkit-linear-gradient(top, #88A5CC 0%, #657B99, 80%);
+     background: -webkit-linear-gradient(top, #88A5CC 0%, #657B99 80%);
       color: white;
     /*-webkit-box-shadow: inset 0 -1px 5px 1px rgba(0,0,0,0.3);*/
   }
@@ -100,12 +100,12 @@
   }
 
   #public .date {
-        /*compresser ça? */
- color:#808080;
+    color:#808080;
     font-size: 12px;
     font-style:italic;
     font-family: Helvetica;
   }
+  
   #public .lists .ideas li .date {
     float:right;
     line-height:21px;
@@ -116,7 +116,7 @@
       margin-top:25px;
     /*compresser ça? */
     font-size: 14px;
-    font-family: pacifico;
+    font-family: Pacifico;
   }
 
   #public .lists .ideas li p  {
@@ -127,7 +127,7 @@
     -webkit-margin-after: 0px;
     margin-top:10px;
     margin-bottom:10px;
-    max-height: 30px;
+   /*max-height: 30px;*/
   }
 
   #public .lists img {
@@ -566,7 +566,38 @@ margin-bottom:12px;
 #public .twocent .twocentDate{
     float: none;
     line-height: 15px;
+    max-width: 150px;
     margin-left: 50px;
+}
+
+#public .twocentMenu{
+    float: right;
+    width: 120px;
+    text-align: center;
+    height: 15px;
+    margin-top: -20px;
+}
+
+#public .twocentButton{
+    display: inline;
+    float: right;
+    height: 15px;
+    width: 25px;
+    margin-right: 10px;
+    background-position: center;
+    background-size: contain;
+}
+
+#public .twocentEditButton{
+    background: url('../img/wall/25modify.png') no-repeat;   
+}
+
+#public .twocentDeleteButton{
+    background: url('../img/wall/25delete.png') no-repeat;   
+}
+
+#public .twocentReplyButton{
+    background: url('../img/wall/25x35reply.png') no-repeat;    
 }
 
 #public .twocentMessage{

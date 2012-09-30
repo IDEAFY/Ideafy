@@ -84,7 +84,7 @@ define("Ideafy/Utils", ["Observable", "Config", "CouchDBStore"], function(Observ
                                      
                                  // if no avatar is defined assign deedee0 by default
                                  if (!filename || filename.length<2){
-                                     image = "img/userpics/deedee0.png";
+                                     image = "../img/userpics/deedee0.png";
                                      Config.get("avatars").set(uid, image);       
                                  }
                                  // if user is using one of the default avatars, then keep image reference as is
@@ -101,7 +101,7 @@ define("Ideafy/Utils", ["Observable", "Config", "CouchDBStore"], function(Observ
                                              }
                                              else {
                                                      // fallback in case of network error or download failure
-                                                     image = "img/userpics/deedee0.png";
+                                                     image = "../img/userpics/deedee0.png";
                                              }
                                              dlOk.notify("avatar-loaded", uid);
                                          }
@@ -110,7 +110,7 @@ define("Ideafy/Utils", ["Observable", "Config", "CouchDBStore"], function(Observ
                                  }
                                  else {
                                          // filename should be a number > 0
-                                         image = "img/userpics/deedee"+filename+".png";
+                                         image = "../img/userpics/deedee"+filename+".png";
                                          Config.get("avatars").set(uid, image); 
                                  }
                                  

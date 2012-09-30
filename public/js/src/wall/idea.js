@@ -1,21 +1,30 @@
-define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "Twocent"],
-	function(Map, Config, Utils, Store,  Widget, ModelPlugin, EventPlugin, CouchDBStore, Twocent){
+define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject", "Olives/Model-plugin", "Olives/UI-plugin", "Olives/Event-plugin", "CouchDBStore", "TwocentReply", "Ideafy/Avatar"],
+	function(Map, Config, Utils, Store,  Widget, ModelPlugin, UIPlugin, EventPlugin, CouchDBStore, TwocentReply, Avatar){
 		return function IdeaConstructor($data){
 
 		//definition
 			var idea = new Widget(),
 		            dom = Map.get("idea"),
 		            domWrite = Map.get("writePublicTwocent"),
-		            writeTwocent = new Twocent(domWrite),
 			    store = new Store($data),
 			    twocents = new Store([]),
-			    avatars = new Store();
+			    avatars = Config.get("publicAvatars");
 
 		//setup;
 
 
 			idea.plugins.addAll({
 				"idea" :new ModelPlugin(store, {
+				        toggleRateEdit : function(authors){
+				            if (authors.indexOf(Config.get("user").get("_id"))>-1) {
+				                    this.setAttribute("name", "editIdea");
+				                    this.setAttribute("style", "background:url('../img/wall/headerModifyYourIdea.png') no-repeat center center;")
+				            }
+				            else{
+				                    this.setAttribute("name", "rateIdea");
+				                    this.setAttribute("style", "background:url('../img/wall/vote.png') no-repeat center center;")
+				            }       
+				        },
 					date : function date(date){
 						this.innerHTML = Utils.formatDate(date);
 					},
@@ -26,8 +35,6 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                                 (authornames ===  Config.get("user").get("username")) ? this.innerHTML="You" : this.innerHTML = authornames;        
                                         },
 					setAvatar : function setAvatar(authors){
-					   // reset
-					   this.setAttribute("style", "background:url('../img/userpics/deedee0.png);")
                                            //check if more than one author and if so display mutli-deedee avatar
                                            if (authors.length>1){
                                                    this.setAttribute("style", "background:url('../img/userpics/deedee0.png');")
@@ -71,6 +78,25 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                                         }
                                                 }
                                         },
+                                        displayReplies : function(replies){
+                                                if (!replies || !replies.length){
+                                                        this.classList.add("invisible");}
+                                                else {
+                                                        var ui = new TwocentReply(replies),
+                                                            frag = document.createDocumentFragment(),
+                                                            id = this.getAttribute("data-twocents_id");
+                                                        ui.render();
+                                                        ui.place(frag);
+                                                        
+                                                        if (this.hasChildNodes){
+                                                                this.replaceChild(frag, this.firstChild);
+                                                        }
+                                                        else {
+                                                                this.appendChild(frag);
+                                                        }
+                                                        this.classList.remove("invisible");
+                                                }     
+                                        },
                                         setAvatar : function setAvatar(author){
                                            
                                                 if (author === Config.get("user").get("_id")){
@@ -111,6 +137,11 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 				                document.getElementById("writePublicTwocent").classList.add("invisible");
 				        }
 				});
+			};
+			
+			idea.action = function(event, node){
+			        var name = node.getAttribute("name");
+			        alert(name);
 			};
 			
 			idea.addTwocent = function(){

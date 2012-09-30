@@ -41,25 +41,6 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
 
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], function(CouchDBUser, Transport, CouchDBStore, Store) {
         var transport = new Transport(olives.handlers),
-/*            download = function(filePath){
-                 var     ext, data,
-                         gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
-                         jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
-                         pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/;  
-                 
-                 if (filePath.match(pngPattern)) { ext = "png";}
-                 if (filePath.match(jpgPattern)) { ext = "jpg";}
-                 if (filePath.match(gifPattern)) { ext = "gif";}
-                 if (!ext) {
-                         data = "error";
-                 }
-                 else {
-                         var rawData = fs.readFileSync("public"+filePath);
-                         data = "data:image/"+ext+";base64," + rawData.toString('base64');
-                 }
-                 return data;
-                      
-    }, */
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -89,12 +70,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                 })      
                 .use(function(req, res, next) {
                         var parse = url.parse(req.url, false),
-                            path = parse.pathname;
+                            path = parse.pathname,
+                            readFile = wrap(fs.readFile);
                   
-                        if (req.method === 'GET' && path.search("/attachments")>-1){
- /*                               res.charset='utf-8';
-                                res.write(download(path), encoding='utf8');
-                                res.end();  */      
+                        if (req.method === 'GET' && path.search("/attachments")>-1){    
                                 // get file extension
                                 var     ext,
                                         gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
@@ -103,8 +82,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
 
                                 if (path.match(pngPattern)) { ext = "png";}
                                 if (path.match(jpgPattern)) { ext = "jpg";}
-                                if (path.match(gifPattern)) { ext = "gif";}                
-                                fs.readFile("public"+path, function (error, data){
+                                if (path.match(gifPattern)) { ext = "gif";}              
+                                readFile("public"+path, function (error, data){
                                         if (data){
                                                 res.charset = 'utf-8';
                                                 //the type should be contained in the repsonse

@@ -87,7 +87,7 @@
           		</div>
         	  	<div id="ideaDetails" class="details">
          		   	<div class="header">
-         		   		<div class="twocentbutton" data-idea="bind: toggleTwocentShare, value.doc.authors" data-ideaevent="listen: touchstart, action"></div>
+         		   		<div class="twocentbutton" data-idea="bind: toggleTwocentShare, value.doc.authors" data-ideaevent="listen: click, action"></div>
          		   		<div class="headerTitle" data-label="bind: innerHTML, ideadetailsheadertitle">Author's idea</div>
          		   		<div class="rate" data-idea="bind: toggleRateEdit, value.doc.authors" data-ideaevent="listen: touchstart, action"></div>
          		   	</div>
@@ -105,45 +105,8 @@
                 			<p class="detailsSolution" data-idea="bind:innerHTML, value.doc.solution">solution</p>
                 			<div class="ratingExpand" data-idea="bind:setRating, value.rating"></div>
               			</div>
-              			<div id="writePublicTwocent" class="invisible" data-idea="bind: displayWriteTwocent, value.doc.authors">
-             <!-- 				<div class = "writeTwocent">
-              					<div class="userAvatar twocentAvatar"></div>
-              					<textarea class="twocentText" placeholder="Add your two cents"></textarea>
-              					<div class="writeFooter">
-              					<ul class="twocentContext">
-              						<li class="user"><span class="userlbl">Authored by username</span></li>
-              						<li class="creadate"><span class="creadatelbl">Creation date: 27/09/2012</span></li>
-              						<li class="moddate"><span class="moddatelbl">Last modified: 27/09/2012</span></li>
-              					</ul>
-              					<div class="twocentCancel">Cancel</div>
-              					<div class="twocentPublish">Publish</div>            						
-              					</div>
-              </div> -->
-              			</div>
+              			<div id="writePublicTwocent" class="invisible" data-idea="bind: displayWriteTwocent, value.doc.authors"></div>
               			<div id="publicTwocents" class="twocents" data-details="bind: displayTwocents, twocents"></div>
-            <!--				<ul class="twocentList" data-twocents="foreach">
-            					<li class="twocent">
-            						<div class="twocentHeader">
-            							<div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div>
-            							<div class="twocentAuthor"data-twocents="bind: setFirstName, firstname">Olivier</div> 
-            							<span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl">commented:</span>
-            							<br/>
-            							<div class="twocentDate date" data-twocents="bind: date, date">27/09/2012</div>
-            							<div class="twocentMenu">
-            								<div class="twocentButton twocentEditButton"></div>
-            								<div class="twocentButton twocentDeleteButton"></div>
-            								<div class="twocentButton twocentReplyButton"></div>
-            							</div>
-            						</div>
-            						<p class = "twocentMessage" data-twocents="bind: innerHTML, message">Well I believe this is a really really cool idea</p>
-            						<div class"displayReplies" data-twocents="bind: displayReplies, replies">
-            							<div class="twocentreplylist"></div>
-            						</div>
-            						<div class = "writeTwocentReply">
-            							<div data-ui = "place: WTR"></div>
-            						</div>
-            					</li>
-            </ul> -->
           		</div>
         	</div>
      	 </div>

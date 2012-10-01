@@ -38,7 +38,6 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                             }       
                                         },
 				        displayWriteTwocent : function(authors){
-				            console.log(this, writeUI);
 				            if (authors.indexOf(user.get("_id"))<0){
 				                    this.classList.remove("invisible");        
 				            }
@@ -85,17 +84,16 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 				                if (twocents && twocents.length){
 				                    // hide twocent write interface    
 				                    document.getElementById("writePublicTwocent").classList.add("invisible");
-				                    
-				                    var UI = new TwocentList(twocents, "public"),
-				                        frag = document.createDocumentFragment();
-				                    UI.render();
-                                                    UI.place(frag);
+				                    var _UI = new TwocentList(twocents, ideaCDB.get("_id"), "public"),
+				                        _frag = document.createDocumentFragment();
+				                    _UI.render();
+                                                    _UI.place(_frag);
                                                     if (this.hasChildNodes()){
-                                                        this.replaceChild(frag, this.firstChild);
+                                                        this.replaceChild(_frag, this.firstChild);
                                                     }
                                                     else {
-                                                        this.appendChild(frag);
-                                                    }      
+                                                        this.appendChild(_frag);
+                                                    }    
 				                }
 				                else {
 				                    // remove child if present
@@ -126,6 +124,21 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 			idea.action = function(event, node){
 			        var name = node.getAttribute("name");
 			        alert(name);
+			        switch(name){
+			                
+			                case "commentIdea":
+			                     document.getElementById("writePublicTwocent").classList.remove("invisible");
+			                     break;
+			                
+			                case "shareIdea":
+			                     break;
+			                
+			                case "rateIdea":
+			                     break;
+			                     
+			                case "editIdea":
+			                     break;
+			        }       
 			};
 			
 			idea.addTwocent = function(){

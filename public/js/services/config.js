@@ -70,7 +70,8 @@ define("Config", ["Store", "Olives/Transport", "Observable", "CouchDBStore"], fu
         "twocentcreationdate":"Creation date: ",
         "twocentmodificationdate": "Last modified: ",
         "cancellbl": "Cancel",
-        "publishlbl": "Publish"
+        "publishlbl": "Publish",
+        "somethingwrong": "Something went wrong, please try again"
 },
            ideaTemplate = {
                 "authors": [],

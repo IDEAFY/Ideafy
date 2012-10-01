@@ -1,7 +1,7 @@
-define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Olives/Model-plugin", "Olives/Event-plugin","TwocentReply"],
-        function(Widget, Config, Store, Utils, ModelPlugin, EventPlugin, TwocentReply){
+define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Olives/Model-plugin", "Olives/Event-plugin","TwocentReply", "WriteTwocent"],
+        function(Widget, Config, Store, Utils, ModelPlugin, EventPlugin, TwocentReply, WriteTwocent){
                 
-                function TwocentListConstructor($data, $view){
+                function TwocentListConstructor($data, $id, $view){
                         
                         var store = new Store($data),
                             user = Config.get("user"),
@@ -36,6 +36,10 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                         },
                                         setInVisible : function(author){
                                                 (author === user.get("_id")) ? this.setAttribute("style", "display: none;") : this.setAttribute("style", "display: block;");
+                                        },
+                                        deleteOK : function(replies){
+                                                //Author cannot delete a twocent if there are already replies from other users
+                                                (replies && replies.length>0) ? this.setAttribute("style", "display: none;") : this.setAttribute("style", "display: block;");        
                                         },
                                         displayReplies : function(replies){
                                                 if (!replies || !replies.length){
@@ -77,13 +81,27 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                 "twocentevent" : new EventPlugin(this)        
                         });
                         
-                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname">Olivier</div><span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: setVisible, author"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author"></div></div></div><p class = "twocentMessage" data-twocents="bind: innerHTML, message">Well I believe this is a really really cool idea</p><div class"displayReplies" data-twocents="bind: displayReplies, replies"><div class="twocentreplylist"></div></div><div class = "writeTwocentReply"><div data-ui = "place: WTR"></div></div></li></ul>';
+                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname">Olivier</div><span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: click, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: setVisible, author; bind: deleteOK, replies"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author"></div></div></div><p class = "twocentMessage" data-twocents="bind: innerHTML, message">Well I believe this is a really really cool idea</p><div class"displayReplies" data-twocents="bind: displayReplies, replies"><div class="twocentreplylist"></div></div></li></ul>';
+                        
+                        this.edit = function(event, node){
+                                var id = node.getAttribute("data-twocents_id"),
+                                    twocentNode = document.querySelector("li.twocent[data-twocents_id='"+id+"']"),
+                                    parent = twocentNode.parentElement;
+                                    writeUI = new WriteTwocent();
+                                    frag = document.createDocumentFragment();
+                                    
+                                writeUI.reset($id, store.get(id));
+                                writeUI.render();
+                                writeUI.place(frag);
+                                // replace current twocent with writeUI
+                                parent.replaceChild(frag, twocentNode);        
+                        };
                 
                 }       
                 
-                return function TwocentListFactory($data, $view){
+                return function TwocentListFactory($data, $id, $view){
                         TwocentListConstructor.prototype = new Widget;
-                        return new TwocentListConstructor($data, $view);
+                        return new TwocentListConstructor($data, $id, $view);
                 };      
                 
         });

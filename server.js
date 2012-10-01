@@ -114,27 +114,43 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                         }
                 }))
                 .use(connect.static(__dirname + "/public"))).listen(1664),
-        io = socketIO.listen(app, {
-                log : true
-        });
-        io.enable('browser client minification');  // send minified client
-        io.enable('browser client etag');          // apply etag caching logic based on version number
-        io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 3);                    // reduce logging
-        io.set('transports', [                     // enable all transports (optional if you want flashsocket)
-               'websocket'
-             , 'flashsocket'
-             , 'htmlfile'
-             , 'xhr-polling'
-             , 'jsonp-polling'
-             ]);
+                io = socketIO.listen(app, {
+                        log : true
+                });
+                
+       // Socket.io configuration
+       io.enable('browser client minification');  // send minified client
+       io.enable('browser client etag');          // apply etag caching logic based on version number
+       io.enable('browser client gzip');          // gzip the file
+       io.set('log level', 3);                    // reduce logging
+       io.set('transports', [                     // enable all transports (optional if you want flashsocket)
+                        'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
 
+        // we need lots of sockets
         http.globalAgent.maxSockets = Infinity;
 
+        // register transport
         olives.registerSocketIO(io);
-
+        
+        // couchdb config update (session authentication)
         olives.config.update("CouchDB", "sessionStore", sessionStore);
         
+        // Application utility functions
+        var updateUserIP = function(userid, increment, onEnd){
+                var usercdb = new CouchDBStore(),
+                    currentIP;
+                usercdb.setTransport(transport);
+                usercdb.sync("ideafy", userid, {auth: 'admin:10e6deth'}).then(function(){
+                        currentIP = usercdb.get("ip");
+                        usercdb.set("ip", currentIP+increment);
+                        usercdb.upload().then(function(){
+                                onEnd("score_updated");
+                                usercdb.unsync();
+                        });       
+                });        
+        };
+        
+        // Application handlers
         olives.handlers.set("Lang", function(json, onEnd){
                 var path = __dirname+'/public/i8n/'+json.lang+'.json';
                 fs.exists(path, function(exists){
@@ -343,7 +359,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                                 res.on('end', function() {
                                         bulkDocs.reset(JSON.parse(body).rows);
                                         result = scanResults(body, bulkDocs);
-                                        console.log(result);
                                         onEnd(result);
                                 });
                         };
@@ -479,10 +494,36 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
         });
 
         // Commenting on ideas
-        olives.handlers.set("Twocent", function(json, onEnd) {
+        olives.handlers.set("WriteTwocent", function(json, onEnd) {
 
                 var cdb = new CouchDBStore();
                 cdb.setTransport(new Transport(olives.handlers));
+                console.log("1er test: ", json);
+                cdb.sync("ideafy", json.docId).then(function(){
+                        if (json.type === "new"){
+                                var tc = cdb.get("twocents");
+                                // new twocents are always appended at the top of the list
+                                tc.unshift(json.twocent);
+                                cdb.set("twocents", tc);
+                                console.log("deuxième test: synchronisé avec l'idée");
+                                cdb.upload().then(function(){
+                                        console.log("troisième est: update de l'idée ok -- plus que le score");
+                                        // call function to update user score here and amount of twocents
+                                        updateUserIP(json.twocent.author, 5, function(result){
+                                                if (result !== "score_updated"){
+                                                        console.log("problem.....");
+                                                        onEnd("issue updating user IP");
+                                                }
+                                                else{
+                                                        console.log("score mis à jour correctement");
+                                                        onEnd("ok");
+                                                }
+                                                cdb.unsync();       
+                                        });
+                                });
+                               
+                        }        
+                });
 
         });
 

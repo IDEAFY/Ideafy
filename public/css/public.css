@@ -434,6 +434,7 @@ margin-bottom:12px;
 /*two cents */
 .twocents{
     overflow-y: scroll;
+    width: 630px;
 }
 
 .writeTwocent {

@@ -5,6 +5,7 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 		//definition
 			var idea = new Widget(),
 		            dom = Map.get("idea"),
+		            domWrite = Map.get("writePublicTwocent"),
 		            user = Config.get("user"),
 			    store = new Store($data),
 			    ideaCDB = new CouchDBStore(),
@@ -37,7 +38,7 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                             }       
                                         },
 				        displayWriteTwocent : function(authors){
-				            
+				            console.log(this, writeUI);
 				            if (authors.indexOf(user.get("_id"))<0){
 				                    this.classList.remove("invisible");        
 				            }
@@ -114,6 +115,8 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 			idea.reset = function(data){
 			        // build idea header with data available from the wall view
 				store.reset(data);
+				// build twocent writing interface and pass the idea's id as paramater
+				writeUI.reset(data.id);
 				// synchronize with idea document in couchDB to build twocents and ratings
 				ideaCDB.unsync();
 				ideaCDB.reset();
@@ -131,6 +134,7 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 
 		      //init
 			idea.alive(dom);
+			writeUI.place(domWrite);
 
 			return idea;
 		};

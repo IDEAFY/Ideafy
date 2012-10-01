@@ -105,8 +105,7 @@
                 			<p class="detailsSolution" data-idea="bind:innerHTML, value.doc.solution">solution</p>
                 			<div class="ratingExpand" data-idea="bind:setRating, value.rating"></div>
               			</div>
-              			<div id="publicTwocents" class="twocents">
-              				<div id="writePublicTwocent" class="writeTwocent invisible">
+              			<div id="writePublicTwocent" class="writeTwocent invisible">
               					<div class="userAvatar twocentAvatar"></div>
               					<textarea class="twocentText" placeholder="Add your two cents"></textarea>
               					<div class="writeFooter">
@@ -118,44 +117,8 @@
               						<div class="twocentCancel">Cancel</div>
               						<div class="twocentPublish">Publish</div>            						
               					</div>
-              				</div>
-            				<ul class="twocentList" data-twocents="foreach">
-            					<li class="twocent">
-            						<div class="twocentHeader">
-            							<div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div>
-            							<div class="twocentAuthor"data-twocents="bind: setFirstName, firstname">Olivier</div> 
-            							<span class="commentLabel">commented:</span>
-            							<br/>
-            							<div class="twocentDate date" data-twocents="bind: date, date">27/09/2012</div>
-            							<div class="twocentMenu">
-            								<div class="twocentButton twocentEditButton"></div>
-            								<div class="twocentButton twocentDeleteButton"></div>
-            								<div class="twocentButton twocentReplyButton"></div>
-            							</div>
-            						</div>
-            						<p class = "twocentMessage" data-twocents="bind: innerHTML, message">Well I believe this is a really really cool idea</p>
-            						<div class"displayReplies" data-twocents="bind: displayReplies, replies">
-            							<div class="twocentreplylist">
-            							<!--	<ul class="replies" data-model="foreach">
-            									<li class="twocentReply">
-            										<div class="replyAvatar" data-model="bind: setAvatar, author"></div>
-            										<div class="twocentAuthor" data-model="bind: innerHTML, firstname"></div>
-            										<span class="commentLabel" data-labels="bind: innerHTML, twocentreplylbl"></span>
-            										<br/>
-            										<div class="twocentDate date" data-model="bind: date, date"></div>
-            										<hr/>
-            										<p class="replyMessage" data-model="bind: innerHTML, message"></p>
-            									</li>
-            							</ul> -->
-            							</div>
-            						</div>
-            						<div class = "writeTwocentReply">
-            							<div data-ui = "place: WTR"></div>
-            						</div>
-            					</li>
-            				</ul>
-            			</div>
-            		</div>
+              			</div>
+              			<div id="publicTwocents" class="twocents" data-details="bind: displayTwocents, twocents"></div>
           		</div>
         	</div>
      	 </div>
@@ -178,6 +141,7 @@
      <!-- load application -->
 	<script src="js/src/wall/wall.js"></script>
 	<script src="js/src/wall/idea.js"></script>
+	<script src="js/src/wall/twocentlist.js"></script>
     <script src="js/src/wall/twocentreply.js"></script>
     <script src="js/src/wall/public.js"></script>
     <script src="js/services/login.js"></script>

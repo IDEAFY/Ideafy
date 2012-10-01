@@ -21,5 +21,7 @@
 	"lastnameplaceholder": "Last name",
 	"publicideasheadertitle": "Public Ideas",
 	"searchplaceholder": "Search ideas...",
-	"ideadetailsheadertitle": "Idea Overview"
+	"ideadetailsheadertitle": "Idea Overview",
+	"twocentcommentlbl": "commented:",
+	"twocentreplycommentlbl": "replied:"
 }

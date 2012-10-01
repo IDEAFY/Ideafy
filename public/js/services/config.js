@@ -62,7 +62,9 @@ define("Config", ["Store", "Olives/Transport", "Observable", "CouchDBStore"], fu
                 "firstnameplaceholder": "First name",
                 "lastnameplaceholder": "Last name",
                 "publicideasheadertitle": "Public Ideas",
-                "ideadetailsheadertitle": "Idea Overview"
+                "ideadetailsheadertitle": "Idea Overview",
+                "twocentcommentlbl": "commented",
+                "twocentreplycommentlbl": "replied"
                 },
            ideaTemplate = {
                 "authors": [],

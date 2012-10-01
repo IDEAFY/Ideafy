@@ -194,9 +194,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                                 sessionStore.get(sessionID, function(err, session){
                                         if(err){throw new Error(err);}
                                         else{
-                                                (session.auth && session.auth.search(json.id) >-1) ? onEnd({authenticated: true}) : onEnd({authenticated : false})
+                                                (session.auth && session.auth.search(json.id) >-1) ? onEnd({authenticated: true}) : onEnd({authenticated : false});
                                         } 
                                 });
+                                cdb.unsync();
                         }, function(){onEnd({authenticated: false});});
                 });
         
@@ -308,6 +309,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                                         result.missing = [list[0]];
                                         onEnd(result);
                                 }
+                                cdb.unsync();
                         });
                 } else {
                         var options = {}, bulkDocs = new Store(), req;
@@ -419,6 +421,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                                                 res : "ok",
                                                 id : userid
                                         });
+                                        cdb.unsync();
                                 });
                         });
                 };
@@ -468,7 +471,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                         votes.unshift(json.vote);
                         cdb.set("votes", votes);
                         cdb.upload().then(function() {
-                                onEnd("ok")
+                                onEnd("ok");
+                                cdb.unsync();
                         });
                 });
 
@@ -547,6 +551,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                         cdb.set("groups", groups);
                         cdb.upload().then(function(){
                                 onEnd("ok");
+                                cdb.unsync();
                         });
                 });
 

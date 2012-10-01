@@ -35,7 +35,6 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                                 (author === user.get("_id")) ? this.setAttribute("style", "display: block;") : this.setAttribute("style", "display: none;");
                                         },
                                         setInVisible : function(author){
-                                                console.log(this);
                                                 (author === user.get("_id")) ? this.setAttribute("style", "display: none;") : this.setAttribute("style", "display: block;");
                                         },
                                         displayReplies : function(replies){

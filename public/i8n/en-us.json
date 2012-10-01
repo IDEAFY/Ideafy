@@ -23,5 +23,10 @@
 	"searchplaceholder": "Search ideas...",
 	"ideadetailsheadertitle": "Idea Overview",
 	"twocentcommentlbl": "commented:",
-	"twocentreplycommentlbl": "replied:"
+	"twocentreplycommentlbl": "replied:",
+	"addtwocentplaceholder": "Add your two cents",
+	"twocentcreationdate":"Creation date: ",
+	"twocentmodificationdate": "Last modified: "
+	"cancellbl": "Cancel",
+	"publishlbl": "Publish"
 }

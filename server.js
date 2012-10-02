@@ -517,14 +517,23 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 var cdb = new CouchDBStore();
                 cdb.setTransport(new Transport(olives.handlers));
                 cdb.sync("ideafy", json.docId).then(function(){
+                        var tc = cdb.get("twocents"), increment = 0;
                         if (json.type === "new"){
-                                var tc = cdb.get("twocents");
                                 // new twocents are always appended at the top of the list
                                 tc.unshift(json.twocent);
-                                cdb.set("twocents", tc);
-                                updateDocAsAdmin(json.docId, cdb).then(function(){
+                                increment = 5;
+                        }
+                        if (json.type === "edit"){
+                                tc.splice(json.position, 1, json.twocent);        
+                        }
+                        if (json.type === "delete"){
+                                tc.splice(json.position, 1);
+                                increment = -5;        
+                        }
+                        cdb.set("twocents", tc);
+                        updateDocAsAdmin(json.docId, cdb).then(function(){
                                         // call function to update user score here and amount of twocents
-                                        updateUserIP(json.twocent.author, 5, function(result){
+                                        updateUserIP(json.twocent.author, increment, function(result){
                                                 if (result !== "score_updated"){
                                                         onEnd("issue updating user IP");
                                                 }
@@ -533,9 +542,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 }
                                                 cdb.unsync();       
                                         });
-                                });
-                               
-                        }        
+                                });     
                 });
 
         });

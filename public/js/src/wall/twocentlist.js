@@ -4,6 +4,7 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                 function TwocentListConstructor($data, $id, $view){
                         
                         var store = new Store($data),
+                            transport = Config.get("transport"),
                             user = Config.get("user"),
                             avatars;
                         
@@ -81,7 +82,7 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                 "twocentevent" : new EventPlugin(this)        
                         });
                         
-                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname">Olivier</div><span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: click, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: setVisible, author; bind: deleteOK, replies"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author"></div></div></div><p class = "twocentMessage" data-twocents="bind: innerHTML, message">Well I believe this is a really really cool idea</p><div class"displayReplies" data-twocents="bind: displayReplies, replies"><div class="twocentreplylist"></div></div></li></ul>';
+                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname">Olivier</div><span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: click, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: setVisible, author; bind: deleteOK, replies" data-twocentevent="listen: click, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author"></div></div></div><p class = "twocentMessage" data-twocents="bind: innerHTML, message">Well I believe this is a really really cool idea</p><div class"displayReplies" data-twocents="bind: displayReplies, replies"><div class="twocentreplylist"></div></div></li></ul>';
                         
                         this.edit = function(event, node){
                                 var id = node.getAttribute("data-twocents_id"),
@@ -96,6 +97,21 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                 // replace current twocent with writeUI
                                 parent.replaceChild(frag, twocentNode);        
                         };
+                        
+                        this.deleteTwocent = function(event, node){
+                                var position = node.getAttribute("data-twocents_id"),
+                                    json = {docId: $id, type: "delete", position: position};
+                                
+                                //should we ask for confirmation??
+                                alert("Are you sure?");
+                                
+                                transport.request("WriteTwocent", json, function(result){
+                                        if (result !== "ok"){
+                                                alert(Config.get("labels").get("somethingwrong"));        
+                                        }               
+                                });
+                                
+                        }
                 
                 }       
                 

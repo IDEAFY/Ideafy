@@ -61,8 +61,10 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                         node.setAttribute("style", "-webkit-box-shadow: none; background: #8cab68;");
                         // message should not be empty (or do nothing)
                         if (twocent.get("message")){
-                                var     content = JSON.parse(twocent.toJSON());
-                                        json = {docId: currentIdea, type: editTC, position: position, twocent: content};
+                                var     content = JSON.parse(twocent.toJSON()), json, type;
+                                        
+                                (editTC === "new") ? type = editTC : type = "edit";
+                                json = {docId: currentIdea, type: type, position: position, twocent: content};
                         
                                 transport.request("WriteTwocent", json, function(result){
                                         if (result !== "ok"){

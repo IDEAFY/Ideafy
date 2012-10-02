@@ -52,7 +52,9 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                 
                 this.cancel = function(event, node){
                         node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
-                        (editTC === "new") ? this.reset(twocentTemplate) : this.reset(editTC);   
+                        (editTC === "new") ? this.reset(twocentTemplate) : this.reset(editTC);
+                        // hide twocent writing interface
+                        document.getElementById("writePublicTwocent").classList.add("invisible");  
                 };
                 
                 this.publish = function(event, node){

@@ -39,8 +39,9 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
 });
 
 
-CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], function(CouchDBUser, Transport, CouchDBStore, Store) {
+CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBStore, Store, Promise) {
         var transport = new Transport(olives.handlers),
+            cdbAdminCredentials = "admin:10e6deth",
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -140,14 +141,31 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
                 var usercdb = new CouchDBStore(),
                     currentIP;
                 usercdb.setTransport(transport);
-                usercdb.sync("ideafy", userid, {auth: 'admin:10e6deth'}).then(function(){
+                usercdb.sync("ideafy", userid).then(function(){
                         currentIP = usercdb.get("ip");
                         usercdb.set("ip", currentIP+increment);
-                        usercdb.upload().then(function(){
+                        updateDocAsAdmin(userid, usercdb).then(function(){
                                 onEnd("score_updated");
                                 usercdb.unsync();
                         });       
                 });        
+        };
+        
+        var updateDocAsAdmin = function(docId, cdbStore){
+            
+                var promise = new Promise;
+                
+                cdbStore.getTransport().request("CouchDB", {
+                        method : "PUT",
+                        path:"/ideafy/"+docId,
+                        auth: cdbAdminCredentials,
+                        headers: {
+                                "Content-Type": "application/json"
+                        },
+                        data: cdbStore.toJSON()
+                }, promise.resolve, promise);
+                
+                return promise;      
         };
         
         // Application handlers
@@ -498,24 +516,19 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], fu
 
                 var cdb = new CouchDBStore();
                 cdb.setTransport(new Transport(olives.handlers));
-                console.log("1er test: ", json);
                 cdb.sync("ideafy", json.docId).then(function(){
                         if (json.type === "new"){
                                 var tc = cdb.get("twocents");
                                 // new twocents are always appended at the top of the list
                                 tc.unshift(json.twocent);
                                 cdb.set("twocents", tc);
-                                console.log("deuxième test: synchronisé avec l'idée");
-                                cdb.upload().then(function(){
-                                        console.log("troisième est: update de l'idée ok -- plus que le score");
+                                updateDocAsAdmin(json.docId, cdb).then(function(){
                                         // call function to update user score here and amount of twocents
                                         updateUserIP(json.twocent.author, 5, function(result){
                                                 if (result !== "score_updated"){
-                                                        console.log("problem.....");
                                                         onEnd("issue updating user IP");
                                                 }
                                                 else{
-                                                        console.log("score mis à jour correctement");
                                                         onEnd("ok");
                                                 }
                                                 cdb.unsync();       

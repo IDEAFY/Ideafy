@@ -100,7 +100,7 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                         
                         this.deleteTwocent = function(event, node){
                                 var position = node.getAttribute("data-twocents_id"),
-                                    json = {docId: $id, type: "delete", position: position};
+                                    json = {docId: $id, type: "delete", position: position, twocent:{author: user.get("_id")}};
                                 
                                 //should we ask for confirmation??
                                 alert("Are you sure?");

@@ -146,6 +146,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         usercdb.set("ip", currentIP+increment);
                         updateDocAsAdmin(userid, usercdb).then(function(){
                                 onEnd("score_updated");
+                                console.log(usercdb.get("ip"));
                                 usercdb.unsync();
                         });       
                 });        

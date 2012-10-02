@@ -41,7 +41,7 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
 
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBStore, Store, Promise) {
         var transport = new Transport(olives.handlers),
-            cdbAdminCredentials = "admin:10e6deth",
+            cdbAdminCredentials = "admin:innovation4U",
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())

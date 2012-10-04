@@ -97,23 +97,20 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                         
                         this.edit = function(event, node){
                                 var id = node.getAttribute("data-twocents_id"),
-                                    twocentNode = document.querySelector("li.twocent[data-twocents_id='"+id+"']"),
-                                    parent = twocentNode.parentElement;
-                                    writeUI = new WriteTwocent();
+                                    writeUI = new WriteTwocent(),
                                     frag = document.createDocumentFragment();
                                     
                                 writeUI.reset($id, store.get(id));
                                 writeUI.render();
                                 writeUI.place(frag);
                                 // replace current twocent with writeUI
-                                parent.replaceChild(frag, twocentNode);        
+                                this.dom.replaceChild(frag, this.dom.children[id]);        
                         };
                         
                         this.deleteTwocent = function(event, node){
                                 var position = node.getAttribute("data-twocents_id"),
                                     json = {docId: $id, type: "delete", position: position, twocent:{author: user.get("_id")}};
                                 
-                                alert(json.docId, json.type, json.position, json.twocent);
                                 //should we ask for confirmation??
                                 alert("Are you sure?");
                                 
@@ -138,7 +135,7 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                     if (!parent.hasChildNodes()){
                                             parent.appendChild(frag);
                                     }
-                                   parent.classList.remove("invisible");                          
+                                    parent.classList.remove("invisible");                          
                         };
                         
                         this.toggleReplies = function(event, node){

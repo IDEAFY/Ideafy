@@ -744,3 +744,16 @@ margin-bottom:12px;
 #public .replyToReply .writeFooter .twocentContext{
     width: 225px;
 }
+
+#public .writeTwocentReply{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#public .writeTwocentReply .twocentText{
+    width: 458px;
+    max-height: 80px;
+}
+#public .writeTwocentReply .writeFooter{
+    width: 480px;
+}

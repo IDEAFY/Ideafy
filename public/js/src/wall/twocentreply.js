@@ -54,24 +54,20 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                    this.template = '<ul class="replies" data-reply="foreach"><li class="twocentReply"><div class="twocentHeader"><div class="replyAvatar" data-reply="bind:setAvatar, author"></div><div class="twocentAuthor" data-reply="bind: innerHTML, firstname"></div><span class="commentLabel" data-labels="bind: innerHTML, twocentreplycommentlbl"></span><br/><div class="twocentDate date" data-reply="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-reply="bind: setVisible, author" data-replyevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-reply="bind: setVisible, author; bind: setVisible, author" data-replyevent="listen: touchstart, deleteTwocentReply"></div><div class="twocentButton twocentReplyButton" data-reply="bind: setInVisible, author" data-replyevent="listen:touchstart, reply"></div></div></div><p class="twocentMessage replyMessage" data-reply="bind: innerHTML, message"></p><div class="writePublicTwocentReply replyToReply invisible"></div></li></ul>';
                    
                    this.edit = function(event, node){
-                                var id = node.getAttribute("data-twocentreply_id"),
-                                    replyNode = document.querySelector("li.twocentReply[data-reply_id='"+id+"']"),
-                                    parent = replyNode.parentElement;
+                                var id = node.getAttribute("data-reply_id"),
                                     writeUI = new WriteTwocentReply();
                                     frag = document.createDocumentFragment();
-                                  
-                                alert($id, $tc, $data[id], id);  
+ 
                                 writeUI.reset($id, $tc, $data[id], id);
                                 writeUI.render();
                                 writeUI.place(frag);
                                 //replace current twocent with writeUI
-                                parent.replaceChild(frag, replyNode);       
+                                this.dom.replaceChild(frag, this.dom.children[id]);       
                         };
                         
                         this.deleteTwocentReply = function(event, node){
                                var position = node.getAttribute("data-reply_id"),
                                     json = {docId: $id, type: "deltcreply", twocent: $tc, position: position};
-                                
                                 transport.request("WriteTwocent", json, function(result){
                                         if (result !== "ok"){
                                                 alert(Config.get("labels").get("somethingwrong"));        
@@ -86,7 +82,6 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                     frag = document.createDocumentFragment();
                                     writeUI = new WriteTwocentReply(parent);
                                 // create writeReplyUI and pass info about initial reply
-                                console.log($data);
                                 writeUI.reset($id, $tc, null, position, $data[$tc].firstname);
                                 writeUI.render();
                                 writeUI.place(frag);
@@ -132,12 +127,11 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                                 "labels" : new ModelPlugin(Config.get("labels"))
                         });
                         
-                        this.template = '<div class="writeTwocent"><div class="replyAvatar" data-model="bind: setAvatar, author"></div><textarea class="twocentText replyMessage" data-labels="bind: placeholder, addtwocentreplyplaceholder" data-model="bind: value, message"></textarea><div class="writeFooter"><ul class="twocentContext"><li class="creadate"><span class="creadatelbl" data-labels="bind:innerHTML, twocentcreationdate"></span><span class="date" data-model="bind: date, date"></span></li></ul><div class="twocentCancel" data-labels="bind: innerHTML, cancellbl" data-writereplyevent="listen: touchstart, press; listen: touchend, cancel; listen:touchend, cancel">Cancel</div><div class="twocentPublish" data-labels="bind: innerHTML, publishlbl" data-writereplyevent="listen: touchstart, press; listen: touchend, publish">Publish</div></div></div>';
+                        this.template = '<div class="writeTwocent writeTwocentReply"><div class="replyAvatar" data-model="bind: setAvatar, author"></div><textarea class="twocentText replyMessage" data-labels="bind: placeholder, addtwocentreplyplaceholder" data-model="bind: value, message"></textarea><div class="writeFooter"><ul class="twocentContext"><li class="creadate"><span class="creadatelbl" data-labels="bind:innerHTML, twocentcreationdate"></span><span class="date" data-model="bind: date, date"></span></li></ul><div class="twocentCancel" data-labels="bind: innerHTML, cancellbl" data-writereplyevent="listen: touchstart, press; listen: touchend, cancel; listen:touchend, cancel">Cancel</div><div class="twocentPublish" data-labels="bind: innerHTML, publishlbl" data-writereplyevent="listen: touchstart, press; listen: touchend, publish;">Publish</div></div></div>';
                         
                         this.reset = function($id, $twocent, $reply, $pos, $replyTo){
                                 var now = new Date(),
                                     replyTemplate = {"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0};
-                                console.log($replyTo);
                                 if ($id && $twocent) {
                                         currentIdea = $id;
                                         currentTwocent = $twocent;
@@ -175,7 +169,6 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                                         if (replyTo) {content.message = "@ "+replyTo+" : "+content.message;}
                                         
                                         json = {docId: currentIdea, type: type, position: position, twocent: currentTwocent, reply: content};
-                        
                                         transport.request("WriteTwocent", json, function(result){
                                                 if (result !== "ok"){
                                                         alert(Config.get("labels").get("somethingwrong"));        

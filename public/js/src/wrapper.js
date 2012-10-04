@@ -72,7 +72,6 @@
  		Config.get("observer").watch("login-completed", function(){
  		        // synchronize user with DB, retrieve and store user avatar
  		        user.setTransport(transport);
- 		        alert(appData.get("currentLogin"));
  		        user.sync("ideafy", appData.get("currentLogin")).then(function(){
  		             Utils.getAvatar(user.get("_id"), user.get("picture_file"));       
  		        });

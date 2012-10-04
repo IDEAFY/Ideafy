@@ -13,7 +13,7 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                         };
                         
                         this.plugins.addAll({
-                                "label" : new ModelPlugin(Config.get("labels")),
+                                "labels" : new ModelPlugin(Config.get("labels")),
                                 "twocents" : new ModelPlugin(store, {
                                         date : function date(date){
                                                 if (date) {this.innerHTML = Utils.formatDate(date);}

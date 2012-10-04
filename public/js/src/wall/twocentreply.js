@@ -60,8 +60,8 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                     writeUI = new WriteTwocentReply();
                                     frag = document.createDocumentFragment();
                                   
-                                alert($id, $tc, store.get(id), id);  
-                                writeUI.reset($id, $tc, store.get(id), id);
+                                alert($id, $tc, $data[id], id);  
+                                writeUI.reset($id, $tc, $data[id], id);
                                 writeUI.render();
                                 writeUI.place(frag);
                                 //replace current twocent with writeUI

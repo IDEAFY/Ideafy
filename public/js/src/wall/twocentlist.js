@@ -40,7 +40,14 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                         },
                                         deleteOK : function(replies){
                                                 //Author cannot delete a twocent if there are already replies from other users
-                                                (replies && replies.length>0) ? this.setAttribute("style", "display: none;") : this.setAttribute("style", "display: block;");        
+                                                if (replies && replies.length>0){
+                                                        this.setAttribute("style", "display: none;");
+                                                }
+                                                else{
+                                                        //check if user is actual author
+                                                        var tc = this.getAttribute("data-twocents_id");
+                                                        (user.get("_id") === $data[tc].author)?this.setAttribute("style", "display: block;"):this.setAttribute("style", "display: none;");         
+                                                }       
                                         },
                                         toggleHideButton : function(replies){
                                                 (!replies || !replies.length) ? this.classList.add("invisible") : this.classList.remove("invisible");       
@@ -86,7 +93,7 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                 "twocentevent" : new EventPlugin(this)        
                         });
                         
-                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div><span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: setVisible, author; bind: deleteOK, replies" data-twocentevent="listen: touchstart, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: touchstart, reply"></div></div></div><div class="twocentBody"><p class="twocentMessage" data-twocents="bind: innerHTML, message"></p><div class="repliesButton hideReplies" name="hide" data-twocents="bind: toggleHideButton, replies" data-twocentevent="listen: touchstart, toggleReplies" data-labels="bind:innerHTML, hidetwocentreplies"></div></div><div class="writePublicTwocentReply invisible"></div><div class="displayReplies" data-twocents="bind: displayReplies, replies"></div></li></ul>';
+                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div><span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: deleteOK, replies" data-twocentevent="listen: touchstart, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: touchstart, reply"></div></div></div><div class="twocentBody"><p class="twocentMessage" data-twocents="bind: innerHTML, message"></p><div class="repliesButton hideReplies" name="hide" data-twocents="bind: toggleHideButton, replies" data-twocentevent="listen: touchstart, toggleReplies" data-labels="bind:innerHTML, hidetwocentreplies"></div></div><div class="writePublicTwocentReply invisible"></div><div class="displayReplies" data-twocents="bind: displayReplies, replies"></div></li></ul>';
                         
                         this.edit = function(event, node){
                                 var id = node.getAttribute("data-twocents_id"),

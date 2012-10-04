@@ -58,12 +58,12 @@
 
 
  		if (appData.get("currentLogin") === "" || !appData.get("currentLogin")){
-                        Login();
+                        Login(appData);
                 }
                 else {
                         var json = {"id": appData.get("currentLogin")};
                         transport.request("CheckLogin", json, function(result){
-                                (result.authenticated) ? Config.get("observer").notify("login-completed") : Login();     
+                                (result.authenticated) ? Config.get("observer").notify("login-completed") : Login(appData);     
                         });
                 }
                 
@@ -83,11 +83,11 @@
  		});
  		
  		Config.get("observer").watch("show-signupscreen", function(){
- 		        SignUp();
+ 		        SignUp(appData);
  		});
  		
  		Config.get("observer").watch("show-loginscreen", function(){
-                        Login();
+                        Login(appData);
                 });
  	}
  );

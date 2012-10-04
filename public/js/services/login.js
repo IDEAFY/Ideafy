@@ -1,11 +1,10 @@
 
 define("Login",["Config", "Map", "Olives/OObject", "Olives/Event-plugin", "Olives/Model-plugin", "Store", "Ideafy/Utils", "Olives/LocalStore"],
 	function(Config, Map, OObject, EventPlugin, ModelPlugin, Store, Utils, LocalStore){
-		return function LoginConstructor(){
+		return function LoginConstructor(appData){
 			
 			var login = new OObject(),
 			    loginData = new Store({"email": "", "pwd": "", "errormsg":""}),
-			    appData = new LocalStore();
 			    dom = Map.get("login");
 			
 			login.plugins.addAll({

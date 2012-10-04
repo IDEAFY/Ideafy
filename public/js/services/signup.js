@@ -1,11 +1,10 @@
 define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "Olives/LocalStore"],
         function(Map, OObject, Config, ModelPlugin, EventPlugin, Store, LocalStore){
                 
-                return function SignUpConstructor(){
+                return function SignUpConstructor(appData){
                         
                         var signUp = new OObject(),
                             signUpData = new Store({"email": "", "pwd": "", "pwdbis":"", "firstname":"", "lastname": "", "errormsg":""}),
-                            appData = new LocalStore(),
                             dom = Map.get("signup");
                             
                             

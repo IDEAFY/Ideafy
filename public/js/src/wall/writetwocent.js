@@ -31,7 +31,7 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                         
                 
                 this.reset = function($id, $twocent, $pos){
-                        var now = new Date();
+                        var now = new Date(),
                             twocentTemplate = {"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0, "replies": []};
                         
                         if ($id) {
@@ -52,7 +52,6 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                 
                 this.cancel = function(event, node){
                         node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
-                        (editTC === "new") ? this.reset(twocentTemplate) : this.reset(editTC);
                         // hide twocent writing interface
                         document.getElementById("writePublicTwocent").classList.add("invisible");  
                 };

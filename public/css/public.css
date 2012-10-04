@@ -148,15 +148,18 @@
     background-image: url('../img/wall/publicForList.png');
   }
 
+  .acorn{
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom left;   
+  }
+  
   #public .lists .acorn {
-   display: inline-block;
     margin-left:5px;
     width: 15px;
     height: 15px;
     background-image: url('../img/wall/rateForList.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: bottom left;
   }
   
   #public .lists .acorn .selected {
@@ -218,7 +221,7 @@
   }
 
   #public .details {
-    width:630px;
+    width:628px;
   }
 
   #public .details .header {
@@ -418,12 +421,54 @@ border: 0;
 margin-bottom:12px;
 }
 
-#public .details .ratingExpand {
+/*#public .details .ratingExpand {
   display:block;
   position: absolute;
   bottom: 25px;
   right: 40px;
   display: inline;
+}*/
+
+#public .details .rateIdea{
+  display:block;
+  position: absolute;
+  bottom: 25px;
+  right: 40px;
+  display: inline;
+}
+
+#public .details .rateIdea .acorn{
+    background-image: url('../img/wall/ideaVoteActive.png');
+    height: 15px;
+    width: 15px;
+    float: left;
+  }
+  
+#public .details .rateIdea .rating{
+    float: left;
+    font-family: Helvetica;
+    font-size: 13px;
+    line-height: 20px; 
+  } 
+
+#public .details .publicButton{
+    float: left;
+    height: 20px;
+    width: 60px;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 20px;
+    font-family: Helvetica;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    margin-left: 5px;
+    background: #657B99; 
+  }
+  
+.pressed{
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+    background: #666666;
 }
 
 #public .details .ratingExpand img {
@@ -434,14 +479,14 @@ margin-bottom:12px;
 /*two cents */
 .twocents{
     overflow-y: scroll;
-    width: 630px;
+    width: 628px;
 }
 
 .writeTwocent {
     padding: 20px;
 }
 
-.writeTwocent textarea{
+.twocentText{
     padding: 10px;
     width: 500px;
     margin-left: 20px;
@@ -457,7 +502,7 @@ margin-bottom:12px;
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3); 
 }
 
-.twocents .writeFooter{
+.writeTwocent .writeFooter{
     width:520px;
     height: 60px;
     margin-top:15px;
@@ -499,6 +544,7 @@ margin-bottom:12px;
 
 .writeTwocent .twocentContext .userlbl{
     color: #F27B3D;
+    font-family: Helvetica;
 }
 
 .writeTwocent .twocentPublish, .writeTwocent .twocentCancel{
@@ -552,11 +598,13 @@ margin-bottom:12px;
 #public .twocentAuthor, #public .twocent .commentLabel{
     float: left;
     font-size: 14px;
+    font-family:Helvetica
 }
 
 #public .twocentAuthor{
     margin-left: 10px;
     color: #657B99;
+    font-weight: bold;
 }
 
 #public .twocent .commentLabel{
@@ -601,8 +649,13 @@ margin-bottom:12px;
     background: url('../img/wall/25x35reply.png') no-repeat;    
 }
 
+#public .twocentBody{
+    width: 100%;
+}
+
 #public .twocentMessage{
     margin-bottom: 10px;
+    padding-bottom: 10px;
     margin-left: 10px;
     margin-top: 15px;
     padding-top: 12px;
@@ -610,9 +663,36 @@ margin-bottom:12px;
     font-size: 12px;
 }
 
+#public .repliesButton{
+    width: 100px;
+    height: 15px;
+    float: right;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 15px;
+    font-family: Helvetica;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #657B99;
+    margin-left: 5px;
+    margin-top: -20px;
+    border: 1px solid #657B99;
+}
+
+#public .showReplies{
+    color: #657B99;
+    background: none;
+    border: 1px solid #657B99;
+}
+
+#public .hideReplies{
+    color: white;
+    background: #657B99;
+    border: 1px solid #657B99;
+}
+
 #public .replies{
-    max-height: 260px;
-    overflow-y: scroll;
+    width: 558px;
 }
 
 #public .twocentReply{
@@ -624,8 +704,43 @@ margin-bottom:12px;
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
 }
 
-#public .replyMessage{
-    max-height: 50px;
-    font-size: 12px;
+
+.writePublicTwocentReply .writeTwocent{
+    padding-right: 0px;
+    min-height: 130px;
 }
 
+.writePublicTwocentReply .replyMessage{
+    max-height: 50px;
+    overflow-y: scroll;
+    width: 458px;
+    float: left;
+}
+
+.writePublicTwocentReply .writeFooter{
+    padding-left: 0px;
+    float:left;
+    width: 478px;
+}
+
+#public .writeTwocent .twocentContext{
+    width: 250px;
+    float: left;
+    text-overflow: ellipsis;
+}
+
+#public .replyToReply .writeTwocent{
+    padding-left: 0px;
+}
+
+#public .replyToReply .replyMessage{
+    width: 418px;
+}
+
+#public .replyToReply .writeFooter{
+    width: 438px;
+}
+
+#public .replyToReply .writeFooter .twocentContext{
+    width: 225px;
+}

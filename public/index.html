@@ -103,12 +103,21 @@
                 			<img class="detailsType" src="img/wall/publicForList.png">
                 			<p class="detailsDescription" data-idea="bind:innerHTML, value.doc.description">description</p>
                 			<p class="detailsSolution" data-idea="bind:innerHTML, value.doc.solution">solution</p>
-                			<div class="ratingExpand" data-idea="bind:setRating, value.rating"></div>
+                			<div class ="rateIdea">
+                				<a class="acorn"></a>
+               		 			<div class="rating" data-idea="bind:innerHTML,value.rating"></div>	
+               		 			<div class="publicButton" data-idea="bind: toggleVoteButton, value.votes" data-ideaevent="listen: touchstart, press; listen: touchend, vote" data-labels="bind: innerHTML, votebuttonlbl">Vote</div>
+                			</div>
+                			<!-- <div class="ratingExpand" data-idea="bind:setRating, value.rating"></div> -->
               			</div>
               			<div id="writePublicTwocent" class="invisible" data-idea="bind: displayWriteTwocent, value.doc.authors"></div>
               			<div id="publicTwocents" class="twocents" data-details="bind: displayTwocents, twocents"></div>
           		</div>
         	</div>
+     	 </div>
+     	 
+     	 <div id="library">
+     	 	<div id="libraryStack"></div>
      	 </div>
     </div>
 </div>

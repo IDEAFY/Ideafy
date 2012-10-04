@@ -42,26 +42,39 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                                 //Author cannot delete a twocent if there are already replies from other users
                                                 (replies && replies.length>0) ? this.setAttribute("style", "display: none;") : this.setAttribute("style", "display: block;");        
                                         },
-                                        toggleHideButton : function(replies){
-                                                (!replies || !replies.length) ? this.classList.add("invisible") : this.classList.remove("invisible");       
-                                        },
                                         displayReplies : function(replies){
                                                 if (!replies || !replies.length){
                                                         this.classList.add("invisible");}
                                                 else {
-                                                        var tc = this.getAttribute("data-twocents_id");
-                                                        var ui = new TwocentReplyList(replies, $id, tc, $view),
-                                                            frag = document.createDocumentFragment();
+                                                        // show button
+                                                        console.log(replies, this);
+                                                        this.classList.remove("invisible");
+                                                        if (this.getAttribute("name") === "show"){
+                                                                if (replies.length === 1){
+                                                                        this.innerHTML = "Show 1 reply";
+                                                                }
+                                                                else{
+                                                                        this.innerHTML = "Show "+replies.length+" replies";
+                                                                }
+                                                        }
+                                                        else{
+                                                                this.innerHTML = "Hide replies"
+                                                        }
+                                                        
+                                                        // build TwocentReplyList UI
+                                                        var tc = this.getAttribute("data-twocents_id"),
+                                                            ui = new TwocentReplyList(replies, $id, tc, $view),
+                                                            frag = document.createDocumentFragment(),
+                                                            parent = document.querySelector(".displayReplies[data-twocents_id='"+position+"']");
+                                                            console.log(frag);
                                                         ui.render();
                                                         ui.place(frag);
-                                                        
-                                                        if (this.hasChildNodes()){
-                                                                this.replaceChild(frag, this.firstChild);
+                                                        if (parent.hasChildNodes()){
+                                                                parent.replaceChild(frag, parent.firstChild);
                                                         }
                                                         else {
-                                                                this.appendChild(frag);
+                                                                parent.appendChild(frag);
                                                         }
-                                                        this.classList.remove("invisible");
                                                 }     
                                         },
                                         setAvatar : function setAvatar(author){
@@ -86,7 +99,7 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                 "twocentevent" : new EventPlugin(this)        
                         });
                         
-                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div><span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: click, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: setVisible, author; bind: deleteOK, replies" data-twocentevent="listen: click, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: click, reply"></div></div></div><div class="twocentBody"><p class="twocentMessage" data-twocents="bind: innerHTML, message"></p><div class="repliesButton hideReplies" name="hide" data-twocents="bind: toggleHideButton, replies" data-twocentevent="listen: click, toggleReplies" data-labels="bind:innerHTML, hidetwocentreplies"></div></div><div class="writePublicTwocentReply invisible"></div><div class="displayReplies" data-twocents="bind: displayReplies, replies"></div></li></ul>';
+                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div><span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: click, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: setVisible, author; bind: deleteOK, replies" data-twocentevent="listen: click, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: click, reply"></div></div></div><p class = "twocentMessage" data-twocents="bind: innerHTML, message"></p><div class="showRepliesButton publicButton " data-twocents="bind: displayReplies, replies" name="show" data-twocentevent="listen: click, toggleReplies"></div><div class="writePublicTwocentReply invisible"></div><div class"displayReplies "></div></li></ul>';
                         
                         this.edit = function(event, node){
                                 var id = node.getAttribute("data-twocents_id"),
@@ -135,32 +148,18 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                         
                         this.toggleReplies = function(event, node){
                                 var position = node.getAttribute("data-twocents_id"),
-                                    replies = store.get(position).replies,
                                     name = node.getAttribute("name"),
-                                    dom = document.querySelector(".displayReplies[data-twocents_id='"+position+"']"); 
-                                       
+                                    dom = document.querySelector(".displayReplies[data-twocents_id='"+position+"']");  
+                                    
                                 if (name === "show"){
-                                        // show twocent replies
-                                        dom.classList.remove("invisible");
-                                        // toggle button to hide mode
                                         node.setAttribute("name", "hide");
-                                        node.classList.remove("showReplies");
-                                        node.classList.add("hideReplies");
-                                        node.innerHTML = Config.get("labels").get("hidetwocentreplies");
+                                        node.classList.add("pressed");
+                                        dom.classList.remove("invisible");
                                 }
                                 else {
-                                        // hide twocent replies
-                                        dom.classList.add("invisible");
-                                        // toggle button to show mode
                                         node.setAttribute("name", "show");
-                                        node.classList.remove("hideReplies");
-                                        node.classList.add("showReplies");
-                                        if (replies.length === 1){
-                                                node.innerHTML = Config.get("labels").get("showonetcreply");
-                                        }
-                                        else{
-                                                node.innerHTML = Config.get("labels").get("showtcrepliesbefore")+replies.length+Config.get("labels").get("showtcrepliesafter");
-                                        }
+                                        node.classList.remove("pressed");
+                                        dom.classList.add("invisible");
                                 }
                         };
                 

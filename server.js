@@ -137,11 +137,25 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         olives.config.update("CouchDB", "sessionStore", sessionStore);
         
         // Application utility functions
-        var updateUserIP = function(userid, increment, onEnd){
+        var updateUserIP = function(userid, reason, increment, onEnd){
                 var usercdb = new CouchDBStore(),
                     currentIP;
                 usercdb.setTransport(transport);
                 usercdb.sync("ideafy", userid).then(function(){
+                        switch(reason){
+                                case "newtc":
+                                        var tc_count = usercdb.get("twocent_count") || 0;
+                                        tc_count++;
+                                        usercdb.set("twocent_count", tc_count);
+                                        break;
+                                case "deltc":
+                                        var tc_count = usercdb.get("twocent_count");
+                                        tc_count--;
+                                        usercdb.set("twocent_count", tc_count);
+                                        break;
+                                default:
+                                        break;        
+                        }
                         currentIP = usercdb.get("ip");
                         usercdb.set("ip", currentIP+increment);
                         updateDocAsAdmin(userid, usercdb).then(function(){
@@ -518,10 +532,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 var cdb = new CouchDBStore();
                 cdb.setTransport(new Transport(olives.handlers));
                 cdb.sync("ideafy", json.docId).then(function(){
-                        var tc = cdb.get("twocents"), increment = 0;
+                        var tc = cdb.get("twocents"), increment = 0, reason = "";
                         if (json.type === "new"){
                                 // new twocents are always appended at the top of the list
                                 tc.unshift(json.twocent);
+                                reason = "newtc";
                                 increment = 5;
                         }
                         if (json.type === "edit"){
@@ -529,21 +544,41 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         }
                         if (json.type === "delete"){
                                 tc.splice(json.position, 1);
+                                reason = "deltc";
                                 increment = -5;        
+                        }
+                        if (json.type === "deltcreply"){
+                                var replies = tc[json.twocent].replies;
+                                replies.splice(json.position, 1);
+                                tc[json.twocent].replies = replies;
+                        }
+                        if (json.type === "newreply"){
+                                // add new reply at the end of the array
+                                tc[json.twocent].replies.push(json.reply);
+                        }
+                        if (json.type === "editreply"){
+                                // replace reply with new content
+                                tc[json.twocent].replies.splice(json.position, 1, json.reply);
                         }
                         cdb.set("twocents", tc);
                         updateDocAsAdmin(json.docId, cdb).then(function(){
                                         // call function to update user score here and amount of twocents
-                                        updateUserIP(json.twocent.author, increment, function(result){
-                                                if (result !== "score_updated"){
-                                                        onEnd("issue updating user IP");
-                                                }
-                                                else{
-                                                        onEnd("ok");
-                                                }
-                                                cdb.unsync();       
-                                        });
-                                });     
+                                        if (increment !== 0){
+                                                updateUserIP(json.twocent.author, reason, increment, function(result){
+                                                        if (result !== "score_updated"){
+                                                                onEnd("issue updating user IP");
+                                                        }
+                                                        else{
+                                                                onEnd("ok");
+                                                        }
+                                                        cdb.unsync();       
+                                                });
+                                        }
+                                        else {
+                                                onEnd("ok");
+                                                cdb.unsync();
+                                        }
+                        });     
                 });
 
         });

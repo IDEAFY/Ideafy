@@ -140,10 +140,6 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 			                     break;
 			        }       
 			};
-			
-			idea.addTwocent = function(){
-			     alert('add twocent');        
-			};
 
 		      //init
 			idea.alive(dom);

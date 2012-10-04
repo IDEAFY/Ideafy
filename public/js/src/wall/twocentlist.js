@@ -106,6 +106,7 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                 var position = node.getAttribute("data-twocents_id"),
                                     json = {docId: $id, type: "delete", position: position, twocent:{author: user.get("_id")}};
                                 
+                                alert(json.docId, json.type, json.position, json.twocent);
                                 //should we ask for confirmation??
                                 alert("Are you sure?");
                                 

@@ -55,7 +55,7 @@ define("Ideafy/Wall", ["Map", "Config", "Ideafy/Utils", "CouchDBStore",
 			});
 
 			wall.getData = function(id){
-				return store.get(id);
+				return {id: id, store: store};
 			};
 
 

@@ -11,7 +11,7 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                         if ($view === "public") {
                                 avatars = Config.get("publicAvatars");
                         };
-                          
+                         
                         this.plugins.addAll({
                                 "reply": new ModelPlugin(store, {
                                         date : function date(date){
@@ -19,9 +19,17 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                                        this.innerHTML = Utils.formatDate(date);
                                                }
                                         },
+                                        setFirstname : function(firstname){
+                                               this.innerHTML = firstname;       
+                                                
+                                               var id = this.getAttribute("data-reply_id");
+                                               if (store.get(id).author === user.get("_id")){
+                                                        this.innerHTML = Config.get("labels").get("firstpersonlbl");
+                                                }
+                                        },
                                         setAvatar : function setAvatar(author){
                                              if (author){
-                                                if (author === Config.get("user").get("_id")){
+                                                if (author === user.get("_id")){
                                                         this.setAttribute("style", "background:url('"+Config.get("avatars").get(author)+"') no-repeat center center; background-size: cover;");        
                                                 }
                                                 else{
@@ -51,7 +59,7 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                   "labels": new ModelPlugin(Config.get("labels"))
                         });
                         
-                   this.template = '<ul class="replies" data-reply="foreach"><li class="twocentReply"><div class="twocentHeader"><div class="replyAvatar" data-reply="bind:setAvatar, author"></div><div class="twocentAuthor" data-reply="bind: innerHTML, firstname"></div><span class="commentLabel" data-labels="bind: innerHTML, twocentreplycommentlbl"></span><br/><div class="twocentDate date" data-reply="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-reply="bind: setVisible, author" data-replyevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-reply="bind: setVisible, author; bind: setVisible, author" data-replyevent="listen: touchstart, deleteTwocentReply"></div><div class="twocentButton twocentReplyButton" data-reply="bind: setInVisible, author" data-replyevent="listen:touchstart, reply"></div></div></div><p class="twocentMessage replyMessage" data-reply="bind: innerHTML, message"></p><div class="writePublicTwocentReply replyToReply invisible"></div></li></ul>';
+                   this.template = '<ul class="replies" data-reply="foreach"><li class="twocentReply"><div class="twocentHeader"><div class="replyAvatar" data-reply="bind:setAvatar, author"></div><div class="twocentAuthor" data-reply="bind: setFirstname, firstname"></div><span class="commentLabel" data-labels="bind: innerHTML, twocentreplycommentlbl"></span><br/><div class="twocentDate date" data-reply="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-reply="bind: setVisible, author" data-replyevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-reply="bind: setVisible, author; bind: setVisible, author" data-replyevent="listen: touchstart, deleteTwocentReply"></div><div class="twocentButton twocentReplyButton" data-reply="bind: setInVisible, author" data-replyevent="listen:touchstart, reply"></div></div></div><p class="twocentMessage replyMessage" data-reply="bind: innerHTML, message"></p><div class="writePublicTwocentReply replyToReply invisible"></div></li></ul>';
                    
                    this.edit = function(event, node){
                                 var id = node.getAttribute("data-reply_id"),
@@ -72,8 +80,7 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                         if (result !== "ok"){
                                                 alert(Config.get("labels").get("somethingwrong"));        
                                         }               
-                                });
-                                
+                                });    
                         };
                         
                         this.reply = function(event, node){
@@ -89,11 +96,8 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                 if (!parent.hasChildNodes()){
                                         parent.appendChild(frag);
                                 }
-                                
-                                parent.classList.remove("invisible");
-                                              
-                        };
-                   
+                                parent.classList.remove("invisible");                     
+                        };     
               }
                         
               return function TwocentReplyListFactory($data, $id, $tc, $view){

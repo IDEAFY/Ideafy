@@ -23,6 +23,9 @@
 	"searchplaceholder": "Search ideas...",
 	"ideadetailsheadertitle": "Idea Overview",
 	"votebuttonlbl": "Vote",
+	"novotesyet": "No vote yet",
+	"onevote": "1 vote",
+	"votes": "votes",
 	"twocentcommentlbl": "commented:",
 	"hidetwocentreplies": "Hide replies",
 	"showonetcreply": "Show 1 reply",
@@ -35,5 +38,6 @@
 	"twocentmodificationdate": "Last modified: ",
 	"cancellbl": "Cancel",
 	"publishlbl": "Publish",
-	"somethingwrong": "Something went wrong, please try again"
+	"somethingwrong": "Something went wrong, please try again",
+	"thankyou": "Thank you"
 }

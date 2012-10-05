@@ -1,13 +1,16 @@
 define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject", "Olives/Model-plugin", "Olives/UI-plugin", "Olives/Event-plugin", "CouchDBStore", "TwocentList", "WriteTwocent"],
 	function(Map, Config, Utils, Store,  Widget, ModelPlugin, UIPlugin, EventPlugin, CouchDBStore, TwocentList, WriteTwocent){
-		return function IdeaConstructor($data){
+		return function IdeaConstructor(obj){
 
 		//definition
 			var idea = new Widget(),
 		            dom = Map.get("idea"),
 		            domWrite = Map.get("writePublicTwocent"),
 		            user = Config.get("user"),
-			    store = new Store($data),
+		            transport = Config.get("transport"),
+			    store = new Store(),
+			    vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
+			    voted = false,
 			    ideaCDB = new CouchDBStore(),
 			    avatars = Config.get("publicAvatars"),
 			    writeUI = new WriteTwocent();
@@ -53,6 +56,33 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
                                         },
                                         setNames : function(authornames){
                                                 (authornames ===  user.get("username")) ? this.innerHTML="You" : this.innerHTML = authornames;        
+                                        },
+                                        toggleVoteButton : function(votes){
+                                                var idea = store.get("id"),
+                                                    authors = store.get("value").doc.authors;  
+                                                // check if user has already voted on this idea or if user is author
+                                                if (user.get("rated_ideas").indexOf(idea)<0 && authors.indexOf(user.get("_id"))<0 && !voted)
+                                                {
+                                                        this.setAttribute("name", "vote");
+                                                        this.innerHTML = Config.get("labels").get("votebuttonlbl");
+                                                        this.classList.remove("votes");
+                                                        this.classList.add("publicButton");
+                                                }
+                                                else{
+                                                        this.classList.remove("publicButton");
+                                                        this.setAttribute("name", "voted");
+                                                        voted = true;
+                                                        if (votes === 0){
+                                                                this.innerHTML = "("+Config.get("labels").get("novotesyet")+")";
+                                                        }
+                                                        else if (votes === 1){
+                                                                this.innerHTML = "("+ Config.get("labels").get("onevote")+")";
+                                                        }
+                                                        else{
+                                                                this.innerHTML = "("+votes + " "+Config.get("labels").get("votes")+")";
+                                                        }
+                                                        this.classList.add("votes");
+                                                }               
                                         },
 					setAvatar : function setAvatar(authors){
                                            //check if more than one author and if so display mutli-deedee avatar
@@ -105,25 +135,42 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 				        }
 			
 				}),
+				"vote" : new ModelPlugin(vote, {
+				        setIcon : function(active){
+				                var styleActive = "background: url('../img/wall/ideaVoteActive.png') no-repeat center center;",
+				                    styleInactive = "background: url('../img/wall/rateForList.png') no-repeat center center;";
+				                
+				            (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
+				        }
+				}),
 				"label" : new ModelPlugin(Config.get("labels")),
 				"ideaevent" : new EventPlugin(idea)
 			});
 			
 
-			idea.reset = function(data){
+			idea.reset = function(obj){
+			        var id = obj.id, cdbstore = obj.store, voted = false;
+			        
 			        // build idea header with data available from the wall view
-				store.reset(data);
+				store.reset(cdbstore.get(id));
 				// build twocent writing interface and pass the idea's id as paramater
-				writeUI.reset(data.id);
+				writeUI.reset(store.get("id"));
 				// synchronize with idea document in couchDB to build twocents and ratings
 				ideaCDB.unsync();
 				ideaCDB.reset();
-				ideaCDB.sync("ideafy", data.id);
+				ideaCDB.sync("ideafy", store.get("id"));
+				
+				// watch cdbstore for changes regarding this idea and update header accordingly
+				cdbstore.watch("updated", function(idx, value){
+				        console.log(idx, value, id);
+				        if (idx === parseInt(id)){
+				            store.reset(value);        
+				        }
+				});
 			};
 			
 			idea.action = function(event, node){
 			        var name = node.getAttribute("name");
-			        alert(name);
 			        switch(name){
 			                
 			                case "commentIdea":
@@ -134,11 +181,48 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 			                     break;
 			                
 			                case "rateIdea":
+			                     // should be added to favorites instead
 			                     break;
 			                     
 			                case "editIdea":
 			                     break;
 			        }       
+			};
+			
+			idea.vote = function(event, node){
+			        if (node.getAttribute("name") === "vote"){
+			                //display voting popup
+			                document.getElementById("ratingPopup").classList.add("appear");
+			        }
+			};
+			
+			idea.previewVote = function(event, node){
+			     var i=0, idx = node.getAttribute("data-vote_id");
+			     
+			     vote.loop(function(v,i){
+			             (i<=idx) ? vote.update(i, "active", true):vote.update(i, "active",false);        
+			     });            
+			};
+			
+			idea.castVote = function(event, node){
+			        var grade = parseInt(node.getAttribute("data-vote_id"))+1,
+			            json = {id : store.get("id"), vote: grade, voter: user.get("_id")};
+			        
+			        // prevent multiple votes on the same idea -- if request fails 
+			        voted = true;
+			        transport.request("Vote", json, function(result){
+                                        if (result!="ok"){
+                                                console.log(result, "something went wrong, please try again later");
+                                                voted = false;
+                                        }
+                                        else {
+                                                alert(Config.get("labels").get("thankyou"));
+                                                document.getElementById("ratingPopup").classList.remove("appear");
+                                                node.classList.remove(popupButton);
+                                                node.setAttribute("name", "voted");
+                                                node.classList.add("votes");
+                                        }
+                                });
 			};
 
 		      //init

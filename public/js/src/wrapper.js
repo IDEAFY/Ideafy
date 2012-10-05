@@ -76,6 +76,7 @@
  		             Utils.getAvatar(user.get("_id"), user.get("picture_file"));       
  		        });
  		        
+ 		        USERDOC = user;
  		        // show main interface
  		        document.getElementById("main").classList.remove("invisible");
                         Public();		        

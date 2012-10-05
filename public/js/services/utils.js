@@ -68,6 +68,7 @@ define("Ideafy/Utils", ["Observable", "Config", "CouchDBStore"], function(Observ
                                        };
                                       request.send(null);                    
 		              }
+		              cdb.unsync();
 		      });      
 		 },
 		 

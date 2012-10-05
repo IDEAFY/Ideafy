@@ -160,7 +160,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         usercdb.set("ip", currentIP+increment);
                         updateDocAsAdmin(userid, usercdb).then(function(){
                                 onEnd("score_updated");
-                                console.log(usercdb.get("ip"));
                                 usercdb.unsync();
                         });       
                 });        
@@ -511,7 +510,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
                 var cdb = new CouchDBStore(),
                     votes;
-                cdb.setTransport(new Transport(olives.handlers));
+                cdb.setTransport(transport);
 
                 cdb.sync("ideafy", json.id).then(function() {
                         votes = cdb.get("votes");
@@ -519,8 +518,21 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         votes.unshift(json.vote);
                         cdb.set("votes", votes);
                         cdb.upload().then(function() {
-                                onEnd("ok");
-                                cdb.unsync();
+                                //update user rated ideas & score
+                                var votercdb = new CouchDBStore();
+                                votercdb.setTransport(transport);
+                                votercdb.sync("ideafy", json.voter).then(function(){
+                                        var ri = votercdb.get("rated_ideas"),
+                                            ip = votercdb.get("ip");
+                                        ri.unshift(json.id);
+                                        votercdb.set("rated_ideas", ri);
+                                        votercdb.set("ip", ip+2);
+                                        updateDocAsAdmin(json.voter, votercdb).then(function(){
+                                                onEnd("ok");
+                                                votercdb.unsync();
+                                                cdb.unsync();        
+                                        }); 
+                                });
                         });
                 });
 

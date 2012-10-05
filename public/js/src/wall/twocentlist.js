@@ -118,8 +118,7 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                         if (result !== "ok"){
                                                 alert(Config.get("labels").get("somethingwrong"));        
                                         }               
-                                });
-                                
+                                });      
                         };
                         
                         this.reply = function(event, node){
@@ -168,7 +167,6 @@ define("TwocentList", ["Olives/OObject", "Config", "Store", "Ideafy/Utils", "Oli
                                         }
                                 }
                         };
-                
                 }       
                 
                 return function TwocentListFactory($data, $id, $view){

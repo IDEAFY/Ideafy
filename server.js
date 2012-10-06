@@ -202,7 +202,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         user.setTransport(transport);
                         user.set("password", json.password);
                         user.set("name", json.name);
-
+                        console.log("SIGNUP REQUEST", json);
                         user.create().then(function (si) {
                                 
                                 // add credentials to the cookie

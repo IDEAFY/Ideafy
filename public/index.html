@@ -23,7 +23,7 @@
 				<div class="enter" data-loginevent="listen:touchstart, press; listen: click, login;" data-label="bind: innerHTML, loginbutton">Log In</div>
 				<div class="loginalert" data-login="bind:innerHTML, errormsg"></div>
 			</div>
-			<div class="signupbutton" data-loginevent="listen: touchstart, press; listen:touchend, signup" data-label="bind:innerHTML, newuserbutton">New User</div>
+			<div class="signupbutton" data-loginevent="listen: touchstart, press; listen:click, signup" data-label="bind:innerHTML, newuserbutton">New User</div>
 		</div>
 		<div id="signup" class="invisible">
 			<img src="img/logoLogInPage.png" data-signupevent="listen: touchend, login"/>
@@ -39,8 +39,8 @@
 				<input class="loginfield" data-signup="bind: value, lastname" data-signupevent="listen: keypress, resetError" data-label="bind:placeholder, lastnameplaceholder">
 			</form>
 			<div class="signupalert" data-signup="bind:innerHTML, errormsg"></div>
-			<div class="enter" data-signupevent = "listen: touchstart, press; listen:touchend, signup" data-label="bind:innerHTML, signupbutton">Sign up</div>
-			<div class="enter" data-signupevent = "listen: touchstart, press; listen:touchend, login" data-label="bind: innerHTML, loginbutton">Log in</div>
+			<div class="enter" data-signupevent = "listen: touchstart, press; listen:click, signup" data-label="bind:innerHTML, signupbutton">Sign up</div>
+			<div class="enter" data-signupevent = "listen: touchstart, press; listen:click, login" data-label="bind: innerHTML, loginbutton">Log in</div>
 			
 			
 		</div>

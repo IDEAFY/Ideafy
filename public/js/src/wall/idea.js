@@ -149,7 +149,8 @@ define("Ideafy/Idea", ["Map", "Config", "Ideafy/Utils","Store", "Olives/OObject"
 			
 
 			idea.reset = function(obj){
-			        var id = obj.id, cdbstore = obj.store, voted = false;
+			        var id = obj.id, cdbstore = obj.store;
+			            voted = false;
 			        
 			        // build idea header with data available from the wall view
 				store.reset(cdbstore.get(id));

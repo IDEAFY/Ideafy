@@ -1,5 +1,5 @@
-define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "Olives/LocalStore"],
-        function(Map, OObject, Config, ModelPlugin, EventPlugin, Store, LocalStore){
+define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "CouchDBStore", "Olives/LocalStore"],
+        function(Map, OObject, Config, ModelPlugin, EventPlugin, Store, CouchDBStore, LocalStore){
                 
                 return function SignUpConstructor(appData){
                         
@@ -37,7 +37,9 @@ define("SignUp", ["Map", "Olives/OObject", "Config", "Olives/Model-plugin", "Oli
                                     labels = Config.get("labels"),
                                     user = new CouchDBStore();
                                     
-                                node.classList.remove("pressed");
+                                //node.classList.remove("pressed");
+                                
+                                alert("hello");
                                 
                                 if (email === ""){
                                         signUpData.set("errormsg", labels.get("signupmissingemail"));        

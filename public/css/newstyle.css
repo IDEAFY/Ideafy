@@ -243,6 +243,55 @@ html, body {
   background-size:35%;
 }
 
+/* Dock submenus */
+.sub-menu{
+    position: absolute;
+    left: 93px;
+    width: 230px;
+    height: 110px;
+    border-radius: 5px;
+    -webkit-box-shadow: -3px 0 5px rgba(0,0,0,0.5), inset 0 0 10px 1px rgba(255,255,255,0.1);
+    z-index: 100;
+    background-image: -webkit-gradient(linear, center bottom, center top, from(#292929), to(#404040));
+    background-image: -webkit-linear-gradient(91deg, #292929 0%, #404040 100%);
+    list-style: none;
+}
+
+.left-caret{
+    margin-left: -15px;
+    border-bottom: 15px solid transparent;
+    border-top: 15px solid transparent;
+    border-right: 15px solid #404040;
+    display: inline-block;
+    height: 0;
+    vertical-align: top;
+    width: 0;
+    float: left;
+}
+
+.menu-item{
+    display: inline-block;
+    font-family: Pacifico;
+    color: white;
+    width: 200px;
+    padding-left: 30px;
+    height: 36px;
+    line-height: 36px;
+}
+
+.menu-list .menu-item:nth-child(n+2) {
+    border-top:1px solid #666666;
+}
+
+#library-menu{
+    top: 141px;
+    margin-top: -55px;   
+}
+
+#library-menu .left-caret{
+    margin-top: 40px;
+}
+
 /* public */
 
 #public .list {
@@ -376,7 +425,8 @@ min-height:200px;
   padding:0 0 0 10px;
   border:0px;
   outline:0;
-  background-image: -webkit-gradient(linear, center top, center bottom, from(white 74%), to(#e5e5e5)); background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
+  background-image: -webkit-gradient(linear, center top, center bottom, from(white 74%), to(#e5e5e5));
+  background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
   -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
 }
 
@@ -431,3 +481,6 @@ textarea.solution {
   border:1px solid #CCC;
   -webkit-border-radius:4px;
 }
+
+
+/* LIBRARY */

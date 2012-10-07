@@ -1,0 +1,433 @@
+/* reset */
+
+html, body, h2, h3, ul, p{
+  margin:0;
+}
+
+html, body, ul {
+  padding:0;
+}
+
+html, body {
+  font-family:Helvetica;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  background:black url('../img/bg.png');
+  width:1024px;
+  height:768px;
+}
+
+
+.overflow {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; 
+}
+
+@font-face {  
+  font-family: pacifico ;  
+  src: url('../fonts/Pacifico.ttf') format("truetype");  
+} 
+
+/* utils */
+.blue-light {
+  background:#9ac9cd;
+}
+
+.blue-dark {
+  background:#657B99;
+}
+
+.header, .list h3, .detail-header h2{
+  font-family:pacifico;
+  letter-spacing:1px;
+}
+
+/* may be ameliorate the .idea-edit .form input.input */
+.header, .header .option, .idea-edit .form input.input {
+  height:36px;
+}
+
+.header {
+  position:relative;
+
+  text-align:center;
+  color:white;
+}
+
+.header .option {
+  position:absolute;
+  top:0;
+  width:36px;
+}
+
+.left {
+  left:0;
+}
+
+.right {
+  right:0;
+}
+
+#dock, .list, .details, .idea-edit, .idea-sendmail{
+  background:white;
+}
+#dock, .list, .details, .list ul{
+  height:768px;
+}
+
+#dock, .list {
+  /* is absolute position better? */
+  float:left;
+}
+
+.details {
+  position:absolute;
+  width:630px;
+  left:394px;
+}
+
+/* utils list */
+
+.list {
+  /* the position has to be relative to apply the shadow */
+  position:relative;
+  width:301px;
+  /*factorize with every box-shadow */
+  -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+
+}
+
+.list-item{
+  min-height: 85px;
+  border-bottom: 1px solid #CCC;
+  padding: 30px 20px 20px 30px;
+}
+
+.list-item div {
+  /* prevent events */
+  pointer-events:none;
+}
+
+.list-item.selected {
+  background-image:-webkit-linear-gradient(top, #88A5CC 0%, #657B99 80%);
+  -webkit-box-shadow:inset 0 0 5px 1px rgba(0,0,0,0.3);
+}
+
+.list-item.selected, .list-item.selected .date, .list-item.selected p{
+  color:white;
+}
+
+.item-header span, .item-body p, .detail-header .date{
+  color:gray;
+  font-size: 12px;
+}
+
+
+.item-header {
+  position:relative;
+  height:30px;
+}
+
+.item-header h2 {
+  display:inline;
+  font-size: 18px;
+  font-weight:normal;
+}
+
+.date {
+  float:right;
+  font-style:italic;
+}
+
+.item-body h3 {
+  font-size: 14px;
+}
+
+.item-body p {
+  margin-top:10px;
+}
+
+.tools {
+  padding:15px;
+}
+
+
+
+.search  {
+  border:0;
+  outline:0;
+  height:25px;
+  padding:0 25px 0 10px;
+  width:160px;
+  border-radius:5px;
+  background:#F2F2F2;
+
+  font-size: 12px;
+  background-image: url('../img/public/search.png');
+  background-size: 15px 15px;
+  background-position: 96%;
+  background-repeat: no-repeat;
+}
+
+/* dock */
+
+#dock {
+  position:relative;
+  background-image: -webkit-linear-gradient(left, #292929, #404040);
+  -webkit-box-shadow: inset -5px 0 25px rgba(0,0,0,0.8);
+}
+
+#dock a {
+  height:94px;
+  width:93px;
+}
+
+.dock-item {
+  display:block;
+  -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  border-bottom: 1px solid black;
+
+  /*width:93px;
+  height:94px;*/
+  background-size:93px 93px;
+}
+
+.dock-item[href="#public"]{
+  background:url('../img/disablePublicWall.png');
+}
+
+.dock-item[href="#library"]{
+  background:url('../img/disableLibrary.png');
+}
+
+.dock-item[href="#brainstorm"]{
+  background:url('../img/disableBrainstorm.png');
+}
+
+.dock-item[href="#connect"]{
+  background:url('../img/disableConnect.png');
+}
+
+.dock-item[href="#settings"]{
+  background:url('../img/disableSettings.png');
+}
+
+.dock-item[href="#public"].selected{
+  background:url('../img/activePublicWall.png');
+}
+
+.dock-item[href="#library"].selected{
+  background:url('../img/activeLibrary.png');
+}
+
+.dock-item[href="#brainstorm"].selected{
+  background:url('../img/activeBrainstorm.png');
+}
+
+.dock-item[href="#connect"].selected{
+  background:url('../img/activeConnect.png');
+}
+
+.dock-item[href="#settings"].selected{
+  background:url('../img/activeSettings.png');
+}
+
+.deedee {
+  position:absolute;
+  left:0;
+  bottom:0;
+
+  width:99px;
+  height:144px;
+  background:url('../img/littleGreyDeeDee.png') no-repeat center center;
+  background-size:35%;
+}
+
+/* public */
+
+#public .list {
+   -webkit-transition: width 140ms ease-in;
+   z-index:1000;
+}
+
+.mosaic .list{
+  width:834px;
+}
+
+.list li {
+  /* this is a test 
+  -webkit-transition: -webkit-box-shadow 60ms ease-in;*/
+}
+
+.mosaic .list-item {
+  /* */
+  display:none;
+}
+
+/*#public .option {
+
+}*/
+
+#public-list .option.right {
+  background:url('../img/public/plus.png') no-repeat center center;
+  background-size:15px 15px;
+}
+
+#public-list .option.left {
+  background:url('../img/public/mosaique.png') no-repeat center center;
+  background-size:15px 15px;
+}
+
+/* public details */ 
+#public-detail {
+ -webkit-transition: opacity 480ms ease-out;
+}
+
+.mosaic #public-detail {
+  opacity: 0.3;
+}
+
+/* factorize with other header buttons */
+#public-detail .option.right {
+  background:url('../img/public/vote.png') no-repeat center center;
+  background-size:12px 15px;
+}
+
+#public-detail .option.left {
+  background:url('../img/public/2cents.png') no-repeat center center;
+  background-size:15px 15px;
+}
+
+
+.idea-detail {
+  background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
+-webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+min-height:200px;
+}
+.detail-header, .detail-body {
+  margin-left:40px;
+  margin-right:40px;
+}
+
+.detail-header {
+  height:80px;
+  padding-top:25px;
+  border-bottom:1px solid #CCC;
+}
+
+.detail-header .avatar {
+  float:left;
+  width: 60px;
+  height: 60px;
+  margin-left:-20px;
+  border-radius: 30px;
+  background: red;
+}
+.detail-header h2{
+  margin-left:15px;
+  font-size:24px;
+  font-weight:normal;
+  display:inline;
+}
+
+.detail-header .date {
+  margin-top:10px;
+}
+
+.detail-header .author {
+  /* may be use an other display */
+  display:table-caption;
+  width:400px;
+
+  margin-left:15px;
+  font-weight : bold;
+  font-size: 14 px;
+  color: #F27B3D;
+}
+
+.detail-body {
+  margin-top:12px;
+  margin-bottom:20px;
+  font-size:12px;
+}
+
+/* public detail stack */
+
+/* refactor with .details position absolute */
+.detail-stack {
+  position:absolute;
+  width:630px;
+}
+
+.form{
+  /* may be set margin instead padding, in this way we don't have to set p margin */
+  padding:20px;
+}
+
+.form p {
+  /* may be try to amelioreate margin and padding to have less css */
+  margin-bottom:20px;
+}
+
+.input {
+  /* keep width 100% size of container with padding */
+  -webkit-box-sizing:border-box;
+  width:100%;
+  padding:0 0 0 10px;
+  border:0px;
+  outline:0;
+  background-image: -webkit-gradient(linear, center top, center bottom, from(white 74%), to(#e5e5e5)); background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
+  -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+}
+
+textarea.input {
+  resize:none;
+  padding-top:15px;
+}
+
+/* set input size...better solution*/
+textarea.description {
+  height:100px;
+}
+
+textarea.solution {
+  height:175px;
+}
+
+/* may be create a class button ...they are label to stay in p*/
+
+.submit label {
+  -webkit-border-radius:4px;
+  text-align:center;
+  /* inline-block because labels are inline */
+  display:inline-block;
+  padding:6px 0;
+  width:92px;
+  font-weight:bold;
+  font-size:12px;
+  color:white;
+}
+
+.publish {
+  background:#8CAB68;
+  margin-right:15px;
+}
+
+.cancel {
+  background:#E69B73;
+}
+
+/* detail stack send mail */
+.idea-sendmail input.input {
+  height:30px;
+}
+
+.idea-sendmail textarea {
+  min-height:150px;
+  padding:20px;
+}
+
+.sendmail-attach {
+  border:1px solid #CCC;
+  -webkit-border-radius:4px;
+}

@@ -21,9 +21,7 @@ var connect = require("connect"),
     sessionStore = new RedisStore({
         hostname : "127.0.0.1",
         port : "6379"
-    }),
-    wrap = require("./wrap");
-
+    });
 
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
@@ -38,10 +36,8 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
         }
 });
 
-
-CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBStore, Store, Promise) {
+CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store"], function(CouchDBUser, Transport, CouchDBStore, Store) {
         var transport = new Transport(olives.handlers),
-            cdbAdminCredentials = "admin:innovation4U",
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -52,6 +48,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                             uid = Object.keys(avatarFile)[0],
                             avatarFileName=uid+"@@"+avatarFile[uid].name,
                             newFile = __dirname+'/public/attachments/'+avatarFileName;
+                
+                        console.log(uid, avatarFile, avatarFileName);
                     
                         fs.rename(avatarFile[uid].path, newFile, function(err){
                                 var updateAvatar = function(){
@@ -71,30 +69,32 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 })      
                 .use(function(req, res, next) {
                         var parse = url.parse(req.url, false),
-                            path = parse.pathname,
-                            readFile = wrap(fs.readFile);
+                            path = parse.pathname;
                   
-                        if (req.method === 'GET' && path.search("/attachments")>-1){    
+                        if (req.method === 'GET' && path.search("/attachments")>-1){
                                 // get file extension
                                 var     ext,
                                         gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
                                         jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
                                         pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/;
 
-                                if (path.match(pngPattern)) { ext = "png";}
-                                if (path.match(jpgPattern)) { ext = "jpg";}
-                                if (path.match(gifPattern)) { ext = "gif";}              
-                                readFile("public"+path, function (error, data){
+                                if (parse.pathname.match(pngPattern)) { ext = "png";}
+                                else if (parse.pathname.match(jpgPattern)) { ext = "jpg";}
+                                if (parse.pathname.match(gifPattern)) { ext = "gif";}                
+                                fs.readFile("public"+path, function (error, data){
                                         if (data){
                                                 res.charset = 'utf-8';
                                                 //the type should be contained in the repsonse
                                                 var encode = "data:image/"+ext+";base64," + new Buffer(data, 'binary').toString('base64');
+                                                console.log(encode);
                                                 res.write(encode, encoding='utf8');  
                                         }
                                         else {
                                                 console.log(error);
                                         }
+                                
                                         res.end();
+                                        next();
                                 });
                         }
                         else{
@@ -105,96 +105,26 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 })
                 .use(connect.cookieParser())
                 .use(connect.session({
-                        secret : "olives&vin2012AD",
-                        key : "ideafy.sid",
+                        secret : "dingdangdong",
+                        key : "proto-ideafy.sid",
                         store : sessionStore,
                         cookie : {
-                                maxAge : 86400000,
+                                maxAge : null,
                                 httpOnly : true,
                                 path : "/"
                         }
                 }))
                 .use(connect.static(__dirname + "/public"))).listen(1664),
-                io = socketIO.listen(app, {
-                        log : true
-                });
-                
-       // Socket.io configuration
-       io.enable('browser client minification');  // send minified client
-       io.enable('browser client etag');          // apply etag caching logic based on version number
-       io.enable('browser client gzip');          // gzip the file
-       io.set('log level', 3);                    // reduce logging
-       io.set('transports', [                     // enable all transports (optional if you want flashsocket)
-                        'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
+        io = socketIO.listen(app, {
+                log : true
+        });
 
-        // we need lots of sockets
         http.globalAgent.maxSockets = Infinity;
 
-        // register transport
         olives.registerSocketIO(io);
-        
-        // couchdb config update (session authentication)
+
         olives.config.update("CouchDB", "sessionStore", sessionStore);
-        
-        // Application utility functions
-        var updateUserIP = function(userid, reason, increment, onEnd){
-                var usercdb = new CouchDBStore(),
-                    currentIP;
-                usercdb.setTransport(transport);
-                usercdb.sync("ideafy", userid).then(function(){
-                        switch(reason){
-                                case "newtc":
-                                        var tc_count = usercdb.get("twocent_count") || 0;
-                                        tc_count++;
-                                        usercdb.set("twocent_count", tc_count);
-                                        break;
-                                case "deltc":
-                                        var tc_count = usercdb.get("twocent_count");
-                                        tc_count--;
-                                        usercdb.set("twocent_count", tc_count);
-                                        break;
-                                default:
-                                        break;        
-                        }
-                        currentIP = usercdb.get("ip");
-                        usercdb.set("ip", currentIP+increment);
-                        updateDocAsAdmin(userid, usercdb).then(function(){
-                                onEnd("score_updated");
-                                usercdb.unsync();
-                        });       
-                });        
-        };
-        
-        var updateDocAsAdmin = function(docId, cdbStore){
-            
-                var promise = new Promise;
-                
-                cdbStore.getTransport().request("CouchDB", {
-                        method : "PUT",
-                        path:"/ideafy/"+docId,
-                        auth: cdbAdminCredentials,
-                        headers: {
-                                "Content-Type": "application/json"
-                        },
-                        data: cdbStore.toJSON()
-                }, promise.resolve, promise);
-                
-                return promise;      
-        };
-        
-        // Application handlers
-        olives.handlers.set("Lang", function(json, onEnd){
-                var path = __dirname+'/public/i8n/'+json.lang+'.json';
-                fs.exists(path, function(exists){
-                        if (exists){
-                                var labels=fs.readFileSync(path, 'utf8');
-                                onEnd(JSON.parse(labels));
-                        }
-                        else{
-                                onEnd("nok");
-                        }    
-                });
-        });
+
         
         olives.handlers.set("Signup", function (json, onEnd) {
                         var user = new CouchDBUser;
@@ -204,25 +134,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         user.set("name", json.name);
 
                         user.create().then(function (si) {
-                                
-                                // add credentials to the cookie
-                                var cookieJSON = cookie.parse(json.handshake.headers.cookie), 
-                                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0];
-                                sessionStore.get(sessionID, function(err, session) {
-                                        if (err) {
-                                                throw new Error(err);
-                                        } else {
-                                                session.auth = json.name + ":" + json.password;
-                                                sessionStore.set(sessionID, session);
-                                                onEnd({
-                                                        signup : "ok",
-                                                        message: json.name + " successfully signed up"
-                                                });
-                                        }
-                                });
+                                onEnd({
+                                        status: "okay",
+                                        message: "The account was successfully created."
+                                })
                                 user.unsync();
                         }, function (json) {
-                                if (json.error === "conflict") {
+                                if (json.error == "conflict") {
                                         onEnd({
                                                 status: "failed",
                                                 message: "An account with this user name already exists."
@@ -233,21 +151,17 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 });
 
         olives.handlers.set("CheckLogin", function(json, onEnd){
-                var cookieJSON = cookie.parse(json.handshake.headers.cookie),
-                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
-                    cdb = new CouchDBStore();    
-                // return false if document does not exist in database
-                cdb.setTransport(transport);
-                cdb.sync("ideafy", json.id).then(function(){
-                                sessionStore.get(sessionID, function(err, session){
-                                        if(err){throw new Error(err);}
-                                        else{
-                                                (session.auth && session.auth.search(json.id) >-1) ? onEnd({authenticated: true}) : onEnd({authenticated : false});
-                                        } 
-                                });
-                                cdb.unsync();
-                        }, function(){onEnd({authenticated: false});});
-                });
+                var cookieJSON = cookie.parse(json.handshake.headers.cookie), sessionID = cookieJSON["proto-ideafy.sid"].split("s:")[1].split(".")[0];
+                
+                sessionStore.get(sessionID, function(err, session){
+                        if(err){
+                                throw new Error(err);
+                        }
+                        else{
+                                (session.auth && session.auth.search(json.id) >-1) ? onEnd({authenticated: true}) : onEnd({authenticated : false})
+                        } 
+                });   
+        });
         
         olives.handlers.set("Login", function(json, onEnd) {
                 var user = new CouchDBUser();
@@ -261,9 +175,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         var result = JSON.parse(result);
                         
                         if (!result.error) {
-                                var cookieJSON = cookie.parse(json.handshake.headers.cookie), 
-                                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0];
-                                
+                                console.log("HERE", cookie.parse(json.handshake.headers.cookie));
+                                var cookieJSON = cookie.parse(json.handshake.headers.cookie), sessionID = cookieJSON["proto-ideafy.sid"].split("s:")[1].split(".")[0];
+                                console.log("COOKIEJSON: ", cookieJSON, "SESSIONID: ",sessionID);
                                 sessionStore.get(sessionID, function(err, session) {
                                         if (err) {
                                                 throw new Error(err);
@@ -342,7 +256,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 // if there is only one recipient
                 if (list.length === 1) {
                         cdb.setTransport(new Transport(olives.handlers));
-                        cdb.sync("ideafy", "users", "_view/tomail", {
+                        cdb.sync("taiaut", "users", "_view/tomail", {
                                 key : '"' + list[0] + '"'
                         }).then(function(doc) {
                                 if (doc.getNbItems()) {
@@ -357,7 +271,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         result.missing = [list[0]];
                                         onEnd(result);
                                 }
-                                cdb.unsync();
                         });
                 } else {
                         var options = {}, bulkDocs = new Store(), req;
@@ -370,7 +283,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 user : "admin",
                                 pass : fs.readFileSync(".password", "utf8").trim()
                         };
-                        options.path = "/ideafy/_design/users/_view/tomail";
+                        options.path = "/taiaut/_design/users/_view/tomail";
                         options.headers = {
                                 "Content-Type" : "application/json"
                         };
@@ -391,6 +304,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 res.on('end', function() {
                                         bulkDocs.reset(JSON.parse(body).rows);
                                         result = scanResults(body, bulkDocs);
+                                        console.log(result);
                                         onEnd(result);
                                 });
                         };
@@ -455,7 +369,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 sendMessage = function(message, userid) {
                         var cdb = new CouchDBStore();
                         cdb.setTransport(new Transport(olives.handlers));
-                        cdb.sync("ideafy", userid).then(function() {
+                        cdb.sync("taiaut", userid).then(function() {
                                 var arr = [];
                                 // retrieve notifications array
                                 if (cdb.get("notifications")[0]){arr = cdb.get("notifications");}
@@ -468,7 +382,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 res : "ok",
                                                 id : userid
                                         });
-                                        cdb.unsync();
                                 });
                         });
                 };
@@ -510,88 +423,25 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
                 var cdb = new CouchDBStore(),
                     votes;
-                cdb.setTransport(transport);
+                cdb.setTransport(new Transport(olives.handlers));
 
-                cdb.sync("ideafy", json.id).then(function() {
+                cdb.sync("taiaut", json.id).then(function() {
                         votes = cdb.get("votes");
                         if (!votes){votes=[];}
                         votes.unshift(json.vote);
                         cdb.set("votes", votes);
                         cdb.upload().then(function() {
-                                //update user rated ideas & score
-                                var votercdb = new CouchDBStore();
-                                votercdb.setTransport(transport);
-                                votercdb.sync("ideafy", json.voter).then(function(){
-                                        var ri = votercdb.get("rated_ideas"),
-                                            ip = votercdb.get("ip");
-                                        ri.unshift(json.id);
-                                        votercdb.set("rated_ideas", ri);
-                                        votercdb.set("ip", ip+2);
-                                        updateDocAsAdmin(json.voter, votercdb).then(function(){
-                                                onEnd("ok");
-                                                votercdb.unsync();
-                                                cdb.unsync();        
-                                        }); 
-                                });
+                                onEnd("ok")
                         });
                 });
 
         });
 
         // Commenting on ideas
-        olives.handlers.set("WriteTwocent", function(json, onEnd) {
+        olives.handlers.set("Twocent", function(json, onEnd) {
 
                 var cdb = new CouchDBStore();
                 cdb.setTransport(new Transport(olives.handlers));
-                cdb.sync("ideafy", json.docId).then(function(){
-                        var tc = cdb.get("twocents"), increment = 0, reason = "";
-                        if (json.type === "new"){
-                                // new twocents are always appended at the top of the list
-                                tc.unshift(json.twocent);
-                                reason = "newtc";
-                                increment = 5;
-                        }
-                        if (json.type === "edit"){
-                                tc.splice(json.position, 1, json.twocent);        
-                        }
-                        if (json.type === "delete"){
-                                tc.splice(json.position, 1);
-                                reason = "deltc";
-                                increment = -5;        
-                        }
-                        if (json.type === "deltcreply"){
-                                var replies = tc[json.twocent].replies;
-                                replies.splice(json.position, 1);
-                                tc[json.twocent].replies = replies;
-                        }
-                        if (json.type === "newreply"){
-                                // add new reply at the end of the array
-                                tc[json.twocent].replies.push(json.reply);
-                        }
-                        if (json.type === "editreply"){
-                                // replace reply with new content
-                                tc[json.twocent].replies.splice(json.position, 1, json.reply);
-                        }
-                        cdb.set("twocents", tc);
-                        updateDocAsAdmin(json.docId, cdb).then(function(){
-                                        // call function to update user score here and amount of twocents
-                                        if (increment !== 0){
-                                                updateUserIP(json.twocent.author, reason, increment, function(result){
-                                                        if (result !== "score_updated"){
-                                                                onEnd("issue updating user IP");
-                                                        }
-                                                        else{
-                                                                onEnd("ok");
-                                                        }
-                                                        cdb.unsync();       
-                                                });
-                                        }
-                                        else {
-                                                onEnd("ok");
-                                                cdb.unsync();
-                                        }
-                        });     
-                });
 
         });
 
@@ -611,7 +461,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
                 cdb.setTransport(new Transport(olives.handlers));
 
-                cdb.sync("ideafy", json.dest).then(function() {
+                cdb.sync("taiaut", json.dest).then(function() {
                         if (cdb.get("connections") && cdb.get("connections")[0]) {connections = cdb.get("connections");}
                         if (cdb.get("groups") && cdb.get("groups")[0]) {groups = cdb.get("groups");}
                         if (cdb.get("notifications") && cdb.get("notifications")[0]) {notifications = cdb.get("notifications");}
@@ -660,11 +510,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         cdb.set("groups", groups);
                         cdb.upload().then(function(){
                                 onEnd("ok");
-                                cdb.unsync();
                         });
                 });
 
         });
+
 });
 
 process.on('uncaughtException', function(error) {

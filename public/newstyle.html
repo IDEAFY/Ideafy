@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ideafy</title>
+  <meta id="mobile" name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="user-scalable=no,width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="css/newstyle.css">
+</head>
+<body data-stack="destination">
+  <div id="login">
+    <img src="img/logoLogInPage.png">
+    <div id="login-stack" data-loginstack="destination">
+      <form id="login-form" data-event="selector:input,keypress,resetError;selector:.login-button,click,login">
+        <p class="login-fields">
+          <input data-loginmodel="bind:value,email" autofocus="autofocus" placeholder="Email" type="text">
+          <input data-loginmodel="bind:value,password" type="password" placeholder="Password" >
+        </p>
+        <p><label class="login-button">Login</label></p>
+        <p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p>
+        <!-- may be set a instead label -->
+        <p><label id="signup-button" name="#signup-screen" data-loginstack="show:click,name">Sign up for free</label></p>
+      </form>
+      <form id="signup-form" data-event="selector:input,keypress,resetError;selector:#signup,click,signup">
+          <p class="login-fields">
+          <input data-loginmodel="bind:value,email" placeholder="Email" type="text">
+          <input data-loginmodel="bind:value,password" type="password" placeholder="Password">
+          <input data-loginmodel="bind:value,confirm-password" type="password" placeholder="Confirm Password">
+          <input data-loginmodel="bind:value,firstname" type="text" placeholder="First name">
+          <input data-loginmodel="bind:value,lastname" type="text" placeholder="Last name">
+        </p>
+        <p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p>
+        <p><label id="signup" class="login-button">Sign up</label></p>
+        <p><label class="login-button" name="#login-screen" data-loginstack="show:click,name">Log in</label></p>
+      </form>
+      <div id="loading">Loading...</div>
+    </div>
+
+  </div>
+  <div id="wrapper">
+    <nav id="dock" data-dockcontrol="radio:a,selected,click,setCurrentWidget">
+      <a class="dock-item selected" href="#public" data-dockcontrol="init"></a>
+      <a class="dock-item" href="#library"></a>
+      <a class="dock-item" href="#brainstorm"></a>
+      <a class="dock-item" href="#connect"></a>
+      <a class="dock-item" href="#settings"></a>
+      <a class="deedee"></a>
+    </nav>
+    <div class="stack" data-dockstack="destination">
+      <div id="public">
+        <div id="public-list" class="list">
+          <div class="header blue-light">
+            <div class="option left" data-publiccontrol="toggle:.option.left,mosaic,click,mosaic"></div>
+            <span>Idea's List</span>
+            <div class="option right"></div>
+          </div>
+          <div class="overflow" data-liststack="destination" data-publiccontrol="radio:li,selected,click,selectStart">
+            <div class="tools">
+             <input class="search" type="text">
+             <button name="#list-rating" data-liststack="show:click,name">test</button>
+            </div>
+            <!-- <ul class="ideas-list" data-publicevent="listen:mouseup,selectEnd" data-publicideas="foreach" data-publiccontrol="radio:li,selected,click,selectStart">
+              <li class="list-item">
+                <div class="item-header">
+                  <div class="avatar"></div>
+                  <h2 data-publicideas="bind:innerHTML,value.doc.authornames">Taiaut</h2>
+                  <span class="date" data-publicideas="bind:date,value.doc.creation_date">jj/mm/aa</span>
+                </div>
+                <div class="item-body">
+                  <h3 data-publicideas="bind:innerHTML,value.doc.title">Idea title</h3>
+                  <p data-publicideas="bind:innerHTML,value.doc.description">This is an idea description</p>
+                </div>
+                <div class="item-footer">
+                  <a class="idea-type"></a>
+                  <a class="item-acorn"></a>
+                  <span></span>
+                </div>
+              </li>
+            </ul>-->
+
+          </div>
+        </div>
+        <div id="public-detail" class="details">
+          <div class="header blue-dark">
+            <a href="#public-2cents" class="option left"></a>
+            <span>Idea's Details</span>
+            <a href="#public-favorites" class="option right"></a>
+          </div>
+          <div class="detail-stack" data-publicstack="destination">
+            <div class="idea-edit">
+              <form class="form">
+                <p><input type="text" class="input"></p>
+                <p><textarea class="description input"></textarea></p>
+                <p><textarea class="solution input"></textarea></p>
+                <p class="submit"><label class="publish">Publish</label><label class="cancel">Cancel</label></p>
+              </form>
+            </div>
+            <div class="idea-sendmail">
+              <form class="form">
+                <p><input type="text" class="input"></p>
+                <p><input type="text" class="input"></p>
+                <p><textarea class="input"></textarea></p>
+                <!-- ce can't place div in p, p only accept inline elements-->
+                <div class="sendmail-attach">
+                  <div class="detail-header">
+                    <div class="avatar"></div>
+                    <h2 data-publicdetail="bind:innerHTML,value.doc.title">Taiaut</h2>
+                    <span class="date" data-publicdetail="bind:date, value.doc.creation_date">jj/mm/aa</span>
+                    <span class="author" data-publicdetail="bind:innerHTML,value.doc.authornames">Taiaut</span>
+                  </div>
+                  <div class="detail-body">
+                    <p data-publicdetail="bind:innerHTML,value.doc.description">In proident dolore; non aliqua, velit dolore cupidatat.</p>
+                    <p data-publicdetail="bind:innerHTML,value.doc.solution">In proident dolore; non aliqua, velit dolore cupidatat.</p>
+                  </div>
+                  <div class="detail-footer"></div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="idea-detail">
+            <div class="detail-header">
+              <div class="avatar"></div>
+              <h2 data-publicdetail="bind:innerHTML,value.doc.title">Taiaut</h2>
+              <span class="date" data-publicdetail="bind:date, value.doc.creation_date">jj/mm/aa</span>
+              <span class="author" data-publicdetail="bind:innerHTML,value.doc.authornames">Taiaut</span>
+            </div>
+            <div class="detail-body">
+              <p data-publicdetail="bind:innerHTML,value.doc.description">In proident dolore; non aliqua, velit dolore cupidatat.</p>
+            </div>
+            <div class="detail-footer"></div>
+          </div>
+          <div id="idea-twocents"></div>
+        </div>
+      </div>
+      <div id="library"><button>library</button>
+      	<div id="library-menu" class="sub-menu" data-menucontrol="radio:a,selected,click,setCurrentWidget">
+      		<ul class="menu-list">
+      			<li class="menu-item">
+      				<a class="library-item selected">My Ideas</a>
+      			</li>
+      		</ul>      		
+      	</div>
+      </div>
+      <div id="brainstorm"><button>brainstorm</button></div>
+      <div id="connect"><button>connect</button></div>
+      <div id="settings"><button>settings</button></div>
+    </div>
+  </div>
+  <script src="js/lib/require.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/lib/Emily-vince.js"></script>
+  <script src="js/lib/olives.min.js"></script>
+  <script src="js/lib/amy2.js"></script>
+  <!-- load config -->
+  <script src="js/services2/config.js"></script>
+    <script src="js/services2/utils.js"></script>
+  <script src="js/services2/map.js"></script>
+  <!-- load application -->
+  <script src="js/src2/public/lists/list-public.js"></script>
+
+  <script src="js/src2/public/detail-stack/public-edit.js"></script>
+  <script src="js/src2/public/detail-stack/public-sendmail.js"></script>
+  <script src="js/src2/public/twocents/twocents.js"></script>
+  <script src="js/src2/public/idea-detail.js"></script>
+  <script src="js/src2/public/public.js"></script>
+
+  <script src="js/src2/brainstorm/brainstorm.js"></script>
+
+  <script src="js/src2/library/library.js"></script>
+
+  <script src="js/src2/connect/connect.js"></script>
+
+  <script src="js/src2/settings/settings.js"></script>
+
+  <script src="js/src2/dock.js"></script>
+
+  <script src="js/src2/login.js"></script>
+  <script src="js/src2/body.js"></script>
+</body>
+
+</html>

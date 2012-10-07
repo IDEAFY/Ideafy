@@ -24,7 +24,7 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			this.selectStart = function(event){
 				//_detail.reset(_ideas.get(event.target.getAttribute("data-publicideas_id")));
 				//please don't do that
-				_detail.reset(_stack.getStack().getCurrentScreen().getModel().get(event.target.getAttribute("data-listideas_id")));
+				_detail.reset(_stack.getStack().getCurrentScreen().getModel().get(event.target.getAttribute("data-listideas_id")).doc);
 			};
 
 			this.selectEnd = function(event){
@@ -34,11 +34,27 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			this.mosaic = function(){
 				_dom.classList.toggle("mosaic");
 			};
+			
+			this.search = function(event, node){
+			        if (event.keyCode === 13){
+			             if (node.value === ""){
+			                     _stack.getStack().show("#list-date");
+			             }
+			             else{
+			                     listSearch.resetQuery({q: node.value,sort: '\\creation_date<date>', include_docs: true});
+			                     _stack.getStack().show("#list-search");
+			             }
+			        }
+			};
 
 			//may be set the list dom (not the public dom)
 			_widget.alive(_dom);
-			_stack.getStack().add("#list-date", new List("ideafy", "library", "_view/publicideas"));
-			_stack.getStack().add("#list-rating", new List("ideafy", "ideas", "_view/ideasbyvotes"));
+			var listDate = new List("ideafy", "library", "_view/publicideas"),
+			    listRating = new List("ideafy", "ideas", "_view/ideasbyvotes"),
+			    listSearch = new List("_fti/local/ideafy", "indexedideas", "publicbyname", {sort: '\\creation_date<date>', include_docs: true});
+			_stack.getStack().add("#list-date", listDate);
+			_stack.getStack().add("#list-rating", listRating);
+			_stack.getStack().add("#list-search", listSearch);
 			_stack.getStack().show("#list-date");
 
 			/*then(function(){

@@ -26,8 +26,9 @@ define("Ideafy/Public/Idea-detail",
 
 		//public
 			_widget.reset = function(model){
+			        console.log(model);
 				_store.reset(model);
-				_twocents.reset(model.id);
+				_twocents.reset(model._id);
 			};
 
 		//return

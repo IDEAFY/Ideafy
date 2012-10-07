@@ -21,12 +21,12 @@ define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore",
 									"<li class='list-item'>" +
 									"<div class='item-header'>" +
                   						"<div class='avatar'></div>" + 
-                  						"<h2 data-listideas='bind:innerHTML,value.doc.authornames'>Taiaut</h2>" + 
-                  						"<span class='date' data-listideas='bind:date,value.doc.creation_date'>jj/mm/aa</span>" +
+                  						"<h2 data-listideas='bind:innerHTML,doc.authornames'>Taiaut</h2>" + 
+                  						"<span class='date' data-listideas='bind:date,doc.creation_date'>jj/mm/aa</span>" +
                 					"</div>" + 
                 					"<div class='item-body'>" + 
-                  						"<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + 
-                  						"<p data-listideas='bind:innerHTML,value.doc.description'>This is an idea description</p>" +
+                  						"<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + 
+                  						"<p data-listideas='bind:innerHTML,doc.description'>This is an idea description</p>" +
                 					"</div>" + 
                 					"<div class='item-footer'>" +
                   						"<a class='idea-type'></a>" + 
@@ -50,6 +50,14 @@ define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore",
 
 			this.getModel = function(){
 				return _store;
+			};
+			
+			this.resetQuery = function(query){
+			     _options.query = query;
+			     
+			     _store.unsync();
+			     _store.reset([]);
+			     _store.sync(_options.db, _options.design, _options.view, _options.query);             
 			};
                         
                         // set default query parameters

@@ -271,12 +271,16 @@ html, body {
 
 .menu-item{
     display: inline-block;
+    width:230px;
+}
+
+.menu-item a{
     font-family: Pacifico;
-    color: white;
-    width: 200px;
-    padding-left: 30px;
+    padding-left: 40px;
     height: 36px;
     line-height: 36px;
+    color: white;
+    text-decoration: none; 
 }
 
 .menu-list .menu-item:nth-child(n+2) {
@@ -284,7 +288,9 @@ html, body {
 }
 
 #library-menu{
+    position: absolute;
     top: 141px;
+    height: 110px;
     margin-top: -55px;   
 }
 

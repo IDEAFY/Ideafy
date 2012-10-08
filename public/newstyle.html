@@ -14,27 +14,27 @@
     <div id="login-stack" data-loginstack="destination">
       <form id="login-form" data-event="selector:input,keypress,resetError;selector:.login-button,click,login">
         <p class="login-fields">
-          <input data-loginmodel="bind:value,email" autofocus="autofocus" placeholder="Email" type="text">
-          <input data-loginmodel="bind:value,password" type="password" placeholder="Password" >
+          <input data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text">
+          <input data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" >
         </p>
-        <p><label class="login-button">Login</label></p>
+        <p><label class="login-button" data-label="bind: innerHTML, loginbutton"></label></p>
         <p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p>
         <!-- may be set a instead label -->
-        <p><label id="signup-button" name="#signup-screen" data-loginstack="show:click,name">Sign up for free</label></p>
+        <p><label id="signup-button" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginstack="show:click,name"></label></p>
       </form>
       <form id="signup-form" data-event="selector:input,keypress,resetError;selector:#signup,click,signup">
           <p class="login-fields">
-          <input data-loginmodel="bind:value,email" placeholder="Email" type="text">
-          <input data-loginmodel="bind:value,password" type="password" placeholder="Password">
-          <input data-loginmodel="bind:value,confirm-password" type="password" placeholder="Confirm Password">
-          <input data-loginmodel="bind:value,firstname" type="text" placeholder="First name">
-          <input data-loginmodel="bind:value,lastname" type="text" placeholder="Last name">
+          <input data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text">
+          <input data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder">
+          <input data-loginmodel="bind:value,confirm-password" type="password" data-label="bind:placeholder, repeatpasswordplaceholder">
+          <input data-loginmodel="bind:value,firstname" type="text" data-label="bind:placeholder, firstnameplaceholder">
+          <input data-loginmodel="bind:value,lastname" type="text" data-label="bind:placeholder, lastnameplaceholder">
         </p>
         <p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p>
-        <p><label id="signup" class="login-button">Sign up</label></p>
-        <p><label class="login-button" name="#login-screen" data-loginstack="show:click,name">Log in</label></p>
+        <p><label id="signup" class="login-button" data-label="bind:innerHTML, signupbutton"></label></p>
+        <p><label class="login-button" name="#login-screen" data-loginstack="show:click,name" data-label="bind:innerHTML, loginbutton"></label></p>
       </form>
-      <div id="loading">Loading...</div>
+      <div id="loading" data-label="bind: innerHTML, loadingmessage">Loading...</div>
     </div>
 
   </div>
@@ -134,13 +134,15 @@
         </div>
       </div>
       <div id="library">
-      	<div id="library-menu" class="sub-menu" data-menucontrol="radio:a,selected,click,setCurrentWidget">
-      		<div class="left-caret"></div>
-      		<ul class="menu-list">
-      			<li class="menu-item"><a class="library-item selected">My Ideas</a></li>
-      			<li class="menu-item"><a class="library-item selected">My Ideafy Sessions</a></li>
-      			<li class="menu-item"><a class="library-item selected">My Ideafy Decks</a></li>
-      		</ul>      		
+      	<div id="library-menu">
+      		<div class="sub-menu" data-menucontrol="radio:a,selected,click,setCurrentWidget">
+      			<div class="left-caret"></div>
+      			<ul class="menu-list">
+      				<li class="menu-item"><a class="library-item" href="#library-ideas">My Ideas</a></li>
+      				<li class="menu-item"><a class="library-item" href="#library-sessions">My Ideafy Sessions</a></li>
+      				<li class="menu-item"><a class="library-item" href="#library-decks">My Ideafy Decks</a></li>
+      			</ul>      		
+      		</div>
       	</div>
       	<div id="library-list" class="list">
       		<div class="header blue-light"></div>

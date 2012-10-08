@@ -39,5 +39,6 @@
 	"cancellbl": "Cancel",
 	"publishlbl": "Publish",
 	"somethingwrong": "Something went wrong, please try again",
-	"thankyou": "Thank you"
+	"thankyou": "Thank you",
+	"loadingmessage": "Application loading, please wait..."
 }

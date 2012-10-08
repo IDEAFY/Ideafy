@@ -19,6 +19,24 @@ require(["Olives/OObject", "Olives/LocalStore" ,"Store", "Map",
 			"password" : "",
 			"error" : ""
 		}),
+		updateLabels = function(lang){
+                        var json = {"lang": lang};
+                        _transport.request("Lang", json, function(result){
+                                if (result === "nok"){
+                                        _local.set("labels", Config.get("defaultLabels"));
+                                        Config.set("language", "US"); 
+                                }
+                                else{
+                                        _local.set("labels", result);
+                                        Config.set("language", result.language);
+                                }
+                                // save labels to local storage
+                                _local.sync("ideafy-data");
+                                // apply language
+                                Config.get("labels").reset(_local.get("labels"));       
+                        });        
+                },
+                _labels = Config.get("labels"),
 		_transport = Config.get("transport"),
 		_user = Config.get("user");
 
@@ -27,6 +45,7 @@ require(["Olives/OObject", "Olives/LocalStore" ,"Store", "Map",
 		_body.plugins.addAll({
 			"event" : new Event(_body),
 			"loginmodel" : new Model(_store),
+			"label" : new Model(_labels),
 			"stack" : _stack
 		});
 		_body.alive(Map.get("body"));
@@ -34,15 +53,28 @@ require(["Olives/OObject", "Olives/LocalStore" ,"Store", "Map",
 		_stack.getStack().setCurrentScreen(_login);
 		_local.sync("ideafy-data");
 
+                // Labels: during development phase we expect to be adding many new labels, that's why localstorage is reset.
+                _local.set("labels", null);
+                
+                // check device language and set labels accordingly
+                if (!_local.get("labels")){
+                        updateLabels(navigator.language);     
+                }
+                else {
+                     // language already set
+                     Config.get("labels").reset(_local.get("labels"));
+                }
+                
 		var current = _local.get("currentLogin");
 		if(!current){
-		//display login
-		_login.setScreen("#signup-screen");
-	}else{
-		//_login.setScreen("#signup-screen");
-		_login.setScreen("#loading-screen");
-		_transport.request("CheckLogin",{"id" : current},function(result){
-			(result.authenticated) ? _body.init() : _login.setScreen("#login-screen");
+		      //display login
+		      _login.setScreen("#signup-screen");
+	        }
+	        else{
+		      //_login.setScreen("#signup-screen");
+		      _login.setScreen("#loading-screen");
+		      _transport.request("CheckLogin",{"id" : current},function(result){
+		      (result.authenticated) ? _body.init() : _login.setScreen("#login-screen");
 		});
 	}
 
@@ -51,62 +83,64 @@ require(["Olives/OObject", "Olives/LocalStore" ,"Store", "Map",
 
 //logic
 
-_body.login = function(){
-	var email = _store.get("email").toLowerCase(),
-	password = _store.get("password");
+        _body.login = function(){
+	       var email = _store.get("email").toLowerCase(),
+	           password = _store.get("password");
 
-	if(email && password){
-		_transport.request("Login", {name: email, password: password}, function (result) {
-			if (result.login === "ok"){
+	       if(email && password){
+		      _transport.request("Login", {name: email, password: password}, function (result) {
+			     if (result.login === "ok"){
 				Config.set("uid", '"'+ email +'"');
 				_local.set("currentLogin", email);
 				_local.sync("ideafy-data");
 
 				_body.init();
-			}else {
-				_store.set("error", "Invalid user name or password");
-			}     
-		});
-	}
-};
+			     }
+			     else {
+				_store.set("error", _labels.get("invalidlogin"));
+			     }     
+		      });
+	       }
+        };
 
-_body.signup = function(){
-	var email = _store.get("email"),
-		password = _store.get("password"),
-		pwdConfirm = _store.get("confirm-password"),
-		fn = _store.get("firstname"),
-		ln = _store.get("lastname"),
-		user = new CouchDBStore();
+        _body.signup = function(){
+	       var email = _store.get("email"),
+		   password = _store.get("password"),
+		   pwdConfirm = _store.get("confirm-password"),
+		   fn = _store.get("firstname"),
+		   ln = _store.get("lastname"),
+		   user = new CouchDBStore();
 
-	if (email === ""){
-		_store.set("error", "Please enter your email and address in the field above");        
-	}
-	else if (password === ""){
-		_store.set("error", "A password is required");
-	}
-	else if (pwdConfirm === ""){
-		_store.set("error", "Please confirm the password");
-	}
-	else if (fn === ""){
-		_store.set("error", "Please enter your first name");
-	}
-	else if (ln === ""){
-		_store.set("error", "Please enter your last name");
-	}
-	else {
+	       if (email === ""){
+		      _store.set("error", _labels.get("signupmissingemail"));        
+	       }
+	       else if (password === ""){
+		      _store.set("error", _labels.get("signupmissingpwd"));
+	       }
+	       else if (pwdConfirm === ""){
+		      _store.set("error", _labels.get("signupmissingpwdok"));
+	       }
+	       else if (fn === ""){
+		      _store.set("error", _labels.get("signupmissingfn"));
+	       }
+	       else if (ln === ""){
+		      _store.set("error", _labels.get("signupmissingln"));
+	       }
+	       else {
 
-    	// check if email address is valid -- in the future an activation mechanism should be envisioned to screen fake addresses
-    	var userid = email.toLowerCase(),
-    	emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+	           // check if email address is valid -- in the future an activation mechanism should be envisioned to screen fake addresses
+	           var userid = email.toLowerCase(),
+	               emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 
-    	if (!emailPattern.test(userid)){
-    		_store.set("error", "Invalid email address");        
-    	}else {
-        	// check if passwords match
-        	if (password !== pwdConfirm){
-        		_store.set("error", "Passwords do not match");        
-        	}
-        	else{
+                   if (!emailPattern.test(userid)){
+    		          _store.set("error", _labels.get("signupinvalidemail"));        
+    	           }
+    	           else {
+        	       // check if passwords match
+        	       if (password !== pwdConfirm){
+        		_store.set("error", _labels.get("signuppwdnomatch"));        
+        	       }
+        	       else{
         		_transport.request("Signup", {
         			name: userid,
         			password: password
@@ -132,10 +166,10 @@ _body.signup = function(){
                                      now.getMinutes(),
                                      now.getSeconds()
                                 ],
-                                "object": "Welcome to Ideafy",
+                                "object": _labels.get("signupwelcomeobject"),
                                 "status": "unread",
                                 "author": "IDEAFY",
-                                "body": "Thank you for trying Ideafy. We hope you'll enjoy it. We designed it so you can manage ideas that matter to you or just play around. But don't keep what you're doing to yourself."
+                                "body": _labels.get("signupwelcomebody")
                              }]);
 
                              // upload to database

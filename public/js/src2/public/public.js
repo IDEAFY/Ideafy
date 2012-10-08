@@ -51,7 +51,7 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			_widget.alive(_dom);
 			var listDate = new List("ideafy", "library", "_view/publicideas"),
 			    listRating = new List("ideafy", "ideas", "_view/ideasbyvotes"),
-			    listSearch = new List("_fti/local/ideafy", "indexedideas", "publicbyname", {sort: '\\creation_date<date>', include_docs: true});
+			    listSearch = new List("_fti/local/ideafy", "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
 			_stack.getStack().add("#list-date", listDate);
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);

@@ -1,4 +1,4 @@
-define("SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin"],
+define("Ideafy/SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin"],
         function(Widget, Model, Control){
                 
                 function SubMenuConstructor($store, $setView){
@@ -11,12 +11,11 @@ define("SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin"
                                 "menucontrol": new Control(this)
                         });
                         
-                        this.template = '<div class="sub-menu" data-menucontrol="radio:a,selected,click,getSelectedView"><div class="left-caret"></div><ul class="menu-list" data-option="foreach"><li class="menu-item"><a class="library-item selected" data-option="bind: innerHTML, label; bind: name, name, bind: setImg, selected">My Ideas</a></li></ul></div>';
+                        this.template = '<div class="sub-menu" data-menucontrol="radio:a,selected,click,getSelectedView"><div class="left-caret"></div><ul class="menu-list" data-option="foreach"><li class="menu-item"><a class="menu-dest" data-option="bind: innerHTML, label; bind: href, dest">My Ideas</a></li></ul></div>';
                         
                         this.getSelectedView = function(event){
-                                // change background image
-                                $setView(event.target.getAttribute("name"));
-                        };        
+                                $setView(event.target.getAttribute("href"));
+                        };     
                 }
                 
                 return function SubMenuFactory($store, $setView){

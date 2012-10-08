@@ -1,5 +1,5 @@
 define("Ideafy/Library/Decks", ["Olives/OObject", "Map"],
-        function(OObject, Map){
+        function(Widget, Map){
                 
            return function MyDecksContructor(){
               

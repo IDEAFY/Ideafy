@@ -1,7 +1,7 @@
 define("Ideafy/Library/Ideas", ["Olives/OObject", "Map"],
-        function(OObject, Map){
+        function(Widget, Map){
                 
-           return function MyIdeasContructor(){
+           return function MyIdeasConstructor(){
               
               // declaration     
               var _widget = new Widget();

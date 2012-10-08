@@ -3,8 +3,12 @@ define("Ideafy/SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Amy/Control-
                 
                 function SubMenuConstructor($dom, $setWidget){
 
-                        var _active = false;
-                        
+                        var _active = false,
+                            toggleActive = function (state){
+                                (state) ? $dom.setAttribute("style", "display : block;") : $dom.setAttribute("style", "display : none;");
+                                _active = state;        
+                            };
+                            
                         // setup
                         this.plugins.addAll({
                                 "label" : new Model(Config.get("labels")),
@@ -15,15 +19,14 @@ define("Ideafy/SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Amy/Control-
                                 return _active;
                         };
                         
-                        this.toggleActive = function toggleActive(state){
-                                (state) ? $dom.setAttribute("style", "display : block;") : $dom.setAttribute("style", "display : none;");
-                                _active = state;
+                        this.toggleActive = function (state){
+                                toggleActive(state);
                         };
                         
                         this.setCurrentWidget = function setCurrentWidget(event){
-                                var href = event.target.getAttribute("href");
-                                $setWidget(href);
-                                this.toggleActive(false);
+                                var ui = event.target.getAttribute("name");
+                                $setWidget(ui);
+                                setTimeout(function(){toggleActive(false);}, 500);
                         };
                         
                         this.alive($dom);     

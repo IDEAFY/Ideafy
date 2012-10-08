@@ -1,5 +1,5 @@
 define("Ideafy/Library/Sessions", ["Olives/OObject", "Map"],
-        function(OObject, Map){
+        function(Widget, Map){
                 
            return function MySessionsContructor(){
               
@@ -7,7 +7,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map"],
               var _widget = new Widget();
               
               // setup
-              _widget.alive(Map.get("ideas"));
+              _widget.alive(Map.get("sessions"));
               
               // return
               return _widget;

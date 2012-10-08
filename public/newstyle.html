@@ -59,7 +59,7 @@
           </div>
           <div class="overflow" data-liststack="destination" data-publiccontrol="radio:li,selected,click,selectStart">
             <div class="tools">
-             <input class="search" type="text" placeholder="Search public ideas" data-publicevent="listen: keypress, search">
+             <input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search">
              <button name="#list-rating" data-liststack="show:click,name">test</button>
             </div>
             <!-- <ul class="ideas-list" data-publicevent="listen:mouseup,selectEnd" data-publicideas="foreach" data-publiccontrol="radio:li,selected,click,selectStart">
@@ -140,33 +140,44 @@
       	<div id="library-menu" class="sub-menu">
       			<div class="left-caret"></div>
       			<ul class="menu-list" data-menucontrol="radio:li,selected,click,setCurrentWidget">
-      				<li class="menu-item selected" data-menucontrol="init"><a class="library-item" href="#library-ideas" data-label="bind:innerHTML, library-ideas"></a></li>
-      				<li class="menu-item"><a class="library-item" href="#library-sessions" data-label="bind:innerHTML, library-sessions"></a></li>
-      				<li class="menu-item"><a class="library-item" href="#library-decks" data-label="bind:innerHTML, library-decks"></a></li>
+      				<li class="menu-item selected" name="#ideas" data-menucontrol="init"><a class="library-item" href="#ideas" data-label="bind:innerHTML, library-ideas"></a></li>
+      				<li class="menu-item" name="#sessions"><a class="library-item" href="#sessions" data-label="bind:innerHTML, library-sessions"></a></li>
+      				<li class="menu-item" name="#decks"><a class="library-item" href="#decks" data-label="bind:innerHTML, library-decks"></a></li>
       			</ul>
       	</div>
-      	<div id = "ideas">  		
-      		<div id="library-list" class="list">
-      			<div class="header blue-light"></div>
-      		</div>
-      		<div id="library-detail" class="details">
-      			<div class="header blue-dark"></div>
-      		</div>
+      	<div class="stack" data-librarystack="destination">
+      		<div id = "ideas">  		
+    	  		<div id="idea-list" class="list">
+      				<div class="header blue-light"></div>
+      			</div>
+      			<div id="idea-detail" class="details">
+      				<div class="header blue-dark"></div>
+      			</div>
+			</div>
+			<div id = "sessions">  		
+   		   		<div id="session-list" class="list">
+   	   				<div class="header blue-light" data-labels="bind: innerHTML, library-sessions"></div>
+   	   				<div class="session-tools">
+   	   					<div class="session-sorting">
+   	   						<div id="sbytitle" class="sort-button">Session title</div>
+   	   						<div id="sbydate" class="sort-button">Date</div>
+   	   						<div id="sbyidea" class="sort-button">Idea title</div>
+   	   						<div id="sbyscore" class="sort-button">Score</div>	
+   	   					</div>
+   	   					<input class="search" type="text" placeholder="Search previous sessions" data-sessionevent="listen: keypress, search">
+   	   				</div>
+   	   				<div class="session-details"></div>
+    	  		</div>
+			</div>
+			<div id = "decks">  		
+      			<div id="deck-list" class="list">
+      				<div class="header blue-light"></div>
+      			</div>
+      			<div id="deck-detail" class="details">
+      				<div class="header blue-dark"></div>
+      			</div>
+			</div>
 		</div>
-		<div id = "sessions">  		
-      		<div id="library-list" class="list">
-      			<div class="header blue-light"></div>
-      		</div>
-		</div>
-		<div id = "decks">  		
-      		<div id="library-list" class="list">
-      			<div class="header blue-light"></div>
-      		</div>
-      		<div id="library-detail" class="details">
-      			<div class="header blue-dark"></div>
-      		</div>
-		</div>
-
       	
       </div>
       <div id="brainstorm">

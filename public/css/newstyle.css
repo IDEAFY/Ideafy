@@ -296,27 +296,27 @@ html, body {
     margin-top: -55px;   
 }
 
-.library-item[href="#library-ideas"]{
+.library-item[href="#ideas"]{
     background-image: url('../../img/libraryIdeaDisabled40.png');   
 }
 
-.library-item[href="#library-sessions"]{
+.library-item[href="#sessions"]{
     background-image: url('../../img/librarySessionDisabled40.png');
 }
 
-.library-item[href="#library-decks"]{
+.library-item[href="#decks"]{
     background-image: url('../../img/libraryDeckDisabled40.png');
 }
 
-.menu-item.selected .library-item[href="#library-ideas"]{
+.menu-item.selected .library-item[href="#ideas"]{
     background-image: url('../../img/libraryIdeaActive40.png');   
 }
 
-.menu-item.selected .library-item[href="#library-sessions"]{
+.menu-item.selected .library-item[href="#sessions"]{
     background-image: url('../../img/librarySessionActive40.png');
 }
 
-.menu-item.selected .library-item[href="#library-decks"]{
+.menu-item.selected .library-item[href="#decks"]{
     background-image: url('../../img/libraryDeckActive40.png');
 }
 
@@ -574,3 +574,23 @@ textarea.solution {
 
 
 /* LIBRARY */
+
+/*ideas*/
+/*sessions*/
+#session-list{
+    width: 870px;
+}
+
+.session-sorting{
+    padding-top: 20px 0px 15px 10px;
+    margin-left: 20px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.session-tools .search{
+    width: 400px;
+    margin: 15px 0px 15px 20px;
+}
+
+
+/*decks*/

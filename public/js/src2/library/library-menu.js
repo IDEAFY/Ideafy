@@ -11,6 +11,15 @@ define("Ideafy/Library/Menu", ["Olives/OObject", "Map", "Olives/Model-plugin", "
                         _menu.plugins.addAll({
                                 "label" : new Model(Config.get("labels"))
                         });
+                        
+                        _menu.show = function show(){
+                                _dom.setAttribute("style", "display : block;");        
+                        };
+                        
+                        _menu.hide = function hide(){
+                                _dom.setAttribute("style", "display : none;");        
+                        };
+                        
                         _menu.alive(_dom);
                         
                         // return

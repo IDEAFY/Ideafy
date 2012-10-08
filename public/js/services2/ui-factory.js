@@ -1,25 +1,26 @@
-define("Ideafy/SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin"],
-        function(Widget, Model, Control){
+define("Ideafy/SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Config"],
+        function(Widget, Model, Config){
                 
-                function SubMenuConstructor($store, $setView){
-                        
+                function SubMenuConstructor($dom){
+
+                        // setup
                         this.plugins.addAll({
-                                "option": new Model($store, {
-                                        setImg : function(selected){
-                                        }
-                                }),
-                                "menucontrol": new Control(this)
+                                "label" : new Model(Config.get("labels"))
                         });
                         
-                        this.template = '<div class="sub-menu" data-menucontrol="radio:a,selected,click,getSelectedView"><div class="left-caret"></div><ul class="menu-list" data-option="foreach"><li class="menu-item"><a class="menu-dest" data-option="bind: innerHTML, label; bind: href, dest">My Ideas</a></li></ul></div>';
+                        this.show = function show(){
+                                $dom.setAttribute("style", "display : block;");        
+                        };
                         
-                        this.getSelectedView = function(event){
-                                $setView(event.target.getAttribute("href"));
-                        };     
+                        this.hide = function hide(){
+                                $dom.setAttribute("style", "display : none;");        
+                        };
+                        
+                        this.alive($dom);     
                 }
                 
-                return function SubMenuFactory($store, $setView){
+                return function SubMenuFactory($dom){
                         SubMenuConstructor.prototype = new Widget();
-                        return new SubMenuConstructor($store, $setView);
+                        return new SubMenuConstructor($dom);
                 };     
         });

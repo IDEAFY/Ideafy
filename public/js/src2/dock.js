@@ -36,6 +36,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				_stack.getStack().add("#dashboard", new Dashboard());
 				//set current stack view
 				_stack.getStack().show("#public");
+				STACK = _stack;
 			};
 
 			this.setCurrentWidget = function(event){
@@ -43,6 +44,10 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				if(href !== _stack.getStack().getCurrentName()){
 					//we show stack widgets this way to reduce listener
 					_stack.getStack().show(href);
+				}
+				else{
+				        //display submenu
+				        _stack.getStack().getCurrentScreen().showMenu();
 				}
 				
 			};

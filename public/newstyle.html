@@ -159,14 +159,55 @@
    	   				<div class="header blue-light" data-labels="bind: innerHTML, library-sessions"></div>
    	   				<div class="session-tools">
    	   					<div class="session-sorting">
-   	   						<div id="sbytitle" class="sort-button">Session title</div>
+   	   						<div id="sbytitle" class="sort-button selectsort">Session title</div>
    	   						<div id="sbydate" class="sort-button">Date</div>
    	   						<div id="sbyidea" class="sort-button">Idea title</div>
    	   						<div id="sbyscore" class="sort-button">Score</div>	
    	   					</div>
    	   					<input class="search" type="text" placeholder="Search previous sessions" data-sessionevent="listen: keypress, search">
    	   				</div>
-   	   				<div class="session-details"></div>
+   	   				<div class="session-details">
+   	   					<ul>
+   	   						<li class="session-item">
+   	   							<table class="session-boxscore">
+   	   								<tr>	
+   	   									<td class="session-type"></td>
+   	   									<td class="session-info">
+   	   										<span class="session-title">Titre de la session</span>
+   	   										<span class="session-date">jj/mm/aaaa</span>
+   	   									</td>
+   	   									<td class="session-idea">
+   	   										<span>Idea(s) generated from session</span>
+   	   										<!-- <ul class="avatarlist">
+   	   											<li class="session-avatar">author pic or Me</li>
+   	   										</ul> -->
+   	   									</td>
+   	   									<td class="session-status">Completed</td>
+   	   									<td class="session-score">Score</td>
+   	   								</tr>
+   	   							</table>
+   	   						</li>
+   	   						<li class="session-item">
+   	   							<table>
+   	   								<tr>
+   	   									<td class="session-type"></td>
+   	   									<td class="session-info">
+   	   										<span class="session-title">Titre de la session</span>
+   	   										<span class="session-date">jj/mm/aaaa</span>
+   	   									</td>
+   	   									<td class="session-idea">
+   	   										<!-- <ul class="avatarlist">
+   	   											<li class="session-avatar">author pic or Me</li>
+   	   										</ul> -->
+   	   										<span>Idea(s) generated from session</span>
+   	   									</td>
+   	   									<td class="session-status">Completed</td>
+   	   									<td class="session-score">Score</td>
+   	   								</tr>
+   	   							</table>
+   	   						</li>
+   	   					</ul>
+   	   				</div>
     	  		</div>
 			</div>
 			<div id = "decks">  		

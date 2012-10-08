@@ -92,6 +92,7 @@ html, body {
   /* the position has to be relative to apply the shadow */
   position:relative;
   width:301px;
+  overflow-y: scroll;
   /*factorize with every box-shadow */
   -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
 
@@ -151,8 +152,6 @@ html, body {
   padding:15px;
 }
 
-
-
 .search  {
   border:0;
   outline:0;
@@ -161,7 +160,6 @@ html, body {
   width:160px;
   border-radius:5px;
   background:#F2F2F2;
-
   font-size: 12px;
   background-image: url('../img/public/search.png');
   background-size: 15px 15px;
@@ -297,27 +295,27 @@ html, body {
 }
 
 .library-item[href="#ideas"]{
-    background-image: url('../../img/libraryIdeaDisabled40.png');   
+    background-image: url('../img/libraryIdeaDisabled40.png');   
 }
 
 .library-item[href="#sessions"]{
-    background-image: url('../../img/librarySessionDisabled40.png');
+    background-image: url('../img/librarySessionDisabled40.png');
 }
 
 .library-item[href="#decks"]{
-    background-image: url('../../img/libraryDeckDisabled40.png');
+    background-image: url('../img/libraryDeckDisabled40.png');
 }
 
 .menu-item.selected .library-item[href="#ideas"]{
-    background-image: url('../../img/libraryIdeaActive40.png');   
+    background-image: url('../img/libraryIdeaActive40.png');   
 }
 
 .menu-item.selected .library-item[href="#sessions"]{
-    background-image: url('../../img/librarySessionActive40.png');
+    background-image: url('../img/librarySessionActive40.png');
 }
 
 .menu-item.selected .library-item[href="#decks"]{
-    background-image: url('../../img/libraryDeckActive40.png');
+    background-image: url('../img/libraryDeckActive40.png');
 }
 
 #connect-menu{
@@ -328,27 +326,27 @@ html, body {
 }
 
 .connect-item[href="#connect-contacts"]{
-    background-image: url('../../img/libraryIdeaDisabled40.png');   
+    background-image: url('../img/libraryIdeaDisabled40.png');   
 }
 
 .connect-item[href="#connect-messages"]{
-    background-image: url('../../img/librarySessionDisabled40.png');
+    background-image: url('../img/librarySessionDisabled40.png');
 }
 
 .connect-item[href="#connect-twocents"]{
-    background-image: url('../../img/libraryDeckDisabled40.png');
+    background-image: url('../img/libraryDeckDisabled40.png');
 }
 
 .menu-item.selected .connect-item[href="#connect-contacts"]{
-    background-image: url('../../img/libraryIdeaActive40.png');   
+    background-image: url('../img/libraryIdeaActive40.png');   
 }
 
 .menu-item.selected .connect-item[href="#connect-messages"]{
-    background-image: url('../../img/librarySessionActive40.png');
+    background-image: url('../img/librarySessionActive40.png');
 }
 
 .menu-item.selected .connect-item[href="#connect-twocents"]{
-    background-image: url('../../img/libraryDeckActive40.png');
+    background-image: url('../img/libraryDeckActive40.png');
 }
 
 #dashboard-menu{
@@ -359,27 +357,27 @@ html, body {
 }
 
 .dashboard-item[href="#dashboard-profile"]{
-    background-image: url('../../img/libraryIdeaDisabled40.png');   
+    background-image: url('../img/libraryIdeaDisabled40.png');   
 }
 
 .dashboard-item[href="#dashboard-settings"]{
-    background-image: url('../../img/librarySessionDisabled40.png');
+    background-image: url('../img/librarySessionDisabled40.png');
 }
 
 .dashboard-item[href="#dashboard-about"]{
-    background-image: url('../../img/libraryDeckDisabled40.png');
+    background-image: url('../img/libraryDeckDisabled40.png');
 }
 
 .menu-item.selected .dashboard-item[href="#dashboard-profile"]{
-    background-image: url('../../img/libraryIdeaActive40.png');   
+    background-image: url('../img/libraryIdeaActive40.png');   
 }
 
 .menu-item.selected .dashboard-item[href="#dashboard-settings"]{
-    background-image: url('../../img/librarySessionActive40.png');
+    background-image: url('../img/librarySessionActive40.png');
 }
 
 .menu-item.selected .dashboard-item[href="#dashboard-about"]{
-    background-image: url('../../img/libraryDeckActive40.png');
+    background-image: url('../img/libraryDeckActive40.png');
 }
 
 /* public */
@@ -578,12 +576,12 @@ textarea.solution {
 /*ideas*/
 /*sessions*/
 #session-list{
-    width: 870px;
+    width: 931px;
 }
 
 .session-sorting{
-    padding-top: 20px 0px 15px 10px;
     margin-left: 20px;
+    height: 65px;
     border-bottom: 1px solid #CCCCCC;
 }
 
@@ -592,5 +590,111 @@ textarea.solution {
     margin: 15px 0px 15px 20px;
 }
 
+.sort-button{
+    border-radius: 5px;
+    font-size: 14px;
+    color: #B3B3B3;
+    text-align: center;
+    border: 1px solid #E6E6E6;
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 17px;
+    margin-bottom: 15px;
+}
+
+.selectsort{
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+    background: #666666;
+}
+
+#sbytitle{
+    width: 110px;
+    margin-left: 10px;
+    border-right: none;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+#sbydate{
+    width: 70px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+#sbyidea{
+    margin-left: 25px;
+    width: 95px;
+}
+
+#sbyscore{
+    width: 85px;
+    margin-left: 465px;
+}
+
+.session-details{
+    margin-left: 15px;
+    width: 916px;
+    height: 600px;
+    
+}
+
+.session-details ul{
+    list-style: none;
+}
+
+.session-item{
+    width: 916px;
+    font-size: 14px;
+}
+
+.session-item:nth-child(odd){
+    background: #F2F2F2;
+}
+
+.session-item tr, .session-item td, .boxscore{
+    padding: 0px;
+    height: 61px;
+    text-align: center; 
+}
+
+.session-type{
+    width: 70px;
+    background: url('../img/library/sessionQuick.png') no-repeat center center;
+    background-size: 40px 40px;
+}
+
+.session-info{
+    width: 135px;
+    border-right: 1px solid #CCCCCC;
+}
+
+.session-date{
+    color:gray;
+    font-style: italic;
+    font-size: 12px;
+}
+
+.session-idea{
+    width: 415px;
+    border-right: 1px solid #CCCCCC;
+}
+
+.avatarlist{
+    text-align: right;
+}
+
+.session-item td.session-idea span{
+    text-align: left;
+}
+
+.session-status{
+    width: 145px;
+    border-right: 1px solid #CCCCCC;
+}
+
+.session-score{
+    width: 145px;
+}
 
 /*decks*/

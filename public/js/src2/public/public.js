@@ -1,15 +1,15 @@
 define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 	"Olives/Model-plugin", "Amy/Delegate-plugin", "CouchDBStore", "Map", "Config",
-	"Ideafy/Public/Idea-detail", "Ideafy/Utils", "Ideafy/Public/List", "Amy/Stack-plugin"], 
+	"Ideafy/Public/Idea-detail", "Ideafy/Utils", "Ideafy/Public/List", "Amy/Stack-plugin", "Ideafy/SubMenu"], 
 	function(Widget, Control, Model, Delegate, Store, Map, 
-		Config, Detail, Utils, List, Stack){
+		Config, Detail, Utils, List, Stack, Menu){
 		return function PublicConstructor(){
 		//declaration
 			var _widget = new Widget(),
 				_dom = Map.get("public"),
 				_radio = new Control(this),
 				_detail = new Detail(),
-
+                                _menu = new Menu(Map.get("public-menu")),
 				_stack = new Stack();
 
 		//setup
@@ -47,9 +47,20 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			             }
 			        }
 			};
-
+			
 			//may be set the list dom (not the public dom)
-			_widget.alive(_dom);
+                        _widget.alive(_dom);
+
+			// not sure we need a submenu for public but it may be useful
+			_widget.showMenu = function showMenu(){
+			        _menu.toggleActive(true);
+			};
+			_widget.hideMenu = function hideMenu(){
+			        _menu.toggleActive(false);
+			};
+			// init
+                       _menu.toggleActive(false);
+			
 			var listDate = new List("ideafy", "library", "_view/publicideas"),
 			    listRating = new List("ideafy", "ideas", "_view/ideasbyvotes"),
 			    listSearch = new List("_fti/local/ideafy", "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});

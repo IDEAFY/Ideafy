@@ -30,10 +30,15 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 			_widget.init = function(){
 			        
 				_stack.getStack().add("#public", new Public());
+				console.log("publicok");
 				_stack.getStack().add("#library", new Library());
+				console.log("libraryok");
 				_stack.getStack().add("#brainstorm", new Brainstorm());
+				console.log("brainstormok");
 				_stack.getStack().add("#connect", new Connect());
+				console.log("connectok");
 				_stack.getStack().add("#dashboard", new Dashboard());
+				console.log("dashboardok");
 				//set current stack view
 				_stack.getStack().show("#public");
 				STACK = _stack;
@@ -42,7 +47,9 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 			this.setCurrentWidget = function(event){
 				var href = event.target.getAttribute("href");
 				if(href !== _stack.getStack().getCurrentName()){
-					//we show stack widgets this way to reduce listener
+				        //hide current submenu if present
+                                        _stack.getStack().getCurrentScreen().hideMenu();
+                                        //we show stack widgets this way to reduce listener
 					_stack.getStack().show(href);
 				}
 				else{

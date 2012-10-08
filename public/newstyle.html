@@ -44,12 +44,13 @@
       <a class="dock-item" href="#library"></a>
       <a class="dock-item" href="#brainstorm"></a>
       <a class="dock-item" href="#connect"></a>
-      <a class="dock-item" href="#settings"></a>
+      <a class="dock-item" href="#dashboard"></a>
       <a class="deedee"></a>
     </nav>
     <div class="stack" data-dockstack="destination">
       
       <div id="public">
+      	<div id = "public-menu"></div>
         <div id="public-list" class="list">
           <div class="header blue-light">
             <div class="option left" data-publiccontrol="toggle:.option.left,mosaic,click,mosaic"></div>
@@ -136,22 +137,36 @@
       </div>
       
       <div id="library">
-      	<div id="library-menu">
-      		<div class="sub-menu" data-menucontrol="radio:a,selected,click,setCurrentWidget">
+      	<div id="library-menu" class="sub-menu">
       			<div class="left-caret"></div>
-      			<ul class="menu-list">
-      				<li class="menu-item"><a class="library-item" href="#library-ideas" data-label="bind:innerHTML, library-ideas"></a></li>
+      			<ul class="menu-list" data-menucontrol="radio:li,selected,click,setCurrentWidget">
+      				<li class="menu-item selected" data-menucontrol="init"><a class="library-item" href="#library-ideas" data-label="bind:innerHTML, library-ideas"></a></li>
       				<li class="menu-item"><a class="library-item" href="#library-sessions" data-label="bind:innerHTML, library-sessions"></a></li>
       				<li class="menu-item"><a class="library-item" href="#library-decks" data-label="bind:innerHTML, library-decks"></a></li>
-      			</ul>      		
+      			</ul>
+      	</div>
+      	<div id = "ideas">  		
+      		<div id="library-list" class="list">
+      			<div class="header blue-light"></div>
       		</div>
-      	</div>
-      	<div id="library-list" class="list">
-      		<div class="header blue-light"></div>
-      	</div>
-      	<div id="library-detail" class="details">
-      		<div class="header blue-dark"></div>
-      	</div>
+      		<div id="library-detail" class="details">
+      			<div class="header blue-dark"></div>
+      		</div>
+		</div>
+		<div id = "sessions">  		
+      		<div id="library-list" class="list">
+      			<div class="header blue-light"></div>
+      		</div>
+		</div>
+		<div id = "decks">  		
+      		<div id="library-list" class="list">
+      			<div class="header blue-light"></div>
+      		</div>
+      		<div id="library-detail" class="details">
+      			<div class="header blue-dark"></div>
+      		</div>
+		</div>
+
       	
       </div>
       <div id="brainstorm">
@@ -159,11 +174,29 @@
       </div>
 		
       <div id="connect">
-      	<div id="connect-menu"></div>	
+      	<div id="connect-menu">
+      		<div class="sub-menu">
+      			<div class="left-caret"></div>
+      			<ul class="menu-list" data-menucontrol="radio:li,selected,click,setCurrentWidget">
+      				<li class="menu-item selected" data-menucontrol="init"><a class="connect-item" href="#connect-contacts" data-label="bind:innerHTML, connect-contacts">Contacts</a></li>
+      				<li class="menu-item"><a class="connect-item" href="#connect-messages" data-label="bind:innerHTML, connect-messages">Messgaes</a></li>
+      				<li class="menu-item"><a class="connect-item" href="#connect-twocents" data-label="bind:innerHTML, connect-twocents">Twocents</a></li>
+      			</ul>      		
+      		</div>
+		</div>	
       </div>
       
       <div id="dashboard">
-      	<div id="dashboard-menu"></div>	
+      	<div id="dashboard-menu">
+      		<div class="sub-menu">
+      			<div class="left-caret"></div>
+      			<ul class="menu-list" data-menucontrol="radio:li,selected,click,setCurrentWidget">
+      				<li class="menu-item selected" data-menucontrol="init"><a class="dashboard-item" href="#dashboard-profile" data-label="bind:innerHTML, dashboard-profile">My Profile</a></li>
+      				<li class="menu-item"><a class="dashboard-item" href="#dashboard-settings" data-label="bind:innerHTML, dashboard-settings">Settings</a></li>
+      				<li class="menu-item"><a class="dashboard-item" href="#dashboard-about" data-label="bind:innerHTML, dashboard-about">About Ideafy</a></li>
+      			</ul>      		
+      		</div>
+      	</div>	
       </div>
     </div>
   </div>
@@ -189,6 +222,9 @@
   <script src="js/src2/brainstorm/brainstorm.js"></script>
   
   <script src="js/src2/library/library.js"></script>
+  <script src="js/src2/library/ideas/ideas.js"></script>
+  <script src="js/src2/library/sessions/sessions.js"></script>
+  <script src="js/src2/library/decks/decks.js"></script>
 
   <script src="js/src2/connect/connect.js"></script>
 

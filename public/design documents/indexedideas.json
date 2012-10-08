@@ -1,0 +1,17 @@
+{
+   "_id": "_design/indexedideas",
+   "fulltext": {
+       "publicbyname": {
+           "defaults": {
+               "store": "yes"
+           },
+           "index": "function(doc) {if (doc.type&&doc.type==6&&doc.visibility=='public'){var ret = new Document(); var date= new Date(doc.creation_date[0],doc.creation_date[1],doc.creation_date[2],doc.creation_date[3],doc.creation_date[4],doc.creation_date[5]); ret.add(doc.title); ret.add(doc.authornames); ret.add(doc.description); ret.add(doc.solution); ret.add(doc.title.toLowerCase(), {'field': 'title', 'index':'not_analyzed'}); ret.add(date, {'field': 'creation_date', 'type': 'date', 'index': 'not_analyzed'}); ret.add(doc, {'field':'value', 'index':'not_analyzed'}); return ret;}}"
+       },
+       "userbyname": {
+           "defaults": {
+               "store": "yes"
+           },
+           "index": "function(doc) {if (doc.type&&doc.type==6){var ret = new Document(); var date= new Date(doc.creation_date[0],doc.creation_date[1],doc.creation_date[2],doc.creation_date[3],doc.creation_date[4],doc.creation_date[5]); ret.add(doc.title); ret.add(doc.authors.join(), {'field': 'authors'}); if(doc.sharedwith) ret.add(doc.sharedwith.join(), {'field': 'sharedwith'}); ret.add(doc.description); ret.add(doc.solution); ret.add(doc.title.toLowerCase(), {'field': 'title', 'index':'not_analyzed'}); ret.add(date, {'field': 'creation_date', 'type': 'date', 'index': 'not_analyzed'}); return ret;}}"
+       }
+   }
+}

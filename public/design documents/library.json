@@ -1,0 +1,27 @@
+{
+   "_id": "_design/library",
+   "views": {
+       "ideas": {
+           "map": "function(doc){if (doc.type == 6) {var arr;var obj={'title': doc.title, 'creation_date':doc.creation_date, 'description':doc.description};if (doc.votes && doc.votes.length >0){arr = doc.votes.concat();var votes = arr.length;var rating = arr.reduce(function(x,y){return x+y;})/votes;} else {votes = 0;rating = 0;}; doc.authors.forEach(function (author) { emit(author, {'doc':obj, 'rating': rating, 'votes':votes}) }); doc.sharedwith && doc.sharedwith.forEach(function (sharedwith) { emit(sharedwith, {'doc':obj, 'rating': rating, 'votes':votes}) });}}"
+       },
+       "ideasbyname": {
+           "map": "function(doc){if (doc.type == 6) {var arr;var obj={'title':doc.title,'authornames':doc.authornames,'creation_date':doc.creation_date, 'description':doc.description};if (doc.votes && doc.votes.length >0){arr = doc.votes.concat();var votes = arr.length;var rating = arr.reduce(function(x,y){return x+y;})/votes;} else {votes = 0;rating = 0;}; doc.authors.forEach(function(author){emit([author, doc.title], {'doc':obj, 'rating': rating, 'votes':votes})}); doc.sharedwith && doc.sharedwith.forEach(function (sharedwith){emit([sharedwith, doc.title], {'doc':obj, 'rating': rating, 'votes':votes})});}}"
+       },
+       "publicideas": {
+           "map": "function(doc){if ((doc.type == 6) && (doc.visibility == 'public')) {var obj={'title': doc.title,'authornames':doc.authornames, 'authors': doc.authors, 'creation_date':doc.creation_date, 'description':doc.description, 'solution':doc.solution};var arr;if (doc.votes && doc.votes.length >0){arr = doc.votes.concat();var votes = arr.length;var rating = Math.round(arr.reduce(function(x,y){return x+y;})/votes*100)/100;} else {votes = 0;rating = 0;}; emit(doc._id, {'doc':obj, 'rating': rating, 'votes':votes});}}"
+       },
+       "publicideasbyname": {
+           "map": "function(doc){if ((doc.type == 6) && (doc.visibility == 'public')) {var obj={'title': doc.title, 'creation_date':doc.creation_date, 'description':doc.description};var arr;if (doc.votes && doc.votes.length >0){arr = doc.votes.concat();var votes = arr.length;var rating = arr.reduce(function(x,y){return x+y;})/votes;} else {votes = 0;rating = 0;}; emit(doc.title, {'doc':obj, 'rating': rating, 'votes':votes});}}"
+       },
+       "decks": {
+           "map": "function(doc){if (doc.type == 7) {if ((doc.custom_decks) && (doc.taiaut_decks)) {var obj = doc.custom_decks.concat(doc.taiaut_decks); for(var i in obj) emit(doc._id, obj[i]);} else if (doc.custom_decks) {for(var i in doc.custom_decks) emit(doc._id, doc.custom_decks[i]);} else {for (var i in doc.taiaut_decks) emit(doc._id, doc.taiaut_decks[i]);}}}"
+       },
+       "cards": {
+           "map": "function(doc){ if ((doc.type == 1) || (doc.type == 2) || (doc.type == 3) || (doc.type == 4)) {doc.deck.forEach(function (deck) {emit(deck, doc)});}}"
+       },
+       "sessions": {
+           "map": "function(doc) {if (doc.type == 8) { doc.participants && doc.participants.forEach(function(participants){emit(participants.id,doc)}); emit(doc.initiator.id, doc);}}"
+       }
+   },
+   "language": "javascript"
+}

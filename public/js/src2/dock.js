@@ -45,12 +45,16 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 			};
 
 			this.setCurrentWidget = function(event){
-				var href = event.target.getAttribute("href");
+				var href = event.target.getAttribute("href"), timeout= 3000;
 				if(href !== _stack.getStack().getCurrentName()){
 				        //hide current submenu if present
                                         _stack.getStack().getCurrentScreen().hideMenu();
+                                        
                                         //we show stack widgets this way to reduce listener
 					_stack.getStack().show(href);
+					//display new submenu for a short duration <3s
+					_stack.getStack().getCurrentScreen().showMenu();
+					setTimeout(function(){_stack.getStack().getCurrentScreen().hideMenu();}, timeout);
 				}
 				else{
 				        //display submenu

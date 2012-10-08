@@ -247,7 +247,9 @@ define("Amy/Stack-service", ["Store", "Olives/OObject", "Olives/DomUtils", "Tool
 
 			var _store = new Store($uis),
 			_destination = $default,
+			_currentName = "",
 			_currentScreen = null;
+			
 
 			this.setDestination = function setDestination(destination) {
 				if (DomUtils.isAcceptedType(destination)) {
@@ -283,7 +285,10 @@ define("Amy/Stack-service", ["Store", "Olives/OObject", "Olives/DomUtils", "Tool
 			this.get = function get(name) {
 				return _store.get(name);
 			};
-
+			
+			this.getCurrentName = function getCurrentName(){
+			        return _currentName;        
+			};
 
 			this.show = function show(name) {
 				var ui = this.get(name);
@@ -293,6 +298,7 @@ define("Amy/Stack-service", ["Store", "Olives/OObject", "Olives/DomUtils", "Tool
 					//empty string passe aussi
 					_currentScreen && this.hide(_currentScreen);
 					this.setCurrentScreen(ui);
+					_currentName = name;
 					return true;
 				} else {
 					return false;

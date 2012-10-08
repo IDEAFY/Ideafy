@@ -61,7 +61,9 @@ define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore",
 			};
                         
                         // set default query parameters
-                        
+                        if ($query){
+                                _options.query = $query;
+                        }
 			_store.sync(_options.db, _options.design, _options.view, _options.query);
 
 		}

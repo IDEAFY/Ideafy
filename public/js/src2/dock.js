@@ -1,7 +1,7 @@
 define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
-	"Ideafy/Public", "Ideafy/Library", "Ideafy/Brainstorm", "Ideafy/Connect", "Ideafy/Settings",
+	"Ideafy/Public", "Ideafy/Library", "Ideafy/Brainstorm", "Ideafy/Connect", "Ideafy/Dashboard",
 	"Map"], 
-	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Settings, Map){
+	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map){
 		return function DockConstructor(){
 
 		//declaration
@@ -15,7 +15,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 					"#library" : new Library(),
 					"#brainstorm" : new Brainstorm(),
 					"#connect" : new Connect(),
-					"#settings" : new Settings()
+					"#dashboard" : new Dashboard()
 				});*/
 
 		//setup
@@ -28,13 +28,15 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 
 		//logic
 			_widget.init = function(){
+			        
 				_stack.getStack().add("#public", new Public());
 				_stack.getStack().add("#library", new Library());
 				_stack.getStack().add("#brainstorm", new Brainstorm());
 				_stack.getStack().add("#connect", new Connect());
-				_stack.getStack().add("#settings", new Settings());
+				_stack.getStack().add("#dashboard", new Dashboard());
 				//set current stack view
 				_stack.getStack().show("#public");
+				STACK = _stack;
 			};
 
 			this.setCurrentWidget = function(event){

@@ -40,5 +40,8 @@
 	"publishlbl": "Publish",
 	"somethingwrong": "Something went wrong, please try again",
 	"thankyou": "Thank you",
-	"loadingmessage": "Application loading, please wait..."
+	"loadingmessage": "Application loading, please wait...",
+	"library-ideas": "My Ideas",
+	"library-sessions": "My Ideafy Sessions",
+	"library-decks": "My Ideafy decks"
 }

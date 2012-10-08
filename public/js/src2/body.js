@@ -74,14 +74,13 @@ require(["Olives/OObject", "Olives/LocalStore" ,"Store", "Map",
 		      //_login.setScreen("#signup-screen");
 		      _login.setScreen("#loading-screen");
 		      _transport.request("CheckLogin",{"id" : current},function(result){
-		      (result.authenticated) ? _body.init() : _login.setScreen("#login-screen");
-		});
-	}
+		              (result.authenticated) ? _body.init() : _login.setScreen("#login-screen");
+		      });
+	       }
 
-	_stack.getStack().add("#dock", _dock);
+	       _stack.getStack().add("#dock", _dock);
 
-
-//logic
+        //logic
 
         _body.login = function(){
 	       var email = _store.get("email").toLowerCase(),

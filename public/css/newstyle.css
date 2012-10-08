@@ -113,7 +113,7 @@ html, body {
   -webkit-box-shadow:inset 0 0 5px 1px rgba(0,0,0,0.3);
 }
 
-.list-item.selected, .list-item.selected .date, .list-item.selected p{
+.list-item.selected, .list-item.selected .date, .list-item.selected p, .menu-item.selected{
   color:white;
 }
 
@@ -276,11 +276,14 @@ html, body {
 
 .menu-item a{
     font-family: Pacifico;
-    padding-left: 40px;
+    padding-left: 45px;
     height: 36px;
     line-height: 36px;
-    color: white;
-    text-decoration: none; 
+    color: #808080;
+    text-decoration: none;
+    background-repeat: no-repeat;
+    background-position: 10px 3px;
+    background-size: 25px 25px;
 }
 
 .menu-list .menu-item:nth-child(n+2) {
@@ -296,6 +299,18 @@ html, body {
 
 #library-menu .left-caret{
     margin-top: 40px;
+}
+
+.library-item[href="#library-ideas"]{
+    background-image: url('../../img/libraryIdeaDisabled25.png');   
+}
+
+.library-item[href="#library-sessions"]{
+    background-image: url('../../img/librarySessionDisabled25.png');
+}
+
+.library-item[href="#library-decks"]{
+    background-image: url('../../img/libraryDeckDisabled25.png');
 }
 
 /* public */

@@ -12,8 +12,12 @@ define("Map", ["Store"], function(Store){
 			"public-edit" : document.querySelector("#public-detail .idea-edit"),
 			"public-sendmail" : document.querySelector("#public-detail .idea-sendmail"),
 		"brainstorm" : document.getElementById("brainstorm"),
+		        "brainstorm-menu": document.getElementById("brainstorm-menu"),
 		"library" : document.getElementById("library"),
+		        "library-menu": document.getElementById("library-menu"),
 		"connect" : document.getElementById("connect"),
-		"settings" : document.getElementById("settings")
+		        "connect-menu": document.getElementById("connect-menu"),
+		"dashboard" : document.getElementById("dashboard"),
+		        "dashboard-menu": document.getElementById("dashboard-menu")
 	});
 });

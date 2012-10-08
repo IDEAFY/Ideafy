@@ -48,6 +48,7 @@
       <a class="deedee"></a>
     </nav>
     <div class="stack" data-dockstack="destination">
+      
       <div id="public">
         <div id="public-list" class="list">
           <div class="header blue-light">
@@ -133,14 +134,15 @@
           <div id="idea-twocents"></div>
         </div>
       </div>
+      
       <div id="library">
       	<div id="library-menu">
       		<div class="sub-menu" data-menucontrol="radio:a,selected,click,setCurrentWidget">
       			<div class="left-caret"></div>
       			<ul class="menu-list">
-      				<li class="menu-item"><a class="library-item" href="#library-ideas">My Ideas</a></li>
-      				<li class="menu-item"><a class="library-item" href="#library-sessions">My Ideafy Sessions</a></li>
-      				<li class="menu-item"><a class="library-item" href="#library-decks">My Ideafy Decks</a></li>
+      				<li class="menu-item"><a class="library-item" href="#library-ideas" data-label="bind:innerHTML, library-ideas"></a></li>
+      				<li class="menu-item"><a class="library-item" href="#library-sessions" data-label="bind:innerHTML, library-sessions"></a></li>
+      				<li class="menu-item"><a class="library-item" href="#library-decks" data-label="bind:innerHTML, library-decks"></a></li>
       			</ul>      		
       		</div>
       	</div>
@@ -149,11 +151,20 @@
       	</div>
       	<div id="library-detail" class="details">
       		<div class="header blue-dark"></div>
-      	</div
+      	</div>
+      	
       </div>
-      <div id="brainstorm"><button>brainstorm</button></div>
-      <div id="connect"><button>connect</button></div>
-      <div id="settings"><button>settings</button></div>
+      <div id="brainstorm">
+      		<div id="brainstorm-menu"></div>
+      </div>
+		
+      <div id="connect">
+      	<div id="connect-menu"></div>	
+      </div>
+      
+      <div id="dashboard">
+      	<div id="dashboard-menu"></div>	
+      </div>
     </div>
   </div>
   <script src="js/lib/require.js"></script>
@@ -175,12 +186,18 @@
   <script src="js/src2/public/public.js"></script>
 
   <script src="js/src2/brainstorm/brainstorm.js"></script>
-
+  <script src="js/src2/brainstorm/brainstorm-menu.js"></script>
+  
   <script src="js/src2/library/library.js"></script>
+  <script src="js/src2/library/library-menu.js"></script>
 
   <script src="js/src2/connect/connect.js"></script>
+  <script src="js/src2/connect/connect-menu.js"></script>
 
-  <script src="js/src2/settings/settings.js"></script>
+
+  <script src="js/src2/dashboard/dashboard.js"></script>
+  <script src="js/src2/dashboard/dashboard-menu.js"></script>
+
 
   <script src="js/src2/dock.js"></script>
 

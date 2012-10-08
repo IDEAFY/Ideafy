@@ -41,7 +41,8 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			                     _stack.getStack().show("#list-date");
 			             }
 			             else{
-			                     listSearch.resetQuery({q: node.value,sort: '\\creation_date<date>', include_docs: true});
+			                     console.log(node.value);
+			                     listSearch.resetQuery({q: node.value, sort: '\\creation_date<date>', include_docs: true});
 			                     _stack.getStack().show("#list-search");
 			             }
 			        }
@@ -55,6 +56,7 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			_stack.getStack().add("#list-date", listDate);
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
+			// show public ideas sorted by most recent
 			_stack.getStack().show("#list-date");
 
 			/*then(function(){

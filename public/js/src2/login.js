@@ -13,9 +13,6 @@ define("Ideafy/Login", ["Olives/OObject" ,"Amy/Stack-plugin",
 			_signupForm.alive(Map.get("signup-form"));
 			_loading.alive(Map.get("loading"));
 
-			
-			_stack.getStack().setCurrentScreen(_loginForm);
-
 			_login.plugins.addAll({
 				"loginstack" : _stack,
 				"label": new Model(Config.get("labels")),
@@ -25,6 +22,8 @@ define("Ideafy/Login", ["Olives/OObject" ,"Amy/Stack-plugin",
 			_stack.getStack().add("#login-screen", _loginForm);
 			_stack.getStack().add("#signup-screen", _signupForm);
 			_stack.getStack().add("#loading-screen", _loading);
+			
+                        _stack.getStack().setCurrentScreen(_loginForm);
 
 		//logic
 			_login.setScreen = function(name){

@@ -30,7 +30,6 @@ define("Ideafy/Library", ["Olives/OObject", "Amy/Stack-plugin", "Map", "Ideafy/S
 	               // set current view
 	               _stack.getStack().show("#ideas");		
 
-		
 		//return
 			return _widget;
 		};

@@ -293,7 +293,7 @@ define("Amy/Stack-service", ["Store", "Olives/OObject", "Olives/DomUtils", "Tool
 			this.show = function show(name) {
 				var ui = this.get(name);
 
-				if (ui) {
+				if (ui && name !== _currentName) {
 					ui.place(_destination);
 					//empty string passe aussi
 					_currentScreen && this.hide(_currentScreen);

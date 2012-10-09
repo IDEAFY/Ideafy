@@ -8,6 +8,7 @@ define("Ideafy/Utils", ["Config"], function(Config){
 			return array[2] + "/" + month + "/" + array[0];
 		},
 
+
 		/* 
 			 * A function to display an abtract in a list, stopping at the end of the first sentence or truncating it if it
 			 * goes beyond 140 characters

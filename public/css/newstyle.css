@@ -11,7 +11,7 @@ html, body, ul {
 html, body {
   font-family:Helvetica;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  background:black url('../img/bg.png');
+  background:rgba(0,0,0,0.65) url('../img/bg.png') repeat;
   width:1024px;
   height:768px;
 }
@@ -698,3 +698,29 @@ textarea.solution {
 }
 
 /*decks*/
+
+
+/*BRAINSTORM*/
+
+#brainstorm{
+    float: left;
+    height: 768px;
+    background:#F2F2F2 url('../img/bg.png') no-repeat center center;
+}
+
+#brainstorm, .brainstorm-header{
+    width: 931px;
+}
+
+.brainstorm-header .date{
+    float: left;
+    margin-left: 15px;
+}
+
+.brainstorm-header .clock{
+    float: right;
+    margin-right: 15px;
+    padding-left: 26px;
+    background: url('../img/brainstorm/bell14x16.png') no-repeat left 8px;
+    background-size: 14px 16px;
+}

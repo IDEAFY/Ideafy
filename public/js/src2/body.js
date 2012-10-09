@@ -48,9 +48,12 @@ require(["Olives/OObject", "Olives/LocalStore" ,"Store", "Map",
 			"label" : new Model(_labels),
 			"stack" : _stack
 		});
+		
 		_body.alive(Map.get("body"));
 		_login = new Login();
+		_login.setScreen("#loading-screen");
 		_stack.getStack().setCurrentScreen(_login);
+		
 		_local.sync("ideafy-data");
 
                 // Labels: during development phase we expect to be adding many new labels, that's why localstorage is reset.
@@ -74,6 +77,7 @@ require(["Olives/OObject", "Olives/LocalStore" ,"Store", "Map",
 		      //_login.setScreen("#signup-screen");
 		      _login.setScreen("#loading-screen");
 		      _transport.request("CheckLogin",{"id" : current},function(result){
+		              console.log("result", result);
 		              (result.authenticated) ? _body.init() : _login.setScreen("#login-screen");
 		      });
 	       }
@@ -207,14 +211,14 @@ require(["Olives/OObject", "Olives/LocalStore" ,"Store", "Map",
 
 	_body.init = function(){
  		_user.sync("ideafy", _local.get("currentLogin")).then(function(){
- 			Utils.getAvatar(user.get("_id"), user.get("picture_file"));       
+ 		        Config.set("uid", '"'+_user.get("_id")+'"');
+ 			Utils.getAvatar(_user.get("_id"), _user.get("picture_file"));
+ 			AVATARS = Config.get("avatars");
+ 			_dock.init(); 
+ 			UI = _dock;
+ 			//if everything is downloaded
+                        _stack.getStack().show("#dock")    
  		});
- 		        
- 		test = _user;
-		_dock.init();
-
-		//if everything is downloaded
-		_stack.getStack().show("#dock");
 	};
 
 });

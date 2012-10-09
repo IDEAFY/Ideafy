@@ -1,4 +1,4 @@
-define("Ideafy/Utils", ["Config"], function(Config){
+define("Ideafy/Utils", ["Config", "Observable"], function(Config, Observable){
 	return {
 		formatDate : function(array){
 			var month = array[1] + 1;
@@ -74,49 +74,50 @@ define("Ideafy/Utils", ["Config"], function(Config){
 			},
 
 			getAvatar : function(uid, filename){
-				/*var request = new XMLHttpRequest(),
-				url = "attachments/"+filename,
-				image,
-				dlOk = new Observable();
+		              var _request = new XMLHttpRequest(),
+				  _url = "attachments/"+filename,
+				  _avatars = Config.get("avatars"),
+				  _image,
+				  _dlOk = new Observable();
 
-                // if no avatar is defined assign deedee0 by default
-                if (!filename || filename.length<2){
-                    image = "../img/userpics/deedee0.png";
-                    Config.get("avatars").set(uid, image);       
+                                // if avatar already exists in the store no need to do anything
+                                if (!_avatars.get(uid)){
+                                        // if no avatar is defined assign deedee0 by default
+                                        if (!filename || filename.length<2){
+                                                _image = "../img/avatars/deedee0.png";
+                                                _avatars.set(uid, _image);       
+                                        }
+                                        // if user is using one of the default avatars, then keep image reference as is
+                                        else if (filename.search("img/avatars")>-1){
+                                                _avatars.set(uid, filename);
+                                        }
+                                        // else check if filename is appropriate and attempt to retrieve file from server
+                                        else if (typeof filename === "string"){                                
+                                                _request.open("GET", _url);
+                                                _request.onreadystatechange = function(){
+                                                if (_request.readyState === 4){
+                                                        if (_request.status === 200){
+                                 	                      _image = _request.responseText;
+                                                        }
+                                                        else {
+                                                        // fallback in case of network error or download failure
+                                                        _image = "../img/avatars/deedee0.png";
+                                                        }
+                                                        _dlOk.notify("avatar-loaded", uid);
+                                                }
+                                                };
+                                                _request.send(null);
+                                        }
+                                        else {
+                                                // filename should be a number > 0
+                                                _image = "../img/avatars/deedee"+filename+".png";
+                                                _avatars.set(uid, _image); 
+                                        }
+
+                                        _dlOk.watch("avatar-loaded", function(uid){
+                                     	  _avatars.set(uid, _image);
+                                        });
+                                }
                 }
-                // if user is using one of the default avatars, then keep image reference as is
-                else if (filename.search("img/userpics")>-1){
-                    Config.get("avatars").set(uid, filename);
-                }
-                                 // else check if filename is appropriate and attempt to retrieve file from server
-                else if (typeof filename === "string"){                                 
-                    request.open("GET", url);
-                    request.onreadystatechange = function(){
-                        if (request.readyState === 4){
-                             if (request.status === 200){
-                                 	image = request.responseText;
-                              }
-                             else {
-                                                     // fallback in case of network error or download failure
-                                                     image = "../img/userpics/deedee0.png";
-                                                 }
-                                                 dlOk.notify("avatar-loaded", uid);
-                                             }
-                                         };
-                                         request.send(null);
-                                     }
-                                     else {
-                                         // filename should be a number > 0
-                                         image = "../img/userpics/deedee"+filename+".png";
-                                         Config.get("avatars").set(uid, image); 
-                                     }
-
-                                     dlOk.watch("avatar-loaded", function(uid){
-                                     	Config.get("avatars").set(uid, image);
-                                     	Config.get("observer").notify("avatar-loaded", uid);
-                                     });*/
-
-                                 }
-
 	};
 });

@@ -637,15 +637,13 @@ textarea.solution {
     border-top: 10px solid white;
 }
 
-
-
-
 #sbytitle{
     width: 110px;
     margin-left: 10px;
     border-right: none;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
+    
 }
 
 #sbydate{
@@ -675,9 +673,11 @@ textarea.solution {
     list-style: none;
 }
 
-.session-item{
+.session-item table{
     width: 916px;
     font-size: 14px;
+    border-spacing: 0px;
+    border: none;
 }
 
 .session-item:nth-child(odd){
@@ -708,18 +708,30 @@ textarea.solution {
 }
 
 .session-item td.session-idea{
-    width: 415px;
-    border-right: 1px solid #CCCCCC;
+    height: 61px;
     text-align: left;
-}
-
-.avatarlist{
-    text-align: right;
-}
-
-.session-idea span{
-    margin-left: 10px;
+    padding-left: 10px;
+    width: 220px;
     font-family: Pacifico;
+}
+
+.session-item .avatarlist ul{
+    text-align: right;
+    width: 186px;
+    border-right: 1px solid #CCCCCC;
+    max-height: 61px;
+}
+
+.avatarlist li{
+    float: right;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size:contain;
+    height: 40px;
+    width: 40px;
+    margin-top: 10px;
+    border-radius: 20px;
+    margin-right: 5px;
 }
 
 .session-status{

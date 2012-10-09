@@ -159,10 +159,22 @@
    	   				<div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div>
    	   				<div class="session-tools">
    	   					<div class="session-sorting">
-   	   						<div id="sbytitle" class="sort-button selectsort"><span data-label="bind: innerHTML, sbytitle"></span><div class="sort-caret sort-descending"></div></div>
-   	   						<div id="sbydate" class="sort-button"><span data-label="bind: innerHTML, sbydate"></span><div class="sort-caret sort-descending"></div></div>
-   	   						<div id="sbyidea" class="sort-button"><span data-label="bind: innerHTML, sbyidea"></span><div class="sort-caret sort-descending"></div></div>
-   	   						<div id="sbyscore" class="sort-button"><span data-label="bind: innerHTML, sbyscore"></span><div class="sort-caret sort-descending"></div></div>	
+   	   						<div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: click, sort">
+   	   							<span data-label="bind: innerHTML, sbytitle"></span>
+   	   							<div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div>
+   	   						</div>
+   	   						<div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: click, sort">
+   	   							<span data-label="bind: innerHTML, sbydate"></span>
+   	   							<div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div>
+   	   						</div>
+   	   						<div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: click, sort">
+   	   							<span data-label="bind: innerHTML, sbyidea"></span>
+   	   							<div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div>
+   	   						</div>
+   	   						<div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: click, sort">
+   	   							<span data-label="bind: innerHTML, sbyscore"></span>
+   	   							<div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div>
+   	   						</div>	
    	   					</div>
    	   					<input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sessionevent="listen: keypress, search">
    	   				</div>
@@ -176,11 +188,9 @@
    	   										<span class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</span>
    	   										<span class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</span>
    	   									</td>
-   	   									<td class="session-idea">
-   	   										<span data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</span>
-   	   										<!-- <ul class="avatarlist">
-   	   											<li class="session-avatar">author pic or Me</li>
-   	   										</ul> -->
+   	   									<td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td>
+   	   									<td class="avatarlist" data-sessions="bind: setAvatars, participants">	
+   	   										<!-- insert avatar list widget here -->
    	   									</td>
    	   									<td class="session-status" data-sessions="bind:setStatus, status">completed</td>
    	   									<td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td>

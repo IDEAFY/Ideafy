@@ -156,53 +156,34 @@
 			</div>
 			<div id = "sessions">  		
    		   		<div id="session-list" class="list">
-   	   				<div class="header blue-light" data-labels="bind: innerHTML, library-sessions"></div>
+   	   				<div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div>
    	   				<div class="session-tools">
    	   					<div class="session-sorting">
-   	   						<div id="sbytitle" class="sort-button selectsort">Session title</div>
-   	   						<div id="sbydate" class="sort-button">Date</div>
-   	   						<div id="sbyidea" class="sort-button">Idea title</div>
-   	   						<div id="sbyscore" class="sort-button">Score</div>	
+   	   						<div id="sbytitle" class="sort-button selectsort"><span data-label="bind: innerHTML, sbytitle"></span><div class="sort-caret sort-descending"></div></div>
+   	   						<div id="sbydate" class="sort-button"><span data-label="bind: innerHTML, sbydate"></span><div class="sort-caret sort-descending"></div></div>
+   	   						<div id="sbyidea" class="sort-button"><span data-label="bind: innerHTML, sbyidea"></span><div class="sort-caret sort-descending"></div></div>
+   	   						<div id="sbyscore" class="sort-button"><span data-label="bind: innerHTML, sbyscore"></span><div class="sort-caret sort-descending"></div></div>	
    	   					</div>
-   	   					<input class="search" type="text" placeholder="Search previous sessions" data-sessionevent="listen: keypress, search">
+   	   					<input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sessionevent="listen: keypress, search">
    	   				</div>
    	   				<div class="session-details">
-   	   					<ul>
+   	   					<ul data-sessions="foreach">
    	   						<li class="session-item">
    	   							<table class="session-boxscore">
    	   								<tr>	
    	   									<td class="session-type"></td>
    	   									<td class="session-info">
-   	   										<span class="session-title">Titre de la session</span>
-   	   										<span class="session-date">jj/mm/aaaa</span>
+   	   										<span class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</span>
+   	   										<span class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</span>
    	   									</td>
    	   									<td class="session-idea">
-   	   										<span>Idea(s) generated from session</span>
+   	   										<span data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</span>
    	   										<!-- <ul class="avatarlist">
    	   											<li class="session-avatar">author pic or Me</li>
    	   										</ul> -->
    	   									</td>
-   	   									<td class="session-status">Completed</td>
-   	   									<td class="session-score">Score</td>
-   	   								</tr>
-   	   							</table>
-   	   						</li>
-   	   						<li class="session-item">
-   	   							<table>
-   	   								<tr>
-   	   									<td class="session-type"></td>
-   	   									<td class="session-info">
-   	   										<span class="session-title">Titre de la session</span>
-   	   										<span class="session-date">jj/mm/aaaa</span>
-   	   									</td>
-   	   									<td class="session-idea">
-   	   										<!-- <ul class="avatarlist">
-   	   											<li class="session-avatar">author pic or Me</li>
-   	   										</ul> -->
-   	   										<span>Idea(s) generated from session</span>
-   	   									</td>
-   	   									<td class="session-status">Completed</td>
-   	   									<td class="session-score">Score</td>
+   	   									<td class="session-status" data-sessions="bind:setStatus, status">completed</td>
+   	   									<td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td>
    	   								</tr>
    	   							</table>
    	   						</li>

@@ -608,6 +608,38 @@ textarea.solution {
     background: #666666;
 }
 
+.sort-caret{
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    display: inline-block;
+    margin-top: 10px;
+    height: 0;
+    width: 0;
+    float: right;
+    margin-right: 10px;
+}
+
+.sort-ascending{
+    border-bottom: 10px solid #B3B3B3;
+    border-top: none;    
+}
+
+.sort-descending{
+    border-bottom: none;
+    border-top: 10px solid #B3B3B3;     
+}
+
+.selectsort .sort-ascending{
+    border-bottom: 10px solid white;
+}
+
+.selectsort .sort-descending{
+    border-top: 10px solid white;
+}
+
+
+
+
 #sbytitle{
     width: 110px;
     margin-left: 10px;
@@ -654,8 +686,7 @@ textarea.solution {
 
 .session-item tr, .session-item td, .boxscore{
     padding: 0px;
-    height: 61px;
-    text-align: center; 
+    height: 61px; 
 }
 
 .session-type{
@@ -667,36 +698,48 @@ textarea.solution {
 .session-info{
     width: 135px;
     border-right: 1px solid #CCCCCC;
+    text-align: left;
 }
 
 .session-date{
-    color:gray;
+    color:#808080;
     font-style: italic;
     font-size: 12px;
 }
 
-.session-idea{
+.session-item td.session-idea{
     width: 415px;
     border-right: 1px solid #CCCCCC;
+    text-align: left;
 }
 
 .avatarlist{
     text-align: right;
 }
 
-.session-item td.session-idea span{
-    text-align: left;
+.session-idea span{
+    margin-left: 10px;
+    font-family: Pacifico;
 }
 
 .session-status{
     width: 145px;
+    font-style: italic;
+    color: #F27B3D;
     border-right: 1px solid #CCCCCC;
+    text-align: center;
 }
 
 .session-score{
     width: 145px;
+    color: #666666;
+    font-family: Pacifico;
+    text-align: center;
 }
 
+.session-score .points{
+    font-size: 21px;
+}
 /*decks*/
 
 

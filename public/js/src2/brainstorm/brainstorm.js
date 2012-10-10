@@ -1,5 +1,5 @@
-define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Stack-plugin", "Olives/Model-plugin", "Config", "Store", "Ideafy/Utils"], 
-	function(Widget, Map, Menu, Stack, Model, Config, Store, Utils){
+define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Stack-plugin", "Olives/Model-plugin", "Config", "Store", "Ideafy/Utils", "Ideafy/Brainstorm/Menu"], 
+	function(Widget, Map, Menu, Stack, Model, Config, Store, Utils, IdeafyMenu){
 		return function BrainstormConstructor(){
 		//declaration
 			var _widget = new Widget(),
@@ -40,6 +40,9 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
                                var now = new Date();
                                _store.set("date", now);
                        },1000);
+                       _stack.getStack().add("menu", new IdeafyMenu());
+                       _stack.getStack().show("menu");
+                       BSTACK = _stack;
                        
 		//return
 			return _widget;

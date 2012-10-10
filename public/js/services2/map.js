@@ -14,6 +14,7 @@ define("Map", ["Store"], function(Store){
 			"public-sendmail" : document.querySelector("#public-detail .idea-sendmail"),
 		"brainstorm" : document.getElementById("brainstorm"),
 		        "brainstorm-menu": document.getElementById("brainstorm-menu"),
+		        "ideafy-menu": document.getElementById("ideafy-menu"),
 		"library" : document.getElementById("library"),
 		        "library-menu": document.getElementById("library-menu"),
 		        "ideas" : document.getElementById("ideas"),

@@ -41,7 +41,6 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				console.log("dashboardok");
 				//set current stack view
 				_stack.getStack().show("#public");
-				STACK = _stack;
 			};
 
 			this.setCurrentWidget = function(event){

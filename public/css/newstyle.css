@@ -807,15 +807,49 @@ textarea.solution {
     width: 931px;
 }
 
+.brainstorm-header .date, .brainstorm-header .clock{
+    position: absolute;
+    z-index: 200;
+    line-height: 30px;        
+}
+
 .brainstorm-header .date{
-    float: left;
-    margin-left: 15px;
+    left: 15px;
 }
 
 .brainstorm-header .clock{
-    float: right;
-    margin-right: 15px;
+    right: 15px;
+    top: 0;
     padding-left: 26px;
     background: url('../img/brainstorm/bell14x16.png') no-repeat left 8px;
     background-size: 14px 16px;
+}
+
+#ideafy-menu .brainstorm-header{
+    margin-top: -30px;
+}
+
+#ideafy-menu ul{
+    margin: 0 auto;
+    margin-top: 195px;
+    width: 212px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 5px 5px 0px rgba(23,41,48,0.4);
+    background: white;
+    font-family: Pacifico;
+    font-size: 14px;
+    color: #4D4D4D;
+    list-style: none;
+}
+
+#ideafy-menu ul>li{
+    height: 60px;
+    line-height: 60px;
+    padding-left: 60px;
+    background-size: 40px 40px;
+    background-position: 10px center;
+    background-repeat:no-repeat;
+}
+#ideafy-menu ul li:nth-child(n+2) {
+    border-top:1px solid #CCCCCC;
 }

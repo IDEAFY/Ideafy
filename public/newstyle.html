@@ -218,14 +218,19 @@
       	
       </div>
       <div id="brainstorm">
+      		<div id="brainstorm-menu"></div>
       		<div class="brainstorm-header header blue-light">
       			<div class="date" data-header="bind: setDate, date">jj/mm/aaaa</div>
       			<span class="headerTitle" data-header="bind: innerHTML, headertitle"></span>
       			<div class="clock" data-header="bind: setTime, date">hh:mm</div>
       		</div>
       		<div class="stack" data-brainstormstack="destination">
-      			<div id="brainstorm-menu"></div>
-      			
+      			<div id="ideafy-menu">
+      				<div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, brainstormchoosemode">Choose your Ideafy mode</div>					<ul class="menu" data-ideafymenu = "foreach">
+      					<li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, bg" data-ideafyevent="listen:touchstart, press; listen click, start"></li>
+      				</ul>
+      			</div>
+      				
       			<div id="quickb">
       				<div class="stack" data-quickbstack="destination"></div>
       			</div>
@@ -280,6 +285,7 @@
   <script src="js/src2/public/public.js"></script>
 
   <script src="js/src2/brainstorm/brainstorm.js"></script>
+  <script src="js/src2/brainstorm/ideafy-menu.js"></script>
   
   <script src="js/src2/library/library.js"></script>
   <script src="js/src2/library/ideas/ideas.js"></script>

@@ -5,6 +5,8 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               
               // declaration     
               var _widget = new Widget(),
+                  _actionWidget = new Widget(),
+                  _dom = Map.get("sessions"),
                   _sessions = new Store(),
                   _user = Config.get("user"),
                   _avatars = Config.get("avatars"),
@@ -84,7 +86,8 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         }
                                 }
                         }),
-                  "sortevent": new Event(this)       
+                  "sortevent": new Event(this),
+                  "sessionevent": new Event(this)      
               });
               
               this.sort = function(event, node){
@@ -147,7 +150,69 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                 }        
               };
               
-              _widget.alive(Map.get("sessions"));
+              this.displayActionBar = function(event, node){
+                      var _id = node.getAttribute("data-sessions_id");
+                      
+                      node.querySelector(".actionbar").setAttribute("style", "display: block;");
+                      
+                      // session can only be deleted if initiated by user and if there was no other participant
+                      if (_sessions.get(_id).participants.length>1 || _sessions.get(_id).participants[0] != _user.get("_id")){
+                        node.querySelector(".deletesession").setAttribute("style", "display: none;");        
+                      }
+                      else node.querySelector(".deletesession").setAttribute("style", "display: inline-block;"); 
+                      
+                      // Automatically hide bar after 3s
+                      setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
+              };
+              
+              this.hideActionBar = function(event, node){
+                node.setAttribute("style", "display: none;");        
+              };
+              
+              this.press = function(event, node){
+                       node.classList.add("pressed");        
+              };
+              
+              this.replay = function(event, node){
+                      node.classList.remove("pressed");
+                      // insert code to replay session here 
+              };
+              
+              this.deleteSession = function(event, node){
+                        var _id = node.getAttribute("data-sessions_id"), _sid;
+                        // hide action bar and remove hightlight
+                        _dom.querySelector(".actionbar[data-sessions_id='"+_id+"']").setAttribute("style", "display: none;");
+                        node.classList.remove("pressed");
+                        // remove session from display
+                        _sid = _sessions.get(_id).id;
+                        // start with _sessionData
+                        for (i=_sessionData.length-1; i>=0; i--){
+                                if (_sessionData[i].id === _sid) {
+                                        _sessionData.splice(i,1);
+                                        break;
+                                }
+                        }
+                        // same with searchData if applicable
+                        if (_currentSearch){
+                                for (i=_searchData.length-1; i>=0; i--){
+                                        if (_searchData[i].id === _sid) {
+                                                _searchData.splice(i,1);
+                                                break;
+                                        }
+                                }        
+                        }
+                        // apply current sorting method
+                        this.sortSessions(_currentSort);
+                        
+                        // remove session from CouchDB
+                        var _cdb = new CouchDBStore();
+                        _cdb.setTransport(Config.get("transport"));
+                        _cdb.sync("ideafy", _sid).then(function(){
+                                _cdb.remove();
+                        });
+              };
+              
+              _widget.alive(_dom);
               
               // init session data
               _sessionsCDB.sync("ideafy", "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){

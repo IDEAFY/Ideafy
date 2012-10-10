@@ -250,7 +250,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 					}
 
 					json = JSON.parse(changes);
-
+                                        
 					// The document is the modified document is the current one
 					if (json.id == _syncInfo.document &&
 						// And if it has a new revision
@@ -536,6 +536,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 		     * @private
 		     */
 		    removeFromDatabase: function () {
+		            console.log("HERE!", this.get("_rev"));
 		    	_transport.request(_channel, {
             		method: "DELETE",
             		path: "/" + _syncInfo.database + "/" + _syncInfo.document,

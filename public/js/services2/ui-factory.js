@@ -49,7 +49,7 @@ define("Ideafy/AvatarList", ["Olives/OObject", "Olives/Model-plugin", "Olives/Ev
                         this.plugins.addAll({
                                 "avatar" : new Model(_store, {
                                         setAvatar : function(img){
-                                                this.setAttribute("style", "background: url('"+img+"');");
+                                                this.setAttribute("style", "background: url('"+img+"') no-repeat center center;background-size:cover;");
                                         }
                                 }),
                                 "event" : new Event(this)

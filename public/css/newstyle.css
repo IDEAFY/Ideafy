@@ -688,6 +688,41 @@ textarea.solution {
     border: none;
 }
 
+.session-item .actionbar{
+    display: none;
+    width: 916px;
+    height: 61px;
+    text-align: center;
+    background-image: -webkit-gradient(linear,center bottom,center top,from(#292929) ,to(#404040));
+    background-image: -webkit-linear-gradient(bottom,#292929,#404040);
+    -webkit-box-shadow: 0 1px 0 white, inset 0 0 5px 1px rgba(0,0,0,0.8);
+}
+
+.actionbar .replaysession, .actionbar .deletesession{
+    display: inline-block;
+    width: 70px;
+    height: 61px;
+    background-size: 40px 40px;
+}
+
+.actionbar .replaysession{
+    background: url('../img/library/25goToSession.png') no-repeat center center;    
+}
+
+.actionbar .deletesession{
+    background: url('../img/library/25delete.png') no-repeat center center;    
+}
+
+/* -- removed - doesn't look good as outline shows
+.replaysession.active{
+    background: url('../img/library/25goToSessionActive.png') no-repeat center center;     
+}
+
+.deletesession.active{
+    background: url('../img/library/25deleteActive.png') no-repeat center center;     
+}
+*/
+
 .session-item:nth-child(odd){
     background: #F2F2F2;
 }
@@ -732,9 +767,6 @@ textarea.solution {
 
 .avatarlist li{
     float: right;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size:contain;
     height: 40px;
     width: 40px;
     margin-top: 10px;

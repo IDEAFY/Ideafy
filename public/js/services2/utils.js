@@ -72,6 +72,87 @@ define("Ideafy/Utils", ["Config", "Observable"], function(Config, Observable){
 				
 				
 			},
+			sortByProperty : function sortByProperty(array, prop, descending){
+			        // need a special treatment for certain properties
+			        switch(prop){
+			             case "idea":
+			                     // sort array by ideas title (idea is an array of objects [{"title": "..", ..}, {"title": "..", ..}])
+			                     array.sort(function(x,y){
+			                             var _x = x[prop], _y = y[prop],
+			                                 a,b;  // variables used for actual comparison
+			                             if (descending){    
+			                                     if (!_x || !(_x instanceof Array) || !_x.length) a=""
+			                                     else {
+			                                             // sort _x array by title
+			                                             sortByProperty(_x, "title", true);
+			                                             // use the first idea title for comparison
+			                                             a = _x[0].title;
+			                                     }
+			                                     
+			                                     if (!_y || !(_y instanceof Array) || !_y.length) b=""
+                                                             else {
+                                                                     sortByProperty(_y, "title", true);
+                                                                     b = _y[0].title;
+                                                             }    
+                                                             if (a<b) return 1;
+                                                             if (a>b) return -1;
+                                                             return 0;
+                                                        }
+                                                        else{
+                                                             if (!_x || !(_x instanceof Array) || !_x.length) a=""
+                                                             else {
+                                                                     // sort _x array by title
+                                                                     sortByProperty(_x, "title", false);
+                                                                     // concatenate all idea titles into a string
+                                                                     a = _x[0].title;
+                                                             }
+                                                             
+                                                             if (!_y || !(_y instanceof Array) || !_y.length) b=""
+                                                             else {
+                                                                     sortByProperty(_y, "title", false);
+                                                                     b = _y[0].title;
+                                                             }    
+                                                             if (a<b) return -1;
+                                                             if (a>b) return 1;
+                                                             return 0;        
+                                                        }
+                                                });
+			                     break;
+			             default:
+			                     array.sort(function(x, y){
+			                        var _x = x[prop], _y=y[prop];
+			                        // should work even if the property is not defined or null for one of the array elements
+			                        if (typeof _x == "string" || typeof _y == "string")   {
+                                                        if (_x) _x=_x.toLowerCase();
+                                                        if(_y) _y=_y.toLowerCase();
+                                                        if (descending){    
+                                                                if (_x<_y) return 1;
+                                                                if (_x>_y) return -1;
+                                                                return 0;
+                                                        }
+                                                        else{
+                                                                if (_x<_y) return -1;
+                                                                if (_x>_y) return 1;
+                                                                return 0;        
+                                                        }  
+                                                }			             
+			                        else{
+                                                        if (descending){    
+                                                                if (_x<_y) return 1;
+                                                                if (_x>_y) return -1;
+                                                                return 0;
+                                                        }
+                                                        else{
+                                                                if (_x<_y) return -1;
+                                                                if (_x>_y) return 1;
+                                                                return 0;        
+                                                        }         
+                                                }
+			                     });
+			                     break;
+			     }
+			        
+			},
 
 			getAvatar : function(uid, filename){
 		              var _request = new XMLHttpRequest(),

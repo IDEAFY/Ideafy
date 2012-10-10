@@ -100,7 +100,23 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               };
               
               this.sortSessions = function sortSessions(mode){
-                        console.log(_sortStatus.toJSON());        
+                        console.log(_sortStatus.toJSON());
+                        // sorting functions
+                        switch(mode){
+                                case "sbytitle":
+                                                Utils.sortByProperty(_sessionData, "title", _sortStatus.get("sbytitle").descending);
+                                        break;
+                                case "sbydate":
+                                                Utils.sortByProperty(_sessionData, "date", _sortStatus.get("sbydate").descending);
+                                        break;
+                                case "sbyidea":
+                                                Utils.sortByProperty(_sessionData, "idea", _sortStatus.get("sbyidea").descending);
+                                        break;
+                                case "sbyscore":
+                                                Utils.sortByProperty(_sessionData, "score", _sortStatus.get("sbyscore").descending);
+                                        break;
+                        }
+                        _sessions.reset(_sessionData);        
               };
               
               _widget.alive(Map.get("sessions"));
@@ -127,10 +143,16 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                                 item.participants.push(v.value.participants[i].id);
                                                 item.avatars.push(v.value.participants[i].picture_file);        
                                         }
+                                        // if there are multiple ideas in a session, sort them by title
+                                        if (item.idea && item.idea.length>1){
+                                                console.log("before", item.idea);
+                                                Utils.sortByProperty(item.idea, "title", false);
+                                                console.log("after", item.idea);
+                                        }
                                         _sessionData.push(item);
                                 });
                                 _sessions.reset(_sessionData);
-                                console.log(_sessionData);
+                                DATA = _sessionData;
               });
               
               // return

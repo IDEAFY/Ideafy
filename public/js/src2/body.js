@@ -77,7 +77,6 @@ require(["Olives/OObject", "Olives/LocalStore" ,"Store", "Map",
 		      //_login.setScreen("#signup-screen");
 		      _login.setScreen("#loading-screen");
 		      _transport.request("CheckLogin",{"id" : current},function(result){
-		              console.log("result", result);
 		              (result.authenticated) ? _body.init() : _login.setScreen("#login-screen");
 		      });
 	       }
@@ -213,7 +212,6 @@ require(["Olives/OObject", "Olives/LocalStore" ,"Store", "Map",
  		_user.sync("ideafy", _local.get("currentLogin")).then(function(){
  		        Config.set("uid", '"'+_user.get("_id")+'"');
  			Utils.getAvatar(_user.get("_id"), _user.get("picture_file"));
- 			AVATARS = Config.get("avatars");
  			_dock.init(); 
  			UI = _dock;
  			//if everything is downloaded

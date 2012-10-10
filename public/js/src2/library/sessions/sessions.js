@@ -17,6 +17,8 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                           }),
                   _currentSort = "sbydate",
                   _sessionData = [],
+                  _searchData = [],
+                  _currentSearch = "",
                   _sessionsCDB = new CouchDBStore();
                   
               
@@ -42,7 +44,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         }),
                         "sessions": new Model(_sessions, {
                                 formatDate: function(date){
-                                        this.innerHTML = Utils.formatDate(date);
+                                        if (date) this.innerHTML = Utils.formatDate(date);
                                 },
                                 formatIdeas: function(array){
                                         // check if at least one idea was generated during this session
@@ -100,23 +102,49 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               };
               
               this.sortSessions = function sortSessions(mode){
-                        console.log(_sortStatus.toJSON());
-                        // sorting functions
-                        switch(mode){
-                                case "sbytitle":
-                                                Utils.sortByProperty(_sessionData, "title", _sortStatus.get("sbytitle").descending);
-                                        break;
-                                case "sbydate":
-                                                Utils.sortByProperty(_sessionData, "date", _sortStatus.get("sbydate").descending);
-                                        break;
-                                case "sbyidea":
-                                                Utils.sortByProperty(_sessionData, "idea", _sortStatus.get("sbyidea").descending);
-                                        break;
-                                case "sbyscore":
-                                                Utils.sortByProperty(_sessionData, "score", _sortStatus.get("sbyscore").descending);
-                                        break;
+                       var _scope;
+                       // scope of search (all items or search results)
+                       (_currentSearch) ? _scope = _searchData : _scope = _sessionData;
+                       
+                       if (_scope.length){ 
+                                // sorting functions
+                                switch(mode){
+                                        case "sbytitle":
+                                                Utils.sortByProperty(_scope, "title", _sortStatus.get("sbytitle").descending);
+                                                break;
+                                        case "sbydate":
+                                                Utils.sortByProperty(_scope, "date", _sortStatus.get("sbydate").descending);
+                                                break;
+                                        case "sbyidea":
+                                                Utils.sortByProperty(_scope, "idea", _sortStatus.get("sbyidea").descending);
+                                                break;
+                                        case "sbyscore":
+                                                Utils.sortByProperty(_scope, "score", _sortStatus.get("sbyscore").descending);
+                                                break;
+                                }
                         }
-                        _sessions.reset(_sessionData);        
+                        // display sorted list
+                        _sessions.reset(_scope);        
+              };
+              
+              this.search = function(event, node){     
+                var _resDiv = document.getElementById("sessionsearchresult");
+                
+                _resDiv.innerHTML ="";
+                
+                if (event.keyCode === 13){
+                        _currentSearch = node.value;
+                        if (_currentSearch === ""){
+                                // make sure list is sorted according to current sort status
+                                 this.sortSessions(_currentSort);
+                                _sessions.reset(_sessionData);
+                        }
+                        else{
+                                _searchData = Utils.searchArray(_sessionData, _currentSearch);
+                                _resDiv.innerHTML = _labels.get("foundlbl")+" "+_searchData.length+" "+_labels.get("matchingsessions");
+                                _sessions.reset(_searchData);
+                        }
+                }        
               };
               
               _widget.alive(Map.get("sessions"));
@@ -125,31 +153,32 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               _sessionsCDB.sync("ideafy", "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
                                 _sessionsCDB.loop(function(v,i){
                                         // only keep useful information to speed up sorting
-                                        var item= {
+                                        var _item= {
                                                 id:v.id,
                                                 title:v.value.title,
                                                 date:v.value.date,
                                                 idea:v.value.idea,
                                                 participants:[],
+                                                usernames:[],
                                                 avatars:[],
                                                 status:v.value.status,
                                                 score:v.value.score
                                          };
-                                         // merge initiator and participants ids
-                                        item.participants.push(v.value.initiator.id);
-                                        item.avatars.push(v.value.initiator.picture_file);
+                                         // merge initiator and participants
+                                        _item.participants.push(v.value.initiator.id);
+                                        _item.usernames.push(v.value.initiator.username);
+                                        _item.avatars.push(v.value.initiator.picture_file);
                                         
                                         for (i=0; i<v.value.participants.length; i++){
-                                                item.participants.push(v.value.participants[i].id);
-                                                item.avatars.push(v.value.participants[i].picture_file);        
+                                                _item.participants.push(v.value.participants[i].id);
+                                                _item.usernames.push(v.value.participants[i].username);
+                                                _item.avatars.push(v.value.participants[i].picture_file);        
                                         }
                                         // if there are multiple ideas in a session, sort them by title
-                                        if (item.idea && item.idea.length>1){
-                                                console.log("before", item.idea);
-                                                Utils.sortByProperty(item.idea, "title", false);
-                                                console.log("after", item.idea);
+                                        if (_item.idea && _item.idea.length>1){
+                                                Utils.sortByProperty(_item.idea, "title", false);
                                         }
-                                        _sessionData.push(item);
+                                        _sessionData.push(_item);
                                 });
                                 _sessions.reset(_sessionData);
                                 DATA = _sessionData;
@@ -158,6 +187,6 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               // return
               return _widget;
                    
-           } ;    
+           };    
                 
         });

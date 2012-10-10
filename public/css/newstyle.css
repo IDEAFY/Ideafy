@@ -587,7 +587,15 @@ textarea.solution {
 
 .session-tools .search{
     width: 400px;
-    margin: 15px 0px 15px 20px;
+    margin: 15px 0px 0px 20px;
+}
+
+
+#sessionsearchresult{
+    height: 15px;
+    margin-left: 30px;
+    font-size: 10px;
+    font-style: italic;    
 }
 
 .sort-button{

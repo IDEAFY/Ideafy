@@ -72,6 +72,24 @@ define("Ideafy/Utils", ["Config", "Observable"], function(Config, Observable){
 				
 				
 			},
+			searchArray : function searchArray(array, s){
+			     var _keywords = s.toLowerCase().split(" "),
+			         _res = [];
+			         
+			     for (i=0, l=array.length; i<l; i++){
+			             // convert array item into string
+			             var _s = JSON.stringify(array[i]).toLowerCase(), _match = 0;
+			             for (j=0; j<_keywords.length; j++){
+			                     if (_s.search(_keywords[j]) > -1) _match++;
+			                     else break;
+			             }
+			             if (_match === _keywords.length){
+			                     _res.push(array[i]);
+			             }   
+			     }
+			     return _res;
+			             
+			},
 			sortByProperty : function sortByProperty(array, prop, descending){
 			        // need a special treatment for certain properties
 			        switch(prop){

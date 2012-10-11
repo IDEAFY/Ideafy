@@ -1,9 +1,9 @@
-define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Stack-plugin", "Olives/Model-plugin", "Config", "Store", "Ideafy/Utils", "Ideafy/Brainstorm/Menu"], 
-	function(Widget, Map, Menu, Stack, Model, Config, Store, Utils, IdeafyMenu){
+define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Stack-plugin", "Olives/Model-plugin", "Config", "Store", "Ideafy/Utils", "Ideafy/Brainstorm/Menu", "Ideafy/Brainstorm/QuickB"], 
+	function(Widget, Map, Menu, Stack, Model, Config, Store, Utils, IdeafyMenu, QuickB){
 		return function BrainstormConstructor(){
 		//declaration
 			var _widget = new Widget(),
-			    _menu = new Menu(Map.get("brainstorm-menu")),
+			    _submenu = new Menu(Map.get("brainstorm-menu")),
 			    _store = new Store();
 			    _stack = new Stack();
 			
@@ -18,8 +18,11 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
 		                              }       
 		                      },
 		                      setTime: function(date){
-		                                      this.innerHTML = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-		                              
+		                                      var hrs = date.getHours(), min=date.getMinutes(), sec = date.getSeconds();
+		                                      if (hrs<10) hrs = "0"+hrs;
+		                                      if (min<10) min = "0"+min;
+		                                      if (sec<10) sec = "0"+sec;
+		                                      this.innerHTML = hrs+":"+min+":"+sec;       
 		                      } 
 		                })
 		        });
@@ -27,20 +30,43 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
                         _widget.alive(Map.get("brainstorm"));
                         
                         _widget.showMenu = function showMenu(){
-                             _menu.toggleActive(true);        
+                             _submenu.toggleActive(true);        
                         };
                         _widget.hideMenu = function hideMenu(){
-                             _menu.toggleActive(false);
+                             _submenu.toggleActive(false);
+                        };
+                        // start || continue the desired brainstorming type based on session in progress ({id:"", type:""}) parameter
+                        _widget.selectScreen = function selectScreen(name, sip){
+                                console.log(name, sip);
+                                // if ui already exists - reset and show
+                                if (_stack.getStack().get(name)){
+                                      _stack.getStack().get(name).reset(sip);
+                                      _stack.getStack().show(name);  
+                                }
+                                // else initialize UI
+                                else{
+                                        (sip) ? name = sip.type : sip = null;
+                                        switch(name){
+                                                case "quick":
+                                                        console.log("here");
+                                                        _stack.getStack().add("quick", new QuickB(sip));
+                                                        break;
+                                                default:
+                                                        name = "";
+                                                        break;                       
+                                        }
+                                        if (name) _stack.getStack().show(name);
+                                }
                         };
                 
                 // init
-                       _menu.toggleActive(false);
+                       _submenu.toggleActive(false);
                        _store.set("headertitle", Config.get("labels").get("brainstormheadertitle"));
                        setInterval(function(){
                                var now = new Date();
                                _store.set("date", now);
                        },1000);
-                       _stack.getStack().add("menu", new IdeafyMenu());
+                       _stack.getStack().add("menu", new IdeafyMenu(_widget.selectScreen));
                        _stack.getStack().show("menu");
                        BSTACK = _stack;
                        

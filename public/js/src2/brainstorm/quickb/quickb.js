@@ -6,6 +6,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                    // declaration
                    var _widget = new Widget(),
                        _stack = new Stack(),
+                       _steps = ["quickstart", "quicksetup", "quickscenario", "quicktech", "quickidea", "quickwrapup"],
                        _session = new CouchDBStore();
                        
                    
@@ -29,11 +30,13 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                    };
                    
                    _widget.prev = function prev(currentName){
-                           
+                        var id = _steps.indexOf(currentName);
+                        if (id>0) _stack.getStack().show(_steps[i-1]);             
                    };
                    
                    _widget.next = function next(currentName){
-                           
+                        var id = _steps.indexOf(currentName);
+                        if (id < _steps.length-1) _stack.getStack().show(_steps[id+1]);        
                    };
                    
                    _widget.init = function init(){

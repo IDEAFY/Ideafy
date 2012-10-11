@@ -1,5 +1,5 @@
-define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-plugin", "Config"],
-        function(Widget, Map, Model, Config){
+define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config"],
+        function(Widget, Map, Model, Event, Config){
                 
                 return function QuickTechConstructor($session, $prev, $next){
                         
@@ -9,12 +9,27 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                         
                         // Setup
                         _widget.plugins.addAll({
-                                "labels" : new Model(_labels)
+                                "labels" : new Model(_labels),
+                                "quicktechevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quicktech"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech"></div></div>';
+                        _widget.template = '<div id = "quicktech"><div class="previousbutton" data-quicktechevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech"></div></div>';
                         
                         _widget.alive(Map.get("quicktech"));
+                        
+                        _widget.press = function(event, node){
+                                node.classList.add("pressed");        
+                        };
+                        
+                        _widget.next = function(event, node){
+                                node.classList.remove("pressed");
+                                $next("quicktech");
+                        };
+                        
+                        _widget.prev = function(event, node){
+                                node.classList.remove("pressed");
+                                $prev("quicktech");
+                        };
                         
                         // Return
                         return _widget;

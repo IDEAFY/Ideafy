@@ -1005,12 +1005,46 @@ textarea.solution {
     margin-top: 20px;    
 }
 
+.whiteboard .defaultcontent{
+    display: inline-block;
+    color: #657B99;
+    font-size: 12px;
+    font-family: Helvetica;
+    width: 567px;
+    margin-left: 75px;
+    margin-top: 150px;
+}
+
+.whiteboard .defaultcontent strong{
+    color: #254066;
+}
+
+.whiteboard .doctor-deedee{
+    float: left;
+    width: 87px;
+    height: 85px;
+    background-image: url('../img/brainstorm/doctordeedee87x85.png');
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-size: contain;  
+}
+
+.whiteboard .help{
+    float: left;
+    width: 450px;
+    padding-left: 30px;
+}
+
+.whiteboard div.help>p{
+    margin-bottom: 5px;
+}
+
 .toolbox{
     margin: 0 159px;
     display: inline-block;
     height: 130px;
     width: 390px;
-    padding: 40px 0px;
+    padding: 30px 0px;
 }
 
 .toolbox-button{
@@ -1028,6 +1062,7 @@ textarea.solution {
 
 .toolbox-button legend{
     width: 100px;
+    padding: 0px;
     text-align: center;
     font-family: Pacifico;
     margin-top: 15px;
@@ -1122,7 +1157,7 @@ textarea.solution {
 
 /* quicksetup */
 
-#quicksetup .drawbutton{
+#quicksetup .drawbutton, #quicktech .drawbutton{
     display: inline-block;
     height: 107px;
     width: 107px;
@@ -1143,6 +1178,10 @@ textarea.solution {
     background: url('../img/decks/problemactive.png') no-repeat center center;
 }
 
+.drawtech{
+    background: url('../img/decks/technologyactive.png') no-repeat center center;
+}
+
 .drawchar.pushed{
     background: url('../img/decks/characters.png') no-repeat center center;
 }
@@ -1154,6 +1193,12 @@ textarea.solution {
 .drawproblem.pushed{
     background: url('../img/decks/problem.png') no-repeat center center;
 }
+
+.drawtech.pushed{
+    background: url('../img/decks/technology.png') no-repeat center center;
+}
+
+
 
 #quicksetup .next-button{
     margin-top: 20px;
@@ -1248,40 +1293,6 @@ textarea.solution {
  
 }
 
-#scenario-whiteboard .defaultcontent{
-    display: inline-block;
-    color: #657B99;
-    font-size: 12px;
-    font-family: Helvetica;
-    width: 567px;
-    margin-left: 75px;
-    margin-top: 150px;
-}
-
-#scenario-whiteboard .defaultcontent strong{
-    color: #254066;
-}
-
-#scenario-whiteboard .doctor-deedee{
-    float: left;
-    width: 87px;
-    height: 85px;
-    background-image: url('../img/brainstorm/doctordeedee87x85.png');
-    background-position: top left;
-    background-repeat: no-repeat;
-    background-size: contain;  
-}
-
-#scenario-whiteboard .help{
-    float: left;
-    width: 450px;
-    padding-left: 30px;
-}
-
-#scenario-whiteboard div.help>p{
-    margin-bottom: 5px;
-}
-
 #quickscenario .next-button{
     margin-left: 683px;
 }
@@ -1295,6 +1306,14 @@ textarea.solution {
 #quicktech .drawarea{
     float: left;
     margin-left: 142px;
+}
+
+#quicktech .drawbutton{
+    margin-left: 167px;
+}
+
+#quicktech .cards{
+    overflow-x: scroll;
 }
 
 #quicktech .next-button{

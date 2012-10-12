@@ -861,18 +861,142 @@ textarea.solution {
     background-color: #E5E5E5;
 }
 
-#quickstart .brainstorm-header, #quicksetup .brainstorm-header, #quickscenario .brainstorm-header, #quickidea .brainstorm-header, #quickwrapup .brainstorm-header{
+/* quick brainstorming */
+
+.progressbar{
+    height: 36px;
+    width: 871px;
+    background: white;
+    padding: 30px;
+    text-align: center;
+}
+
+#quicksteplist{
+    list-style: none;
+    display: inline-block;
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    -webkit-padding-start: 0px;
+    height: 34px;
+    border: 1px solid #aeb9bf;
+    border-radius: 5px;  
+}
+
+#quicksteplist .step{
+    list-style: none;
+    padding-left: 20px;
+    padding-right: 20px;
+    float: left;
+    color: #B3B3B3;
+    font-family: Helvetica;
+    font-size: 12px;
+    height: 34px;
+    border-right: 1px solid #aeb9bf;   
+}
+
+#quicksteplist .step:nth-last-child{
+    border-right: none;
+}
+
+#quicksteplist .step.pressed{
+    color: white;
+}
+
+.inactive{
+    color: #B3B3B3;
+    background: #E5E5E5;
+}
+
+#quickstart .brainstorm-header, #quicksetup .brainstorm-header, #quickscenario .brainstorm-header, #quicktech .brainstorm-header, #quickidea .brainstorm-header, #quickwrapup .brainstorm-header{
     margin-top: -36px;
     line-height: 36px;
 }
 
-#quickstart .quickstart-form, #quicksetup .drawarea{
+#quickstart .quickstart-form, #quicksetup .drawarea, #quicktech .drawarea{
     background: white;
     margin: auto;
     margin-top: 130px;
     border-radius: 10px;
     -webkit-box-shadow: 0px 10px 10px 1px rgba(23,41,48,0.4);
 }
+
+.next-button{
+    color: white;
+    width: 56px;
+    height: 26px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 26px;
+    font-weight: bold;
+    background: #94A3B8;
+    border-radius: 5px;    
+}
+
+.previousbutton{
+    position: absolute;
+    width: 130px;
+    height: 36px;
+    top: 0px;
+    margin-left: 15px;
+    z-index: 1000;
+    background: #9ac9cd;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 20px auto ;
+    background-image: url('../img/brainstorm/previousstep.png');
+}
+
+.previousbutton.pressed{
+    background-image: url('../img/brainstorm/previousactive.png');
+    -webkit-box-shadow: none;
+}
+
+.drawarea{
+    width: 441px;
+    height: 425px;
+    padding: 20px;
+}
+
+.drawok{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin-left: 58px;
+    margin-right: 58px;
+    background-size: contain;
+    background: url('../img/brainstorm/lockdraw.png') no-repeat center center;
+}
+
+.drawok.pushed{
+    background: url('../img/brainstorm/drawaccepted.png') no-repeat center center;
+}
+
+.leftarea{
+    width: 167px;
+    height: 732px;
+    float: left;
+    background: -webkit-gradient(linear,left top,right top,color-stop(0%,#ffffff),color-stop(100%,#f2f2f2));
+    background: -webkit-linear-gradient(left,#ffffff 0%,#f2f2f2 100%);
+    -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);    
+}
+
+.workarea{
+        float: left;
+    margin-left: 5px;
+    width: 719px;
+    height: 632px;
+    background: white;    
+}
+
+.whiteboard{
+    width: 717px;
+    height: 438px;
+    background: #F2F2F2;
+    border: 1px dashed #CCCCCC;
+    border-radius: 10px;    
+}
+
+/* quickstart */
 
 #quickstart .quickstart-form{
     width: 590px;
@@ -917,50 +1041,16 @@ textarea.solution {
     margin-bottom: 20px;
 }
 
-.next-button{
-    color: white;
-    width: 56px;
-    height: 26px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 26px;
-    font-weight: bold;
-    background: #94A3B8;
-    border-radius: 5px;    
-}
-
 #quickstart .next-button{
     margin-left: 534px;
 }
 
-.previousbutton{
-    position: absolute;
-    width: 130px;
-    height: 36px;
-    top: 0px;
-    margin-left: 15px;
-    z-index: 1000;
-    background: #9ac9cd;
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: 20px auto ;
-    background-image: url('../img/brainstorm/previousstep.png');
-}
-
-.previousbutton.pressed{
-    background-image: url('../img/brainstorm/previousactive.png');    
-}
-
-#quicksetup .drawarea{
-    width: 440px;
-    height: 425px;
-    padding: 20px;
-}
+/* quicksetup */
 
 #quicksetup .drawbutton{
     display: inline-block;
-    height: 106px;
-    width: 106px;
+    height: 107px;
+    width: 107px;
     background-size: contain;
     border-radius: 50px;
     margin: 20px 20px 30px 20px;
@@ -990,39 +1080,110 @@ textarea.solution {
     background: url('../img/decks/problem.png') no-repeat center center;
 }
 
-#quicksetup .card{
-    display: inline-block;
-    margin: 0px 20px 10px 20px;
-    height: 155px;
-    width: 106px;
-    -webkit-box-shadow: inset 0 0 3px 1px rgba(0,0,0,0.3);
-    border-radius: 5px;    
-}
-
-.confirm{
-    padding-left: 1px;
-    padding-right: 1px;    
-}
-
-.drawok{
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    margin-left: 58px;
-    margin-right: 58px;
-    background-size: contain;
-    background: url('../img/brainstorm/lockdraw.png') no-repeat center center;
-}
-
-.drawok.zoom{
-    -webkit-box-shadow: inset 0 0 10px 1px rgba(0,0,0,0.3);
-}
-
 #quicksetup .next-button{
     margin-top: 20px;
     margin-left: 364px;
 }
 
-.char{
-    
+/* cards, reusable */
+.card{
+    display: inline-block;
+    float: left;
+    margin: 0px 20px 10px 20px;
+    height: 155px;
+    width: 107px;
+    -webkit-box-shadow: inset 0 0 2px 1px rgba(0,0,0,0.3);
+    border-radius: 5px;
+    text-align: center;
+    background-size: 107px 155px;   
 }
+
+.card.highlighted{
+    -webkit-box-shadow: inset 0 0 10px 1px rgba(0,0,0,0.3);    
+}
+
+.card .cardpicture{
+    display: inline-block;
+    margin: 10px 10px 25px 10px;
+    width: 87px;
+    height: 87px;
+}
+
+.card .cardtitle{
+    font-size: 14px;
+    line-height: 14px;
+    font-family: Pacifico;
+    color: #808080;
+}
+
+/*default cards in case picture is missing */
+.defaultchar{
+    background: url('../img/decks/fullcards/activeCharacter.png') no-repeat;
+} 
+
+.defaultcontext{
+    background: url('../img/decks/fullcards/activeContext.png') no-repeat;
+}
+
+.defaultproblem{
+    background: url('../img/decks/fullcards/activeProblem.png') no-repeat;
+}
+
+.defaulttech{
+    background: url('../img/decks/fullcards/activeTechnology.png') no-repeat;
+}
+
+.defaultchar.highlighted{
+    background: url('../img/decks/fullcards/disableCharacter.png') no-repeat;
+} 
+
+.defaultcontext.highlighted{
+    background: url('../img/decks/fullcards/disableContext.png') no-repeat;
+}
+
+.defaultproblem.highlighted{
+    background: url('../img/decks/fullcards/disableProblem.png') no-repeat;
+}
+
+.defaulttech.highlighted{
+    background: url('../img/decks/fullcards/disableTechnology.png') no-repeat;
+}
+
+/* quickscenario */
+
+#quickscenario, #quickidea{
+    background: white;
+    width: 931px;
+    height: 768px;
+}
+
+#quickscenario-left{
+
+}
+
+#quickscenario-right{
+ 
+}
+
+#quickscenario-right .whiteboard{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+#quickscenario .next-button{
+    margin-left: 683px;
+}
+
+/* quicktech */
+
+#quicktech .drawarea{
+    float: left;
+    margin-left: 142px;
+}
+
+#quicktech .next-button{
+    margin-top: 20px;
+    margin-left: 364px;
+}
+
+/* quickidea */

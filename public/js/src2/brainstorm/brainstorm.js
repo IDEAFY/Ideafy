@@ -37,7 +37,6 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
                         };
                         // start || continue the desired brainstorming type based on session in progress ({id:"", type:""}) parameter
                         _widget.selectScreen = function selectScreen(name, sip){
-                                console.log(name, sip);
                                 // if ui already exists - reset and show
                                 if (_stack.getStack().get(name)){
                                       _stack.getStack().get(name).reset(sip);
@@ -48,7 +47,6 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
                                         (sip) ? name = sip.type : sip = null;
                                         switch(name){
                                                 case "quick":
-                                                        console.log("here");
                                                         _stack.getStack().add("quick", new QuickB(sip));
                                                         break;
                                                 default:

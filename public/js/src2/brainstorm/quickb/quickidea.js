@@ -1,7 +1,7 @@
 define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config"],
         function(Widget, Map, Model, Event, Config){
                 
-                return function QuickIdeaConstructor($session, $prev, $next){
+                return function QuickIdeaConstructor($session, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -10,10 +10,10 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         // Setup
                         _widget.plugins.addAll({
                                 "labels" : new Model(_labels),
-                                "quickidea" : new Event(_widget)
+                                "quickideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quickidea"><div class="previousbutton" data-quickideaevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickidea"></div></div>';
+                        _widget.template = '<div id = "quickidea"><div class="previousbutton" data-quickideaevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickidea" data-quickideaevent="listen:click, toggleProgress"></div><div id="quickidea-left" class="leftarea"></div><div id="quickidea-right" class="workarea"><div class="whiteboard"></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickideaevent="listen: touchstart, press; listen:click, next"></div></div></div>';
                         
                         _widget.alive(Map.get("quickidea"));
                         
@@ -29,6 +29,10 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         _widget.prev = function(event, node){
                                 node.classList.remove("pressed");
                                 $prev("quickidea");
+                        };
+                        
+                        _widget.toggleProgress = function(event, node){
+                                $progress(node);               
                         };
                         
                         // Return

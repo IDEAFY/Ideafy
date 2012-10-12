@@ -983,7 +983,8 @@ textarea.solution {
     float: left;
     background: -webkit-gradient(linear,left top,right top,color-stop(0%,#ffffff),color-stop(100%,#f2f2f2));
     background: -webkit-linear-gradient(left,#ffffff 0%,#f2f2f2 100%);
-    -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);    
+    -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+    overflow-y: scroll;   
 }
 
 .workarea{
@@ -1002,6 +1003,72 @@ textarea.solution {
     border-radius: 10px;
     margin-left: 20px;
     margin-top: 20px;    
+}
+
+.toolbox{
+    margin: 0 159px;
+    display: inline-block;
+    height: 130px;
+    width: 390px;
+    padding: 40px 0px;
+}
+
+.toolbox-button{
+    width:100px;
+    height:130px;
+    margin: 0px 15px;
+    float: left;
+}
+
+.toolbox-button div{
+    width: 100px;
+    height: 100px;
+    background-size: contain;
+}
+
+.toolbox-button legend{
+    width: 100px;
+    text-align: center;
+    font-family: Pacifico;
+    margin-top: 15px;
+    line-height: 15px;
+    color: #808080;
+}
+
+.toolbox-button .postit-button{
+    background-image: url('../img/brainstorm/postItDisable100.png');
+}
+
+.toolbox-button .importpic-button{
+    background-image: url('../img/brainstorm/importDisable100.png');
+}
+
+.toolbox-button .drawingtool-button{
+    background-image: url('../img/brainstorm/drawingDisable100.png');
+}
+
+.toolbox-button .postit-button.pushed{
+    background-image: url('../img/brainstorm/postItActive100.png');
+}
+
+.toolbox-button .importpic-button.pushed{
+    background-image: url('../img/brainstorm/importActive100.png');
+}
+
+.toolbox-button .drawingtool-button.pushed{
+    background-image: url('../img/brainstorm/drawingActive100.png');
+}
+
+.finish-button{
+    width: 145px;
+    height: 34px;
+    line-height: 34px;
+    color: white;
+    font-size: 12px;
+    background: #94A3B8;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
 }
 
 /* quickstart */
@@ -1141,6 +1208,10 @@ textarea.solution {
     background: url('../img/decks/fullcards/activeTechnology.png') no-repeat;
 }
 
+.defaultscenario{
+    background: url('../img/decks/fullcards/activeProblem.png') no-repeat;    
+}
+
 .defaultchar.highlighted{
     background: url('../img/decks/fullcards/disableCharacter.png') no-repeat;
 } 
@@ -1157,18 +1228,58 @@ textarea.solution {
     background: url('../img/decks/fullcards/disableTechnology.png') no-repeat;
 }
 
+.defaultscenario.highlighted{
+    background: url('../img/decks/fullcards/disableProblem.png') no-repeat;
+}
+
 /* quickscenario */
 
 #quickscenario-left{
+    padding-top: 93px;
+    height: 639px;
+    text-align: center;
+}
 
+#quickscenario-left .card{
+    margin: 10px 30px;
 }
 
 #quickscenario-right{
  
 }
 
-#quickscenario-right .whiteboard{
+#scenario-whiteboard .defaultcontent{
+    display: inline-block;
+    color: #657B99;
+    font-size: 12px;
+    font-family: Helvetica;
+    width: 567px;
+    margin-left: 75px;
+    margin-top: 150px;
+}
 
+#scenario-whiteboard .defaultcontent strong{
+    color: #254066;
+}
+
+#scenario-whiteboard .doctor-deedee{
+    float: left;
+    width: 87px;
+    height: 85px;
+    background-image: url('../img/brainstorm/doctordeedee87x85.png');
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-size: contain;  
+}
+
+#scenario-whiteboard .help{
+    float: left;
+    width: 450px;
+    padding-left: 30px;
+}
+
+#scenario-whiteboard div.help>p{
+    margin-bottom: 5px;
 }
 
 #quickscenario .next-button{
@@ -1176,6 +1287,10 @@ textarea.solution {
 }
 
 /* quicktech */
+
+#quicktech-left .card{
+    margin: 20px 30px 30px 30px;
+}
 
 #quicktech .drawarea{
     float: left;
@@ -1188,6 +1303,18 @@ textarea.solution {
 }
 
 /* quickidea */
+#quickidea-left ul{
+    list-style: none;
+}
+
+#quickidea-left{
+    padding-top: 15px;
+    height: 717px;
+}
+
+#quickidea-left .card{
+    margin: 10px 30px 10px 30px;
+}
 
 /* quickwrapup */
 #quickwrapup{

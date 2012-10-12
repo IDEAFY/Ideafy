@@ -13,7 +13,7 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                 "quicktechevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quicktech"><div class="previousbutton" data-quicktechevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech" data-quicktechevent="listen:click, toggleProgress"></div><div class="leftarea"></div><div class="drawarea"><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quicktechevent="listen: touchstart, press; listen:click, next"></div></div></div>';
+                        _widget.template = '<div id = "quicktech"><div class="previousbutton" data-quicktechevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech" data-quicktechevent="listen:click, toggleProgress"></div><div id="quicktech-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-quicktechevent="listen: touchstart, select; listen:click, zoom"><div class="cardpicture"></div><div class="cardtitle">Your Story</div></div></div><div class="drawarea"><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quicktechevent="listen: touchstart, press; listen:click, next"></div></div></div>';
                         
                         _widget.alive(Map.get("quicktech"));
                         
@@ -33,6 +33,14 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                         
                         _widget.toggleProgress = function(event, node){
                                 $progress(node);               
+                        };
+                        
+                        _widget.select = function(event, node){
+                                node.classList.add("highlighted");        
+                        };
+                        
+                        _widget.zoom = function(event, node){
+                                
                         };
                         
                         // Return

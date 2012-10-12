@@ -1,0 +1,131 @@
+<!-- WRAPUP -->
+<div id = "quickwrapup">
+	<div class="previousbutton" data-quickwrapupevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickwrapup" data-quickwrapupevent="listen:click, toggleProgress"></div>
+	<div class="congrats">
+		<div class="message">
+			<span class="messagetitle">Congratulations !</span><span class="sessioncompleted">You successfully completed your Ideafy session</span>
+		</div><div class="enddeedee"></div>
+	</div>
+	<div class="summary">
+		<div class="storysummary">
+			<div class="storyheader"></div><div class="storytitle"></div>
+			<div class="storycontent">
+				Scenario /n Solution description
+			</div>
+		</div>
+		<div class="ideasummary"></div>
+	</div>
+	<div class="sessionresults">
+		<div class ="sessiontime">
+			<span>Your Time</span><span>9 min 32 sec</span>
+		</div>
+		<div class="sessionscore">
+			<span>Your Score</span><span>500ip</span>
+		</div>
+	</div>
+	<div class="sessioncards">
+		<legend>
+			Cards used during this session
+		</legend>
+	</div>
+</div>
+
+<!-- SCENARIO -->
+<div id = "quickscenario">
+	<div class="previousbutton" data-quickscenarioevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickscenario" data-quickscenarioevent="listen:click, toggleProgress"></div>
+	<div id="quickscenario-left" class="leftarea">
+		<div class = "card defaultchar" name="char" data-quickscenarioevent="listen: touchstart, select; listen:click, zoom">
+			<div class="cardpicture"></div>
+			<div class="cardtitle">
+				Character
+			</div>
+		</div>
+		<div class="card defaultcontext" name="context" data-quickscenarioevent="listen: touchstart, select; listen:click, zoom">
+			<div class="cardpicture"></div>
+			<div class="cardtitle">
+				Context
+			</div>
+		</div>
+		<div class="card defaultproblem" name="problem" data-quickscenarioevent="listen: touchstart, select; listen:click, zoom">
+			<div class="cardpicture"></div>
+			<div class="cardtitle">
+				Problem
+			</div>
+		</div>
+	</div>
+	<div id="quickscenario-right" class="workarea">
+		<div id="scenario-whiteboard" class="whiteboard">
+			<div class="defaultcontent">
+				<div class="doctor-deedee"></div>
+				<div class="help">
+					<p>
+						This is your <strong>whiteboard.</strong>
+					</p>
+					<p>
+						Now is the time to show your creativity and imagination. The cards you just picked give you a scope, a set of directions to project your thoughts. Use them as hints but do not feel overly constrained: they are here to help you <strong>write your own story and describe your own use case</strong>.
+					</p>
+					<p>
+						Finding the problem to solve is often the most important step of an innovation. So get started and use the tools below to <strong>post any thought, drawing or picture that will help you focus on a story.</strong>
+					</p>
+					<br>
+					<p>
+						When you are done, clik on the button at the bottom to write up your story.
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="toolbox">
+			<div class="toolbox-button">
+				<div class="postit-button" data-quickscenarioevent="listen: touchstart, push; listen:click, post"></div>
+				<legend>
+					Post-it
+				</legend>
+			</div>
+			<div class="toolbox-button">
+				<div class="importpic-button" data-quickscenarioevent="listen: touchstart, push; listen:click, import"></div>
+				<legend>
+					Post-it
+				</legend>
+			</div>
+			<div class="toolbox-button">
+				<div class="drawingtool-button" data-quickscenarioevent="listen: touchstart, push; listen:click, draw"></div>
+				<legend>
+					Post-it
+				</legend>
+			</div>
+		</div>
+		<div class="finish-button" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:click, finish"></div> 
+		<div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:click, next"></div>
+	</div>
+</div>
+
+<!-- SETUP -->
+<div id = "quicksetup">
+	<div class="previousbutton" data-quicksetupevent="listen: touchstart, press; listen: click, prev"></div>
+	<div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicksetup"></div>
+	<div class="drawarea">
+		<div class="decks">
+			<div class="drawbutton drawchar" "name"="char" data-quicksetupevent="listen: touchstart, push; listen:click, draw"></div>
+			<div class="drawbutton drawcontext" "name"="context" data-quicksetupevent="listen: touchstart, push; listen:click, draw"></div>
+			<div class="drawbutton drawproblem" name="problem" data-quicksetupevent="listen: touchstart, push; listen:click, draw"></div>
+		</div>
+		<div class="cards">
+			<div class="card char">
+				<div class="cardpicture">
+					Picture
+				</div>
+				<div class="cardtitle">
+					Name
+				</div>
+			</div>
+			<div class="card context"></div>
+			<div class="card problem"></div>
+		</div>
+		<div class="confirm">
+			<div class="drawok" name="char"></div>
+			<div class="drawok" name="context"></div>
+			<div class="drawok" name="problem"></div>
+		</div>
+		<div class="next-button"></div>
+	</div>
+</div>

@@ -912,6 +912,12 @@ textarea.solution {
     line-height: 36px;
 }
 
+#quickscenario, #quickidea, #quickwrapup{
+    background: white;
+    width: 931px;
+    height: 768px;
+}
+
 #quickstart .quickstart-form, #quicksetup .drawarea, #quicktech .drawarea{
     background: white;
     margin: auto;
@@ -993,7 +999,9 @@ textarea.solution {
     height: 438px;
     background: #F2F2F2;
     border: 1px dashed #CCCCCC;
-    border-radius: 10px;    
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-top: 20px;    
 }
 
 /* quickstart */
@@ -1151,12 +1159,6 @@ textarea.solution {
 
 /* quickscenario */
 
-#quickscenario, #quickidea{
-    background: white;
-    width: 931px;
-    height: 768px;
-}
-
 #quickscenario-left{
 
 }
@@ -1166,8 +1168,7 @@ textarea.solution {
 }
 
 #quickscenario-right .whiteboard{
-    margin-left: 20px;
-    margin-top: 20px;
+
 }
 
 #quickscenario .next-button{
@@ -1187,3 +1188,166 @@ textarea.solution {
 }
 
 /* quickidea */
+
+/* quickwrapup */
+#quickwrapup{
+    text-align: center;
+}
+
+#quickwrapup .congrats{
+    height: 92px;
+    width: 445px; 
+    margin: 0 auto;
+    margin-top: 20px;
+    padding-left: 113px;
+}
+
+#quickwrapup .congrats .message{
+    float: left;
+    width: 330px;
+    height: 72px;
+    padding-top:15px;
+    background: #F2F2F2;
+    border: 1px dashed #CCCCCC;
+    border-radius: 5px;
+    color: #657B99;
+    font-family: Pacifico;    
+}
+
+#quickwrapup .congrats .messagetitle{
+    font-size: 18px;
+    display: block;
+}
+
+#quickwrapup .congrats .sessioncompleted{
+    display: block;
+    font-size: 14px;
+    line-height: 14px;   
+}
+
+#quickwrapup .congrats .enddeedee{
+    display: inline-block;
+    float: left;
+    margin-left: 15px;
+    width: 98px;
+    height: 92px;
+    background-image: url('../img/brainstorm/enddeedee.png');
+    background-size: contain;
+}
+
+#quickwrapup .summary{
+    width: 664px;
+    height: 430px;
+    padding-left: 8px;
+    margin: 0 auto;
+    display: inline-block;
+    margin-top: 5px;
+    background: url('../img/brainstorm/book.png');
+    background-size: contain;
+}
+
+#quickwrapup .storysummary, #quickwrapup .ideasummary{
+    width: 262px;
+    height: 385px;
+    padding: 25px 0px 20px 25px;
+    margin-left: 20px;
+    float: left;
+    text-align: left;
+}
+
+#quickwrapup .storyheader, #quickwrapup .storytitle, #quickwrapup .ideaheader, #quickwrapup .ideatitle{
+    color: white;
+    font-family: Pacifico;
+    font-size: 16px;
+    text-overflow: ellipsis;        
+}
+
+#quickwrapup .storyheader, #quickwrapup .ideaheader{
+    padding-left: 25px;
+    background-repeat: no-repeat;
+}
+
+#quickwrapup .storyheader{
+    background-image: url('../img/brainstorm/iconStory16x14.png');
+    background-position: left 10px;   
+    background-size: 16px 14px;    
+}
+
+#quickwrapup .ideaheader{
+    background-image: url('../img/brainstorm/iconIdea12x16.png');
+        background-position: left 8px;    
+}
+
+#quickwrapup .storycontent, #quickwrapup .ideacontent{
+    margin-top: 20px;
+    overflow-y: scroll;
+    max-height: 323px;
+}
+
+#quickwrapup .storycontent .summaryheader, #quickwrapup .ideacontent .summaryheader{
+    text-align: left;
+    font-family: Pacifico;
+    font-size: 14px;
+    height: 25px;
+}
+
+#quickwrapup .storycontent .content, #quickwrapup .ideacontent .content{
+    font-family: Helvetica;
+    border-top: 1px solid #CCCCCC;
+    margin-top: 5px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    font-size: 12px;
+}
+
+#quickwrapup .sessionresults{
+    width: 624px;
+    display: inline-block;
+}
+
+#quickwrapup .sessiontime, #quickwrapup .sessionscore{
+    float: left;
+    display: inline-block;
+    width: 252px;
+    height: 40px;
+    margin-left: 10px;
+    padding-left: 50px;
+    background-size: 40px 40px;
+    background-position: left center;
+    background-repeat: no-repeat;   
+}
+
+#quickwrapup .sessiontime span, #quickwrapup .sessionscore span{
+    display: block;
+    text-align: left;
+    line-height:20px;
+    font-family: Pacifico;
+    color: #808080;
+    font-size: 14px;
+}
+
+#quickwrapup .sessiontime{
+    background-image: url('../img/brainstorm/yourTime40.png');    
+}
+
+#quickwrapup .sessionscore{
+    background-image: url('../img/brainstorm/yourScore40.png');      
+}
+
+#quickwrapup .sessioncards{
+    width: 931px;
+    height: 191px;
+    margin-top: 30px;
+    overflow-y: scroll;
+    padding-top: 15px;
+    background: -webkit-gradient(linear,left bottom,left top,color-stop(0%,#ffffff),color-stop(100%,#f2f2f2));
+    background: -webkit-linear-gradient(bottom,#ffffff 0%,#f2f2f2 100%);
+    -webkit-box-shadow: inset 0px 0px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#quickwrapup .sessioncards legend{
+    font-family: Pacifico;
+    font-size: 14px;
+    margin: 0 auto;
+    color: #666666;
+}

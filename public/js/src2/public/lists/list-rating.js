@@ -2,6 +2,7 @@ define("Ideafy/Public/ListRating", ["Olives/OObject", "CouchDBStore", "Config", 
 	function(Widget, Store, Config, Model){
 		return function ListRatingConstructor(){
 			var _widget = new Widget(),
+			     _db = Config.get("db"),
 				_store = new Store([]);
 
 			//setup
@@ -28,7 +29,7 @@ define("Ideafy/Public/ListRating", ["Olives/OObject", "CouchDBStore", "Config", 
 
 
 			_widget.plugins.add("listideas", new Model(_store));
-			_store.sync("ideafy", "ideas", "_view/ideasbyvotes", {
+			_store.sync(_db, "ideas", "_view/ideasbyvotes", {
 				descending : true,
 				limit : 30
 			});

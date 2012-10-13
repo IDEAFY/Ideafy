@@ -69,6 +69,9 @@ define("Ideafy/Brainstorm/Menu", ["Olives/OObject", "Map", "Store", "Olives/Mode
                         _widget.reset();
                         
                         // watch sessionInProgess value in user document
+                        _user.watchValue("sessionInProgress", function(sip){
+                                (sip.id && sip.type) ? _widget.addContinue(sip) : _widget.removeContinue();
+                        });
                         
                         //return
                         return _widget;

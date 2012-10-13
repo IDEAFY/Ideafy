@@ -18,6 +18,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                                {name: "quickidea", label: _labels.get("quickstepidea"), currentStep: false, status:null},
                                {name: "quickwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
                                ]),
+                       _user = Config.get("user"),
                        _session = new CouchDBStore();
                        
                    
@@ -64,7 +65,31 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                    };
                    
                    _widget.startNewSession = function startNewSession(){
-                           
+                        // reset progress bar
+                        _steps.reset([
+                               {name: "quickstart", label: _labels.get("quickstepstart"), currentStep: true, status:"ongoing"},
+                               {name: "quicksetup", label: _labels.get("quickstepsetup"), currentStep: false, status:null},
+                               {name: "quickscenario", label: _labels.get("quickstepscenario"), currentStep: false, status:null},
+                               {name: "quicktech", label: _labels.get("quicksteptech"), currentStep: false, status:null},
+                               {name: "quickidea", label: _labels.get("quickstepidea"), currentStep: false, status:null},
+                               {name: "quickwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
+                               ]);
+                         
+                        /* create new session document; new session will only be sync'd once the quickstart step is complete (title & desc)
+                         * at this point session in progress is not yet altered.
+                         */
+                        _session.unsync(); // just to be sure
+                        _session.reset(Config.get("sessionTemplate")); 
+                        
+                        // set session initiator to current user
+                        _session.set("initiator", {"id": _user.get("_id"),"username": _user.get("username"),"picture_file": _user.get("picture_file")});
+                        
+                        // set session mode to quick
+                        _session.set("mode", "quick");
+                        
+                        // reset and display first step
+                        _stack.getStack().get("quickstart").reset();
+                        _stack.getStack().show("quickstart");
                    };
                    
                    _widget.reset = function reset(sip){
@@ -108,8 +133,6 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                            _stack.getStack().add("quicktech", new QuickTech(_session, _widget.prev, _widget.next, _widget.toggleProgress));
                            _stack.getStack().add("quickidea", new QuickIdea(_session, _widget.prev, _widget.next, _widget.toggleProgress));
                            _stack.getStack().add("quickwrapup", new QuickWrapup(_session, _widget.prev, _widget.next, _widget.toggleProgress));
-                           QUICKSTACK = _stack;
-                           _stack.getStack().show("quickstart");
                    };
                    
                    _widget.toggleProgress = function toggleProgress(node){
@@ -127,6 +150,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                    _widget.reset($sip);
                    WID = _widget;
                    STEPS = _steps;
+                   SESSION = _session;
                    
                    // return
                    return _widget;

@@ -41,6 +41,7 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
 
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBStore, Store, Promise) {
         var transport = new Transport(olives.handlers),
+            _db = "ideafy",
             cdbAdminCredentials = "admin:innovation4U",
             app = http.createServer(connect()
                 .use(connect.responseTime())
@@ -141,7 +142,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 var usercdb = new CouchDBStore(),
                     currentIP;
                 usercdb.setTransport(transport);
-                usercdb.sync("ideafy", userid).then(function(){
+                usercdb.sync(_db, userid).then(function(){
                         switch(reason){
                                 case "newtc":
                                         var tc_count = usercdb.get("twocent_count") || 0;
@@ -171,7 +172,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 
                 cdbStore.getTransport().request("CouchDB", {
                         method : "PUT",
-                        path:"/ideafy/"+docId,
+                        path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
                         headers: {
                                 "Content-Type": "application/json"
@@ -216,6 +217,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 sessionStore.set(sessionID, session);
                                                 onEnd({
                                                         signup : "ok",
+                                                        db : _db,
                                                         message: json.name + " successfully signed up"
                                                 });
                                         }
@@ -238,7 +240,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                     cdb = new CouchDBStore();    
                 // return false if document does not exist in database
                 cdb.setTransport(transport);
-                cdb.sync("ideafy", json.id).then(function(){
+                cdb.sync(_db, json.id).then(function(){
                                 sessionStore.get(sessionID, function(err, session){
                                         if(err){throw new Error(err);}
                                         else{
@@ -272,6 +274,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 sessionStore.set(sessionID, session);
                                                 onEnd({
                                                         login : "ok",
+                                                        db : _db,
                                                         message: json.name + " is logged-in"
                                                 });
                                         }
@@ -342,7 +345,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 // if there is only one recipient
                 if (list.length === 1) {
                         cdb.setTransport(new Transport(olives.handlers));
-                        cdb.sync("ideafy", "users", "_view/tomail", {
+                        cdb.sync(_db, "users", "_view/tomail", {
                                 key : '"' + list[0] + '"'
                         }).then(function(doc) {
                                 if (doc.getNbItems()) {
@@ -370,7 +373,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 user : "admin",
                                 pass : fs.readFileSync(".password", "utf8").trim()
                         };
-                        options.path = "/ideafy/_design/users/_view/tomail";
+                        options.path = "/"+_db+"/_design/users/_view/tomail";
                         options.headers = {
                                 "Content-Type" : "application/json"
                         };
@@ -455,7 +458,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 sendMessage = function(message, userid) {
                         var cdb = new CouchDBStore();
                         cdb.setTransport(new Transport(olives.handlers));
-                        cdb.sync("ideafy", userid).then(function() {
+                        cdb.sync(_db, userid).then(function() {
                                 var arr = [];
                                 // retrieve notifications array
                                 if (cdb.get("notifications")[0]){arr = cdb.get("notifications");}
@@ -512,7 +515,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                     votes;
                 cdb.setTransport(transport);
 
-                cdb.sync("ideafy", json.id).then(function() {
+                cdb.sync(_db, json.id).then(function() {
                         votes = cdb.get("votes");
                         if (!votes){votes=[];}
                         votes.unshift(json.vote);
@@ -521,7 +524,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 //update user rated ideas & score
                                 var votercdb = new CouchDBStore();
                                 votercdb.setTransport(transport);
-                                votercdb.sync("ideafy", json.voter).then(function(){
+                                votercdb.sync(_db, json.voter).then(function(){
                                         var ri = votercdb.get("rated_ideas"),
                                             ip = votercdb.get("ip");
                                         ri.unshift(json.id);
@@ -543,7 +546,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
                 var cdb = new CouchDBStore();
                 cdb.setTransport(new Transport(olives.handlers));
-                cdb.sync("ideafy", json.docId).then(function(){
+                cdb.sync(_db, json.docId).then(function(){
                         var tc = cdb.get("twocents"), increment = 0, reason = "";
                         if (json.type === "new"){
                                 // new twocents are always appended at the top of the list
@@ -611,7 +614,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
                 cdb.setTransport(new Transport(olives.handlers));
 
-                cdb.sync("ideafy", json.dest).then(function() {
+                cdb.sync(_db, json.dest).then(function() {
                         if (cdb.get("connections") && cdb.get("connections")[0]) {connections = cdb.get("connections");}
                         if (cdb.get("groups") && cdb.get("groups")[0]) {groups = cdb.get("groups");}
                         if (cdb.get("notifications") && cdb.get("notifications")[0]) {notifications = cdb.get("notifications");}

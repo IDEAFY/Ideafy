@@ -7,6 +7,7 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 		//declaration
 			var _widget = new Widget(),
 				_dom = Map.get("public"),
+				_db = Config.get("db"),
 				_radio = new Control(this),
 				_detail = new Detail(),
                                 _menu = new Menu(Map.get("public-menu")),
@@ -61,9 +62,9 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			// init
                        _menu.toggleActive(false);
 			
-			var listDate = new List("ideafy", "library", "_view/publicideas"),
-			    listRating = new List("ideafy", "ideas", "_view/ideasbyvotes"),
-			    listSearch = new List("_fti/local/ideafy", "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
+			var listDate = new List(_db, "library", "_view/publicideas"),
+			    listRating = new List(_db, "ideas", "_view/ideasbyvotes"),
+			    listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
 			_stack.getStack().add("#list-date", listDate);
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);

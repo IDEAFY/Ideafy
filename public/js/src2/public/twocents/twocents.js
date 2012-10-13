@@ -5,6 +5,7 @@ define("Ideafy/TwoCents",
 
 		//declararation
 			var _widget = new Widget(),
+			     _db = Config.get("db"),
 				_store = new Store();
 
 		//setup
@@ -61,7 +62,7 @@ define("Ideafy/TwoCents",
 	      		_store.unsync();
 	      		//_store.reset();
 	      		//sync
-	      		_store.sync("ideafy", id).then(function(){
+	      		_store.sync(_db, id).then(function(){
 	      			console.log(_store.toJSON());
 	      		});
 	      	};

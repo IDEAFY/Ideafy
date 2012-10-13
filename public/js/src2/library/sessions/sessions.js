@@ -8,6 +8,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                   _actionWidget = new Widget(),
                   _dom = Map.get("sessions"),
                   _sessions = new Store(),
+                  _db = Config.get("db"),
                   _user = Config.get("user"),
                   _avatars = Config.get("avatars"),
                   _labels = Config.get("labels"),
@@ -207,7 +208,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         // remove session from CouchDB
                         var _cdb = new CouchDBStore();
                         _cdb.setTransport(Config.get("transport"));
-                        _cdb.sync("ideafy", _sid).then(function(){
+                        _cdb.sync(_db, _sid).then(function(){
                                 _cdb.remove();
                         });
               };
@@ -215,7 +216,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               _widget.alive(_dom);
               
               // init session data
-              _sessionsCDB.sync("ideafy", "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
+              _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
                                 _sessionsCDB.loop(function(v,i){
                                         // only keep useful information to speed up sorting
                                         var _item= {

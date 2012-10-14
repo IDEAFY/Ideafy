@@ -1,3 +1,66 @@
+<!-- TWOCENT LIST -->
+<ul class="twocentList" data-twocents="foreach">
+	<li class="twocent">
+		<div class="twocentHeader">
+			<div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div>
+			<div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div>
+			<span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span>
+			<br/>
+			<div class="twocentDate date" data-twocents="bind: date, date"></div>
+			<div class="twocentMenu">
+				<div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: deleteOK, replies" data-twocentevent="listen: touchstart, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: touchstart, reply"></div>
+			</div>
+		</div>
+		<div class="twocentBody">
+			<p class="twocentMessage" data-twocents="bind: innerHTML, message"></p>
+			<div class="repliesButton hideReplies" name="hide" data-twocents="bind: toggleHideButton, replies" data-twocentevent="listen: touchstart, toggleReplies" data-labels="bind:innerHTML, hidetwocentreplies"></div>
+		</div>
+		<div class="writePublicTwocentReply invisible"></div>
+		<div class="displayReplies" data-twocents="bind: displayReplies, replies"></div>
+	</li>
+</ul>
+
+<!-- TECH -->
+<div id = "quicktech">
+	<div class="previousbutton" data-quicktechevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech" data-quicktechevent="listen:click, toggleProgress"></div>
+	<div id="quicktech-left" class="leftarea">
+		<div class="card defaultscenario" name="scenario" data-quicktechevent="listen: touchstart, select; listen:click, zoom">
+			<div class="cardpicture"></div>
+			<div class="cardtitle">
+				Your Story
+			</div>
+		</div>
+	</div>
+	<div class="drawarea">
+		<div class="decks">
+			<div class="drawbutton drawtech" "name"="tech" data-quicktechevent="listen: touchstart, push; listen:click, draw"></div>
+		</div>
+		<div class="cards">
+			<div class="card tech defaulttech" data-quicktechevent="listen: touchstart, select; listen:click, zoom">
+				<div class="cardpicture"></div>
+				<div class="cardtitle">
+					Tech 1
+				</div>
+			</div>
+			<div class="card tech defaulttech" data-quicktechevent="listen: touchstart, select; listen:click, zoom">
+				<div class="cardpicture"></div>
+				<div class="cardtitle">
+					Tech 2
+				</div>
+			</div>
+			<div class="card tech defaulttech" data-quicktechevent="listen: touchstart, select; listen:click, zoom">
+				<div class="cardpicture"></div>
+				<div class="cardtitle">
+					Tech 3
+				</div>
+			</div>
+		</div>
+		<div class="confirm">
+			<div class="drawok" name="tech1" data-quicktechevent="listen: touchstart, push; listen:click, accept"></div><div class="drawok" name="tech 2" data-quicksetupevent="listen: touchstart, push; listen:click, accept"></div><div class="drawok" name="tech 3" data-quicktechevent="listen: touchstart, push; listen:click, accept"></div>
+		</div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quicktechevent="listen: touchstart, press; listen:click, next"></div>
+	</div>
+</div>
+
 <!-- WRAPUP -->
 <div id = "quickwrapup">
 	<div class="previousbutton" data-quickwrapupevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickwrapup" data-quickwrapupevent="listen:click, toggleProgress"></div>
@@ -94,7 +157,7 @@
 				</legend>
 			</div>
 		</div>
-		<div class="finish-button" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:click, finish"></div> 
+		<div class="finish-button" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:click, finish"></div>
 		<div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:click, next"></div>
 	</div>
 </div>

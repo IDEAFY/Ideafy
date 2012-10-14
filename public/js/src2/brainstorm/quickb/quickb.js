@@ -79,7 +79,9 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                          * at this point session in progress is not yet altered.
                          */
                         _session.unsync(); // just to be sure
-                        _session.reset(Config.get("sessionTemplate")); 
+                        _session.reset(Config.get("sessionTemplate"));
+                        
+SESSION = _session;
                         
                         // set session initiator to current user
                         _session.set("initiator", {"id": _user.get("_id"),"username": _user.get("username"),"picture_file": _user.get("picture_file")});
@@ -150,7 +152,6 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                    _widget.reset($sip);
                    WID = _widget;
                    STEPS = _steps;
-                   SESSION = _session;
                    
                    // return
                    return _widget;

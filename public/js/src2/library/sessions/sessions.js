@@ -105,7 +105,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         this.sortSessions(mode);      
               };
               
-              this.sortSessions = function sortSessions(mode){
+              _widget.sortSessions = function sortSessions(mode){
                        var _scope;
                        // scope of search (all items or search results)
                        (_currentSearch) ? _scope = _searchData : _scope = _sessionData;
@@ -131,7 +131,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         _sessions.reset(_scope);        
               };
               
-              this.search = function(event, node){     
+              _widget.search = function(event, node){     
                 var _resDiv = document.getElementById("sessionsearchresult");
                 
                 _resDiv.innerHTML ="";
@@ -151,7 +151,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                 }        
               };
               
-              this.displayActionBar = function(event, node){
+              _widget.displayActionBar = function(event, node){
                       var _id = node.getAttribute("data-sessions_id");
                       
                       node.querySelector(".actionbar").setAttribute("style", "display: block;");
@@ -166,20 +166,20 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                       setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
               };
               
-              this.hideActionBar = function(event, node){
+              _widget.hideActionBar = function(event, node){
                 node.setAttribute("style", "display: none;");        
               };
               
-              this.press = function(event, node){
+              _widget.press = function(event, node){
                        node.classList.add("pressed");        
               };
               
-              this.replay = function(event, node){
+              _widget.replay = function(event, node){
                       node.classList.remove("pressed");
                       // insert code to replay session here 
               };
               
-              this.deleteSession = function(event, node){
+              _widget.deleteSession = function(event, node){
                         var _id = node.getAttribute("data-sessions_id"), _sid;
                         // hide action bar and remove hightlight
                         _dom.querySelector(".actionbar[data-sessions_id='"+_id+"']").setAttribute("style", "display: none;");
@@ -209,14 +209,15 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         var _cdb = new CouchDBStore();
                         _cdb.setTransport(Config.get("transport"));
                         _cdb.sync(_db, _sid).then(function(){
+                                console.log("before");
                                 _cdb.remove();
+                                console.log("after");
+                                _cdb.unsync();
                         });
               };
               
-              _widget.alive(_dom);
-              
-              // init session data
-              _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
+              _widget.resetSessionData = function resetSessionData(){
+                      console.log("inside reset function");
                                 _sessionsCDB.loop(function(v,i){
                                         // only keep useful information to speed up sorting
                                         var _item= {
@@ -246,8 +247,22 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         }
                                         _sessionData.push(_item);
                                 });
-                                _sessions.reset(_sessionData);
-                                DATA = _sessionData;
+                                console.log(_sessionData);
+                                _sessions.reset(_sessionData);        
+              };
+              
+              _widget.alive(_dom);
+              
+              // init session data
+              _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
+                               console.log("synchronized", _sessionsCDB.toJSON());
+                                _widget.resetSessionData();
+                                _sessionsCDB.watch("added", function(){
+                                       console.log("updated");
+                                        _widget.resetSessionData();
+                                        // apply current sorting methods
+                                        _widget.sortSessions(_currentSort);       
+                                });
               });
               
               // return

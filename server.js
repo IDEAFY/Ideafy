@@ -673,4 +673,3 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 process.on('uncaughtException', function(error) {
         console.log(error.stack);
 });
-

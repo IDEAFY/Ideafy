@@ -6,7 +6,8 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         // declaration
                         var _widget = new Widget(),
                             _session = $session,
-                            _user = Config.get("user");
+                            _user = Config.get("user"),
+                            _db = Config.get("db"),
                              _labels = Config.get("labels");
                         
                         // setup
@@ -14,7 +15,8 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                 "labels" : new Model(_labels),
                                 "model" : new Model(_session, {
                                         setTitle : function(initiator){
-                                                if (initiator && initiator.username) this.setAttribute("placeholder", initiator.username+_labels.get("quickstarttitleplaceholder"))
+                                                var _now = new Date();
+                                                if (initiator && initiator.username) this.setAttribute("placeholder", initiator.username+_labels.get("quickstarttitleplaceholder")+_now.toLocaleDateString());
                                         }
                                 }),
                                 "quickstartevent" : new Event(_widget)
@@ -30,6 +32,17 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         
                         _widget.next = function(event, node){
                                 node.classList.remove("pressed");
+                                
+                                // if title field is empty, set placeholder value as the default title
+                                if (_session.get("title") === ""){
+                                        _session.set("title", _session.get("initiator").username+_labels.get("quickstarttitleplaceholder")+new Date(_session.get("startTime")).toLocaleDateString());      
+                                }
+                                
+                                // save session to database and update user's session in progress
+                                _session.sync(_db, "S:"+_session.get("startTime"));
+                                _session.upload();
+                                
+                                
                                 $next("quickstart");
                         };
                         

@@ -671,18 +671,17 @@ textarea.solution {
 }
 
 .session-details{
-    margin-left: 15px;
-    width: 916px;
+    width: 931px;
     height: 600px;
-    
 }
 
 .session-details ul{
     list-style: none;
+    overflow-y: scroll;
 }
 
 .session-item table{
-    width: 916px;
+    width: 931px;
     font-size: 14px;
     border-spacing: 0px;
     border: none;
@@ -690,7 +689,7 @@ textarea.solution {
 
 .session-item .actionbar{
     display: none;
-    width: 916px;
+    width: 931px;
     height: 61px;
     text-align: center;
     background-image: -webkit-gradient(linear,center bottom,center top,from(#292929) ,to(#404040));
@@ -738,16 +737,18 @@ textarea.solution {
     background-size: 40px 40px;
 }
 
-.session-info{
-    width: 135px;
+.session-item td.session-info{
+    width: 150px;
     border-right: 1px solid #CCCCCC;
     text-align: left;
+    overflow-x: hidden;
+    padding-right: 2px;
+    font-size: 12px;
 }
 
-.session-date{
+.session-item td.session-date{
     color:#808080;
     font-style: italic;
-    font-size: 12px;
 }
 
 .session-item td.session-idea{
@@ -761,7 +762,6 @@ textarea.solution {
 .session-item .avatarlist ul{
     text-align: right;
     width: 186px;
-    border-right: 1px solid #CCCCCC;
     max-height: 61px;
 }
 
@@ -775,9 +775,10 @@ textarea.solution {
 }
 
 .session-status{
-    width: 145px;
+    width: 144px;
     font-style: italic;
     color: #F27B3D;
+    border-left: 1px solid #CCCCCC; 
     border-right: 1px solid #CCCCCC;
     text-align: center;
 }
@@ -800,7 +801,10 @@ textarea.solution {
 #brainstorm{
     float: left;
     height: 768px;
-    background:#F2F2F2 url('../img/bg.png') no-repeat center center;
+/*    background:#F2F2F2 url('../img/bg.png') no-repeat center center;*/
+    background: #CCCCCC;
+    background-size: 4px 3px;
+    background-image: -webkit-linear-gradient(-45deg,rgba(255,255,255,.2) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.2) 50%, rgba(255,255,255,.2) 75%,transparent 75%, transparent);
 }
 
 #brainstorm, .brainstorm-header{
@@ -820,6 +824,7 @@ textarea.solution {
 .brainstorm-header .clock{
     right: 15px;
     top: 0;
+    position: absolute;
     padding-left: 26px;
     background: url('../img/brainstorm/bell14x16.png') no-repeat left 8px;
     background-size: 14px 16px;

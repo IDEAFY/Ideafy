@@ -1,0 +1,46 @@
+// sessions
+{
+   "title": "",
+   "description": "",
+   "initiator": {
+       "id": "",
+       "username": "",
+       "picture_file": ""
+   },
+   "participants": [],
+   "date": [],
+   "startTime": null,
+   "resumeTime": null,
+   "duration": null,
+   "elapsedTime": 0,
+   "elapsedTimers": {},
+   "mode": "",
+   "type": 8,
+   "deck": "",
+   "status": "in progress",
+   "step": "",
+   "characters": [],
+   "contexts": [],
+   "problems": [],
+   "scenarioWB": [],
+   "sessionid": "",
+   "scenario": [
+       {
+           "title": "",
+           "story": "",
+           "solution": ""
+       }
+   ],
+   "techno": [[]],
+   "ideaWB": [],
+   "idea": [
+       {
+           "title": "",
+           "description": "",
+           "solution": "",
+           "visibility": "private",
+           "id": ""
+       }
+   ],
+   "score": ""
+}

@@ -181,13 +181,13 @@
    	   				</div>
    	   				<div class="session-details">
    	   					<ul data-sessions="foreach">
-   	   						<li class="session-item" data-sessionevent="listen: touchmove, displayActionBar">
+   	   						<li class="session-item" data-sessionevent="listen: touchmove, displayActionBar; listen:click,displayActionBar">
    	   							<table class="session-boxscore">
    	   								<tr>	
    	   									<td class="session-type"></td>
    	   									<td class="session-info">
-   	   										<span class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</span>
-   	   										<span class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</span>
+   	   										<p class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</p>
+   	   										<p class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</p>
    	   									</td>
    	   									<td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td>
    	   									<td class="avatarlist" data-sessions="bind: setAvatars, participants">	
@@ -267,7 +267,8 @@
   </div>
   <script src="js/lib/require.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="js/lib/Emily-vince.js"></script>
+  <script src="js/lib/CouchDBTools.js"></script>
+  <script src="js/lib/Emily.js"></script>
   <script src="js/lib/olives.min.js"></script>
   <script src="js/lib/amy2.js"></script>
   <!-- load config -->

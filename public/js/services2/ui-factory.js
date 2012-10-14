@@ -64,7 +64,7 @@ define("Ideafy/AvatarList", ["Olives/OObject", "Olives/Model-plugin", "Olives/Ev
                                         _store.alter("push", {id:$ids[i], img:_avatars.get($ids[i])});       
                                 }
                                 else {
-                                        _store.alter("push", {id:$ids[i], img:"../img/avatar/deedee0.png"});
+                                        _store.alter("push", {id:$ids[i], img:"../img/avatars/deedee0.png"});
                                         Utils.getAvatar($ids[i], $files[i]);
                                 }
                                 _avatars.watchValue($ids[i], function(value){

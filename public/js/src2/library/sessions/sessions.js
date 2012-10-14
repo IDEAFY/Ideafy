@@ -18,10 +18,10 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                           "sbyidea": {selected: false, "descending": true},
                           "sbyscore": {selected: false, "descending": true}
                           }),
-                  _currentSort = "sbydate",
+                  _currentSort = "sbydate", // the current sorting type of the list
                   _sessionData = [],
                   _searchData = [],
-                  _currentSearch = "",
+                  _currentSearch = "", // the current search, if empty _sessionData is used
                   _sessionsCDB = new CouchDBStore();
                   
               
@@ -47,7 +47,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         }),
                         "sessions": new Model(_sessions, {
                                 formatDate: function(date){
-                                        if (date) this.innerHTML = Utils.formatDate(date);
+                                        if (date && date.length) this.innerHTML = Utils.formatDate(date);
                                 },
                                 formatIdeas: function(array){
                                         // check if at least one idea was generated during this session
@@ -102,7 +102,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                 _sortStatus.set(mode, {selected:true, descending:_sortStatus.get(mode).descending});
                                 _currentSort = mode;
                         }
-                        this.sortSessions(mode);      
+                        _widget.sortSessions(mode);      
               };
               
               _widget.sortSessions = function sortSessions(mode){
@@ -131,7 +131,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         _sessions.reset(_scope);        
               };
               
-              _widget.search = function(event, node){     
+              this.search = function(event, node){     
                 var _resDiv = document.getElementById("sessionsearchresult");
                 
                 _resDiv.innerHTML ="";
@@ -151,13 +151,14 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                 }        
               };
               
-              _widget.displayActionBar = function(event, node){
-                      var _id = node.getAttribute("data-sessions_id");
+              this.displayActionBar = function(event, node){
+                      var _id = node.getAttribute("data-sessions_id"),
+                          _sid = _sessions.get(_id);
                       
                       node.querySelector(".actionbar").setAttribute("style", "display: block;");
                       
                       // session can only be deleted if initiated by user and if there was no other participant
-                      if (_sessions.get(_id).participants.length>1 || _sessions.get(_id).participants[0] != _user.get("_id")){
+                      if (_sid.participants.length>1 || _sid.participants[0] != _user.get("_id")){
                         node.querySelector(".deletesession").setAttribute("style", "display: none;");        
                       }
                       else node.querySelector(".deletesession").setAttribute("style", "display: inline-block;"); 
@@ -166,26 +167,27 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                       setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
               };
               
-              _widget.hideActionBar = function(event, node){
+              this.hideActionBar = function(event, node){
                 node.setAttribute("style", "display: none;");        
               };
               
-              _widget.press = function(event, node){
+              this.press = function(event, node){
                        node.classList.add("pressed");        
               };
               
-              _widget.replay = function(event, node){
+              this.replay = function(event, node){
                       node.classList.remove("pressed");
                       // insert code to replay session here 
               };
               
-              _widget.deleteSession = function(event, node){
+              this.deleteSession = function(event, node){
                         var _id = node.getAttribute("data-sessions_id"), _sid;
                         // hide action bar and remove hightlight
                         _dom.querySelector(".actionbar[data-sessions_id='"+_id+"']").setAttribute("style", "display: none;");
                         node.classList.remove("pressed");
                         // remove session from display
                         _sid = _sessions.get(_id).id;
+                        
                         // start with _sessionData
                         for (i=_sessionData.length-1; i>=0; i--){
                                 if (_sessionData[i].id === _sid) {
@@ -202,22 +204,22 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         }
                                 }        
                         }
+                        
                         // apply current sorting method
-                        this.sortSessions(_currentSort);
+                        _widget.sortSessions(_currentSort);
                         
                         // remove session from CouchDB
                         var _cdb = new CouchDBStore();
                         _cdb.setTransport(Config.get("transport"));
                         _cdb.sync(_db, _sid).then(function(){
-                                console.log("before");
+                                console.log(_cdb.toJSON());
                                 _cdb.remove();
-                                console.log("after");
-                                _cdb.unsync();
+                                setTimeout(function(){_cdb.remove();console.log("after");_cdb.unsync();}, 200);
                         });
               };
               
               _widget.resetSessionData = function resetSessionData(){
-                      console.log("inside reset function");
+                                _sessionData = [];
                                 _sessionsCDB.loop(function(v,i){
                                         // only keep useful information to speed up sorting
                                         var _item= {
@@ -247,18 +249,17 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         }
                                         _sessionData.push(_item);
                                 });
-                                console.log(_sessionData);
                                 _sessions.reset(_sessionData);        
               };
               
               _widget.alive(_dom);
               
               // init session data
+              SESSIONSTORE = _sessionsCDB;
+              
               _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
-                               console.log("synchronized", _sessionsCDB.toJSON());
                                 _widget.resetSessionData();
                                 _sessionsCDB.watch("added", function(){
-                                       console.log("updated");
                                         _widget.resetSessionData();
                                         // apply current sorting methods
                                         _widget.sortSessions(_currentSort);       

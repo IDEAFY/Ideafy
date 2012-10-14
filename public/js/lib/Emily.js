@@ -193,7 +193,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
             	Tools.mixin({
 					feed: "continuous",
 					heartbeat: 20000,
-					limit: 0,
+					limit: 1,
 					since: update_seq
 				}, _syncInfo.query);
 
@@ -217,7 +217,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 						} else {
 							if (json.deleted) {
 								action = "delete";
-							} else if (json.changes[0].rev.search("1-") == 0) {
+							} else if (json.changes && json.changes[0].rev.search("1-") == 0) {
 								action = "add";
 							} else {
 								action = "change";
@@ -233,7 +233,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 			 * @private
 			 */
 			subscribeToDocumentChanges: function () {
-
 				this.stopListening = _transport.listen(_channel, {
 					path: "/" + _syncInfo.database + "/_changes",
 					query: {

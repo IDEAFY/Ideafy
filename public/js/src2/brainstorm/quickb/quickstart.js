@@ -40,10 +40,11 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                 
                                 // save session to database and update user's session in progress
                                 _session.sync(_db, "S:"+_session.get("startTime"));
-                                _session.upload();
-                                
-                                
-                                $next("quickstart");
+                                setTimeout(function(){
+                                                _session.upload().then(function(){
+                                                        $next("quickstart");        
+                                                });
+                                        }, 200);
                         };
                         
                         _widget.prev = function(event, node){
@@ -58,11 +59,11 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         _widget.reset = function reset(){
                                 var now = new Date();
                                 _session.set("startTime", now.getTime());
+                                _session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                 _session.set("step", "quickstart");
                         };
                         
                         // init
-                        console.log("I am here");
                         
                         // return
                         return _widget;

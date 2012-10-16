@@ -40,12 +40,10 @@ define("Ideafy/Public/Idea-detail",
                                         // display twocentlist if present
                                         displayTwocentList : function(twocents){
                                                  var twocentUI, _frag = document.createDocumentFragment();
-                                                 console.log(twocents, _store.get("id"));
                                                  if (twocents && twocents.length){
                                                     // hide twocent write interface    
                                                     document.getElementById("public-writetwocents").classList.add("invisible");
                                                     twocentUI = new TwocentList(_store.get("id"), "public");
-                                                    console.log(twocentUI);
                                                     twocentUI.render();
                                                     twocentUI.place(_frag);
                                                     (this.hasChildNodes()) ? this.replaceChild(_frag, this.firstChild): this.appendChild(_frag);   

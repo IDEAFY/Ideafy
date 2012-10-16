@@ -193,7 +193,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
             	Tools.mixin({
 					feed: "continuous",
 					heartbeat: 20000,
-					limit: 1,
 					since: update_seq
 				}, _syncInfo.query);
 

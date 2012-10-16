@@ -879,7 +879,7 @@ textarea.solution {
     padding: 20px 40px 20px 30px;    
 }
 
-#public .twocentAvatar,  #public .twocentAvatar .avatar, #public .replyAvatar .avatar{
+#public .twocentAvatar,  #public .twocentAvatar .avatar, #public .replyAvatar, #public .replyAvatar .avatar{
   width:40px;
   height:40px;
   border-radius:20px;
@@ -1037,11 +1037,11 @@ textarea.solution {
     padding-left: 0px;
 }
 
-#public .replyToReply .replyMessage{
+#public .replyToReply textarea.replyMessage{
     width: 418px;
 }
 
-#public .replyToReply .writeFooter{
+#public .replyToReply div.writeFooter{
     width: 438px;
 }
 

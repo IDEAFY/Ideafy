@@ -44,7 +44,7 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                   "labels": new ModelPlugin(Config.get("labels"))
                         });
                         
-                   this.template = '<ul class="replies" data-reply="foreach"><li class="twocentReply"><div class="twocentHeader"><div class="replyAvatar" data-reply="bind:setAvatar, author"></div><div class="twocentAuthor" data-reply="bind: setFirstname, firstname"></div><span class="commentLabel" data-labels="bind: innerHTML, twocentreplycommentlbl"></span><br/><div class="twocentDate date" data-reply="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-reply="bind: setVisible, author" data-replyevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-reply="bind: setVisible, author; bind: setVisible, author" data-replyevent="listen: touchstart, deleteTwocentReply"></div><div class="twocentButton twocentReplyButton" data-reply="bind: setInVisible, author" data-replyevent="listen:touchstart, reply"></div></div></div><p class="twocentMessage replyMessage" data-reply="bind: innerHTML, message"></p><div class="writePublicTwocentReply replyToReply invisible"></div></li></ul>';
+                   this.template = '<ul class="replies" data-reply="foreach"><li class="twocentReply"><div class="twocentHeader"><div class="replyAvatar" data-reply="bind:setAvatar, author"></div><div class="twocentAuthor" data-reply="bind: setFirstname, firstname"></div><span class="commentLabel" data-labels="bind: innerHTML, twocentreplycommentlbl"></span><br/><div class="twocentDate date" data-reply="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-reply="bind: setVisible, author" data-replyevent="listen: click, edit"></div><div class="twocentButton twocentDeleteButton" data-reply="bind: setVisible, author; bind: setVisible, author" data-replyevent="listen: click, deleteTwocentReply"></div><div class="twocentButton twocentReplyButton" data-reply="bind: setInVisible, author" data-replyevent="listen:click, reply"></div></div></div><p class="twocentMessage replyMessage" data-reply="bind: innerHTML, message"></p><div class="writePublicTwocentReply replyToReply invisible"></div></li></ul>';
                    
                    this.edit = function(event, node){
                                 var id = node.getAttribute("data-reply_id"),
@@ -74,6 +74,10 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                     frag = document.createDocumentFragment();
                                     writeUI = new WriteTwocentReply(parent);
                                 // create writeReplyUI and pass info about initial reply
+                                alert($id);
+                                alert($tc);
+                                alert(position);
+                                alert($data[$tc].firstname);
                                 writeUI.reset($id, $tc, null, position, $data[$tc].firstname);
                                 writeUI.render();
                                 writeUI.place(frag);
@@ -101,12 +105,13 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                         var user = Config.get("user"),
                             transport = Config.get("transport"),
                             currentIdea, currentTwocent, position, replyTo,
-                            reply = new Store();
+                            now = new Date()
+                            reply = new Store({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": [now.getFullYear(), now.getMonth(), now.getDate()], "datemod": "", "plusones": 0});
                             
                         this.plugins.addAll({
                                 "model": new ModelPlugin(reply, {
                                         setAvatar : function(author){
-                                                this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center;");
+                                                this.setAttribute("style", "background-image: url('"+ Config.get("avatar") + "');");
                                         },
                                         date : function date(date){
                                                 this.innerHTML = Utils.formatDate(date);
@@ -149,6 +154,7 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                 
                         this.publish = function(event, node){
                                 node.setAttribute("style", "-webkit-box-shadow: none; background: #8cab68;");
+                                console.log(reply.toJSON());
                                 // message should not be empty (or do nothing)
                                 if (reply.get("message")){
                                         var     content = JSON.parse(reply.toJSON()), json, type;

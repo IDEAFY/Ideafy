@@ -60,37 +60,20 @@
           <div class="overflow" data-liststack="destination" data-publiccontrol="radio:li,selected,click,selectStart">
             <div class="tools">
              <input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search">
-             <button name="#list-rating" data-liststack="show:click,name">test</button>
+             <div name="#list-date" class="tools-button bydate pushed" data-publicevent="listen:click,show"></div>
+             <div name="#list-rating" class="tools-button byrating" data-publicevent="listen:click,show"></div>
             </div>
-            <!-- <ul class="ideas-list" data-publicevent="listen:mouseup,selectEnd" data-publicideas="foreach" data-publiccontrol="radio:li,selected,click,selectStart">
-              <li class="list-item">
-                <div class="item-header">
-                  <div class="avatar"></div>
-                  <h2 data-publicideas="bind:innerHTML,value.doc.authornames">Taiaut</h2>
-                  <span class="date" data-publicideas="bind:date,value.doc.creation_date">jj/mm/aa</span>
-                </div>
-                <div class="item-body">
-                  <h3 data-publicideas="bind:innerHTML,value.doc.title">Idea title</h3>
-                  <p data-publicideas="bind:innerHTML,value.doc.description">This is an idea description</p>
-                </div>
-                <div class="item-footer">
-                  <a class="idea-type"></a>
-                  <a class="item-acorn"></a>
-                  <span></span>
-                </div>
-              </li>
-            </ul>-->
 
           </div>
         </div>
         <div id="public-detail" class="details">
-          <div class="header blue-dark">
-            <a href="#public-2cents" class="option left"></a>
-            <span>Idea's Details</span>
-            <a href="#public-favorites" class="option right"></a>
-          </div>
           <div class="detail-stack" data-publicstack="destination">
-            <div class="idea-edit">
+            	<div class="idea-edit">
+            		<div class="header blue-dark">
+            		<a href="#public-2cents" class="option left"></a>
+            		<span>Idea's Details</span>
+            		<a href="#public-favorites" class="option right"></a>
+				</div>
               <form class="form">
                 <p><input type="text" class="input"></p>
                 <p><textarea class="description input"></textarea></p>
@@ -99,6 +82,11 @@
               </form>
             </div>
             <div class="idea-sendmail">
+            	<div class="header blue-dark">
+            		<a href="#public-2cents" class="option left"></a>
+            		<span>Idea's Details</span>
+            		<a href="#public-favorites" class="option right"></a>
+          		</div>
               <form class="form">
                 <p><input type="text" class="input"></p>
                 <p><input type="text" class="input"></p>
@@ -106,8 +94,8 @@
                 <!-- ce can't place div in p, p only accept inline elements-->
                 <div class="sendmail-attach">
                   <div class="detail-header">
-                    <div class="avatar"></div>
-                    <h2 data-publicdetail="bind:innerHTML,title">Taiaut</h2>
+                    <div class="avatar" data-publicdetail="bind:setAvatar, authors"></div>
+                    <h2 data-publicdetail="bind:innerHTML,title"></h2>
                     <span class="date" data-publicdetail="bind:date, creation_date">jj/mm/aa</span>
                     <span class="author" data-publicdetail="bind:innerHTML,authornames">Taiaut</span>
                   </div>
@@ -121,16 +109,37 @@
             </div>
           </div>
           <div class="idea-detail">
+          	<div class="header blue-dark">
+            	<a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, doc.authors" data-publicdetailevent="listen: click, action" class="option left"></a>
+            	<span data-label="bind: innerHTML, ideadetailsheadertitle">Idea's Details</span>
+            	<a href="#public-favorites" data-publicdetail="bind: toggleRateEdit, doc.authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a>
+          	</div>
             <div class="detail-header">
-              <div class="avatar"></div>
-              <h2 data-publicdetail="bind:innerHTML,title">Taiaut</h2>
-              <span class="date" data-publicdetail="bind:date, creation_date">jj/mm/aa</span>
-              <span class="author" data-publicdetail="bind:innerHTML,authornames">Taiaut</span>
+              <div class="avatar" data-publicdetail="bind:setAvatar, doc.authors"></div>
+              <h2 data-publicdetail="bind:innerHTML,doc.title">Taiaut</h2>
+              <span class="date" data-publicdetail="bind:date, doc.creation_date">jj/mm/aa</span>
+              <br>
+              <span class="author" data-publicdetail="bind:innerHTML,doc.authornames">Taiaut</span>
+              <span class='commentlbl' data-labels='bind: innerHTML, ideawrotelbl'>wrote:</span>
             </div>
             <div class="detail-body">
-              <p data-publicdetail="bind:innerHTML,description">In proident dolore; non aliqua, velit dolore cupidatat.</p>
+              <p data-publicdetail="bind:innerHTML,doc.description">In proident dolore; non aliqua, velit dolore cupidatat.</p>
+              <p data-publicdetail="bind:innerHTML,doc.solution">In proident dolore; non aliqua, velit dolore cupidatat.</p>
             </div>
-            <div class="detail-footer"></div>
+            <div class="detail-footer">
+            	<div class ="rateIdea">
+                	<a class="item-acorn"></a>
+               		<div class="rating" data-publicdetail="bind:setRating,value.rating"></div>	
+               		<div class="publicButton" data-publicdetail="bind: toggleVoteButton, doc.votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote; listen:click, vote" data-labels="bind: innerHTML, votebuttonlbl">Vote</div>
+                </div>
+                <div id="ratingPopup" class="popup">
+                	<ul class="acorns" data-vote="foreach">
+                		<li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend: castVote; listen:click, castVote"></li> 
+                	</ul>
+                </div>
+            </div>
+          	<div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, doc.authors"></div>
+            <div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, doc.twocents"></div>
           </div>
           <div id="idea-twocents"></div>
         </div>
@@ -269,7 +278,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="js/lib/CouchDBTools.js"></script>
   <script src="js/lib/Emily.js"></script>
-  <script src="js/lib/olives.min.js"></script>
+  <script src="js/lib/Olives.js"></script>
   <script src="js/lib/amy2.js"></script>
   <!-- load config -->
   <script src="js/services2/config.js"></script>
@@ -282,6 +291,10 @@
   <script src="js/src2/public/detail-stack/public-edit.js"></script>
   <script src="js/src2/public/detail-stack/public-sendmail.js"></script>
   <script src="js/src2/public/twocents/twocents.js"></script>
+  <script src="js/src2/public/twocents/writetwocent.js"></script>
+  <script src="js/src2/public/twocents/twocentlist.js"></script>
+  <script src="js/src2/public/twocents/twocentreply.js"></script>
+  
   <script src="js/src2/public/idea-detail.js"></script>
   <script src="js/src2/public/public.js"></script>
 

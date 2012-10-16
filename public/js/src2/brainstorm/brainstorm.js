@@ -35,6 +35,10 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
                         _widget.hideMenu = function hideMenu(){
                              _submenu.toggleActive(false);
                         };
+                        _widget.exitSession = function exitSession(){
+                                _stack.getStack().show("menu");        
+                        };
+                        
                         // start || continue the desired brainstorming type based on session in progress ({id:"", type:""}) parameter
                         _widget.selectScreen = function selectScreen(name, sip){
                                 // if ui already exists - reset and show
@@ -47,7 +51,7 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
                                         (sip) ? name = sip.type : sip = null;
                                         switch(name){
                                                 case "quick":
-                                                        _stack.getStack().add("quick", new QuickB(sip));
+                                                        _stack.getStack().add("quick", new QuickB(sip, _widget.exitSession));
                                                         break;
                                                 default:
                                                         name = "";

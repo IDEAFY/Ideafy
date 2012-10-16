@@ -71,7 +71,14 @@ ul {
   width:630px;
 }
 
-
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:20px;
+  float:left;
+  background:url('../img/wall/60blueProfile.png');
+  background-size:cover;
+}
 
 /* dock */
 

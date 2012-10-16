@@ -49,27 +49,33 @@ define("Ideafy/AvatarList", ["Olives/OObject", "Olives/Model-plugin", "Olives/Ev
                         this.plugins.addAll({
                                 "avatar" : new Model(_store, {
                                         setAvatar : function(img){
-                                                this.setAttribute("style", "background: url('"+img+"') no-repeat center center;background-size:cover;");
+                                                this.setAttribute("style", "background-image: url('"+img+"');");
                                         }
                                 }),
                                 "event" : new Event(this)
                         });
                         
                         // set template
-                        this.template='<ul data-avatar="foreach"><li data-avatar="bind: setAvatar, img"></li></ul>'
+                        this.template='<ul data-avatar="foreach"><li data-avatar="bind: setAvatar, img; bind: name, id"></li></ul>'
                         
                         // init
                         for (i=0; i<$ids.length; i++){
-                                if (_avatars.get($ids[i])){
+                                if ($ids[i] === Config.get("user").get("_id")){
+                                        _store.alter("push", {id:$ids[i], img: Config.get("avatar")});
+                                }
+                                else if (_avatars.get($ids[i])){
                                         _store.alter("push", {id:$ids[i], img:_avatars.get($ids[i])});       
                                 }
                                 else {
-                                        _store.alter("push", {id:$ids[i], img:"../img/avatars/deedee0.png"});
-                                        Utils.getAvatar($ids[i], $files[i]);
+                                        if ($files[i].search("img/avatars")>-1)  _store.alter("push", {id:$ids[i], img:$files[i]});
+                                        else{
+                                                Config.get("transport").request("GetAvatar", {id: $ids[i], file:$files[i]}, function(result){
+                                                        if (!result.error){
+                                                                _store.alter("push", {id: $ids[i], img: result});
+                                                        }
+                                                });
+                                        }
                                 }
-                                _avatars.watchValue($ids[i], function(value){
-                                        _store.update(i, "img", value);
-                                }, this);
                         }
                              
                 }
@@ -79,3 +85,45 @@ define("Ideafy/AvatarList", ["Olives/OObject", "Olives/Model-plugin", "Olives/Ev
                         return new AvatarListConstructor($ids,$files);
                 };     
         });
+        
+define("Ideafy/Avatar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "Ideafy/Utils"],
+        function(Widget, Model, Event, Config, Store, Utils){
+                
+                function AvatarConstructor($array){
+
+                        var _store = new Store([]),
+                            _avatars = Config.get("avatars"),
+                            _id = $array[0]; 
+                        
+                        // setup
+                        this.plugins.addAll({
+                                "avatar" : new Model(_store, {
+                                        setStyle : function(img){
+                                                this.setAttribute("style", "background-image: url('"+img+"');");
+                                        }
+                                }),
+                                "event" : new Event(this)
+                        });
+                        
+                        // set template
+                        this.template='<div class="avatar" data-avatar="bind: setStyle, img"></div>'
+                        
+                        // init
+                        if ($array.length>1) _store.set("img", "img/avatars/deedee6.png")
+                        else if (_id === Config.get("user").get("_id")) _store.set("img", Config.get("avatar"))
+                        else if (_avatars.get(_id)) _store.set("img", _avatars.get(_id))
+                        else {
+                                Utils.getAvatarById(_id).then(function(){
+                                        _store.set("img", _avatars.get(_id));
+                                });
+                        }
+                             
+                }
+                
+                return function AvatarFactory($id){
+                        AvatarConstructor.prototype = new Widget();
+                        return new AvatarConstructor($id);
+                };     
+        });
+        
+

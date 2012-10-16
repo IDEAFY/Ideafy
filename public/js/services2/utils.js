@@ -1,4 +1,4 @@
-define("Ideafy/Utils", ["Config", "Observable"], function(Config, Observable){
+define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"], function(Config, Observable, Promise, LocalStore){
 	return {
 		formatDate : function(array){
 			var month = array[1] + 1;
@@ -72,7 +72,7 @@ define("Ideafy/Utils", ["Config", "Observable"], function(Config, Observable){
 				
 				
 			},
-			searchArray : function searchArray(array, s){
+	         searchArray : function searchArray(array, s){
 			     var _keywords = s.toLowerCase().split(" "),
 			         _res = [];
 			         
@@ -90,7 +90,7 @@ define("Ideafy/Utils", ["Config", "Observable"], function(Config, Observable){
 			     return _res;
 			             
 			},
-			sortByProperty : function sortByProperty(array, prop, descending){
+	         sortByProperty : function sortByProperty(array, prop, descending){
 			        // need a special treatment for certain properties
 			        switch(prop){
 			             case "idea":
@@ -172,51 +172,28 @@ define("Ideafy/Utils", ["Config", "Observable"], function(Config, Observable){
 			        
 			},
 
-			getAvatar : function(uid, filename){
-		              var _request = new XMLHttpRequest(),
-				  _url = "attachments/"+filename,
-				  _avatars = Config.get("avatars"),
-				  _image,
-				  _dlOk = new Observable();
-
-                                // if avatar already exists in the store no need to do anything
-                                if (!_avatars.get(uid)){
-                                        // if no avatar is defined assign deedee0 by default
-                                        if (!filename || filename.length<2){
-                                                _image = "../img/avatars/deedee0.png";
-                                                _avatars.set(uid, _image);       
-                                        }
-                                        // if user is using one of the default avatars, then keep image reference as is
-                                        else if (filename.search("img/avatars")>-1){
-                                                _avatars.set(uid, filename);
-                                        }
-                                        // else check if filename is appropriate and attempt to retrieve file from server
-                                        else if (typeof filename === "string"){                                
-                                                _request.open("GET", _url);
-                                                _request.onreadystatechange = function(){
-                                                if (_request.readyState === 4){
-                                                        if (_request.status === 200){
-                                 	                      _image = _request.responseText;
-                                                        }
-                                                        else {
-                                                        // fallback in case of network error or download failure
-                                                        _image = "../img/avatars/deedee0.png";
-                                                        }
-                                                        _dlOk.notify("avatar-loaded", uid);
-                                                }
-                                                };
-                                                _request.send(null);
-                                        }
-                                        else {
-                                                // filename should be a number > 0
-                                                _image = "../img/avatars/deedee"+filename+".png";
-                                                _avatars.set(uid, _image); 
-                                        }
-
-                                        _dlOk.watch("avatar-loaded", function(uid){
-                                     	  _avatars.set(uid, _image);
-                                        });
-                                }
-                }
+		 getAvatarById : function(id){
+		      var promise = new Promise,
+		          avatars = Config.get("avatars");
+		      
+		      Config.get("transport").request("GetAvatar", {id: id}, function(result){
+		              if (result.error){
+		                      promise.reject();
+		              }
+		              else{
+		                      if (avatars.getNbItems() < 100){
+		                              avatars.set(id, result);
+		                      }
+		                      else {
+		                          var obj = avatars.toJSON(),
+		                              arr = obj.keys();
+		                          avatars.del(arr[0]);
+		                          avatars.set(id, result);
+		                      }
+		                      promise.resolve();
+		              }      
+		      });
+		      return promise;         
+                 }
 	};
 });

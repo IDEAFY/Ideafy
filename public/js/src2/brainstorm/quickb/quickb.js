@@ -1,7 +1,7 @@
 define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Brainstorm/QuickStart", "Ideafy/Brainstorm/QuickSetup", "Ideafy/Brainstorm/QuickScenario", "Ideafy/Brainstorm/QuickTech", "Ideafy/Brainstorm/QuickIdea", "Ideafy/Brainstorm/QuickWrapup", "CouchDBStore", "Config", "Promise", "Store"],
         function(Widget, Map, Stack, Model, Event, QuickStart, QuickSetup, QuickScenario, QuickTech, QuickIdea, QuickWrapup, CouchDBStore, Config, Promise, Store){
                 
-           return function QuickBConstructor($sip){
+           return function QuickBConstructor($sip, $exit){
                    
                    // declaration
                    var _widget = new Widget(),
@@ -89,8 +89,14 @@ SESSION = _session;
                         // set session mode to quick
                         _session.set("mode", "quick");
                         
-                        // reset and display first step
+                        // set session deck to active deck
+                        _session.set("deck", _user.get("active_deck"));
+                        
+                        // reset all step UIS
                         _stack.getStack().get("quickstart").reset();
+                        _stack.getStack().get("quicksetup").reset();
+                        
+                        // display first step
                         _stack.getStack().show("quickstart");
                    };
                    
@@ -109,7 +115,14 @@ SESSION = _session;
                                 _steps.update(_id, "currentStep", false);
                                 _steps.update(_id-1, "currentStep", true);
                                 _stack.getStack().show(_steps.get(_id-1).name);
-                        }             
+                        }
+                        else {
+                                alert("Exiting session");
+                                _session.reset(Config.get("sessionTemplate"));
+                                // return to main menu
+                                console.log($exit)
+                                $exit();
+                        }            
                    };
                    
                    _widget.next = function next(currentName){

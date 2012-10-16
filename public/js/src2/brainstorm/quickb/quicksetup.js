@@ -58,6 +58,10 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 
                         };
                         
+                        _widget.reset = function reset(){
+                                // retrieve active deck      
+                        };
+                        
                         // Return
                         return _widget;
                 };     

@@ -105,6 +105,8 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         _widget.sortSessions(mode);      
               };
               
+              OObj = _widget;
+              
               _widget.sortSessions = function sortSessions(mode){
                        var _scope;
                        // scope of search (all items or search results)

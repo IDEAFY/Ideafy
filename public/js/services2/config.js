@@ -98,7 +98,7 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore"], function(Store, 
                         "type" : 8,
                         "deck" : "",
                         "status" : "in progress",
-                        "step" : "",
+                        "step" : "quickstart",
                         "characters" : [],
                         "contexts" : [],
                         "problems" : [],
@@ -120,8 +120,8 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore"], function(Store, 
                         }],
                         "score" : ""
                 },
-                avatars : new Store({}),
-                publicAvatars : new Store({}),
+                avatars : new Store({}), // to keep frequently used avatars (.e.g connections)
+                avatar : null, // user's avatar
                 defaultLabels : {
                         "language" : "US",
                         "emailplaceholder" : "Email",

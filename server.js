@@ -290,6 +290,75 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         console.log(result)
                 });
         });
+        
+        // retrieve a given user's avatar
+        olives.handlers.set("GetAvatar", function(json, onEnd){
+                var _ext,
+                    gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
+                    jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
+                    pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/,
+                    _file,
+                    readFile = wrap(fs.readFile);
+                
+                // file info provided by client
+                if (json.file){
+                        if (json.file.search("img/avatars")>-1) onEnd(json.file)
+                        else {
+                                _file = __dirname+"/attachments/"+ json.file;
+                                
+                                // retrieve file extension
+                                if (json.file.match(pngPattern)) { ext = "png";}
+                                if (json.file.match(jpgPattern)) { ext = "jpg";}
+                                if (json.file.match(gifPattern)) { ext = "gif";}
+                                
+                                readFile(_file, function (error, data){
+                                        if (data){
+                                                onEnd("data:image/"+ext+";base64," + new Buffer(data, 'binary').toString('base64'));
+                                        }
+                                        else {
+                                                console.log(error);
+                                                onEnd({"error": error});
+                                        }        
+                                });        
+                        }        
+                }
+                // need to fetch file info from couchDB
+                else {
+                        var _cdb = new CouchDBStore();
+                        _cdb.setTransport(transport);
+                
+                        _cdb.sync(_db, json.id).then(function(){
+                                var _image = _cdb.get("picture_file");
+                            
+                        // if user avatar is one of the default choices then return path (available in local files)
+                        if (_image.search("img/avatars")>-1){
+                                onEnd(_image);
+                        }
+                        // otherwise return base64 version of file located in attachments directory
+                        else {
+                                _file = __dirname+"/attachments/"+_image;
+                                
+                                // retrieve file extension
+
+                                if (_image.match(pngPattern)) { ext = "png";}
+                                if (_image.match(jpgPattern)) { ext = "jpg";}
+                                if (_image.match(gifPattern)) { ext = "gif";}
+                            
+                                readFile(_file, function (error, data){
+                                        if (data){
+                                                _image = "data:image/"+ext+";base64," + new Buffer(data, 'binary').toString('base64');
+                                                onEnd(_image);  
+                                        }
+                                        else {
+                                                console.log(error);
+                                                onEnd({"error": error});
+                                        }        
+                                });      
+                        }
+                });
+            }
+                        
+        });
 
         // Sending email messages from Ideafy
         olives.handlers.set("SendMail", function(json, onEnd) {

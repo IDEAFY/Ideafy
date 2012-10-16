@@ -7,6 +7,8 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 		//declaration
 			var _widget = new Widget(),
 				_dom = Map.get("public"),
+				byDate = _dom.querySelector(".bydate"),             // header buttons need to be declared
+                                byRating =  _dom.querySelector(".byrating"),        // disabled if search is active
 				_db = Config.get("db"),
 				_radio = new Control(this),
 				_detail = new Detail(),
@@ -25,7 +27,29 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			this.selectStart = function(event){
 				//_detail.reset(_ideas.get(event.target.getAttribute("data-publicideas_id")));
 				//please don't do that
-				_detail.reset(_stack.getStack().getCurrentScreen().getModel().get(event.target.getAttribute("data-listideas_id")).doc);
+				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
+				    _id = event.target.getAttribute("data-listideas_id");
+				_detail.reset(_ideaList, _id);
+				
+			};
+			
+			// this piece can be considerable simplified --> using stack & control plugins (when I am not brain dead)
+			this.show = function(event, node){
+			     var byDate = _dom.querySelector(".bydate"),
+			         byRating =  _dom.querySelector(".byrating"),
+			         name = node.getAttribute("name");
+			     console.log(name);
+			     if (name !== _stack.getStack().getCurrentName){
+			             _stack.getStack().show(name);
+			             if (name == "#list-date"){
+			                     byRating.classList.remove("pushed");
+			                     byDate.classList.add("pushed");
+			             }
+			             else{
+			                     byRating.classList.add("pushed");
+                                             byDate.classList.remove("pushed"); 
+			             }
+			     }    
 			};
 
 			this.selectEnd = function(event){
@@ -39,10 +63,16 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			this.search = function(event, node){
 			        if (event.keyCode === 13){
 			             if (node.value === ""){
+			                     byDate.setAttribute("style", "display: inline-block;");
+                                             byRating.setAttribute("style", "display: inline-block;");
+			                     // default list viewed by date
 			                     _stack.getStack().show("#list-date");
+			                     byDate.classList.add("pushed");
 			             }
 			             else{
-			                     console.log(node.value);
+			                     // hide sorting buttons (not available for the time being in search mode)
+			                     byDate.setAttribute("style", "display: none;");
+			                     byRating.setAttribute("style", "display: none;");
 			                     listSearch.resetQuery({q: node.value, sort: '\\creation_date<date>', include_docs: true});
 			                     _stack.getStack().show("#list-search");
 			             }
@@ -59,6 +89,7 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			_widget.hideMenu = function hideMenu(){
 			        _menu.toggleActive(false);
 			};
+			
 			// init
                        _menu.toggleActive(false);
 			
@@ -69,7 +100,11 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
 			// show public ideas sorted by most recent
+		        listDate.init(_detail.reset);
 			_stack.getStack().show("#list-date");
+			_widget.initDetail
+			ST = _stack;
+			LIST = listDate.getModel();
 
 			/*then(function(){
 			//select first item

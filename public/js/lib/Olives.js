@@ -406,7 +406,8 @@ function ModelPlugin(Store, Observable, Tools, DomUtils) {
 			 * @returns the value
 			 */
 			this.setStart = function setStart(start) {
-				return _start = parseInt(start, 10);
+			        _start = parseInt(start, 10)
+				return _start;
 			};
 			
 			/**
@@ -425,7 +426,8 @@ function ModelPlugin(Store, Observable, Tools, DomUtils) {
 			 * @returns the value
 			 */
 			this.setNb = function setNb(nb) {
-				return _nb = nb == "*" ? nb : parseInt(nb, 10);
+			        _nb = nb == "*" ? nb : parseInt(nb, 10);
+				return _nb;
 			};
 			
 			/**
@@ -549,7 +551,7 @@ function ModelPlugin(Store, Observable, Tools, DomUtils) {
 					
 					// Now that we have removed the old nodes
 					// Add the missing one 
-					for (var i=_start, l=_tmpNb+_start; i<l; i++) {
+					for (i=_start, l=_tmpNb+_start; i<l; i++) {
 						this.addItem(i);
 					}
 					return true;
@@ -1266,7 +1268,7 @@ function Transport(Observable, Tools) {
 			} else {
 				return false;
 			}
-		},
+		};
 
 		/**
 		 * Get the socket, for debugging purpose
@@ -1275,7 +1277,7 @@ function Transport(Observable, Tools) {
 		 */
 		this.getSocket = function getSocket() {
 			return _socket;
-		},
+		};
 
 		/**
 		 * Subscribe to a socket event
@@ -1284,7 +1286,7 @@ function Transport(Observable, Tools) {
 		 */
 		this.on = function on(event, func) {
 			return _socket.on(event, func);
-		},
+		};
 
 		/**
 		 * Subscribe to a socket event but disconnect as soon as it fires.

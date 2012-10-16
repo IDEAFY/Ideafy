@@ -189,9 +189,23 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         _body.init = function() {
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         Config.set("uid", '"' + _user.get("_id") + '"');
-                        Utils.getAvatar(_user.get("_id"), _user.get("picture_file"));
+                        
+                        // load user avatar if not found in localstore
+                        if (!_local.get("userAvatar")){
+                                _transport.request("GetAvatar", {id: _user.get("_id")}, function(result){
+                                        if (!result.error) {
+                                                _local.set("userAvatar", result);
+                                                _local.sync("ideafy-data");
+                                                // add to Config
+                                                Config.set("avatar", result);
+                                        }     
+                                });
+                        }
+                        else Config.set("avatar", _local.get("userAvatar"));
+                        
                         _dock.init();
                         USER = _user;
+                        LOCAL = _local;
                         //if everything is downloaded
                         _stack.getStack().show("#dock")
                 });

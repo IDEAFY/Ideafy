@@ -1574,7 +1574,14 @@ function Tools(){
 	    mixin: function mixin(source, destination, dontOverride) {
 			this.loop(source, function (value, idx) {
 				if (!destination[idx] || !dontOverride) {
-					destination[idx] = source[idx];	
+					if (source[idx] instanceof Array) {
+                                                destination[idx] =  source[idx].concat();
+                                        } 
+                                        else if (typeof object == "object" && object !== null && !(object instanceof RegExp)) {
+                                                destination[idx] = mixin(source[idx], {});
+                                                
+                                        }
+                                        else destination[idx] = source[idx];	
 				}
 			});
 			return destination;
@@ -1765,6 +1772,7 @@ function Tools(){
 				return object.slice(0);
 			} else if (typeof object == "object" && object !== null && !(object instanceof RegExp)) {
 				return this.mixin(object, {});
+				//return JSON.parse(JSON.stringify(object));
 			} else {
 				return false;
 			}

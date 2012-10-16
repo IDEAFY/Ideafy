@@ -38,13 +38,21 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                         _session.set("title", _session.get("initiator").username+_labels.get("quickstarttitleplaceholder")+new Date(_session.get("startTime")).toLocaleDateString());      
                                 }
                                 
-                                // save session to database and update user's session in progress
-                                _session.sync(_db, "S:"+_session.get("startTime"));
+                                // IMPORTANT: the new session doc is created in CDB and the session document is synched for the entire session
+                                // it should only be synced once to avoid conflicts.
+                                if (!_session.get("_id")) {
+                                        // if no existing id this will create the doc in couchdb -- else we assume the sync has been done before.
+                                        _session.sync(_db, "S:"+_session.get("startTime"));
+                                }
+                                // work around to avoid upload before store is actually listening for changes
                                 setTimeout(function(){
                                                 _session.upload().then(function(){
                                                         $next("quickstart");        
                                                 });
                                         }, 200);
+                                
+                                // set session in progress in user document
+                                _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});
                         };
                         
                         _widget.prev = function(event, node){
@@ -60,7 +68,6 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                 var now = new Date();
                                 _session.set("startTime", now.getTime());
                                 _session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
-                                _session.set("step", "quickstart");
                         };
                         
                         // init

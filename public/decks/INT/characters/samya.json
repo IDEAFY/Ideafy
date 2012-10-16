@@ -1,0 +1,56 @@
+{
+   "_id": "INT:samia",
+   "default_lang": "US",
+   "title": "SAMIA",
+   "gender": 0,
+   "age": 35,
+   "firstname": "Samia",
+   "lastname": "Haddad",
+   "location": "Dubai, UAE",
+   "occupation": {
+       "description": "Saleswoman",
+       "details": [
+           1,
+           "Saleswoman",
+           "Shopping Center"
+       ]
+   },
+   "family": {
+       "couple": 0,
+       "children": 0
+   },
+   "leisure_activities": [
+       {
+           "name": "Cooking",
+           "comment": "Traditional"
+       },
+       {
+           "name": "Television",
+           "comment": "Entertainment shows, movies"
+       },
+       {
+           "name": "Shopping",
+           "comment": "Women fashion"
+       }
+   ],
+   "interests": [
+       {
+           "name": "English",
+           "comment": "Seeks to improve her English"
+       },
+       {
+           "name": "Desert hiking",
+           "comment": ""
+       }
+   ],
+   "comments": null,
+   "type": 1,
+   "deck": [
+       "INT"
+   ],
+   "created_by": "Taïaut",
+   "created_on": [
+       2012,
+       9,
+       5]
+}

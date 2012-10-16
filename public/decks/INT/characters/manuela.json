@@ -1,0 +1,56 @@
+{
+   "_id": "INT:manuela",
+   "default_lang": "US",
+   "title": "MANUELA",
+   "gender": 0,
+   "age": 38,
+   "firstname": "Manuela",
+   "lastname": "Thomann",
+   "location": "Tübingen, Germany",
+   "occupation": {
+       "description": "Waitress",
+       "details": [
+           1,
+           "Waitress",
+           "Weinstube"
+       ]
+   },
+   "family": {
+       "couple": 1,
+       "children": 1
+   },
+   "leisure_activities": [
+       {
+           "name": "Television",
+           "comment": "Entertainment, movies and series"
+       },
+       {
+           "name": "Cooking",
+           "comment": "Likes Italian food"
+       },
+       {
+           "name": "Fitness",
+           "comment": "Goes to the gym once a week"
+       }
+   ],
+   "interests": [
+       {
+           "name": "Family and education",
+           "comment": "Reads books and magazines covering these topics"
+       },
+       {
+           "name": "Music",
+           "comment": "Mostly pop music"
+       }
+   ],
+   "comments": null,
+   "type": 1,
+   "deck": [
+       "INT"
+   ],
+   "created_by": "Taïaut",
+   "created_on": [
+       2012,
+       9,
+       4]
+}

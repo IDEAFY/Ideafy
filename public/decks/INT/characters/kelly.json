@@ -1,0 +1,56 @@
+{
+   "_id": "INT:kelly",
+   "default_lang": "US",
+   "title": "KELLY",
+   "gender": 0,
+   "age": 12,
+   "firstname": "Kelly",
+   "lastname": "Nelson",
+   "location": "Coventry, UK",
+   "occupation": {
+       "description": "Student",
+       "details": [
+           1,
+           "Student",
+           "High school"
+       ]
+   },
+   "family": {
+       "couple": 0,
+       "children": 0
+   },
+   "leisure_activities": [
+       {
+           "name": "Dance",
+           "comment": "Started at age 8"
+       },
+       {
+           "name": "Social networks",
+           "comment": "Spends an hour on social networks every day"
+       },
+       {
+           "name": "Video games",
+           "comment": "Adventure and multi-player games"
+       }
+   ],
+   "interests": [
+       {
+           "name": "Music",
+           "comment": "Pop music"
+       },
+       {
+           "name": "Fashion",
+           "comment": "Her friends say she wears too much makeup"
+       }
+   ],
+   "comments": null,
+   "type": 1,
+   "deck": [
+       "INT"
+   ],
+   "created_by": "Taïaut",
+   "created_on": [
+       2012,
+       9,
+       5]
+}

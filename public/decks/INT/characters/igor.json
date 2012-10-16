@@ -1,0 +1,56 @@
+{
+   "_id": "INT:igor",
+   "default_lang": "US",
+   "title": "IGOR",
+   "gender": 1,
+   "age": 69,
+   "firstname": "Igor",
+   "lastname": "Belinov",
+   "location": "Moscow, Russia",
+   "occupation": {
+       "description": "Car repairman",
+       "details": [
+           2,
+           "Car repairman",
+           "Small garage"
+       ]
+   },
+   "family": {
+       "couple": 4,
+       "children": 2
+   },
+   "leisure_activities": [
+       {
+           "name": "Newspaper",
+           "comment": "Likes puzzles and crossword sections"
+       },
+       {
+           "name": "Television",
+           "comment": ""
+       },
+       {
+           "name": "",
+           "comment": ""
+       }
+   ],
+   "interests": [
+       {
+           "name": "Cars",
+           "comment": "Still likes a good car when he sees one"
+       },
+       {
+           "name": "News",
+           "comment": "National and local news"
+       }
+   ],
+   "comments": "Drinks and smokes too much",
+   "type": 1,
+   "deck": [
+       "INT"
+   ],
+   "created_by": "Taïaut",
+   "created_on": [
+       2012,
+       9,
+       5]
+}

@@ -1,0 +1,55 @@
+{
+   "_id": "INT:zhang",
+   "default_lang": "US",
+   "title": "ZHANG",
+   "gender": 1,
+   "age": 74,
+   "firstname": "Zhang",
+   "lastname": "Chin",
+   "location": "",
+   "occupation": {
+       "description": "Retired miner",
+       "details": [
+           2,
+           "Retired miner",
+           "China Mining Corporation"
+       ]
+   },
+   "family": {
+       "couple": 0,
+       "children": 0
+   },
+   "leisure_activities": [
+       {
+           "name": "Cricket",
+           "comment": ""
+       },
+       {
+           "name": "Video games",
+           "comment": "MMORPG games"
+       },
+       {
+           "name": "Movies",
+           "comment": "Action and sci-fi movies"
+       }
+   ],
+   "interests": [
+       {
+           "name": "High-tech",
+           "comment": "Likes new high tech gadgets"
+       },
+       {
+           "name": "Travel",
+           "comment": "Seeks a job opportunity in the US or in Europe"
+       }
+   ],
+   "type": 1,
+   "deck": [
+       "INT"
+   ],
+   "created_by": "Taïaut",
+   "created_on": [
+       2012,
+       9,
+       5]
+}

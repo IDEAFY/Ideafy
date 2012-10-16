@@ -1,0 +1,55 @@
+{
+   "_id": "INT:nathalie",
+   "default_lang": "US",
+   "title": "NATHALIE",
+   "gender": 0,
+   "age": 55,
+   "firstname": "Nathalie",
+   "lastname": "Vincent",
+   "location": "Grenoble, France",
+   "occupation": {
+       "description": "Lawyer",
+       "details": {
+           "situation": 1,
+           "job": "Lawyer",
+           "organization": "Small law firm"
+       }
+   },
+   "family": {
+       "couple": 1,
+       "children": 2
+   },
+   "leisure_activities": [
+       {
+           "name": "Reading",
+           "comment": "Crime novels, sci-fi"
+       },
+       {
+           "name": "Gardening",
+           "comment": "Flowers and vegetables"
+       },
+       {
+           "name": "Mountain sports",
+           "comment": "Skying and hiking"
+       }
+   ],
+   "interests": [
+       {
+           "name": "News",
+           "comment": "Business, politics, justice"
+       },
+       {
+           "name": "Family",
+           "comment": "Very demanding with her children"
+       }
+   ],
+   "comments": null,
+   "picture_url": "",
+   "picture_credit": "",
+   "type": 1,
+   "deck": [
+       "INT"
+   ],
+   "created_by": "Taïaut",
+   "created_on": [2012, 9, 4]
+}

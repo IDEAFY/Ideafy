@@ -1,0 +1,56 @@
+{
+   "_id": "INT:aika",
+   "default_lang": "US",
+   "title": "AIKA",
+   "gender": 0,
+   "age": 55,
+   "firstname": "Aika",
+   "lastname": "Sato",
+   "location": "Tokyo, Japan",
+   "occupation": {
+       "description": "Bank clerk",
+       "details": [
+           1,
+           "Bank clerk",
+           "Private bank"
+       ]
+   },
+   "family": {
+       "couple": 1,
+       "children": 0
+   },
+   "leisure_activities": [
+       {
+           "name": "Dancing",
+           "comment": "Flamenco"
+       },
+       {
+           "name": "Television",
+           "comment": "Entertainment shows, movies"
+       },
+       {
+           "name": "Shopping",
+           "comment": "Books and home decoration"
+       }
+   ],
+   "interests": [
+       {
+           "name": "News",
+           "comment": "World news"
+       },
+       {
+           "name": "Cooking",
+           "comment": "Enjoys French and Italian restaurants"
+       }
+   ],
+   "comments": null,
+   "type": 1,
+   "deck": [
+       "INT"
+   ],
+   "created_by": "Taïaut",
+   "created_on": [
+       2012,
+       9,
+       5]
+}

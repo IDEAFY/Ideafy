@@ -122,6 +122,7 @@ define("Ideafy/Public/Idea-detail",
 			_widget.reset = function reset(viewStore, index){
 			        _voted = false;
 				_store.reset(viewStore.get(index));
+				_twocentWriteUI.reset(_store.get("id"));
 				//_twocents.reset(model._id);
 				
 				// watch viewStore for changes regarding this idea and update model accordingly

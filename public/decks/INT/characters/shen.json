@@ -1,0 +1,56 @@
+{
+   "_id": "INT:shen",
+   "default_lang": "US",
+   "title": "SHEN",
+   "gender": 0,
+   "age": 38,
+   "firstname": "Shen",
+   "lastname": "Fang",
+   "location": "",
+   "occupation": {
+       "description": "",
+       "details": [
+           1,
+           "",
+           ""
+       ]
+   },
+   "family": {
+       "couple": 1,
+       "children": 0
+   },
+   "leisure_activities": [
+       {
+           "name": "",
+           "comment": ""
+       },
+       {
+           "name": "",
+           "comment": ""
+       },
+       {
+           "name": "",
+           "comment": ""
+       }
+   ],
+   "interests": [
+       {
+           "name": "Astrology",
+           "comment": "World news"
+       },
+       {
+           "name": "Nature, animals",
+           "comment": "Enjoys French and Italian restaurants"
+       }
+   ],
+   "comments": null,
+   "type": 1,
+   "deck": [
+       "INT"
+   ],
+   "created_by": "Taïaut",
+   "created_on": [
+       2012,
+       9,
+       5]
+}

@@ -1,0 +1,56 @@
+{
+   "_id": "INT:john",
+   "default_lang": "US",
+   "title": "JOHN",
+   "gender": 1,
+   "age": 64,
+   "firstname": "John",
+   "lastname": "Dexter",
+   "location": "London, UK",
+   "occupation": {
+       "description": "Retired military officer",
+       "details": [
+           2,
+           "Military Officer",
+           "Royal Air Force"
+       ]
+   },
+   "family": {
+       "couple": 1,
+       "children": 2
+   },
+   "leisure_activities": [
+       {
+           "name": "Computer games",
+           "comment": "Strategy and wargames"
+       },
+       {
+           "name": "Home improvement",
+           "comment": ""
+       },
+       {
+           "name": "Travel",
+           "comment": "Owns a secondary home in Burgundy, France"
+       }
+   ],
+   "interests": [
+       {
+           "name": "History",
+           "comment": "World war two specialist"
+       },
+       {
+           "name": "News",
+           "comment": "International politics"
+       }
+   ],
+   "comments": null,
+   "type": 1,
+   "deck": [
+       "INT"
+   ],
+   "created_by": "Taïaut",
+   "created_on": [
+       2012,
+       9,
+       5]
+}

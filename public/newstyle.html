@@ -190,7 +190,7 @@
    	   				</div>
    	   				<div class="session-details">
    	   					<ul data-sessions="foreach">
-   	   						<li class="session-item" data-sessionevent="listen: click, displayActionBar">
+   	   						<li class="session-item" data-sessionevent="listen: touchmove, displayActionBar">
    	   							<table class="session-boxscore">
    	   								<tr>	
    	   									<td class="session-type"></td>
@@ -208,7 +208,7 @@
    	   							</table>
    	   							<div class="actionbar" data-sessionevent="listen: touchend, hideActionBar">
    	   								<div class="replaysession" name="replay" data-sessionevent="listen: touchstart, press; listen:touchend, replay"></div>
-   	   								<div class="deletesession" name="delete" data-sessionevent="listen: touchstart, press; listen:click, deleteSession"></div>
+   	   								<div class="deletesession" name="delete" data-sessionevent="listen: touchstart, press; listen:touchend, deleteSession"></div>
    	   							</div>
    	   						</li>
    	   					</ul>

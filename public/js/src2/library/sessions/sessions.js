@@ -214,9 +214,8 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         var _cdb = new CouchDBStore();
                         _cdb.setTransport(Config.get("transport"));
                         _cdb.sync(_db, _sid).then(function(){
-                                console.log(_cdb.toJSON());
                                 _cdb.remove();
-                                setTimeout(function(){_cdb.remove();console.log("after");_cdb.unsync();}, 200);
+                                setTimeout(function(){_cdb.remove();_cdb.unsync();}, 200);
                         });
               };
               

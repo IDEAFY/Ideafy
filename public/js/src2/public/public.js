@@ -101,8 +101,8 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			_stack.getStack().add("#list-search", listSearch);
 			// show public ideas sorted by most recent
 		        listDate.init(_detail.reset);
+		        listRating.init(_detail.reset);
 			_stack.getStack().show("#list-date");
-			_widget.initDetail
 			ST = _stack;
 			LIST = listDate.getModel();
 

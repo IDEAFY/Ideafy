@@ -32,7 +32,6 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                                            (currentStep) ? this.classList.add("pressed") : this.classList.remove("pressed");
                                    },
                                    setActive : function(status){
-                                           console.log(status);
                                            (status) ? this.classList.remove("inactive") : this.classList.add("inactive");
                                    }
                            }),

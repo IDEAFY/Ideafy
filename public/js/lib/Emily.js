@@ -237,7 +237,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 					query: {
 						 feed: "continuous",
 						 heartbeat: 20000,
-						 limit:0,
 						 descending: true
 						}
 					},
@@ -499,6 +498,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
             	}, function (response) {
             		var json = JSON.parse(response);
             		if (json.ok) {
+            		        this.set("_id", json._id);
             			this.set("_rev", json.rev);
             			promise.resolve(json);
             		} else {

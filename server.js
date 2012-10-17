@@ -667,6 +667,40 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
         });
 
+        // updating a session's score
+        olives.handlers.set("UpdateSessionScore", function(json, onEnd){
+                var cdb = new CouchDBStore(), increment, min_score, time_bonus;
+                
+                switch(json.step){
+                        case "quicksetup":
+                                min_score = 20;
+                                time_bonus = 120 - Math.floor(json.time/1000);
+                                if (time_bonus < 0) { time_bonus = 0;}
+                                increment = 100 - (json.cards*5);
+                                if (increment<0) { increment = 0;}
+                                increment += min_score + time_bonus;
+                                break;
+                        default:
+                                increment = 0;
+                                break;
+                }
+                
+                if (increment !== 0){
+                        cdb.setTransport(transport);
+                        cdb.sync(_db, json.sid).then(function(){
+                                cdb.set("score", parseInt(cdb.get("score"))+increment);
+                                updateDocAsAdmin(json.sid, cdb).then(function(){
+                                   cdb.unsync();
+                                   onEnd({res:"ok", value: increment});   
+                                });  
+                        });
+                }
+                else {
+                        onEnd({res:"ok", value: 0})
+                }
+                        
+        });
+
         // Connection events
         olives.handlers.set("CxEvent", function(json, onEnd) {
 

@@ -33,6 +33,7 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         _widget.next = function(event, node){
                                 node.classList.remove("pressed");
                                 
+                                _session.set("step", "quicksetup");
                                 // if title field is empty, set placeholder value as the default title
                                 if (_session.get("title") === ""){
                                         _session.set("title", _session.get("initiator").username+_labels.get("quickstarttitleplaceholder")+new Date(_session.get("startTime")).toLocaleDateString());      
@@ -47,12 +48,12 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                 // work around to avoid upload before store is actually listening for changes
                                 setTimeout(function(){
                                                 _session.upload().then(function(){
-                                                        $next("quickstart");        
+                                                        console.log(_session.toJSON());
+                                                        $next("quickstart"); 
+                                                        // set session in progress in user document
+                                                        _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});       
                                                 });
                                         }, 200);
-                                
-                                // set session in progress in user document
-                                _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});
                         };
                         
                         _widget.prev = function(event, node){

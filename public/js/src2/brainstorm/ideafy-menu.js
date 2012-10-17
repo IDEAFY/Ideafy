@@ -35,7 +35,8 @@ define("Ideafy/Brainstorm/Menu", ["Olives/OObject", "Map", "Store", "Olives/Mode
                         
                         this.start = function(event, node){
                                 var id = node.getAttribute("data-ideafymenu_id");
-                                (id>0) ? $selectScreen(_menu.get(id).name) : $selectScreen(_menu.get(0).name, _sip);    
+                                (id>0) ? $selectScreen(_menu.get(id).name) : $selectScreen(_menu.get(0).name, _sip);
+                                node.classList.remove("pressed");  
                         };
                         
                         _widget.addContinue = function addContinue(sip){

@@ -120,6 +120,7 @@ define("Ideafy/Public/Idea-detail",
 
 		//public
 			_widget.reset = function reset(viewStore, index){
+			        // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
 			        _voted = false;
 				_store.reset(viewStore.get(index));
 				_twocentWriteUI.reset(_store.get("id"));

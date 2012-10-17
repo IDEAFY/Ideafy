@@ -1698,6 +1698,10 @@ textarea.solution {
     background: url('../img/decks/technology.png') no-repeat center center;
 }
 
+.reload{
+    background: url('../img/brainstorm/reload.png') no-repeat center center;
+}
+
 
 
 #quicksetup .next-button{
@@ -1727,6 +1731,10 @@ textarea.solution {
     margin: 10px 10px 25px 10px;
     width: 87px;
     height: 87px;
+    border-radius: 5px;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 .card .cardtitle{
@@ -1737,19 +1745,19 @@ textarea.solution {
 }
 
 /*default cards in case picture is missing */
-.defaultchar{
+.char.defaultcard{
     background: url('../img/decks/fullcards/activeCharacter.png') no-repeat;
 } 
 
-.defaultcontext{
+.context.defaultcard{
     background: url('../img/decks/fullcards/activeContext.png') no-repeat;
 }
 
-.defaultproblem{
+.problem.defaultcard{
     background: url('../img/decks/fullcards/activeProblem.png') no-repeat;
 }
 
-.defaulttech{
+.tech.defaultcard{
     background: url('../img/decks/fullcards/activeTechnology.png') no-repeat;
 }
 
@@ -1757,19 +1765,19 @@ textarea.solution {
     background: url('../img/decks/fullcards/activeProblem.png') no-repeat;    
 }
 
-.defaultchar.highlighted{
+.char.defaultcard.highlighted{
     background: url('../img/decks/fullcards/disableCharacter.png') no-repeat;
 } 
 
-.defaultcontext.highlighted{
+.context.defaultcard.highlighted{
     background: url('../img/decks/fullcards/disableContext.png') no-repeat;
 }
 
-.defaultproblem.highlighted{
+.problem.defaultcard.highlighted{
     background: url('../img/decks/fullcards/disableProblem.png') no-repeat;
 }
 
-.defaulttech.highlighted{
+.tech.defaultcard.highlighted{
     background: url('../img/decks/fullcards/disableTechnology.png') no-repeat;
 }
 

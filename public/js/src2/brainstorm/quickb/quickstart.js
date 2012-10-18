@@ -48,10 +48,14 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                 // work around to avoid upload before store is actually listening for changes
                                 setTimeout(function(){
                                                 _session.upload().then(function(){
-                                                        console.log(_session.toJSON());
-                                                        $next("quickstart"); 
-                                                        // set session in progress in user document
-                                                        _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});       
+                                                        // ugly workaround to add session _id to _session store....
+                                                        _session.unsync();
+                                                        _session.sync(_db, "S:"+_session.get("startTime")).then(function(){
+                                                                console.log(_session.toJSON());
+                                                                $next("quickstart"); 
+                                                                // set session in progress in user document
+                                                                _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});         
+                                                        });       
                                                 });
                                         }, 200);
                         };

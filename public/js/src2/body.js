@@ -187,6 +187,8 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         };
 
         _body.init = function() {
+                TRSP = _transport;
+                CDB = new CouchDBStore();
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         Config.set("uid", '"' + _user.get("_id") + '"');
                         

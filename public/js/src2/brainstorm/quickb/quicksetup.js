@@ -43,7 +43,6 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                                 }
                                         },
                                         updateNext : function(selected){
-                                                console.log("here", _selection.toJSON());
                                                 (_selection.get("char").selected && _selection.get("context").selected && _selection.get("problem").selected) ? this.classList.remove("invisible"):this.classList.add("invisible");
                                         }
                                 }),
@@ -64,17 +63,21 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 // compute session score
                                 _widget.updateSessionScore(_elapsedTime).then(function(){
                                         // update session document
-                                        $session.set("elapsedTimers", {"quicksetup": _elapsedTime});
-                                        $session.set("characters", [_selection.get("char").id]);
-                                        $session.set("contexts", [_selection.get("context").id]);
-                                        $session.set("problems", [_selection.get("problem").id]);
-                                        $session.set("step", "quickscenario"); 
-                                        //upload and move to next step
-                                        $session.upload().then(function(){
-                                                console.log($session.toJSON());
-                                                _widget.updateSessionScore();
-                                                node.classList.remove("pressed");
-                                                $next("quicksetup");        
+                                        var sid = $session.get("_id");
+                                        console.log(sid);
+                                        $session.unsync();
+                                        $session.sync(_db, sid).then(function(){
+                                                $session.set("elapsedTimers", {"quicksetup": _elapsedTime});
+                                                $session.set("characters", [_selection.get("char").id]);
+                                                $session.set("contexts", [_selection.get("context").id]);
+                                                $session.set("problems", [_selection.get("problem").id]);
+                                                $session.set("step", "quickscenario"); 
+                                                //upload and move to next step
+                                                $session.upload().then(function(){
+                                                        console.log($session.toJSON());
+                                                        node.classList.remove("pressed");
+                                                        $next("quicksetup");        
+                                                });        
                                         });       
                                 });
                         };

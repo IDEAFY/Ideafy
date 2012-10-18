@@ -8,7 +8,6 @@
 var connect = require("connect"), 
     http = require("http"), 
     socketIO = require("socket.io"), 
-    emily = require("emily"), 
     olives = require("olives"), 
     CouchDBTools = require("couchdb-emily-tools"), 
     cookie = require("cookie"), 
@@ -178,7 +177,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 "Content-Type": "application/json"
                         },
                         data: cdbStore.toJSON()
-                }, promise.resolve, promise);
+                }, function (res) {
+                        var json = JSON.parse(res);
+                        if (json.ok) {
+                                promise.resolve();
+                        } else {
+                                promise.reject();
+                        }});
                 
                 return promise;      
         };
@@ -674,9 +679,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 switch(json.step){
                         case "quicksetup":
                                 min_score = 20;
-                                time_bonus = 120 - Math.floor(json.time/1000);
+                                time_bonus = 20 - Math.floor(json.time/6000);
                                 if (time_bonus < 0) { time_bonus = 0;}
-                                increment = 100 - (json.cards*5);
+                                increment = 20 - (json.cards*5);
                                 if (increment<0) { increment = 0;}
                                 increment += min_score + time_bonus;
                                 break;
@@ -688,10 +693,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 if (increment !== 0){
                         cdb.setTransport(transport);
                         cdb.sync(_db, json.sid).then(function(){
-                                cdb.set("score", parseInt(cdb.get("score"))+increment);
+                                cdb.set("score", parseInt(cdb.get("score")+increment, 10));
                                 updateDocAsAdmin(json.sid, cdb).then(function(){
-                                   cdb.unsync();
-                                   onEnd({res:"ok", value: increment});   
+                                   onEnd({res:"ok", value: increment});
+                                   cdb.unsync();   
                                 });  
                         });
                 }

@@ -236,7 +236,8 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 					path: "/" + _syncInfo.database + "/_changes",
 					query: {
 						 feed: "continuous",
-						 heartbeat: 20000,
+						 heartbeat: 10000,
+						 limit: 0,
 						 descending: true
 						}
 					},

@@ -42,10 +42,12 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			     if (name !== _stack.getStack().getCurrentName){
 			             _stack.getStack().show(name);
 			             if (name == "#list-date"){
+			                     _detail.reset(listDate.getModel(), 0);
 			                     byRating.classList.remove("pushed");
 			                     byDate.classList.add("pushed");
 			             }
 			             else{
+			                     _detail.reset(listRating.getModel(), 0);
 			                     byRating.classList.add("pushed");
                                              byDate.classList.remove("pushed"); 
 			             }
@@ -103,8 +105,6 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 		        listDate.init(_detail.reset);
 		        listRating.init(_detail.reset);
 			_stack.getStack().show("#list-date");
-			ST = _stack;
-			LIST = listDate.getModel();
 
 			/*then(function(){
 			//select first item

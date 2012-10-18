@@ -1488,7 +1488,7 @@ textarea.solution {
 }
 
 .workarea{
-        float: left;
+    float: left;
     margin-left: 5px;
     width: 719px;
     height: 632px;
@@ -1726,7 +1726,7 @@ textarea.solution {
     -webkit-box-shadow: inset 0 0 10px 1px rgba(0,0,0,0.3);    
 }
 
-.card .cardpicture{
+.card .cardpicture, .cd-picarea .cardpicture{
     display: inline-block;
     margin: 10px 10px 25px 10px;
     width: 87px;
@@ -1783,6 +1783,171 @@ textarea.solution {
 
 .defaultscenario.highlighted{
     background: url('../img/decks/fullcards/disableProblem.png') no-repeat;
+}
+
+/* card popup */
+.cardpopup{
+    width: 310px;
+    height: 380px;
+    z-index: 100;
+    position: absolute;
+}
+
+.cardpopup .leftcaret{
+    margin-top: 60px;
+    margin-left: -310px;
+    border-bottom: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-right: 10px solid white;
+    display: none;
+    float: left;    
+}
+
+.cardpopup.popright .leftcaret{
+    display: inline-block;
+}
+
+.cardpopup.popright .rightcaret{
+    display: none;
+}
+
+.cardpopup .rightcaret{
+    margin-top: 60px;
+    border-bottom: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-left: 10px solid white;
+    display: inline-block;
+    float: left;    
+}
+
+.cardpopup .card-detail{
+    float: left;
+    width: 300px;
+    height: 380px;
+    background: white;
+    -webkit-box-shadow: 1px 1px 10px 1px rgba(0,0,0,0.6);
+}
+
+.cd-header{
+    height: 30px;
+    width: 270px;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: white;
+    font-family: Pacifico;
+    line-height: 30px;
+    font-size: 16px;
+}
+
+.cd-header span, .close-popup{
+    float: left;
+}
+
+.cd-header span{
+    width: 240px;
+}
+
+.close-popup{
+    width: 30px;
+    height: 30px;
+    display: block;
+    background-image: url('../img/decks/whiteCrossDelete.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 10px 10px;
+}
+
+.cd-picarea{
+   padding: 20px 20px 0px 20px;
+   width: 260px;
+   height: 112px;
+}
+
+.cd-picarea .cardpicture{
+    float: left;
+    margin: 0;
+}
+
+.cardinfo{
+    width: 158px;
+    float: left;
+    margin-left: 15px;
+    font-family: Helvetica;
+    font-size: 12px;
+    height: 87px;
+}
+
+.cardinfo span{
+    float: left;
+    margin-top: 3px;
+}
+
+.cd-info{
+    margin-left: 2px;
+    word-wrap: break-word;
+}
+
+.age-suffix{
+    margin-left: 2px;
+}
+
+.cd-creditslbl, .cd-sourcelbl, .cd-agelbl, .cd-locationlbl, .cd-joblbl, .cd-familylbl{
+    color: #999999;
+    font-size: 11px;
+    padding-left: 20px;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 15px;
+}
+
+.cd-agelbl, .cd-locationlbl, .cd-joblbl, .cd-familylbl{
+    width: 15px;
+    height: 15px;
+    padding-right: 5px;
+    display: inline-block;    
+}
+
+.cd-creditslbl{
+    background-image: url('../img/decks/photoBy14.png');
+}
+
+.cd-sourcelbl{
+    background-image: url('../img/decks/source14.png');
+}
+
+.cd-agelbl{
+    background-image: url('../img/decks/creationDate14.png');
+}
+
+.cd-locationlbl{
+    background-image: url('../img/decks/livesIn14.png');
+}
+
+.cd-joblbl{
+    background-image: url('../img/decks/lastModified14-01.png');
+}
+
+.cd-familylbl{
+    background-image: url('../img/decks/children14.png');
+}
+
+.cd-contentarea{
+    width: 260px;
+    height: 193px;
+    padding: 0px 20px 20px 20px;
+    overflow-y: scroll;
+}
+
+.cd-contentarea .contentTitle{
+    font-family: Pacifico;
+    font-size: 14px;
+    color: #4D4D4D;
+}
+
+.cd-contentarea p{
+    border-top: 1px solid #E6E6E6;
+    padding-top: 3px;
+    font-size: 12px;
 }
 
 /* quickscenario */

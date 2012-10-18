@@ -222,7 +222,7 @@ define("Ideafy/CardPopup", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 var res = "<ul>";
                                                 if (comments && comments.length){
                                                         for (i=0; i<comments.length; i++){
-                                                                res+="<li>"+comments[i].name+" ("+comments[i].comment+")</li>";
+                                                                res+="<li>"+comments[i]+")</li>";
                                                         }
                                                         this.innerHTML = res+"</ul>";        
                                                 }

@@ -1878,7 +1878,6 @@ textarea.solution {
 }
 
 .cardinfo span{
-    float: left;
     margin-top: 3px;
 }
 
@@ -1892,9 +1891,16 @@ textarea.solution {
 }
 
 .cd-creditslbl, .cd-sourcelbl, .cd-agelbl, .cd-locationlbl, .cd-joblbl, .cd-familylbl{
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 15px;
+}
+
+.cd-creditslbl, .cd-sourcelbl{
     color: #999999;
     font-size: 11px;
     padding-left: 20px;
+    line-height: 15px;
     background-repeat: no-repeat;
     background-position: left bottom;
     background-size: 15px;
@@ -1947,7 +1953,7 @@ textarea.solution {
 .cd-contentarea p{
     border-top: 1px solid #E6E6E6;
     padding-top: 3px;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 /* quickscenario */

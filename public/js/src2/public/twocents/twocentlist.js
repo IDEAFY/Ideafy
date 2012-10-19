@@ -13,7 +13,11 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                         // retrieve twocents data from couchdb
                         cdb.setTransport(transport);
                         cdb.sync(Config.get("db"), $id).then(function(){
-                                store.reset(cdb.get("twocents"));       
+                                store.reset(cdb.get("twocents"));
+                                
+                                cdb.watchValue("twocents", function(value){
+                                        store.reset(value);        
+                                });
                         });
                         
                         // define plugins and methods
@@ -86,9 +90,8 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                         this.edit = function(event, node){
                                 var id = node.getAttribute("data-twocents_id"),
                                     writeUI = new WriteTwocent(),
-                                    frag = document.createDocumentFragment();
-                                    
-                                writeUI.reset($id, store.get(id));
+                                    frag = document.createDocumentFragment();  
+                                writeUI.reset($id, store.get(id), id);
                                 writeUI.render();
                                 writeUI.place(frag);
                                 // replace current twocent with writeUI

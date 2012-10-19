@@ -154,7 +154,6 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                 
                         this.publish = function(event, node){
                                 node.setAttribute("style", "-webkit-box-shadow: none; background: #8cab68;");
-                                console.log(reply.toJSON());
                                 // message should not be empty (or do nothing)
                                 if (reply.get("message")){
                                         var     content = JSON.parse(reply.toJSON()), json, type;

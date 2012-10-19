@@ -38,7 +38,6 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			     var byDate = _dom.querySelector(".bydate"),
 			         byRating =  _dom.querySelector(".byrating"),
 			         name = node.getAttribute("name");
-			     console.log(name);
 			     if (name !== _stack.getStack().getCurrentName){
 			             _stack.getStack().show(name);
 			             if (name == "#list-date"){
@@ -103,7 +102,6 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			_stack.getStack().add("#list-search", listSearch);
 			// show public ideas sorted by most recent
 		        listDate.init(_detail.reset);
-		        listRating.init(_detail.reset);
 			_stack.getStack().show("#list-date");
 
 			/*then(function(){

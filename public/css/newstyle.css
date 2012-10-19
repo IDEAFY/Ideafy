@@ -499,7 +499,8 @@ button{
 
 /* public details */ 
 #public-detail {
- -webkit-transition: opacity 480ms ease-out;
+    -webkit-transition: opacity 480ms ease-out;
+    overflow-y: scroll;
 }
 
 .mosaic #public-detail {

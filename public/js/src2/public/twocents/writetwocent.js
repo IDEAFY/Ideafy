@@ -54,19 +54,18 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                 this.cancel = function(event, node){
                         node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
                         // hide twocent writing interface
-                        document.getElementById("writePublicTwocent").classList.add("invisible");  
+                        alert("cancel");
+                        document.getElementById("public-writetwocents").classList.add("invisible");  
                 };
                 
                 this.publish = function(event, node){
                         node.setAttribute("style", "-webkit-box-shadow: none; background: #8cab68;");
-                        console.log(twocent.toJSON());
                         // message should not be empty (or do nothing)
                         if (twocent.get("message")){
                                 var     content = JSON.parse(twocent.toJSON()), json, type;
                                         
                                 (editTC === "new") ? type = editTC : type = "edit";
                                 json = {docId: currentIdea, type: type, position: position, twocent: content};
-                                console.log(json);
                                 transport.request("WriteTwocent", json, function(result){
                                         if (result !== "ok"){
                                                 alert(Config.get("labels").get("somethingwrong"));        
@@ -74,8 +73,10 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                                         else{
                                                 //need to reset store
                                                 this.reset(currentIdea);
+                                                // hide write interface
+                                                document.getElementById("public-writetwocents").classList.add("invisible");
                                         }               
-                                });
+                                }, this);
                         }
                 };
                 

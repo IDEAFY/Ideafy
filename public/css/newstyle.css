@@ -1491,7 +1491,7 @@ textarea.solution {
 .workarea{
     float: left;
     margin-left: 5px;
-    width: 719px;
+    width: 759px;
     height: 632px;
     background: white;    
 }
@@ -1538,6 +1538,92 @@ textarea.solution {
 
 .whiteboard div.help>p{
     margin-bottom: 5px;
+}
+
+.wbpostit{
+    width: 190px;
+    height: 285px;
+    margin: 0 auto;
+    margin-top: 40px;
+    padding: 40px;
+    background: white;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 3px 5px 1px rgba(23,41,48,0.4);
+}
+
+.postit-cancel{
+    float: right;
+    width: 10px;
+    height: 10px;
+    display: block;
+    margin-top: -30px;
+    margin-right: -30px;
+    background: url('../img/brainstorm/closeFrame.png') no-repeat center center;
+    background-size: 10px 10px;
+}
+
+.postit{
+    width: 142px;
+    height: 141px;
+    padding: 20px;
+    border: none;
+    font-family: Pacifico;
+    font-size: 14px;
+    color: #4D4D4D;
+    background-size: 182px 161px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.choosecolorlbl{
+    width: 190px;
+    margin-top: 20px;
+    disaply: block;
+    color: #657B99;
+    font-family: Pacifico;
+    font-size: 14px;
+    border-bottom: 2px solid #AEB9BF;
+}
+
+.postitcolors{
+    margin-top: 10px;
+    margin-left: 3px;
+}
+
+.postitcolor{
+    display: block;
+    float: left;
+    margin-left: 10px;
+    width: 15px;
+    height: 15px;
+    color: white;
+    font-size: 13px;
+    line-height: 15px;
+    text-align: center;
+}
+
+.postpostit, .delpostit{
+    margin-top: 20px;
+    float: left;
+    width: 95px;
+    height: 34px;
+    background-size: cover;
+}
+
+.postpostit{
+    background: url('../img/brainstorm/buttonPostDisable.png') no-repeat center center;
+}
+
+.delpostit{
+    background: url('../img/brainstorm/buttonDeleteDisable.png') no-repeat center center;
+}
+
+.postpostit.pressed{
+    background: url('../img/brainstorm/buttonPostActive.png') no-repeat center center;
+}
+
+.delpostit.pressed{
+    background: url('../img/brainstorm/buttonDeleteActive.png') no-repeat center center;
 }
 
 .toolbox{
@@ -1812,6 +1898,10 @@ textarea.solution {
     display: none;
 }
 
+.bottomcaret {
+    margin-top: 320px;    
+}
+
 .cardpopup .rightcaret{
     margin-top: 60px;
     border-bottom: 10px solid transparent;
@@ -1961,7 +2051,7 @@ textarea.solution {
 
 #quickscenario-left{
     padding-top: 93px;
-    height: 639px;
+    height: 619px;
     text-align: center;
 }
 
@@ -1975,6 +2065,33 @@ textarea.solution {
 
 #quickscenario .next-button{
     margin-left: 683px;
+}
+
+.writeup{
+}
+
+.enterTitle{
+    
+}
+
+.setPrivate{
+    
+}
+
+.setPublic{
+    
+}
+
+.enterDesc{
+    
+}
+
+.enterSol{
+    
+}
+
+.finish-writeup{
+    
 }
 
 /* quicktech */

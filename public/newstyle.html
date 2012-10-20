@@ -8,21 +8,21 @@
   <link rel="stylesheet" href="css/login.css">
   <link rel="stylesheet" href="css/newstyle.css">
 </head>
-<body data-stack="destination">
+<body data-stack="destination" data-event="selector:.pressed-btn, touchstart, press; selector:.pressed-btn, touchend, release">
   <div id="login">
     <img src="img/logoLogInPage.png">
     <div id="login-stack" data-loginstack="destination">
-      <form id="login-form" data-event="selector:input,keypress,resetError;selector:.login-button,click,login">
+      <form id="login-form" data-event="selector:input,keypress,resetError;selector:.login-button,touchend,login">
         <p class="login-fields">
           <input data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text">
           <input data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" >
         </p>
-        <p><label class="login-button" data-label="bind: innerHTML, loginbutton"></label></p>
+        <p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton"></label></p>
         <p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p>
         <!-- may be set a instead label -->
-        <p><label id="signup-button" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginstack="show:click,name"></label></p>
+        <p><label id="signup-button pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginstack="show:touchstart,name"></label></p>
       </form>
-      <form id="signup-form" data-event="selector:input,keypress,resetError;selector:#signup,click,signup">
+      <form id="signup-form" data-event="selector:input,keypress,resetError;selector:#signup,touchend,signup">
           <p class="login-fields">
           <input data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text">
           <input data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder">
@@ -32,14 +32,14 @@
         </p>
         <p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p>
         <p><label id="signup" class="login-button" data-label="bind:innerHTML, signupbutton"></label></p>
-        <p><label class="login-button" name="#login-screen" data-loginstack="show:click,name" data-label="bind:innerHTML, loginbutton"></label></p>
+        <p><label class="login-button pressed-btn" name="#login-screen" data-loginstack="show:touchstart,name" data-label="bind:innerHTML, loginbutton"></label></p>
       </form>
       <div id="loading" data-label="bind: innerHTML, loadingmessage">Loading...</div>
     </div>
 
   </div>
   <div id="wrapper">
-    <nav id="dock" data-dockcontrol="radio:a,selected,click,setCurrentWidget">
+    <nav id="dock" data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget">
       <a class="dock-item selected" href="#public" data-dockcontrol="init"></a>
       <a class="dock-item" href="#library"></a>
       <a class="dock-item" href="#brainstorm"></a>
@@ -53,15 +53,15 @@
       	<div id = "public-menu"></div>
         <div id="public-list" class="list">
           <div class="header blue-light">
-            <div class="option left" data-publiccontrol="toggle:.option.left,mosaic,click,mosaic"></div>
+            <div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div>
             <span>Idea's List</span>
             <div class="option right"></div>
           </div>
-          <div class="overflow" data-liststack="destination" data-publiccontrol="radio:li,selected,click,selectStart">
+          <div class="overflow" data-liststack="destination" data-publiccontrol="radio:li,selected,touchstart,selectStart">
             <div class="tools">
              <input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search">
-             <div name="#list-date" class="tools-button bydate pushed" data-publicevent="listen:click,show"></div>
-             <div name="#list-rating" class="tools-button byrating" data-publicevent="listen:click,show"></div>
+             <div name="#list-date" class="tools-button bydate pushed" data-publicevent="listen:touchstart,show"></div>
+             <div name="#list-rating" class="tools-button byrating" data-publicevent="listen:touchstart,show"></div>
             </div>
 
           </div>
@@ -78,7 +78,7 @@
                 <p><input type="text" class="input"></p>
                 <p><textarea class="description input"></textarea></p>
                 <p><textarea class="solution input"></textarea></p>
-                <p class="submit"><label class="publish">Publish</label><label class="cancel">Cancel</label></p>
+                <p class="submit"><label class="publish pressed-btn">Publish</label><label class="cancel pressed-btn">Cancel</label></p>
               </form>
             </div>
             <div class="idea-sendmail">
@@ -110,7 +110,7 @@
           </div>
           <div class="idea-detail">
           	<div class="header blue-dark">
-            	<a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, doc.authors" data-publicdetailevent="listen: click, action" class="option left"></a>
+            	<a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, doc.authors" data-publicdetailevent="listen: touchstart, action" class="option left"></a>
             	<span data-label="bind: innerHTML, ideadetailsheadertitle">Idea's Details</span>
             	<a href="#public-favorites" data-publicdetail="bind: toggleRateEdit, doc.authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a>
           	</div>
@@ -130,11 +130,11 @@
             	<div class ="rateIdea">
                 	<a class="item-acorn"></a>
                		<div class="rating" data-publicdetail="bind:setRating,value.rating"></div>	
-               		<div class="publicButton" data-publicdetail="bind: toggleVoteButton, doc.votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote; listen:click, vote" data-labels="bind: innerHTML, votebuttonlbl">Vote</div>
+               		<div class="publicButton" data-publicdetail="bind: toggleVoteButton, doc.votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote;" data-labels="bind: innerHTML, votebuttonlbl">Vote</div>
                 </div>
                 <div id="ratingPopup" class="popup">
                 	<ul class="acorns" data-vote="foreach">
-                		<li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend: castVote; listen:click, castVote"></li> 
+                		<li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend: castVote"></li> 
                 	</ul>
                 </div>
             </div>
@@ -148,7 +148,7 @@
       <div id="library">
       	<div id="library-menu" class="sub-menu">
       			<div class="left-caret"></div>
-      			<ul class="menu-list" data-menucontrol="radio:li,selected,click,setCurrentWidget">
+      			<ul class="menu-list" data-menucontrol="radio:li,selected,touchstart,setCurrentWidget">
       				<li class="menu-item selected" name="#ideas" data-menucontrol="init"><a class="library-item" href="#ideas" data-label="bind:innerHTML, library-ideas"></a></li>
       				<li class="menu-item" name="#sessions"><a class="library-item" href="#sessions" data-label="bind:innerHTML, library-sessions"></a></li>
       				<li class="menu-item" name="#decks"><a class="library-item" href="#decks" data-label="bind:innerHTML, library-decks"></a></li>
@@ -168,19 +168,19 @@
    	   				<div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div>
    	   				<div class="session-tools">
    	   					<div class="session-sorting">
-   	   						<div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: click, sort">
+   	   						<div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: touchstart, sort">
    	   							<span data-label="bind: innerHTML, sbytitle"></span>
    	   							<div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div>
    	   						</div>
-   	   						<div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: click, sort">
+   	   						<div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: touchstart, sort">
    	   							<span data-label="bind: innerHTML, sbydate"></span>
    	   							<div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div>
    	   						</div>
-   	   						<div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: click, sort">
+   	   						<div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: touchstart, sort">
    	   							<span data-label="bind: innerHTML, sbyidea"></span>
    	   							<div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div>
    	   						</div>
-   	   						<div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: click, sort">
+   	   						<div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: touchstart, sort">
    	   							<span data-label="bind: innerHTML, sbyscore"></span>
    	   							<div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div>
    	   						</div>	
@@ -237,7 +237,7 @@
       			<div id="ideafy-menu">
       				<div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, brainstormchoosemode"></div>
       				<ul class="menu" data-ideafymenu = "foreach">
-      					<li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, bg" data-ideafyevent="listen:touchstart, press; listen: click, start"></li>
+      					<li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, bg" data-ideafyevent="listen:touchstart, press; listen: touchend, start"></li>
       				</ul>
       			</div>
       			<div id="ideafy-quick">
@@ -251,7 +251,7 @@
       	<div id="connect-menu">
       		<div class="sub-menu">
       			<div class="left-caret"></div>
-      			<ul class="menu-list" data-menucontrol="radio:li,selected,click,setCurrentWidget">
+      			<ul class="menu-list" data-menucontrol="radio:li,selected,touchstart,setCurrentWidget">
       				<li class="menu-item selected" data-menucontrol="init"><a class="connect-item" href="#connect-contacts" data-label="bind:innerHTML, connect-contacts">Contacts</a></li>
       				<li class="menu-item"><a class="connect-item" href="#connect-messages" data-label="bind:innerHTML, connect-messages">Messgaes</a></li>
       				<li class="menu-item"><a class="connect-item" href="#connect-twocents" data-label="bind:innerHTML, connect-twocents">Twocents</a></li>
@@ -264,7 +264,7 @@
       	<div id="dashboard-menu">
       		<div class="sub-menu">
       			<div class="left-caret"></div>
-      			<ul class="menu-list" data-menucontrol="radio:li,selected,click,setCurrentWidget">
+      			<ul class="menu-list" data-menucontrol="radio:li,selected,touchstart,setCurrentWidget">
       				<li class="menu-item selected" data-menucontrol="init"><a class="dashboard-item" href="#dashboard-profile" data-label="bind:innerHTML, dashboard-profile">My Profile</a></li>
       				<li class="menu-item"><a class="dashboard-item" href="#dashboard-settings" data-label="bind:innerHTML, dashboard-settings">Settings</a></li>
       				<li class="menu-item"><a class="dashboard-item" href="#dashboard-about" data-label="bind:innerHTML, dashboard-about">About Ideafy</a></li>
@@ -308,6 +308,12 @@
   <script src="js/src2/brainstorm/quickb/quicktech.js"></script>
   <script src="js/src2/brainstorm/quickb/quickidea.js"></script>
   <script src="js/src2/brainstorm/quickb/quickwrapup.js"></script>
+  <script src="js/src2/brainstorm/whiteboard/whiteboard.js"></script>
+  <script src="js/src2/brainstorm/whiteboard/wbdefault.js"></script>
+  <script src="js/src2/brainstorm/whiteboard/wbmain.js"></script>
+  <script src="js/src2/brainstorm/whiteboard/wbpostit.js"></script>
+  <script src="js/src2/brainstorm/whiteboard/wbimport.js"></script>
+  <script src="js/src2/brainstorm/whiteboard/wbdrawing.js"></script>
   
   <script src="js/src2/library/library.js"></script>
   <script src="js/src2/library/ideas/ideas.js"></script>

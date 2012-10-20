@@ -20,6 +20,7 @@ define("Map", ["Store"], function(Store){
 		        "quickstart": document.getElementById("quickstart"),
 		        "quicksetup": document.getElementById("quicksetup"),
 		        "quickscenario": document.getElementById("quickscenario"),
+		        "scenario-whiteboard": document.getElementById("scenario-whiteboard"),
 		        "quicktech": document.getElementById("quicktech"),
 		        "quickidea": document.getElementById("quickidea"),
 		        "quickwrapup": document.getElementById("quickwrapup"),

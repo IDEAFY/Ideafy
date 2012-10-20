@@ -185,10 +185,16 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         _body.resetError = function() {
                 _store.set("error", "");
         };
-
+        
+        _body.press = function(event){
+                event.target.classList.add("pressed");
+        };
+        
+        _body.release = function(event){
+                event.target.classList.remove("pressed");        
+        };
+        
         _body.init = function() {
-                TRSP = _transport;
-                CDB = new CouchDBStore();
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         Config.set("uid", '"' + _user.get("_id") + '"');
                         
@@ -206,8 +212,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                         else Config.set("avatar", _local.get("userAvatar"));
                         
                         _dock.init();
-                        USER = _user;
-                        LOCAL = _local;
                         //if everything is downloaded
                         _stack.getStack().show("#dock")
                 });

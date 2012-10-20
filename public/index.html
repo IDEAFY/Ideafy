@@ -1,157 +1,200 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Ideafy</title>
-  <meta id="mobile" name="apple-mobile-web-app-capable" content="yes">
-  <meta name="viewport" content="user-scalable=no,width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/wrapper.css">
-  <link rel="stylesheet" href="css/login.css">
-  <link rel="stylesheet" href="css/public.css">
-</head>
-<body>
- <div id="wrapper">
-  	<div id= "login" class="invisible">
-			<img src="img/logoLogInPage.png"/>
-			<div class ="defaultlogin">
-				<div class="loginform">
-					<input class="loginfield" data-login="bind: value, email" data-loginevent="listen: keypress, resetError" data-label="bind: placeholder, emailplaceholder" autocomplete="on">
-					<hr class="loginseparator"/>
-					<input class="loginfield" type="password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: keypress, resetError" data-login="bind: value, pwd" autocomplete="on">	
-				</div>
-				<div class="enter" data-loginevent="listen:touchstart, press; listen: click, login;" data-label="bind: innerHTML, loginbutton">Log In</div>
-				<div class="loginalert" data-login="bind:innerHTML, errormsg"></div>
+<!-- CARD POPUPS -->
+<div class="cardpopup">
+	<div class="card-detail">
+		<div class="cd-header">
+			Title
+		</div>
+		<div class="cd-picarea">
+			<div class = "cardpicture"></div>
+			<div class = "cardinfo">
+				<span class="cd-credits">Picture credits</span>
+				<span class="cd-sourcelbl">Source : </span><span class="cd-sources"></span>
 			</div>
-			<div class="signupbutton" data-loginevent="listen: touchstart, press; listen:click, signup" data-label="bind:innerHTML, newuserbutton">New User</div>
 		</div>
-		<div id="signup" class="invisible">
-			<img src="img/logoLogInPage.png" data-signupevent="listen: touchend, login"/>
-			<form class="signupform">
-				<input class="loginfield" data-signup = "bind:value, email" data-signupevent="listen: keypress, resetError" data-label="bind: placeholder, emailplaceholder" autocomplete="on">
-				<hr class="loginseparator"/>
-				<input class="loginfield" type="password" data-signup="bind: value, pwd" data-signupevent="listen: keypress, resetError" data-label="bind:placeholder, passwordplaceholder">
-				<hr class="loginseparator"/>
-				<input class="loginfield" type="password" data-signup="bind: value, pwdbis" data-signupevent="listen: keypress, resetError" data-label="bind: placeholder, repeatpasswordplaceholder">
-				<hr class="loginseparator"/>
-				<input class="loginfield" data-signup="bind: value, firstname" data-signupevent="listen: keypress, resetError" data-label="bind:placeholder, firstnameplaceholder">
-				<hr class="loginseparator"/>
-				<input class="loginfield" data-signup="bind: value, lastname" data-signupevent="listen: keypress, resetError" data-label="bind:placeholder, lastnameplaceholder">
-			</form>
-			<div class="signupalert" data-signup="bind:innerHTML, errormsg"></div>
-			<div class="enter" data-signupevent = "listen: touchstart, press; listen:click, signup" data-label="bind:innerHTML, signupbutton">Sign up</div>
-			<div class="enter" data-signupevent = "listen: touchstart, press; listen:click, login" data-label="bind: innerHTML, loginbutton">Log in</div>
-			
-			
+		<div class="cd-contentarea">
+			<span class="contentTitle">Did you know?</span>
+			<p class = "dyknow">This area provides explanations, statistics or additional information about the card</p>
 		</div>
-    <!-- unifier plugin,s event puis class -->
-    <div id = "main" class="invisible">
-    	<nav data-stack="show:touchstart,href" data-control="radio:selected,touchstart">
-			<a href="#public"></a>
-			<a href="#library"></a>
-			<a href="#brainstorm"></a>
-			<a href="#connect"></a>
-			<a href="#settings"></a>
-			<div class="deedee"></div>
-    	</nav>
-    	<div class="stack" data-stack="destination">
-      		<div id="public">
-        		<div id="wall" class="lists">
-          			<!-- scroll top when click on it -->
-         	 		<div class="header">
-           		 		<div class="mosaic" data-public="toggle:expand,click,expand"></div>
-         		   		<div class="headerTitle" data-label="bind:innerHTML, publicideasheadertitle">Public Ideas</div>
-            			<div class="plus"></div>
-          			</div>
-          			<input id="wallsearch" class="searchfield" type="search" data-label="bind:placeholder, searchplaceholder">
-          			<!-- mettre une image deedee qui dit click sur + lorsqu'il n'y a pas d'idéees -->
-          			<!-- display none is far faster -->
-          			<ul class="ideas" data-wall="foreach" data-public="radio:selected,click, select">
-           		 		<li>
-              				<div class="ideaHeader">
-                				<div class="avatar" data-wall="bind: setAvatar, value.doc.authors"></div>
-                				<div class="author" data-wall="bind:innerHTML, value.doc.authornames"></div>
-                				<div class="date" data-wall="bind:date,value.doc.creation_date"></div>
-              				</div>
-              				<div class="ideaContent">
-               					<div class="title" data-wall="bind:innerHTML,value.doc.title"></div>
-               					<p data-wall="bind:innerHTML,value.doc.description"></p>
-               		 			<a class="type"></a>
-              		  			<!-- <img class="acorn" src="img/wall/rateForList.png"> -->
-              		  			<a class="acorn"></a>
-               		 			<div class="rating" data-wall="bind:innerHTML,value.rating"></div>
-                				<div class="ratingExpand" data-wall="bind:setRating,value.rating"></div>
-             	 			</div>
-            			</li>
-          			</ul>
-          		</div>
-        	  	<div id="ideaDetails" class="details">
-         		   	<div class="header">
-         		   		<div class="twocentbutton" data-idea="bind: toggleTwocentShare, value.doc.authors" data-ideaevent="listen: click, action"></div>
-         		   		<div class="headerTitle" data-label="bind: innerHTML, ideadetailsheadertitle">Author's idea</div>
-         		   		<div class="rate" data-idea="bind: toggleRateEdit, value.doc.authors" data-ideaevent="listen: touchstart, action"></div>
-         		   	</div>
-         		   	<div id="idearating" class="invisible">if already voted show message else show acorns</div>
-         		   	<div class="content">
-              			<div class="detailsHeader">
-             	   			<div class="detailsAvatar" data-idea="bind: setAvatar, value.doc.authors"></div>
-               	 			<div class="detailsTitle" data-idea="bind:innerHTML, value.doc.title">Title</div>
-                			<div class="detailsDate date" data-idea="bind:date, value.doc.creation_date">jj/mm/aa</div>
-                			<div class="detailsAuthor" data-idea="bind:setNames, value.doc.authornames">author</div>
-                			<span class="commentLabel">wrote:</span>
-                			<br />
-                			<img class="detailsType" src="img/wall/publicForList.png">
-                			<div class="ideaDetails">
-                				<p class="detailsDescription" data-idea="bind:innerHTML, value.doc.description">description</p>
-                				<p class="detailsSolution" data-idea="bind:innerHTML, value.doc.solution">solution</p>
-                			</div>
-                			<div class ="rateIdea">
-                				<a class="acorn"></a>
-               		 			<div class="rating" data-idea="bind:innerHTML,value.rating"></div>	
-               		 			<div class="publicButton" data-idea="bind: toggleVoteButton, value.votes" name="vote" data-ideaevent="listen: touchstart, press; listen: touchend, vote; listen:click, vote" data-labels="bind: innerHTML, votebuttonlbl">Vote</div>
-                			</div>
-                			<div id="ratingPopup" class="popup">
-                				<ul class="acorns" data-vote="foreach">
-                					<li class="acorn" data-vote="bind: setIcon, active" data-ideaevent="listen: touchstart, previewVote; listen: touchend: castVote; listen:click, castVote"></li> 
-                				</ul>
-                			</div>
-                			<!-- <div class="ratingExpand" data-idea="bind:setRating, value.rating"></div> -->
-              			</div>
-              			<div id="writePublicTwocent" class="invisible" data-idea="bind: displayWriteTwocent, value.doc.authors"></div>
-              			<div id="publicTwocents" class="twocents" data-details="bind: displayTwocents, twocents"></div>
-          		</div>
-        	</div>
-     	 </div>
-     	 
-     	 <div id="library">
-     	 	<div id="libraryStack"></div>
-     	 </div>
-    </div>
+	</div>
+	<div class="leftcaret"></div>
+	<div class="rightcaret"></div>
 </div>
-    <script src="js/lib/require.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-<!--    <script src="js/lib/emily.min.js"></script> -->
-	<script src="js/lib/Emily-vince.js"></script>
-    <script src="js/lib/Olives.js"></script>
-    <script src="js/lib/amy.js"></script>
-     <!-- load config -->
-     <script src="js/services/config.js"></script>
-     <script src="js/services/map.js"></script>
-     <script src="js/services/utils.js"></script>
-     <script src="js/services/avatar.js"></script>
-     <!-- load dependencies -->
 
+<!-- TWOCENT LIST -->
+<ul class="twocentList" data-twocents="foreach">
+	<li class="twocent">
+		<div class="twocentHeader">
+			<div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div>
+			<div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div>
+			<span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span>
+			<br/>
+			<div class="twocentDate date" data-twocents="bind: date, date"></div>
+			<div class="twocentMenu">
+				<div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: deleteOK, replies" data-twocentevent="listen: touchstart, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: touchstart, reply"></div>
+			</div>
+		</div>
+		<div class="twocentBody">
+			<p class="twocentMessage" data-twocents="bind: innerHTML, message"></p>
+			<div class="repliesButton hideReplies" name="hide" data-twocents="bind: toggleHideButton, replies" data-twocentevent="listen: touchstart, toggleReplies" data-labels="bind:innerHTML, hidetwocentreplies"></div>
+		</div>
+		<div class="writePublicTwocentReply invisible"></div>
+		<div class="displayReplies" data-twocents="bind: displayReplies, replies"></div>
+	</li>
+</ul>
 
-     <!-- load application -->
-	<script src="js/src/wall/wall.js"></script>
-	<script src="js/src/wall/idea.js"></script>
-	<script src="js/src/wall/writetwocent.js"></script>
-	<script src="js/src/wall/twocentlist.js"></script>
-    <script src="js/src/wall/twocentreply.js"></script>
-    <script src="js/src/wall/public.js"></script>
-    <script src="js/services/login.js"></script>
-    <script src="js/services/signup.js"></script>
-    <script src="js/src/wrapper.js"></script>
-  </body>
+<!-- TECH -->
+<div id = "quicktech">
+	<div class="previousbutton" data-quicktechevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech" data-quicktechevent="listen:click, toggleProgress"></div>
+	<div id="quicktech-left" class="leftarea">
+		<div class="card defaultscenario" name="scenario" data-quicktechevent="listen: touchstart, select; listen:click, zoom">
+			<div class="cardpicture"></div>
+			<div class="cardtitle">
+				Your Story
+			</div>
+		</div>
+	</div>
+	<div class="drawarea">
+		<div class="decks">
+			<div class="drawbutton drawtech" "name"="tech" data-quicktechevent="listen: touchstart, push; listen:click, draw"></div>
+		</div>
+		<div class="cards">
+			<div class="card tech defaulttech" data-quicktechevent="listen: touchstart, select; listen:click, zoom">
+				<div class="cardpicture"></div>
+				<div class="cardtitle">
+					Tech 1
+				</div>
+			</div>
+			<div class="card tech defaulttech" data-quicktechevent="listen: touchstart, select; listen:click, zoom">
+				<div class="cardpicture"></div>
+				<div class="cardtitle">
+					Tech 2
+				</div>
+			</div>
+			<div class="card tech defaulttech" data-quicktechevent="listen: touchstart, select; listen:click, zoom">
+				<div class="cardpicture"></div>
+				<div class="cardtitle">
+					Tech 3
+				</div>
+			</div>
+		</div>
+		<div class="confirm">
+			<div class="drawok" name="tech1" data-quicktechevent="listen: touchstart, push; listen:click, accept"></div><div class="drawok" name="tech 2" data-quicksetupevent="listen: touchstart, push; listen:click, accept"></div><div class="drawok" name="tech 3" data-quicktechevent="listen: touchstart, push; listen:click, accept"></div>
+		</div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quicktechevent="listen: touchstart, press; listen:click, next"></div>
+	</div>
+</div>
 
-  </html>
+<!-- WRAPUP -->
+<div id = "quickwrapup">
+	<div class="previousbutton" data-quickwrapupevent="listen: touchstart, press; listen: click, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickwrapup" data-quickwrapupevent="listen:click, toggleProgress"></div>
+	<div class="congrats">
+		<div class="message">
+			<span class="messagetitle">Congratulations !</span><span class="sessioncompleted">You successfully completed your Ideafy session</span>
+		</div><div class="enddeedee"></div>
+	</div>
+	<div class="summary">
+		<div class="storysummary">
+			<div class="storyheader"></div><div class="storytitle"></div>
+			<div class="storycontent">
+				Scenario /n Solution description
+			</div>
+		</div>
+		<div class="ideasummary"></div>
+	</div>
+	<div class="sessionresults">
+		<div class ="sessiontime">
+			<span>Your Time</span><span>9 min 32 sec</span>
+		</div>
+		<div class="sessionscore">
+			<span>Your Score</span><span>500ip</span>
+		</div>
+	</div>
+	<div class="sessioncards">
+		<legend>
+			Cards used during this session
+		</legend>
+	</div>
+</div>
+
+<!-- SCENARIO -->
+<div id = "quickscenario">
+	<div class="previousbutton" data-quickscenarioevent="listen: touchstart, press; listen: click, prev"></div>
+	<div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickscenario" data-quickscenarioevent="listen:click, toggleProgress"></div>
+	<div id="quickscenario-left" class="leftarea">
+		<div class = "card char defaultcard" data-cards="bind:removeDefault,char.pic; bind:popup,char.popup" name="char" data-quickscenarioevent="listen:click, zoom">
+			<div class="cardpicture" data-cards="bind:setPic,char.pic"></div>
+			<div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div>
+		</div>
+		<div class="card context defaultcard" name="context" data-cards="bind:removeDefault,context.pic;bind: popup,context.popup" data-quickscenarioevent="listen:click, zoom">
+			<div class="cardpicture" data-cards="bind:setPic,context.pic"></div>
+			<div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div>
+		</div>
+		<div class="card problem defaultcard" name="problem" data-cards="bind:removeDefault,problem.pic;bind:popup, problem.popup" data-quickscenarioevent="listen:click, zoom">
+			<div class="cardpicture" data-cards="bind:setPic,problem.pic"></div>
+			<div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div>
+		</div>
+	</div>
+	<div id="quickscenario-popup"></div>
+	<div id="quickscenario-right" class="workarea">
+		<div id="scenario-whiteboard" class="whiteboard">
+			<div class="stack" data-wbstack="destination">
+				<div class="defaultcontent">
+					<div class="doctor-deedee"></div>
+					<div class="help" data-labels="bind:innerHTML,quickscenariohelp"></div>
+				</div>
+			</div>
+		</div>
+		<div id="quickscenario-toolbox">
+			<div class="toolbox-button">
+				<div class="postit-button" data-quickscenarioevent="listen: touchstart, push; listen:click, post"></div>
+				<legend>Post-it</legend>
+			</div>
+			<div class="toolbox-button">
+				<div class="importpic-button" data-quickscenarioevent="listen: touchstart, push; listen:click, import"></div>
+				<legend>Import pictures</legend>
+			</div>
+			<div class="toolbox-button">
+				<div class="drawingtool-button" data-quickscenarioevent="listen: touchstart, push; listen:click, draw"></div>
+				<legend>Drawing tool</legend>
+			</div>
+		</div>
+		<div class="finish-button" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:click, finish"></div>
+		<div id = "quickscenario-writeup" class="invisible">
+			<textarea class = "enterTitle"></textarea>
+			<div class="setPrivate"></div>
+			<div class="setPublic"></div>
+			<textarea class = "enterDesc"></textarea>
+			<textarea class = "enterSol"></textarea>
+			<div class = "finish-button finish-writeup"></div>
+		</div>
+		<div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:click, next"></div></div></div>
+
+<!-- SETUP -->
+<div id = "quicksetup">
+	<div class="previousbutton" data-quicksetupevent="listen: touchstart, press; listen: click, prev"></div>
+	<div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicksetup"></div>
+	<div class="drawarea">
+		<div class="decks">
+			<div class="drawbutton drawchar" "name"="char" data-quicksetupevent="listen: touchstart, push; listen:click, draw"></div>
+			<div class="drawbutton drawcontext" "name"="context" data-quicksetupevent="listen: touchstart, push; listen:click, draw"></div>
+			<div class="drawbutton drawproblem" name="problem" data-quicksetupevent="listen: touchstart, push; listen:click, draw"></div>
+		</div>
+		<div class="cards">
+			<div class="card char">
+				<div class="cardpicture">
+					Picture
+				</div>
+				<div class="cardtitle">
+					Name
+				</div>
+			</div>
+			<div class="card context"></div>
+			<div class="card problem"></div>
+		</div>
+		<div class="confirm">
+			<div class="drawok" name="char"></div>
+			<div class="drawok" name="context"></div>
+			<div class="drawok" name="problem"></div>
+		</div>
+		<div class="next-button"></div>
+	</div>
+</div>

@@ -37,7 +37,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                            }),
                            "progressevent" : new Event(_progress)
                    });
-                   _progress.template = '<div class = "progressbar"><ul id = "quicksteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: click, changeStep"></li></ul></div>';
+                   _progress.template = '<div class = "progressbar"><ul id = "quicksteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul></div>';
                    _progress.place(_frag);
                    
                    _widget.plugins.add("quickstack", _stack);
@@ -94,6 +94,7 @@ SESSION = _session;
                         // reset all step UIS
                         _stack.getStack().get("quickstart").reset();
                         _stack.getStack().get("quicksetup").reset();
+                        _stack.getStack().get("quickscenario").reset();
                         
                         // display first step
                         _stack.getStack().show("quickstart");

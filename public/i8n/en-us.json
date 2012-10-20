@@ -86,6 +86,8 @@
 	"siblingslbl": " siblings",
 	"onesiblinglbl": " sibling",
 	"quickscenario": "Write your story",
+	"quickscenariohelp": "<p>This is your <strong>whiteboard.</strong></p><p>Now is the time to show your creativity and imagination. The cards you just picked give you a scope, a set of directions to project your thoughts. Use them as hints but do not feel overly constrained: they are here to help you <strong>write your own story and describe your own use case</strong>.</p><p>Finding the problem to solve is often the most important step of an innovation. So get started and use the tools below to <strong>post any thought, drawing or picture that will help you focus on a story.</strong></p><br><p>When you are done, click on the <strong>ready</strong> button at the bottom to write up your story.</p>",
+	"choosecolorlbl": "Choose a color",
 	"quicktech": "Assign technologies",
 	"quickidea": "Describe your idea",
 	"quickwrapup": "Summary",

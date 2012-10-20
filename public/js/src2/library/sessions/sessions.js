@@ -80,6 +80,9 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         if (score >= 0){
                                                 this.innerHTML = score;
                                         }
+                                        else {
+                                                this.innerHTML = "";
+                                        }
                                 },
                                 setSuffix : function(score){
                                         if (score === undefined || score === ""){

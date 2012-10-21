@@ -74,10 +74,6 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                     frag = document.createDocumentFragment();
                                     writeUI = new WriteTwocentReply(parent);
                                 // create writeReplyUI and pass info about initial reply
-                                alert($id);
-                                alert($tc);
-                                alert(position);
-                                alert($data[$tc].firstname);
                                 writeUI.reset($id, $tc, null, position, $data[$tc].firstname);
                                 writeUI.render();
                                 writeUI.place(frag);

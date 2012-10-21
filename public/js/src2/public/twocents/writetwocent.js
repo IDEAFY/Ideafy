@@ -54,7 +54,6 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                 this.cancel = function(event, node){
                         node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
                         // hide twocent writing interface
-                        alert("cancel");
                         document.getElementById("public-writetwocents").classList.add("invisible");  
                 };
                 

@@ -55,6 +55,10 @@ define("Amy/Stack-plugin", ["Amy/Stack-service"],
 			this.destination = function(node){
 				_stack.setDestination(node);
 			};
+			
+			this.hide = function(){
+			        _stack.hide();
+			};
 
 			this.show = function(node, eventType, attribute, useCapture) {
 				node.addEventListener(eventType, function(event){

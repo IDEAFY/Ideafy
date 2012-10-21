@@ -1,9 +1,9 @@
-require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugin", "Olives/Model-plugin", "Amy/Delegate-plugin", "Ideafy/Dock", "Ideafy/Login", "Config", "CouchDBStore", "Ideafy/Utils"], function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils) {
+require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugin", "Olives/Model-plugin", "Amy/Delegate-plugin", "Ideafy/Dock", "Ideafy/Login", "Config", "CouchDBStore", "Ideafy/Utils", "Ideafy/NewIdea"], function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils, NewIdea) {
 
         //declaration
         var _body = new Widget(), _login = null, _stack = new Stack({
                 "#login" : _login
-        }), _dock = new Dock(), _local = new LocalStore(), _store = new Store({
+        }), _dock = new Dock(), _newIdea = new NewIdea(), _local = new LocalStore(), _store = new Store({
                 "email" : "",
                 "firstname" : "",
                 "lastname" : "",

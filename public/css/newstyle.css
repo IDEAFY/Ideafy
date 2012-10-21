@@ -210,6 +210,22 @@ button{
   background-repeat: no-repeat;
 }
 
+/* Main Stack */
+#cache{
+    height: 748px;
+    width: 1024px;
+    position: absolute;
+    z-index: -1500;
+    opacity: 0;
+    background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
+}
+
+#cache.appear{
+    opacity: 0.9;
+    z-index: 1500;
+    -webkit-transition: opacity 0.7s linear;
+}
+
 /* dock */
 
 #dock {
@@ -422,6 +438,83 @@ button{
 .menu-item.selected .dashboard-item[href="#dashboard-about"]{
     background-image: url('../img/libraryDeckActive40.png');
 }
+
+/* New idea popup */
+#newidea-popup{
+    position: absolute;
+    width: 480px;
+    height: 560px;
+    -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.6);
+    z-index: 2000;
+    background: white;
+    left: 270px;
+    bottom: -565px;
+}
+
+#newidea-popup.appear{
+    -webkit-transition:-webkit-transform 0.2s linear;
+    -webkit-transform:translateY(-689px);
+}
+
+#newidea-popup .option{
+    width: 60px;
+    height: 24px;
+    margin-top: 5px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 22px;
+    border: 1px solid #94A3B8;
+    border-radius: 5px;
+}
+
+#newidea-popup .option.pressed{
+    background: #94A3B8;
+    border: 1px solid #657B99;
+}
+
+#newidea-popup .left{
+    left: 5px;
+}
+
+#newidea-popup .right{
+    right: 5px;
+}
+
+#newidea-popup .form{
+    font-size: 16px;
+    padding: 30px 20px 30px 20px;
+}
+
+#newidea-popup .form p{
+    margin-bottom: 30px;
+}
+
+.newideatitle{
+    height: 36px;
+}
+
+.visibility{
+    float: right;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    background-size: 15px 15px;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #B3B3B3;
+    text-align: center;
+    border: 1px solid #E6E6E6;
+    line-height: 30px;
+    display: inline-block;
+    background-image: url('../img/public/privateForList.png');
+}
+
+.visibility.public{
+    background-image: url('../img/public/publicForList.png');
+    background-size: 18px 15px; 
+}
+
 
 /* public */
 
@@ -697,6 +790,10 @@ height: 320px;
 .detail-stack {
   position:absolute;
   width:630px;
+  -webkit-box-shadow : 0px 0px 5px 1px rgba(0,0,0,0.3);
+}
+.idea-edit .header, .idea-sendmail .header{
+    z-index: 1000;
 }
 
 .form{
@@ -734,7 +831,6 @@ textarea.description {
 textarea.solution {
   height:175px;
 }
-
 /* may be create a class button ...they are label to stay in p*/
 
 .submit label {
@@ -748,6 +844,16 @@ textarea.solution {
   font-size:12px;
   color:white;
 }
+
+.submit .editerror{
+    float: right;
+    width: 300px;
+    margin-left: 10px;
+    font-size: 10px;
+    font-family: Helvetica;
+    color: #4D4D4D;
+}
+
 
 .publish {
   background:#8CAB68;

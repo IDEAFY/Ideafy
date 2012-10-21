@@ -1,8 +1,8 @@
 //may be change the module id to have something nicer
 define("Ideafy/Public/Idea-detail", 
 	["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Map", "Ideafy/Utils",
-	 "Ideafy/TwoCents", "Amy/Stack-plugin", "Ideafy/Public/Edit", "Ideafy/Public/Sendmail", "Ideafy/Avatar", "Config", "WriteTwocent", "TwocentList"], 
-	function(Widget, Store, Model, Event, Map, Utils, TwoCents, Stack, Edit, Sendmail, Avatar, Config, WriteTwocent, TwocentList){
+	 "Ideafy/TwoCents", "Amy/Stack-plugin", "Ideafy/Public/Edit", "Ideafy/Public/Sendmail", "Ideafy/Avatar", "Config", "WriteTwocent", "TwocentList", "Observable"], 
+	function(Widget, Store, Model, Event, Map, Utils, TwoCents, Stack, Edit, Sendmail, Avatar, Config, WriteTwocent, TwocentList, Observable){
 		return function IdeaDetailConstructor(){
 		//declaration
 			var  _widget = new Widget(),
@@ -15,12 +15,25 @@ define("Ideafy/Public/Idea-detail",
 		             _twocents = new TwoCents(),
 		             _store = new Store(),
 		             _stack = new Stack(),
-		             _dom = Map.get("public-detail")
-		             _domWrite = Map.get("public-writetwocents");
+		             _dom = Map.get("public-detail"),
+		             _domWrite = Map.get("public-writetwocents"),
+		             _obs = new Observable(),
+		             _edit = new Edit(_obs),
+		             _sendMail = new Sendmail(_obs);
 
 		//setup
-			_stack.getStack().add("#public-edit", new Edit());
-			_stack.getStack().add("#public-sendmail", new Sendmail());
+		         // DUMMY to fix stack hide problem
+		         var dummy = new Widget();
+		         dummy.template='<div></div>';
+		              
+			_stack.getStack().add("#public-edit", _edit);
+			_stack.getStack().add("#public-sendmail", _sendMail);
+			_stack.getStack().add("dummy", dummy);
+			
+			_obs.watch("hide", function(){
+			     _stack.getStack().show("dummy");        
+			});
+			
 			_twocentWriteUI.place(_domWrite);
 			_widget.plugins.addAll({
 			        "label" : new Model(_labels),
@@ -144,16 +157,23 @@ define("Ideafy/Public/Idea-detail",
                                              document.getElementById("public-writetwocents").classList.remove("invisible");
                                              break;
                                         
-                                        case "#public-share":
+                                        case "#public-edit":
+                                                _edit.reset(_store.get("id"));
+                                                _stack.getStack().show('#public-edit');
                                              break;
                                         
                                         case "#public-favorites":
                                              break;
                                              
                                         case "#public-share":
+                                                _stack.getStack().show("#public-sendmail");
                                              break;
                                 }       
                         };
+			
+			_widget.edit = function(){
+			     _stack.getStack().show("#public-edit");     
+			};
 			
 			_widget.press = function(event, node){
                                 node.classList.add("pressed");        

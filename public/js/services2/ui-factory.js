@@ -264,3 +264,110 @@ define("Ideafy/CardPopup", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                         return new CardPopupConstructor($close);
                 };     
         });
+
+define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "CouchDBStore"],
+        function(Widget, Map, Model, Event, Config, Store){
+                
+                return function newIdeaConstructor(){
+                
+                        var _widget = new Widget(),
+                            _store = new Store(Config.get("ideaTemplate")),
+                            _user = Config.get("user"),
+                            _labels = Config.get("labels"),
+                            _error = new Store({"error": ""});
+                            
+                        _store.setTransport(Config.get("transport"));
+                        
+                        _widget.plugins.addAll({
+                                "newidea" : new Model(_store, {
+                                        setVisibility : function(visibility){
+                                                if (visibility === "private"){
+                                                        this.classList.remove("public");
+                                                        this.innerHTML = _labels.get("privatelbl");
+                                                }
+                                                else{
+                                                        this.classList.add("public");
+                                                        this.innerHTML = _labels.get("publiclbl");        
+                                                }
+                                        }
+                                }),
+                                "labels" : new Model(_labels),
+                                "errormsg" : new Model(_error, {
+                                        setError : function(error){
+                                                switch (error){
+                                                        case "notitle":
+                                                             this.innerHTML = _labels.get("titlefield")+ _labels.get("emptyfielderror");
+                                                             break;
+                                                        case "nodesc":
+                                                             this.innerHTML = _labels.get("descriptionfield")+ _labels.get("emptyfielderror");
+                                                             break;
+                                                        case "nosol":
+                                                             this.innerHTML = _labels.get("solutionfield")+ _labels.get("emptyfielderror");
+                                                             break;
+                                                        default:
+                                                             this.innerHTML = "";
+                                                }
+                                        }
+                                }),
+                                "newideaevent" : new Event(_widget)
+                        });
+                        
+                        _widget.toggleVisibility = function(event, node){
+                                var vis = _store.get("visibility");
+                                node.classList.remove("pressed");
+                                (vis === "public") ? _store.set("visibility", "private") : _store.set("visibility", "public");
+                        };
+                        
+                        _widget.press = function(event, node){
+                                node.classList.add("pressed");
+                        };
+                        
+                        _widget.cancel = function(event, node){
+                                node.classList.remove("pressed");
+                                // hide window
+                                document.getElementById("newidea-popup").classList.remove("appear");
+                                document.getElementById("cache").classList.remove("appear");
+                                // reset _store and _error
+                                _store.unsync();
+                                _store.reset(Config.get("ideaTemplate"));
+                                _error.reset({"error":""});       
+                        };
+                        
+                        _widget.upload = function(event, node){
+                                var now = new Date(),
+                                    id = "I:"+now.getTime();
+                                
+                                node.classList.remove("pressed");
+                                // check for errors (missing fields)
+                                if (!_store.get("title")) _error.set("error", "notitle");
+                                else if (!_store.get("description")) _error.set("error", "nodesc");
+                                else if (!_store.get("solution")) _error.set("error", "nosol");
+
+                                if (!_error.get("error")){                                
+                                        // fill cdb document
+                                        _store.set("authors", [_user.get("_id")]);
+                                        _store.set("authornames", _user.get("username"));
+                                        _store.set("creation_date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
+                                
+                                        // create document in couchdb and upload
+                                        _store.sync(Config.get("db"), id);
+                                        setTimeout(function(){
+                                                _store.upload().then(function(){
+                                                        // hide window
+                                                        document.getElementById("newidea-popup").classList.remove("appear");
+                                                        document.getElementById("cache").classList.remove("appear");
+                                                        // reset _store and _error
+                                                        _store.unsync();
+                                                        _store.reset(Config.get("ideaTemplate"));
+                                                        _error.reset({"error":""});
+                                                });
+                                        }, 200);
+                                }  
+                        };
+                        
+                        _widget.alive(Map.get("newidea-popup"));
+                
+                        return _widget;
+                };
+                
+        })

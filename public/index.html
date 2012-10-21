@@ -47,15 +47,32 @@
       <a class="dock-item" href="#dashboard"></a>
       <a class="deedee"></a>
     </nav>
+    
+    <div id="newidea-popup">
+    	<div class = "header blue-dark">
+    		<div class="option left" data-newideaevent="listen:touchstart, press; listen:touchend, cancel">Cancel</div>
+    		<span data-labels="bind: innerHTML, createidealbl">Create new Idea</span>
+    		<div class="option right" data-newideaevent="listen:touchstart, press; listen:touchend, upload">Ok</div>
+    	</div>	
+      	<form class="form">
+      		<p><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title"></p>
+                <p><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description"></textarea></p>
+                <p><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution"></textarea></p>
+                <p>
+                	<span class="errormsg" data-errormsg="bind:setError, error"></span>
+                	<span class="visibility" data-labels="bind:innerHTML, privatelbl" data-newideaevent="listen: touchstart, press; listen:touchend,toggleVisibility" data-newidea="bind: setVisibility, visibility"></span>
+                </p>
+      	</form>
+    </div>
+    <div id="cache"></div>
     <div class="stack" data-dockstack="destination">
-      
       <div id="public">
       	<div id = "public-menu"></div>
         <div id="public-list" class="list">
           <div class="header blue-light">
             <div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div>
             <span>Idea's List</span>
-            <div class="option right"></div>
+            <div class="option right" data-publicevent="listen: touchstart, plus"></div>
           </div>
           <div class="overflow" data-liststack="destination" data-publiccontrol="radio:li,selected,touchstart,selectStart">
             <div class="tools">
@@ -67,18 +84,16 @@
           </div>
         </div>
         <div id="public-detail" class="details">
-          <div class="detail-stack" data-publicstack="destination">
+          <div class="detail-stack" data-detailstack="destination">
             	<div class="idea-edit">
             		<div class="header blue-dark">
-            		<a href="#public-2cents" class="option left"></a>
-            		<span>Idea's Details</span>
-            		<a href="#public-favorites" class="option right"></a>
+            		<span>Modify your idea</span>
 				</div>
               <form class="form">
-                <p><input type="text" class="input"></p>
-                <p><textarea class="description input"></textarea></p>
-                <p><textarea class="solution input"></textarea></p>
-                <p class="submit"><label class="publish pressed-btn">Publish</label><label class="cancel pressed-btn">Cancel</label></p>
+                <p><input type="text" class="input" data-editidea="bind: value, title"></p>
+                <p><textarea class="description input" data-editidea="bind: value, description"></textarea></p>
+                <p><textarea class="solution input" data-editidea="bind: value, solution"></textarea></p>
+                <p class="submit"><label class="publish pressed-btn" data-editevent="listen:touchend, upload">Publish</label><label class="cancel pressed-btn" data-editevent="listen:touchend, cancel">Cancel</label><label class="editerror" data-errormsg="bind:setError, error"></label></p>
               </form>
             </div>
             <div class="idea-sendmail">

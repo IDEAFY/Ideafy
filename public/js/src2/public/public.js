@@ -61,6 +61,11 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 				_dom.classList.toggle("mosaic");
 			};
 			
+			this.plus = function(){
+			        Map.get("newidea-popup").classList.add("appear");
+			        Map.get("cache").classList.add("appear");        
+			};
+			
 			this.search = function(event, node){
 			        if (event.keyCode === 13){
 			             if (node.value === ""){

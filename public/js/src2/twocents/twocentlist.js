@@ -17,7 +17,7 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                 
                                 cdb.watchValue("twocents", function(value){
                                         store.reset(value);        
-                                });
+                        });
                         });
                         
                         // define plugins and methods

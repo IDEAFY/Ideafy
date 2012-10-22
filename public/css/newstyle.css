@@ -307,7 +307,7 @@ button{
     width: 230px;
     border-radius: 5px;
     -webkit-box-shadow: -3px 0 5px rgba(0,0,0,0.5), inset 0 0 10px 1px rgba(255,255,255,0.1);
-    z-index: 100;
+    z-index: 3000;
     background-image: -webkit-gradient(linear, center bottom, center top, from(#292929), to(#404040));
     background-image: -webkit-linear-gradient(91deg, #292929 0%, #404040 100%);
     list-style: none;
@@ -518,7 +518,7 @@ button{
 
 /* public */
 
-#public .list {
+#public .list, #ideas .list {
    -webkit-transition: width 140ms ease-in;
    z-index:1000;
 }
@@ -540,11 +540,11 @@ button{
 /*#public .option {
 
 }*/
-#public-list .search{
+#public-list .search, #idea-list .search{
     float: left;
 }
 
-#public-list .tools-button{
+#public-list .tools-button, #ideas-list .tools-button{
     display: inline-block;
     float: left;
     width: 32px;
@@ -556,35 +556,35 @@ button{
     background-repeat: no-repeat;
 }
 
-#public-list .tools-button.bydate{
+#public-list .tools-button.bydate, #ideas-list .tools-button.bydate{
     margin-left: 5px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     background-image: url('../img/public/byDateDisable.png');   
 }
 
-#public-list .tools-button.byrating{
+#public-list .tools-button.byrating, #ideas-list .tools-button.byrating{
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-left: none;
     background-image: url('../img/public/byRatingDisable.png');    
 }
 
-#public-list .tools-button.bydate.pushed{
+#public-list .tools-button.bydate.pushed, #ideas-list .tools-button.bydate.pushed{
     background-image: url('../img/public/byDateActive.png');   
 }
 
-#public-list .tools-button.byrating.pushed{
+#public-list .tools-button.byrating.pushed, #ideas-list .tools-button.byrating.pushed{
     background-image: url('../img/public/byRatingActive.png');   
 }
 
 
-#public-list .option.right {
+#public-list .option.right, #idea-list .option.right {
   background:url('../img/public/plus.png') no-repeat center center;
   background-size:15px 15px;
 }
 
-#public-list .option.left {
+#public-list .option.left,  #idea-list .option.left{
   background:url('../img/public/mosaique.png') no-repeat center center;
   background-size:15px 15px;
 }
@@ -601,24 +601,24 @@ button{
 }
 
 /* factorize with other header buttons */
-#public-detail .option.right {
+#public-detail .option.right, #ideas-detail .option.right {
   background-size:12px 15px;
 }
 
-#public-detail .option.right[href="#public-favorites"]{
+#public-detail .option.right[href="#public-favorites"], #ideas-detail .option.right[href="#library-favorites"]{
     background:url('../img/public/vote.png') no-repeat center center;
 }
 
-#public-detail .option.right[href="#public-edit"]{
+#public-detail .option.right[href="#public-edit"], #ideas-detail .option.right[href="#library-edit"] {
     background:url('../img/wall/headerModifyYourIdea.png') no-repeat center center;
 }
 
-#public-detail .option.left[href="#public-2cents"]{
+#public-detail .option.left[href="#public-2cents"], #ideas-detail .option.left[href="#library-2cts"]{
     background:url('../img/public/2cents.png') no-repeat center center;
     background-size:15px 15px;
 }
 
-#public-detail .option.left[href="#public-share"]{
+#public-detail .option.left[href="#public-share"], #ideas-detail .option.left[href="#library-share"]{
     background:url('../img/wall/25shareActive.png') no-repeat center center;
     background-size: 25px 25px;
 }
@@ -694,7 +694,7 @@ height: 320px;
 }
 
 /* idea voting piece */
-#public-detail .rateIdea{
+#public-detail .rateIdea, #ideas-detail .rateIdea{
   position: absolute;
   text-align: right;
   top: 290px;
@@ -703,14 +703,14 @@ height: 320px;
   display: inline;
 }
 
-#public-detail .rateIdea .item-acorn{
+#public-detail .rateIdea .item-acorn, #ideas-detail .rateIdea .item-acorn{
     background-image: url('../img/wall/ideaVoteActive.png');
     height: 15px;
     width: 15px;
     float: left;
   }
   
-#public-detail .rateIdea .rating{
+#public-detail .rateIdea .rating, #ideas-detail .rateIdea .rating{
     float: left;
     font-family: Helvetica;
     margin-right: 5px;
@@ -718,7 +718,7 @@ height: 320px;
     line-height: 20px; 
   } 
 
-#public-detail .publicButton{
+#public-detail .publicButton, #ideas-detail .publicButton{
     float: right;
     height: 20px;
     width: 60px;

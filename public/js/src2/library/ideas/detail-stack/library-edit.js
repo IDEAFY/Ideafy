@@ -1,6 +1,6 @@
-define("Ideafy/Public/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "Config"], 
+define("Ideafy/Library/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "Config"], 
 	function(Widget, Map, Store, Model, Event, Config){
-		return function PublicEditConstructor($obs){
+		return function LibraryEditConstructor($obs){
 		//declaration
 			var _widget = new Widget(),
 			    _store = new Store(),  // the idea
@@ -11,7 +11,7 @@ define("Ideafy/Public/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/M
                         _store.setTransport(Config.get("transport"));
                         
 			_widget.plugins.addAll({
-			        "editlabel" : new Model(_labels),
+			        "editlabel": new Model(_labels),
 			        "editidea" : new Model(_store),
 			        "editevent" : new Event(_widget),
 			        "errormsg" : new Model(_error,{
@@ -33,7 +33,7 @@ define("Ideafy/Public/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/M
 			        })
 			});
 			
-			_widget.alive(Map.get("public-edit"));
+			_widget.alive(Map.get("library-edit"));
 
 
                         _widget.reset = function reset(id){

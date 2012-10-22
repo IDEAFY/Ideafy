@@ -1,7 +1,7 @@
 //may be change the module id to have something nicer
-define("Ideafy/Public/Idea-detail", 
+define("Ideafy/Library/Idea-detail", 
 	["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Map", "Ideafy/Utils",
-	 "Ideafy/TwoCents", "Amy/Stack-plugin", "Ideafy/Public/Edit", "Ideafy/Public/Sendmail", "Ideafy/Avatar", "Config", "WriteTwocent", "TwocentList", "Observable"], 
+	 "Ideafy/TwoCents", "Amy/Stack-plugin", "Ideafy/Library/Edit", "Ideafy/Library/Sendmail", "Ideafy/Avatar", "Config", "WriteTwocent", "TwocentList", "Observable"], 
 	function(Widget, Store, Model, Event, Map, Utils, TwoCents, Stack, Edit, Sendmail, Avatar, Config, WriteTwocent, TwocentList, Observable){
 		return function IdeaDetailConstructor(){
 		//declaration
@@ -15,8 +15,8 @@ define("Ideafy/Public/Idea-detail",
 		             _twocents = new TwoCents(),
 		             _store = new Store(),
 		             _stack = new Stack(),
-		             _dom = Map.get("public-detail"),
-		             _domWrite = Map.get("public-writetwocents"),
+		             _dom = Map.get("ideas-detail"),
+		             _domWrite = Map.get("library-writetwocents"),
 		             _obs = new Observable(),
 		             _edit = new Edit(_obs),
 		             _sendMail = new Sendmail(_obs);
@@ -26,8 +26,8 @@ define("Ideafy/Public/Idea-detail",
 		         var dummy = new Widget();
 		         dummy.template='<div></div>';
 		              
-			_stack.getStack().add("#public-edit", _edit);
-			_stack.getStack().add("#public-sendmail", _sendMail);
+			_stack.getStack().add("#library-edit", _edit);
+			_stack.getStack().add("#library-sendmail", _sendMail);
 			_stack.getStack().add("dummy", dummy);
 			
 			_obs.watch("hide", function(){
@@ -37,14 +37,14 @@ define("Ideafy/Public/Idea-detail",
 			_twocentWriteUI.place(_domWrite);
 			_widget.plugins.addAll({
 			        "label" : new Model(_labels),
-				"publicdetail" : new Model(_store, {
+				"ideadetail" : new Model(_store, {
 				        // toggle header buttons right
 				        toggleRateEdit : function(authors){
-                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#public-edit") : this.setAttribute("href", "#public-favorites");       
+                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#library-edit") : this.setAttribute("href", "#library-favorites");       
                                         },
                                         // toggle header buttons left
                                         toggleTwocentShare : function(authors){
-                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#public-share") : this.setAttribute("href", "#public-2cents");       
+                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#library-share") : this.setAttribute("href", "#library-2cents");       
                                         },
                                         // display twocents writing interface if applicable
                                         displayWriteTwocent : function(authors){
@@ -133,7 +133,7 @@ define("Ideafy/Public/Idea-detail",
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
-				"publicdetailevent" : new Event(_widget),
+				"ideadetailevent" : new Event(_widget),
 				"detailstack" : _stack
 			});
 			_widget.alive(_dom);
@@ -160,21 +160,21 @@ define("Ideafy/Public/Idea-detail",
                                 var name = node.getAttribute("href");
                                 switch(name){
                                         
-                                        case "#public-2cents":
+                                        case "#library-2cents":
                                              _twocentWriteUI.reset(_store.get("id"));
-                                             document.getElementById("public-writetwocents").classList.remove("invisible");
+                                             document.getElementById("library-writetwocents").classList.remove("invisible");
                                              break;
                                         
-                                        case "#public-edit":
+                                        case "#library-edit":
                                                 _edit.reset(_store.get("id"));
-                                                _stack.getStack().show('#public-edit');
+                                                _stack.getStack().show('#library-edit');
                                              break;
                                         
-                                        case "#public-favorites":
+                                        case "#library-favorites":
                                              break;
                                              
-                                        case "#public-share":
-                                                _stack.getStack().show("#public-sendmail");
+                                        case "#library-share":
+                                                _stack.getStack().show("#library-sendmail");
                                              break;
                                 }       
                         };

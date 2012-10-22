@@ -87,7 +87,7 @@
           <div class="detail-stack" data-detailstack="destination">
             	<div class="idea-edit">
             		<div class="header blue-dark">
-            		<span>Modify your idea</span>
+            		<span data-editlabel="bind:innerHTML, modifyidealbl">Modify your idea</span>
 				</div>
               <form class="form">
                 <p><input type="text" class="input" data-editidea="bind: value, title"></p>
@@ -106,7 +106,7 @@
                 <p><input type="text" class="input"></p>
                 <p><input type="text" class="input"></p>
                 <p><textarea class="input"></textarea></p>
-                <!-- ce can't place div in p, p only accept inline elements-->
+                <!-- we can't place div in p, p only accept inline elements-->
                 <div class="sendmail-attach">
                   <div class="detail-header">
                     <div class="avatar" data-publicdetail="bind:setAvatar, authors"></div>
@@ -118,7 +118,13 @@
                     <p data-publicdetail="bind:innerHTML,description">In proident dolore; non aliqua, velit dolore cupidatat.</p>
                     <p data-publicdetail="bind:innerHTML,solution">In proident dolore; non aliqua, velit dolore cupidatat.</p>
                   </div>
-                  <div class="detail-footer"></div>
+                  <div class="detail-footer">
+                  	<p class="submit">
+                		<label class="publish pressed-btn" data-sendevent="listen:touchend, upload">Send</label>
+                		<label class="cancel pressed-btn" data-sendevent="listen:touchend, cancel">Cancel</label>
+                		<label class="editerror" data-errormsg="bind:setError, error"></label>
+                	</p>
+                  </div>
                 </div>
               </form>
             </div>
@@ -134,7 +140,7 @@
               <h2 data-publicdetail="bind:innerHTML,doc.title">Taiaut</h2>
               <span class="date" data-publicdetail="bind:date, doc.creation_date">jj/mm/aa</span>
               <br>
-              <span class="author" data-publicdetail="bind:innerHTML,doc.authornames">Taiaut</span>
+              <span class="author" data-publicdetail="bind:setAuthor,doc.authornames">Taiaut</span>
               <span class='commentlbl' data-labels='bind: innerHTML, ideawrotelbl'>wrote:</span>
             </div>
             <div class="detail-body">
@@ -172,10 +178,105 @@
       	<div class="stack" data-librarystack="destination">
       		<div id = "ideas">  		
     	  		<div id="idea-list" class="list">
-      				<div class="header blue-light"></div>
+      				<div class="header blue-light">
+            			<div class="option left" data-ideascontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div>
+            			<span data-label="bind: innerHTML, idealistheadertitle">My Ideas</span>
+            			<div class="option right" data-ideasevent="listen: touchstart, plus"></div>
+          			</div>
+          			<div class="overflow" data-idealiststack="destination" data-ideascontrol="radio:li,selected,touchstart,selectStart">
+            			<div class="tools">
+             				<input class="search" type="text" data-label="bind: placeholder, searchprivateplaceholder" data-ideasevent="listen: keypress, search">
+             				<div name="#list-date" class="tools-button bydate pushed" data-ideasevent="listen:touchstart,show"></div>
+             				<div name="#list-rating" class="tools-button byrating" data-ideasevent="listen:touchstart,show"></div>
+            			</div>
+
+          			</div>
       			</div>
-      			<div id="idea-detail" class="details">
-      				<div class="header blue-dark"></div>
+      			
+      			<div id="ideas-detail" class="details">
+      				<div class="detail-stack" data-detailstack="destination">
+      					<div class="idea-edit">
+            				<div class="header blue-dark">
+            					<span data-editlabel="bind:innerHTML, modifyidealbl">Modify your idea</span>
+							</div>
+              				<form class="form">
+                				<p><input type="text" class="input" data-editidea="bind: value, title"></p>
+                				<p><textarea class="description input" data-editidea="bind: value, description"></textarea></p>
+                				<p><textarea class="solution input" data-editidea="bind: value, solution"></textarea></p>
+                				<p class="submit">
+                					<label class="publish pressed-btn" data-editevent="listen:touchend, upload">Publish</label>
+                					<label class="cancel pressed-btn" data-editevent="listen:touchend, cancel">Cancel</label>
+                					<label class="editerror" data-errormsg="bind:setError, error"></label>
+                				</p>
+              				</form>
+            			</div>
+            			<div class="idea-sendmail">
+            				<div class="header blue-dark">
+            					<a href="#public-2cents" class="option left"></a>
+            					<span>Idea's Details</span>
+            					<a href="#public-favorites" class="option right"></a>
+          					</div>
+              				<form class="form">
+                				<p><input type="text" class="input"></p>
+                				<p><input type="text" class="input"></p>
+                				<p><textarea class="input"></textarea></p>
+                				<!-- we can't place div in p, p only accept inline elements-->
+                				<div class="sendmail-attach">
+                  					<div class="detail-header">
+                    					<div class="avatar" data-publicdetail="bind:setAvatar, authors"></div>
+                    					<h2 data-publicdetail="bind:innerHTML,title"></h2>
+                    					<span class="date" data-publicdetail="bind:date, creation_date">jj/mm/aa</span>
+                    					<span class="author" data-publicdetail="bind:innerHTML,authornames">Taiaut</span>
+                  					</div>
+                  					<div class="detail-body">
+                    					<p data-publicdetail="bind:innerHTML,description">In proident dolore; non aliqua, velit dolore cupidatat.</p>
+                    					<p data-publicdetail="bind:innerHTML,solution">In proident dolore; non aliqua, velit dolore cupidatat.</p>
+                  					</div>
+                  					<div class="detail-footer">
+                  						<p class="submit">
+                							<label class="publish pressed-btn" data-sendevent="listen:touchend, upload">Send</label>
+                							<label class="cancel pressed-btn" data-sendevent="listen:touchend, cancel">Cancel</label>
+                							<label class="editerror" data-errormsg="bind:setError, error"></label>
+                						</p>	
+                  					</div>
+                				</div>
+              				</form>
+            			</div>
+            		</div>
+            		
+      				<div class="idea-detail">
+          					<div class="header blue-dark">
+            					<a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a>
+            					<span data-label="bind: innerHTML, ideadetailsheadertitle">Idea's Details</span>
+            					<a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a>
+          					</div>
+            				<div class="detail-header">
+              					<div class="avatar" data-ideadetail="bind:setAvatar, doc.authors"></div>
+              					<h2 data-ideadetail="bind:innerHTML,doc.title">Taiaut</h2>
+              					<span class="date" data-ideadetail="bind:date, doc.creation_date">jj/mm/aa</span>
+              					<br>
+              					<span class="author" data-ideadetail="bind:setAuthor,doc.authornames">Taiaut</span>
+              					<span class='commentlbl' data-labels='bind: innerHTML, ideawrotelbl'>wrote:</span>
+            				</div>
+            				<div class="detail-body">
+              					<p data-ideadetail="bind:innerHTML,doc.description">In proident dolore; non aliqua, velit dolore cupidatat.</p>
+              					<p data-ideadetail="bind:innerHTML,doc.solution">In proident dolore; non aliqua, velit dolore cupidatat.</p>
+            				</div>
+            				<div class="detail-footer">
+            					<div class ="rateIdea">
+                					<a class="item-acorn"></a>
+               						<div class="rating" data-ideadetail="bind:setRating,value.rating"></div>	
+               						<div class="publicButton" data-ideadetail="bind: toggleVoteButton, doc.votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-labels="bind: innerHTML, votebuttonlbl">Vote</div>
+                				</div>
+                				<div id="ratingPopup" class="popup">
+                					<ul class="acorns" data-vote="foreach">
+                						<li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend: castVote"></li> 
+                					</ul>
+                				</div>
+            				</div>
+          					<div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, doc.authors"></div>
+            				<div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, doc.twocents"></div>
+          				</div>	
       			</div>
 			</div>
 			<div id = "sessions">  		
@@ -306,10 +407,10 @@
 
   <script src="js/src2/public/detail-stack/public-edit.js"></script>
   <script src="js/src2/public/detail-stack/public-sendmail.js"></script>
-  <script src="js/src2/public/twocents/twocents.js"></script>
-  <script src="js/src2/public/twocents/writetwocent.js"></script>
-  <script src="js/src2/public/twocents/twocentlist.js"></script>
-  <script src="js/src2/public/twocents/twocentreply.js"></script>
+  <script src="js/src2/twocents/twocents.js"></script>
+  <script src="js/src2/twocents/writetwocent.js"></script>
+  <script src="js/src2/twocents/twocentlist.js"></script>
+  <script src="js/src2/twocents/twocentreply.js"></script>
   
   <script src="js/src2/public/idea-detail.js"></script>
   <script src="js/src2/public/public.js"></script>
@@ -332,6 +433,10 @@
   
   <script src="js/src2/library/library.js"></script>
   <script src="js/src2/library/ideas/ideas.js"></script>
+  <script src="js/src2/library/ideas/idea-detail.js"></script>
+  <script src="js/src2/library/ideas/lists/idealist.js"></script>
+  <script src="js/src2/library/ideas/detail-stack/library-edit.js"></script>
+  <script src="js/src2/library/ideas/detail-stack/library-sendmail.js"></script>
   <script src="js/src2/library/sessions/sessions.js"></script>
   <script src="js/src2/library/decks/decks.js"></script>
 

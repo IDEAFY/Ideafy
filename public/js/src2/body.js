@@ -194,6 +194,10 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                 event.target.classList.remove("pressed");        
         };
         
+        _body.preventScrolling = function(event){
+                event.preventDefault();    
+        };
+        
         _body.init = function() {
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         Config.set("uid", '"' + _user.get("_id") + '"');

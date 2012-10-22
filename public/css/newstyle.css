@@ -1669,17 +1669,33 @@ textarea.solution {
 }
 
 .postit{
-    width: 142px;
+    width: 139px;
     height: 141px;
     padding: 20px;
     border: none;
     font-family: Pacifico;
-    font-size: 14px;
+    font-size: 16px;
+    text-align: center;
     color: #4D4D4D;
-    background-size: 182px 161px;
+    background-size: 175px 161px;
     background-position: center center;
     background-repeat: no-repeat;
 }
+
+.wbmain{
+    width: 717px;
+    height: 438px; 
+    overflow-y: scroll;   
+}
+
+.wb-item{
+    width: 139px;
+    height: 141px;
+    margin-top: 20px;
+    float: left;
+    margin-bottom: 5px;
+}
+
 
 .choosecolorlbl{
     width: 190px;

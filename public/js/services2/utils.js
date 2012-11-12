@@ -136,6 +136,24 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                                                         }
                                                 });
 			                     break;
+			             case "date":
+			                     array.sort(function(x,y){
+			                             var _dx = x[prop], _dy = y[prop],
+			                                  d1 = new Date(_dx[0], _dx[1], _dx[2]),
+			                                  d2 = new Date(_dy[0], _dy[1], _dy[2]);
+			                             
+			                             if (descending){
+			                                     if (d1<d2) return 1;
+			                                     if (d1>d2) return -1;
+			                                     return 0;
+			                             }
+			                             else {
+			                                     if (d1<d2) return -1;
+			                                     if (d1>d2) return 1;
+			                                     return 0;
+			                             }
+			                     });
+			                     break;
 			             default:
 			                     array.sort(function(x, y){
 			                        var _x = x[prop], _y=y[prop];
@@ -170,9 +188,37 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 			                     break;
 			     }
 			        
-			},
-
-		 getAvatarById : function(id){
+		},
+		
+		/**
+                * A function to upload a file on the server
+                * @Param {String} url the URL to send the file ot
+                * @Param {Object} body the data to upload
+                * @Param {Store} progress a store used to display upload progress
+                * @Param {function} onEnd the callback when the request is complete
+                */
+                uploadFile : function(url, body, progress, onEnd){
+                                
+                             var req = new XMLHttpRequest();
+                             
+                             req.open('POST', url);
+                             
+                             req.onreadystatechange = function(){
+                                     if(req.readyState === 4 && onEnd){
+                                             onEnd(req);
+                                     }
+                             };
+                             
+                             req.upload.onprogress = function(e){
+                                     if(e.lengthComputable){
+                                             progress.set("status", Math.round(e.loaded/e.total*100));
+                                     }
+                             };
+                             
+                             req.send(body);
+                  },	
+			
+                getAvatarById : function(id){
 		      var promise = new Promise,
 		          avatars = Config.get("avatars");
 		      

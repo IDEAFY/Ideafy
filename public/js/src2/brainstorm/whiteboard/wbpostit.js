@@ -12,6 +12,7 @@ define("Ideafy/Whiteboard/Postit", ["Olives/OObject", "Store", "Olives/Model-plu
                             {name: "yellow", color: "#F2E520",img: "postItYellow.png", selected: true},
                             {name: "orange", color: "#F27B3D",img: "postItOrange.png", selected: false}
                             ]),
+                   _pos = null, // the position of the postit
                    _postit = new Store({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png","marker": "#4D4D4D"}});
                    
                    _widget.plugins.addAll({
@@ -58,7 +59,14 @@ define("Ideafy/Whiteboard/Postit", ["Olives/OObject", "Store", "Olives/Model-plu
                 };
                 
                 _widget.post = function(event, node){
-                        $store.alter("push", JSON.parse(_postit.toJSON()));
+                        // add new post or replace previous one with new content
+                        if (!_pos && _pos !== 0){
+                                $store.alter("push", JSON.parse(_postit.toJSON()));
+                        }
+                        else {
+                                $store.update(_pos, "content", _postit.get("content"));
+                                $store.update(_pos, "style", _postit.get("style"));
+                        }
                         node.classList.remove("pressed");
                         $exit("postit");  
                         // reset postit
@@ -66,16 +74,18 @@ define("Ideafy/Whiteboard/Postit", ["Olives/OObject", "Store", "Olives/Model-plu
                 };
                 
                 _widget.reset = function reset($pos){
-                        if (!$pos && $pos !== 0){
+                        _pos = $pos;
+                        if (!_pos && _pos !== 0){
                                 _postit.reset({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png", "marker": "#4D4D4D"}});
                         }
                         else{
-                               _postit.reset($content.get($pos)); 
+                               _postit.reset($store.get($pos)); 
                         }
                 };
                 
                 _widget.del = function(event, node){
-                        
+                        // check if postit has been previously saved -- if it's a new one delete == cancel
+                        $exit("postit");        
                 };
                 
                 return _widget;      

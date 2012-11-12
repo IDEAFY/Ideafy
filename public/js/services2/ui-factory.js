@@ -25,7 +25,7 @@ define("Ideafy/SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Amy/Control-
                         
                         this.setCurrentWidget = function setCurrentWidget(event){
                                 var ui = event.target.getAttribute("name");
-                                $setWidget(ui);
+                                if ($setWidget) {$setWidget(ui);}
                                 setTimeout(function(){toggleActive(false);}, 500);
                         };
                         

@@ -1657,6 +1657,10 @@ textarea.solution {
     -webkit-box-shadow: 0px 3px 5px 1px rgba(23,41,48,0.4);
 }
 
+.import .wbpostit{
+    height:245px;
+}
+
 .postit-cancel{
     float: right;
     width: 10px;
@@ -1682,10 +1686,25 @@ textarea.solution {
     background-repeat: no-repeat;
 }
 
+.picframe{
+    display: table-cell;
+    width: 186px;
+    height: 186px;
+    border: 2px solid white;
+    -webkit-border-radius:3px;
+   -webkit-box-shadow: 0px 3px 5px 1px rgba(23,41,48,0.4);
+   background: black;
+   text-align:center;
+   vertical-align:middle;
+}
+
 .wbmain{
+    overflow-y: scroll;
+}
+
+.wbmain, .wbdrawing{
     width: 717px;
-    height: 438px; 
-    overflow-y: scroll;   
+    height: 438px;   
 }
 
 .wb-item{
@@ -1746,6 +1765,31 @@ textarea.solution {
 
 .delpostit.pressed{
     background: url('../img/brainstorm/buttonDeleteActive.png') no-repeat center center;
+}
+
+.wbdrawing{
+    background: white;
+}
+
+.drawingtools{
+        height: 438px;
+        float:left;
+        width:60px;
+        background:#4D4D4D;
+}
+
+.pencil, .erase, .canceldrawing, .savedrawing{
+    width:60px;
+    height:40px;
+}
+
+.canvas{
+    float:left;
+    background:white;
+    height: 438px;
+    width: 647px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .toolbox{

@@ -15,7 +15,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                      }),
                              _tools = new Store({"postit": "inactive"}, {"import": "inactive"}, {"drawing": "inactive"}),
                             _wbContent = new Store([]), // a store of whiteboard objects
-                            _wb = new Whiteboard("scenario", _wbContent, _tools);
+                            _wb = new Whiteboard("scenario", _wbContent, _tools, $session.get("_id"));
                              
                         
                         
@@ -147,7 +147,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         };
                         
                         // init interface
-                        // Initializing the QuickSetup UI
+                        // Initializing the QuickScenario UI
                         _widget.reset = function reset(){
                                 // reset timer
                                 _start = null;
@@ -196,7 +196,13 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 }        
                         });
                         
-                        CARDS = _cards;
+                        // upload whiteboard content to database as soon as it is updated
+                        ["added", "deleted", "updated"].forEach(function(change){
+                                _wbContent.watch(change, function(){
+                                        $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
+                                        $session.upload();        
+                                });  
+                        });
                         
                         // Return
                         return _widget;

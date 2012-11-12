@@ -1,7 +1,7 @@
 define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin" ],
         function(Widget, Model, Event){
                 
-           return function WBMainConstructor($store){
+           return function WBMainConstructor($store, $tools, $select){
              
                 var _widget = new Widget();
                 
@@ -37,8 +37,9 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                         var id = node.getAttribute("data-wbmain_id"),
                             type = $store.get(id).type;
                             
-                        _tools.set(type, "active");
-                }
+                        $tools.set(type, "active");
+                        $select(type, id);
+                };
                 
                 return _widget;      
                    

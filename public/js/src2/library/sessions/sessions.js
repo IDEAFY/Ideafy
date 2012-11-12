@@ -162,8 +162,8 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                       
                       node.querySelector(".actionbar").setAttribute("style", "display: block;");
                       
-                      // session can only be deleted if initiated by user and if there was no other participant
-                      if (_sid.participants.length>1 || _sid.participants[0] != _user.get("_id")){
+                      // session cannot be deleted if initiated by another user or if has multiple users or if it is the current session in progress
+                      if (_sid.participants.length>1 || _sid.participants[0] != _user.get("_id") || _sid.id === _user.get("sessionInProgress").id){
                         node.querySelector(".deletesession").setAttribute("style", "display: none;");        
                       }
                       else node.querySelector(".deletesession").setAttribute("style", "display: inline-block;"); 

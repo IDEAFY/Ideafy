@@ -16,7 +16,7 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                 "model" : new Model(_session, {
                                         setTitle : function(initiator){
                                                 var _now = new Date();
-                                                if (initiator && initiator.username) this.setAttribute("placeholder", initiator.username+_labels.get("quickstarttitleplaceholder")+_now.toLocaleDateString());
+                                                if (initiator && initiator.username) this.setAttribute("placeholder", initiator.username+_labels.get("quickstarttitleplaceholder"));
                                         }
                                 }),
                                 "quickstartevent" : new Event(_widget)

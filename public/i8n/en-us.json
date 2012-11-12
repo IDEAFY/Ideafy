@@ -76,7 +76,7 @@
 	"quickbmode" : "Quick mode session",
 	"quickstart" : "Name your session to retrieve it easily",
 	"quickstarttitle" : "Name your session",
-	"quickstarttitleplaceholder" : "'s session, ",
+	"quickstarttitleplaceholder" : "'s session",
 	"quickstartdesc": "Enter a description of your session",
 	"quickstartdescplaceholder": "Date, context, purpose, ...",
 	"nextbutton": "Next",

@@ -150,7 +150,6 @@ define("Ideafy/CardPopup", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                         },
                                         setCaret : function(caret){
                                                 var top, y= cardDetails.get("position").y;
-                                                console.log(y);
                                                 (y > 340)? top = 180 : top = 60;
                                                 (caret) ? this.setAttribute("style", "display: inline-block; margin-top:"+top+"px;") : this.setAttribute("style", "display: none;");     
                                         },

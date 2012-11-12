@@ -15,7 +15,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                      }),
                              _tools = new Store({"postit": "inactive"}, {"import": "inactive"}, {"drawing": "inactive"}),
                             _wbContent = new Store([]), // a store of whiteboard objects
-                            _wb = new Whiteboard("scenario", _wbContent, _tools, $session.get("_id"));
+                            _wb = new Whiteboard("scenario", _wbContent, _tools);
                              
                         
                         
@@ -127,15 +127,21 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         _popupUI = new CardPopup(_widget.closePopup);
                         
                         _widget.post = function(event, node){
-                                _wb.selectScreen("postit");        
+                                _wb.selectScreen("postit");
+                                _tools.set("import", "inactive");
+                                _tools.set("drawing", "inactive");        
                         };
                         
                         _widget.import = function(event, node){
                                 _wb.selectScreen("import");
+                                _tools.set("postit", "inactive");
+                                _tools.set("drawing", "inactive");
                         };
                         
                         _widget.draw = function(event, node){
                                 _wb.selectScreen("drawing");
+                                _tools.set("import", "inactive");
+                                _tools.set("postit", "inactive");
                         };
                         
                         _widget.exitTool = function exitTool(name){
@@ -153,6 +159,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 _start = null;
                                                         
                                 // reset whiteboard (if sip, need to show existing content)
+                                _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("scenarioWB"));
                                 console.log(_wbContent);
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");

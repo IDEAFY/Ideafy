@@ -35,7 +35,6 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                             _canvas.height = _height;
                             // draw canva
                             _ctx.drawImage(img, 0, 0, _width, _height);
-                            document.getElementById("postpic").classList.remove("invisible");
                     },
                     _uploadCanvas = function(){
                             var _url = '/upload',
@@ -67,21 +66,24 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                 });
                 
                 _widget.cancel = function(event,node){
-                        $exit("postit");        
+                        $exit("import");        
                 };
                 
                 _widget.preview = function(event, node){
                         
-                        var _img = document.createElement("img"),
+                        var _img = new Image(),
                             _reader = new FileReader();
                         
                         // first read the file to memory, once loaded resize and display upload button
                         _reader.onload = function(e) {
                                 _img.src = e.target.result;
                                 // timeout is needed to render image and obtain its dimensions
-                                setTimeout(_drawImage(_img), 500);
+                                setTimeout(function(){
+                                        _drawImage(_img);
+                                        }, 300);
                         };
                         _reader.readAsDataURL(node.files[0]);
+                        document.getElementById("postpic").classList.remove("invisible");
                 };
                 
                 _widget.post = function(event, node){
@@ -95,7 +97,7 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                                 $store.update(_pos, "content", _postit.get("content"));
                         }
                         node.classList.remove("pressed");
-                        $exit("postit");  
+                        $exit("import");  
                         // reset postit
                         _widget.reset();   
                 };

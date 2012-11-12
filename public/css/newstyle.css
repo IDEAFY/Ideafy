@@ -1704,7 +1704,7 @@ textarea.solution {
 
 .wbmain, .wbdrawing{
     width: 717px;
-    height: 438px;   
+    height: 438px;  
 }
 
 .wb-item{
@@ -1769,6 +1769,7 @@ textarea.solution {
 
 .wbdrawing{
     background: white;
+    border-radius:10px; 
 }
 
 .drawingtools{
@@ -1776,6 +1777,8 @@ textarea.solution {
         float:left;
         width:60px;
         background:#4D4D4D;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
 }
 
 .pencil, .erase, .canceldrawing, .savedrawing{

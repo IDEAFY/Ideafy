@@ -1714,6 +1714,14 @@ textarea.solution {
     margin-top: 5px;    
 }
 
+.import .uploadprogress{
+    float: right;
+    margin-right: 5px;
+    font-family: Helvetica;
+    font-size: small;
+    color: #292929;
+}
+
 .postit-cancel{
     float: right;
     width: 20px;

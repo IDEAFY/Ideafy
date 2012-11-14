@@ -16,13 +16,13 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                 "model" : new Model(_session, {
                                         setTitle : function(initiator){
                                                 var _now = new Date();
-                                                if (initiator && initiator.username) this.setAttribute("placeholder", initiator.username+_labels.get("quickstarttitleplaceholder"));
+                                                if (initiator && initiator.username) this.setAttribute("placeholder", _labels.get("quickstarttitleplaceholderpre")+initiator.username+_labels.get("quickstarttitleplaceholderpost"));
                                         }
                                 }),
                                 "quickstartevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quickstart"><div class="previousbutton" data-quickstartevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickstart" data-quickstartevent="listen:touchstart, toggleProgress"></div><form class="quickstart-form"><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="quickstart-title" name="title" data-model="bind:value, title; bind: setTitle, initiator" data-labels="bind: placeholder, quickstarttitleplaceholder"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="quickstart-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div>';
+                        _widget.template = '<div id = "quickstart"><div class="previousbutton" data-quickstartevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickstart" data-quickstartevent="listen:touchstart, toggleProgress"></div><form class="quickstart-form"><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="quickstart-title" name="title" data-model="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="quickstart-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div>';
                         
                         _widget.alive(Map.get("quickstart"));
                         
@@ -36,7 +36,7 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                 _session.set("step", "quicksetup");
                                 // if title field is empty, set placeholder value as the default title
                                 if (_session.get("title") === ""){
-                                        _session.set("title", _session.get("initiator").username+_labels.get("quickstarttitleplaceholder")+new Date(_session.get("startTime")).toLocaleDateString());      
+                                        _session.set("title", _labels.get("quickstarttitleplaceholderpre")+_session.get("initiator").username+_labels.get("quickstarttitleplaceholderpost"));      
                                 }
                                 
                                 // IMPORTANT: the new session doc is created in CDB and the session document is synched for the entire session

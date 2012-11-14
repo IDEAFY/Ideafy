@@ -198,23 +198,18 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                 * @Param {function} onEnd the callback when the request is complete
                 */
                 uploadFile : function(url, body, progress, onEnd){
-                                
                              var req = new XMLHttpRequest();
-                             
                              req.open('POST', url);
-                             
                              req.onreadystatechange = function(){
                                      if(req.readyState === 4 && onEnd){
                                              onEnd(req);
                                      }
                              };
-                             
                              req.upload.onprogress = function(e){
                                      if(e.lengthComputable){
                                              progress.set("status", Math.round(e.loaded/e.total*100));
                                      }
                              };
-                             
                              req.send(body);
                   },	
 			

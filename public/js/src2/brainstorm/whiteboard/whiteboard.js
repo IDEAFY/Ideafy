@@ -4,7 +4,6 @@ define("Ideafy/Whiteboard", ["Amy/Stack-plugin", "Ideafy/Whiteboard/Default", "I
                 function WhiteboardConstructor($type, $store, $tools){
                         
                         var _wbContent = new Store([]), // a store of whiteboard objects
-                            _sid, //session id is used to upload data to the server (directory named after session)
                             _stack = this;
                             
                         this.selectScreen = function selectScreen(name, param){
@@ -24,14 +23,16 @@ define("Ideafy/Whiteboard", ["Amy/Stack-plugin", "Ideafy/Whiteboard/Default", "I
                         };
                         
                         this.setSessionId = function(sid){
-                                _sid = sid;
+                                _stack.getStack().get("main").setSessionId(sid);
+                                _stack.getStack().get("import").setSessionId(sid);
+                                _stack.getStack().get("drawing").setSessionId(sid);
                         };
                         
                         this.getStack().add("default", new Default($type));
                         this.getStack().add("main", new Main($store, $tools, this.selectScreen));
                         this.getStack().add("postit", new Postit($store, this.exitScreen));
-                        this.getStack().add("import", new Import($store, _sid, this.exitScreen));
-                        this.getStack().add("drawing", new Drawing($store, _sid, this.exitScreen));
+                        this.getStack().add("import", new Import($store, this.exitScreen));
+                        this.getStack().add("drawing", new Drawing($store, this.exitScreen));
                         
                         
                 }

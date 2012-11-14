@@ -85,6 +85,12 @@ define("Ideafy/Whiteboard/Postit", ["Olives/OObject", "Store", "Olives/Model-plu
                 
                 _widget.del = function(event, node){
                         // check if postit has been previously saved -- if it's a new one delete == cancel
+                        if (_pos){
+                                $store.del(_pos);
+                        }
+                        node.classList.remove("pressed");
+                        // reset postit
+                        _widget.reset();
                         $exit("postit");        
                 };
                 

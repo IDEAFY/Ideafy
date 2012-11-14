@@ -47,8 +47,43 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 .use(redirect())
                 .use(connect.bodyParser({ uploadDir:__dirname+'/public/upload', keepExtensions: true }))
                 .use('/upload', function(req, res){
-                
-                        var avatarFile = req.files,
+                        var type = req.body.type,
+                            path = __dirname+'/attachments/',
+                            filename,
+                            now,
+                            dataurl,
+                            sid;
+                        
+                        if (type === 'postit'){
+                                sid = req.body.sid;
+                                now = new Date();
+                                filename = path+sid+'/'+req.body.filename;
+                                dataurl = req.body.dataString;
+                                
+                                fs.exists(path+sid, function(exists){
+                                        if (!exists) {
+                                                fs.mkdir(path+sid, 0777, function(err){
+                                                        if (err) {throw(err);}
+                                                        fs.writeFile(filename, dataurl, function(err){
+                                                                if (err) {throw(err);}
+                                                                res.write("ok");
+                                                                res.end();
+                                                        });
+                                                });
+                                        }
+                                        else {
+                                                fs.writeFile(filename, dataurl, function(err){
+                                                        if (err) {throw(err);}
+                                                        res.write("ok");
+                                                        res.end();
+                                                });
+                                        }       
+                                });
+                        }
+                        
+                        
+                        
+                        /* var avatarFile = req.files,
                             uid = Object.keys(avatarFile)[0],
                             avatarFileName=uid+"@@"+avatarFile[uid].name,
                             newFile = __dirname+'/public/attachments/'+avatarFileName;
@@ -67,7 +102,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 // update avatar in couchdb
                                 updateAvatar();
                                 fs.unlink(avatarFile[uid].path);
-                        }); 
+                        });  */
                 })      
                 .use(function(req, res, next) {
                         var parse = url.parse(req.url, false),
@@ -293,6 +328,21 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         }
                 }, function(result) {
                         console.log(result)
+                });
+        });
+        
+        // retrieve an attachment document (e.g brainstorming session)
+        olives.handlers.set("GetFile", function(json, onEnd){
+                var _filename =  __dirname+'/attachments/'+ json.sid+'/'+json.filename;;
+                    
+                fs.readFile(_filename, 'utf8', function(error, data){
+                        if (data){
+                                onEnd(data);
+                        }
+                        else {
+                                console.log(error);
+                                onEnd({"error": error});
+                        }                
                 });
         });
         

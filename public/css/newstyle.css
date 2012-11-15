@@ -1862,21 +1862,122 @@ textarea.solution {
         height: 438px;
         float:left;
         width:60px;
-        background:#4D4D4D;
+        margin-right: 5px;
+        background:#1A1A1A;
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
+        text-align:center;
+        color:white;
+        font-family: Helvetica;
+        font-size:10px;
+        -webkit-box-shadow: 0 0 5px 1px gray;
 }
 
-.pencil, .erase, .canceldrawing, .savedrawing{
+.pencil, .erase, .clear, .canceldrawing, .deletedrawing, .savedrawing{
     width:60px;
-    height:40px;
+    height:39px;
+    line-height:39px;
+    background-repeat: no-repeat;
+    background-position:center center;
+    background-size: 20px 20px;
+}
+.pencil, .erase, .clear, .canceldrawing, .deletedrawing{
+    border-bottom: 1px solid white;
 }
 
-.canvas{
+.pencil.selected, .erase.selected, .canceldrawing.selected, .deletedrawing.selected, .savedrawing.selected{
+    background-repeat: no-repeat;
+    background-position:center center;
+    background-size: 20px 20px;    
+}
+
+.pencil.selected, .erase.selected{
+    background: white;    
+}
+
+.drawinglabel{
+    height: 18px;
+    border-bottom: 1px solid white;
+    line-height: 18px;
+}
+
+.pencil{
+    border-top-left-radius: 10px;
+    background-image: url('../img/brainstorm/penToolDisable20.png');
+}
+
+.pencil.selected{
+    background-image: url('../img/brainstorm/penToolActive20.png');
+}
+
+.erase{
+    background-image: url('../img/brainstorm/eraserToolDisable.png');    
+}
+
+.erase.selected{
+    background-image: url('../img/brainstorm/eraserToolActive20.png');    
+}
+
+.vertical{
+    -webkit-appearance:none;
+    z-index:500;
+    background-color: silver;
+    width: 160px;
+    height:20px;
+    -webkit-transform:rotate(270deg);
+}
+
+.vertical::-webkit-slider-thumb {
+     -webkit-appearance: none;
+    background-color: #666;
+    opacity: 0.5;
+    width: 20px;
+    height: 26px;
+}
+
+circle.stroke {
+    stroke:rgba(145,145,145,0.7);
+}
+
+.pencilpreview, .bgpreview{
+    width:36px;
+    height:36px;
+    display: inline-block;
+    margin-top: 4px;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+}
+
+.pencilpreview{
+    border-radius: 18px;
+}
+
+.bgpreview{
+    border-radius:3px;
+}
+
+.canceldrawing{
+    background-image: url('../img/brainstorm/hideTool9x14.png');    
+}
+
+.deletedrawing{
+    background-image: url('../img/brainstorm/whiteCrossDelete.png');    
+}
+
+.savedrawing{
+    background: #B1C59B;
+    background-image: url('../img/brainstorm/continueactive.png');
+}
+
+#pencilcolor, #pencilbgcolor{
+    width:60px;
+    height:61px;   
+}
+
+.drawingcanvas{
     float:left;
     background:white;
     height: 438px;
-    width: 647px;
+    width: 652px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }

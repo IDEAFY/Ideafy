@@ -108,8 +108,6 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         _widget.sortSessions(mode);      
               };
               
-              OObj = _widget;
-              
               _widget.sortSessions = function sortSessions(mode){
                        var _scope;
                        // scope of search (all items or search results)
@@ -136,6 +134,10 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         _sessions.reset(_scope);        
               };
               
+              this.acceptinput = function(event, node){
+                node.removeAttribute("readonly");        
+              };
+              
               this.search = function(event, node){     
                 var _resDiv = document.getElementById("sessionsearchresult");
                 
@@ -145,7 +147,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         _currentSearch = node.value;
                         if (_currentSearch === ""){
                                 // make sure list is sorted according to current sort status
-                                 this.sortSessions(_currentSort);
+                                 _widget.sortSessions(_currentSort);
                                 _sessions.reset(_sessionData);
                         }
                         else{
@@ -259,8 +261,6 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               _widget.alive(_dom);
               
               // init session data
-              SESSIONSTORE = _sessionsCDB;
-              
               _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
                                 _widget.resetSessionData();
                                 _sessionsCDB.watch("added", function(){

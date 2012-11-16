@@ -16,6 +16,7 @@ html, body {
   background:rgba(0,0,0,0.65) url('../img/bg.png') repeat;
   width:1024px;
   height:748px;
+  position:fixed;
 }
 
 ul{
@@ -1186,7 +1187,7 @@ textarea.solution {
 
 .session-tools .search{
     width: 400px;
-    margin: 15px 0px 0px 20px;
+    margin: 15px 0px 0px 265px;
 }
 
 
@@ -1885,14 +1886,11 @@ textarea.solution {
     border-bottom: 1px solid white;
 }
 
-.pencil.selected, .erase.selected, .canceldrawing.selected, .deletedrawing.selected, .savedrawing.selected{
+.pencil.selected, .erase.selected{
+    background: white;
     background-repeat: no-repeat;
     background-position:center center;
-    background-size: 20px 20px;    
-}
-
-.pencil.selected, .erase.selected{
-    background: white;    
+    background-size: 20px 20px; 
 }
 
 .drawinglabel{
@@ -1915,7 +1913,12 @@ textarea.solution {
 }
 
 .erase.selected{
-    background-image: url('../img/brainstorm/eraserToolActive20.png');    
+    background-image: url('../img/brainstorm/eraserToolActive.png');    
+}
+
+.clear.selected{
+    background: white;
+    color: #1A1A1A;
 }
 
 .vertical{
@@ -1951,21 +1954,84 @@ circle.stroke {
     border-radius: 18px;
 }
 
+#pencilcolors, #pencilbgcolors{
+    position:absolute;
+    left: 346px;
+    padding: 15px 15px 15px 0px;
+    height: 30px;
+    background: #333333;
+    z-index: 500;
+    -webkit-box-shadow: 0 0 5px 1px gray;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#pencilcolors{
+    top: 253px;
+}
+
+#pencilbgcolors{
+    top: 315px;
+}
+
+li.color-item{
+    margin-left:15px;
+    float: left;
+}
+
+.color-item div{
+    display: block;
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    line-height: 30px;
+    text-align:center;
+    line-height:30px;
+    font-size:20px;
+    font-weight: bold;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+}
+
+#pencilcolors div{
+    border-radius:30px;
+}
+
+#pencilbgcolors div{
+    border-radius:5px;
+}
+
 .bgpreview{
     border-radius:3px;
 }
 
 .canceldrawing{
-    background-image: url('../img/brainstorm/hideTool9x14.png');    
+    background-image: url('../img/brainstorm/hideTool9x14.png');
+    background-size: 12px 12px;   
 }
 
 .deletedrawing{
-    background-image: url('../img/brainstorm/whiteCrossDelete.png');    
+    background-image: url('../img/brainstorm/whiteCrossDelete.png');
+    background-size: 12px 12px;     
 }
 
 .savedrawing{
     background: #B1C59B;
     background-image: url('../img/brainstorm/continueactive.png');
+    background-repeat: no-repeat;
+    background-position:center center;
+    background-size: 40px 40px;
+    height:40px;
+    border-bottom-left-radius:10px; 
+}
+
+.canceldrawing.selected, .deletedrawing.selected{
+    -webkit-box-shadow: inset 0 0 10px 1px rgba(255,255,255,0.6);
+}
+
+.savedrawing.selected{
+    background: #6C8B4D;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+    background-repeat: no-repeat;
 }
 
 #pencilcolor, #pencilbgcolor{

@@ -93,7 +93,7 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                         }),
                         "importprogress" : new Model(_progress, {
                                 "showProgress" : function(status){
-                                        this.innerHTML = status+'%';
+                                        (status)?this.innerHTML = status+'%':this.innerHTML="";
                                 }
                         }),
                         "importevent" : new Event(_widget)        
@@ -148,6 +148,7 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                                 node.classList.remove("pressed"); 
                                 // reset postit & clear canvas
                                 _widget.reset();
+                                _progress.reset({"type": "import", "content":""});
                                 _clearCanvas();
                                 $exit("import");
                         });  

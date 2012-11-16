@@ -1,9 +1,10 @@
-define("Ideafy/Whiteboard/Drawing", ["Olives/OObject", "Map", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Store"],
-        function(Widget, Map, Config, Model, Event, Store){
+define("Ideafy/Whiteboard/Drawing", ["Olives/OObject", "Map", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "Promise", "Ideafy/Utils"],
+        function(Widget, Map, Config, Model, Event, Store, Promise, Utils){
                 
            return function DrawingConstructor($store, $exit){
              
                 var _widget = new Widget(),
+                    _pos = null,
                     _lines = [],
                     _pencil = new Store({color: "#4D4D4D", size:"1", cap:"round", bg: "white", mode:"pencil"}),
                     _colors = new Store([
@@ -14,7 +15,7 @@ define("Ideafy/Whiteboard/Drawing", ["Olives/OObject", "Map", "Config", "Olives/
                             {color: "#F27B3D", active: false},
                             {color: "#BD262C", active: false},
                             {color: "#5F8F28", active: false},
-                            {color: "#white", active: false}
+                            {color: "white", active: false}
                     ]),
                     _bgcolors = new Store([
                             {color: "white", active: true},
@@ -27,7 +28,28 @@ define("Ideafy/Whiteboard/Drawing", ["Olives/OObject", "Map", "Config", "Olives/
                             {color: "#4D4D4D", active: false}
                     ]),
                     _labels = Config.get("labels"),
-                    _transport = Config.get("transport"),
+                    _progress = new Store({"status": null}),
+                    _postit = new Store({"type": "drawing", "content":"", "background":""}),
+                    _uploadCanvas = function(filename){
+                            var _promise = new Promise(),
+                                _url = '/upload',
+                                _fd = new FormData(),
+                                _type = "postit",
+                                _canvas = document.getElementById("drawarea"),
+                                _dataURL = _canvas.toDataURL("image/png"),
+                                _now=new Date(),
+                                _filename = filename || Config.get("user").get("_id")+'_'+_now.getTime();
+                            _fd.append("type", _type);
+                            _fd.append("sid", _sid);
+                            _fd.append("filename", _filename);
+                            _fd.append("dataString", _dataURL);
+                            Utils.uploadFile(_url, _fd, _progress, function(result){
+                                _postit.set("content", _filename);
+                                _postit.set("background", _pencil.get("bg"));
+                                _promise.resolve();
+                            });
+                            return _promise;
+                    },
                     _sid;
                 
                 _widget.plugins.addAll({
@@ -47,7 +69,10 @@ define("Ideafy/Whiteboard/Drawing", ["Olives/OObject", "Map", "Config", "Olives/
                                 "setColor" : function(color){
                                         this.setAttribute("style", "background:"+color+";");        
                                 },
-                                "togglebgfill" : function(mode){
+                                "togglebgfill" : function(color){
+                                        this.setAttribute("fill", color);  
+                                },
+                                "togglemode" : function(mode){
                                         (mode === "pencil") ? this.setAttribute("fill", _pencil.get("bg")) : this.setAttribute("fill", "#CCCCCC");  
                                 },
                                 "togglepencil" : function(color){
@@ -63,12 +88,33 @@ define("Ideafy/Whiteboard/Drawing", ["Olives/OObject", "Map", "Config", "Olives/
                                 },
                                 "setActive" : function(active){
                                         (active) ? this.innerHTML="&#10003;":this.innerHTML="";        
-                                },
+                                }
+                        }),
+                        "uploadprogress" : new Model(_progress, {
+                                "showProgress" : function(status){
+                                        (status)?this.innerHTML = status+'%':this.innerHTML="";
+                                }
+                        }),
+                        "drawing" : new Model(_postit, {
+                                "draw" : function(content){
+                                        var _transport = Config.get("transport"), node=this, json;
+                                        if (content){
+                                                json = {"sid":_sid, "filename":content};
+                                                _transport.request("GetFile", json, function(data){
+                                                        var _img = new Image(),
+                                                            _ctx = node.getContext('2d');
+                                                        _img.src = data;
+                                                        /*node.width=_img.width;
+                                                        node.height=_img.height;*/
+                                                        _ctx.drawImage(_img,0,0);   
+                                                });       
+                                        }
+                                }        
                         }),
                         "drawingevent" : new Event(_widget)
                 });
                 
-                _widget.template = '<div class = "wbdrawing"><div class="drawingtools"><div class="pencil selected" data-pencil="bind:toggleselected, mode" data-drawingevent="listen:touchstart, drawactive"><span></span></div><div class="erase" data-drawingevent="listen:touchstart, erase" data-pencil="bind:toggleselected, mode"><span></span></div><div class="clear" data-drawingevent="listen:touchstart, select; listen:touchend,clear"><span data-labels="bind:innerHTML, cleardrawinglbl">Clear</span></div><p name="pencilsize" data-drawingevent="listen:touchstart, expand"><svg width="60" height="54"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle class="stroke" cx="30" cy="36" r="18" stroke-width="1" data-pencil="bind:togglebgfill,mode"/><circle class="fill" cx="30" cy="36" r="18" data-pencil="bind:setSize,size; bind:togglepencil,color"/></svg><div class="drawinglabel" data-labels="bind:innerHTML, pencilsizelbl">size</div></p><input id="pencilsize" class="vertical invisible" type="range" min="1" max="36" data-pencil="bind:value,size" data-drawingevent="listen:touchstart, stop; listen:touchmove,stop; listen:touchend,hide"><div name="pencilcolors" id="pencilcolor" data-drawingevent="listen:touchstart, expand"><ul id="pencilcolors"  class="invisible" data-color="foreach"><li class="color-item" data-drawingevent="listen:touchstart, getColor"><div data-color="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="pencilpreview" data-pencil="bind:setColor, color"></div><div class="drawinglabel" data-labels="bind:innerHTML, pencilcolorlbl">Color</div></div><div name="pencilbgcolors" id="pencilbgcolor" data-drawingevent="listen:touchstart, expand"><ul id="pencilbgcolors"  class="invisible" data-bgcolor="foreach"><li class="color-item" data-drawingevent="listen:touchstart, getBgColor"><div data-bgcolor="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="bgpreview" data-pencil="bind:setColor, bg"></div><div class="drawinglabel" data-labels="bind:innerHTML, drawbgcolorlbl">Background</div></div><div class="canceldrawing" data-drawingevent="listen:touchstart, select; listen:touchend,cancel"></div><div class="deletedrawing" data-drawingevent="listen:touchstart,select;listen:touchend,deletedrawing"></div><div class="savedrawing" data-drawingevent="listen:touchstart, post"></div></div><canvas id="drawarea" class="drawingcanvas" width=652 height=438 data-pencil="bind:setColor, bg" data-drawingevent="listen:touchstart,start;listen:touchmove,move;listen:touchend,end;"></canvas></div>';
+                _widget.template = '<div class = "wbdrawing"><div class="drawingtools"><div class="pencil selected" data-pencil="bind:toggleselected, mode" data-drawingevent="listen:touchstart, drawactive"><span></span></div><div class="erase" data-drawingevent="listen:touchstart, erase" data-pencil="bind:toggleselected, mode"><span></span></div><div class="clear" data-drawingevent="listen:touchstart, select; listen:touchend,clear"><span data-labels="bind:innerHTML, cleardrawinglbl">Clear</span></div><p name="pencilsize" data-drawingevent="listen:touchstart, expand"><svg width="60" height="54"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle class="stroke" cx="30" cy="36" r="18" stroke-width="1" data-pencil="bind:togglebgfill,bg; bind:togglemode,mode"/><circle class="fill" cx="30" cy="36" r="18" data-pencil="bind:setSize,size; bind:togglepencil,color"/></svg><div class="drawinglabel" data-labels="bind:innerHTML, pencilsizelbl">size</div></p><input id="pencilsize" class="vertical invisible" type="range" min="1" max="36" data-pencil="bind:value,size" data-drawingevent="listen:touchstart, stop; listen:touchmove,stop; listen:touchend,hide"><div name="pencilcolors" id="pencilcolor" data-drawingevent="listen:touchstart, expand"><ul id="pencilcolors"  class="invisible" data-color="foreach"><li class="color-item" data-drawingevent="listen:touchstart, getColor"><div data-color="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="pencilpreview" data-pencil="bind:setColor, color"></div><div class="drawinglabel" data-labels="bind:innerHTML, pencilcolorlbl">Color</div></div><div name="pencilbgcolors" id="pencilbgcolor" data-drawingevent="listen:touchstart, expand"><ul id="pencilbgcolors"  class="invisible" data-bgcolor="foreach"><li class="color-item" data-drawingevent="listen:touchstart, getBgColor"><div data-bgcolor="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="bgpreview" data-pencil="bind:setColor, bg"></div><div class="drawinglabel" data-labels="bind:innerHTML, drawbgcolorlbl">Background</div></div><div class="canceldrawing" data-drawingevent="listen:touchstart, select; listen:touchend,cancel"></div><div class="deletedrawing" data-drawingevent="listen:touchstart,select;listen:touchend,deletedrawing"></div><div class="savedrawing" data-drawingevent="listen:touchstart, post" data-uploadprogress="bind:showProgress,status" ></div></div><canvas id="drawarea" class="drawingcanvas" width=652 height=438 data-pencil="bind:setColor, bg" data-drawingevent="listen:touchstart,start;listen:touchmove,move;listen:touchend,end;" data-drawing="bind:draw, content"></canvas></div>';
                 
                 
                 _widget.setSessionId = function(sid){
@@ -164,27 +210,49 @@ define("Ideafy/Whiteboard/Drawing", ["Olives/OObject", "Map", "Config", "Olives/
                 _widget.cancel = function(event, node){
                         _widget.clear(event, node);
                         _widget.resetColors();
+                        _postit.reset({"type": "drawing", "content":"", "background":""});
+                        node.classList.remove("selected");
                         $exit("drawing");       
                 };
                 
                 _widget.deletedrawing = function(event, node){
-                        node.classList.remove("selected");        
+                        // delete == cancel if it's a new drawing
+                        if (_pos || _pos === 0) $store.del(_pos);
+                        _widget.cancel(event, node);      
                 };
                 
                 _widget.post = function(event, node){
                         node.classList.add("selected");
-                        // temporary
-                        setTimeout(function(){node.classList.remove("selected");}, 300);        
+                        // upload canvas to the server
+                        _uploadCanvas(_postit.get("content")).then(function(){
+                                // add new post or replace previous one with new content
+                                if (!_pos && _pos !== 0){
+                                        $store.alter("push", JSON.parse(_postit.toJSON()));
+                                }
+                                else {
+                                        $store.update(_pos, "content", _postit.get("content"));
+                                        $store.update(_pos, "background", _postit.get("background"));
+                                }
+                                node.classList.remove("selected"); 
+                                // reset progress & clear canvas
+                                _widget.cancel(event,node);
+                                _progress.reset({status:""});
+                        });      
                 };
                 
                 _widget.reset = function reset($pos){
                         _pos = $pos;
+                        _widget.resetColors();
+                        _lines = [];
                         if (!_pos && _pos !== 0){
-                                _lines = [];
-                                _pencil.reset({color: "#4D4D4D", size:"3", cap:"round"});
+                                _postit.reset({"type": "drawing", "content":"", "background":""});
                         }
                         else{
-                               _postit.reset($store.get($pos)); 
+                               _postit.reset($store.get($pos));
+                               _pencil.set("bg", _postit.get("background"));
+                               _bgcolors.loop(function(v,i){
+                                       (v.color === _postit.get("background")) ? _bgcolors.update(i, "active", true) : _bgcolors.update(i, "active", false);
+                               }); 
                         }
                 };
                 

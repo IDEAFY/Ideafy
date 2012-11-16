@@ -72,11 +72,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 });
                                         }
                                         else {
-                                                fs.writeFile(filename, dataurl, function(err){
-                                                        if (err) {throw(err);}
-                                                        res.write("ok");
-                                                        res.end();
+                                                fs.exists(filename, function(exists){
+                                                        if (exists) fs.unlinkSync(filename);
+                                                        fs.writeFile(filename, dataurl, function(err){
+                                                                if (err) {throw(err);}
+                                                                res.write("ok");
+                                                                res.end();
+                                                        });   
                                                 });
+                                                
                                         }       
                                 });
                         }

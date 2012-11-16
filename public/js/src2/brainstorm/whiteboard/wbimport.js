@@ -37,7 +37,7 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                             // draw canva
                             _ctx.drawImage(img, 0, 0, _width, _height);
                     },
-                    _uploadCanvas = function(){
+                    _uploadCanvas = function(filename){
                             var _promise = new Promise(),
                                 _url = '/upload',
                                 _fd = new FormData(),
@@ -45,14 +45,12 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                                 _canvas = document.getElementById("preview"),
                                 _dataURL = _canvas.toDataURL("image/png"),
                                 _now=new Date(),
-                                _filename = Config.get("user").get("_id")+'_'+_now.getTime();
+                                _filename = filename || Config.get("user").get("_id")+'_'+_now.getTime();
                             _fd.append("type", _type);
                             _fd.append("sid", _sid);
                             _fd.append("filename", _filename);
                             _fd.append("dataString", _dataURL);
-                            FD = _fd;
                             Utils.uploadFile(_url, _fd, _progress, function(result){
-                                console.log(result);
                                 _postit.set("content", _filename);
                                 _promise.resolve();
                             });
@@ -137,7 +135,7 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                 
                 _widget.post = function(event, node){
                         // upload current picture to the server
-                        _uploadCanvas().then(function(){
+                        _uploadCanvas(_postit.get("content")).then(function(){
                                 // add new post or replace previous one with new content
                                 if (!_pos && _pos !== 0){
                                         $store.alter("push", JSON.parse(_postit.toJSON()));
@@ -148,7 +146,7 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                                 node.classList.remove("pressed"); 
                                 // reset postit & clear canvas
                                 _widget.reset();
-                                _progress.reset({"type": "import", "content":""});
+                                _progress.reset({"status": ""});
                                 _clearCanvas();
                                 $exit("import");
                         });  
@@ -171,7 +169,7 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                 
                 _widget.del = function(event,node){
                         // check if postit has been previously saved -- if it's a new one delete == cancel
-                        if (_pos){
+                        if (_pos || _pos === 0){
                                 $store.del(_pos);
                         }
                         node.classList.remove("pressed");

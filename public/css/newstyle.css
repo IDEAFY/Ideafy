@@ -1784,23 +1784,24 @@ textarea.solution {
     overflow-y: scroll;
 }
 
-.photo{
+.photo, .drawing{
     margin: 30px 10px 15px 10px;
-    padding: 5px;
-    background:white;
-    background-position: center;
-    background-repeat: no-repeat;
     background-size: contain;
     border: 5px solid white;
     border-radius:3px;
     -webkit-box-shadow: 0px 3px 5px 1px rgba(23,41,48,0.4); 
 }
 
-.zoomout{
-    position: absolute;
-    top: 60px;
-    left: 380px;
-    z-index: 3000;   
+.photo{
+    padding: 5px;    
+}
+
+.drawing{
+    border-top-width: 30px;
+    border-bottom-width:29px;
+    padding: 0px;
+    width: 139px;
+    height:100px;    
 }
 
 .choosecolorlbl{
@@ -1925,22 +1926,23 @@ textarea.solution {
     -webkit-appearance:none;
     z-index:500;
     background: url('../img/brainstorm/sizeRuler.png') no-repeat center center;
-    background-size: 153px 50px;
+    background-size: cover;
     width: 153px;
     height:50px;
     position:absolute;
-    top:200px;
-    left: 285px;
+    top:180px;
+    left: 289px;
+    -webkit-transform:rotate(270deg);
 
 }
 
 .vertical::-webkit-slider-thumb {
      -webkit-appearance: none;
-    background-color: #666;
-    opacity: 0.5;
+    background: url('../img/brainstorm/rulerArrow.png') no-repeat left 30px;
+    background-size: 20px 10px;
+    border: none;
     width: 20px;
-    height: 26px;
-    -webkit-transform:rotate(270deg);
+    height: 50px;
 }
 
 circle.stroke {
@@ -1988,12 +1990,12 @@ li.color-item{
     display: block;
     width:30px;
     height:30px;
-    border-radius:30px;
     line-height: 30px;
     text-align:center;
     line-height:30px;
     font-size:20px;
     font-weight: bold;
+    text-shadow: 1px 1px black;
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
 }
 
@@ -2036,7 +2038,8 @@ li.color-item{
 .savedrawing.selected{
     background: #6C8B4D;
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
-    background-repeat: no-repeat;
+    color: black;
+    font-size: 12px;
 }
 
 #pencilcolor, #pencilbgcolor{

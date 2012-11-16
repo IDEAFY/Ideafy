@@ -68,7 +68,7 @@ define("Ideafy/Whiteboard/Drawing", ["Olives/OObject", "Map", "Config", "Olives/
                         "drawingevent" : new Event(_widget)
                 });
                 
-                _widget.template = '<div class = "wbdrawing"><div class="drawingtools"><div class="pencil selected" data-pencil="bind:toggleselected, mode" data-drawingevent="listen:touchstart, drawactive"><span></span></div><div class="erase" data-drawingevent="listen:touchstart, erase" data-pencil="bind:toggleselected, mode"><span></span></div><div class="clear" data-drawingevent="listen:touchstart, select; listen:touchend,clear"><span data-labels="bind:innerHTML, cleardrawinglbl">Clear</span></div><p name="size" data-drawingevent="listen:touchstart, expand"><svg width="60" height="54"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle class="stroke" cx="30" cy="36" r="18" stroke-width="1" data-pencil="bind:togglebgfill,mode"/><circle class="fill" cx="30" cy="36" r="18" data-pencil="bind:setSize,size; bind:togglepencil,color"/></svg><div class="drawinglabel" data-labels="bind:innerHTML, pencilsizelbl">size</div></p><input id="pencilsize" class="vertical invisible" type="range" min="1" max="36" data-pencil="bind:value,size" data-drawingevent="listen:touchstart, stop; listen:touchmove,stop; listen:touchend,hide"><div name="color" id="pencilcolor" data-drawingevent="listen:touchstart, expand"><ul id="pencilcolors"  class="invisible" data-color="foreach"><li class="color-item" data-drawingevent="listen:touchstart, getColor"><div data-color="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="pencilpreview" data-pencil="bind:setColor, color"></div><div class="drawinglabel" data-labels="bind:innerHTML, pencilcolorlbl">Color</div></div><div name="bgcolor" id="pencilbgcolor" data-drawingevent="listen:touchstart, expand"><ul id="pencilbgcolors"  class="invisible" data-bgcolor="foreach"><li class="color-item" data-drawingevent="listen:touchstart, getBgColor"><div data-bgcolor="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="bgpreview" data-pencil="bind:setColor, bg"></div><div class="drawinglabel" data-labels="bind:innerHTML, drawbgcolorlbl">Background</div></div><div class="canceldrawing" data-drawingevent="listen:touchstart, select; listen:touchend,cancel"></div><div class="deletedrawing" data-drawingevent="listen:touchstart,select;listen:touchend,deletedrawing"></div><div class="savedrawing" data-drawingevent="listen:touchstart, post"></div></div><canvas id="drawarea" class="drawingcanvas" width=652 height=438 data-pencil="bind:setColor, bg" data-drawingevent="listen:touchstart,start;listen:touchmove,move;listen:touchend,end;"></canvas></div>';
+                _widget.template = '<div class = "wbdrawing"><div class="drawingtools"><div class="pencil selected" data-pencil="bind:toggleselected, mode" data-drawingevent="listen:touchstart, drawactive"><span></span></div><div class="erase" data-drawingevent="listen:touchstart, erase" data-pencil="bind:toggleselected, mode"><span></span></div><div class="clear" data-drawingevent="listen:touchstart, select; listen:touchend,clear"><span data-labels="bind:innerHTML, cleardrawinglbl">Clear</span></div><p name="pencilsize" data-drawingevent="listen:touchstart, expand"><svg width="60" height="54"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle class="stroke" cx="30" cy="36" r="18" stroke-width="1" data-pencil="bind:togglebgfill,mode"/><circle class="fill" cx="30" cy="36" r="18" data-pencil="bind:setSize,size; bind:togglepencil,color"/></svg><div class="drawinglabel" data-labels="bind:innerHTML, pencilsizelbl">size</div></p><input id="pencilsize" class="vertical invisible" type="range" min="1" max="36" data-pencil="bind:value,size" data-drawingevent="listen:touchstart, stop; listen:touchmove,stop; listen:touchend,hide"><div name="pencilcolors" id="pencilcolor" data-drawingevent="listen:touchstart, expand"><ul id="pencilcolors"  class="invisible" data-color="foreach"><li class="color-item" data-drawingevent="listen:touchstart, getColor"><div data-color="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="pencilpreview" data-pencil="bind:setColor, color"></div><div class="drawinglabel" data-labels="bind:innerHTML, pencilcolorlbl">Color</div></div><div name="pencilbgcolors" id="pencilbgcolor" data-drawingevent="listen:touchstart, expand"><ul id="pencilbgcolors"  class="invisible" data-bgcolor="foreach"><li class="color-item" data-drawingevent="listen:touchstart, getBgColor"><div data-bgcolor="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="bgpreview" data-pencil="bind:setColor, bg"></div><div class="drawinglabel" data-labels="bind:innerHTML, drawbgcolorlbl">Background</div></div><div class="canceldrawing" data-drawingevent="listen:touchstart, select; listen:touchend,cancel"></div><div class="deletedrawing" data-drawingevent="listen:touchstart,select;listen:touchend,deletedrawing"></div><div class="savedrawing" data-drawingevent="listen:touchstart, post"></div></div><canvas id="drawarea" class="drawingcanvas" width=652 height=438 data-pencil="bind:setColor, bg" data-drawingevent="listen:touchstart,start;listen:touchmove,move;listen:touchend,end;"></canvas></div>';
                 
                 
                 _widget.setSessionId = function(sid){
@@ -93,7 +93,7 @@ define("Ideafy/Whiteboard/Drawing", ["Olives/OObject", "Map", "Config", "Olives/
                             {color: "#F27B3D", active: false},
                             {color: "#BD262C", active: false},
                             {color: "#5F8F28", active: false},
-                            {color: "#white", active: false}
+                            {color: "white", active: false}
                         ]);
                         _bgcolors.reset([
                             {color: "white", active: true},
@@ -120,17 +120,11 @@ define("Ideafy/Whiteboard/Drawing", ["Olives/OObject", "Map", "Config", "Olives/
                 };
                 
                 _widget.expand = function(event, node){
-                        var name=node.getAttribute("name");
+                        var name=node.getAttribute("name"),
+                            _ui = document.getElementById(name);;
                         
-                        if (name === "size"){
-                                document.getElementById("pencilsize").classList.remove("invisible");
-                        }
-                        if (name === "color"){
-                                document.getElementById("pencilcolors").classList.remove("invisible");
-                        }
-                        if (name === "bgcolor"){
-                                document.getElementById("pencilbgcolors").classList.remove("invisible");
-                        } 
+                        _ui.classList.contains("invisible") ? _ui.classList.remove("invisible") : _ui.classList.add("invisible");
+                        
                 };
                 
                 _widget.stop = function(event, node){

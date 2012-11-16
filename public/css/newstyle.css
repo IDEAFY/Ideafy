@@ -1924,10 +1924,14 @@ textarea.solution {
 .vertical{
     -webkit-appearance:none;
     z-index:500;
-    background-color: silver;
-    width: 160px;
-    height:20px;
-    -webkit-transform:rotate(270deg);
+    background: url('../img/brainstorm/sizeRuler.png') no-repeat center center;
+    background-size: 153px 50px;
+    width: 153px;
+    height:50px;
+    position:absolute;
+    top:200px;
+    left: 285px;
+
 }
 
 .vertical::-webkit-slider-thumb {
@@ -1936,6 +1940,7 @@ textarea.solution {
     opacity: 0.5;
     width: 20px;
     height: 26px;
+    -webkit-transform:rotate(270deg);
 }
 
 circle.stroke {

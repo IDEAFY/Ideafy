@@ -5,6 +5,7 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
              
                 var _widget = new Widget(),
                     _sid,
+                    _readonly = false,
                     _transport = Config.get("transport");
                 
                 _widget.plugins.addAll({
@@ -92,13 +93,19 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                         var id = node.getAttribute("data-wbmain_id"),
                             type = $store.get(id).type;
                             
-                        $tools.set(type, "active");
-                        $select(type, id);
+                        if (!_readonly){
+                                $tools.set(type, "active");
+                                $select(type, id);
+                        }
                 };
                 
                 _widget.setSessionId = function(sid){
                         _sid = sid;
                 };
+                
+                _widget.setReadonly = function(bool){
+                        _readonly = bool;
+                }
                 
                 return _widget;      
                    

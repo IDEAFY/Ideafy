@@ -106,10 +106,15 @@ button{
   /* the position has to be relative to apply the shadow */
   position:relative;
   width:301px;
-  overflow-y: scroll;
   /*factorize with every box-shadow */
   -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
 
+}
+
+.ideas-list {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; 
 }
 
 .list-item{
@@ -1427,7 +1432,6 @@ textarea.solution {
 .brainstorm-header .clock{
     right: 15px;
     top: 0;
-    position: absolute;
     padding-left: 26px;
     background: url('../img/brainstorm/bell14x16.png') no-repeat left 8px;
     background-size: 14px 16px;
@@ -2056,9 +2060,8 @@ li.color-item{
     border-bottom-right-radius: 10px;
 }
 
-.toolbox{
+#toolbox{
     margin: 0 159px;
-    display: inline-block;
     height: 130px;
     width: 390px;
     padding: 30px 0px;
@@ -2111,7 +2114,7 @@ li.color-item{
     background-image: url('../img/brainstorm/drawingActive100.png');
 }
 
-.finish-button{
+#finish-button{
     width: 145px;
     height: 34px;
     line-height: 34px;
@@ -2498,10 +2501,28 @@ li.color-item{
 }
 
 .writeup{
+    padding: 20px 20px 10px 20px;
+    font-family: Helvetica;
+    font-size: 12px;
+}
+
+.enterTitle, .enterDesc, .enterSol{
+    padding: 10px;
+    background-image: -webkit-linear-gradient(top, #F2F2F2, #F2F2F2);
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+    border-radius: 0;
+    border: none;
+    color: black;
+}
+
+.enterTitle::-webkit-input-placeholder, .enterDesc::-webkit-input-placeholder, .enterSol::-webkit-input-placeholder{
+    color: #657B99;
 }
 
 .enterTitle{
-    
+    height: 20px;
+    line-height: 20px;
+    width: 330px;
 }
 
 .setPrivate{
@@ -2512,12 +2533,14 @@ li.color-item{
     
 }
 
-.enterDesc{
-    
+.enterDesc, .enterSol{
+    width: 330px;
+    height: 100px;
+    margin-top: 15px;    
 }
 
 .enterSol{
-    
+    margin-left: 19px;
 }
 
 .finish-writeup{

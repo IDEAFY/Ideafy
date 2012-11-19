@@ -119,26 +119,16 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore"], function(Store, 
                         "type" : 8,
                         "deck" : "",
                         "status" : "in progress",
-                        "step" : "quickstart",
+                        "step" : "",
                         "characters" : [],
                         "contexts" : [],
                         "problems" : [],
                         "scenarioWB" : [],
                         "sessionid" : "",
-                        "scenario" : [{
-                                "title" : "",
-                                "story" : "",
-                                "solution" : ""
-                        }],
+                        "scenario" : [], //{"title" : "", "story" : "", "solution" : ""}
                         "techno" : [[]],
                         "ideaWB" : [],
-                        "idea" : [{
-                                "title" : "",
-                                "description" : "",
-                                "solution" : "",
-                                "visibility" : "private",
-                                "id" : ""
-                        }],
+                        "idea" : [], //{"title" : "", "description" : "", "solution" : "", "visibility" : "private", "id" : "" }
                         "score" : ""
                 },
                 avatars : new Store({}), // to keep frequently used avatars (.e.g connections)

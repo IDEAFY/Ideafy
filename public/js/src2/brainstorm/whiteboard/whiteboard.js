@@ -28,6 +28,10 @@ define("Ideafy/Whiteboard", ["Amy/Stack-plugin", "Ideafy/Whiteboard/Default", "I
                                 _stack.getStack().get("drawing").setSessionId(sid);
                         };
                         
+                        this.setReadonly = function(bool){
+                                _stack.getStack().get("main").setReadonly(bool);
+                        };
+                        
                         this.getStack().add("default", new Default($type));
                         this.getStack().add("main", new Main($store, $tools, this.selectScreen));
                         this.getStack().add("postit", new Postit($store, this.exitScreen));

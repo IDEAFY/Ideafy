@@ -7,8 +7,7 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                         design : $design,
                         query : {
                                 descending : true,
-                                include_docs : true,
-                                limit : 30
+                                include_docs : true
                         }
                 };
 

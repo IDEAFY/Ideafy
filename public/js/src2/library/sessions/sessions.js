@@ -220,7 +220,8 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         _cdb.setTransport(Config.get("transport"));
                         _cdb.sync(_db, _sid).then(function(){
                                 _cdb.remove();
-                                setTimeout(function(){_cdb.remove();_cdb.unsync();}, 200);
+                                // _cdb.unsync();
+                                // setTimeout(function(){_cdb.remove();_cdb.unsync();}, 200);
                         });
               };
               

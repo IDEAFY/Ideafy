@@ -13,7 +13,16 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                      "context": {"title": "", "pic": "", "popup": false},
                                      "problem": {"title": "", "pic": "", "popup": false}
                                      }),
-                             _tools = new Store({"postit": "inactive"}, {"import": "inactive"}, {"drawing": "inactive"}),
+                             _tools = new Store(
+                                     {"postit": "inactive"},
+                                     {"import": "inactive"},
+                                     {"drawing": "inactive"},
+                                     {"ready": false}, // display finish button
+                                     {"showstory": false}, // display write up interface
+                                     {"shownext" : false}, // display next button
+                                     {"readonly" : false} // set story textareas in readonly mode
+                                     ),
+                            _scenario = new Store({"title" : "", "story" : "", "solution" : ""}),
                             _wbContent = new Store([]), // a store of whiteboard objects
                             _wb = new Whiteboard("scenario", _wbContent, _tools);
                              
@@ -21,7 +30,11 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         
                         // Setup
                         _widget.plugins.addAll({
-                                "labels" : new Model(_labels),
+                                "labels" : new Model(_labels, {
+                                        setPlaceholder : function(value){
+                                                this.setAttribute("placeholder", value);
+                                        }
+                                }),
                                 "cards" : new Model(_cards, {
                                         removeDefault : function(pic){
                                                 (pic) ? this.classList.remove("defaultcard") : this.classList.add("defaultcard");                
@@ -46,13 +59,23 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 "wbtools" : new Model(_tools, {
                                         setActive : function(status){
                                                 (status === "active") ? this.classList.add("pushed") : this.classList.remove("pushed");
+                                        },
+                                        setReady : function(ready){
+                                                (ready) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                        },
+                                        toggleToolbox : function(showstory){
+                                                (showstory) ? this.classList.add("invisible") : this.classList.remove("invisible");
+                                        },
+                                        setReadonly : function(readonly){
+                                                (readonly)?this.setAttribute("readonly", "readonly"):this.removeAttribute("readonly");
                                         }
                                 }),
+                                "scenario" : new Model(_scenario),
                                 "wbstack" : _wb,
                                 "quickscenarioevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quickscenario"><div class="previousbutton" data-quickscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickscenario" data-quickscenarioevent="listen:touchstart, toggleProgress"></div><div id="quickscenario-left" class="leftarea"><div class = "card char defaultcard" data-cards="bind:removeDefault,char.pic; bind:popup,char.popup" name="char" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context defaultcard" name="context" data-cards="bind:removeDefault,context.pic;bind: popup,context.popup" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem defaultcard" name="problem" data-cards="bind:removeDefault,problem.pic;bind:popup, problem.popup" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div></div><div id="quickscenario-popup"></div><div id="quickscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div class="toolbox"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div class="finish-button" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickscenario-writeup" class="writeup invisible"><textarea class = "enterTitle"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc"></textarea><textarea class = "enterSol"></textarea><div class = "finish-button finish-writeup"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
+                        _widget.template = '<div id = "quickscenario"><div class="previousbutton" data-quickscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickscenario" data-quickscenarioevent="listen:touchstart, toggleProgress"></div><div id="quickscenario-left" class="leftarea"><div class = "card char defaultcard" data-cards="bind:removeDefault,char.pic; bind:popup,char.popup" name="char" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context defaultcard" name="context" data-cards="bind:removeDefault,context.pic;bind: popup,context.popup" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem defaultcard" name="problem" data-cards="bind:removeDefault,problem.pic;bind:popup, problem.popup" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div></div><div id="quickscenario-popup"></div><div id="quickscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div id="finish-button" class="invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickscenario-writeup" class="writeup invisible" data-wbtools="bind: setReady,showstory"><textarea class = "enterTitle" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea><div class = "finish-button finish-writeup"></div></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
                         
                         _widget.place(Map.get("quickscenario"));
                         
@@ -61,16 +84,24 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 node.classList.add("pressed");        
                         };
                         
+                        // move to next screen
                         _widget.next = function(event, node){
                                 node.classList.remove("pressed");
+                                // if first time: upload scenario and set readonly
+                                if (!$session.get("scenario").length){
+                                        $session.set("scenario", [_scenario.toJSON()]);
+                                        $session.upload();
+                                }
                                 $next("quickscenario");
                         };
                         
+                        // move to previous screen
                         _widget.prev = function(event, node){
                                 node.classList.remove("pressed");
                                 $prev("quickscenario");
                         };
                         
+                        // toggle progress bar
                         _widget.toggleProgress = function(event, node){
                                 $progress(node);               
                         };
@@ -81,6 +112,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 _tools.set(name,"active");
                         };
                         
+                        // zoom on selected card
                         _widget.zoom = function(event, node){
                                 var type = node.getAttribute("name");
                                 _widget.setPopup(type);        
@@ -126,44 +158,67 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         // Creating the popup UI
                         _popupUI = new CardPopup(_widget.closePopup);
                         
+                        // create/edit postit
                         _widget.post = function(event, node){
                                 _wb.selectScreen("postit");
                                 _tools.set("import", "inactive");
                                 _tools.set("drawing", "inactive");        
                         };
                         
+                        // import picture
                         _widget.importpic = function(event, node){
                                 _wb.selectScreen("import");
                                 _tools.set("postit", "inactive");
                                 _tools.set("drawing", "inactive");
                         };
                         
+                        // create drawing
                         _widget.draw = function(event, node){
                                 _wb.selectScreen("drawing");
                                 _tools.set("import", "inactive");
                                 _tools.set("postit", "inactive");
                         };
                         
+                        // called when user exits one of the content creation UI
                         _widget.exitTool = function exitTool(name){
                                 _tools.set(name, "inactive");
                         };
                         
+                        // user is done with whiteboard
                         _widget.finish = function(event, node){
-                                
+                                // change mode to readonly
+                                _wb.setReadonly(true);
+                                // hide finish button, toolbox and show writeup interface
+                                _tools.set("ready", false);
+                                _tools.set("showstory", true);      
                         };
                         
-                        // init interface
+                        // INIT SCENARIO
                         // Initializing the QuickScenario UI
                         _widget.reset = function reset(){
-                                // reset timer
-                                _start = null;
-                                                        
+                                // reset all tools and status indicators
+                                _tools.reset({"postit": "inactive"},{"import": "inactive"},{"drawing": "inactive"},{"ready": false},{"showstory": false},{"shownext" : false},{"readonly" : false});
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("scenarioWB"));
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
-                                // if step is finished display story else display toolbar
+                                // if scenario is present show write up interface and board in readonly mode
+                                if ($session.get("scenario").length){
+                                        _tools.set("showstory", true);
+                                        _wb.setReadonly(true);
+                                        // in quick mode only one scenario is available
+                                        _scenario.reset($session.get("scenario")[0]);
+                                        // if not in current step story should be readonly
+                                        _tools.set("readonly", true);
+                                        _tools.set("shownext", true);        
+                                }
+                                else{
+                                        _scenario.reset({"title" : "", "story" : "", "solution" : ""});
+                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        // remove readonly
+                                        _wb.setReadonly(false);      
+                                }
                          };
                         
                         // get selected cards
@@ -211,8 +266,16 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         ["added", "deleted", "updated"].forEach(function(change){
                                 _wbContent.watch(change, function(){
                                         $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
-                                        $session.upload();        
+                                        $session.upload();
+                                        
+                                        // toggle ready button
+                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);     
                                 });  
+                        });
+                        
+                        // watch contents of scenario and display next button if ready
+                        _scenario.watch("updated", function(){
+                                        (_scenario.get("title") && _scenario.get("story") && _scenario.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
                         
                         // Return

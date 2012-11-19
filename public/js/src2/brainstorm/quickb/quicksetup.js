@@ -302,6 +302,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         "time": time,
                                         "cards": _drawnCards.char + _drawnCards.context + _drawnCards.problem
                                 };
+                                
                                 _transport.request("UpdateSessionScore", json, function(result){
                                         if (result.res === "ok"){
                                                 promise.resolve();

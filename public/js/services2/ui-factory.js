@@ -335,14 +335,13 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                         _widget.upload = function(event, node){
                                 var now = new Date(),
                                     id = "I:"+now.getTime();
-                                
-                                node.classList.remove("pressed");
+                                    
                                 // check for errors (missing fields)
                                 if (!_store.get("title")) _error.set("error", "notitle");
                                 else if (!_store.get("description")) _error.set("error", "nodesc");
                                 else if (!_store.get("solution")) _error.set("error", "nosol");
 
-                                if (!_error.get("error")){                                
+                                if (!_error.get("error") && !_store.get("_id                               ")){                                
                                         // fill cdb document
                                         _store.set("authors", [_user.get("_id")]);
                                         _store.set("authornames", _user.get("username"));
@@ -351,15 +350,15 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                                         // create document in couchdb and upload
                                         _store.sync(Config.get("db"), id);
                                         setTimeout(function(){
-                                                _store.upload().then(function(){
-                                                        // hide window
-                                                        document.getElementById("newidea-popup").classList.remove("appear");
-                                                        document.getElementById("cache").classList.remove("appear");
-                                                        // reset _store and _error
-                                                        _store.unsync();
-                                                        _store.reset(Config.get("ideaTemplate"));
-                                                        _error.reset({"error":""});
-                                                });
+                                                _store.upload();
+                                                node.classList.remove("pressed");
+                                                // hide window
+                                                document.getElementById("newidea-popup").classList.remove("appear");
+                                                document.getElementById("cache").classList.remove("appear");
+                                                // reset _store and _error
+                                                _store.unsync();
+                                                _store.reset(Config.get("ideaTemplate"));
+                                                _error.reset({"error":""});
                                         }, 200);
                                 }  
                         };

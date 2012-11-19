@@ -32,6 +32,7 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         
                         _widget.next = function(event, node){
                                 node.classList.remove("pressed");
+                                event.preventDefault();
                                 
                                 _session.set("step", "quicksetup");
                                 // if title field is empty, set placeholder value as the default title
@@ -43,10 +44,23 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                 // it should only be synced once to avoid conflicts.
                                 if (!_session.get("_id")) {
                                         // if no existing id this will create the doc in couchdb -- else we assume the sync has been done before.
-                                        _session.sync(_db, "S:"+_session.get("startTime"));
+                                        _session.set("_id", "S:"+_session.get("startTime"));
+                                        _session.sync(_db, _session.get("_id"));
+                                        setTimeout(function(){
+                                                _session.upload();
+                                                // set session in progress in user document
+                                                _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});
+                                                // next step
+                                                $next("quickstart");
+                                        }, 200);
+                                }
+                                else {
+                                        _session.upload().then(function(){
+                                                $next("quickstart");
+                                        });
                                 }
                                 // work around to avoid upload before store is actually listening for changes
-                                setTimeout(function(){
+                                /*setTimeout(function(){
                                                 _session.upload().then(function(){
                                                         // ugly workaround to add session _id to _session store....
                                                         _session.unsync();
@@ -56,7 +70,7 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                                                 _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});         
                                                         });       
                                                 });
-                                        }, 200);
+                                        }, 200);*/
                         };
                         
                         _widget.prev = function(event, node){

@@ -85,8 +85,9 @@ SESSION = _session;
                         // set session initiator to current user
                         _session.set("initiator", {"id": _user.get("_id"),"username": _user.get("username"),"picture_file": _user.get("picture_file")});
                         
-                        // set session mode to quick
+                        // set session mode to quick & current step to "quickstart"
                         _session.set("mode", "quick");
+                        _session.set("step", "quickstart");
                         
                         // set session deck to active deck
                         _session.set("deck", _user.get("active_deck"));
@@ -132,11 +133,15 @@ SESSION = _session;
                                         _id = idx;
                                 }
                         });
+                        
                         if (_id < _steps.getNbItems()-1) {
-                                _steps.update(_id, "status", "done");
-                                _steps.update(_id, "currentStep", false);
-                                _steps.update(_id+1, "status", "ongoing");
-                                _steps.update(_id+1, "currentStep", true);
+                                // if previous step was already done do not modify status
+                                if (!_steps.get(_id).status === "done"){
+                                        _steps.update(_id, "status", "done");
+                                        _steps.update(_id, "currentStep", false);
+                                        _steps.update(_id+1, "status", "ongoing");
+                                        _steps.update(_id+1, "currentStep", true);
+                                }
                                 _stack.getStack().show(_steps.get(_id+1).name);
                         }        
                    };

@@ -8,7 +8,8 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                             _session = $session,
                             _user = Config.get("user"),
                             _db = Config.get("db"),
-                             _labels = Config.get("labels");
+                             _labels = Config.get("labels"),
+                             _next = "step";
                         
                         // setup
                         _widget.plugins.addAll({
@@ -31,46 +32,29 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         };
                         
                         _widget.next = function(event, node){
-                                node.classList.remove("pressed");
-                                event.preventDefault();
+                               if (_next === "step"){
+                                        _next = "screen";
+                                        // if title field is empty, set placeholder value as the default title
+                                        if (_session.get("title") === ""){
+                                                _session.set("title", _labels.get("quickstarttitleplaceholderpre")+_session.get("initiator").username+_labels.get("quickstarttitleplaceholderpost"));      
+                                        }
                                 
-                                _session.set("step", "quicksetup");
-                                // if title field is empty, set placeholder value as the default title
-                                if (_session.get("title") === ""){
-                                        _session.set("title", _labels.get("quickstarttitleplaceholderpre")+_session.get("initiator").username+_labels.get("quickstarttitleplaceholderpost"));      
-                                }
-                                
-                                // IMPORTANT: the new session doc is created in CDB and the session document is synched for the entire session
-                                // it should only be synced once to avoid conflicts.
-                                if (!_session.get("_id")) {
-                                        // if no existing id this will create the doc in couchdb -- else we assume the sync has been done before.
+                                        // IMPORTANT: the new session doc is created in CDB and the session document is synched for the entire session
                                         _session.set("_id", "S:"+_session.get("startTime"));
                                         _session.sync(_db, _session.get("_id"));
                                         setTimeout(function(){
-                                                _session.upload();
+                                                //_session.upload();
                                                 // set session in progress in user document
                                                 _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});
                                                 // next step
                                                 $next("quickstart");
-                                        }, 200);
+                                         }, 200);
+                                        
                                 }
-                                else {
-                                        _session.upload().then(function(){
-                                                $next("quickstart");
-                                        });
+                                else{
+                                        node.classList.remove("pressed");
+                                        $next("quickstart");        
                                 }
-                                // work around to avoid upload before store is actually listening for changes
-                                /*setTimeout(function(){
-                                                _session.upload().then(function(){
-                                                        // ugly workaround to add session _id to _session store....
-                                                        _session.unsync();
-                                                        _session.sync(_db, "S:"+_session.get("startTime")).then(function(){
-                                                                $next("quickstart"); 
-                                                                // set session in progress in user document
-                                                                _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});         
-                                                        });       
-                                                });
-                                        }, 200);*/
                         };
                         
                         _widget.prev = function(event, node){
@@ -82,10 +66,16 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                 $progress(node);               
                         };
                         
-                        _widget.reset = function reset(){
+                        _widget.reset = function reset(sip){
                                 var now = new Date();
-                                _session.set("startTime", now.getTime());
-                                _session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                if (sip){
+                                        (_session.get("step") === "quickstart") ? _next = "step" : next = "screen";       
+                                }
+                                else{
+                                        _session.set("startTime", now.getTime());
+                                        _session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        _next = "step";
+                                }
                         };
                         
                         // init

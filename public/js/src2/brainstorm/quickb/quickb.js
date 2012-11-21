@@ -127,7 +127,8 @@ SESSION = _session;
                    };
                    
                    _widget.next = function next(currentName){
-                        var _id;
+                        var _id,
+                            _nextui;
                         _steps.loop(function(value, idx){
                                 if (value.name === currentName){
                                         _id = idx;
@@ -136,13 +137,22 @@ SESSION = _session;
                         
                         if (_id < _steps.getNbItems()-1) {
                                 // if previous step was already done do not modify status
-                                if (!_steps.get(_id).status === "done"){
+                                if (_steps.get(_id).status !== "done"){
                                         _steps.update(_id, "status", "done");
                                         _steps.update(_id, "currentStep", false);
                                         _steps.update(_id+1, "status", "ongoing");
                                         _steps.update(_id+1, "currentStep", true);
+                                        
+                                        _session.set("step", _steps.get(_id+1).name);
+                                        console.log(_session.get("_rev"), _session.get("_id"), _session.toJSON());
+                                        _session.upload();
+                                        _nextui = _stack.getStack().get(_steps.get(_id+1).name);
+                                        if (_nextui.initTimer) _nextui.initTimer();
+                                        _stack.getStack().show(_steps.get(_id+1).name);
                                 }
-                                _stack.getStack().show(_steps.get(_id+1).name);
+                                else {
+                                        _stack.getStack().show(_steps.get(_id+1).name);
+                                }
                         }        
                    };
                    

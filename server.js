@@ -208,7 +208,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
             
                 var promise = new Promise;
                 
-                cdbStore.getTransport().request("CouchDB", {
+                transport.request("CouchDB", {
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
@@ -728,16 +728,37 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
         // updating a session's score
         olives.handlers.set("UpdateSessionScore", function(json, onEnd){
-                var cdb = new CouchDBStore(), increment, min_score, time_bonus;
+                var cdb = new CouchDBStore(), increment, min_score, bonus, coeff, wbdata, t, input;
                 
                 switch(json.step){
                         case "quicksetup":
-                                min_score = 20;
-                                time_bonus = 20 - Math.floor(json.time/6000);
-                                if (time_bonus < 0) { time_bonus = 0;}
-                                increment = 20 - (json.cards*5);
+                                min_score = 10;
+                                bonus = 20 - Math.floor(json.time/3000); // time bonus
+                                if (bonus < 0) { bonus = 0;}
+                                increment = 15 - (json.cards*5);
                                 if (increment<0) { increment = 0;}
-                                increment += min_score + time_bonus;
+                                increment += bonus;
+                                if (increment < min_score) increment = min_score;
+                                break;
+                        case "quickscenario":
+                                wbdata = JSON.parse(json.wbcontent);
+                                input = JSON.parse(json.scenario);
+                                t = json.time;
+                                if (t>=900000) coeff = 0.75; // too long
+                                if (t<900000) coeff = 1; // ok
+                                if (t<600000) coeff = 1.5; // great !!
+                                if (t<300000) coeff = 0.75; // too fast
+                                if (t<120000) coeff = 0.25; // way too fast
+                                if (input.title.length+input.story.length+input.solution.length < 200) coeff *= 0.5; // need a bit more effort
+                                if (wbdata.length>12) coeff *= 1.25
+                                else {
+                                        if (wbdata.length < 3) coeff *= 0.25
+                                        else if (wbdata.length < 6) coeff *= 0.75
+                                 }
+                                if (json.wbcontent.search("import") && json.wbcontent.search("drawing")) bonus = 25
+                                else if (json.wbcontent.search("import") || json.wbcontent.search("drawing"))  bonus = 10
+                                
+                                increment = Math.floor((wbdata.length*10 + bonus)*coeff);
                                 break;
                         default:
                                 increment = 0;
@@ -749,9 +770,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         cdb.sync(_db, json.sid).then(function(){
                                 cdb.set("score", parseInt(cdb.get("score")+increment, 10));
                                 updateDocAsAdmin(json.sid, cdb).then(function(){
-                                   onEnd({res:"ok", value: increment});
-                                   cdb.unsync();   
-                                });  
+                                   onEnd({res: "ok", value: cdb.get("score")});
+                                   cdb.unsync();  
+                                });
                         });
                 }
                 else {
@@ -774,7 +795,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]
                 };
 
-                cdb.setTransport(new Transport(olives.handlers));
+                cdb.setTransport(transport);
 
                 cdb.sync(_db, json.dest).then(function() {
                         if (cdb.get("connections") && cdb.get("connections")[0]) {connections = cdb.get("connections");}

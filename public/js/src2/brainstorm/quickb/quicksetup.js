@@ -20,7 +20,8 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                             _ready = true, // ready to draw a new card 
                             _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()}, // used for zoom
                             _currentPopup = "", // which card if any is magnified
-                            _start =  null;
+                            _start =  null,
+                            _next = "step"; // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
                         
                         // Setup
                         _widget.plugins.addAll({
@@ -68,24 +69,28 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         _widget.next = function(event, node){
                                 var _now = new Date(), _elapsedTime = _now.getTime() - _start;
                                 
-                                // compute session score
-                                _widget.updateSessionScore(_elapsedTime).then(function(){
-                                        // update session document
-                                        var sid = $session.get("_id");
-                                        $session.unsync();
-                                        $session.sync(_db, sid).then(function(){
-                                                $session.set("elapsedTimers", {"quicksetup": _elapsedTime});
-                                                $session.set("characters", [_selection.get("char").id]);
-                                                $session.set("contexts", [_selection.get("context").id]);
-                                                $session.set("problems", [_selection.get("problem").id]);
-                                                $session.set("step", "quickscenario"); 
-                                                //upload and move to next step
-                                                $session.upload().then(function(){
+                                if (_next === "step"){
+                                        _next = "screen"; //only one upload
+                                        // compute session score
+                                        _widget.updateSessionScore(_elapsedTime).then(function(){
+                                                // resync with db
+                                                $session.unsync();
+                                                $session.sync(Config.get("db"), $session.get("_id")).then(function(){
+                                                        // update session document
+                                                        $session.set("elapsedTimers", {"quicksetup": _elapsedTime});
+                                                        $session.set("characters", [_selection.get("char").id]);
+                                                        $session.set("contexts", [_selection.get("context").id]);
+                                                        $session.set("problems", [_selection.get("problem").id]);
+                                                        //upload and move to next step
                                                         node.classList.remove("pressed");
-                                                        $next("quicksetup");        
-                                                });        
-                                        });       
-                                });
+                                                        $next("quicksetup");         
+                                                });      
+                                        });
+                                }
+                                else {
+                                        node.classList.remove("pressed");
+                                        $next("quicksetup");
+                                }
                         };
                         
                         // Method called when clicking on the previous button in the header
@@ -212,26 +217,31 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         _popupUI = new CardPopup(_widget.closePopup);
                         
                         // Initializing the QuickSetup UI
-                        _widget.reset = function reset(){
-                                // retrieve active deck
-                                _widget.getDeck().then(function(){
-                                        // reset draw status
-                                        _deckStack.char = _deck.char.concat();
-                                        _deckStack.context = _deck.context.concat();
-                                        _deckStack.problem = _deck.problem.concat();
-                                        _drawnCards.char = 0; _drawnCards.context = 0; _drawnCard.problem = 0;
-                                        _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()};
-                                        _currentPopup = "";
-                                        _ready = true;
-                                        // reset timer
-                                        _start = null;
-                                        // reset selection
-                                        _selection.reset({
-                                                char : {id:"",title:"", pic: "", selected: false, left: null, popup: false},
-                                                context : {id:"",title:"", pic: "", selected: false, left: null, popup: false},
-                                                problem : {id:"",title:"", pic: "", selected: false, left: null, popup: false}
+                        _widget.reset = function reset(sip){
+                                
+                                if (sip){}
+                                else{
+                                        // retrieve active deck
+                                        _widget.getDeck().then(function(){
+                                                // reset draw status
+                                                _deckStack.char = _deck.char.concat();
+                                                _deckStack.context = _deck.context.concat();
+                                                _deckStack.problem = _deck.problem.concat();
+                                                _drawnCards.char = 0; _drawnCards.context = 0; _drawnCard.problem = 0;
+                                                _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()};
+                                                _currentPopup = "";
+                                                _ready = true;
+                                                // reset timer
+                                                _start = null;
+                                                // reset selection
+                                                _selection.reset({
+                                                        char : {id:"",title:"", pic: "", selected: false, left: null, popup: false},
+                                                        context : {id:"",title:"", pic: "", selected: false, left: null, popup: false},
+                                                        problem : {id:"",title:"", pic: "", selected: false, left: null, popup: false}
                                                 });
-                                });
+                                        });
+                                        _next = "step";
+                                }
                                      
                         };
                         

@@ -1,5 +1,5 @@
-define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "CouchDBStore", "Ideafy/CardPopup", "Ideafy/Whiteboard"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard){
+define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "CouchDBStore", "Ideafy/CardPopup", "Ideafy/Whiteboard", "Promise"],
+        function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise){
                 
                 return function QuickScenarioConstructor($session, $prev, $next, $progress){
                         
@@ -24,7 +24,11 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                      ),
                             _scenario = new Store({"title" : "", "story" : "", "solution" : ""}),
                             _wbContent = new Store([]), // a store of whiteboard objects
-                            _wb = new Whiteboard("scenario", _wbContent, _tools);
+                            _wb = new Whiteboard("scenario", _wbContent, _tools),
+                            _start,
+                            _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
+                            _transport = Config.get("transport"),
+                            _elapsed = 0;
                              
                         
                         
@@ -86,13 +90,28 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         
                         // move to next screen
                         _widget.next = function(event, node){
+                                var now = new Date(), _timers;
+                                
                                 node.classList.remove("pressed");
                                 // if first time: upload scenario and set readonly
-                                if (!$session.get("scenario").length){
-                                        $session.set("scenario", [_scenario.toJSON()]);
-                                        $session.upload();
+                                if (_next === "step"){
+                                        _next = "sccreen";
+                                        // compute elapsed time
+                                        _timers = $session.get("elapsedTimers");
+                                        _timers.quickscenario = _elapsed + now.getTime() - _start;
+                                        // update session score
+                                        _widget.updateSessionScore(_timers.quickscenario).then(function(){
+                                                // resync with db
+                                                $session.unsync();
+                                                $session.sync(Config.get("db"), $session.get("_id")).then(function(){
+                                                        // update session document
+                                                        $session.set("scenario", [_scenario.toJSON()]);
+                                                        $session.set("elapsedTimers", _timers);
+                                                        $next("quickscenario");         
+                                                });      
+                                        });
                                 }
-                                $next("quickscenario");
+                                else $next("quickscenario");
                         };
                         
                         // move to previous screen
@@ -193,9 +212,30 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 _tools.set("showstory", true);      
                         };
                         
+                        // update session score
+                        _widget.updateSessionScore = function(timer){
+                                var promise = new Promise(),
+                                    json = {
+                                        "sid": $session.get("_id"),
+                                        "step": "quickscenario",
+                                        "time": timer,
+                                        "wbcontent": _wbContent.toJSON(),
+                                        "scenario": _scenario.toJSON()
+                                };
+                                _transport.request("UpdateSessionScore", json, function(result){
+                                        if (result.res === "ok"){
+                                                promise.resolve();
+                                        }
+                                        else {
+                                                promise.reject();
+                                        }
+                                });
+                                return promise;        
+                        };
+                        
                         // INIT SCENARIO
                         // Initializing the QuickScenario UI
-                        _widget.reset = function reset(){
+                        _widget.reset = function reset(sip){
                                 // reset all tools and status indicators
                                 _tools.reset({"postit": "inactive"},{"import": "inactive"},{"drawing": "inactive"},{"ready": false},{"showstory": false},{"shownext" : false},{"readonly" : false});
                                 // reset whiteboard (if sip, need to show existing content)
@@ -209,22 +249,35 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                         _wb.setReadonly(true);
                                         // in quick mode only one scenario is available
                                         _scenario.reset($session.get("scenario")[0]);
-                                        // if not in current step story should be readonly
+                                        // story should be readonly
                                         _tools.set("readonly", true);
-                                        _tools.set("shownext", true);        
+                                        _tools.set("shownext", true);
+                                        // set _next to screen
+                                        _next="screen";       
                                 }
                                 else{
+                                        // scenario fields are not uploaded separately        
                                         _scenario.reset({"title" : "", "story" : "", "solution" : ""});
                                         (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         // remove readonly
-                                        _wb.setReadonly(false);      
+                                        _wb.setReadonly(false);
+                                        // set next to step
+                                        _next="step";     
                                 }
+                                // retrieve time already spent on this step
+                                ($session.get("elapsedTimers").quickscenario) ? _elapsed = $sesion.get("elapsedTimers").quickscenario : _elapsed = 0;
+                         };
+                         
+                         _widget.initTimer = function(param){
+                                var now = new Date();
+                                _start = now.getTime();
+                                (param) ? _elapsed = param : _elapsed = 0;             
                          };
                         
                         // get selected cards
                         $session.watchValue("characters", function(value){
                                 var cdb = new CouchDBStore();
-                                    cdb.setTransport(Config.get("transport"));
+                                    cdb.setTransport(_transport);
                                 if (value.length === 1){
                                         // in the case of a  quick brainstorm there is only one character - for multiple characters a bulk query would be used ({keys: value})
                                         cdb.sync(Config.get("db"), value[0]).then(function(){
@@ -236,7 +289,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         });
                         $session.watchValue("contexts", function(value){
                                 var cdb = new CouchDBStore();
-                                    cdb.setTransport(Config.get("transport"));
+                                    cdb.setTransport(_transport);
                                 if (value.length === 1){
                                         cdb.sync(Config.get("db"), value[0]).then(function(){
                                                 _context.reset(JSON.parse(cdb.toJSON()));
@@ -247,7 +300,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         });
                         $session.watchValue("problems", function(value){
                                 var cdb = new CouchDBStore();
-                                    cdb.setTransport(Config.get("transport"));
+                                    cdb.setTransport(_transport);
                                 if (value.length === 1){
                                         cdb.sync(Config.get("db"), value[0]).then(function(){
                                                 _problem.reset(JSON.parse(cdb.toJSON()));

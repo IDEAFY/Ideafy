@@ -149,7 +149,6 @@ define("Ideafy/Public/Idea-detail",
 				
 				// watch viewStore for changes regarding this idea and update model accordingly
                                 viewStore.watch("updated", function(idx, value){
-                                        console.log(idx, value, index);
                                         if (idx === parseInt(index)){
                                             _store.reset(value);        
                                         }

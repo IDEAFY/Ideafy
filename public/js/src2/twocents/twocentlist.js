@@ -54,7 +54,16 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                                 }       
                                         },
                                         toggleHideButton : function(replies){
-                                                (!replies || !replies.length) ? this.classList.add("invisible") : this.classList.remove("invisible");       
+                                                if (!replies || !replies.length) this.classList.add("invisible")
+                                                else {
+                                                         this.classList.remove("invisible");
+                                                         if (replies.length === 1){
+                                                                this.innerHTML = Config.get("labels").get("showonetcreply");
+                                                        }
+                                                        else{
+                                                                this.innerHTML = Config.get("labels").get("showtcrepliesbefore")+replies.length+Config.get("labels").get("showtcrepliesafter");
+                                                        } 
+                                               }      
                                         },
                                         displayReplies : function(replies){
                                                 if (!replies || !replies.length){
@@ -141,7 +150,6 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                         node.setAttribute("name", "hide");
                                         node.classList.remove("showReplies");
                                         node.classList.add("hideReplies");
-                                        node.innerHTML = Config.get("labels").get("hidetwocentreplies");
                                 }
                                 else {
                                         // hide twocent replies
@@ -150,12 +158,6 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                         node.setAttribute("name", "show");
                                         node.classList.remove("hideReplies");
                                         node.classList.add("showReplies");
-                                        if (replies.length === 1){
-                                                node.innerHTML = Config.get("labels").get("showonetcreply");
-                                        }
-                                        else{
-                                                node.innerHTML = Config.get("labels").get("showtcrepliesbefore")+replies.length+Config.get("labels").get("showtcrepliesafter");
-                                        }
                                 }
                         };
                 }       

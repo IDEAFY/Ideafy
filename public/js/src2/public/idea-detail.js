@@ -1,8 +1,7 @@
 //may be change the module id to have something nicer
 define("Ideafy/Public/Idea-detail", 
-	["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Map", "Ideafy/Utils",
-	 "Ideafy/TwoCents", "Amy/Stack-plugin", "Ideafy/Public/Edit", "Ideafy/Public/Sendmail", "Ideafy/Avatar", "Config", "WriteTwocent", "TwocentList", "Observable"], 
-	function(Widget, Store, Model, Event, Map, Utils, TwoCents, Stack, Edit, Sendmail, Avatar, Config, WriteTwocent, TwocentList, Observable){
+	["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Map", "Ideafy/Utils", "Amy/Stack-plugin", "Ideafy/Public/Edit", "Ideafy/Public/Sendmail", "Ideafy/Avatar", "Config", "WriteTwocent", "TwocentList", "Observable"], 
+	function(Widget, Store, Model, Event, Map, Utils, Stack, Edit, Sendmail, Avatar, Config, WriteTwocent, TwocentList, Observable){
 		return function IdeaDetailConstructor(){
 		//declaration
 			var  _widget = new Widget(),
@@ -12,7 +11,6 @@ define("Ideafy/Public/Idea-detail",
 			     _voted = false,
 			     user = Config.get("user"),
                              transport = Config.get("transport"),
-		             _twocents = new TwoCents(),
 		             _store = new Store(),
 		             _stack = new Stack(),
 		             _dom = Map.get("public-detail"),
@@ -137,7 +135,6 @@ define("Ideafy/Public/Idea-detail",
 				"detailstack" : _stack
 			});
 			_widget.alive(_dom);
-			//_twocents.place(Map.get("public-twocents"));
 
 		//public
 			_widget.reset = function reset(viewStore, index){
@@ -145,7 +142,6 @@ define("Ideafy/Public/Idea-detail",
 			        _voted = false;
 				_store.reset(viewStore.get(index));
 				_twocentWriteUI.reset(_store.get("id"));
-				//_twocents.reset(model._id);
 				
 				// watch viewStore for changes regarding this idea and update model accordingly
                                 viewStore.watch("updated", function(idx, value){

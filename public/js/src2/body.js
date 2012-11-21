@@ -88,9 +88,16 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                 Config.set("db", result.db);
                                         }
                                         _local.set("currentLogin", email);
-                                        _local.sync("ideafy-data");
-
-                                        _body.init();
+                                        _transport.request("GetAvatar", {id: email}, function(result){
+                                                if (!result.error) {
+                                                        _local.set("userAvatar", result);
+                                                        _local.sync("ideafy-data");
+                                                        // add to Config
+                                                        Config.set("avatar", result);
+                                                }
+                                                _local.sync("ideafy-data");
+                                                _body.init();
+                                        });
                                 } else {
                                         _store.set("error", _labels.get("invalidlogin"));
                                 }
@@ -201,20 +208,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         _body.init = function() {
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         Config.set("uid", '"' + _user.get("_id") + '"');
-                        
-                        // load user avatar if not found in localstore
-                        if (!_local.get("userAvatar")){
-                                _transport.request("GetAvatar", {id: _user.get("_id")}, function(result){
-                                        if (!result.error) {
-                                                _local.set("userAvatar", result);
-                                                _local.sync("ideafy-data");
-                                                // add to Config
-                                                Config.set("avatar", result);
-                                        }     
-                                });
-                        }
-                        else Config.set("avatar", _local.get("userAvatar"));
-                        
                         _dock.init();
                         //if everything is downloaded
                         _stack.getStack().show("#dock")

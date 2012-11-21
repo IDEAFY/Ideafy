@@ -1803,6 +1803,19 @@ textarea.solution {
     height:100px;    
 }
 
+.enlarge{
+    width: 716px;
+    height: 438px;
+    z-index: 200;
+    position: absolute;
+    margin: 0;
+    -webkit-box-shadow: none;
+    border-radius: 10px;
+    background-size:contain;
+    padding: 0px;
+    border: none;
+}
+
 .choosecolorlbl{
     width: 190px;
     margin-top: 20px;

@@ -46,42 +46,7 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                                                 default:
                                                         break;
                                         }
-                                }
-                              /*  setType : function(type){
-                                        switch(type){
-                                                case "postit":
-                                                        this.classList.remove("photo");
-                                                        break;
-                                                case "import":
-                                                        this.classList.add("photo");
-                                                default:
-                                                        break;
-                                        }
-                                },
-                                setContent : function(content){
-                                        var id = this.getAttribute("data-wbmain_id"),
-                                            node = this,
-                                            json;
-                                        if ($store.get(id).type === "postit") this.innerHTML = content;
-                                        if ($store.get(id).type === "import") {
-                                                this.innerHTML = "";
-                                                json = {"sid":_sid, "filename":content};
-                                                _transport.request("GetFile", json, function(data){
-                                                        node.setAttribute("style", "background-image: url('"+data+"');");   
-                                                });
-                                        }     
-                                },
-                                setStyle : function(style){
-                                        if (style){
-                                                var color = style.marker, img = style.img;
-                                                this.setAttribute("style", "background-image:url('img/brainstorm/"+img+"'); color:"+color+";");
-                                        }
-                                },
-                                setBg : function(bg){
-                                        if (bg){
-                                                this.setAttribute("style", "background:"+bg+";");
-                                        }
-                                }*/
+                                }                              
                         }),
                         "wbevent" : new Event(_widget)
                 });
@@ -96,6 +61,12 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                         if (!_readonly){
                                 $tools.set(type, "active");
                                 $select(type, id);
+                        }
+                        else{
+                                // in readonly mode allow the possibility to zoom in on pictures and drawings
+                                if ($store.get(id).type !== "postit"){
+                                        (node.classList.contains("enlarge"))?node.classList.remove("enlarge"):node.classList.add("enlarge");
+                                }
                         }
                 };
                 

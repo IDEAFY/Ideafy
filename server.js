@@ -395,7 +395,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         }
                         // otherwise return base64 version of file located in attachments directory
                         else {
-                                _file = __dirname+"/attachments/"+_image;
+                                _file = __dirname+"/attachments/avatars/"+_image;
                                 
                                 // retrieve file extension
 

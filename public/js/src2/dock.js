@@ -8,15 +8,6 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 			var _widget = new Widget(),
 				_control = new Control(this),
 				_stack = new Stack();
-				//refactor stack-service
-				/*_stack = new Stack({
-					"#public" :_public,
-					//replace with modules
-					"#library" : new Library(),
-					"#brainstorm" : new Brainstorm(),
-					"#connect" : new Connect(),
-					"#dashboard" : new Dashboard()
-				});*/
 
 		//setup
 			//labels have to configurable
@@ -41,6 +32,11 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				console.log("dashboardok");
 				//set current stack view
 				_stack.getStack().show("#public");
+			};
+			
+			_widget.reset = function(){
+			     _stack = new Stack();
+			     _widget.init();      
 			};
 
 			this.setCurrentWidget = function(event){

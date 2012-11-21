@@ -96,6 +96,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                         Config.set("avatar", result);
                                                 }
                                                 _local.sync("ideafy-data");
+                                                console.log("calling init now");
                                                 _body.init();
                                         });
                                 } else {
@@ -171,6 +172,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                         user.upload().then(function() {
                                                                 // alter local
                                                                 _local.set("currentLogin", userid);
+                                                                _local.set("userAvatar", user.get("picture_file"));
                                                                 _local.sync("ideafy-data");
                                                                 Config.set("uid", '"' + userid + '"');
                                                                 _body.init();
@@ -206,11 +208,31 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         };
         
         _body.init = function() {
+                
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         Config.set("uid", '"' + _user.get("_id") + '"');
+                        Config.set("avatar", _local.get("userAvatar"));
                         _dock.init();
                         //if everything is downloaded
-                        _stack.getStack().show("#dock")
+                        _stack.getStack().show("#dock");
+                        
+                        _user.watchValue("picture_file", function(){
+                                //handle avatar change
+                                _transport.request("GetAvatar", {id: email}, function(result){
+                                        if (!result.error) {
+                                                _local.set("userAvatar", result);
+                                                _local.sync("ideafy-data");
+                                                Config.set("avatar", result);
+                                        }
+                                });
+                        });
+                
+                        Config.watchValue("uid", function(uid){
+                                // handle signout
+                                if (uid === ""){              
+                                }   
+                        });
+                        
                 });
         };
 

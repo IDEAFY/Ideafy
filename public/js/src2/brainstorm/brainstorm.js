@@ -70,7 +70,6 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
                        },1000);
                        _stack.getStack().add("menu", new IdeafyMenu(_widget.selectScreen));
                        _stack.getStack().show("menu");
-                       BSTACK = _stack;
                        
 		//return
 			return _widget;

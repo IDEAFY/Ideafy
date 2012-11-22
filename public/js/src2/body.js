@@ -1,4 +1,4 @@
-require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugin", "Olives/Model-plugin", "Amy/Delegate-plugin", "Ideafy/Dock", "Ideafy/Login", "Config", "CouchDBStore", "Ideafy/Utils", "Ideafy/NewIdea"], function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils, NewIdea) {
+require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugin", "Olives/Model-plugin", "Amy/Delegate-plugin", "Ideafy/Dock", "Ideafy/Login", "Config", "CouchDBStore", "Ideafy/Utils", "Ideafy/NewIdea", "Ideafy/Help"], function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils, NewIdea, Help) {
 
         //declaration
         var _body = new Widget(), _login = null, _stack = new Stack({

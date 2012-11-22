@@ -7,6 +7,7 @@ define("Map", ["Store"], function(Store){
 			"loading" : document.getElementById("loading"),
 		"dock" : document.getElementById("wrapper"),
 		"newidea-popup" : document.getElementById("newidea-popup"),
+		"help-popup" : document.getElementById("help-popup"),
 		"cache" : document.getElementById("cache"),
 		"public" : document.getElementById("public"),
 		        "public-menu" : document.getElementById("public-menu"),

@@ -311,6 +311,11 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                                 "newideaevent" : new Event(_widget)
                         });
                         
+                        _widget.template = '<div><div class = "header blue-dark"><div class="option left" data-newideaevent="listen:touchstart, press; listen:touchend, cancel">Cancel</div><span data-labels="bind: innerHTML, createidealbl"></span><div class="option right" data-newideaevent="listen:touchstart, press; listen:touchend, upload">Ok</div></div><form class="form"><p><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title"></p><p><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution"></textarea></p><p><span class="errormsg" data-errormsg="bind:setError, error"></span><span class="visibility" data-labels="bind:innerHTML, privatelbl" data-newideaevent="listen: touchstart, press; listen:touchend,toggleVisibility" data-newidea="bind: setVisibility, visibility"></span></p></form></div>';
+                        
+                        _widget.render();
+                        _widget.place(Map.get("newidea-popup"));
+                        
                         _widget.toggleVisibility = function(event, node){
                                 var vis = _store.get("visibility");
                                 node.classList.remove("pressed");
@@ -363,8 +368,40 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                                 }  
                         };
                         
-                        _widget.alive(Map.get("newidea-popup"));
+                        return _widget;
+                };
                 
+        });
+        
+define("Ideafy/Help", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store"],
+        function(Widget, Map, Model, Event, Config, Store){
+                
+                return new function HelpConstructor(){
+                
+                        var _widget = new Widget(),
+                            _labels = Config.get("labels"),
+                            _content = new Store({"html":""});
+                        
+                        _widget.plugins.addAll({
+                                "help" : new Model(_content),
+                                "helpevent" : new Event(_widget)
+                        });
+                        
+                        _widget.template = '<div><div class="help-doctor" data-helpevent="listen:touchstart, close"></div><div class="help-screen" data-help="bind:innerHTML,html"></div></div>';
+                        
+                        _widget.render();
+                        _widget.place(Map.get("help-popup"));
+                        
+                        _widget.setContent = function setContent(label){
+                                _content.set("html", _labels.get(label));        
+                        };
+                        
+                        _widget.close = function(event, node){
+                                // hide window
+                                document.getElementById("help-popup").classList.remove("appear");
+                                document.getElementById("cache").classList.remove("appear");
+                        };
+                        
                         return _widget;
                 };
                 

@@ -1672,11 +1672,12 @@ textarea.solution {
 .whiteboard .defaultcontent{
     display: inline-block;
     color: #657B99;
-    font-size: 12px;
+    font-size: 14px;
     font-family: Helvetica;
     width: 567px;
     margin-left: 75px;
-    margin-top: 150px;
+    margin-top: 100px;
+    text-align: justify;
 }
 
 .whiteboard .defaultcontent strong{

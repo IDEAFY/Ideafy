@@ -1,7 +1,7 @@
 define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "CouchDBStore", "Ideafy/CardPopup", "Ideafy/Whiteboard", "Promise"],
         function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise){
                 
-                return function QuickScenarioConstructor($session, $prev, $next, $progress){
+                return function QuickScenarioConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),

@@ -1,7 +1,7 @@
 define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config"],
         function(Widget, Map, Model, Event, Config){
                 
-                return function QuickIdeaConstructor($session, $prev, $next, $progress){
+                return function QuickIdeaConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),

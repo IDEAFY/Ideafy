@@ -19,7 +19,8 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                                {name: "quickwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
                                ]),
                        _user = Config.get("user"),
-                       _session = new CouchDBStore();
+                       _session = new CouchDBStore()
+                       _sessionData = new Store();
                        
                    
                    // setup -- initialize UIs (progress bar and stack) and _session couchdbstore
@@ -60,7 +61,26 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                         }              
                    };
                    
-                   _widget.retrieveSession = function retrieveSession(sip){       
+                   _widget.retrieveSession = function retrieveSession(sip){
+                           // connect to couchdbstore
+                           // retrieve card information      
+                   };
+                   
+                   // Method called to retrieve selected cards when loading a session in progress with this step complete
+                   _widgetgetSelectedCards = function getSelectedCards(ids){
+                                var Promise = new Promise(),
+                                    cdb = new CouchDBStore();
+                                
+                                cdb.setTransport(Config.get("transport"));
+                                cdb.sync(Config.get("db"), ids).then(function(){
+                                        console.log(cdb.toJSON());
+                                        
+                                        // to do -- assign the card contents to _sessionData
+                                        
+                                        promise.resolve();
+                                        cdb.unsync();        
+                                });
+                                return promise; 
                    };
                    
                    _widget.startNewSession = function startNewSession(){
@@ -79,8 +99,8 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                          */
                         _session.unsync(); // just to be sure
                         _session.reset(Config.get("sessionTemplate"));
-                        
-SESSION = _session;
+                         //reset local session data
+                        _sessionData.reset();
                         
                         // set session initiator to current user
                         _session.set("initiator", {"id": _user.get("_id"),"username": _user.get("username"),"picture_file": _user.get("picture_file")});
@@ -158,11 +178,11 @@ SESSION = _session;
                    
                    _widget.init = function init(){
                            _stack.getStack().add("quickstart", new QuickStart(_session, _widget.prev, _widget.next, _widget.toggleProgress));
-                           _stack.getStack().add("quicksetup", new QuickSetup(_session, _widget.prev, _widget.next, _widget.toggleProgress));
-                           _stack.getStack().add("quickscenario", new QuickScenario(_session, _widget.prev, _widget.next, _widget.toggleProgress));
-                           _stack.getStack().add("quicktech", new QuickTech(_session, _widget.prev, _widget.next, _widget.toggleProgress));
-                           _stack.getStack().add("quickidea", new QuickIdea(_session, _widget.prev, _widget.next, _widget.toggleProgress));
-                           _stack.getStack().add("quickwrapup", new QuickWrapup(_session, _widget.prev, _widget.next, _widget.toggleProgress));
+                           _stack.getStack().add("quicksetup", new QuickSetup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
+                           _stack.getStack().add("quickscenario", new QuickScenario(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
+                           _stack.getStack().add("quicktech", new QuickTech(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
+                           _stack.getStack().add("quickidea", new QuickIdea(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
+                           _stack.getStack().add("quickwrapup", new QuickWrapup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
                    };
                    
                    _widget.toggleProgress = function toggleProgress(node){
@@ -178,8 +198,6 @@ SESSION = _session;
                    // init
                    _widget.init();
                    _widget.reset($sip);
-                   WID = _widget;
-                   STEPS = _steps;
                    
                    // return
                    return _widget;

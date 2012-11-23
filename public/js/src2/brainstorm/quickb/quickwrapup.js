@@ -1,7 +1,7 @@
 define("Ideafy/Brainstorm/QuickWrapup", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config"],
         function(Widget, Map, Model, Event, Config){
                 
-                return function QuickWrapupConstructor($session, $prev, $next, $progress){
+                return function QuickWrapupConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),

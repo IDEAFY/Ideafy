@@ -113,6 +113,7 @@
 	"storydescplaceholder": "Tell your story, describe the problem your character is facing",
 	"storysolplaceholder": "How would you plan to fix this problem ?",
 	"quicktech": "Assign technologies",
+	"quitechhelp":"<h2>Draw technologies</h2><p>The next phase of your session consist in finding a way to implement your solution using state of the art technologies. In this step you will draw three technology cards that you will try to include in your design.</p>",
 	"quickidea": "Describe your idea",
 	"quickwrapup": "Summary",
 	"quickstepstart": "Session description",

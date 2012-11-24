@@ -17,7 +17,6 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                                             style = $store.get(id).style,
                                             bg = $store.get(id).background,
                                             json;
-                                        console.log($store.get(id));
                                         switch(type){
                                                 case "postit":
                                                         node.classList.remove("photo");

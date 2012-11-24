@@ -38,6 +38,10 @@ button{
   src: url('../fonts/Pacifico.ttf') format("truetype");  
 } 
 
+textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
+    font-size: 14px;
+}
+
 /* utils */
 .blue-light {
   background:#9ac9cd;
@@ -52,7 +56,7 @@ button{
   letter-spacing:1px;
 }
 
-/* may be ameliorate the .idea-edit .form input.input */
+/* may be improve the .idea-edit .form input.input */
 .header, .header .option, .idea-edit .form input.input {
   height:36px;
 }
@@ -2330,6 +2334,14 @@ li.color-item{
     color: #808080;
 }
 
+.card.tech .cardpicture{
+    margin-bottom: 15px;
+}
+
+.card.tech .cardtitle{
+    font-family: Helvetica;
+}
+
 /*default cards in case picture is missing */
 .char.defaultcard{
     background: url('../img/decks/fullcards/activeCharacter.png') no-repeat;
@@ -2429,6 +2441,10 @@ li.color-item{
     font-size: 16px;
 }
 
+.cd-header.story{
+    height:72px;
+}
+
 .cd-header span, .close-popup{
     float: left;
 }
@@ -2438,13 +2454,16 @@ li.color-item{
 }
 
 .close-popup{
+    position: absolute;
+    top: 8px;
+    right: 18px;
     width: 30px;
     height: 30px;
     display: block;
     background-image: url('../img/decks/whiteCrossDelete.png');
     background-repeat: no-repeat;
-    background-position: right center;
-    background-size: 10px 10px;
+    background-position: right top;
+    background-size: 12px 12px;
 }
 
 .cd-picarea{
@@ -2531,7 +2550,10 @@ li.color-item{
     width: 260px;
     height: 193px;
     padding: 0px 20px 20px 20px;
-    overflow-y: scroll;
+}
+
+.cd-contentarea.story p{
+    font-size: 12px;
 }
 
 .cd-contentarea .contentTitle{
@@ -2544,6 +2566,22 @@ li.color-item{
     border-top: 1px solid #E6E6E6;
     padding-top: 3px;
     font-size: 10px;
+    overflow-y: scroll;
+    text-align: justify;
+}
+
+.storytitlelbl{
+    background-image: url('../img/brainstorm/iconStory16x14.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 16px 14px;
+    padding-left: 20px;
+}
+
+.storytitle span{
+    width: auto;
+    max-width: 200px;
+    overflow: hidden;
 }
 
 /* quickscenario */
@@ -2574,6 +2612,7 @@ li.color-item{
 
 .enterTitle, .enterDesc, .enterSol{
     padding: 10px;
+    font-size: 14px;
     background-image: -webkit-linear-gradient(top, #F2F2F2, #F2F2F2);
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
     border-radius: 0;
@@ -2616,7 +2655,7 @@ li.color-item{
 /* quicktech */
 
 #quicktech-left .card{
-    margin: 20px 30px 30px 30px;
+    margin: 240px 30px 30px 30px;
 }
 
 #quicktech .drawarea{

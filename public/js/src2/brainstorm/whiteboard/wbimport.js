@@ -70,7 +70,6 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                         "labels" : new Model(_labels),
                         "importmodel" : new Model(_postit, {
                                 "setVisibility" : function(content){
-                                        console.log(content);
                                         (content) ? this.classList.remove("invisible") : this.classList.add("invisible");        
                                 },
                                 "showPreview" : function(content){

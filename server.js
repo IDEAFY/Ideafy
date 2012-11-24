@@ -363,7 +363,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 if (json.file){
                         if (json.file.search("img/avatars")>-1) onEnd(json.file)
                         else {
-                                _file = __dirname+"/attachments/"+ json.file;
+                                _file = __dirname+"/attachments/avatars/"+ json.file;
                                 
                                 // retrieve file extension
                                 if (json.file.match(pngPattern)) { ext = "png";}
@@ -735,7 +735,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 min_score = 10;
                                 bonus = 20 - Math.floor(json.time/3000); // time bonus
                                 if (bonus < 0) { bonus = 0;}
-                                increment = 15 - (json.cards*5);
+                                increment = 15 - (json.cards*3);
                                 if (increment<0) { increment = 0;}
                                 increment += bonus;
                                 if (increment < min_score) increment = min_score;
@@ -760,6 +760,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 
                                 increment = Math.floor((wbdata.length*10 + bonus)*coeff);
                                 break;
+                        case "quicktech":
+                                min_score = 10;
+                                bonus = 20 - Math.floor(json.time/3000); // time bonus
+                                if (bonus < 0) { bonus = 0;}
+                                increment = 15 - (json.cards*3);
+                                if (increment<0) { increment = 0;}
+                                increment += bonus;
+                                if (increment < min_score) increment = min_score;
+                                break;        
                         default:
                                 increment = 0;
                                 break;

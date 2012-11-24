@@ -66,23 +66,6 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                            // retrieve card information      
                    };
                    
-                   // Method called to retrieve selected cards when loading a session in progress with this step complete
-                   _widgetgetSelectedCards = function getSelectedCards(ids){
-                                var Promise = new Promise(),
-                                    cdb = new CouchDBStore();
-                                
-                                cdb.setTransport(Config.get("transport"));
-                                cdb.sync(Config.get("db"), ids).then(function(){
-                                        console.log(cdb.toJSON());
-                                        
-                                        // to do -- assign the card contents to _sessionData
-                                        
-                                        promise.resolve();
-                                        cdb.unsync();        
-                                });
-                                return promise; 
-                   };
-                   
                    _widget.startNewSession = function startNewSession(){
                         // reset progress bar
                         _steps.reset([
@@ -101,6 +84,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                         _session.reset(Config.get("sessionTemplate"));
                          //reset local session data
                         _sessionData.reset();
+                        DATA = _sessionData;
                         
                         // set session initiator to current user
                         _session.set("initiator", {"id": _user.get("_id"),"username": _user.get("username"),"picture_file": _user.get("picture_file")});
@@ -116,6 +100,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                         _stack.getStack().get("quickstart").reset();
                         _stack.getStack().get("quicksetup").reset();
                         _stack.getStack().get("quickscenario").reset();
+                        _stack.getStack().get("quicktech").reset();
                         
                         // display first step
                         _stack.getStack().show("quickstart");

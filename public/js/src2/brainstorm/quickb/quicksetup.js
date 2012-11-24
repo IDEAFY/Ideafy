@@ -9,7 +9,6 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                             _dom = Map.get("quicksetup"),
                             _labels = Config.get("labels"),
                             _transport = Config.get("transport"), _db = Config.get("db"), _user = Config.get("user"),
-                            _deck = {}, // to store the initial deck content
                             _deckStack = {}, // the cards remaining in the stack after each draw
                             _selection = new Store({
                                      char : {selected: false, left: null, popup: false},
@@ -82,7 +81,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         //update session data
                                         $data.set("characters", _cards.get("char"));
                                         $data.set("contexts", _cards.get("context"));
-                                        $data.set("problems", _cards.get("problems"));
+                                        $data.set("problems", _cards.get("problem"));
                                         
                                         // compute session score
                                         _widget.updateSessionScore(_elapsedTime).then(function(){
@@ -135,11 +134,11 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                     _sel = _selection.get(_type);
                                     _now = new Date();
                                
-                                if (_next === "step"){
+                                if (_next === "step" && _ready){
                                         // if reload button -- could've used classList.contains("reload") but browser compat issue
                                         if (_sel.left === 0){
                                                 // reinitialize deckStack
-                                                _deckStack[_type] = _deck[_type].concat();
+                                                _deckStack[_type] = $data.get("deck")[_type].concat();
                                                 _sel.left = _deckStack[_type].length;
                                                 _selection.set(_type, _sel);
                                         }
@@ -211,8 +210,14 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         _widget.setPopup = function setPopup(type){
                                 var pos = {x:0, y:337}, // the position of the popup
                                     caret = "left", // the position of the caret
+                                    old = _selection.get(_currentPopup) || "",
                                     sel = _selection.get(type);
                                 
+                                // reset previous card if any
+                                if(old) {
+                                        old.popup = false;
+                                        _selection.set(_currentPopup, old);
+                                }
                                 sel.popup = true;
                                 _selection.set(type, sel);
                                 _currentPopup = type;
@@ -253,6 +258,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 else{
                                         // retrieve active deck
                                         _widget.getDeck().then(function(){
+                                                var _deck = $data.get("deck");
                                                 // reset draw status
                                                 _deckStack.char = _deck.char.concat();
                                                 _deckStack.context = _deck.context.concat();
@@ -288,9 +294,12 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 
                                 cdb.setTransport(_transport);
                                 cdb.sync(_db, _user.get("active_deck")).then(function(){
-                                        _deck.char = cdb.get("content").characters;
-                                        _deck.context = cdb.get("content").contexts;
-                                        _deck.problem = cdb.get("content").problems;
+                                        var deck = {};
+                                        deck.char = cdb.get("content").characters;
+                                        deck.context = cdb.get("content").contexts;
+                                        deck.problem = cdb.get("content").problems;
+                                        deck.techno = cdb.get("content").techno; // even though it is not for this step so there is only one request to read the deck going out to the database
+                                        $data.set("deck", deck);
                                         promise.resolve();
                                         cdb.unsync();
                                 });

@@ -1866,7 +1866,7 @@ textarea.solution {
 }
 
 .photo, .drawing{
-    margin: 30px 10px 15px 10px;
+    margin: 30px 10px 20px 10px;
     background-size: contain;
     border: 5px solid white;
     border-radius:3px;
@@ -2849,7 +2849,9 @@ li.color-item{
     line-height:20px;
     font-family: Pacifico;
     color: #808080;
-    font-size: 14px;
+    font-size: 16px;
+    width: 80px;
+    text-align:center;
 }
 
 #quickwrapup .sessiontime{

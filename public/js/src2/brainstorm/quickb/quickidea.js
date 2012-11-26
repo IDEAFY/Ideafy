@@ -10,6 +10,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                             _idea = new Store({"title" : "", "description" : "", "solution" : "", "visibility": "private"}),
                             _scenario = new Store(),
                             _techs = new Store([]),
+                            _techDetails = [], //used to store tech card details
                             _tools = new Store(
                                      {"cardpopup":{"scenario":false, "techs":[false, false, false]}},
                                      {"postit": "inactive"},
@@ -88,7 +89,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         
                         // move to next screen
                         _widget.next = function(event, node){
-                                var now = new Date(), _timers;
+                                var now = new Date(), _timers, duration;
                                 
                                 node.classList.remove("pressed");
                                 // if first time: upload scenario and set readonly
@@ -97,8 +98,16 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                         // compute elapsed time
                                         _timers = $session.get("elapsedTimers");
                                         _timers.quickidea = _elapsed + now.getTime() - _start;
+                                        
+                                        // compute overall session time
+                                        duration = _widget.getSessionDuration();
+                                        
                                         // add idea to session data
                                         $data.set("idea", JSON.parse(_idea.toJSON()));
+                                        
+                                        // create separate idea document in couchdb
+                                        _widget.createIdeaDoc();
+                                        
                                         // update session score
                                         _widget.updateSessionScore(_timers.quickidea).then(function(){
                                                 // resync with db
@@ -107,6 +116,8 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                                         // update session document
                                                         $session.set("idea", [JSON.parse(_idea.toJSON())]);
                                                         $session.set("elapsedTimers", _timers);
+                                                        $session.set("duration", duration);
+                                                        $session.set("status", completed);
                                                         // set idea to readonly
                                                         _tools.set("readonly", true);
                                                         $next("quickidea");         
@@ -162,6 +173,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 var pos = {x:240, y: 30}, // the position of the popup
                                     caret = "left", // the position of the caret
                                     popup = _tools.get("cardpopup"),
+                                    story = new Store(),
                                     details = "", // the contents of the cards
                                     temp,
                                     cdb; // if content needs to be retrieved from database
@@ -179,7 +191,9 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 
                                 if (type === "scenario") {
                                         pos.y = 55;
-                                        details = JSON.stringify($data.get("scenario"));
+                                        story.reset($data.get("scenario"));
+                                        story.set("type", 5);
+                                        details = story.toJSON();
                                         _popupUI.reset(details, pos, caret, document.getElementById("quickidea-popup"));
                                 }
                                 else {
@@ -187,8 +201,8 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                         if (id == 0) pos.y = 200;
                                         if (id == 1) pos.y = 260;
                                         if (id == 2) pos.y = 350;
-                                        if (_techs.get(id)){
-                                                details = JSON.stringify(_techs.get(id));
+                                        if (_techDetails[id]){
+                                                details = _techDetails[id];
                                                 _popupUI.reset(details, pos, caret, document.getElementById("quickidea-popup"));
                                         }
                                         else{
@@ -198,7 +212,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                                         details = cdb.toJSON();
                                                         _popupUI.reset(details, pos, caret, document.getElementById("quickidea-popup"));
                                                         // save contents in the appropriate local store for further use
-                                                        _techs.set(id, JSON.parse(cdb.toJSON()));
+                                                        _techDetails[id] = details;
                                                  });
                                         }  
                                 }        
@@ -271,8 +285,20 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 return promise;        
                         };
                         
-                        // INIT IDEA
-                        // Initializing the QuickIdea UI
+                        // compute session duration
+                        _widget.getSessionDuration = function getSessionDuration(){
+                                var elapsed = $session.get("elapsedTime"),
+                                    start = $session.get("resumeTime") || $session.get("startTime");
+                                    now = new Date();
+                                return (now.getTime()-start+elapsed);
+                        };
+                        
+                        // create separate idea doc in couchDB
+                        _widget.createIdeaDoc = function createIdeaDoc(){
+                                
+                        };
+                        
+                        // INIT QUICKIDEA STEP
                         _widget.reset = function reset(sip){
                                 // reset all tools and status indicators
                                 _tools.reset(

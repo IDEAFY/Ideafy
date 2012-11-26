@@ -9,10 +9,30 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 		},
 
 
+		/*
+                 * A function used to format a duration in days, hours, min and secs from a number of milliseconds
+                 */
+                        
+                formatDuration : function(duration){
+                        var d = Math.round(duration/1000),
+                            days = Math.floor(d / 86400),
+                            hrs = Math.floor(d % 86400 / 3600),
+                            min = Math.floor(d % 86400 % 3600 / 60),
+                            sec =  Math.floor(d % 86400 % 3600 % 60),
+                            res;
+                            
+                            days>0 ? res = days+"d ": res="";
+                            hrs>0 ? res += hrs+":" : res+="";
+                            min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : "0:";
+                            sec<10 ? res += "0"+sec : res+= sec;
+                                                
+                            return res;
+                },
+		
 		/* 
-			 * A function to display an abtract in a list, stopping at the end of the first sentence or truncating it if it
-			 * goes beyond 140 characters
-			 */
+                * A function to display an abtract in a list, stopping at the end of the first sentence or truncating it if it
+		* goes beyond 140 characters
+		*/
 		displayFirstSentence : function(elementid, desc){
 			var sentences = [];
 			sentences = desc.split("."[0], 1);

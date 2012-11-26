@@ -203,17 +203,18 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                 event.target.classList.remove("pressed");        
         };
         
-        _body.forcePortrait = function(event, node){
-                if (window.orientation % 180 == 0){
-                   node.css("-webkit-transform-origin", "")
-                       .css("-webkit-transform", "");               
+        _body.forceLandscape = function(event, node){
+                console.log(window.orientation);
+                var scaleX = 1004/1024, scaleY = 768/748;
+                if (window.orientation === 90 || window.orientation === -90){
+                   node.setAttribute("style", "-webkit-transform-origin:0;-webkit-transform:0;");               
                } 
                else {                   
                    if ( window.orientation > 0) { //clockwise
-                     node.setAtribute("style", "-webkit-transform-origin: 200px 190px; -webkit-transform:rotate(-90deg);");
+                     node.setAttribute("style", "-webkit-transform-origin: 384px 374px; -webkit-transform:rotate(-90deg) scale("+scaleX+","+scaleY+"); -webkit-transition: all 1s ease-in-out;");
                    }
                    else {
-                     node.setAttribute("style", "-webkit-transform-origin:280px 190px;-webkit-transform:rotate(90deg);"); 
+                     node.setAttribute("style", "-webkit-transform-origin:384px 374px;-webkit-transform:rotate(90deg) scale("+scaleX+","+scaleY+"); -webkit-transition: all 0.25s ease-in-out;");
                    }
                }    
         };

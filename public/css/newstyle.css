@@ -571,7 +571,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 .visibility.public{
     background-image: url('../img/public/publicForList.png');
     background-size: 18px 15px; 
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 .visibility.pressed{
@@ -579,11 +579,17 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .visibility.private.pressed{
-    background-image: url('../img/brainstorm/byPrivateActive.png');    
+    background-image: url('../img/brainstorm/byPublicActive.png');
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+    background-position: 3px center;   
 }
 
 .visibility.public.pressed{
-    background-image: url('../img/brainstorm/byPublicActive.png');    
+    background-image: url('../img/brainstorm/byPrivateActive.png'); 
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+    background-position: 3px center;     
 }
 
 
@@ -2352,6 +2358,7 @@ li.color-item{
 
 .card.tech .cardpicture{
     margin-bottom: 15px;
+    margin-top:15px;
 }
 
 .card.tech .cardtitle{
@@ -2359,6 +2366,13 @@ li.color-item{
 }
 
 /*default cards in case picture is missing */
+.defaultcard{
+    background-size: 87px 87px;
+    background-position: center center;
+    background-position: center center;
+    background-repeat: no-repeat;    
+}
+
 .char.defaultcard{
     background: url('../img/decks/fullcards/activeCharacter.png') no-repeat;
 } 

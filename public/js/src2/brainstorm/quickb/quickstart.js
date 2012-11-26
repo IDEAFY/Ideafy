@@ -67,9 +67,11 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         };
                         
                         _widget.reset = function reset(sip){
-                                var now = new Date();
+                                var now = new Date(), step = _session.get("step");
                                 if (sip){
-                                        (_session.get("step") === "quickstart") ? _next = "step" : next = "screen";       
+                                        (step === "quickstart") ? _next = "step" : next = "screen";
+                                        // set resume time (to be added to elapsed time) if session is still in progress
+                                        if (step !== "quickwrapup") _session.set("resumeTime", now.getTime());       
                                 }
                                 else{
                                         _session.set("startTime", now.getTime());

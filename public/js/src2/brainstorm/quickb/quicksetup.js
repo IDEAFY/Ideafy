@@ -250,70 +250,46 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         
                         // Initializing the QuickSetup UI
                         _widget.reset = function reset(sip){
-                                
-                                console.log(sip, $session.toJSON())
-                                if (sip && $session.get("characters").length){
-                                        _next = "screen"; // read-only
-                                        console.log("reset quicksetup");
-                                        // retrieve session deck
-                                        _widget.getDeck().then(function(){
-                                                // retrieve card information
-                                                _widget.getCard($session.get("characters")[0], _currentCards.char).then(function(){
-                                                        var c = _currentCards.char;
-                                                        _cards.set("char", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
-                                                        $data.set("characters", _cards.get("char"));        
-                                                });
-                                                _widget.getCard($session.get("contexts")[0], _currentCards.context).then(function(){
-                                                        var c = _currentCards.context;
-                                                        _cards.set("context", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
-                                                        $data.set("contexts", _cards.get("context"));
-                                                });
-                                                _widget.getCard($session.get("problems")[0], _currentCards.problem).then(function(){
-                                                        var c = _currentCards.problem;
-                                                        _cards.set("problem", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
-                                                        $data.set("problems", _cards.get("problem"));
-                                                });
+                                if (sip){
+                                        if ($session.get("characters").length){
+                                                _next = "screen"; // read-only
+                                                // retrieve session deck
+                                                _widget.getDeck().then(function(){
+                                                        // retrieve card information
+                                                        _widget.getCard($session.get("characters")[0], _currentCards.char).then(function(){
+                                                                var c = _currentCards.char;
+                                                                _cards.set("char", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
+                                                                $data.set("characters", _cards.get("char"));        
+                                                                });
+                                                        _widget.getCard($session.get("contexts")[0], _currentCards.context).then(function(){
+                                                                var c = _currentCards.context;
+                                                                _cards.set("context", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
+                                                                $data.set("contexts", _cards.get("context"));
+                                                                });
+                                                        _widget.getCard($session.get("problems")[0], _currentCards.problem).then(function(){
+                                                                var c = _currentCards.problem;
+                                                                _cards.set("problem", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
+                                                                $data.set("problems", _cards.get("problem"));
+                                                        });
                                         
-                                                // reset selection & popup status
-                                                _selection.reset({
-                                                        char : {selected: true, left: 1, popup: false},
-                                                        context : {selected: true, left: 1, popup: false},
-                                                        problem : {selected: true, left: 1, popup: false}
-                                                });
-                                                _currentPopup = "";
+                                                        // reset selection & popup status
+                                                        _selection.reset({
+                                                                char : {selected: true, left: 1, popup: false},
+                                                                context : {selected: true, left: 1, popup: false},
+                                                                problem : {selected: true, left: 1, popup: false}
+                                                        });
+                                                        _currentPopup = "";
                                         
-                                                // get time
-                                                _elapsed  = $session.get("elpasedTimers").quicksetup;        
-                                        });
+                                                        // get time
+                                                        _elapsed  = $session.get("elpasedTimers").quicksetup;        
+                                                });        
+                                        }
+                                        else{
+                                                _widget.init();        
+                                        }
                                 }
                                 else{
-                                        // retrieve active deck
-                                        _widget.getDeck().then(function(){
-                                                var _deck = $data.get("deck");
-                                                // reset draw status
-                                                _deckStack.char = _deck.char.concat();
-                                                _deckStack.context = _deck.context.concat();
-                                                _deckStack.problem = _deck.problem.concat();
-                                                _drawnCards.char = 0; _drawnCards.context = 0; _drawnCard.problem = 0;
-                                                _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()};
-                                                _currentPopup = "";
-                                                _ready = true;
-                                                // reset timer
-                                                _start = null;
-                                                // reset cards
-                                                _cards.reset({
-                                                        char : {id:"",title:"", pic: ""},
-                                                        context : {id:"",title:"", pic: ""},
-                                                        problem : {id:"",title:"", pic: ""}
-                                                });
-                                                // reset selection
-                                                _selection.reset({
-                                                        char : {selected: false, left: null, popup: false},
-                                                        context : {selected: false, left: null, popup: false},
-                                                        problem : {selected: false, left: null, popup: false}
-                                                });
-                                        });
-                                        _next = "step";
+                                        _widget.init();
                                 }
                                      
                         };
@@ -401,6 +377,37 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         }
                                 });
                                 return promise;
+                        };
+                        
+                        // initialize quicksetup step
+                        _widget.init = function init(){
+                                // retrieve active deck
+                                _widget.getDeck().then(function(){
+                                        var _deck = $data.get("deck");
+                                        // reset draw status
+                                        _deckStack.char = _deck.char.concat();
+                                        _deckStack.context = _deck.context.concat();
+                                        _deckStack.problem = _deck.problem.concat();
+                                        _drawnCards.char = 0; _drawnCards.context = 0; _drawnCard.problem = 0;
+                                        _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()};
+                                        _currentPopup = "";
+                                        _ready = true;
+                                        // reset timer
+                                        _start = null;
+                                        // reset cards
+                                        _cards.reset({
+                                                char : {id:"",title:"", pic: ""},
+                                                context : {id:"",title:"", pic: ""},
+                                                problem : {id:"",title:"", pic: ""}
+                                         });
+                                         // reset selection
+                                         _selection.reset({
+                                                char : {selected: false, left: null, popup: false},
+                                                context : {selected: false, left: null, popup: false},
+                                                problem : {selected: false, left: null, popup: false}
+                                         });
+                                });
+                                _next = "step";        
                         };
                         
                         // Return

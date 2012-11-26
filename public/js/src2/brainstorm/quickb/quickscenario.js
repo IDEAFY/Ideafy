@@ -74,7 +74,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 "quickscenarioevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quickscenario"><div class="previousbutton" data-quickscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickscenario" data-quickscenarioevent="listen:touchstart, toggleProgress"></div><div id="quickscenario-left" class="leftarea"><div class = "card char" data-wbtools="bind:popup,cardpopup.char" name="char" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context" name="context" data-wbtools="bind: popup,cardpopup.context" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem" name="problem" data-wbtools="bind:popup, cardpopup.problem" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div></div><div id="quickscenario-popup"></div><div id="quickscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div id="finish-button" class="invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickscenario-writeup" class="writeup invisible" data-wbtools="bind: setReady,showstory"><textarea class = "enterTitle" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea><div class = "finish-button finish-writeup"></div></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
+                        _widget.template = '<div id = "quickscenario"><div class="previousbutton" data-quickscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickscenario" data-quickscenarioevent="listen:touchstart, toggleProgress"></div><div id="quickscenario-left" class="leftarea"><div class = "card char" data-wbtools="bind:popup,cardpopup.char" name="char" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context" name="context" data-wbtools="bind: popup,cardpopup.context" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem" name="problem" data-wbtools="bind:popup, cardpopup.problem" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div></div><div id="quickscenario-popup"></div><div id="quickscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div id="finish-button" class="invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickscenario-writeup" class="writeup invisible" data-wbtools="bind: setReady,showstory"><textarea class = "enterTitle" maxlength="40" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea><div class = "finish-button finish-writeup"></div></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
                         
                         _widget.place(Map.get("quickscenario"));
                         
@@ -264,21 +264,29 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 _wb.setSessionId($session.get("_id"));
                                 if ($session.get("scenarioWB").length) {
                                         _upload = false; // set upload to false at initialization
+                                        _wbContent.reset($session.get("scenarioWB"));
                                 }
-                                _wbContent.reset($session.get("scenarioWB"));
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if scenario is present show write up interface and board in readonly mode
                                 if ($session.get("scenario").length){
-                                        _tools.set("showstory", true);
-                                        _wb.setReadonly(true);
+                                        
+                                        // set _next to screen
+                                        _next="screen";
+                                        
+                                        _tools.set("showstory", true); // display story
+                                        _wb.setReadonly(true); // set whiteboard in readonly
+                                        
                                         // in quick mode only one scenario is available
                                         _scenario.reset($session.get("scenario")[0]);
+                                        
+                                        // add scenario to session data
+                                        $data.set("scenario", $session.get("scenario")[0]);
+                                        
                                         // story should be readonly
                                         _tools.set("readonly", true);
                                         _tools.set("shownext", true);
-                                        // set _next to screen
-                                        _next="screen";       
+                                               
                                 }
                                 else{
                                         // scenario fields are not uploaded separately        
@@ -329,7 +337,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                         }
                                         else { _upload = true;}
                                         // toggle ready button
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);     
+                                        (_wbContent.getNbItems() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);     
                                 });  
                         });
                         

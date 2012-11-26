@@ -201,7 +201,6 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                         _techDisplay.loop(function(v,k){
                                                 if (v.selected) _techs.splice(_techs.indexOf(_techCards.get(k).id), 1);
                                         });
-                                        console.log(_techs);
                                 }
                                 
                                 idx = Math.floor(Math.random()*_techs.length);
@@ -246,6 +245,8 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                         
                         _widget.reset = function(sip){
                                 
+                                var sessionTech = $session.get("techno")[0];
+                                
                                 //reset display
                                 _techDisplay.reset({
                                         "scenario":{"popup": false},
@@ -254,9 +255,13 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                         "tech3":{"popup": false, "selected": false}
                                 });
                                 
-                                if (sip && $session.get("techno")[0].length){
+                                if (sip && sessionTech.length){
                                         _next = "screen"; // read-only
                                         // retrieve card information from _sessionData
+                                        _widget.getCardDetails(sessionTech[0], "tech1");
+                                        _widget.getCardDetails(sessionTech[1], "tech2");
+                                        _widget.getCardDetails(sessionTech[2], "tech3");
+                                        $data.set("techno", _techCards);
                                 }
                                 else{
                                         // reset techstack

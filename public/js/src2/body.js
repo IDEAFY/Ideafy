@@ -203,8 +203,19 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                 event.target.classList.remove("pressed");        
         };
         
-        _body.preventScrolling = function(event){
-                event.preventDefault();    
+        _body.forcePortrait = function(event, node){
+                if (window.orientation % 180 == 0){
+                   node.css("-webkit-transform-origin", "")
+                       .css("-webkit-transform", "");               
+               } 
+               else {                   
+                   if ( window.orientation > 0) { //clockwise
+                     node.setAtribute("style", "-webkit-transform-origin: 200px 190px; -webkit-transform:rotate(-90deg);");
+                   }
+                   else {
+                     node.setAttribute("style", "-webkit-transform-origin:280px 190px;-webkit-transform:rotate(90deg);"); 
+                   }
+               }    
         };
         
         _body.init = function() {

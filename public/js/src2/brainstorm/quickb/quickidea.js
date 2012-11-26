@@ -208,7 +208,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                         else{
                                                cdb = new CouchDBStore();
                                                 cdb.setTransport(_transport);
-                                                cdb.sync(Config.get("db"), $data.get("techno")[id].id).then(function(){
+                                                cdb.sync(Config.get("db"), $data.get("techno").get(id).id).then(function(){
                                                         details = cdb.toJSON();
                                                         _popupUI.reset(details, pos, caret, document.getElementById("quickidea-popup"));
                                                         // save contents in the appropriate local store for further use
@@ -312,7 +312,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 cdb.set("authornames", $session.get("initiator").username);
                                 cdb.set("_id", _id);
                                 cdb.sync(Config.get("db"), _id);
-                                setTimemout(function(){
+                                setTimeout(function(){
                                         cdb.upload();
                                 }, 250);      
                         };

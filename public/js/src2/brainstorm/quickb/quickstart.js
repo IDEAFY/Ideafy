@@ -43,7 +43,6 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                         _session.set("_id", "S:QUICK:"+_session.get("startTime"));
                                         _session.sync(_db, _session.get("_id"));
                                         setTimeout(function(){
-                                                //_session.upload();
                                                 // set session in progress in user document
                                                 _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});
                                                 // next step

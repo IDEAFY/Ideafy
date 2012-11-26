@@ -295,7 +295,26 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         
                         // create separate idea doc in couchDB
                         _widget.createIdeaDoc = function createIdeaDoc(){
+                                var cdb = new CouchDBStore(Config.get("ideaTemplate")),
+                                    now = new Date(),
+                                    _id = "I:"+now.getTime();
                                 
+                                cdb.set("title", _idea.get("title"));
+                                cdb.set("sessionid", $session.get("_id"));
+                                cdb.set("authors", [$session.get("initiator").id]);
+                                cdb.set("description", _idea.get("description"));
+                                cdb.set("solution", _idea.get("solution"));
+                                cdb.set("creation_date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
+                                cdb.set("character", $session.get("characters")[0]);
+                                cdb.set("problem", $session.get("problems")[0]);
+                                cdb.set('context', $session.get("contexts")[0]);
+                                cdb.set("visibility", _idea.get("visibility"));
+                                cdb.set("authornames", $session.get("initiator").username);
+                                cdb.set("_id", _id);
+                                cdb.sync(Config.get("db"), _id);
+                                setTimemout(function(){
+                                        cdb.upload();
+                                }, 250);      
                         };
                         
                         // INIT QUICKIDEA STEP

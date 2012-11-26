@@ -28,9 +28,6 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                             _next = "step"; // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
                             
                         
-                        
-                        TD = _techDisplay;
-                        
                         // Setup
                         _widget.plugins.addAll({
                                 "labels" : new Model(_labels),
@@ -68,7 +65,7 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                         
                         _widget.template = '<div id = "quicktech"><div class="previousbutton" data-quicktechevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="quicktech-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech" data-quicktechevent="listen:touchstart, toggleProgress"></div><div class="help-brainstorm" data-quicktechevent="listen:touchstart, help"></div><div id="quicktech-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-quicktechevent="listen: touchstart, select; listen:touchstart, zoom" data-display="bind: popup, scenario.popup"><div class="cardpicture"></div><div class="cardtitle" data-labels="bind:innerHTML, scenariolbl"></div></div></div><div class="drawarea"><div class="decks"><div class="drawbutton drawtech" "name"="tech" data-quicktechevent="listen: touchstart, push; listen:touchend, draw"></div></div><div class="cards"><div class="card tech defaultcard" name="tech1" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, tech1.pic" data-display="bind: popup, tech1.popup"><div class="cardpicture" data-techcards="bind:setPic, tech1.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, tech1.title" data-labels="bind:innerHTML, tech1lbl"></div></div><div class="card tech defaultcard" name="tech2" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, tech2.pic" data-display="bind: popup, tech2.popup"><div class="cardpicture" data-techcards="bind:setPic, tech2.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, tech2.title" data-labels="bind:innerHTML,tech2lbl">Techno 2</div></div><div class="card tech defaultcard" name="tech3" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, tech3.pic" data-display="bind: popup, tech3.popup"><div class="cardpicture" data-techcards="bind:setPic, tech3.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, tech3.title" data-labels="bind:innerHTML, tech3lbl">Techno 3</div></div></div><div class="confirm"><div class="drawok" name="tech1" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech2" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech3" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quicktechevent="listen: touchstart, press; listen:touchend, next" data-display="bind:updateNext, tech1.selected;bind:updateNext, tech2.selected;bind:updateNext, tech3.selected"></div></div></div>';
                         
-                        _widget.alive(Map.get("quicktech"));
+                        _widget.place(Map.get("quicktech"));
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed"); 
@@ -229,7 +226,7 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                     display = _techDisplay.get(name);
                                 
                                 if (_next === "step"){
-                                        if (_techCards.get(name).id){
+                                        if (_techCards.get(name) && _techCards.get(name).id){
                                                 if (display.selected){
                                                         node.classList.remove("pushed");
                                                         display.selected = false;

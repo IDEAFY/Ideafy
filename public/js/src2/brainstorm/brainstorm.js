@@ -71,6 +71,17 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
                        _stack.getStack().add("menu", new IdeafyMenu(_widget.selectScreen));
                        _stack.getStack().show("menu");
                        
+		/*
+		 * Watch for replay session events
+		 */
+		Config.get("observer").watch("replay-session", function(sid, mode){
+		      
+		      var _sip = {}; // need to create session in progress object (with id and type of session)
+		      _sip.id = sid;
+		      _sip.type = mode;
+		      _widget.selectScreen(mode, _sip);
+		});
+		
 		//return
 			return _widget;
 		};

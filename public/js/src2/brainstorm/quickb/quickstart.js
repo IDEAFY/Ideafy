@@ -25,7 +25,7 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         
                         _widget.template = '<div id = "quickstart"><div class="previousbutton" data-quickstartevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickstart" data-quickstartevent="listen:touchstart, toggleProgress"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="quickstart-form"><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="quickstart-title" autofocus="" name="title" data-model="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="quickstart-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div>';
                         
-                        _widget.alive(Map.get("quickstart"));
+                        _widget.place(Map.get("quickstart"));
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");        
@@ -40,7 +40,7 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                         }
                                 
                                         // IMPORTANT: the new session doc is created in CDB and the session document is synched for the entire session
-                                        _session.set("_id", "S:"+_session.get("startTime"));
+                                        _session.set("_id", "S:QUICK:"+_session.get("startTime"));
                                         _session.sync(_db, _session.get("_id"));
                                         setTimeout(function(){
                                                 //_session.upload();

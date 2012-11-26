@@ -123,6 +123,7 @@
 	"scenariodesclbl": "Scenario description",
 	"soldesclbl": "Solution description",
 	"quickidea": "Describe your idea",
+	"quickideahelp": "<p>Welcome back to your <strong>whiteboard.</strong></p><p>Your goal now is to try to apply the technologies that you just picked to design a solution to the use case described in your scenario.</p><p>Again do not feel too constrained: at this stage you can either alter your scenario to accomodate a technology, add additional technologies to the ones you have drawn to complete your solution or skip some of these if they do not fit in your design.</p><p>You are almost done: at the end of this step you will be able to refine your use case and turn it into an <strong>idea</strong>. You will be asked to provide a description in layman terms and also to describe how you would implement it with your chosen technologies.</p><br><p>When you are done, clik on the <strong>ready</strong> button at the bottom to write up your story.</p>",
 	"quickwrapup": "Summary",
 	"quickstepstart": "Session description",
 	"quickstepsetup": "Setup",

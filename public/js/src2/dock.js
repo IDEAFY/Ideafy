@@ -1,7 +1,7 @@
 define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"Ideafy/Public", "Ideafy/Library", "Ideafy/Brainstorm", "Ideafy/Connect", "Ideafy/Dashboard",
-	"Map"], 
-	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map){
+	"Map", "Config"], 
+	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config){
 		return function DockConstructor(){
 
 		//declaration
@@ -55,8 +55,17 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				        //display submenu
 				        _stack.getStack().getCurrentScreen().showMenu();
 				}
-				
 			};
+			
+	       
+               /*
+                * Watch for view changing events
+                */
+                        
+                        // replay session
+                        Config.get("observer").watch("replay-session", function(sid, mode){
+                                _stack.getStack().show("#brainstorm");                
+                        });
 
 		//return
 			return _widget;

@@ -183,8 +183,15 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               };
               
               this.replay = function(event, node){
-                      node.classList.remove("pressed");
-                      // insert code to replay session here 
+                      var _id = node.getAttribute("data-sessions_id"),
+                          _sid = _sessions.get(_id).id,
+                         _mode = _sessions.get(_id).mode;
+                      
+                      // hide action bar and remove hightlight
+                        _dom.querySelector(".actionbar[data-sessions_id='"+_id+"']").setAttribute("style", "display: none;");
+                        node.classList.remove("pressed");
+                      // notify replay-session event
+                      Config.get("observer").notify("replay-session", _sid, _mode); 
               };
               
               this.deleteSession = function(event, node){
@@ -238,7 +245,8 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                                 usernames:[],
                                                 avatars:[],
                                                 status:v.value.status,
-                                                score:v.value.score
+                                                score:v.value.score,
+                                                mode: v.value.mode
                                          };
                                          // merge initiator and participants
                                         _item.participants.push(v.value.initiator.id);
@@ -257,6 +265,18 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         _sessionData.push(_item);
                                 });
                                 _sessions.reset(_sessionData);        
+              };
+              
+              _widget.getMode = function getMode(sid){
+                        var result;
+                        console.log(sid);
+                       _sessionsCDB.loop(function(v, i){
+                                if (v.id === sid) {
+                                        result = v.value.mode;
+                                }         
+                        });
+                        
+                        return result;
               };
               
               _widget.alive(_dom);

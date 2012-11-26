@@ -5,9 +5,9 @@
  */
 
 // Required middleware
-var connect = require("connect"), 
-    http = require("http"), 
-    socketIO = require("socket.io"), 
+var http = require("http"), 
+    socketIO = require("socket.io"),
+    connect = require("connect"),
     olives = require("olives"), 
     CouchDBTools = require("couchdb-emily-tools"), 
     cookie = require("cookie"), 
@@ -165,7 +165,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
        io.set('log level', 3);                    // reduce logging
        io.set('transports', [                     // enable all transports (optional if you want flashsocket)
                         'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
-
+        io.set("close timeout", 15);
+        io.set("heartbeat interval", 10);
         // we need lots of sockets
         http.globalAgent.maxSockets = Infinity;
 

@@ -243,7 +243,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         _popupUI = new CardPopup(_widget.closePopup);
                         
                         // Init timer
-                        _widget.initTimer = function(param){
+                        _widget.initTimer = function(){
                                 var now = new Date();
                                 _start = now.getTime();
                         };

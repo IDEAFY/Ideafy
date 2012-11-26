@@ -55,7 +55,14 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                                 (readonly)?this.setAttribute("readonly", "readonly"):this.removeAttribute("readonly");
                                         },
                                         popup : function(pop){
-                                                (pop) ? this.classList.add("highlighted") : this.classList.remove("highlighted");
+                                                var idx;
+                                                if (this.getAttribute("name") === "scenario"){
+                                                        (pop) ? this.classList.add("highlighted") : this.classList.remove("highlighted");
+                                                }
+                                                else {
+                                                        idx = this.getAttribute("data-techs_id");
+                                                        (pop[idx]) ? this.classList.add("highlighted") : this.classList.remove("highlighted");
+                                                }
                                         }
                                 }),
                                 "idea" : new Model(_idea, {
@@ -134,6 +141,10 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 _tools.set(name,"active");
                         };
                         
+                        _widget.select = function(event, node){
+                                node.classList.add("higlighted");        
+                        };
+                        
                         // zoom on selected card
                         _widget.zoom = function(event, node){
                                 var type, id;
@@ -148,48 +159,48 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         
                         // Method called to initialize a card popup
                         _widget.setPopup = function setPopup(type, id){
-                                var pos = {x:240, y: 130}, // the position of the popup
+                                var pos = {x:240, y: 30}, // the position of the popup
                                     caret = "left", // the position of the caret
-                                    card = _cards.get(i),
                                     popup = _tools.get("cardpopup"),
                                     details = "", // the contents of the cards
+                                    temp,
                                     cdb; // if content needs to be retrieved from database
                                 
-                                // reset previous card if any
-                                if (_currentPopup) popup[_currentPopup] = false;
-                                popup[type] = true;
+                                // reset previous popup if any
+                                if (_currentPopup) {
+                                        (_currentPopup.type === "scenario") ? popup.scenario = false : popup.techs[_currentPopup.id] = false;
+                                        _tools.set("cardpopup", popup);
+                                }
+                                //display new popup
+                                (type === "scenario") ? popup.scenario = true : popup.techs[id] = true;
                                 _tools.set("cardpopup", popup);
-                                _currentPopup = type;
+                                
+                                _currentPopup = {"type":type, "id":id};
+                                
                                 if (type === "scenario") {
-                                        pos.y = 120;
-                                        if (card.id === _char.get("_id")) details = _char.toJSON();
+                                        pos.y = 55;
+                                        details = JSON.stringify($data.get("scenario"));
+                                        _popupUI.reset(details, pos, caret, document.getElementById("quickidea-popup"));
                                 }
-                                if (type === "tech") {
-                                        pos.y = 290;
-                                        if (card.id === _context.get("_id")) details = _context.toJSON();
-                                }
-                                // only display popup if a card is present
-                                if (details){
-                                        _popupUI.reset(details, pos, caret, document.getElementById("quickscenario-popup"));
-                                }
-                                // else fetch card details in couchDB
-                                else{
-                                        cdb = new CouchDBStore();
-                                        cdb.setTransport(_transport);
-                                        cdb.sync(Config.get("db"), card.id).then(function(){
-                                                details = cdb.toJSON();
-                                                _popupUI.reset(details, pos, caret, document.getElementById("quickscenario-popup"));
-                                                // save contents in the appropriate local store for further use
-                                                if (type === "char"){
-                                                        _char.reset(JSON.parse(cdb.toJSON()));
-                                                }
-                                                if (type === "context"){
-                                                        _context.reset(JSON.parse(cdb.toJSON()));
-                                                }
-                                                if (type === "problem"){
-                                                        _problem.reset(JSON.parse(cdb.toJSON()));
-                                                }             
-                                        });  
+                                else {
+                                        console.log(id);
+                                        if (id == 0) pos.y = 200;
+                                        if (id == 1) pos.y = 260;
+                                        if (id == 2) pos.y = 350;
+                                        if (_techs.get(id)){
+                                                details = JSON.stringify(_techs.get(id));
+                                                _popupUI.reset(details, pos, caret, document.getElementById("quickidea-popup"));
+                                        }
+                                        else{
+                                               cdb = new CouchDBStore();
+                                                cdb.setTransport(_transport);
+                                                cdb.sync(Config.get("db"), $data.get("techno")[id].id).then(function(){
+                                                        details = cdb.toJSON();
+                                                        _popupUI.reset(details, pos, caret, document.getElementById("quickidea-popup"));
+                                                        // save contents in the appropriate local store for further use
+                                                        _techs.set(id, JSON.parse(cdb.toJSON()));
+                                                 });
+                                        }  
                                 }        
                         };
                         
@@ -275,13 +286,8 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                      {"readonly" : false} // set story textareas in readonly mode
                                      );
                                 
-                                // if sip && technos have already been drawn retrieve technologies
-                                if (sip && $data.get("techno").getNbItems()){
-                                        _techs.reset();
-                                        $data.get("techno").loop(function(v, i){
-                                                _techs.alter("push", v);
-                                        });
-                                }
+                                // reset technology
+                                _techs.reset();
                                 
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));
@@ -316,24 +322,20 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 ($session.get("elapsedTimers").quickidea) ? _elapsed = $sesion.get("elapsedTimers").quickidea : _elapsed = 0;
                          };
                          
-                         _widget.initTimer = function(param){
+                         _widget.initTimer = function(){
                                 var now = new Date();
-                                _start = now.getTime();
-                                (param) ? _elapsed = param : _elapsed = 0;             
+                                _start = now.getTime();            
                          };
-                        
-                        // get selected cards
-                        $data.watchValue("techno", function(value){
-                                _techs.reset();
-                                value.loop(function(v, i){
-                                        _techs.alter("push", v);
-                                });    
-                        });
                         
                         // get session id and pass it to Whiteboard
                         $session.watchValue("_id", function(sid){
                                 _wb.setSessionId(sid);        
                         });
+                        
+                        // get technology cards from session data
+                       $data.watchValue("techno", function(store){
+                                _techs.reset(JSON.parse($data.get("techno").toJSON()));       
+                       });
                         
                         // upload whiteboard content to database as soon as it is updated
                         ["added", "deleted", "updated"].forEach(function(change){
@@ -353,8 +355,11 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         _idea.watch("updated", function(){
                                         (_idea.get("title") && _idea.get("description") && _idea.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
-
+                        
+                        
+                        TECHS = _techs;
+                        
                         // Return
                         return _widget;
-                };     
-        });
+                };    
+        })

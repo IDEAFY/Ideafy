@@ -227,8 +227,11 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         _cdb.setTransport(Config.get("transport"));
                         _cdb.sync(_db, _sid).then(function(){
                                 _cdb.remove();
-                                // _cdb.unsync();
-                                // setTimeout(function(){_cdb.remove();_cdb.unsync();}, 200);
+                        });
+                        
+                        // last, remove attachments (whiteboards) if any from the server
+                        Config.get("transport").request("cleanUpSession", _sid, function(result){
+                                if (res.err) console.log(res.err);        
                         });
               };
               

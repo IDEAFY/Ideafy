@@ -301,10 +301,9 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 ($session.get("elapsedTimers").quickscenario) ? _elapsed = $sesion.get("elapsedTimers").quickscenario : _elapsed = 0;
                          };
                          
-                         _widget.initTimer = function(param){
+                         _widget.initTimer = function(){
                                 var now = new Date();
-                                _start = now.getTime();
-                                (param) ? _elapsed = param : _elapsed = 0;             
+                                _start = now.getTime();            
                          };
                         
                         // get selected cards

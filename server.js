@@ -13,7 +13,8 @@ var http = require("http"),
     cookie = require("cookie"), 
     RedisStore = require("connect-redis")(connect), 
     nodemailer = require("nodemailer"), 
-    fs = require("fs"), 
+    fs = require("fs"),
+    path = require("path"), 
     qs = require("querystring"), 
     url = require("url"), 
     redirect = require('connect-redirection'), 
@@ -48,7 +49,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 .use(connect.bodyParser({ uploadDir:__dirname+'/public/upload', keepExtensions: true }))
                 .use('/upload', function(req, res){
                         var type = req.body.type,
-                            path = __dirname+'/attachments/',
+                            _path = __dirname+'/attachments/',
                             filename,
                             now,
                             dataurl,
@@ -57,12 +58,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         if (type === 'postit'){
                                 sid = req.body.sid;
                                 now = new Date();
-                                filename = path+sid+'/'+req.body.filename;
+                                filename = _path+sid+'/'+req.body.filename;
                                 dataurl = req.body.dataString;
                                 
-                                fs.exists(path+sid, function(exists){
+                                fs.exists(_path+sid, function(exists){
                                         if (!exists) {
-                                                fs.mkdir(path+sid, 0777, function(err){
+                                                fs.mkdir(_path+sid, 0777, function(err){
                                                         if (err) {throw(err);}
                                                         fs.writeFile(filename, dataurl, function(err){
                                                                 if (err) {throw(err);}
@@ -110,20 +111,20 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 })      
                 .use(function(req, res, next) {
                         var parse = url.parse(req.url, false),
-                            path = parse.pathname,
+                            _path = parse.pathname,
                             readFile = wrap(fs.readFile);
                   
-                        if (req.method === 'GET' && path.search("/attachments")>-1){    
+                        if (req.method === 'GET' && _path.search("/attachments")>-1){    
                                 // get file extension
                                 var     ext,
                                         gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
                                         jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
                                         pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/;
 
-                                if (path.match(pngPattern)) { ext = "png";}
-                                if (path.match(jpgPattern)) { ext = "jpg";}
-                                if (path.match(gifPattern)) { ext = "gif";}              
-                                readFile("public"+path, function (error, data){
+                                if (_path.match(pngPattern)) { ext = "png";}
+                                if (_path.match(jpgPattern)) { ext = "jpg";}
+                                if (_path.match(gifPattern)) { ext = "gif";}              
+                                readFile("public"+_path, function (error, data){
                                         if (data){
                                                 res.charset = 'utf-8';
                                                 //the type should be contained in the repsonse
@@ -230,10 +231,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         
         // Application handlers
         olives.handlers.set("Lang", function(json, onEnd){
-                var path = __dirname+'/public/i8n/'+json.lang+'.json';
-                fs.exists(path, function(exists){
+                var _path = __dirname+'/public/i8n/'+json.lang+'.json';
+                fs.exists(_path, function(exists){
                         if (exists){
-                                var labels=fs.readFileSync(path, 'utf8');
+                                var labels=fs.readFileSync(_path, 'utf8');
                                 onEnd(JSON.parse(labels));
                         }
                         else{
@@ -769,7 +770,27 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 if (increment<0) { increment = 0;}
                                 increment += bonus;
                                 if (increment < min_score) increment = min_score;
-                                break;        
+                                break;
+                        case "quickidea":
+                                wbdata = JSON.parse(json.wbcontent);
+                                input = JSON.parse(json.scenario);
+                                t = json.time;
+                                if (t>=900000) coeff = 1; // too long
+                                if (t<900000) coeff = 1.5; // ok
+                                if (t<600000) coeff = 1.5; // great !!
+                                if (t<300000) coeff = 0.8; // too fast
+                                if (t<120000) coeff = 0.5; // way too fast
+                                if (input.title.length+input.story.length+input.solution.length < 200) coeff *= 0.5; // need a bit more effort
+                                if (wbdata.length>6) coeff *= 1.25
+                                else {
+                                        if (wbdata.length < 3) coeff *= 0.25
+                                        else if (wbdata.length < 6) coeff *= 0.75
+                                 }
+                                if (json.wbcontent.search("import") && json.wbcontent.search("drawing")) bonus = 25
+                                else if (json.wbcontent.search("import") || json.wbcontent.search("drawing"))  bonus = 10
+                                
+                                increment = Math.floor((wbdata.length*10 + bonus)*coeff);
+                                break;       
                         default:
                                 increment = 0;
                                 break;
@@ -789,6 +810,25 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         onEnd({res:"ok", value: 0})
                 }
                         
+        });
+        
+        // Clean up attachments from drive when user deletes a session
+        olives.handlers.set("cleanUpSession", function(id, onEnd){
+                var _path = __dirname+'/attachments/'+id;
+                
+                fs.exists(_path, function(exists){
+                        if (exists){
+                                // need to delete all files first
+                                fs.readdirSync(_path).forEach(function(file){
+                                        fs.unlink(path.join(_path, file));
+                                });
+                                fs.rmdirSync(_path);
+                                onEnd("ok"); 
+                        }
+                        else {
+                                onEnd({"err": "Directory not found"});
+                        } 
+                })        
         });
 
         // Connection events

@@ -1556,6 +1556,7 @@ textarea.solution {
     background: white;
     padding: 30px;
     text-align: center;
+    -webkit-box-shadow: 0px 15px 15px gray;
 }
 
 #quicksteplist{
@@ -2366,12 +2367,6 @@ li.color-item{
 }
 
 /*default cards in case picture is missing */
-.defaultcard{
-    background-size: 87px 87px;
-    background-position: center center;
-    background-position: center center;
-    background-repeat: no-repeat;    
-}
 
 .char.defaultcard{
     background: url('../img/decks/fullcards/activeCharacter.png') no-repeat;
@@ -2630,7 +2625,7 @@ li.color-item{
  
 }
 
-#quickscenario .next-button{
+#quickscenario .next-button, #quickidea .next-button{
     margin-left: 683px;
 }
 

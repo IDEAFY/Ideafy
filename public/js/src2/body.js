@@ -81,6 +81,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                 name : email,
                                 password : password
                         }, function(result) {
+                                console.log(result);
                                 if (result.login === "ok") {
                                         Config.set("uid", '"' + email + '"');
                                         // check if there is a new db
@@ -96,7 +97,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                         Config.set("avatar", result);
                                                 }
                                                 _local.sync("ideafy-data");
-                                                console.log("calling init now");
                                                 _body.init();
                                         });
                                 } else {

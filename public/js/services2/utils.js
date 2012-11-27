@@ -179,8 +179,8 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 			                        var _x = x[prop], _y=y[prop];
 			                        // should work even if the property is not defined or null for one of the array elements
 			                        if (typeof _x == "string" || typeof _y == "string")   {
-                                                        if (_x) _x=_x.toLowerCase();
-                                                        if(_y) _y=_y.toLowerCase();
+                                                        if (_x && _x.toLowerCase) _x=_x.toLowerCase();
+                                                        if(_y && _y.toLowerCase) _y=_y.toLowerCase();
                                                         if (descending){    
                                                                 if (_x<_y) return 1;
                                                                 if (_x>_y) return -1;

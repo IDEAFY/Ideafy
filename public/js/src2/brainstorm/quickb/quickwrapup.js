@@ -18,10 +18,10 @@ define("Ideafy/Brainstorm/QuickWrapup", ["Olives/OObject", "Map", "Olives/Model-
                                                         }       
                                         },
                                         setScore : function(score){
-                                                this.innerHTML = score + "ip";
+                                                if (score) this.innerHTML = score + "ip";
                                         },
                                         setTime : function(duration){
-                                                this.innerHTML = Utils.formatDuration(duration);
+                                                if (duration) this.innerHTML = Utils.formatDuration(duration);
                                         }
                                 }),
                                 "quickwrapupevent" : new Event(_widget)

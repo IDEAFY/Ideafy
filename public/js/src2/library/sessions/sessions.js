@@ -77,7 +77,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         (status === "completed") ? this.innerHTML = _labels.get("completed") : this.innerHTML = _labels.get("inprogress");
                                 },
                                 setScore : function(score){
-                                        if (score >= 0){
+                                        if (score>=0){
                                                 this.innerHTML = score;
                                         }
                                         else {
@@ -85,9 +85,10 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         }
                                 },
                                 setSuffix : function(score){
-                                        if (score === undefined || score === ""){
+                                        if (score === undefined || score === "" || score === null){
                                                 this.innerHTML = _labels.get("noscore");
                                         }
+                                        else this.innerHTML = "ip";
                                 }
                         }),
                   "sortevent": new Event(this),
@@ -199,6 +200,10 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         // hide action bar and remove hightlight
                         _dom.querySelector(".actionbar[data-sessions_id='"+_id+"']").setAttribute("style", "display: none;");
                         node.classList.remove("pressed");
+                        
+                        /*
+                         * Use store.watch deleted aand resetting the store instead
+                         
                         // remove session from display
                         _sid = _sessions.get(_id).id;
                         
@@ -221,6 +226,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         
                         // apply current sorting method
                         _widget.sortSessions(_currentSort);
+                        */
                         
                         // remove session from CouchDB
                         var _cdb = new CouchDBStore();
@@ -287,11 +293,19 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               // init session data
               _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
                                 _widget.resetSessionData();
-                                _sessionsCDB.watch("added", function(){
+                                /* _sessionsCDB.watch("added", function(){
                                         _widget.resetSessionData();
                                         // apply current sorting methods
                                         _widget.sortSessions(_currentSort);       
-                                });
+                                });*/
+                               ["added", "deleted", "updated"].forEach(function(change){
+                                        _sessionsCDB.watch(change, function(){
+                                                console.log(_sessionsCDB.toJSON());
+                                                _widget.resetSessionData();
+                                                // apply current sorting methods
+                                                _widget.sortSessions(_currentSort);        
+                                        });   
+                               });
               });
               
               // return

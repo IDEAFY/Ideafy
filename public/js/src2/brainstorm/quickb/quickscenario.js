@@ -26,7 +26,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                             _scenario = new Store({"title" : "", "story" : "", "solution" : ""}),
                             _wbContent = new Store([]), // a store of whiteboard objects
                             _wb = new Whiteboard("scenario", _wbContent, _tools),
-                            _start, _upload = true, // switch to false when copying WB contents from database
+                            _start,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
                             _transport = Config.get("transport"),
                             _elapsed = 0;
@@ -263,7 +263,6 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));
                                 if ($session.get("scenarioWB").length) {
-                                        _upload = false; // set upload to false at initialization
                                         _wbContent.reset($session.get("scenarioWB"));
                                 }
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
@@ -329,12 +328,12 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                         
                                         console.log("scenario change");
                                         // avoid upload if $session is already up-to-date (e.g. replay)
-                                        if (_upload){
+                                        if (JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
                                                 $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
                                                 $session.upload();
                                                 console.log("scenario upload");
                                         }
-                                        else { _upload = true;}
+                                        
                                         // toggle ready button
                                         (_wbContent.getNbItems() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);     
                                 });  

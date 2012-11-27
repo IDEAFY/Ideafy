@@ -7,9 +7,9 @@
 // Required middleware
 var http = require("http"), 
     socketIO = require("socket.io"),
-    connect = require("connect"),
-    olives = require("olives"), 
-    CouchDBTools = require("couchdb-emily-tools"), 
+    connect = require("connect"), 
+    CouchDBTools = require("couchdb-emily-tools"),
+    olives = require("olives"),
     cookie = require("cookie"), 
     RedisStore = require("connect-redis")(connect), 
     nodemailer = require("nodemailer"), 
@@ -204,23 +204,42 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 usercdb.unsync();
                         });       
                 });        
-        };
-        
-        var updateDocAsAdmin = function(docId, cdbStore){
-            
-                var promise = new Promise;
-                
+        },
+            updateDocAsAdmin = function(docId, cdbStore){
+                var promise = new Promise();
                 transport.request("CouchDB", {
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
                         headers: {
-                                "Content-Type": "application/json"
+                                "Content-Type": "application/json",
+                                "Connection": "close"
                         },
                         data: cdbStore.toJSON()
                 }, function (res) {
                         var json = JSON.parse(res);
                         if (json.ok) {
+                                promise.resolve();
+                        } else {
+                                promise.reject();
+                        }});
+                
+                return promise;      
+        },
+            getDocAsAdmin = function(docId, cdbStore){
+                var promise = new Promise();
+                transport.request("CouchDB", {
+                        method : "GET",
+                        path:"/"+_db+"/"+docId,
+                        auth: cdbAdminCredentials,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        }
+                }, function (res) {
+                        var json = JSON.parse(res);
+                        if (json._id) {
+                                cdbStore.reset(json);
                                 promise.resolve();
                         } else {
                                 promise.reject();
@@ -321,7 +340,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 onEnd({
                                                         login : "ok",
                                                         db : _db,
-                                                        message: json.name + " is logged-in"
+                                                        message: json.name + " is logged-in",
+                                                        session: session
                                                 });
                                         }
                                 });
@@ -387,8 +407,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 else {
                         var _cdb = new CouchDBStore();
                         _cdb.setTransport(transport);
-                
-                        _cdb.sync(_db, json.id).then(function(){
+                        
+                        getDocAsAdmin(json.id, _cdb).then(function(){
                                 var _image = _cdb.get("picture_file");
                             
                         // if user avatar is one of the default choices then return path (available in local files)

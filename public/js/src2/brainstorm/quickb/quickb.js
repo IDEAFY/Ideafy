@@ -68,21 +68,21 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                            _session.sync(Config.get("db"), sip.id).then(function(){
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
-                                console.log("retrieving session : ", _session.toJSON());
+                                console.log("retrieving session", _session.toJSON());
                                 
                                 // reset step UIs
                                 _stack.getStack().get("quickstart").reset(sip);
-                                console.log("start ok");
+                                console.log("quickstart ok");
                                 _stack.getStack().get("quicksetup").reset(sip);
-                                console.log("setup ok");
+                                console.log("quicksetup ok");
                                 _stack.getStack().get("quickscenario").reset(sip);
-                                console.log("scenario ok");
+                                console.log("quickscenario ok");
                                 _stack.getStack().get("quicktech").reset(sip);
-                                console.log("tech ok");
+                                console.log("quicktech ok");
                                 _stack.getStack().get("quickidea").reset(sip);
-                                console.log("idea ok");
+                                console.log("quickidea ok");
                                 _stack.getStack().get("quickwrapup").reset(sip);
-                                console.log("wrapup ok");
+                                console.log("quickwrapup ok");
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
@@ -100,6 +100,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                                 // if session is complete display wrapup screen else display start screen
                                 if (step === "quickwrapup"){ 
                                         _stack.getStack().show("quickwrapup");
+                                        _steps.update(0, "currentStep", false);
                                 }
                                 else{
                                         // set quick start as current step
@@ -197,7 +198,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                                         _steps.update(_id+1, "currentStep", true);
                                         
                                         _session.set("step", _steps.get(_id+1).name);
-                                        console.log(_session.get("_rev"), _session.get("_id"), _session.toJSON());
+                                        console.log("next step", _session.toJSON());
                                         _session.upload();
                                         _nextui = _stack.getStack().get(_steps.get(_id+1).name);
                                         if (_nextui.initTimer) _nextui.initTimer();
@@ -235,10 +236,9 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                    };
                    
                    // init
-                   QBSTACK = _stack;
-                   SESSION = _session;
-                   SD = _sessionData;
                    _widget.init($sip);
+                   
+                   SESSION = _session;
                    
                    // return
                    return _widget;

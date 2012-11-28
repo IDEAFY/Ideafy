@@ -1,5 +1,5 @@
-define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "CouchDBStore", "Ideafy/CardPopup", "Ideafy/Whiteboard", "Promise"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise){
+define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "CouchDBStore", "Ideafy/CardPopup", "Ideafy/Whiteboard", "Promise", "Ideafy/Utils"],
+        function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise, Utils){
                 
                 return function QuickScenarioConstructor($session, $data, $prev, $next, $progress){
                         
@@ -23,13 +23,14 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                      {"shownext" : false}, // display next button
                                      {"readonly" : false} // set story textareas in readonly mode
                                      ),
+                            _timer = new Store({"timer":null, "display":false}),
+                            _qsTimer,
                             _scenario = new Store({"title" : "", "story" : "", "solution" : ""}),
                             _wbContent = new Store([]), // a store of whiteboard objects
                             _wb = new Whiteboard("scenario", _wbContent, _tools),
-                            _start,
+                            _start, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            _transport = Config.get("transport"),
-                            _elapsed = 0;
+                            _transport = Config.get("transport");
                              
                         
                         
@@ -69,12 +70,20 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                                 (pop) ? this.classList.add("highlighted") : this.classList.remove("highlighted");
                                         }
                                 }),
+                                "quickscenariotimer" : new Model(_timer, {
+                                      setTime: function(timer){
+                                                      this.innerHTML = Utils.formatDuration(timer);       
+                                      },
+                                      displayTimer: function(display){
+                                              (display) ? this.classList.add("showtimer") : this.classList.remove("showtimer");
+                                      }
+                                }),
                                 "scenario" : new Model(_scenario),
                                 "wbstack" : _wb,
                                 "quickscenarioevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quickscenario"><div class="previousbutton" data-quickscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickscenario" data-quickscenarioevent="listen:touchstart, toggleProgress"></div><div id="quickscenario-left" class="leftarea"><div class = "card char" data-wbtools="bind:popup,cardpopup.char" name="char" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context" name="context" data-wbtools="bind: popup,cardpopup.context" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem" name="problem" data-wbtools="bind:popup, cardpopup.problem" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div></div><div id="quickscenario-popup"></div><div id="quickscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div id="finish-button" class="invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickscenario-writeup" class="writeup invisible" data-wbtools="bind: setReady,showstory"><textarea class = "enterTitle" maxlength="40" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea><div class = "finish-button finish-writeup"></div></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
+                        _widget.template = '<div id = "quickscenario"><div class="previousbutton" data-quickscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickscenario" data-quickscenarioevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quickscenariotimer="bind:setTime, timer; bind: displayTimer, display" data-quickscenarioevent="listen:touchstart,toggleTimer"></div><div id="quickscenario-left" class="leftarea"><div class = "card char" data-wbtools="bind:popup,cardpopup.char" name="char" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context" name="context" data-wbtools="bind: popup,cardpopup.context" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem" name="problem" data-wbtools="bind:popup, cardpopup.problem" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div></div><div id="quickscenario-popup"></div><div id="quickscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div id="finish-button" class="invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickscenario-writeup" class="writeup invisible" data-wbtools="bind: setReady,showstory"><textarea class = "enterTitle" maxlength="40" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea><div class = "finish-button finish-writeup"></div></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
                         
                         _widget.place(Map.get("quickscenario"));
                         
@@ -85,25 +94,30 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         
                         // move to next screen
                         _widget.next = function(event, node){
-                                var now = new Date(), _timers;
                                 
                                 node.classList.remove("pressed");
                                 // if first time: upload scenario and set readonly
                                 if (_next === "step"){
                                         _next = "screen";
-                                        // compute elapsed time
-                                        _timers = $session.get("elapsedTimers");
-                                        _timers.quickscenario = _elapsed + now.getTime() - _start;
+                                        
+                                        // stop timer and update display
+                                        clearInterval(_qsTimer);
+                                        _timer.set("display", true);
+                                        
                                         // add scenario to session data
                                         $data.set("scenario", JSON.parse(_scenario.toJSON()));
+                                        
                                         // update session score
-                                        _widget.updateSessionScore(_timers.quickscenario).then(function(){
+                                        _widget.updateSessionScore(_timer.get("timer")).then(function(){
                                                 // resync with db
                                                 $session.unsync();
                                                 $session.sync(Config.get("db"), $session.get("_id")).then(function(){
+                                                        var timers = $session.get("elapsedTimers");
+                                                        
+                                                        timers.quickscenario = _timer.get("timer");
                                                         // update session document
                                                         $session.set("scenario", [JSON.parse(_scenario.toJSON())]);
-                                                        $session.set("elapsedTimers", _timers);
+                                                        $session.set("elapsedTimers", timers);
                                                         // set idea to readonly
                                                         _tools.set("readonly", true);
                                                         $next("quickscenario");         
@@ -122,6 +136,11 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         // toggle progress bar
                         _widget.toggleProgress = function(event, node){
                                 $progress(node);               
+                        };
+                        
+                        // toggle timer
+                        _widget.toggleTimer = function(event,node){
+                                _timer.set("display", !_timer.get("display"));        
                         };
                         
                         // function called when selecting one of the scenario tools
@@ -296,13 +315,26 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                         // set next to step
                                         _next="step";     
                                 }
-                                // retrieve time already spent on this step
+                                // retrieve time already spent on this step and init/display timer as appropriate
                                 ($session.get("elapsedTimers").quickscenario) ? _elapsed = $session.get("elapsedTimers").quickscenario : _elapsed = 0;
+                                _timer.set("timer", _elapsed);
+                                (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
                          };
                          
-                         _widget.initTimer = function(){
-                                var now = new Date();
-                                _start = now.getTime();            
+                         _widget.initTimer = function(init){
+                                var now = new Date(),
+                                    _start = now.getTime(),
+                                    elapsed = init || 0;
+                                
+                                _timer.set("display", false);
+                                _timer.set("timer", elapsed);
+                                // make sure current step is ongoing before restarting timer
+                                if ($session.get("step") === "quickscenario"){
+                                        _qsTimer = setInterval(function(){
+                                                var now = new Date();
+                                                _timer.set("timer", elapsed + now.getTime()-_start);
+                                        }, 1000);
+                                }           
                          };
                         
                         // get selected cards

@@ -1,5 +1,5 @@
-define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "CouchDBStore", "Store", "Promise", "Ideafy/CardPopup", "Ideafy/Help"],
-        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Promise, CardPopup, Help){
+define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "CouchDBStore", "Store", "Promise", "Ideafy/CardPopup", "Ideafy/Help", "Ideafy/Utils"],
+        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Promise, CardPopup, Help, Utils){
                 
                 return function QuickSetupConstructor($session, $data, $prev, $next, $progress){
                         
@@ -10,6 +10,8 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                             _labels = Config.get("labels"),
                             _transport = Config.get("transport"), _db = Config.get("db"), _user = Config.get("user"),
                             _deckStack = {}, // the cards remaining in the stack after each draw
+                            _timer = new Store({"timer":null, "display":false}),
+                            _qsTimer,
                             _selection = new Store({
                                      char : {selected: false, left: null, popup: false},
                                      context : {selected: false, left: null, popup: false},
@@ -24,7 +26,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                             _ready = true, // ready to draw a new card 
                             _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()}, // used for zoom
                             _currentPopup = "", // which card if any is magnified
-                            _start =  null, _elapsed = null,
+                            _start =  null, _elapsed = 0,
                             _next = "step"; // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
                         
                         // Setup
@@ -40,6 +42,14 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         popup : function(pop){
                                                 (pop) ? this.classList.add("highlighted") : this.classList.remove("highlighted");
                                         }
+                                }),
+                                "quicksetuptimer" : new Model(_timer, {
+                                      setTime: function(timer){
+                                                      this.innerHTML = Utils.formatDuration(timer);       
+                                      },
+                                      displayTimer: function(display){
+                                              (display) ? this.classList.add("showtimer") : this.classList.remove("showtimer");
+                                      }
                                 }),
                                 "quicksetupcards" : new Model(_cards,{
                                         removeDefault : function(pic){
@@ -62,7 +72,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 "quicksetupevent": new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quicksetup"><div class="previousbutton" data-quicksetupevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="quicksetup-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicksetup" data-quicksetupevent="listen:touchstart, toggleProgress"></div><div class="help-brainstorm" data-quicksetupevent="listen:touchstart, help"></div><div class="drawarea"><div class="decks"><div class="drawbutton drawchar" name="char" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind: setReload, char.left"></div><div class="drawbutton drawcontext" name="context" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind:setReload, context.left"></div><div class="drawbutton drawproblem" name="problem" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind:setReload, problem.left"></div></div><div class="cards"><div class="card char defaultcard" name="char" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, char.pic" data-quicksetup="bind: popup, char.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, char.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, char.title">Character</div></div><div class="card context defaultcard" name="context" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, context.pic" data-quicksetup="bind: popup, context.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, context.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, context.title">Context</div></div><div class="card problem defaultcard" name="problem" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, problem.pic" data-quicksetup="bind: popup, problem.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, problem.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, problem.title">Problem</div></div></div><div class="confirm"><div class="drawok" name="char" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="context" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="problem" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button invisible" data-labels="bind:innerHTML, nextbutton" data-quicksetupevent="listen: touchstart, press; listen:touchend, next" data-quicksetup="bind:updateNext, char.selected;bind:updateNext, context.selected;bind:updateNext, problem.selected"></div></div></div>';
+                        _widget.template = '<div id = "quicksetup"><div class="previousbutton" data-quicksetupevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="quicksetup-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicksetup" data-quicksetupevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quicksetuptimer="bind:setTime, timer; bind: displayTimer, display" data-quicksetupevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-quicksetupevent="listen:touchstart, help"></div><div class="drawarea"><div class="decks"><div class="drawbutton drawchar" name="char" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind: setReload, char.left"></div><div class="drawbutton drawcontext" name="context" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind:setReload, context.left"></div><div class="drawbutton drawproblem" name="problem" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind:setReload, problem.left"></div></div><div class="cards"><div class="card char defaultcard" name="char" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, char.pic" data-quicksetup="bind: popup, char.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, char.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, char.title">Character</div></div><div class="card context defaultcard" name="context" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, context.pic" data-quicksetup="bind: popup, context.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, context.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, context.title">Context</div></div><div class="card problem defaultcard" name="problem" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, problem.pic" data-quicksetup="bind: popup, problem.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, problem.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, problem.title">Problem</div></div></div><div class="confirm"><div class="drawok" name="char" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="context" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="problem" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button invisible" data-labels="bind:innerHTML, nextbutton" data-quicksetupevent="listen: touchstart, press; listen:touchend, next" data-quicksetup="bind:updateNext, char.selected;bind:updateNext, context.selected;bind:updateNext, problem.selected"></div></div></div>';
                         
                         _widget.place(_dom);
                         
@@ -73,7 +83,6 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         
                         // Method called when clicking next button -- updates session store, computes score and moves to next step
                         _widget.next = function(event, node){
-                                var _now = new Date(), _elapsedTime = _now.getTime() - _start;
                                 
                                 if (_next === "step"){
                                         _next = "screen"; //only one upload
@@ -83,13 +92,17 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         $data.set("contexts", _cards.get("context"));
                                         $data.set("problems", _cards.get("problem"));
                                         
+                                        // stop timer and update display
+                                        clearInterval(_qsTimer);
+                                        _timer.set("display", true);
+                                        
                                         // compute session score
-                                        _widget.updateSessionScore(_elapsedTime).then(function(){
+                                        _widget.updateSessionScore(_timer.get("timer")).then(function(){
                                                 // resync with db
                                                 $session.unsync();
                                                 $session.sync(Config.get("db"), $session.get("_id")).then(function(){
                                                         // update session document
-                                                        $session.set("elapsedTimers", {"quicksetup": _elapsedTime});
+                                                        $session.set("elapsedTimers", {"quicksetup": _timer.get("timer")});
                                                         $session.set("characters", [_cards.get("char").id]);
                                                         $session.set("contexts", [_cards.get("context").id]);
                                                         $session.set("problems", [_cards.get("problem").id]);
@@ -121,6 +134,11 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         // Method called to display the progress bar
                         _widget.toggleProgress = function(event, node){
                                 $progress(node);               
+                        };
+                        
+                        // Method called to display step timer instead of current time
+                        _widget.toggleTimer = function(event,node){
+                                _timer.set("display", !_timer.get("display"));        
                         };
                         
                         // Method called when clicking on the draw buttons (toggles the "pushed" class)
@@ -243,14 +261,29 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         _popupUI = new CardPopup(_widget.closePopup);
                         
                         // Init timer
-                        _widget.initTimer = function(){
-                                var now = new Date();
-                                _start = now.getTime();
+                        _widget.initTimer = function(init){
+                                var now = new Date(),
+                                    _start = now.getTime(),
+                                    elapsed = init || 0;
+                                
+                                _timer.set("display", false);
+                                _timer.set("timer", elapsed);
+                                console.log("inittimer quicksetup called", $session.get("step"));
+                                // make sure current step is ongoing before restarting timer
+                                if ($session.get("step") === "quicksetup"){
+                                        _qsTimer = setInterval(function(){
+                                                var now = new Date();
+                                                _timer.set("timer", elapsed + now.getTime()-_start);
+                                        }, 1000);
+                                }
                         };
                         
                         // Initializing the QuickSetup UI
                         _widget.reset = function reset(sip){
                                 if (sip){
+                                        // check if time has been spent on this step already
+                                        _elapsed = $session.get("elapsedTimers").quicksetup || 0;
+                                        
                                         if ($session.get("characters").length){
                                                 _next = "screen"; // read-only
                                                 // retrieve session deck
@@ -280,12 +313,17 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                                         });
                                                         _currentPopup = "";
                                         
-                                                        // get time
-                                                        _elapsed  = $session.get("elpasedTimers").quicksetup;        
-                                                });        
+                                                        // set timer and display
+                                                        _timer.set("timer", _elapsed);
+                                                        _timer.set("display", true);
+                                                        
+                                                                
+                                                });       
                                         }
                                         else{
-                                                _widget.init();        
+                                                _widget.init();
+                                                // init timer
+                                                _widget.initTimer(_elapsed);       
                                         }
                                 }
                                 else{

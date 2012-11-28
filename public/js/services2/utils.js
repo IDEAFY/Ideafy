@@ -23,7 +23,7 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                             
                             days>0 ? res = days+"d ": res="";
                             hrs>0 ? res += hrs+":" : res+="";
-                            min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : "0:";
+                            min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : res+="0:";
                             sec<10 ? res += "0"+sec : res+= sec;
                                                 
                             return res;

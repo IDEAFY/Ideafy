@@ -77,7 +77,10 @@ define("Ideafy/Brainstorm/QuickWrapup", ["Olives/OObject", "Map", "Olives/Model-
                         };
                         
                         _widget.reset = function reset(sip){
-                                console.log(sip, $session.toJSON());        
+                                console.log(sip, $session.toJSON());
+                                _cards.reset([]);
+                                _wrapup.reset();
+                                       
                         };
                         
                         // watch session data for updates
@@ -87,26 +90,41 @@ define("Ideafy/Brainstorm/QuickWrapup", ["Olives/OObject", "Map", "Olives/Model-
                         
                         $data.watchValue("idea", function(value){
                                 _wrapup.set("idea", value);
-                                
-                                // when the idea is defined we also have all the cards we want to show
-                                _cards.alter("push", $data.get("characters"));
-                                _cards.alter("push", $data.get("contexts"));
-                                _cards.alter("push", $data.get("problems"));
-                                _cards.alter("push", $data.get("techno")[0]);
-                                _cards.alter("push", $data.get("techno")[1]);
-                                _cards.alter("push", $data.get("techno")[2]);
-                                console.log(_cards.toJSON());
                         });
+                        
+                        
+                        // watch $data store for cards
+                        ["added", "updated"].forEach(function(change){
+                                $data.watch(change, function(){
+                                        var cards;
+                                        
+                                        if ($data.get("characters") && $data.get("contexts") && $data.get("problems") && ($data.get("techno").getNbItems() === 3)){
+                                                cards = [
+                                                        $data.get("characters"),
+                                                        $data.get("contexts"),
+                                                        $data.get("problems"),
+                                                        $data.get("techno").get(0),
+                                                        $data.get("techno").get(1),
+                                                        $data.get("techno").get(2)
+                                                        ];
+                                                _cards.reset(cards);
+                                        }                
+                                });
+                        });
+                        
                         
                         // watch session store for score update
                         $session.watchValue("score", function(score){
                                 _wrapup.set("score", score);        
                         });
                         
+                        // wtahc session for furation update
                         $session.watchValue("duration", function(duration){
                                 _wrapup.set("duration", duration);     
                         });
                         
+                        
+                        CARDS = _cards;
                         // Return
                         return _widget;
                 };     

@@ -5,7 +5,6 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         
                         // declaration
                         var _widget = new Widget(),
-                            _session = $session,
                             _user = Config.get("user"),
                             _db = Config.get("db"),
                              _labels = Config.get("labels"),
@@ -14,7 +13,7 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         // setup
                         _widget.plugins.addAll({
                                 "labels" : new Model(_labels),
-                                "model" : new Model(_session, {
+                                "model" : new Model($session, {
                                         setTitle : function(initiator){
                                                 var _now = new Date();
                                                 if (initiator && initiator.username) this.setAttribute("placeholder", _labels.get("quickstarttitleplaceholderpre")+initiator.username+_labels.get("quickstarttitleplaceholderpost"));
@@ -35,17 +34,18 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                if (_next === "step"){
                                         _next = "screen";
                                         // if title field is empty, set placeholder value as the default title
-                                        if (_session.get("title") === ""){
-                                                _session.set("title", _labels.get("quickstarttitleplaceholderpre")+_session.get("initiator").username+_labels.get("quickstarttitleplaceholderpost"));      
+                                        if ($session.get("title") === ""){
+                                                $session.set("title", _labels.get("quickstarttitleplaceholderpre")+$session.get("initiator").username+_labels.get("quickstarttitleplaceholderpost"));      
                                         }
                                 
                                         // IMPORTANT: the new session doc is created in CDB and the session document is synched for the entire session
-                                        _session.set("_id", "S:QUICK:"+_session.get("startTime"));
-                                        _session.sync(_db, _session.get("_id"));
+                                        $session.set("_id", "S:QUICK:"+$session.get("startTime"));
+                                        $session.sync(_db, $session.get("_id"));
                                         
                                         // set session in progress in user document
-                                        _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});
+                                        _user.set("sessionInProgress", {id : $session.get("_id"), type: "quick"});
                                         _user.upload().then(function(){
+                                                console.log("move to next screen", $session.toJSON());
                                                 // next step
                                                 $next("quickstart");        
                                         });
@@ -67,15 +67,15 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                         };
                         
                         _widget.reset = function reset(sip){
-                                var now = new Date(), step = _session.get("step");
+                                var now = new Date(), step = $session.get("step");
                                 if (sip){
                                         (step === "quickstart") ? _next = "step" : next = "screen";
                                         // set resume time (to be added to elapsed time) if session is still in progress
-                                        if (step !== "quickwrapup") _session.set("resumeTime", now.getTime());       
+                                        if (step !== "quickwrapup") $session.set("resumeTime", now.getTime());       
                                 }
                                 else{
-                                        _session.set("startTime", now.getTime());
-                                        _session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        $session.set("startTime", now.getTime());
+                                        $session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                         _next = "step";
                                 }
                         };

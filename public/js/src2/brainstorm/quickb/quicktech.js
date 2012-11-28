@@ -1,5 +1,5 @@
-define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Help", "Store", "CouchDBStore", "Promise", "Ideafy/CardPopup"],
-        function(Widget, Map, Model, Event, Config, Help, Store, CouchDBStore, Promise, CardPopup){
+define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Help", "Store", "CouchDBStore", "Promise", "Ideafy/CardPopup", "Ideafy/Utils"],
+        function(Widget, Map, Model, Event, Config, Help, Store, CouchDBStore, Promise, CardPopup, Utils){
                 
                 return function QuickTechConstructor($session, $data, $prev, $next, $progress){
                         
@@ -7,6 +7,8 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                         var _widget = new Widget(),
                             _start = null, //timer
                             _elapsed = null, //time already elapsed in this step
+                            _qtTimer,
+                            _timer = new Store({"timer":null, "display":false}),
                             _transport = Config.get("transport"),
                             _user = Config.get("user"),
                             _labels = Config.get("labels"),
@@ -64,10 +66,18 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                                 }
                                         }
                                 }),
+                                "quicktechtimer" : new Model(_timer, {
+                                      setTime: function(timer){
+                                                      this.innerHTML = Utils.formatDuration(timer);       
+                                      },
+                                      displayTimer: function(display){
+                                              (display) ? this.classList.add("showtimer") : this.classList.remove("showtimer");
+                                      }
+                                }),
                                 "quicktechevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quicktech"><div class="previousbutton" data-quicktechevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="quicktech-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech" data-quicktechevent="listen:touchstart, toggleProgress"></div><div class="help-brainstorm" data-quicktechevent="listen:touchstart, help"></div><div id="quicktech-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-quicktechevent="listen: touchstart, select; listen:touchstart, zoom" data-display="bind: popup, scenario.popup"><div class="cardpicture"></div><div class="cardtitle" data-labels="bind:innerHTML, scenariolbl"></div></div></div><div class="drawarea"><div class="decks"><div class="drawbutton drawtech" "name"="tech" data-quicktechevent="listen: touchstart, push; listen:touchend, draw"></div></div><div class="cards"><div class="card tech defaultcard" name="tech1" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 0.pic" data-display="bind: popup, tech1.popup"><div class="cardpicture" data-techcards="bind:setPic, 0.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 0.title" data-labels="bind:innerHTML, tech1lbl"></div></div><div class="card tech defaultcard" name="tech2" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 1.pic" data-display="bind: popup, tech2.popup"><div class="cardpicture" data-techcards="bind:setPic, 1.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 1.title" data-labels="bind:innerHTML,tech2lbl"></div></div><div class="card tech defaultcard" name="tech3" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 2.pic" data-display="bind: popup, tech3.popup"><div class="cardpicture" data-techcards="bind:setPic, 2.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 2.title" data-labels="bind:innerHTML, tech3lbl"></div></div></div><div class="confirm"><div class="drawok" name="tech1" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech2" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech3" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quicktechevent="listen: touchstart, press; listen:touchend, next" data-display="bind:updateNext, tech1.selected;bind:updateNext, tech2.selected;bind:updateNext, tech3.selected"></div></div></div>';
+                        _widget.template = '<div id = "quicktech"><div class="previousbutton" data-quicktechevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="quicktech-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech" data-quicktechevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quicktechtimer="bind:setTime, timer; bind: displayTimer, display" data-quicktechevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-quicktechevent="listen:touchstart, help"></div><div id="quicktech-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-quicktechevent="listen: touchstart, select; listen:touchstart, zoom" data-display="bind: popup, scenario.popup"><div class="cardpicture"></div><div class="cardtitle" data-labels="bind:innerHTML, scenariolbl"></div></div></div><div class="drawarea"><div class="decks"><div class="drawbutton drawtech" "name"="tech" data-quicktechevent="listen: touchstart, push; listen:touchend, draw"></div></div><div class="cards"><div class="card tech defaultcard" name="tech1" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 0.pic" data-display="bind: popup, tech1.popup"><div class="cardpicture" data-techcards="bind:setPic, 0.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 0.title" data-labels="bind:innerHTML, tech1lbl"></div></div><div class="card tech defaultcard" name="tech2" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 1.pic" data-display="bind: popup, tech2.popup"><div class="cardpicture" data-techcards="bind:setPic, 1.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 1.title" data-labels="bind:innerHTML,tech2lbl"></div></div><div class="card tech defaultcard" name="tech3" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 2.pic" data-display="bind: popup, tech3.popup"><div class="cardpicture" data-techcards="bind:setPic, 2.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 2.title" data-labels="bind:innerHTML, tech3lbl"></div></div></div><div class="confirm"><div class="drawok" name="tech1" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech2" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech3" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quicktechevent="listen: touchstart, press; listen:touchend, next" data-display="bind:updateNext, tech1.selected;bind:updateNext, tech2.selected;bind:updateNext, tech3.selected"></div></div></div>';
                         
                         _widget.place(Map.get("quicktech"));
                         
@@ -84,13 +94,21 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                         //update session data
                                         $data.set("techno", _techCards);
                                         
+                                        // stop timer and update display
+                                        clearInterval(_qtTimer);
+                                        _timer.set("display", true);
+                                        
                                         // compute session score
-                                        _widget.updateSessionScore(_elapsedTime).then(function(){
+                                        _widget.updateSessionScore(_timer.get("timer")).then(function(){
                                                // resync with db
                                                 $session.unsync();
                                                 $session.sync(Config.get("db"), $session.get("_id")).then(function(){
+                                                        var timers = $session.get("elapsedTimers");
+                                                        
+                                                        timers.quicktech = _timer.get("timer");
+                                                        
                                                         // update session document
-                                                        $session.set("elapsedTimers", {"quicktech": _elapsedTime});
+                                                        $session.set("elapsedTimers", timers);
                                                         $session.set("techno", [[_techCards.get(0).id, _techCards.get(1).id, _techCards.get(2).id]]);
                                                         //upload and move to next step
                                                         node.classList.remove("pressed");
@@ -118,6 +136,11 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                         
                         _widget.toggleProgress = function(event, node){
                                 $progress(node);               
+                        };
+                        
+                        // toggle timer
+                        _widget.toggleTimer = function(event,node){
+                                _timer.set("display", !_timer.get("display"));        
                         };
                         
                         _widget.select = function(event, node){
@@ -288,6 +311,11 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                                 {"id":"", "title":"", "pic":""}
                                         ]);
                                 }
+                                
+                                // retrieve time already spent on this step and init/display timer as appropriate
+                                ($session.get("elapsedTimers").quicktech) ? _elapsed = $session.get("elapsedTimers").quicktech : _elapsed = 0;
+                                _timer.set("timer", _elapsed);
+                                (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
                         };
                         
                         // Method called to update the session score at the end of the current step
@@ -311,10 +339,21 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                 return promise;
                         };
                         
-                        _widget.initTimer = function(){
-                                var now = new Date();
-                                _start = now.getTime();
-                        };
+                        _widget.initTimer = function(init){
+                                var now = new Date(),
+                                    _start = now.getTime(),
+                                    elapsed = init || 0;
+                                
+                                _timer.set("display", false);
+                                _timer.set("timer", elapsed);
+                                // make sure current step is ongoing before restarting timer
+                                if ($session.get("step") === "quicktech"){
+                                        _qtTimer = setInterval(function(){
+                                                var now = new Date();
+                                                _timer.set("timer", elapsed + now.getTime()-_start);
+                                        }, 1000);
+                                }          
+                         };
 
                         // Creating the popup UI
                         _popupUI = new CardPopup(_widget.closePopup);

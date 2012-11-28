@@ -5,6 +5,7 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
              
                 var _widget = new Widget(),
                     _sid,
+                    _edit = true,
                     _readonly = false,
                     _transport = Config.get("transport");
                 
@@ -21,7 +22,7 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                                                 case "postit":
                                                         node.classList.remove("photo");
                                                         node.classList.remove("drawing");
-                                                        node.innerHTML = content;
+                                                        node.innerHTML = '<div class="inner-postit">'+content+"</div>";
                                                         node.setAttribute("style", "background:transparent; background:url('img/brainstorm/"+style.img+"'); color:"+style.marker+";");
                                                         break;
                                                 case "import":
@@ -50,23 +51,30 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                         "wbevent" : new Event(_widget)
                 });
                 
-                _widget.template = '<div class="wbmain"><ul class="wblist" data-wbmain="foreach"><li class="wb-item postit" data-wbmain="bind: displayPost, type" data-wbevent="listen: touchstart, edit"></li><ul><div>';
+                _widget.template = '<div class="wbmain"><ul class="wblist" data-wbmain="foreach"><li class="wb-item postit" data-wbmain="bind: displayPost, type" data-wbevent="listen: touchend, edit; listen:touchmove, cancelEdit"></li><ul><div>';
                 
                 
                 _widget.edit = function(event, node){
                         var id = node.getAttribute("data-wbmain_id"),
                             type = $store.get(id).type;
-                            
-                        if (!_readonly){
-                                $tools.set(type, "active");
-                                $select(type, id);
-                        }
-                        else{
-                                // in readonly mode allow the possibility to zoom in on pictures and drawings
-                                if ($store.get(id).type !== "postit"){
-                                        (node.classList.contains("enlarge"))?node.classList.remove("enlarge"):node.classList.add("enlarge");
+                        
+                        if (_edit){    
+                                if (!_readonly){
+                                        $tools.set(type, "active");
+                                        $select(type, id);
+                                }
+                                else{
+                                        // in readonly mode allow the possibility to zoom in on pictures and drawings
+                                        if ($store.get(id).type !== "postit"){
+                                                (node.classList.contains("enlarge"))?node.classList.remove("enlarge"):node.classList.add("enlarge");
+                                        }
                                 }
                         }
+                        else _edit = true;
+                };
+                
+                _widget.cancelEdit = function(event,node){
+                        _edit = false;        
                 };
                 
                 _widget.setSessionId = function(sid){
@@ -75,7 +83,7 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                 
                 _widget.setReadonly = function(bool){
                         _readonly = bool;
-                }
+                };
                 
                 return _widget;      
                    

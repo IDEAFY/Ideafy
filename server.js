@@ -8,8 +8,8 @@
 var http = require("http"), 
     socketIO = require("socket.io"),
     connect = require("connect"), 
-    CouchDBTools = require("couchdb-emily-tools"),
     olives = require("olives"),
+    CouchDBTools = require("couchdb-emily-tools"),
     cookie = require("cookie"), 
     RedisStore = require("connect-redis")(connect), 
     nodemailer = require("nodemailer"), 
@@ -304,15 +304,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                     sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
                     cdb = new CouchDBStore();    
                 // return false if document does not exist in database
-                cdb.setTransport(transport);
-                cdb.sync(_db, json.id).then(function(){
+                getDocAsAdmin(json.id, cdb).then(function(){
                                 sessionStore.get(sessionID, function(err, session){
                                         if(err){throw new Error(err);}
                                         else{
                                                 (session.auth && session.auth.search(json.id) >-1) ? onEnd({authenticated: true}) : onEnd({authenticated : false});
                                         } 
                                 });
-                                cdb.unsync();
                         }, function(){onEnd({authenticated: false});});
                 });
         
@@ -695,8 +693,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         olives.handlers.set("WriteTwocent", function(json, onEnd) {
 
                 var cdb = new CouchDBStore();
-                cdb.setTransport(new Transport(olives.handlers));
-                cdb.sync(_db, json.docId).then(function(){
+                getDocAsAdmin(json.docId, cdb).then(function(){
+                        console.log("WRITETWOCENT", cdb.toJSON());
                         var tc = cdb.get("twocents"), increment = 0, reason = "";
                         if (json.type === "new"){
                                 // new twocents are always appended at the top of the list
@@ -793,14 +791,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 break;
                         case "quickidea":
                                 wbdata = JSON.parse(json.wbcontent);
-                                input = JSON.parse(json.scenario);
+                                input = JSON.parse(json.idea);
                                 t = json.time;
                                 if (t>=900000) coeff = 1; // too long
                                 if (t<900000) coeff = 1.5; // ok
                                 if (t<600000) coeff = 1.5; // great !!
                                 if (t<300000) coeff = 0.8; // too fast
                                 if (t<120000) coeff = 0.5; // way too fast
-                                if (input.title.length+input.story.length+input.solution.length < 200) coeff *= 0.5; // need a bit more effort
+                                if (input.title.length+input.description.length+input.solution.length < 200) coeff *= 0.5; // need a bit more effort
                                 if (wbdata.length>6) coeff *= 1.25
                                 else {
                                         if (wbdata.length < 3) coeff *= 0.25
@@ -817,8 +815,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 }
                 
                 if (increment !== 0){
-                        cdb.setTransport(transport);
-                        cdb.sync(_db, json.sid).then(function(){
+                        getDocAsAdmin(json.sid, cdb).then(function(){
                                 cdb.set("score", parseInt(cdb.get("score")+increment, 10));
                                 updateDocAsAdmin(json.sid, cdb).then(function(){
                                    onEnd({res: "ok", value: cdb.get("score")});

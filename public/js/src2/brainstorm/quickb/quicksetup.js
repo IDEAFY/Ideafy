@@ -308,7 +308,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         deck.techno = cdb.get("content").techno; // even though it is not for this step so there is only one request to read the deck going out to the database
                                         $data.set("deck", deck);
                                         promise.resolve();
-                                        cdb.unsync();
+                                        setTimeout(function(){cdb.unsync();}, 250);
                                 });
                                 return promise;                       
                         };
@@ -323,10 +323,11 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         // update currentCards
                                         store.reset(JSON.parse(cdb.toJSON()));
                                         promise.resolve();
-                                        cdb.unsync();
+                                        setTimeout(function(){cdb.unsync();},250);
                                 });
                                 return promise;        
                         };
+                        
                         
                         // Method called to draw a random card from a deckstack
                         _widget.drawCard = function drawCard(type){
@@ -369,6 +370,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 };
                                 
                                 _transport.request("UpdateSessionScore", json, function(result){
+                                        console.log(result);
                                         if (result.res === "ok"){
                                                 promise.resolve();
                                         }

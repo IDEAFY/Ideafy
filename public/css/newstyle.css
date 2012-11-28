@@ -1819,17 +1819,27 @@ textarea.solution {
 }
 
 .postit{
-    width: 139px;
-    height: 141px;
-    padding: 20px;
-    border: none;
-    font-family: Pacifico;
-    font-size: 16px;
-    text-align: center;
-    color: #4D4D4D;
-    background-size: 175px 161px;
+    width: 150px;
+    height: 150px;
+    padding: 15px 20px 25px 20px;
+    background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
+    display: block;
+}
+
+.postit textarea{
+    font-size: 16px;
+    text-align: center;       
+    font-family: Pacifico;
+    color: #4D4D4D;
+    border: none;
+    background: transparent;
+    padding-top: 0px;
+    line-height: 25px;
+    widht:100%;
+    height:100%;
+    overflow-y: scroll;
 }
 
 .picframe{
@@ -1866,6 +1876,20 @@ textarea.solution {
     margin-bottom: 5px;
     word-wrap: break-word;
     overflow-y: scroll;
+}
+
+.wb-item.postit{
+    font-family: Pacifico;
+    overfloz-y: scroll;
+    text-algin: center;
+}
+
+.inner-postit{
+    width:100%;
+    height:80%;
+    overflow-y:scroll;
+    line-height:26px;
+    padding-bottom: 20px;
 }
 
 .photo, .drawing{
@@ -2658,14 +2682,6 @@ li.color-item{
     width: 330px;
 }
 
-.setPrivate{
-    
-}
-
-.setPublic{
-    
-}
-
 .enterDesc, .enterSol{
     width: 330px;
     height: 100px;
@@ -2866,9 +2882,11 @@ li.color-item{
 }
 
 #quickwrapup .sessioncards{
+    position:absolute;
     width: 931px;
-    height: 191px;
-    margin-top: 20px;
+    height: 240px;
+    z-index: 100;
+    top: 650px;
     overflow-y: scroll;
     padding-top: 15px;
     background: -webkit-gradient(linear,left bottom,left top,color-stop(0%,#ffffff),color-stop(100%,#f2f2f2));
@@ -2876,9 +2894,18 @@ li.color-item{
     -webkit-box-shadow: inset 0px 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
+#quickwrapup .sessioncards.expanded{
+    top:500px;
+    -webkit-transition:all 0.2s ease-in;
+}
+
 #quickwrapup .sessioncards legend{
     font-family: Pacifico;
     font-size: 14px;
     margin: 0 auto;
     color: #666666;
+}
+
+#quickwrapup .cardlist{
+    margin: 20px 0px 0px 20px;
 }

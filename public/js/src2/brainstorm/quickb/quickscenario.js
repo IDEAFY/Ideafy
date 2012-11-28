@@ -272,7 +272,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                         
                                         // set _next to screen
                                         _next="screen";
-                                        
+                                        _tools.set("ready", false);
                                         _tools.set("showstory", true); // display story
                                         _wb.setReadonly(true); // set whiteboard in readonly
                                         
@@ -297,7 +297,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                         _next="step";     
                                 }
                                 // retrieve time already spent on this step
-                                ($session.get("elapsedTimers").quickscenario) ? _elapsed = $sesion.get("elapsedTimers").quickscenario : _elapsed = 0;
+                                ($session.get("elapsedTimers").quickscenario) ? _elapsed = $session.get("elapsedTimers").quickscenario : _elapsed = 0;
                          };
                          
                          _widget.initTimer = function(){
@@ -326,12 +326,10 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                         ["added", "deleted", "updated"].forEach(function(change){
                                 _wbContent.watch(change, function(){
                                         
-                                        console.log("scenario change");
                                         // avoid upload if $session is already up-to-date (e.g. replay)
                                         if (JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
                                                 $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
                                                 $session.upload();
-                                                console.log("scenario upload");
                                         }
                                         
                                         // toggle ready button

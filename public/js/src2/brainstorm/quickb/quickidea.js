@@ -6,7 +6,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         // Declaration
                         var _widget = new Widget(),
                             _popupUI, _currentPopup,
-                            _start, _next="step", _upload = true, // switch to false when copying WB contents from database
+                            _start, _next="step",
                             _idea = new Store({"title" : "", "description" : "", "solution" : "", "visibility": "private"}),
                             _scenario = new Store(),
                             _techs = new Store([]),
@@ -101,7 +101,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                         
                                         // compute overall session time
                                         duration = _widget.getSessionDuration();
-                                        
+                                        console.log(duration);
                                         // add idea to session data
                                         $data.set("idea", JSON.parse(_idea.toJSON()));
                                         
@@ -117,7 +117,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                                         $session.set("idea", [JSON.parse(_idea.toJSON())]);
                                                         $session.set("elapsedTimers", _timers);
                                                         $session.set("duration", duration);
-                                                        $session.set("status", completed);
+                                                        $session.set("status", "completed");
                                                         // set idea to readonly
                                                         _tools.set("readonly", true);
                                                         $next("quickidea");         
@@ -337,17 +337,19 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));
                                 if ($session.get("ideaWB").length){
-                                        _upload = false; // set upload to false at initialization
                                         _wbContent.reset($session.get("ideaWB"));
                                 }
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
-                                // if scenario is present show write up interface and board in readonly mode
+                                // if idea is present show write up interface and board in readonly mode
                                 if ($session.get("idea").length){
-                                        _tools.set("showidea", true);
                                         _wb.setReadonly(true);
+                                        _tools.set("ready", false);
+                                        _tools.set("showidea", true);
                                         // in quick mode only one scenario is available
                                         _idea.reset($session.get("idea")[0]);
+                                        // add it to the session data store
+                                        $data.set("idea", $session.get("idea")[0]);
                                         // idea should be readonly
                                         _tools.set("readonly", true);
                                         _tools.set("shownext", true);
@@ -364,7 +366,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                         _next="step";     
                                 }
                                 // retrieve time already spent on this step
-                                ($session.get("elapsedTimers").quickidea) ? _elapsed = $sesion.get("elapsedTimers").quickidea : _elapsed = 0;
+                                ($session.get("elapsedTimers").quickidea) ? _elapsed = $session.get("elapsedTimers").quickidea : _elapsed = 0;
                          };
                          
                          _widget.initTimer = function(){
@@ -385,11 +387,10 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         // upload whiteboard content to database as soon as it is updated
                         ["added", "deleted", "updated"].forEach(function(change){
                                 _wbContent.watch(change, function(){
-                                        if (_upload && JSON.stringify($session.get("ideaWB")) !== _wbContent.toJSON()){
+                                        if (JSON.stringify($session.get("ideaWB")) !== _wbContent.toJSON()){
                                                 $session.set("ideaWB", JSON.parse(_wbContent.toJSON()));
                                                 $session.upload();
                                         }
-                                        else _upload = true;
                                         
                                         // toggle ready button
                                         (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);     
@@ -402,7 +403,6 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         });
                         
                         
-                        TECHS = _techs;
                         
                         // Return
                         return _widget;

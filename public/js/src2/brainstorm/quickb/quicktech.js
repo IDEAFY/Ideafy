@@ -86,7 +86,7 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                         
                                         // compute session score
                                         _widget.updateSessionScore(_elapsedTime).then(function(){
-                                                // resync with db
+                                               // resync with db
                                                 $session.unsync();
                                                 $session.sync(Config.get("db"), $session.get("_id")).then(function(){
                                                         // update session document
@@ -95,7 +95,7 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                                         //upload and move to next step
                                                         node.classList.remove("pressed");
                                                         $next("quicktech");         
-                                                });      
+                                                });;     
                                         });
                                 }
                                 else {
@@ -228,7 +228,7 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                         _techCards.update(idx,"id",id);
                                         _techCards.update(idx,"title",cdb.get("title"));
                                         _techCards.update(idx,"pic", cdb.get("picture_file"));
-                                        cdb.unsync();       
+                                        setTimeout(function(){cdb.unsync();}, 500);       
                                 });  
                         };
                         

@@ -81,7 +81,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                 name : email,
                                 password : password
                         }, function(result) {
-                                console.log(result);
                                 if (result.login === "ok") {
                                         Config.set("uid", '"' + email + '"');
                                         // check if there is a new db
@@ -204,7 +203,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         };
         
         _body.forceLandscape = function(event, node){
-                console.log(window.orientation);
                 var scaleX = 1004/1024, scaleY = 768/748;
                 if (window.orientation === 90 || window.orientation === -90){
                    node.setAttribute("style", "-webkit-transform-origin:0;-webkit-transform:0;");               

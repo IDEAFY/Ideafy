@@ -144,9 +144,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 
                                 _transport.request(_channel, {
                                         method: "GET",
-                                        headers: {
-                                                "Connection": "close"
-                                        },
                                         path: "/" + _syncInfo.database + "/_design/" + _syncInfo.design + "/" + _syncInfo.view,
                                         query: _syncInfo.query
                                 }, function (results) {
@@ -173,9 +170,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 
                                 _transport.request(_channel, {
                                         method: "GET",
-                                        headers: {
-                                                "Connection": "close"
-                                        },
                                         path: "/" + _syncInfo.database + "/" + _syncInfo.document,
                                         query: _syncInfo.query
                                 }, function (results) {
@@ -207,8 +201,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                         reqData.method = "POST";
                                         reqData.data = JSON.stringify({keys:_syncInfo.keys});
                                         reqData.headers = {
-                                                "Content-Type": "application/json",
-                                                "Connection": "close"
+                                                "Content-Type": "application/json"
                                         };
                                         errorString = reqData.data;
 
@@ -269,7 +262,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                 Tools.mixin({
                                         feed: "continuous",
                                         heartbeat: 10000,
-                                        limit: 1,
                                         // limit: 0,
                                         descending: true
                                 }, _syncInfo.query);
@@ -316,7 +308,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                         query: {
                                                  feed: "continuous",
                                                  heartbeat: 10000,
-                                                 limit: 1,
                                                  descending: true
                                                 }
                                         },
@@ -352,7 +343,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                 Tools.mixin({
                                         feed: "continuous",
                                         heartbeat: 10000,
-                                        limit: 0,
                                         descending: true,
                                         include_docs: true
                                 }, _syncInfo.query);
@@ -573,8 +563,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                         method: "PUT",
                         path: "/" + _syncInfo.database + "/" + _syncInfo.document,
                         headers: {
-                                "Content-Type": "application/json",
-                                "Connection" : "close"
+                                "Content-Type": "application/json"
                         },
                         data: this.toJSON()
                 }, function (response) {

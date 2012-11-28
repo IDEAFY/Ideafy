@@ -64,7 +64,9 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
                         
                         // replay session
                         Config.get("observer").watch("replay-session", function(sid, mode){
-                                _stack.getStack().show("#brainstorm");                
+                                _stack.getStack().show("#brainstorm");
+                                document.querySelector(".dock-item.selected").classList.remove("selected");
+                                document.querySelector(".dock-item[href='#brainstorm']").classList.add("selected");              
                         });
 
 		//return

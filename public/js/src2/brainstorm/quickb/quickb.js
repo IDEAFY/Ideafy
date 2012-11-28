@@ -62,21 +62,27 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                            // reset local session data
                            _sessionData.reset();
                            
-                           console.log("start retrieving session", sip);
-                                
                            // connect to couchdbstore and retrieve session
                            _session.unsync();
                            _session.reset();
                            _session.sync(Config.get("db"), sip.id).then(function(){
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
+                                console.log("retrieving session : ", _session.toJSON());
+                                
                                 // reset step UIs
                                 _stack.getStack().get("quickstart").reset(sip);
+                                console.log("start ok");
                                 _stack.getStack().get("quicksetup").reset(sip);
+                                console.log("setup ok");
                                 _stack.getStack().get("quickscenario").reset(sip);
+                                console.log("scenario ok");
                                 _stack.getStack().get("quicktech").reset(sip);
+                                console.log("tech ok");
                                 _stack.getStack().get("quickidea").reset(sip);
+                                console.log("idea ok");
                                 _stack.getStack().get("quickwrapup").reset(sip);
+                                console.log("wrapup ok");
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
@@ -103,7 +109,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                                         //update user session in progress
                                         console.log("before sip change", _user.toJSON());
                                         _user.set("sessionInProgress", sip);
-                                        console.log("upload result", _user.upload());
+                                        _user.upload().then(function(){console.log("upload ok");});
                                 }
                            });
                    };
@@ -115,7 +121,6 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                         _session.reset(Config.get("sessionTemplate"));
                          //reset local session data
                         _sessionData.reset();
-                        DATA = _sessionData;
                         
                         // set session initiator to current user
                         _session.set("initiator", {"id": _user.get("_id"),"username": _user.get("username"),"picture_file": _user.get("picture_file")});
@@ -231,6 +236,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                    
                    // init
                    QBSTACK = _stack;
+                   SESSION = _session;
                    SD = _sessionData;
                    _widget.init($sip);
                    

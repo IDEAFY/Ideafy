@@ -34,7 +34,7 @@ define("Ideafy/Whiteboard/Postit", ["Olives/OObject", "Store", "Olives/Model-plu
                            "postitevent": new Event(_widget)
                    });
                 
-                _widget.template = '<div class="wbpostit"><div class="postit-cancel" data-postitevent="listen:touchstart,cancel"></div><textarea class="postit" data-postit="bind: value, content; bind: setStyle, style"></textarea><span class="choosecolorlbl" data-labels="bind:innerHTML, choosecolorlbl"></span><ul class="postitcolors" data-colors="foreach"><li class="postitcolor" data-postitevent="listen:touchstart,choose" data-colors="bind:setBg, color;bind:setSelected, selected"></li></ul><div name="post" class = "postpostit" data-postitevent="listen: touchstart, press; listen:touchend, post"></div><div class = "delpostit" name="del" data-postitevent="listen:touchstart, press;listen:touchend, del"></div></div>';
+                _widget.template = '<div class="wbpostit"><div class="postit-cancel" data-postitevent="listen:touchstart,cancel"></div><div class="postit" data-postit="bind:setStyle, style"><textarea data-postit="bind: value, content"></textarea></div><span class="choosecolorlbl" data-labels="bind:innerHTML, choosecolorlbl"></span><ul class="postitcolors" data-colors="foreach"><li class="postitcolor" data-postitevent="listen:touchstart,choose" data-colors="bind:setBg, color;bind:setSelected, selected"></li></ul><div name="post" class = "postpostit" data-postitevent="listen: touchstart, press; listen:touchend, post"></div><div class = "delpostit" name="del" data-postitevent="listen:touchstart, press;listen:touchend, del"></div></div>';
                 
                 
                 _widget.cancel = function(event,node){

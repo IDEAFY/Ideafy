@@ -196,7 +196,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               };
               
               this.deleteSession = function(event, node){
-                        var _id = node.getAttribute("data-sessions_id"), _sid;
+                        var _id = node.getAttribute("data-sessions_id"), _sid = _sessions.get(_id).id;
                         // hide action bar and remove hightlight
                         _dom.querySelector(".actionbar[data-sessions_id='"+_id+"']").setAttribute("style", "display: none;");
                         node.classList.remove("pressed");
@@ -229,6 +229,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         */
                         
                         // remove session from CouchDB
+                        console.log("delete", _sid);
                         var _cdb = new CouchDBStore();
                         _cdb.setTransport(Config.get("transport"));
                         _cdb.sync(_db, _sid).then(function(){
@@ -236,7 +237,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         });
                         
                         // last, remove attachments (whiteboards) if any from the server
-                        Config.get("transport").request("cleanUpSession", _sid, function(result){
+                        Config.get("transport").request("cleanUpSession", _sid, function(res){
                                 if (res.err) console.log(res.err);        
                         });
               };
@@ -299,8 +300,8 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         _widget.sortSessions(_currentSort);       
                                 });*/
                                ["added", "deleted", "updated"].forEach(function(change){
-                                        _sessionsCDB.watch(change, function(){
-                                                console.log(_sessionsCDB.toJSON());
+                                        _sessionsCDB.watch(change, function(idx, value){
+                                                console.log(change, idx, value);
                                                 _widget.resetSessionData();
                                                 // apply current sorting methods
                                                 _widget.sortSessions(_currentSort);        

@@ -42,12 +42,13 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                         // IMPORTANT: the new session doc is created in CDB and the session document is synched for the entire session
                                         _session.set("_id", "S:QUICK:"+_session.get("startTime"));
                                         _session.sync(_db, _session.get("_id"));
-                                        setTimeout(function(){
-                                                // set session in progress in user document
-                                                _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});
+                                        
+                                        // set session in progress in user document
+                                        _user.set("sessionInProgress", {id : _session.get("_id"), type: "quick"});
+                                        _user.upload().then(function(){
                                                 // next step
-                                                $next("quickstart");
-                                         }, 200);
+                                                $next("quickstart");        
+                                        });
                                         
                                 }
                                 else{

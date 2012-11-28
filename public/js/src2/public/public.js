@@ -110,18 +110,7 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 		        listRating.init(_detail.reset);
 			_stack.getStack().show("#list-date");
 
-			/*then(function(){
-			//select first item
-			var li = _dom.querySelector("li");
-			if(li){
-				_radio.init(li);
-				li.classList.add("selected");
-				_detail.reset(_ideas.get(0));
-			}
-		});*/
-
-
-		//return
+			//return
 			return _widget;
 		};
 	}

@@ -1,7 +1,11 @@
-define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olives/Model-plugin", "Ideafy/Utils", "Ideafy/Avatar"], function(Widget, Store, Config, Model, Utils, Avatar) {
+define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Utils", "Ideafy/Avatar", "Ideafy/ActionBar"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar) {
         function ListPublicConstructor($db, $design, $view, $query) {
                 var _store = new Store([]),
-                    _options = {
+                touchStart,
+                touchPoint,
+                display = false,
+                currentBar = null,
+                _options = {
                         db : $db,
                         view : $view,
                         design : $design,
@@ -14,10 +18,10 @@ define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olive
 
                 //setup
                 _store.setTransport(Config.get("transport"));
-                this.template = "<ul class='ideas-list' data-listideas='foreach'>" + "<li class='list-item'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:innerHTML,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul>";
+                this.template = "<ul class='ideas-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:innerHTML,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul>";
 
-                this.plugins.add(
-                        "listideas", new Model(_store, {
+                this.plugins.addAll({
+                        "listideas" : new Model(_store, {
                                 date : function date(date) {
                                         this.innerHTML = Utils.formatDate(date);
                                 },
@@ -39,13 +43,15 @@ define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olive
                                         _ui = new Avatar(authors);
                                         _ui.place(_frag);
                                         (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
-                                        }
                                 }
-                        ));
+                        }),
+                        "listevent" : new Event(this)
+                        });
 
                 this.getModel = function() {
                         return _store;
                 };
+                
                 this.resetQuery = function(query) {
                         _options.query = query;
 
@@ -53,12 +59,42 @@ define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olive
                         _store.reset([]);
                         _store.sync(_options.db, _options.design, _options.view, _options.query);
                 };
+                
+                this.setStart = function(event, node){
+                        touchStart = [event.pageX, event.pageY];
+                        
+                        if (currentBar) this.hideActionBar(currentBar);  // hide previous action bar 
+                };
+                
+                this.showActionBar = function(event, node){
+                        var id = node.getAttribute("data-listideas_id");
+                        
+                        touchPoint = [event.pageX, event.pageY];
+                        
+                        if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                var actionBar = new ActionBar("idea", node, _store.get(id).doc, this.hideActionBar),
+                                    frag = document.createDocumentFragment();  
+                                
+                                actionBar.place(frag); // render action bar    
+                                node.appendChild(frag); // display action bar
+                                currentBar = actionBar; // store current action bar
+                                display = true; // prevent from showing it multiple times
+                        }
+                };
+                
+                this.hideActionBar = function hideActionBar(ui){
+                        
+                        var parent = ui.dom.parentElement;
+                        
+                        parent.removeChild(parent.lastChild);
+                        display = false;
+                        currentBar = null;
+                };
 
                 // set default query parameters
                 if ($query) {
                         _options.query = $query;
                 }
-                
                 
                 this.init = function init(initCallback){
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){

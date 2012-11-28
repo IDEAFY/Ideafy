@@ -55,6 +55,8 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "notifications" : [],
                                 "facebook" : "",
                                 "twitter" : "",
+                                "gplus" : "",
+                                "linkedin" : "",
                                 "username" : "",
                                 "sessionInProgress" : {},
                                 "organization" : "",

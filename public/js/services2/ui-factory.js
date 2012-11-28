@@ -38,6 +38,137 @@ define("Ideafy/SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Amy/Control-
                 };     
         });
         
+define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "CouchDBStore", "Promise"],
+        function(Widget, Model, Event, Config, Store, CouchDBStore, Promise){
+                function ActionBarConstructor($type, $parent, $data, $hide){
+                
+                        var buttons = new Store([]),
+                            parentHeight = $parent.offsetHeight,
+                            padding = 20,
+                            margin = Math.floor((parentHeight-padding-51)/2)+51,
+                            style = new Store({"margin": margin}),
+                            user = Config.get("user"),
+                            observer = Config.get("observer"),
+                            buildButtons,
+                            ui = this;
+                        
+                        this.plugins.addAll({
+                                "buttons" : new Model(buttons, {
+                                        setIcon : function(icon){
+                                                this.setAttribute("style", "background-image:url('"+icon+"');");
+                                        }
+                                }),
+                                "style" : new Model(style,{
+                                        setPosition : function(mt){
+                                                this.setAttribute("style", "margin-top:-"+ mt +"px;");
+                                        }
+                                }),
+                                "action" : new Event(this)
+                        });
+                        
+                        this.template = '<div class="actionbar" data-style="bind:setPosition, margin" data-action="listen:touchend, hide"><ul class="buttonlist" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:touchstart, press; listen:touchend, action"></li></ul></div>';
+                        
+                        this.hide = function(event, node){
+                                console.log("hide event");
+                                $hide(this);        
+                        };
+                        
+                        this.press = function(event, node){
+                                node.classList.add("pressed");
+                        };
+                        
+                        this.action = function(event, node){
+                                var id = node.getAttribute("data-buttons_id"),
+                                    action = buttons.get(id).name;
+                                
+                                event.stopPropagation();
+                                node.classList.remove("pressed");
+                                
+                                
+                                switch(action){
+                                        case "delete":
+                                                this.deleteItem().then(function(){
+                                                        $hide(ui);
+                                                });
+                                                break;
+                                        default:
+                                                break;        
+                                }
+                        };
+                        
+                        buildButtons = function(type, data){
+                                
+                                switch (type){
+                                        case "idea":
+                                                // actions: edit, delete, email, share, replaysession, add to favorites ?
+                                                console.log(user.toJSON(), data);
+                                                // edit : allow edits if user is one of the authors
+                                                // note: original idea is always saved with session
+                                                if (data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"edit", icon:"img/wall/35modify.png"});
+                                                
+                                                // if idea is coming from a session display replaysession
+                                                if (data.sessionId) buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"})
+                                                
+                                                // email -- if you can see it you can email it
+                                                buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});
+                                                
+                                                // if user has contacts or twitter/facebook/google profiles then share is ok
+                                                if (user.get("connections") && user.get("connections").length){
+                                                        buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
+                                                }
+                                                else if (user.get("facebook") || user.get("twitter") || user.get("gplus") || user.get("linkedin")){
+                                                        buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
+                                                }
+                                                
+                                                // if user is sole author, idea has not been shared and no twocents, then delete is ok
+                                                if (data.authors.length === 1 && data.authors[0] === user.get("_id") && !data.twocents.length && !data.sharedwith.length) {
+                                                        buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
+                                                }
+                                                
+                                                
+                                                
+                                                break;
+                                        default:
+                                                break;
+                                }
+                        };
+                        
+                        this.deleteItem = function deleteItem(){
+                                var promise = new Promise(),
+                                    cdb = new CouchDBStore();
+                                
+                                cdb.setTransport(Config.get("transport"));
+                                
+                                switch($type){
+                                        case "idea":
+                                                cdb.sync(Config.get("db"), $data._id).then(function(){
+                                                        cdb.remove();
+                                                        promise.resolve();
+                                                });
+                                                break;
+                                        default:
+                                                break;        
+                                }
+                                
+                                return promise;
+                        };
+                        
+                        console.log($data);
+                        
+                        THIS = this;
+                        buildButtons($type, $data);
+                        
+                        //hide if no action is taken after 3s
+                       // setTimeout(function(){$hide(ui);}, 30000);
+                
+                }
+                
+                return function ActionBarFactory($type, $parent, $data, $hide){
+                        ActionBarConstructor.prototype = new Widget();
+                        return new ActionBarConstructor($type, $parent, $data, $hide);
+                };
+        });
+
 define("Ideafy/AvatarList", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Utils", "Store"],
         function(Widget, Model, Event, Config, Utils, Store){
                 

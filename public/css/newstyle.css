@@ -133,14 +133,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .list-item.selected {
-  background-image:-webkit-linear-gradient(top, #88A5CC 0%, #657B99 80%);
+  /* background-image:-webkit-linear-gradient(top, #88A5CC 0%, #657B99 80%);*/
+  background-image:-webkit-linear-gradient(top, #f2f2f2 0%, #d4d4d4 80%); 
   -webkit-box-shadow:inset 0 0 5px 1px rgba(0,0,0,0.3);
 }
-
-.list-item.selected, .list-item.selected .date, .list-item.selected p, .menu-item.selected a{
-  color:white;
-}
-
 .item-header span, .item-body p, .detail-header .date{
   color:gray;
   font-size: 12px;
@@ -172,6 +168,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   font-size: 15px;
   line-height: 20px;
   font-weight: normal;
+  color: #404040;
 }
 
 .item-body p {
@@ -1360,14 +1357,46 @@ textarea.solution {
     border: none;
 }
 
-.session-item .actionbar{
+/*ALL ACTION BARS HERE */
+
+#sessions .session-item .actionbar{
     display: none;
     width: 931px;
     height: 61px;
     text-align: center;
-    background-image: -webkit-gradient(linear,center bottom,center top,from(#292929) ,to(#404040));
     background-image: -webkit-linear-gradient(bottom,#292929,#404040);
     -webkit-box-shadow: 0 1px 0 white, inset 0 0 5px 1px rgba(0,0,0,0.8);
+}
+
+.list .actionbar{
+    pointer-events: all;
+    float:left;
+    margin-left: -20px;
+    z-index: 300;
+    width: 301px;
+    height: 51px;
+    text-align: center;
+    background-image: -webkit-linear-gradient(bottom,#404040,#606060);
+    -webkit-box-shadow: 0 1px black, inset 0 0 5px 1px rgba(0,0,0,0.8);
+    position: relative;
+}
+
+.list .actionbar .buttonlist{
+    height:40px;
+    padding:5px;
+    display: inline-block;
+    text-align: center;
+}
+
+.buttonlist .actionbutton{
+    float:left;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-size: contain;
+    background-position:center center;
 }
 
 .actionbar .replaysession, .actionbar .deletesession{

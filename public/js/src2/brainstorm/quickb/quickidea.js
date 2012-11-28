@@ -121,7 +121,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                         _widget.createIdeaDoc();
                                         
                                         // update session score
-                                        _widget.updateSessionScore(_timers.quickidea).then(function(){
+                                        _widget.updateSessionScore(timers.quickidea).then(function(){
                                                 // resync with db
                                                 $session.unsync();
                                                 $session.sync(Config.get("db"), $session.get("_id")).then(function(){

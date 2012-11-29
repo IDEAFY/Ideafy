@@ -11,6 +11,7 @@ define("Ideafy/Public/Idea-detail",
 			     _voted = false,
 			     user = Config.get("user"),
                              transport = Config.get("transport"),
+                             observer = Config.get("observer"),
 		             _store = new Store(),
 		             _stack = new Stack(),
 		             _dom = Map.get("public-detail"),
@@ -143,6 +144,9 @@ define("Ideafy/Public/Idea-detail",
 				_store.reset(viewStore.get(index));
 				_twocentWriteUI.reset(_store.get("id"));
 				
+				// hide edit and sendmail uis if present
+				_stack.getStack().show("dummy"); 
+				
 				// watch viewStore for changes regarding this idea and update model accordingly
                                 viewStore.watch("updated", function(idx, value){
                                         if (idx === parseInt(index)){
@@ -169,7 +173,7 @@ define("Ideafy/Public/Idea-detail",
                                              break;
                                              
                                         case "#public-share":
-                                                _stack.getStack().show("#public-sendmail");
+                                                // _stack.getStack().show("#public-sendmail");
                                              break;
                                 }       
                         };
@@ -177,6 +181,16 @@ define("Ideafy/Public/Idea-detail",
 			_widget.edit = function(){
 			     _stack.getStack().show("#public-edit");     
 			};
+			
+			observer.watch("public-edit", function(id){
+			             _edit.reset(id);
+			             _stack.getStack().show("#public-edit");        
+			});
+			
+			observer.watch("public-sendmail", function(idea){
+                                     _sendMail.reset(idea                                                            );
+                                     _stack.getStack().show("#public-sendmail");        
+                        });
 			
 			_widget.press = function(event, node){
                                 node.classList.add("pressed");        

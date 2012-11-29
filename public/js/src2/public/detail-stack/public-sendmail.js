@@ -20,6 +20,11 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 		        
 			_widget.alive(Map.get("public-sendmail"));
 			
+			_widget.reset = function reset(idea){
+			     _store.reset(idea);
+			     console.log(_store.toJSON());
+			};
+			
 			_widget.cancel = function(event, node){
                                 node.classList.remove("pressed");
                                 $obs.notify("hide");       

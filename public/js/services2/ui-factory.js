@@ -91,6 +91,11 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                         $hide(ui);
                                                 });
                                                 break;
+                                        case "edit":
+                                                this.editItem();
+                                                break;
+                                        case "mail":
+                                                this.mailItem();
                                         default:
                                                 break;        
                                 }
@@ -153,9 +158,28 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                 return promise;
                         };
                         
-                        console.log($data);
+                        this.editItem = function editItem(){
+                                // if type is "idea" we need to differentiate between public and private lists
+                                switch($type){
+                                        case "idea":
+                                                (document.getElementById("public")) ? observer.notify("public-edit", $data._id) : observer.notify("library-edit", $data._id);
+                                                break;
+                                        default:
+                                                break;        
+                                } 
+                        };
                         
-                        THIS = this;
+                        this.mailItem = function mailItem(){
+                                // if type is "idea" we need to differentiate between public and private lists
+                                switch($type){
+                                        case "idea":
+                                                (document.getElementById("public")) ? observer.notify("public-sendmail", $data) : observer.notify("library-sendmail", $data);
+                                                break;
+                                        default:
+                                                break;        
+                                } 
+                        };
+                        
                         buildButtons($type, $data);
                         
                         //hide if no action is taken after 3s

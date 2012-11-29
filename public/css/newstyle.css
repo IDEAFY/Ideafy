@@ -875,6 +875,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     z-index: 1000;
 }
 
+.idea-edit .input{
+    font-size: 14px;
+}
+
 .form{
   /* may be set margin instead padding, in this way we don't have to set p margin */
   padding:20px;

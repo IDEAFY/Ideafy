@@ -11,6 +11,7 @@ define("Ideafy/Library/Idea-detail",
 			     _voted = false,
 			     user = Config.get("user"),
                              transport = Config.get("transport"),
+                             observer = Config.get("observer"),
 		             _store = new Store(),
 		             _stack = new Stack(),
 		             _dom = Map.get("ideas-detail"),
@@ -143,6 +144,9 @@ define("Ideafy/Library/Idea-detail",
 				_store.reset(viewStore.get(index));
 				_twocentWriteUI.reset(_store.get("id"));
 				
+				// hide edit and sendmail uis if present
+                                _stack.getStack().show("dummy"); 
+				
 				// watch viewStore for changes regarding this idea and update model accordingly
                                 viewStore.watch("updated", function(idx, value){
                                         if (idx === parseInt(index)){
@@ -177,6 +181,16 @@ define("Ideafy/Library/Idea-detail",
 			_widget.edit = function(){
 			     _stack.getStack().show("#public-edit");     
 			};
+			
+			observer.watch("library-edit", function(id){
+                                     _edit.reset(id);
+                                     _stack.getStack().show("#library-edit");        
+                        });
+                        
+                        observer.watch("library-edit", function(idea){
+                                     _sendMail.reset(idea);
+                                     _stack.getStack().show("#library-sendmail");        
+                        });
 			
 			_widget.press = function(event, node){
                                 node.classList.add("pressed");        

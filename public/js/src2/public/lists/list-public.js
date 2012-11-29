@@ -1,4 +1,4 @@
-define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Utils", "Ideafy/Avatar", "Ideafy/ActionBar"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar) {
+define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Utils", "Ideafy/Avatar", "Ideafy/ActionBar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function ListPublicConstructor($db, $design, $view, $query) {
                 var _store = new Store([]),
                 touchStart,
@@ -97,9 +97,12 @@ define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olive
                 }
                 
                 this.init = function init(initCallback){
+                        var promise = new Promise();
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                initCallback(_store, 0);      
-                        });        
+                                initCallback(_store, 0);
+                                promise.resolve();      
+                        });
+                        return promise;
                 };
 
         }

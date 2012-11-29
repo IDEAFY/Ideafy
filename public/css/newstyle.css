@@ -705,8 +705,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 .detail-contents{
     background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
-    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
-    height: 320px;    
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);  
 }
 
 .detail-header, .detail-body {
@@ -761,17 +760,17 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .detail-body {
-  font-size:12px;
-  height: 140px;
+  font-size:14px;
   overflow-y: scroll;
 }
 
 .detail-body p{
-    margin-top: 10px;
+    margin-top: 15px;
+    text-align: justify;
 }
 
 .detail-footer{
-    height: 40px;
+    height: 60px;
 }
 
 /* idea voting piece */
@@ -779,7 +778,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   text-align: right;
   float:right;
   max-width: 150px;
-  margin: 10px 40px 0px 0px;
+  margin: 20px 40px 0px 0px;
   display: inline;
 }
 
@@ -962,13 +961,19 @@ textarea.solution {
 
 /* TWOCENTS */
 
-#public-twocents{
-    height: 423px;
+#public-twocents, #library-twocents{
     width: 628px;
     overflow-y: scroll;
     font-family: Helvetica;
 }
 
+.twocentList li:nth-child(even){
+    background-image:-webkit-linear-gradient(top, #fafafa 0%, #f8f8f8 90%);
+}
+
+.replies li:nth-child(even){
+    background: white;
+}
 
 .writeTwocent {
     padding: 20px;
@@ -1063,11 +1068,11 @@ textarea.solution {
     background: #e69b73;
 }
 
-#public .details .twocent{
+.details .twocent{
     padding: 20px 40px 20px 30px;    
 }
 
-#public .twocentAvatar,  #public .twocentAvatar .avatar, #public .replyAvatar, #public .replyAvatar .avatar{
+.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar{
   width:40px;
   height:40px;
   border-radius:20px;
@@ -1085,24 +1090,24 @@ textarea.solution {
   background-image:url('../img/wall/60yellowProfile.png'); 
 }*/
 
-#public .twocentAuthor, #public .twocent .commentLabel{
+.twocentAuthor, .twocent .commentLabel{
     float: left;
     font-size: 14px;
     font-family:Helvetica
 }
 
-#public .twocentAuthor{
+.twocentAuthor{
     margin-left: 10px;
     color: #657B99;
     font-weight: bold;
 }
 
-#public .twocent .commentLabel{
+.twocent .commentLabel{
     color: black;
     margin-left: 2px;
 }
 
-#public .twocent .twocentDate{
+.twocent .twocentDate{
     float: none;
     color:gray;
     font-size: 12px;
@@ -1111,7 +1116,7 @@ textarea.solution {
     margin-left: 50px;
 }
 
-#public .twocentMenu{
+.twocentMenu{
     float: right;
     width: 120px;
     text-align: center;
@@ -1119,7 +1124,7 @@ textarea.solution {
     margin-top: -20px;
 }
 
-#public .twocentButton{
+.twocentButton{
     float: right;
     height: 20px;
     width: 25px;
@@ -1128,24 +1133,24 @@ textarea.solution {
     background-size: 80%;
 }
 
-#public .twocentEditButton{
+.twocentEditButton{
     background: url('../img/wall/25modify.png') no-repeat;   
 }
 
-#public .twocentDeleteButton{
+.twocentDeleteButton{
     background: url('../img/wall/25delete.png') no-repeat;   
 }
 
-#public .twocentReplyButton{
+.twocentReplyButton{
     background: url('../img/wall/25x35reply.png') no-repeat;
     background-size:120%;    
 }
 
-#public .twocentBody{
+.twocentBody{
     width: 100%;
 }
 
-#public .twocentMessage{
+.twocentMessage{
     margin-bottom: 10px;
     padding-bottom: 10px;
     margin-left: 10px;
@@ -1155,7 +1160,7 @@ textarea.solution {
     font-size: 12px;
 }
 
-#public .repliesButton{
+.repliesButton{
     height: 18px;
     line-height: 14px;
     font-family: Pacifico;
@@ -1169,19 +1174,19 @@ textarea.solution {
     background-size:15px 15px;
 }
 
-#public .showReplies{
+.showReplies{
     background-image:url('../img/public/show.png');
 }
 
-#public .hideReplies{
+.hideReplies{
     background-image:url('../img/public/hide.png');
 }
 
-#public .replies{
+.replies{
     width: 558px;
 }
 
-#public .twocentReply{
+.twocentReply{
     padding: 20px 30px 20px 20px;
     margin-top: 10px;
     margin-left: 10px;
@@ -1209,38 +1214,38 @@ textarea.solution {
     width: 478px;
 }
 
-#public .writeTwocent .twocentContext{
+.writeTwocent .twocentContext{
     width: 250px;
     float: left;
     text-overflow: ellipsis;
 }
 
-#public .replyToReply .writeTwocent{
+.replyToReply .writeTwocent{
     padding-left: 0px;
 }
 
-#public .replyToReply textarea.replyMessage{
+.replyToReply textarea.replyMessage{
     width: 416px;
 }
 
-#public .replyToReply div.writeFooter{
+.replyToReply div.writeFooter{
     width: 438px;
 }
 
-#public .replyToReply .writeFooter .twocentContext{
+.replyToReply .writeFooter .twocentContext{
     width: 225px;
 }
 
-#public .writeTwocentReply{
+.writeTwocentReply{
     padding-left: 0px;
     padding-right: 0px;
 }
 
-#public .writeTwocentReply .twocentText{
+.writeTwocentReply .twocentText{
     width: 458px;
     max-height: 80px;
 }
-#public .writeTwocentReply .writeFooter{
+.writeTwocentReply .writeFooter{
     width: 480px;
 }
 

@@ -771,11 +771,11 @@ height: 320px;
 
 /* idea voting piece */
 #public-detail .rateIdea, #ideas-detail .rateIdea{
-  position: absolute;
   text-align: right;
+  float:right;
   top: 290px;
   max-width: 150px;
-  right: 40px;
+  margin: 10px 40p 0px 0px;
   display: inline;
 }
 

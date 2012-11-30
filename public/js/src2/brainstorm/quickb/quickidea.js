@@ -113,7 +113,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                         
                                         // compute overall session time
                                         duration = _widget.getSessionDuration();
-                                        console.log(duration);
+                                        
                                         // add idea to session data
                                         $data.set("idea", JSON.parse(_idea.toJSON()));
                                         
@@ -121,7 +121,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                         _widget.createIdeaDoc();
                                         
                                         // update session score
-                                        _widget.updateSessionScore(timers.quickidea).then(function(){
+                                        _widget.updateSessionScore(_timer.get("timer")).then(function(){
                                                 // resync with db
                                                 $session.unsync();
                                                 $session.sync(Config.get("db"), $session.get("_id")).then(function(){

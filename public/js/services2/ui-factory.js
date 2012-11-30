@@ -94,6 +94,9 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                         case "edit":
                                                 this.editItem();
                                                 break;
+                                        case "replay":
+                                                Config.get("observer").notify("replay-session", $data.sessionId);
+                                                break;
                                         case "mail":
                                                 this.mailItem();
                                         default:
@@ -112,7 +115,7 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 if (data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"edit", icon:"img/wall/35modify.png"});
                                                 
                                                 // if idea is coming from a session display replaysession
-                                                if (data.sessionId) buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"})
+                                                if (data.sessionId && data.sessionReplay) buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"})
                                                 
                                                 // email -- if you can see it you can email it
                                                 buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});
@@ -471,7 +474,7 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                                 "newideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><div class="option left" data-newideaevent="listen:touchstart, press; listen:touchend, cancel">Cancel</div><span data-labels="bind: innerHTML, createidealbl"></span><div class="option right" data-newideaevent="listen:touchstart, press; listen:touchend, upload">Ok</div></div><form class="form"><p><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title"></p><p><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution"></textarea></p><p><span class="errormsg" data-errormsg="bind:setError, error"></span><span class="visibility" data-labels="bind:innerHTML, privatelbl" data-newideaevent="listen: touchstart, press; listen:touchend,toggleVisibility" data-newidea="bind: setVisibility, visibility"></span></p></form></div>';
+                        _widget.template = '<div><div class = "header blue-dark"><div class="option left" data-newideaevent="listen:touchstart, press; listen:touchend, cancel" data-labels="bind: innerHTML, cancellbl">Cancel</div><span data-labels="bind: innerHTML, createidealbl"></span><div class="option right" data-newideaevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, oklbl">Ok</div></div><form class="form"><p><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title"></p><p><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution"></textarea></p><p><span class="errormsg" data-errormsg="bind:setError, error"></span><span class="visibility" data-labels="bind:innerHTML, privatelbl" data-newideaevent="listen: touchstart, press; listen:touchend,toggleVisibility" data-newidea="bind: setVisibility, visibility"></span></p></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
@@ -565,4 +568,54 @@ define("Ideafy/Help", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/E
                         return _widget;
                 };
                 
+        })
+        
+define("Ideafy/Confirm", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store"],
+        function(Widget, Map, Model, Event, Config, Store){
+                
+                function ConfirmConstructor($parent, $question, $onDecision){
+                
+                        var _labels = Config.get("labels"),
+                                _widget = this,
+                            _content = new Store({"question":""});
+                        
+                        _widget.plugins.addAll({
+                                "label" : new Model(_labels),
+                                "confirm" : new Model(_content),
+                                "confirmevent" : new Event(this)
+                        });
+                        
+                        _widget.template = '<div class = "confirm"><div class="help-doctor"></div><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-confirmevent="listen:touchstart, press; listen:touchend, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-confirmevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl">Cancel</div></div>';
+                        
+                        _widget.press = function(event, node){
+                                event.stopPropagation();
+                                node.classList.add("pressed");
+                        };
+                        
+                        _widget.ok = function(event, node){
+                                node.classList.remove("pressed");
+                                $onDecision(true);    
+                        };
+                        
+                        _widget.cancel = function(event, node){
+                                node && node.classList.remove("pressed");
+                                $onDecision(false);
+                        };
+                        
+                        _widget.close = function close(){
+                                $parent.removeChild($parent.lastChild);       
+                        };
+                        
+                        _content.set("question", $question);
+                        _widget.render();
+                        _widget.place($parent);
+                        
+                        setTimeout(function(){_widget.close;}, 15000);
+                        
+                }
+                        
+                return function ConfirmFactory($parent, $question, $onDecision){
+                        ConfirmConstructor.prototype = new Widget();
+                        return new ConfirmConstructor($parent, $question, $onDecision);
+                };
         })

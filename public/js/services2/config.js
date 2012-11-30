@@ -80,7 +80,8 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                         },
                         ideaTemplate:{
                                 "title": "",
-                                "sessionid": "",
+                                "sessionId": "",
+                                "sessionReplay": false,
                                 "authors": [],
                                 "description": "",
                                 "solution": "",
@@ -123,7 +124,6 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "contexts" : [],
                                 "problems" : [],
                                 "scenarioWB" : [],
-                                "sessionid" : "",
                                 "scenario" : [], //{"title" : "", "story" : "", "solution" : ""}
                                 "techno" : [[]],
                                 "ideaWB" : [],

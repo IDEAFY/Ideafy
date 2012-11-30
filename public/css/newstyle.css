@@ -501,6 +501,30 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     margin-top: 10px;
 }
 
+.confirm{
+    -webkit-box-shadow: 0px 0px 5px 2px #657B99;
+    z-index: 2000;
+    background: white;
+    margin-top: 5px;
+    position: absolute;
+}
+
+.idea-edit .confirm{
+    width: 280px;
+    padding: 40px 30px 10px 30px;
+    right:20px;   
+}
+
+.confirm .help-doctor{
+    width: 40px;
+}
+
+.confirm p{
+    text-align: justify;
+    font-weight: bold;
+    line-height: 20px;
+}
+
 #newidea-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
     -webkit-transform:translateY(-689px);
@@ -511,7 +535,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     -webkit-transform:translateX(-797px);    
 }
 
-#newidea-popup .option{
+#newidea-popup .option, .confirm .option{
     width: 60px;
     height: 24px;
     margin-top: 5px;
@@ -522,7 +546,17 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     border-radius: 5px;
 }
 
-#newidea-popup .option.pressed{
+.confirm .option{
+    display: inline;
+    margin: 5px;
+    padding: 3px
+}
+
+.confirm .option.pressed{
+    color: white;
+}
+
+#newidea-popup .option.pressed, .confirm .option.pressed{
     background: #94A3B8;
     border: 1px solid #657B99;
 }
@@ -550,7 +584,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     font-size: 16px;
 }
 
-.visibility{
+.visibility, .toggle-replay{
     float: right;
     background-repeat: no-repeat;
     background-position: 5px center;
@@ -564,7 +598,23 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     border: 1px solid #E6E6E6;
     line-height: 30px;
     display: inline-block;
+}
+
+.visibility{
     background-image: url('../img/public/privateForList.png');
+}
+
+.toggle-replay{
+    background-image: url('../img/library/25goToSession.png');
+    margin-left: 10px;
+}
+
+.toggle-replay.pressed{
+    background-image: url('../img/library/25goToSessionActive.png');
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    color: white;
 }
 
 .visibility.public{
@@ -881,7 +931,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 .form{
   /* may be set margin instead padding, in this way we don't have to set p margin */
-  padding:20px;
+  padding:20px 20px 0px 20px;
 }
 
 .form p {
@@ -915,6 +965,51 @@ textarea.description {
 textarea.solution {
   height:175px;
 }
+
+.options{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width: 100%;   
+}
+
+.edit-visibility, .current-visibility{
+    display: inline-block;
+    font-size: 12px;
+    height: 30px;
+}
+
+.edit-visibility{
+    text-align: right;
+    color: #b3b3b3;
+    width: 65%;
+}
+
+.current-visibility{
+    padding-left: 25px;
+    background-position: left center;
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    color: #F27B3D;
+    width: 30%;
+    background-image: url('../img/public/privateForList.png');
+}
+
+.current-visibility.replay{
+    background-image: url('../img/library/25goToSession.png');    
+}
+
+.edit-visibility.replay, .current-visibility.replay{
+    margin-top:5px;
+}
+
+.edit-visibility .label, .current-visibility .label{
+    font-family: Pacifico;
+    line-height: 30px;
+}
+
+.edit-visibility span, .current-visibility span{
+    font-family: Helvetica;
+}
 /* may be create a class button ...they are label to stay in p*/
 
 .submit label {
@@ -930,22 +1025,25 @@ textarea.solution {
 }
 
 .submit .editerror{
-    float: right;
-    width: 300px;
-    margin-left: 10px;
+    width: 50%;
     font-size: 10px;
     font-family: Helvetica;
     color: #4D4D4D;
 }
 
+.submit{
+    margin-top: 20px;
+}
 
 .publish {
   background:#8CAB68;
-  margin-right:15px;
+  margin-right:2%;
+  width: 24%;
 }
 
 .cancel {
   background:#E69B73;
+  width: 24%;
 }
 
 /* detail stack send mail */
@@ -980,7 +1078,8 @@ textarea.solution {
 }
 
 .writeTwocent {
-    padding: 20px;
+    padding: 20px 20px 0px 20px;
+    -webkit-box-shadow: 0px 0px 3px #cccccc;
 }
 
 .writeTwocent .date{
@@ -995,7 +1094,7 @@ textarea.solution {
     margin-left: 20px;
     border: none;
     border-radius: 0;
-    height: 120px;
+    height: 150px;
     overflow-y: scroll;
     font-family: Helvetica;
     font-size: 12px;

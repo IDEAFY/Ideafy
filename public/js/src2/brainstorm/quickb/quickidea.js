@@ -320,7 +320,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                     _id = "I:"+now.getTime();
                                 cdb.setTransport(_transport);
                                 cdb.set("title", _idea.get("title"));
-                                cdb.set("sessionid", $session.get("_id"));
+                                cdb.set("sessionId", $session.get("_id"));
                                 cdb.set("authors", [$session.get("initiator").id]);
                                 cdb.set("description", _idea.get("description"));
                                 cdb.set("solution", _idea.get("solution"));

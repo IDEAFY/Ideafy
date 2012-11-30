@@ -78,7 +78,15 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
 		      
 		      var _sip = {}; // need to create session in progress object (with id and type of session)
 		      _sip.id = sid;
-		      _sip.type = mode;
+		      if (mode) {
+		              _sip.type = mode;
+		      }
+		      else{
+		              //attempt to detect mode from session name
+		              if (sid.toLowerCase().search("quick") > -1) _sip.type = "quick";
+		              
+		              // need a default mode ??
+		      }
 		      _widget.selectScreen(mode, _sip);
 		});
 		

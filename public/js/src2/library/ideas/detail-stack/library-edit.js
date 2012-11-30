@@ -1,5 +1,5 @@
-define("Ideafy/Library/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "Config"], 
-	function(Widget, Map, Store, Model, Event, Config){
+define("Ideafy/Library/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Confirm"], 
+	function(Widget, Map, Store, Model, Event, Config, Confirm){
 		return function LibraryEditConstructor($obs){
 		//declaration
 			var _widget = new Widget(),
@@ -12,7 +12,27 @@ define("Ideafy/Library/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/
                         
 			_widget.plugins.addAll({
 			        "editlabel": new Model(_labels),
-			        "editidea" : new Model(_store),
+			        "editidea" : new Model(_store, {
+			                setVisibility : function(visibility){
+			                     (visibility === "public") ? this.innerHTML = _labels.get("publiclbl") : this.innerHTML = _labels.get("privatelbl");     
+			                },
+			                hideVisibility : function(visibility){
+			                     (visibility === "public") ? this.setAttribute("style", "display:none"):this.setAttribute("style", "display:inline-block");       
+			                },
+			                setVisibleIcon : function(visibility){
+			                     (visibility === "public") ? this.setAttribute("style", "background:url('img/public/publicForList.png') no-repeat left center; background-size: 14px 12px;") : this.setAttribute("style", "background-image:url('img/public/privateForList.png');");         
+			                },
+			                setReplay : function(session){
+			                        console.log("hello anyone there", session);
+			                     (!session) ? this.setAttribute("style", "display:none"):this.setAttribute("style", "display:inline-block");      
+			                },
+			                setIdeafyStatus : function(replay){
+			                     (replay) ? this.innerHTML = _labels.get("enabledreplaylbl") : this.innerHTML = _labels.get("disabledreplaylbl");         
+			                },
+			                setSessionReplay : function(replay){
+			                     (replay) ? this.innerHTML = _labels.get("disablereplaylbl") : this.innerHTML = _labels.get("enablereplaylbl");         
+			                }
+			        }),
 			        "editevent" : new Event(_widget),
 			        "errormsg" : new Model(_error,{
 			                setError : function(error){
@@ -40,6 +60,25 @@ define("Ideafy/Library/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/
                                 _store.unsync();
                                 _store.reset();
                                 _store.sync(Config.get("db"), id);        
+                        };
+                        
+                        _widget.editVisibility = function(event, node){
+                                // confirmation
+                                var confirm = new Confirm(node, _labels.get("setpublicquestion"), function(decision){
+                                        (decision) ? _store.set("visibility", "public") : _store.set("visibility", "private");
+                                        confirm.close();
+                                        });       
+                        };
+                        
+                        _widget.press = function(event, node){
+                                node.classList.add("pressed");        
+                        };
+                        
+                        _widget.enableReplay = function(event, node){
+                                setTimeout(function(){
+                                        (_store.get("sessionReplay")) ? _store.set("sessionReplay", false) : _store.set("sessionReplay", true);
+                                        node.classList.remove("pressed");
+                                }, 300);
                         };
                         
                         _widget.upload = function(event, node){

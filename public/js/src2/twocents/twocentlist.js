@@ -5,6 +5,7 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                        
                         // declaration
                         var cdb = new CouchDBStore(),
+                            labels = Config.get("labels"),
                             store = new Store([]),
                             transport = Config.get("transport"),
                             user = Config.get("user");
@@ -34,6 +35,15 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                                 else {
                                                         var id = this.getAttribute("data-twocents_id");
                                                         (store.get(id).author === user.get("_id")) ? this.innerHTML = Config.get("labels").get("youlbl"): this.innerHTML = firstname;
+                                                }
+                                        },
+                                        setCommentlbl : function(firstname){
+                                                if (firstname !== user.get("firstname")){
+                                                        this.innerHTML = labels.get("twocentcommentlbl");
+                                                }
+                                                else {
+                                                        var id = this.getAttribute("data-twocents_id");
+                                                        (store.get(id).author === user.get("_id")) ? this.innerHTML = Config.get("labels").get("youlbl"): this.innerHTML = labels.get("youcommentedlbl");
                                                 }
                                         },
                                         setVisible : function(author){
@@ -94,7 +104,7 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                 "twocentevent" : new Event(this)        
                         });
                         
-                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div><span class="commentLabel" data-labels="bind: innerHTML, twocentcommentlbl"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: deleteOK, replies" data-twocentevent="listen: touchstart, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: touchstart, reply"></div></div></div><div class="twocentBody"><p class="twocentMessage" data-twocents="bind: innerHTML, message"></p><div class="repliesButton hideReplies" name="hide" data-twocents="bind: toggleHideButton, replies" data-twocentevent="listen: touchstart, toggleReplies" data-labels="bind:innerHTML, hidetwocentreplies"></div></div><div class="writePublicTwocentReply invisible"></div><div class="displayReplies" data-twocents="bind: displayReplies, replies"></div></li></ul>';
+                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div><span class="commentLabel" data-labels="bind: setCommentlbl, firstname"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: deleteOK, replies" data-twocentevent="listen: touchstart, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: touchstart, reply"></div></div></div><div class="twocentBody"><p class="twocentMessage" data-twocents="bind: innerHTML, message"></p><div class="repliesButton hideReplies" name="hide" data-twocents="bind: toggleHideButton, replies" data-twocentevent="listen: touchstart, toggleReplies" data-labels="bind:innerHTML, hidetwocentreplies"></div></div><div class="writePublicTwocentReply invisible"></div><div class="displayReplies" data-twocents="bind: displayReplies, replies"></div></li></ul>';
                         
                         this.edit = function(event, node){
                                 var id = node.getAttribute("data-twocents_id"),

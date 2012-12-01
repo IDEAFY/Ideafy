@@ -115,7 +115,9 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 if (data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"edit", icon:"img/wall/35modify.png"});
                                                 
                                                 // if idea is coming from a session display replaysession
-                                                if (data.sessionId && data.sessionReplay) buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"})
+                                                if (data.sessionId){
+                                                        if (data.sessionReplay || data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"});
+                                                }
                                                 
                                                 // email -- if you can see it you can email it
                                                 buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});

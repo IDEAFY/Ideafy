@@ -112,29 +112,29 @@
             		<span>Idea's Details</span>
             		<a href="#public-favorites" class="option right"></a>
           		</div>
-              <form class="form">
-                <p><input type="text" class="input"></p>
-                <p><input type="text" class="input"></p>
-                <p><textarea class="input"></textarea></p>
-                <!-- we can't place div in p, p only accept inline elements-->
-                <div class="sendmail-attach">
-                  <div class="detail-header">
-                    <div class="avatar" data-publicdetail="bind:setAvatar, authors"></div>
-                    <h2 data-publicdetail="bind:innerHTML,title"></h2>
-                    <span class="date" data-publicdetail="bind:date, creation_date">jj/mm/aa</span>
-                    <span class="author" data-publicdetail="bind:innerHTML,authornames">Taiaut</span>
-                  </div>
-                  <div class="detail-body">
-                    <p data-publicdetail="bind:innerHTML,description">In proident dolore; non aliqua, velit dolore cupidatat.</p>
-                    <p data-publicdetail="bind:innerHTML,solution">In proident dolore; non aliqua, velit dolore cupidatat.</p>
-                  </div>
-                  <div class="detail-footer">
-                  	<p class="submit">
-                		<label class="publish pressed-btn" data-sendevent="listen:touchend, upload">Send</label>
-                		<label class="cancel pressed-btn" data-sendevent="listen:touchend, cancel">Cancel</label>
-                		<label class="editerror" data-errormsg="bind:setError, error"></label>
-                	</p>
-                  </div>
+          		<div class="avatar"></div>
+              	<form class="form">
+              		<p><input type="text" class="input"></p>
+                	<p><input type="text" class="input"></p>
+                	<p><textarea class="input"></textarea></p>
+                	<div class="sendmail-attach">
+                  		<div class="detail-header">
+                    		<div class="avatar" data-publicdetail="bind:setAvatar, authors"></div>
+                    		<h2 data-publicdetail="bind:innerHTML,title"></h2>
+                    		<span class="date" data-publicdetail="bind:date, creation_date"></span>
+                    		<span class="author" data-publicdetail="bind:innerHTML,authornames"></span>
+                  		</div>
+                  	<div class="detail-body">
+                    	<p data-publicdetail="bind:innerHTML,description"></p>
+                    	<p data-publicdetail="bind:innerHTML,solution"></p>
+                  	</div>
+                  	<div class="detail-footer">
+                  		<p class="send">
+                			<label class="publish pressed-btn" data-sendevent="listen:touchend, upload">Send</label>
+                			<label class="cancel pressed-btn" data-sendevent="listen:touchend, cancel">Cancel</label>
+                			<label class="editerror" data-errormsg="bind:setError, error"></label>
+                		</p>
+                  	</div>
                 </div>
               </form>
             </div>
@@ -152,7 +152,7 @@
               		<span class="date" data-publicdetail="bind:date, doc.creation_date"></span>
               		<br>
               		<span class="author" data-publicdetail="bind:setAuthor,doc.authornames"></span>
-              		<span class='commentlbl' data-labels='bind: innerHTML, ideawrotelbl'></span>
+              		<span class='commentlbl' data-labels='bind: setWrotelbl, doc.authornames'></span>
             	</div>
             	<div class="detail-body">
               		<p data-publicdetail="bind:innerHTML,doc.description"></p>
@@ -288,7 +288,7 @@
               						<span class="date" data-ideadetail="bind:date, doc.creation_date"></span>
               						<br>
               						<span class="author" data-ideadetail="bind:setAuthor,doc.authornames"></span>
-              						<span class='commentlbl' data-labels='bind: innerHTML, ideawrotelbl'></span>
+              						<span class='commentlbl' data-labels='bind: setWrotelbl, doc.authornames'></span>
             					</div>
             					<div class="detail-body">
               						<p data-ideadetail="bind:innerHTML,doc.description"></p>

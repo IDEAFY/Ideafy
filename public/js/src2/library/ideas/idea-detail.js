@@ -78,6 +78,14 @@ define("Ideafy/Library/Idea-detail",
                                                         this.innerHTML = authornames;
                                                 }
                                         },
+					setWrotelbl : function(authornames){
+                                                if (authornames === user.get("username") && _store.get("doc").authors.indexOf(user.get("_id"))>-1){
+                                                        this.innerHTML = _labels.get("youwrotelbl");
+                                                }
+                                                else {
+                                                        this.innerHTML = _labels.get("ideawrotelbl");
+                                                }        
+                                        },
 					setAvatar : function setAvatar(authors){
 					        var _frag = document.createDocumentFragment(),
                                                     _ui = new Avatar(authors);

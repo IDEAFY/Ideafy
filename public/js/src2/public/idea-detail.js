@@ -72,11 +72,19 @@ define("Ideafy/Public/Idea-detail",
 					},
 					setAuthor : function(authornames){
                                                 if (authornames === user.get("username") && _store.get("doc").authors.indexOf(user.get("_id"))>-1){
-                                                        this.innerHTML = Config.get("labels").get("youlbl");
+                                                        this.innerHTML = _labels.get("youlbl");
                                                 }
                                                 else {
                                                         this.innerHTML = authornames;
                                                 }
+                                        },
+                                        setWrotelbl : function(authornames){
+                                                if (authornames === user.get("username") && _store.get("doc").authors.indexOf(user.get("_id"))>-1){
+                                                        this.innerHTML = _labels.get("youwrotelbl");
+                                                }
+                                                else {
+                                                        this.innerHTML = _labels.get("ideawrotelbl");
+                                                }        
                                         },
 					setAvatar : function setAvatar(authors){
 					        var _frag = document.createDocumentFragment(),

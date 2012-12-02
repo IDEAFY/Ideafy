@@ -1064,6 +1064,10 @@ textarea.solution {
 }
 
 /* detail stack send mail */
+.idea-sendmail{
+    height: 100%;
+}
+
 .idea-sendmail input.input {
   height:30px;
 }

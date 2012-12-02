@@ -196,7 +196,7 @@ define("Ideafy/Public/Idea-detail",
 			});
 			
 			observer.watch("public-sendmail", function(idea){
-                                     _sendMail.reset(idea                                                            );
+                                     _sendMail.reset(idea);
                                      _stack.getStack().show("#public-sendmail");        
                         });
 			

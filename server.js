@@ -269,8 +269,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         user.set("password", json.password);
                         user.set("name", json.name);
                         
-                        console.log(json.name);
-                        
                         user.create().then(function (si) {
                                 
                                 // add credentials to the cookie
@@ -292,7 +290,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 });
                                 user.unsync();
                         }, function (json) {
-                                console.log(json);
                                 if (json.error === "conflict") {
                                         onEnd({
                                                 status: "failed",

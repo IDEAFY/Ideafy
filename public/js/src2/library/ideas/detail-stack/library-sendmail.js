@@ -24,6 +24,11 @@ define("Ideafy/Library/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mo
                                 node.classList.remove("pressed");
                                 $obs.notify("hide");       
                         };
+                        
+                        _widget.reset = function reset(idea){
+                             _store.reset(idea);
+                             console.log(_store.toJSON());
+                        };
 
                 //return
                         return _widget;

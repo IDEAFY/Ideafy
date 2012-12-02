@@ -167,7 +167,8 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                         // upload to database
                                                         user.setTransport(_transport);
 
-                                                        user.sync(result.db, userid).then(function(){
+                                                        user.sync(result.db, userid);
+                                                        setTimeout(function(){
                                                                 user.upload().then(function() {
                                                                         // alter local
                                                                         _local.set("currentLogin", userid);
@@ -176,8 +177,8 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                                         Config.set("uid", '"' + userid + '"');
                                                                         _body.init();
                                                                         user.unsync();
-                                                                });        
-                                                        });
+                                                                });
+                                                                }, 250);
 
                                                 } else {
                                                         _store.set("error", "error : " + result.message);

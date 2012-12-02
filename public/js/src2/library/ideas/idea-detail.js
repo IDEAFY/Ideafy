@@ -145,7 +145,7 @@ define("Ideafy/Library/Idea-detail",
 			});
 			_widget.alive(_dom);
 
-		//public
+		//library
 			_widget.reset = function reset(viewStore, index){
 			        // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
 			        _voted = false;
@@ -195,7 +195,8 @@ define("Ideafy/Library/Idea-detail",
                                      _stack.getStack().show("#library-edit");        
                         });
                         
-                        observer.watch("library-edit", function(idea){
+                        observer.watch("library-sendmail", function(idea){
+                                     console.log("here", idea);
                                      _sendMail.reset(idea);
                                      _stack.getStack().show("#library-sendmail");        
                         });
@@ -228,7 +229,6 @@ define("Ideafy/Library/Idea-detail",
                                 if (!_voted){
                                         _voted = true;
                                         transport.request("Vote", json, function(result){
-                                                console.log(result);
                                                 if (result != "ok"){
                                                         console.log(result, "something went wrong, please try again later");
                                                         _voted = false;

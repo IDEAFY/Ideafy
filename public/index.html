@@ -114,28 +114,29 @@
           		</div>
           		<div class="avatar"></div>
               	<form class="form">
-              		<p><input type="text" class="input"></p>
-                	<p><input type="text" class="input"></p>
-                	<p><textarea class="input"></textarea></p>
+              		<p><input type="text" class="input" data-mail="bind: value, toField" data-mailevent="listen: keypress, validate">Contact</p>
+                	<p><input type="text" class="input" data-mail="bind:value, subject">Object</p>
+                	<p><textarea class="input" data-mail="bind:value, body"></textarea></p>
                 	<div class="sendmail-attach">
                   		<div class="detail-header">
                     		<div class="avatar" data-publicdetail="bind:setAvatar, authors"></div>
                     		<h2 data-publicdetail="bind:innerHTML,title"></h2>
                     		<span class="date" data-publicdetail="bind:date, creation_date"></span>
                     		<span class="author" data-publicdetail="bind:innerHTML,authornames"></span>
+                    		<span class="visibility">public</span>
                   		</div>
-                  	<div class="detail-body">
-                    	<p data-publicdetail="bind:innerHTML,description"></p>
-                    	<p data-publicdetail="bind:innerHTML,solution"></p>
-                  	</div>
-                  	<div class="detail-footer">
+                  		<div class="detail-body">
+                    		<p data-publicdetail="bind:innerHTML,description"></p>
+                    		<p data-publicdetail="bind:innerHTML,solution"></p>
+                  		</div>
+                	</div>
+                	<div class="sendmail-footer">
                   		<p class="send">
-                			<label class="publish pressed-btn" data-sendevent="listen:touchend, upload">Send</label>
-                			<label class="cancel pressed-btn" data-sendevent="listen:touchend, cancel">Cancel</label>
+                			<label class="publish pressed-btn" data-mailevent="listen:touchstart, press; listen:touchend, send">Send</label>
+                			<label class="cancel pressed-btn" data-mailevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label>
                 			<label class="editerror" data-errormsg="bind:setError, error"></label>
                 		</p>
                   	</div>
-                </div>
               </form>
             </div>
           </div>
@@ -243,36 +244,35 @@
             			</div>
             			<div class="idea-sendmail">
             				<div class="header blue-dark">
-            					<a href="#public-2cents" class="option left"></a>
+            					<a href="#library-2cents" class="option left"></a>
             					<span>Idea's Details</span>
-            					<a href="#public-favorites" class="option right"></a>
+            					<a href="#library-favorites" class="option right"></a>
           					</div>
+          					<div class="avatar"></div>
               				<form class="form">
-                				<p><input type="text" class="input"></p>
-                				<p><input type="text" class="input"></p>
+              					<p><input type="text" class="input">Contact</p>
+                				<p><input type="text" class="input">Object</p>
                 				<p><textarea class="input"></textarea></p>
-                				<!-- we can't place div in p, p only accept inline elements-->
-                				<div class="sendmail-attach">
-                  					<div class="detail-header">
-                    					<div class="avatar" data-publicdetail="bind:setAvatar, authors"></div>
-                    					<h2 data-publicdetail="bind:innerHTML,title"></h2>
-                    					<span class="date" data-publicdetail="bind:date, creation_date">jj/mm/aa</span>
-                    					<span class="author" data-publicdetail="bind:innerHTML,authornames">Taiaut</span>
-                  					</div>
-                  					<div class="detail-body">
-                    					<p data-publicdetail="bind:innerHTML,description">In proident dolore; non aliqua, velit dolore cupidatat.</p>
-                    					<p data-publicdetail="bind:innerHTML,solution">In proident dolore; non aliqua, velit dolore cupidatat.</p>
-                  					</div>
-                  					<div class="detail-footer">
-                  						<p class="submit">
-                							<label class="editerror" data-errormsg="bind:setError, error"></label>
-                							<label class="publish pressed-btn" data-sendevent="listen:touchend, upload">Send</label>
-                							<label class="cancel pressed-btn" data-sendevent="listen:touchend, cancel">Cancel</label>
-                						</p>	
-                  					</div>
-                				</div>
-              				</form>
-            			</div>
+                			<div class="sendmail-attach">
+                  				<div class="detail-header">
+                    				<div class="avatar" data-publicdetail="bind:setAvatar, authors"></div>
+                    				<h2 data-publicdetail="bind:innerHTML,title"></h2>
+                    				<span class="date" data-publicdetail="bind:date, creation_date"></span>
+                    				<span class="author" data-publicdetail="bind:innerHTML,authornames"></span>
+                    				<span class="visibility">public</span>
+                  			</div>
+                  			<div class="detail-body">
+                    			<p data-publicdetail="bind:innerHTML,description"></p>
+                    			<p data-publicdetail="bind:innerHTML,solution"></p>
+                  			</div>
+                		</div>
+                		<div class="sendmail-footer">
+                  			<p class="send">
+                				<label class="publish pressed-btn" data-sendevent="listen:touchend, upload">Send</label>
+                				<label class="cancel pressed-btn" data-sendevent="listen:touchend, cancel">Cancel</label>
+                				<label class="editerror" data-errormsg="bind:setError, error"></label>
+                			</p>
+                  		</div>
             		</div>
             		
       				<div class="idea-detail">

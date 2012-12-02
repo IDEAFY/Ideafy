@@ -3,14 +3,16 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 		return function PublicSendmailConstructor($obs){
 		//declaration
 			var _widget = new Widget(),
-			    _store = new Store(),
-			    _error = new Store(),
+			    _mail = new Store({"toField":"", "from": "", "subject":"", "body": "", "attachment": ""}),
+			    _error = new Store({"errormsg": ""}),
+			    _user = Config.get("user"),
+			    _transport = Config.get("transport"),
 			    _labels = Config.get("labels");
 		//setup
 		        _widget.plugins.addAll({
-                                "sendlabel": new Model(_labels),
-                                "senddoc" : new Model(_store),
-                                "sendevent" : new Event(_widget),
+                                "labels": new Model(_labels),
+                                "mail" : new Model(_mail),
+                                "mailevent" : new Event(_widget),
                                 "errormsg" : new Model(_error,{
                                         setError : function(error){
                                                 switch (error){}
@@ -21,8 +23,28 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			_widget.alive(Map.get("public-sendmail"));
 			
 			_widget.reset = function reset(idea){
-			     _store.reset(idea);
-			     console.log(_store.toJSON());
+			     console.log(idea);
+			};
+			
+			_widget.validateAddress = function(event, node){
+			        
+			};
+			
+			_widget.validateMessage = function validateMessage(){
+			     
+			     return (_error.get("errormsg") === "");       
+			};
+			
+			_widget.sendMail = function sendMail(){
+			     console.log("send message now");             
+			};
+			
+			_widget.press = function(event, node){
+			     node.classList.add("pressed");        
+			};
+			
+			_widget.send = function(event, node){
+			     if (_widget.validateMessage()) _widget.sendMail();            
 			};
 			
 			_widget.cancel = function(event, node){

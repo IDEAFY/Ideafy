@@ -1,4 +1,4 @@
-require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugin", "Olives/Model-plugin", "Amy/Delegate-plugin", "Ideafy/Dock", "Ideafy/Login", "Config", "CouchDBStore", "Ideafy/Utils", "Ideafy/NewIdea", "Ideafy/Help"], function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils, NewIdea, Help) {
+require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugin", "Olives/Model-plugin", "Amy/Delegate-plugin", "Ideafy/Dock", "Ideafy/Login", "Config", "CouchDBStore", "Ideafy/Utils", "Ideafy/NewIdea", "Ideafy/Help", "Promise"], function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils, NewIdea, Help, Promise) {
 
         //declaration
         var _body = new Widget(), _login = null, _stack = new Stack({
@@ -111,6 +111,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                     pwdConfirm = _store.get("confirm-password"),
                     fn = _store.get("firstname"),
                     ln = _store.get("lastname"),
+                    promise = new Promise(),
                     user = new CouchDBStore();
 
                 if (email === "") {
@@ -172,16 +173,22 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
 
                                                         user.sync(result.db, userid);
                                                         setTimeout(function(){
-                                                                user.upload().then(function() {
+                                                                user.upload().then(function(result) {
+                                                                        console.log(result);
                                                                         // alter local
                                                                         _local.set("currentLogin", userid);
                                                                         _local.set("userAvatar", user.get("picture_file"));
                                                                         _local.sync("ideafy-data");
                                                                         Config.set("uid", '"' + userid + '"');
                                                                         user.unsync();
-                                                                        setTimeout(function(){_body.init();}, 250);
+                                                                        promise.resolve();
+                                                                        
                                                                 });
                                                                 }, 250);
+                                                                
+                                                         promise.then(function(){
+                                                                 setTimeout(function(){_body.init();}, 250);
+                                                         });
 
                                                 } else {
                                                         _store.set("error", "error : " + result.message);
@@ -225,13 +232,13 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         _body.init = function() {
                 
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
-                        Config.set("uid", '"' + _user.get("_id") + '"');
-                        Config.set("avatar", _local.get("userAvatar"));
-                        _dock.init();
-                        //if everything is downloaded
-                        _stack.getStack().show("#dock");
+                                Config.set("uid", '"' + _user.get("_id") + '"');
+                                Config.set("avatar", _local.get("userAvatar"));
+                                _dock.init();
+                                //if everything is downloaded
+                                _stack.getStack().show("#dock");
                         
-                        _user.watchValue("picture_file", function(){
+                                _user.watchValue("picture_file", function(){
                                 //handle avatar change
                                 _transport.request("GetAvatar", {id: email}, function(result){
                                         if (!result.error) {

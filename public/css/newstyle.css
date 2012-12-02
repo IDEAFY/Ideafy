@@ -714,7 +714,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 
 #public-list .option.right, #idea-list .option.right {
-  background:url('../img/public/plus.png') no-repeat center center;
+  background:url('../img/public/plus2.png') no-repeat center center;
   background-size:15px 15px;
   right: 5px;
 }

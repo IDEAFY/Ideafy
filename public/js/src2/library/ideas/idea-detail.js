@@ -228,7 +228,8 @@ define("Ideafy/Library/Idea-detail",
                                 if (!_voted){
                                         _voted = true;
                                         transport.request("Vote", json, function(result){
-                                                if (result!="ok"){
+                                                console.log(result);
+                                                if (result != "ok"){
                                                         console.log(result, "something went wrong, please try again later");
                                                         _voted = false;
                                                 }

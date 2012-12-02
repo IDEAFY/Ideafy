@@ -167,15 +167,16 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                         // upload to database
                                                         user.setTransport(_transport);
 
-                                                        user.sync(result.db, userid);
-                                                        user.upload().then(function() {
-                                                                // alter local
-                                                                _local.set("currentLogin", userid);
-                                                                _local.set("userAvatar", user.get("picture_file"));
-                                                                _local.sync("ideafy-data");
-                                                                Config.set("uid", '"' + userid + '"');
-                                                                _body.init();
-                                                                user.unsync();
+                                                        user.sync(result.db, userid).then(function(){
+                                                                user.upload().then(function() {
+                                                                        // alter local
+                                                                        _local.set("currentLogin", userid);
+                                                                        _local.set("userAvatar", user.get("picture_file"));
+                                                                        _local.sync("ideafy-data");
+                                                                        Config.set("uid", '"' + userid + '"');
+                                                                        _body.init();
+                                                                        user.unsync();
+                                                                });        
                                                         });
 
                                                 } else {

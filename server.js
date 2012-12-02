@@ -263,17 +263,20 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         });
         
         olives.handlers.set("Signup", function (json, onEnd) {
-                        var user = new CouchDBUser;
+                        var user = new CouchDBUser();
                         
                         user.setTransport(transport);
                         user.set("password", json.password);
                         user.set("name", json.name);
-
+                        
+                        console.log(json.name);
+                        
                         user.create().then(function (si) {
                                 
                                 // add credentials to the cookie
                                 var cookieJSON = cookie.parse(json.handshake.headers.cookie), 
                                     sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0];
+                                    
                                 sessionStore.get(sessionID, function(err, session) {
                                         if (err) {
                                                 throw new Error(err);
@@ -289,6 +292,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 });
                                 user.unsync();
                         }, function (json) {
+                                console.log(json);
                                 if (json.error === "conflict") {
                                         onEnd({
                                                 status: "failed",
@@ -663,16 +667,16 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                     votes;
                 cdb.setTransport(transport);
 
-                cdb.sync(_db, json.id).then(function() {
+                getDocAsAdmin(json.id, cdb).then(function() {
                         votes = cdb.get("votes");
                         if (!votes){votes=[];}
                         votes.unshift(json.vote);
                         cdb.set("votes", votes);
-                        cdb.upload().then(function() {
+                        updateDocAsAdmin(json.id, cdb).then(function() {
                                 //update user rated ideas & score
                                 var votercdb = new CouchDBStore();
                                 votercdb.setTransport(transport);
-                                votercdb.sync(_db, json.voter).then(function(){
+                                getDocAsAdmin(json.voter, votercdb).then(function(){
                                         var ri = votercdb.get("rated_ideas"),
                                             ip = votercdb.get("ip");
                                         ri.unshift(json.id);
@@ -694,7 +698,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
                 var cdb = new CouchDBStore();
                 getDocAsAdmin(json.docId, cdb).then(function(){
-                        console.log("WRITETWOCENT", cdb.toJSON());
                         var tc = cdb.get("twocents"), increment = 0, reason = "";
                         if (json.type === "new"){
                                 // new twocents are always appended at the top of the list

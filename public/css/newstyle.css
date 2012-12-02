@@ -207,6 +207,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   border:0;
   outline:0;
   height:25px;
+  line-height: 25px;
   padding:0 25px 0 10px;
   width:160px;
   border-radius:5px;
@@ -715,6 +716,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 #public-list .option.right, #idea-list .option.right {
   background:url('../img/public/plus.png') no-repeat center center;
   background-size:15px 15px;
+  right: 5px;
 }
 
 #public-list .option.left,  #idea-list .option.left{

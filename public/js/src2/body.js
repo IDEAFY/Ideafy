@@ -181,7 +181,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                                         user.unsync();
                                                                         _body.init();
                                                                 });
-                                                                }, 350);
+                                                                }, 500);
 
                                                 } else {
                                                         _store.set("error", "error : " + result.message);

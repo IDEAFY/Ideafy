@@ -141,6 +141,9 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                         }, function(result) {
                                                 console.log("transport signup handler:", result);
                                                 if (result.signup === "ok") {
+                                                        
+                                                        _store.set("error", _labels.get("Initialization"));
+                                                        
                                                         // create user
                                                         user.reset(Config.get("userTemplate"));
                                                         user.set("fistname", fn);
@@ -175,8 +178,8 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                                         _local.set("userAvatar", user.get("picture_file"));
                                                                         _local.sync("ideafy-data");
                                                                         Config.set("uid", '"' + userid + '"');
-                                                                        _body.init();
                                                                         user.unsync();
+                                                                        _body.init();
                                                                 });
                                                                 }, 250);
 

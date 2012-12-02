@@ -179,9 +179,9 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                                         _local.sync("ideafy-data");
                                                                         Config.set("uid", '"' + userid + '"');
                                                                         user.unsync();
-                                                                        _body.init();
+                                                                        setTimeout(function(){_body.init();}, 250);
                                                                 });
-                                                                }, 500);
+                                                                }, 250);
 
                                                 } else {
                                                         _store.set("error", "error : " + result.message);

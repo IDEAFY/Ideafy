@@ -181,8 +181,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         var updateUserIP = function(userid, reason, increment, onEnd){
                 var usercdb = new CouchDBStore(),
                     currentIP;
-                usercdb.setTransport(transport);
-                usercdb.sync(_db, userid).then(function(){
+                getDocAsAdmin(userid, usercdb).then(function(){
                         switch(reason){
                                 case "newtc":
                                         var tc_count = usercdb.get("twocent_count") || 0;
@@ -201,7 +200,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         usercdb.set("ip", currentIP+increment);
                         updateDocAsAdmin(userid, usercdb).then(function(){
                                 onEnd("score_updated");
-                                usercdb.unsync();
                         });       
                 });        
         },
@@ -288,7 +286,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 });
                                         }
                                 });
-                                user.unsync();
                         }, function (json) {
                                 if (json.error === "conflict") {
                                         onEnd({
@@ -296,7 +293,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 message: "An account with this user name already exists."
                                         });
                                 }
-                                user.unsync();
                         });
                 });
 
@@ -607,7 +603,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 sendMessage = function(message, userid) {
                         var cdb = new CouchDBStore();
                         cdb.setTransport(new Transport(olives.handlers));
-                        cdb.sync(_db, userid).then(function() {
+                        getDocAsAdmin(userid, cdb).then(function() {
                                 var arr = [];
                                 // retrieve notifications array
                                 if (cdb.get("notifications")[0]){arr = cdb.get("notifications");}
@@ -615,12 +611,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 arr.unshift(message);
                                 // update store and upload
                                 cdb.set("notifications", arr);
-                                cdb.upload().then(function() {
+                                updateDocAsAdmin(userid, cdb).then(function() {
                                         sendResults.alter("push", {
                                                 res : "ok",
                                                 id : userid
                                         });
-                                        cdb.unsync();
                                 });
                         });
                 };

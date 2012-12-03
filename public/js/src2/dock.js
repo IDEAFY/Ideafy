@@ -20,7 +20,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 		//logic
 			_widget.init = function(){
 			        
-				_stack.getStack().add("#public", new Public());
+			        _stack.getStack().add("#public", new Public());
 				console.log("publicok");
 				_stack.getStack().add("#library", new Library());
 				console.log("libraryok");

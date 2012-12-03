@@ -334,7 +334,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         
                         // Method  called to retrieve the active deck from the database
                         _widget.getDeck = function getDeck(){
-                                var promise = new Promise,
+                                var promise = new Promise(),
                                     cdb = new CouchDBStore();
                                 
                                 cdb.setTransport(_transport);
@@ -346,7 +346,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         deck.techno = cdb.get("content").techno; // even though it is not for this step so there is only one request to read the deck going out to the database
                                         $data.set("deck", deck);
                                         promise.resolve();
-                                        setTimeout(function(){cdb.unsync();}, 250);
+                                        setTimeout(function(){cdb.unsync();}, 2000);
                                 });
                                 return promise;                       
                         };

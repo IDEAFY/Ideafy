@@ -140,7 +140,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                 name : userid,
                                                 password : password
                                         }, function(result) {
-                                                console.log("transport signup handler:", result);
                                                 if (result.signup === "ok") {
                                                         
                                                         _store.set("error", _labels.get("Initialization"));
@@ -173,20 +172,16 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
 
                                                         user.sync(result.db, userid);
                                                         setTimeout(function(){
-                                                                user.upload().then(function(result) {
-                                                                        console.log(result);
-                                                                        // alter local
-                                                                        _local.set("currentLogin", userid);
-                                                                        _local.set("userAvatar", user.get("picture_file"));
-                                                                        _local.sync("ideafy-data");
-                                                                        Config.set("uid", '"' + userid + '"');
-                                                                        user.unsync();
-                                                                        promise.resolve();
-                                                                        
-                                                                });
+                                                                user.upload();
+                                                                _local.set("currentLogin", userid);
+                                                                _local.set("userAvatar", user.get("picture_file"));
+                                                                _local.sync("ideafy-data");
+                                                                Config.set("uid", '"' + userid + '"');
+                                                                promise.resolve();
                                                                 }, 250);
                                                                 
                                                          promise.then(function(){
+                                                                 user.unsync();
                                                                  setTimeout(function(){_body.init();}, 250);
                                                          });
 
@@ -230,15 +225,15 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         };
         
         _body.init = function() {
-                
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                                 Config.set("uid", '"' + _user.get("_id") + '"');
-                                Config.set("avatar", _local.get("userAvatar"));
+                                if (_local.get("userAvatar")) Config.set("avatar", _local.get("userAvatar"))
                                 _dock.init();
                                 //if everything is downloaded
                                 _stack.getStack().show("#dock");
                         
                                 _user.watchValue("picture_file", function(){
+                                        console.log("picture file chnge before transport request");
                                 //handle avatar change
                                 _transport.request("GetAvatar", {id: email}, function(result){
                                         if (!result.error) {

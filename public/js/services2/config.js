@@ -28,7 +28,7 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "connections" : [],
                                 "taiaut_decks" : ["INT"],
                                 "custom_decks" : [],
-                                "active_deck": ["INT"],
+                                "active_deck": "INT",
                                 "occupation" : {
                                         "description" : "",
                                         "details" : {
@@ -65,7 +65,7 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "rated_ideas" : [],
                                 "favorites" : [],
                                 "ip" : 0,
-                                "picture_file" : "img/userpics/deedee0.png",
+                                "picture_file" : "img/avatars/deedee0.png",
                                 "title" : null,
                                 "achievements" : [],
                                 "ideas_count" : 0,
@@ -305,6 +305,7 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
         
         // init
         this.reset();
+        TRSP = _transport;
         
         return _config;
 });

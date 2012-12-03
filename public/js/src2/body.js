@@ -17,7 +17,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                 _transport.request("Lang", json, function(result) {
                         if (result === "nok") {
                                 _local.set("labels", Config.get("defaultLabels"));
-                                Config.set("language", "US");
+                                Config.set("language", "en-us");
                         } else {
                                 _local.set("labels", result);
                                 Config.set("language", result.language);
@@ -43,24 +43,18 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         _stack.getStack().setCurrentScreen(_login);
 
         _local.sync("ideafy-data");
+        LOCAL = _local;
+        CONF = Config;
 
-        // Labels: during development phase we expect to be adding many new labels, that's why localstorage is reset.
-        _local.set("labels", null);
-
-        // check device language and set labels accordingly
-        if (!_local.get("labels")) {
-                updateLabels(navigator.language);
-        } else {
-                // language already set
-                Config.get("labels").reset(_local.get("labels"));
-        }
+        // initialize labels to device language if available or US by default
+         (_local.get("labels")) ? Config.get("labels").reset(_local.get("labels")) : updateLabels(navigator.language);
 
         var current = _local.get("currentLogin");
+        // if the last user is in the local storage
         if (!current) {
                 //display login
                 _login.setScreen("#signup-screen");
         } else {
-                //_login.setScreen("#signup-screen");
                 _login.setScreen("#loading-screen");
                 _transport.request("CheckLogin", {
                         "id" : current
@@ -142,14 +136,17 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                         }, function(result) {
                                                 if (result.signup === "ok") {
                                                         
-                                                        _store.set("error", _labels.get("Initialization"));
+                                                        _login.setScreen("#loading-screen");
                                                         
                                                         // create user
                                                         user.reset(Config.get("userTemplate"));
                                                         user.set("fistname", fn);
                                                         user.set("lastname", ln);
                                                         user.set("username", fn + " " + ln);
-
+                                                        
+                                                        // add lang
+                                                        user.set("lang", Config.get("language"));
+                                                        
                                                         // add welcome notification
                                                         var now = new Date();
 
@@ -161,6 +158,9 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                                 "author" : "IDEAFY",
                                                                 "body" : _labels.get("signupwelcomebody")
                                                         }]);
+                                                        
+                                                        // add welcome contents
+                                                        _transport.request("Welcome", userid, user.get("lang"), function(result){console.log(result);});
 
                                                         // get database info
                                                         if (result.db){
@@ -226,31 +226,39 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         
         _body.init = function() {
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
+                                // set uid for future queries
                                 Config.set("uid", '"' + _user.get("_id") + '"');
-                                if (_local.get("userAvatar")) Config.set("avatar", _local.get("userAvatar"))
-                                _dock.init();
-                                //if everything is downloaded
-                                _stack.getStack().show("#dock");
-                        
-                                _user.watchValue("picture_file", function(){
-                                        console.log("picture file chnge before transport request");
-                                //handle avatar change
-                                _transport.request("GetAvatar", {id: email}, function(result){
+                                // update language if necessary
+                                if (_user.get("lang") !== Config.get("lang")) updateLabels(_user.get("lang"));
+                                // get user avatar
+                                _transport.request("GetAvatar", {id: _user.get("_id")}, function(result){
                                         if (!result.error) {
                                                 _local.set("userAvatar", result);
                                                 _local.sync("ideafy-data");
                                                 Config.set("avatar", result);
+                                                _dock.init();
+                                                //if everything is downloaded
+                                                _stack.getStack().show("#dock");
+                        
+                                                _user.watchValue("picture_file", function(){
+                                                        //handle avatar change
+                                                        _transport.request("GetAvatar", {id: email}, function(result){
+                                                                if (!result.error) {
+                                                                        _local.set("userAvatar", result);
+                                                                        _local.sync("ideafy-data");
+                                                                        Config.set("avatar", result);
+                                                                }
+                                                        });
+                                                });
                                         }
                                 });
                         });
                 
-                        Config.watchValue("uid", function(uid){
+                  Config.watchValue("uid", function(uid){
                                 // handle signout
                                 if (uid === ""){              
                                 }   
-                        });
-                        
-                });
+                   });
         };
 
 }); 

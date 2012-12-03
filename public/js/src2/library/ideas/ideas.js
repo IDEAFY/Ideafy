@@ -33,7 +33,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 				
 			};
 			
-			// this piece can be considerable simplified --> using stack & control plugins (when I am not brain dead)
+			// this piece can be considerably simplified --> using stack & control plugins
 			this.show = function(event, node){
 			     var byDate = _dom.querySelector(".bydate"),
 			         byRating =  _dom.querySelector(".byrating"),
@@ -99,29 +99,31 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			// init
                        _menu.toggleActive(false);
 			
+			// for library for the time being only propose list by date or serach tool
+			// additional options (rating/favorites etc. may be offered in the future)
+			
 			var listDate = new List(_db, "library", "_view/ideas", {key: Config.get("uid"), descending: true, include_docs:true}),
-			    listRating = new List(_db, "ideas", "_view/ideasbyvotes"),
+			   //listRating = new List(_db, "ideas", "_view/ideasbyvotes", {key: Config.get("uid"), descending: true, include_docs:true}),
 			    listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
+			
 			_stack.getStack().add("#list-date", listDate);
-			_stack.getStack().add("#list-rating", listRating);
+			
+			//_stack.getStack().add("#list-rating", listRating);
+			
 			_stack.getStack().add("#list-search", listSearch);
-			// show public ideas sorted by most recent
+			
+			// show private ideas sorted by most recent
+		        //listRating.init(_detail.reset);
+		        
 		        listDate.init(_detail.reset);
-		        listRating.init(_detail.reset);
-			_stack.getStack().show("#list-date");
+			
+			listDate.init(_detail.reset).then(function(){
+                              _stack.getStack().show("#list-date"); 
+                        });
+			
+			//_stack.getStack().show("#list-date");
 
-			/*then(function(){
-			//select first item
-			var li = _dom.querySelector("li");
-			if(li){
-				_radio.init(li);
-				li.classList.add("selected");
-				_detail.reset(_ideas.get(0));
-			}
-		});*/
-
-
-		//return
+			//return
 			return _widget;
 		};
 	}

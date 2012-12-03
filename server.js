@@ -295,6 +295,21 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 }
                         });
                 });
+        
+        olives.handlers.set('Welcome', function(userid, language, onEnd){
+                var Id = "", cdb = new CouchDBStore(), lang  = language.toUpperCase();
+                
+                (["US", "FR"].indexOf(lang.substr(2))>-1) ? Id = "I:WELCOME:"+lang : Id = "I:WELCOME:US";
+                
+                getDocAsAdmin(Id, cdb).then(function(){
+                                        var shared = cdb.get("sharewith");
+                                        shared.alter("push", userid);
+                                        updateDocAsAdmin(Id, cdb).then(function(){
+                                                onEnd({"res": "ok"});
+                                        })
+                                })
+                      
+        });
 
         olives.handlers.set("CheckLogin", function(json, onEnd){
                 var cookieJSON = cookie.parse(json.handshake.headers.cookie),

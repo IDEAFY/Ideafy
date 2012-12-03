@@ -68,7 +68,7 @@ define("Ideafy/Library/Idea-detail",
                                                 }        
                                         },
 					date : function date(date){
-						this.innerHTML = Utils.formatDate(date);
+						if (date) this.innerHTML = Utils.formatDate(date);
 					},
 					setAuthor : function(authornames){
                                                 if (authornames === user.get("username") && _store.get("doc").authors.indexOf(user.get("_id"))>-1){

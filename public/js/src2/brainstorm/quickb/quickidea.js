@@ -330,6 +330,8 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 cdb.set('context', $session.get("contexts")[0]);
                                 cdb.set("visibility", _idea.get("visibility"));
                                 cdb.set("authornames", $session.get("initiator").username);
+                                //set the idea's language to the same language as the session
+                                cdb.set("lang", $session.get("lang"));
                                 cdb.set("_id", _id);
                                 cdb.sync(Config.get("db"), _id);
                                 setTimeout(function(){

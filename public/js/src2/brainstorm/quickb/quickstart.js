@@ -37,6 +37,9 @@ define("Ideafy/Brainstorm/QuickStart", ["Olives/OObject", "Map", "Olives/Model-p
                                         if ($session.get("title") === ""){
                                                 $session.set("title", _labels.get("quickstarttitleplaceholderpre")+$session.get("initiator").username+_labels.get("quickstarttitleplaceholderpost"));      
                                         }
+                                        
+                                        // set session language to the user's language
+                                        $session.set("lang", _user.get("lang"));
                                 
                                         // IMPORTANT: the new session doc is created in CDB and the session document is synched for the entire session
                                         $session.set("_id", "S:QUICK:"+$session.get("startTime"));

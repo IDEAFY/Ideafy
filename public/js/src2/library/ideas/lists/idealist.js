@@ -1,4 +1,4 @@
-define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Utils", "Ideafy/Avatar", "Ideafy/ActionBar"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar) {
+define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Utils", "Ideafy/Avatar", "Ideafy/ActionBar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function IdeaListConstructor($db, $design, $view, $query) {
                 var _store = new Store([]),
                 touchStart,
@@ -22,13 +22,13 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                 this.plugins.addAll({
                         "listideas": new Model(_store, {
                                 date : function date(date) {
-                                        this.innerHTML = Utils.formatDate(date);
+                                        (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                 },
                                 setRating : function setRating(rating) {
                                         this.innerHTML = rating;
                                         if (rating === undefined) {
                                                 var _id = this.getAttribute("data-listideas_id"),
-                                                    _arr = _store.get(_id).doc.votes;
+                                                    _arr = _store.get(_id).doc.votes || [];
                                                 if (_arr.length === 0) {this.innerHTML = ""}
                                                 else {
                                                         this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
@@ -38,13 +38,14 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                                 },
                                 setAvatar : function setAvatar(authors){
                                         var _ui, _frag;
-                                        _frag = document.createDocumentFragment();
-                                        _ui = new Avatar(authors);
-                                        _ui.place(_frag);
-                                        (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                        if (authors){
+                                                _frag = document.createDocumentFragment();
+                                                _ui = new Avatar(authors);
+                                                _ui.place(_frag);
+                                                (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                         }
                                 }
-                        ),
+                        }),
                         "listevent" : new Event(this)
                         });
 
@@ -98,11 +99,13 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                 
                 
                 this.init = function init(initCallback){
+                        var promise = new Promise();
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                initCallback(_store, 0);      
-                        });        
+                                initCallback(_store, 0);
+                                promise.resolve();   
+                        });
+                        return promise;
                 };
-
         }
 
         return function IdeaListFactory($db, $design, $view, $query) {

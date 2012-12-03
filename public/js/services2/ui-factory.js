@@ -516,7 +516,9 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                                         _store.set("authors", [_user.get("_id")]);
                                         _store.set("authornames", _user.get("username"));
                                         _store.set("creation_date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
-                                
+                                        // set language to the user's language by default
+                                        _store.set("lang", _user.get("lang"));
+                                        
                                         // create document in couchdb and upload
                                         _store.sync(Config.get("db"), id);
                                         setTimeout(function(){

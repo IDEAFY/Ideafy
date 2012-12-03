@@ -206,6 +206,7 @@
       			</div>
       			
       			<div id="ideas-detail" class="details">
+      				
       				<div class="detail-stack" data-detailstack="destination">
       					<div class="idea-edit">
             				<div class="header blue-dark">
@@ -274,107 +275,106 @@
                 			</p>
                   		</div>
             		</div>
-            		
-      				<div class="idea-detail">
-          					<div class="header blue-dark">
-            					<a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a>
-            					<span data-label="bind: innerHTML, ideadetailsheadertitle">Idea's Details</span>
-            					<a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a>
-          					</div>
-            				<div class = "detail-contents">
-            					<div class="detail-header">
-              						<div class="avatar" data-ideadetail="bind:setAvatar, doc.authors"></div>
-              						<h2 data-ideadetail="bind:innerHTML,doc.title"></h2>
-              						<span class="date" data-ideadetail="bind:date, doc.creation_date"></span>
-              						<br>
-              						<span class="author" data-ideadetail="bind:setAuthor,doc.authornames"></span>
-              						<span class='commentlbl' data-labels='bind: setWrotelbl, doc.authornames'></span>
-            					</div>
-            					<div class="detail-body">
-              						<p data-ideadetail="bind:innerHTML,doc.description"></p>
-              						<p data-ideadetail="bind:innerHTML,doc.solution"></p>
-            					</div>
-            					<div class="detail-footer">
-            						<div class ="rateIdea">
-                						<a class="item-acorn"></a>
-               							<div class="rating" data-ideadetail="bind:setRating,value.rating"></div>	
-               							<div class="publicButton" data-ideadetail="bind: toggleVoteButton, doc.votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-labels="bind: innerHTML, votebuttonlbl">Vote</div>
-                					</div>
-                					<div id="ratingPopup" class="popup">
-                						<ul class="acorns" data-vote="foreach">
-                							<li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li> 
-                						</ul>
-                					</div>
-                				</div>
-            				</div>
-          					<div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, doc.authors"></div>
-            				<div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, doc.twocents"></div>
-          				</div>	
-      			</div>
-			</div>
-			<div id = "sessions">  		
-   		   		<div id="session-list" class="list">
-   	   				<div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div>
-   	   				<div class="session-tools">
-   	   					<div class="session-sorting">
-   	   						<div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: touchstart, sort">
-   	   							<span data-label="bind: innerHTML, sbytitle"></span>
-   	   							<div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div>
-   	   						</div>
-   	   						<div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: touchstart, sort">
-   	   							<span data-label="bind: innerHTML, sbydate"></span>
-   	   							<div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div>
-   	   						</div>
-   	   						<div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: touchstart, sort">
-   	   							<span data-label="bind: innerHTML, sbyidea"></span>
-   	   							<div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div>
-   	   						</div>
-   	   						<div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: touchstart, sort">
-   	   							<span data-label="bind: innerHTML, sbyscore"></span>
-   	   							<div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div>
-   	   						</div>	
-   	   					</div>
-   	   					<input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sortevent="listen: keypress, search">
-   	   					<div id="sessionsearchresult"></div>
-   	   				</div>
-   	   				<div class="session-details">
-   	   					<ul data-sessions="foreach">
-   	   						<li class="session-item" data-sessionevent="listen: touchmove, displayActionBar">
-   	   							<table class="session-boxscore">
-   	   								<tr>	
-   	   									<td class="session-type"></td>
-   	   									<td class="session-info">
-   	   										<p class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</p>
-   	   										<p class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</p>
-   	   									</td>
-   	   									<td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td>
-   	   									<td class="avatarlist" data-sessions="bind: setAvatars, participants">	
-   	   										<!-- insert avatar list widget here -->
-   	   									</td>
-   	   									<td class="session-status" data-sessions="bind:setStatus, status">completed</td>
-   	   									<td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td>
-   	   								</tr>
-   	   							</table>
-   	   							<div class="actionbar" data-sessionevent="listen: touchend, hideActionBar">
-   	   								<div class="replaysession" name="replay" data-sessionevent="listen: touchstart, press; listen:touchend, replay"></div>
-   	   								<div class="deletesession" name="delete" data-sessionevent="listen: touchstart, press; listen:touchend, deleteSession"></div>
-   	   							</div>
-   	   						</li>
-   	   					</ul>
-   	   				</div>
-    	  		</div>
-			</div>
-			<div id = "decks">  		
-      			<div id="deck-list" class="list">
-      				<div class="header blue-light"></div>
-      			</div>
-      			<div id="deck-detail" class="details">
-      				<div class="header blue-dark"></div>
-      			</div>
-			</div>
+            	</div>
+      			<div class="idea-detail">
+          			<div class="header blue-dark">
+            			<a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a>
+            			<span data-label="bind: innerHTML, ideadetailsheadertitle">Idea's Details</span>
+           				<a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a>
+        			</div>
+            		<div class = "detail-contents">
+            			<div class="detail-header">
+              				<div class="avatar" data-ideadetail="bind:setAvatar, doc.authors"></div>
+              				<h2 data-ideadetail="bind:innerHTML,doc.title"></h2>
+              				<span class="date" data-ideadetail="bind:date, doc.creation_date"></span>
+              				<br>
+              				<span class="author" data-ideadetail="bind:setAuthor,doc.authornames"></span>
+              				<span class='commentlbl' data-labels='bind: setWrotelbl, doc.authornames'></span>
+            			</div>
+            			<div class="detail-body">
+              				<p data-ideadetail="bind:innerHTML,doc.description"></p>
+              				<p data-ideadetail="bind:innerHTML,doc.solution"></p>
+            			</div>
+            			<div class="detail-footer">
+            				<div class ="rateIdea">
+                				<a class="item-acorn"></a>
+               					<div class="rating" data-ideadetail="bind:setRating,value.rating"></div>	
+               					<div class="publicButton" data-ideadetail="bind: toggleVoteButton, doc.votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-labels="bind: innerHTML, votebuttonlbl">Vote</div>
+                			</div>
+                			<div id="ratingPopup" class="popup">
+                				<ul class="acorns" data-vote="foreach">
+                					<li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li> 
+                				</ul>
+                			</div>
+                		</div>
+            		</div>
+          			<div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, doc.authors"></div>
+            		<div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, doc.twocents"></div>
+          		</div>	
+      		</div>
 		</div>
-      	
-      </div>
+		<div id = "sessions">  		
+   		  	<div id="session-list" class="list">
+   	   			<div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div>
+   	   			<div class="session-tools">
+   	   				<div class="session-sorting">
+   	   					<div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: touchstart, sort">
+   	   						<span data-label="bind: innerHTML, sbytitle"></span>
+   	   						<div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div>
+   	   					</div>
+   	   					<div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: touchstart, sort">
+   	   						<span data-label="bind: innerHTML, sbydate"></span>
+   	   						<div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div>
+   	   					</div>
+   	   					<div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: touchstart, sort">
+   	   						<span data-label="bind: innerHTML, sbyidea"></span>
+   	   						<div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div>
+   	   					</div>
+   	   					<div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: touchstart, sort">
+   	   						<span data-label="bind: innerHTML, sbyscore"></span>
+   	   						<div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div>
+   	   					</div>	
+   	   				</div>
+   	   				<input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sortevent="listen: keypress, search">
+   	   				<div id="sessionsearchresult"></div>
+   	   			</div>
+   	   			<div class="session-details">
+   	   				<ul data-sessions="foreach">
+   	   					<li class="session-item" data-sessionevent="listen: touchmove, displayActionBar">
+   	   						<table class="session-boxscore">
+   	   							<tr>	
+   	   								<td class="session-type"></td>
+   	   								<td class="session-info">
+   	   									<p class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</p>
+   	   									<p class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</p>
+   	   								</td>
+   	   								<td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td>
+   	   								<td class="avatarlist" data-sessions="bind: setAvatars, participants">	
+   	   									<!-- insert avatar list widget here -->
+   	   								</td>
+   	   								<td class="session-status" data-sessions="bind:setStatus, status">completed</td>
+   	   								<td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td>
+   	   							</tr>
+   	   						</table>
+   	   						<div class="actionbar" data-sessionevent="listen: touchend, hideActionBar">
+   	   							<div class="replaysession" name="replay" data-sessionevent="listen: touchstart, press; listen:touchend, replay"></div>
+   	   							<div class="deletesession" name="delete" data-sessionevent="listen: touchstart, press; listen:touchend, deleteSession"></div>
+   	   						</div>
+   	   					</li>
+   	   				</ul>
+   	   			</div>
+    	  	</div>
+		</div>
+		<div id = "decks">  		
+      		<div id="deck-list" class="list">
+      			<div class="header blue-light"></div>
+      		</div>
+      		<div id="deck-detail" class="details">
+      			<div class="header blue-dark"></div>
+      		</div>
+		</div>
+	</div>
+  </div>
       <div id="brainstorm">
       		<div id="brainstorm-menu"></div>
       		<div class="brainstorm-header header blue-light">

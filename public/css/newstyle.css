@@ -927,7 +927,9 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 .detail-stack {
   position:absolute;
   width:630px;
+  height: 100%;
   -webkit-box-shadow : 0px 0px 5px 1px rgba(0,0,0,0.3);
+  overflow-y: scroll;
 }
 .idea-edit .header, .idea-sendmail .header{
     z-index: 1000;
@@ -1075,7 +1077,6 @@ textarea.solution {
 
 .idea-sendmail .avatar{
     margin: 20px;
-    background: blue;
 }
 
 .idea-sendmail .form{
@@ -1089,9 +1090,93 @@ textarea.solution {
   padding:20px;
 }
 
-.sendmail-attach {
+/* send mail attachment styles */
+
+.attachment {
   border:1px solid #CCC;
-  -webkit-border-radius:4px;
+  -webkit-border-radius:5px;
+  padding: 30px 20px 30px 20px;
+}
+
+.attachment-header{
+    padding-bottom: 20px;  
+}
+
+.idea-sendmail .attachment-header .avatar{
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    margin: 0px;
+    float: left;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+.attachment-header h2{
+    margin-left:75px;
+    font-family: Pacifico;
+    font-size: 24px;
+    line-height: 40px;
+}
+
+.attachment-header .date{
+    font-size: 12px;
+    color: #808080;    
+}
+
+.attachment-header .author{
+    margin-left: 15px;
+    font-size: 16px;
+    color: #F27B3D;
+    font-weight: bold;  
+}
+
+.attachment-header .visibility-icon{
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    float: right;
+    margin-top: -10px;
+}
+
+.visibility-icon.public{
+    background: url('../img/public/publicForList.png') no-repeat center center;  
+}
+
+.visibility-icon.private{
+    background: url('../img/public/privateForList.png') no-repeat center center;     
+}
+
+.attachment-body{
+    margin-left: 20px;
+    padding-top: 12px;
+    border-top: 1px solid #cccccc;
+}
+
+.attachment-body p{
+    font-size: 14px;    
+}
+
+.attachment-body .rating{
+    
+}
+
+.attachment-body .votes{
+    
+}
+
+.sendmail-footer p.send{
+    padding-bottom: 20px;
+    margin-top: 20px;
+}
+
+.send .editerror{
+    float: left;
+    font-weight: bold;
+    color: black;
+    font-size: 12px;
 }
 
 /* TWOCENTS */
@@ -1182,7 +1267,7 @@ textarea.solution {
     font-family: Helvetica;
 }
 
-.writeTwocent .twocentPublish, .writeTwocent .twocentCancel{
+.writeTwocent .twocentPublish, .writeTwocent .twocentCancel, .sendmail, .cancelmail{
     height: 26px;
     width: 92px;
     border-radius: 5px;
@@ -1195,11 +1280,11 @@ textarea.solution {
     float: right;
 }
 
-.writeTwocent .twocentPublish{
+.writeTwocent .twocentPublish, .sendmail{
     background: #8cab68;
 }
 
-.writeTwocent .twocentCancel{
+.writeTwocent .twocentCancel, .cancelmail{
     margin-left: 15px;
     background: #e69b73;
 }

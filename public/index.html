@@ -57,7 +57,7 @@
         <div id="public-list" class="list">
           <div class="header blue-light">
             <div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div>
-            <span>Idea's List</span>
+            <span data-label="bind: innerHTML, publicideasheadertitle"></span>
             <div class="option right" data-publicevent="listen: touchstart, plus"></div>
           </div>
           <div data-liststack="destination" data-publiccontrol="radio:li,selected,touchstart,selectStart">
@@ -112,29 +112,32 @@
             		<span>Idea's Details</span>
             		<a href="#public-favorites" class="option right"></a>
           		</div>
-          		<div class="avatar"></div>
+          		<div class="avatar" data-mail="bind:setUserAvatar, from"></div>
               	<form class="form">
-              		<p><input type="text" class="input" data-mail="bind: value, toField" data-mailevent="listen: keypress, validate">Contact</p>
-                	<p><input type="text" class="input" data-mail="bind:value, subject">Object</p>
+              		<p><input type="text" class="input" data-mail="bind: value, toField" data-labels="bind:placeholder, tolbl"></p>
+                	<p><input type="text" class="input" data-mail="bind:value, subject" data-labels="bind:placeholder, subjectlbl"></p>
                 	<p><textarea class="input" data-mail="bind:value, body"></textarea></p>
-                	<div class="sendmail-attach">
-                  		<div class="detail-header">
-                    		<div class="avatar" data-publicdetail="bind:setAvatar, authors"></div>
-                    		<h2 data-publicdetail="bind:innerHTML,title"></h2>
-                    		<span class="date" data-publicdetail="bind:date, creation_date"></span>
-                    		<span class="author" data-publicdetail="bind:innerHTML,authornames"></span>
-                    		<span class="visibility">public</span>
+                	<div class="attachment">
+                  		<div class="attachment-header">
+                    		<div data-mail="bind:setAvatar, attachment.authors"></div>
+                    		<span class="date" data-mail="bind:date, attachment.creation_date"></span>
+                    		<h2 data-mail="bind:innerHTML,attachment.title"></h2>
+                    		<span class="author" data-mail="bind:innerHTML,attachment.authornames"></span>
+                    		<span data-labels="bind:innerHTML, ideawrotelbl"></span>
+                    		<div class="visibility-icon private"></div>
                   		</div>
-                  		<div class="detail-body">
-                    		<p data-publicdetail="bind:innerHTML,description"></p>
-                    		<p data-publicdetail="bind:innerHTML,solution"></p>
+                  		<div class="attachment-body">
+                    		<p data-mail="bind:innerHTML,attachment.description"></p>
+                    		<p data-mail="bind:innerHTML,attachment.solution"></p>
+                    		<div class = "rating" data-mail="bind:setRating, attachment.rating"></div>
+                    		<div class = "votes" data-mail="bind:setVotes, attachment. votes"></div>
                   		</div>
                 	</div>
                 	<div class="sendmail-footer">
                   		<p class="send">
-                			<label class="publish pressed-btn" data-mailevent="listen:touchstart, press; listen:touchend, send">Send</label>
-                			<label class="cancel pressed-btn" data-mailevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label>
-                			<label class="editerror" data-errormsg="bind:setError, error"></label>
+                			<label class="cancelmail" data-mailevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label>
+                			<label class="sendmail" data-mailevent="listen:touchstart, press; listen:touchend, send">Send</label>
+                			<label class="editerror" data-errormsg="bind:setError, error">This is an error</label>
                 		</p>
                   	</div>
               </form>

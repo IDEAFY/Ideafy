@@ -163,5 +163,7 @@
 	"connect-twocent": "Two cents",
 	"dashboard-profile": "Mon profil",
 	"dashboard-settings": "Paramètres",
-	"dashboard-about": "A propos d'Ideafy"
+	"dashboard-about": "A propos d'Ideafy",
+	"tolbl": "Destinataire(s):",
+	"subjectlbl": "Objet :"
 }

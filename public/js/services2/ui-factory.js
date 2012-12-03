@@ -134,6 +134,10 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 if (data.authors.length === 1 && data.authors[0] === user.get("_id") && !data.twocents.length && !data.sharedwith.length) {
                                                         buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                 }
+                                                // if user is not an author but idea has been shared with him, he can delete it from his library
+                                                if (data.authors.indexOf(user.get("_id")) === -1 && data.sharedwith.indexOf(user.get("_id")) >-1 && document.getElementById("library")){
+                                                        buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
+                                                }
                                                 
                                                 
                                                 

@@ -1072,11 +1072,7 @@ textarea.solution {
 
 /* detail stack send mail */
 .idea-sendmail{
-    height: 100%;
-}
-
-.idea-sendmail input.input {
-  height:30px;
+    background: white;
 }
 
 .idea-sendmail .avatar{
@@ -1090,8 +1086,9 @@ textarea.solution {
 }
 
 .idea-sendmail .input{
-    line-height: 30px;
+    height:30px;
     padding-left: 10px;
+    font-size: 14px;
 }
 
 .idea-sendmail textarea.input{
@@ -1164,7 +1161,7 @@ textarea.solution {
     border-top: 1px solid #cccccc;
 }
 
-.attachment-body p, .idea-sendmail p{
+.attachment-body p{
     font-size: 14px;    
 }
 

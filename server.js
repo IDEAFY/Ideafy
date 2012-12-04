@@ -484,6 +484,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         });
                 }
                 if (type == "doc") {
+                        console.log("SEND MAIL CALLED:", json);
                         // set mail parameters
                         mailOptions.from = json.from;
                         mailOptions.to = json.recipient;

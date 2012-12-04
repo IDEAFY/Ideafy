@@ -28,7 +28,7 @@ var http = require("http"),
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
-        host : "mail.taiaut.net",
+        host : "ideafy.taiaut.com",
         // host: "localhost",
         secureConnection : true,
         port : 465,
@@ -455,9 +455,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         olives.handlers.set("SendMail", function(json, onEnd) {
 
                 var type = json.type;
-                var sentOK;
                 var mailOptions = {
-                        from : "IDEAFY <ideafy@taiaut.net>", // sender address
+                        from : "IDEAFY <ideafy@taiaut.com>", // sender address
                         to : "", // list of receivers
                         subject : "", // Subject line
                         html : "" // html body
@@ -468,6 +467,28 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         mailOptions.to = json.recipient;
                         mailOptions.subject = json.sender + " invites you to join the Ideafy community";
                         mailOptions.html = "<p style='background: whitesmoke; font-family=helvetica; font-size=24px; text-align=justify;'><b>Take advantage of this invitation! Get Ideafy now and join the fast growing online community of Ideafans. Compete for best idea, best mind and many other exciting challenges. Give your imagination and your ideas a new life. <a href='http://ideafy.taiaut.net'>Join now!</a></b></p>"
+
+                        smtpTransport.sendMail(mailOptions, function(error, response) {
+                                if (error) {
+                                        onEnd({
+                                                sendmail : "error",
+                                                reason : error,
+                                                response : response
+                                        });
+                                } else {
+                                        onEnd({
+                                                sendmail : "ok",
+                                                recipient : json.recipient
+                                        });
+                                }
+                        });
+                }
+                if (type == "doc") {
+                        // set mail parameters
+                        mailOptions.from = json.from;
+                        mailOptions.to = json.recipient;
+                        mailOptions.subject = json.subject;
+                        mailOptions.html = json.body;
 
                         smtpTransport.sendMail(mailOptions, function(error, response) {
                                 if (error) {

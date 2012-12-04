@@ -68,7 +68,7 @@
 	"descriptionfield": "Le champ description",
 	"solutionfield": "Le champ solution",
 	"emptyfielderror": " ne peut pas rester vide",
-	"somethingwrong": "Une erreur s'est produite, veuillez réessayer",
+	"somethingwrong": "Une erreur s'est produite, veuillez réessayer plus tard",
 	"thankyou": "Merci",
 	"loadingmessage": "Application en cours de chargement, veuillez patienter...",
 	"library-ideas": "Mes Idées",
@@ -165,5 +165,7 @@
 	"dashboard-settings": "Paramètres",
 	"dashboard-about": "A propos d'Ideafy",
 	"tolbl": "Destinataire(s):",
-	"subjectlbl": "Objet :"
+	"subjectlbl": "Objet :",
+	"yourmessage": "Votre message pour ",
+	"sentok": " a été envoyé."
 }

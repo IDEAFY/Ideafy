@@ -7,7 +7,7 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			    _user = Config.get("user"),
 			    _transport = Config.get("transport"),
 			    _labels = Config.get("labels"),
-			    _mail = new Store({"toField":"", "from": _user.get("username"), "subject":"", "body": "", "attachment": ""});
+			    _mail = new Store({"toField":"", "from": "", "subject":"", "body": "", "attachment": ""});
 		//setup
 		        _widget.plugins.addAll({
                                 "labels": new Model(_labels),
@@ -43,7 +43,9 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			
 			_widget.reset = function reset(idea){
 			     console.log(idea);
-			     _mail.set("attachment", idea);
+			     _error.reset({"errormsg": ""});
+			     _mail.reset({"toField":"", "from": _user.get("username")+" <"+_user.get("_id")+">", "subject":"", "body": "", "attachment": idea});
+			     json = {};
 			};
 			
 			_widget.validateAddress = function(event, node){
@@ -56,7 +58,21 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			};
 			
 			_widget.sendMail = function sendMail(){
-			     console.log("send message now");             
+			     console.log("send message now"); 
+			     json.type = "doc";
+			     json.from = _mail.get("from");
+			     json.recipient = _mail.get("toField");
+			     json.body = _mail.get("body");
+			     _transport.request("Sendmail", json, function(result){
+			             if (result.sendmail === "ok"){
+			                     _error.set("errormsg", _labels.get("yourmessage")+result.recipient+_labels.get("sentoklbl"));        
+			             }
+			             else{
+			                     _error.set("errormsg", _labels.get("somethingwrong"));
+			                     console.log("error", result.error);
+			                     console.log("response", result.response);
+			             }
+			     });            
 			};
 			
 			_widget.press = function(event, node){

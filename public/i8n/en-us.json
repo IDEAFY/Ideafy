@@ -68,7 +68,7 @@
 	"descriptionfield": "Description field",
 	"solutionfield": "Solution field",
 	"emptyfielderror": " cannot be left empty",
-	"somethingwrong": "Something went wrong, please try again",
+	"somethingwrong": "Something went wrong, please try again later",
 	"thankyou": "Thank you",
 	"loadingmessage": "Application loading, please wait...",
 	"library-ideas": "My Ideas",
@@ -165,5 +165,7 @@
 	"dashboard-settings": "Settings",
 	"dashboard-about": "About Ideafy",
 	"tolbl": "To :",
-	"subjectlbl": "Subject :"
+	"subjectlbl": "Subject :",
+	"yourmessage": "Your message to ",
+	"sentok": " has been sent."
 }

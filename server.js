@@ -485,10 +485,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 if (type == "doc") {
                         console.log("SEND MAIL RECEIVED:", json);
                         // set mail parameters
-                        mailOptions.from = json.from;
                         mailOptions.to = json.recipient;
                         mailOptions.subject = json.subject;
-                        mailOptions.html = json.body;
+                        mailOptions.html = "<div style='background: whitesmoke; font-family=helvetica; font-size=24px; text-align=justify;'><p><b>"+json.header+ "</b></p><p>"+json.body+"</p><br><p>" + json.signature + "<hr style='margin-top: 20px'>" + json.attachHeader + json.attachBody;
                         console.log("SEND MAIL CALLED:", mailOptions);
                         smtpTransport.sendMail(mailOptions, function(error, response) {
                                 if (error) {

@@ -167,5 +167,6 @@
 	"tolbl": "To :",
 	"subjectlbl": "Subject :",
 	"yourmessage": "Your message to ",
-	"sentok": " has been sent."
+	"sentok": " has been sent.",
+	"sentdocmsg": " sent you an Ideafy document"
 }

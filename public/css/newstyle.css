@@ -970,7 +970,7 @@ textarea.input {
 .idea-sendmail .mail-header{
   -webkit-box-sizing:border-box;
   width:100%;
-  padding:0 0 0 10px;
+  padding:10px 0 0 10px;
   border:0px;
   border-radius: 0px;
   outline:0;

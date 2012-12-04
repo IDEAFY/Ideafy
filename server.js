@@ -28,8 +28,7 @@ var http = require("http"),
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
-        host : "ideafy.taiaut.com",
-        // host: "localhost",
+        host: "localhost",
         secureConnection : true,
         port : 465,
         auth : {

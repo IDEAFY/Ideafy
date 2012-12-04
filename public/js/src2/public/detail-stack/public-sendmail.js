@@ -62,6 +62,7 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			     json.type = "doc";
 			     json.from = _mail.get("from");
 			     json.recipient = _mail.get("toField");
+			     json.subject = _mail.get("subject";)
 			     json.body = _mail.get("body");
 			     console.log(json);
 			     _transport.request("SendMail", json, function(result){

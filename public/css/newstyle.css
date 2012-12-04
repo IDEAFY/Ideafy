@@ -977,6 +977,13 @@ textarea.input {
   font-size: 14px;
 }
 
+textarea.mail-header{
+    min-height: 30px;
+    resize: vertical;
+    max-height: 75px;
+    font-size: 14px;
+}
+
 /* set input size...better solution*/
 textarea.description {
   height:100px;

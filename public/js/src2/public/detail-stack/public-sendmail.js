@@ -63,7 +63,7 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			     json.from = _mail.get("from");
 			     json.recipient = _mail.get("toField");
 			     json.body = _mail.get("body");
-			     _transport.request("Sendmail", json, function(result){
+			     _transport.request("SendMail", json, function(result){
 			             if (result.sendmail === "ok"){
 			                     _error.set("errormsg", _labels.get("yourmessage")+result.recipient+_labels.get("sentoklbl"));        
 			             }

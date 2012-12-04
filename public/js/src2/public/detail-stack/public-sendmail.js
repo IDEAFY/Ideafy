@@ -24,9 +24,6 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
                                                 _ui.place(_frag);
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                         },
-                                        setSignature : function(sign){
-                                                if (!sign) this.setAttribute("placeholder", _user.get("username")+ " <" + _user.get("_id"));     
-                                        },
                                         setRating : function(rating){
                                                 
                                         },
@@ -47,7 +44,7 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			_widget.reset = function reset(idea){
 			     console.log(idea);
 			     _error.reset({"errormsg": ""});
-			     _mail.reset({"toField":"", "from": _user.get("username")+" <"+_user.get("_id")+">", "subject":"", "body": "", "signature":"", "attachment": idea});
+			     _mail.reset({"toField":"", "from": _user.get("username"), "subject":"", "body": "", "signature": _user.get("username")+" <"+_user.get("_id"), "attachment": idea});
 			     json = {};
 			};
 			
@@ -67,9 +64,9 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			     json.subject = _user.get("username") + _labels.get("sentdocmsg");
 			     json.header = _mail.get("subject");
 			     json.body = _mail.get("body");
-			     json.signature = _mail.get("from");
-			     json.attachHeader = "<div style='border:1px solid #cccccc'; border-radius=5px; padding = 10px;'>"+ Utils.formatDate(_mail.get("attachment").creation_date) + "<br><p><b>" + mail.get("attachment").title + "</b></p><br><p><i>" + _mail.get("attachment").authornames + "</i></p>";
-			     json.attachBody = "<p style='margin-top: 20px;'>"+_mail.get("attachment").description+"</p><pstyle='margin-top: 20px;'>" + _mail.get("attachment").solution + "</p>";
+			     json.signature = _mail.get("signature");
+			     json.attachHeader = "<div style='border:1px solid #cccccc'; border-radius=5px; padding = 10px;'>"+ Utils.formatDate(_mail.get("attachment").creation_date) + "<br><p><b>" + _mail.get("attachment").title + "</b></p><br><p><i>" + _mail.get("attachment").authornames + "</i></p>";
+			     json.attachBody = "<p style='margin-top: 20px;'>"+ _mail.get("attachment").description + "</p><pstyle='margin-top: 20px;'>" + _mail.get("attachment").solution + "</p>";
 			     console.log(json);
 			     _transport.request("SendMail", json, function(result){
 			             if (result.sendmail === "ok"){

@@ -979,6 +979,7 @@ textarea.input {
   line-height: 20px;
   min-height: 30px;
   max-height: 75px;
+  font-size: 14px;
 }
 
 /* set input size...better solution*/

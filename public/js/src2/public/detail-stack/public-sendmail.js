@@ -65,8 +65,8 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			     json.header = _mail.get("subject");
 			     json.body = _mail.get("body");
 			     json.signature = _mail.get("signature");
-			     json.attachHeader = "<div style='background:#657B99; font-family=Helvetica'><p style='color:white;font-size=24px;font-weight=bold'>" + _mail.get("attachment").title + "</p><p style='color: #F27B3D; font-size=16px'>" + _mail.get("attachment").authornames + ", <span style='color:black';>" + Utils.formatDate(_mail.get("attachment").creation_date) + "</span></p><div>";
-			     json.attachBody = "<div style='border:1px solid #657b99;font-size=14px; font-family=Helvetica; text-align:justify'><p>"+ _mail.get("attachment").description + "</p><p>" + _mail.get("attachment").solution + "</p></div>";
+			     json.attachHeader = "<div style='background:#657B99; font-family=Helvetica; margin='><p style='color:white;font-size=24px;font-weight=bold'>" + _mail.get("attachment").title + "</p><p style='color: #F27B3D; font-size=16px'>" + _mail.get("attachment").authornames + ", <span style='color:black';>" + Utils.formatDate(_mail.get("attachment").creation_date) + "</span></p></div>";
+			     json.attachBody = "<div style='border:1px solid #657b99;background:white'><p style='font-size=14px; font-family=Helvetica; text-align:justify; padding:5px;'>"+ _mail.get("attachment").description + "</p><p style='font-size=14px; font-family=Helvetica; text-align:justify; padding:5px;'>" + _mail.get("attachment").solution + "</p></div>";
 			     _transport.request("SendMail", json, function(result){
 			             if (result.sendmail === "ok"){
 			                     _error.set("errormsg", _labels.get("yourmessage")+result.recipient+_labels.get("sentoklbl"));

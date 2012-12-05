@@ -98,7 +98,7 @@ define("Ideafy/Public/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/M
                                         _store.set("modification_date", modDate);
                                         _store.upload().then(function(){
                                                 // close window
-                                                _widget.place(document.createDocumentFragment());
+                                                //_widget.place(document.createDocumentFragment());
                                                 $obs.notify("hide");
                                         });
                                }

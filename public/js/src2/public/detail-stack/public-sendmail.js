@@ -65,8 +65,8 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			     json.header = _mail.get("subject");
 			     json.body = _mail.get("body");
 			     json.signature = _mail.get("signature");
-			     json.attachHeader = "<div style='background:#657B99; font-family=Helvetica; margin-top=0px;'><p style='color:white;margin=5px;font-size=large;font-weight=bold'>" + _mail.get("attachment").title + "</p><p style='color: #F27B3D; font-size=12px; margin=5px;'>" + _mail.get("attachment").authornames + ", <span style='color:black';>" + Utils.formatDate(_mail.get("attachment").creation_date) + "</span></p></div>";
-			     json.attachBody = "<p style='margin-top: 20px;margin-left=10px; margin-right=5px;'>"+ _mail.get("attachment").description + "</p><pstyle='margin-top: 20px;margin-left=10px; margin-right=5px;'>" + _mail.get("attachment").solution + "</p>";
+			     json.attachHeader = "<tr style='background:#657B99; font-family=Helvetica'><h1 style='color:white;font-weight=bold'>" + _mail.get("attachment").title + "</h1><p style='color: #F27B3D; font-size=16px'>" + _mail.get("attachment").authornames + ", <span style='color:black';>" + Utils.formatDate(_mail.get("attachment").creation_date) + "</span></p></tr>";
+			     json.attachBody = "<tr><p style='margin-top: 20px;margin-left=10px; margin-right=5px;'>"+ _mail.get("attachment").description + "</p><pstyle='margin-top: 20px;margin-left=10px; margin-right=5px;'>" + _mail.get("attachment").solution + "</p></tr>";
 			     console.log(json);
 			     _transport.request("SendMail", json, function(result){
 			             if (result.sendmail === "ok"){

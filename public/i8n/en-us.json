@@ -168,5 +168,7 @@
 	"subjectlbl": "Subject :",
 	"yourmessage": "Your message to ",
 	"sentok": " has been sent.",
-	"sentdocmsg": " sent you an Ideafy document"
+	"sentdocmsg": " sent you an Ideafy document",
+	"notavalidaddress": " is not a valid email address",
+	"norecipient": "No email address specified"
 }

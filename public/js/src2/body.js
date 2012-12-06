@@ -45,7 +45,10 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         _local.sync("ideafy-data");
         LOCAL = _local;
         CONF = Config;
-
+        
+        //reset labels (temporary to allow updates)
+        _local.set("labels", "");
+        
         // initialize labels to device language if available or US by default
          (_local.get("labels")) ? Config.get("labels").reset(_local.get("labels")) : updateLabels(navigator.language);
 

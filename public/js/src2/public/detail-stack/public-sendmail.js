@@ -7,7 +7,7 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			    _user = Config.get("user"),
 			    _transport = Config.get("transport"),
 			    _labels = Config.get("labels"),
-			    _mail = new Store({"toField":"", "from": "", "subject":"", "body": "", "signature": "", "attachment": ""});
+			    _mail = new Store({"toField":"", "from": "", "subject":"", "body": "", "signature": "", "attachment": "", "sent": false});
 		//setup
 		        _widget.plugins.addAll({
                                 "labels": new Model(_labels),
@@ -32,49 +32,58 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
                                         }
                                 }),
                                 "mailevent" : new Event(_widget),
-                                "errormsg" : new Model(_error,{
-                                        setError : function(error){
-                                                switch (error){}
-                                        }
-                                })
+                                "errormsg" : new Model(_error)
                         });
 		        
 			_widget.alive(Map.get("public-sendmail"));
 			
 			_widget.reset = function reset(idea){
-			     console.log(idea);
 			     _error.reset({"errormsg": ""});
-			     _mail.reset({"toField":"", "from": _user.get("username"), "subject":"", "body": "", "signature": _user.get("username")+" <"+_user.get("_id"), "attachment": idea});
+			     _mail.reset({"toField":"", "from": _user.get("username"), "subject":"", "body": "", "signature": _user.get("username")+" <"+_user.get("_id"), "attachment": idea, "sent": false});
 			     json = {};
 			};
 			
-			_widget.validateAddress = function(event, node){
-			        
+			_widget.validateAddress = function validateAddress(value){
+			     var emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+			         emailArray = value.toLowerCase().split(/,|;/),
+			         result = true;
+			     
+                             for (i=0, l=emailArray.length; i<l; i++){
+                                if (!emailPattern.test(emailArray[i])) {
+                                        _error.set("errormsg", emailArray[i]+_labels.get("notavalidaddress"));
+                                        result = false;
+                                        break;
+                                }         
+                             }
+                             return result;        
 			};
 			
 			_widget.validateMessage = function validateMessage(){
-			     
+			     // check email addresses
+			     (_mail.get("toField")) ? _widget.validateAddress(_mail.get("toField")) : _error.set("errormsg", _labels.get("norecipient"));
 			     return (_error.get("errormsg") === "");       
 			};
 			
 			_widget.sendMail = function sendMail(){
-			     console.log("send message now"); 
+			     // formatting message
 			     json.type = "doc";
 			     json.recipient = _mail.get("toField");
 			     json.subject = _user.get("username") + _labels.get("sentdocmsg");
 			     json.header = _mail.get("subject");
 			     json.body = _mail.get("body");
 			     json.signature = _mail.get("signature");
-			     json.attachHeader = "<div style='background:#657B99; font-family=Helvetica; margin='><p style='color:white;font-size=24px;font-weight=bold'>" + _mail.get("attachment").title + "</p><p style='color: #F27B3D; font-size=16px'>" + _mail.get("attachment").authornames + ", <span style='color:black';>" + Utils.formatDate(_mail.get("attachment").creation_date) + "</span></p></div>";
-			     json.attachBody = "<div style='border:1px solid #657b99;background:white'><p style='font-size=14px; font-family=Helvetica; text-align:justify; padding:5px;'>"+ _mail.get("attachment").description + "</p><p style='font-size=14px; font-family=Helvetica; text-align:justify; padding:5px;'>" + _mail.get("attachment").solution + "</p></div>";
+			     json.attachHeader = "<div style='background:#657B99; font-family:Helvetica; margin:5px;'><br><p style='color:white;font-size:24px;font-weight:bold;'>" + _mail.get("attachment").title + "</p><p style='color: #F27B3D; font-size:16px'>" + _mail.get("attachment").authornames + ", <span style='color:black';>" + Utils.formatDate(_mail.get("attachment").creation_date) + "</span></p><br></div>";
+			     json.attachBody = "<div style='border:1px solid #657b99;background:white'><p style='font-size:14px; font-family:Helvetica; text-align:justify; padding:5px;'>"+ _mail.get("attachment").description + "</p><p style='font-size=14px; font-family=Helvetica; text-align:justify; padding:5px;'>" + _mail.get("attachment").solution + "</p></div>";
+			     // send request
 			     _transport.request("SendMail", json, function(result){
 			             if (result.sendmail === "ok"){
 			                     _error.set("errormsg", _labels.get("yourmessage")+result.recipient+_labels.get("sentoklbl"));
 			                     //_widget.place(document.createDocumentFragment());
-                                             $obs.notify("hide");        
+			                     setTimeout(function(){$obs.notify("hide");}, 350);       
 			             }
 			             else{
 			                     _error.set("errormsg", _labels.get("somethingwrong"));
+			                     _mail.set("sent", false);
 			                     console.log("error", result.error);
 			                     console.log("response", result.response);
 			             }
@@ -82,12 +91,16 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			};
 			
 			_widget.press = function(event, node){
-			     node.classList.add("pressed");        
+			     
+			     if (!node.classList.contains("sendmail") || !_mail.get("sent")) node.classList.add("pressed");        
 			};
 			
 			_widget.send = function(event, node){
-			        node.classList.remove("pressed");
-			     if (_widget.validateMessage()) _widget.sendMail();            
+			     if (!_mail.get("sent")){
+			             _mail.set("sent", true); // to avoid multiple attempts
+			             node.classList.remove("pressed");
+			             (_widget.validateMessage()) ? _widget.sendMail() : _mail.set("sent", false);
+			     }          
 			};
 			
 			_widget.cancel = function(event, node){

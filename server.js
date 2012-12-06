@@ -482,13 +482,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 }
                         });
                 }
-                if (type == "doc") {
-                        console.log("SEND MAIL RECEIVED:", json);
+                if (type === "doc") {
                         // set mail parameters
                         mailOptions.to = json.recipient;
                         mailOptions.subject = json.subject;
                         mailOptions.html = "<p><b>"+json.header+"</b></p><p>"+json.body+"</p><p>----------<br>"+ json.signature +"<div>"+json.attachHeader + json.attachBody+"</div>";
-                        console.log("SEND MAIL CALLED:", mailOptions);
                         smtpTransport.sendMail(mailOptions, function(error, response) {
                                 if (error) {
                                         onEnd({

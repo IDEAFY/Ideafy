@@ -457,6 +457,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 var mailOptions = {
                         from : "IDEAFY <ideafy@taiaut.com>", // sender address
                         to : "", // list of receivers
+                        cc : "", // automatic copy to sender
+                        replyTo : "", // recipient should reply to sender
                         subject : "", // Subject line
                         html : "" // html body
                 };
@@ -485,6 +487,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 if (type === "doc") {
                         // set mail parameters
                         mailOptions.to = json.recipient;
+                        mailOptions.cc = json.cc;
+                        mailOptions.replyTo = json.replyTo;
                         mailOptions.subject = json.subject;
                         mailOptions.html = "<p><b>"+json.header+"</b></p><p>"+json.body+"</p><p>----------<br>"+ json.signature +"<div>"+json.attachHeader + json.attachBody+"</div>";
                         smtpTransport.sendMail(mailOptions, function(error, response) {

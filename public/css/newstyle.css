@@ -725,7 +725,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 
 /* public details */ 
-#public-detail {
+#public-detail, #ideas-detail {
     -webkit-transition: opacity 480ms ease-out;
     overflow-y: scroll;
 }

@@ -712,14 +712,26 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         votercdb.set("rated_ideas", ri);
                                         votercdb.set("ip", ip+2);
                                         updateDocAsAdmin(json.voter, votercdb).then(function(){
-                                                onEnd("ok");
-                                                votercdb.unsync();
-                                                cdb.unsync();        
+                                                onEnd("ok");       
                                         }); 
                                 });
                         });
                 });
 
+        });
+        
+        // Removing an idea that has been shared with a user from his private library
+        olives.handlers.set("RemoveFromLibrary", function(json, onEnd){
+                var cdb = new CouchDBStore();
+                cdb.setTransport(transport);
+                getDocAsAdmin(json.id, cdb).then(function() {
+                        var shared = cdb.get("sharedwith");
+                        shared.splice(shared.indexOf(json.userid), 1);
+                        cdb.set("sharedwith", shared);
+                        updateDocAsAdmin(json.id, cdb).then(function() {
+                                onEnd("ok");
+                        });
+                });      
         });
 
         // Commenting on ideas

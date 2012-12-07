@@ -49,6 +49,7 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                             style = new Store({"margin": margin}),
                             user = Config.get("user"),
                             observer = Config.get("observer"),
+                            transport = Config.get("transport"),
                             buildButtons,
                             ui = this;
                         
@@ -151,14 +152,21 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                 var promise = new Promise(),
                                     cdb = new CouchDBStore();
                                 
-                                cdb.setTransport(Config.get("transport"));
+                                cdb.setTransport(transport);
                                 
                                 switch($type){
                                         case "idea":
-                                                cdb.sync(Config.get("db"), $data._id).then(function(){
-                                                        cdb.remove();
-                                                        promise.resolve();
-                                                });
+                                                if ($data.authors.length === 1 && $data.authors[0] === user.get("_id")){
+                                                        cdb.sync(Config.get("db"), $data._id).then(function(){
+                                                                cdb.remove();
+                                                                promise.resolve();
+                                                        });
+                                                }
+                                                else {
+                                                        transport.request("RemoveFromLibrary", {"id": $data._id, "userid": user.get("_id")}, function(result){
+                                                                console.log(result);
+                                                        });       
+                                                }
                                                 break;
                                         default:
                                                 break;        

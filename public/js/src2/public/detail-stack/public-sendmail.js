@@ -68,7 +68,7 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			     // formatting message
 			     json.type = "doc";
 			     json.recipient = _mail.get("toField");
-			     json.cc = _user.get("_id");
+			     json.cc = _user.get("_id"); // this is a parameter users could disable
 			     json.replyTo =_user.get("_id");
 			     json.subject = _user.get("username") + _labels.get("sentdocmsg");
 			     json.header = _mail.get("subject");

@@ -1230,18 +1230,11 @@ textarea.solution {
 
 .writeTwocent .writeFooter{
     width:520px;
-    max-height: 60px;
+    min-height: 30px;
     padding-bottom: 15px;
     margin-top:15px;
     margin-left: 60px;
 }
-
-.writeTwocent .twocentContext{
-    width: 300px;
-    float: left;
-    text-overflow: ellipsis;
-}
-
 
 .writeTwocent .twocentContext .user, .writeTwocent .twocentContext .creadate, .writeTwocent .twocentContext .moddate{
     background-repeat:no-repeat;
@@ -1311,7 +1304,7 @@ textarea.solution {
 }
 
 .replyAvatar{
-    margin-left: 10px;
+    margin-left: 15px;
 }
 /*
 #public .twocentAvatar{
@@ -1448,6 +1441,7 @@ textarea.solution {
     float:left;
     width: 250px;
     text-overflow: ellipsis;
+    padding-left: 15px;
 }
 
 .replyToReply .writeTwocent{
@@ -1460,11 +1454,12 @@ textarea.solution {
 }
 
 .replyToReply div.writeFooter{
-    width: 438px;
+    width: 420px;
 }
 
 .replyToReply .writeFooter .twocentContext{
     width: 200px;
+    padding-left: 10px;
 }
 
 .writeTwocentReply{
@@ -1473,7 +1468,7 @@ textarea.solution {
 }
 
 .writeTwocentReply .twocentText{
-    width: 458px;
+    width: 443px;
     max-height: 80px;
 }
 .writeTwocentReply .writeFooter{

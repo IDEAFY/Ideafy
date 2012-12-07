@@ -8,7 +8,8 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                             labels = Config.get("labels"),
                             store = new Store([]),
                             transport = Config.get("transport"),
-                            user = Config.get("user");
+                            user = Config.get("user"),
+                            ui = this;
                         
                         // setup
                         // retrieve twocents data from couchdb
@@ -22,7 +23,7 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                         });
                         
                         // define plugins and methods
-                        this.plugins.addAll({
+                        ui.plugins.addAll({
                                 "labels" : new Model(Config.get("labels")),
                                 "twocents" : new Model(store, {
                                         date : function date(date){
@@ -104,20 +105,26 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                 "twocentevent" : new Event(this)        
                         });
                         
-                        this.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div><span class="commentLabel" data-labels="bind: setCommentlbl, firstname"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: deleteOK, replies" data-twocentevent="listen: touchstart, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: touchstart, reply"></div></div></div><div class="twocentBody"><p class="twocentMessage" data-twocents="bind: innerHTML, message"></p><div class="repliesButton hideReplies" name="hide" data-twocents="bind: toggleHideButton, replies" data-twocentevent="listen: touchstart, toggleReplies" data-labels="bind:innerHTML, hidetwocentreplies"></div></div><div class="writePublicTwocentReply invisible"></div><div class="displayReplies" data-twocents="bind: displayReplies, replies"></div></li></ul>';
+                        ui.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div><span class="commentLabel" data-labels="bind: setCommentlbl, firstname"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: deleteOK, replies" data-twocentevent="listen: touchstart, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: touchstart, reply"></div></div></div><div class="twocentBody"><p class="twocentMessage" data-twocents="bind: innerHTML, message"></p><div class="repliesButton hideReplies" name="hide" data-twocents="bind: toggleHideButton, replies" data-twocentevent="listen: touchstart, toggleReplies" data-labels="bind:innerHTML, hidetwocentreplies"></div></div><div class="writePublicTwocentReply invisible"></div><div class="displayReplies" data-twocents="bind: displayReplies, replies"></div></li></ul>';
                         
-                        this.edit = function(event, node){
+                        ui.edit = function(event, node){
                                 var id = node.getAttribute("data-twocents_id"),
                                     writeUI = new WriteTwocent(),
-                                    frag = document.createDocumentFragment();  
-                                writeUI.reset($id, store.get(id), id);
+                                    currentUI = ui.dom.children[id],
+                                    frag = document.createDocumentFragment(),
+                                    cancel = function(){
+                                            console.log(writeUI.dom, currentUI);
+                                        ui.dom.replaceChild(currentUI, writeUI.dom);        
+                                    };
+                                    
+                                writeUI.reset($id, store.get(id), id, cancel);
                                 writeUI.render();
                                 writeUI.place(frag);
                                 // replace current twocent with writeUI
-                                this.dom.replaceChild(frag, this.dom.children[id]);        
+                                ui.dom.replaceChild(frag, currentUI);       
                         };
                         
-                        this.deleteTwocent = function(event, node){
+                        ui.deleteTwocent = function(event, node){
                                 var position = node.getAttribute("data-twocents_id"),
                                     json = {docId: $id, type: "delete", position: position, twocent:{author: user.get("_id")}};
                                 
@@ -131,7 +138,7 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                 });      
                         };
                         
-                        this.reply = function(event, node){
+                        ui.reply = function(event, node){
                                 var position = node.getAttribute("data-twocents_id"),
                                     parent = document.querySelector(".writePublicTwocentReply[data-twocents_id='"+position+"']"),
                                     writeUI = new WriteTwocentReply(parent),
@@ -147,7 +154,7 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                     parent.classList.remove("invisible");                          
                         };
                         
-                        this.toggleReplies = function(event, node){
+                        ui.toggleReplies = function(event, node){
                                 var position = node.getAttribute("data-twocents_id"),
                                     replies = store.get(position).replies,
                                     name = node.getAttribute("name"),

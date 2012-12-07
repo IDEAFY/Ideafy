@@ -1230,7 +1230,8 @@ textarea.solution {
 
 .writeTwocent .writeFooter{
     width:520px;
-    height: 60px;
+    max-height: 60px;
+    padding-bottom: 15px;
     margin-top:15px;
     margin-left: 60px;
 }
@@ -1307,6 +1308,10 @@ textarea.solution {
   background-position: center;
   background-repeat: no-repeat;
   background-size:cover;
+}
+
+.replyAvatar{
+    margin-left: 10px;
 }
 /*
 #public .twocentAvatar{
@@ -1425,25 +1430,23 @@ textarea.solution {
 
 .writePublicTwocentReply .writeTwocent{
     padding-right: 0px;
-    min-height: 130px;
+    min-height: 150px;
 }
 
 .writePublicTwocentReply .replyMessage{
     max-height: 50px;
     overflow-y: scroll;
     width: 458px;
-    float: left;
 }
 
 .writePublicTwocentReply .writeFooter{
     padding-left: 0px;
-    float:left;
     width: 478px;
 }
 
 .writeTwocent .twocentContext{
+    float:left;
     width: 250px;
-    float: left;
     text-overflow: ellipsis;
 }
 
@@ -1452,7 +1455,8 @@ textarea.solution {
 }
 
 .replyToReply textarea.replyMessage{
-    width: 416px;
+    width: 390px;
+    margin-left: 15px;
 }
 
 .replyToReply div.writeFooter{
@@ -1460,7 +1464,7 @@ textarea.solution {
 }
 
 .replyToReply .writeFooter .twocentContext{
-    width: 225px;
+    width: 200px;
 }
 
 .writeTwocentReply{
@@ -3122,7 +3126,7 @@ li.color-item{
 #quickwrapup .storycontent, #quickwrapup .ideacontent{
     margin-top: 20px;
     overflow-y: scroll;
-    max-height: 323px;
+    max-height: 280px;
 }
 
 #quickwrapup .storycontent .summaryheader, #quickwrapup .ideacontent .summaryheader{
@@ -3139,6 +3143,7 @@ li.color-item{
     padding-top: 5px;
     padding-bottom: 10px;
     font-size: 12px;
+    text-align: justify;
 }
 
 #quickwrapup .sessionresults{

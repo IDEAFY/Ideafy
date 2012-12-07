@@ -1420,6 +1420,9 @@ textarea.solution {
     border-radius: 5px;
 }
 
+.twocentReply .twocentDate{
+    margin-left: 65px;
+}
 
 .writePublicTwocentReply .writeTwocent{
     padding-right: 0px;

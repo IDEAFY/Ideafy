@@ -113,8 +113,7 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                     currentUI = ui.dom.children[id],
                                     frag = document.createDocumentFragment(),
                                     cancel = function(){
-                                            console.log(writeUI.dom, currentUI);
-                                        ui.dom.replaceChild(currentUI, writeUI.dom);        
+                                            ui.dom.replaceChild(currentUI, writeUI.dom);        
                                     };
                                     
                                 writeUI.reset($id, store.get(id), id, cancel);

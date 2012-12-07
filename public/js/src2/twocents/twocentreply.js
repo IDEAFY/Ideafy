@@ -60,15 +60,18 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                     writeUI = new WriteTwocentReply(),
                                     currentUI = ui.dom.children[id],
                                     cancel = function(){
-                                        ui.dom.replaceChild(currentUI, writeUI.dom);            
+                                            ui.dom.replaceChild(currentUI, writeUI.dom);            
                                     },
                                     frag = document.createDocumentFragment();
  
-                                writeUI.reset($id, $tc, $data[id], id, cancel);
+                                writeUI.reset($id, $tc, $data[id], id, null, cancel);
                                 writeUI.render();
                                 writeUI.place(frag);
                                 //replace current twocent with writeUI
-                                ui.dom.replaceChild(frag, currentUI);       
+                                ui.dom.replaceChild(frag, currentUI);
+                                UI = ui.dom;
+                                CURRENT = currentUI;
+                                WRITE = writeUI.dom;       
                         };
                         
                         ui.deleteTwocentReply = function(event, node){
@@ -131,13 +134,12 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                                 "labels" : new ModelPlugin(Config.get("labels"))
                         });
                         
-                        this.template = '<div class="writeTwocent writeTwocentReply"><div class="replyAvatar" data-model="bind: setAvatar, author"></div><textarea class="twocentText replyMessage" data-labels="bind: placeholder, addtwocentreplyplaceholder" data-model="bind: value, message"></textarea><div class="writeFooter"><ul class="twocentContext"><li class="creadate"><span class="creadatelbl" data-labels="bind:innerHTML, twocentcreationdate"></span><span class="date" data-model="bind: date, date"></span></li></ul><div class="twocentCancel" data-labels="bind: innerHTML, cancellbl" data-writereplyevent="listen: touchstart, press; listen: touchend, cancel; listen:touchend, cancel">Cancel</div><div class="twocentPublish" data-labels="bind: innerHTML, publishlbl" data-writereplyevent="listen: touchstart, press; listen: touchend, publish;">Publish</div></div></div>';
+                        this.template = '<div class="writeTwocent writeTwocentReply"><div class="replyAvatar" data-model="bind: setAvatar, author"></div><textarea class="twocentText replyMessage" data-labels="bind: placeholder, addtwocentreplyplaceholder" data-model="bind: value, message"></textarea><div class="writeFooter"><ul class="twocentContext"><li class="creadate"><span class="creadatelbl" data-labels="bind:innerHTML, twocentcreationdate"></span><span class="date" data-model="bind: date, date"></span></li></ul><div class="twocentCancel" data-labels="bind: innerHTML, cancellbl" data-writereplyevent="listen: touchstart, press; listen: touchend, cancel">Cancel</div><div class="twocentPublish" data-labels="bind: innerHTML, publishlbl" data-writereplyevent="listen: touchstart, press; listen: touchend, publish;">Publish</div></div></div>';
                         
                         this.reset = function($id, $twocent, $reply, $pos, $replyTo, $cancel){
                                 var now = new Date(),
                                     replyTemplate = {"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0};
                                 
-                                cancel = $cancel;
                                 if ($id && $twocent) {
                                         currentIdea = $id;
                                         currentTwocent = $twocent;
@@ -155,13 +157,15 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                                         reply.reset(replyTemplate);
                                         reply.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                         editTCR = "newreply";
-                                }   
+                                }
+                                
+                                cancel = $cancel;  
                         };
                 
                         this.cancel = function(event, node){
                                 node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
                                 // hide twocent writing interface
-                                (cancel)?cancel():$parent.classList.add("invisible");
+                                (cancel) ? cancel():$parent.classList.add("invisible");
                         };
                 
                         this.publish = function(event, node){

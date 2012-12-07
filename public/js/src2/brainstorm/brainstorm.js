@@ -87,7 +87,7 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
 		              
 		              // need a default mode ??
 		      }
-		      _widget.selectScreen(mode, _sip);
+		      _widget.selectScreen(_sip.type, _sip);
 		});
 		
 		//return

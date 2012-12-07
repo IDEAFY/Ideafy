@@ -3,7 +3,7 @@
 	"emailplaceholder": "Email",
 	"passwordplaceholder": "Mot de passe",
 	"repeatpasswordplaceholder": "Confirmez le mot de passe",
-	"loginbutton": "Entrez",
+	"loginbutton": "Identifiez-vous",
 	"newuserbutton": "Nouvel utilisateur",
 	"invalidlogin": "Nom d'utilisateur ou mot de passe erroné",
 	"missingloginparam": "Votre nom d'utilisateur et votre mot de passe sont requis",
@@ -170,5 +170,6 @@
 	"sentok": " a été envoyé.",
 	"sentdocmsg": " vous a envoyé un document Ideafy",
 	"notavalidaddress": " n'est pas une adress email valide",
-	"norecipient": "Pas de destinataire saisi"
+	"norecipient": "Pas de destinataire saisi",
+	"sendlbl": "Envoyer"
 }

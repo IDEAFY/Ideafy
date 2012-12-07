@@ -4,6 +4,7 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                 function TwocentReplyListConstructor($data, $id, $tc, $view){
                         
                         var store = new Store($data),
+                            ui = this,
                             avatars,
                             user = Config.get("user"),
                             labels = Config.get("labels"),
@@ -13,7 +14,7 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                 avatars = Config.get("publicAvatars");
                         };
                          
-                        this.plugins.addAll({
+                        ui.plugins.addAll({
                                 "reply": new ModelPlugin(store, {
                                         date : function date(date){
                                                if (date){
@@ -52,21 +53,25 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                   "labels": new ModelPlugin(labels)
                         });
                         
-                   this.template = '<ul class="replies" data-reply="foreach"><li class="twocentReply"><div class="twocentHeader"><div class="replyAvatar" data-reply="bind:setAvatar, author"></div><div class="twocentAuthor" data-reply="bind: setFirstname, firstname"></div><span class="commentLabel" data-labels="bind: setReplylbl, firstname"></span><br/><div class="twocentDate date" data-reply="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-reply="bind: setVisible, author" data-replyevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-reply="bind: setVisible, author; bind: setVisible, author" data-replyevent="listen: touchstart, deleteTwocentReply"></div><div class="twocentButton twocentReplyButton" data-reply="bind: setInVisible, author" data-replyevent="listen:touchstart, reply"></div></div></div><p class="twocentMessage replyMessage" data-reply="bind: innerHTML, message"></p><div class="writePublicTwocentReply replyToReply invisible"></div></li></ul>';
+                   ui.template = '<ul class="replies" data-reply="foreach"><li class="twocentReply"><div class="twocentHeader"><div class="replyAvatar" data-reply="bind:setAvatar, author"></div><div class="twocentAuthor" data-reply="bind: setFirstname, firstname"></div><span class="commentLabel" data-labels="bind: setReplylbl, firstname"></span><br/><div class="twocentDate date" data-reply="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-reply="bind: setVisible, author" data-replyevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-reply="bind: setVisible, author; bind: setVisible, author" data-replyevent="listen: touchstart, deleteTwocentReply"></div><div class="twocentButton twocentReplyButton" data-reply="bind: setInVisible, author" data-replyevent="listen:touchstart, reply"></div></div></div><p class="twocentMessage replyMessage" data-reply="bind: innerHTML, message"></p><div class="writePublicTwocentReply replyToReply invisible"></div></li></ul>';
                    
-                   this.edit = function(event, node){
+                   ui.edit = function(event, node){
                                 var id = node.getAttribute("data-reply_id"),
-                                    writeUI = new WriteTwocentReply();
+                                    writeUI = new WriteTwocentReply(),
+                                    currentUI = ui.dom.children[id],
+                                    cancel = function(){
+                                        ui.dom.replaceChild(currentUI, writeUI.dom);            
+                                    },
                                     frag = document.createDocumentFragment();
  
-                                writeUI.reset($id, $tc, $data[id], id);
+                                writeUI.reset($id, $tc, $data[id], id, cancel);
                                 writeUI.render();
                                 writeUI.place(frag);
                                 //replace current twocent with writeUI
-                                this.dom.replaceChild(frag, this.dom.children[id]);       
+                                ui.dom.replaceChild(frag, currentUI);       
                         };
                         
-                        this.deleteTwocentReply = function(event, node){
+                        ui.deleteTwocentReply = function(event, node){
                                var position = node.getAttribute("data-reply_id"),
                                     json = {docId: $id, type: "deltcreply", twocent: $tc, position: position};
                                 transport.request("WriteTwocent", json, function(result){
@@ -76,7 +81,7 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                 });    
                         };
                         
-                        this.reply = function(event, node){
+                        ui.reply = function(event, node){
                                 var position = node.getAttribute("data-reply_id"),
                                     parent = document.querySelector(".writePublicTwocentReply[data-reply_id='"+position+"']"),
                                     frag = document.createDocumentFragment();
@@ -109,7 +114,8 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                         var user = Config.get("user"),
                             transport = Config.get("transport"),
                             currentIdea, currentTwocent, position, replyTo,
-                            now = new Date()
+                            now = new Date(),
+                            cancel,
                             reply = new Store({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": [now.getFullYear(), now.getMonth(), now.getDate()], "datemod": "", "plusones": 0});
                             
                         this.plugins.addAll({
@@ -127,9 +133,11 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                         
                         this.template = '<div class="writeTwocent writeTwocentReply"><div class="replyAvatar" data-model="bind: setAvatar, author"></div><textarea class="twocentText replyMessage" data-labels="bind: placeholder, addtwocentreplyplaceholder" data-model="bind: value, message"></textarea><div class="writeFooter"><ul class="twocentContext"><li class="creadate"><span class="creadatelbl" data-labels="bind:innerHTML, twocentcreationdate"></span><span class="date" data-model="bind: date, date"></span></li></ul><div class="twocentCancel" data-labels="bind: innerHTML, cancellbl" data-writereplyevent="listen: touchstart, press; listen: touchend, cancel; listen:touchend, cancel">Cancel</div><div class="twocentPublish" data-labels="bind: innerHTML, publishlbl" data-writereplyevent="listen: touchstart, press; listen: touchend, publish;">Publish</div></div></div>';
                         
-                        this.reset = function($id, $twocent, $reply, $pos, $replyTo){
+                        this.reset = function($id, $twocent, $reply, $pos, $replyTo, $cancel){
                                 var now = new Date(),
                                     replyTemplate = {"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0};
+                                
+                                cancel = $cancel;
                                 if ($id && $twocent) {
                                         currentIdea = $id;
                                         currentTwocent = $twocent;
@@ -153,7 +161,7 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                         this.cancel = function(event, node){
                                 node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
                                 // hide twocent writing interface
-                                $parent.classList.add("invisible");
+                                (cancel)?cancel():$parent.classList.add("invisible");
                         };
                 
                         this.publish = function(event, node){

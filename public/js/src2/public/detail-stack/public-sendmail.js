@@ -75,7 +75,7 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			     json.body = _mail.get("body");
 			     json.signature = _mail.get("signature");
 			     json.attachHeader = "<div style='background:#657B99; font-family:Helvetica; padding:15px;'><p style='color:white;font-size:24px;font-weight:bold;margin-top:10px;'>" + _mail.get("attachment").title + "</p><p style='color: #F27B3D; font-size:16px; font-weight:bold;margin-bottom:10px;'>" + _mail.get("attachment").authornames + ", <span style='color:black';>" + Utils.formatDate(_mail.get("attachment").creation_date) + "</span></p></div>";
-			     json.attachBody = "<div style='border:1px solid #657b99;background:white'><p style='font-size:14px; font-family:Helvetica; text-align:justify; padding:15px;'>"+ _mail.get("attachment").description + "</p><p style='font-size=14px; font-family:Helvetica; text-align:justify; padding:15px;'>" + _mail.get("attachment").solution + "</p></div>";
+			     json.attachBody = "<div style='border:1px solid #657b99;background:white'><p style='font-size:14px; font-family:Helvetica; text-align:justify; padding:15px;'>"+ _mail.get("attachment").description + "</p><p style='font-size:14px; font-family:Helvetica; text-align:justify; padding:15px;'>" + _mail.get("attachment").solution + "</p></div>";
 			     // send request
 			     _transport.request("SendMail", json, function(result){
 			             if (result.sendmail === "ok"){

@@ -107,10 +107,11 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                                         _steps.update(0, "currentStep", true);
                                         _steps.update(current, "currentStep", false);
                                         _stack.getStack().show("quickstart");
-                                        //update user session in progress
-                                        console.log("before sip change", _user.toJSON());
-                                        _user.set("sessionInProgress", sip);
-                                        _user.upload().then(function(){console.log("upload ok");});
+                                        //update user session in progress if and only if session is not complete
+                                        if (_session.get("status") !== "completed"){
+                                                _user.set("sessionInProgress", sip);
+                                                _user.upload();
+                                        }
                                 }
                            });
                    };

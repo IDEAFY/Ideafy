@@ -135,7 +135,8 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                 } else {
                                         _transport.request("Signup", {
                                                 name : userid,
-                                                password : password
+                                                password : password,
+                                                lang : Config.get("language")
                                         }, function(result) {
                                                 if (result.signup === "ok") {
                                                         

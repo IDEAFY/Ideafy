@@ -7,8 +7,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 		//declaration
 			var _widget = new Widget(),
 				_control = new Control(this),
-				_stack = new Stack(),
-				_notify = new Notify();
+				_stack = new Stack();
 
 		//setup
 			//labels have to configurable
@@ -20,6 +19,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 
 		//logic
 			_widget.init = function(){
+			        var notify = new Notify();
 			        
 			        _stack.getStack().add("#public", new Public());
 				console.log("publicok");
@@ -33,7 +33,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				console.log("dashboardok");
 				
 				// init notification engine
-				_notify.init();
+				notify.init();
 				
 				//set current stack view
 				_stack.getStack().show("#public");

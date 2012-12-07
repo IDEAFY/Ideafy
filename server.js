@@ -243,7 +243,33 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         }});
                 
                 return promise;      
-        };
+           },
+            sendSignupEmail = function(login, pwd, lang){
+                var mailOptions = {
+                        from : "IDEAFY <ideafy@taiaut.com>", // sender address
+                        to : login
+                };
+                
+                switch(lang){
+                        case ("en-us"):
+                                mailOptions.subject = "Ideafy confirmation";
+                                mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team."
+                                break;
+                        case ("fr-fr"):
+                                mailOptions.subject = "Confirmation d'inscription à Ideafy";
+                                mailOptions.text ="Merci de vous être enregistré sur Ideafy. Votre identifiant est "+login+ " et votre mot de passe "+pwd+". Nous espérons que vous prendrez plaisir à utiliser notre application.\nL'équipe Ideafy."
+                                break;
+                        default:
+                                mailOptions.subject = "Thank you for joining Ideafy";
+                                break;
+                }
+                smtpTransport.sendMail(mailOptions, function(error, response) {
+                        if (error) {
+                                console.log(error, response);
+                        }
+                });        
+            };
+        
         
         // Application handlers
         olives.handlers.set("Lang", function(json, onEnd){
@@ -283,6 +309,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         db : _db,
                                                         message: json.name + " successfully signed up"
                                                 });
+                                                
+                                                // send confirmation Email
+                                                sendSignupEmail(json.name, json.password, json.lang);
                                         }
                                 });
                         }, function (json) {
@@ -453,8 +482,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         // Sending email messages from Ideafy
         olives.handlers.set("SendMail", function(json, onEnd) {
 
-                var type = json.type;
-                var mailOptions = {
+                var type = json.type,
+                    mailOptions = {
                         from : "IDEAFY <ideafy@taiaut.com>", // sender address
                         to : "", // list of receivers
                         cc : "", // automatic copy to sender

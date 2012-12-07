@@ -298,19 +298,39 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   background:url('../img/activeSettings.png');
 }
 
-.deedee {
-  position:absolute;
-  left:0;
-  bottom:0;
 
-  width:99px;
-  height:144px;
-  background:url('../img/littleGreyDeeDee.png') no-repeat center center;
-  background-size:35%;
+#notify{
+    position: absolute;
+    left: 0;
+    bottom: 0;
 }
 
+.deedee {
+  width:99px;
+  height:100px;
+  background:url('../img/littleGreyDeeDee.png') no-repeat center center;
+  background-size:40%;
+}
+
+.deedee.orange{
+    background:url('../img/littleOrangeDeeDee.png') no-repeat center center;
+}
+
+
 .notif-bubble{
-    
+    background: url('../img/notificationBubble.png') no-repeat center center;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-size: contain;
+    left: 57px;
+    top: 7px;
+    display: inline-block;
+    line-height: 25px;
+    text-align: center;
+    font-family: Helvetica;
+    font-size: 12px;
+    color: white;
 }
 
 

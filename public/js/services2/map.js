@@ -6,6 +6,7 @@ define("Map", ["Store"], function(Store){
 			"signup-form" : document.getElementById("signup-form"),
 			"loading" : document.getElementById("loading"),
 		"dock" : document.getElementById("wrapper"),
+		"notify" : document.getElementById("notify"),
 		"newidea-popup" : document.getElementById("newidea-popup"),
 		"help-popup" : document.getElementById("help-popup"),
 		"cache" : document.getElementById("cache"),

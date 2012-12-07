@@ -1,13 +1,14 @@
 define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"Ideafy/Public", "Ideafy/Library", "Ideafy/Brainstorm", "Ideafy/Connect", "Ideafy/Dashboard",
-	"Map", "Config"], 
-	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config){
+	"Map", "Config", "Ideafy/Notify"], 
+	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify){
 		return function DockConstructor(){
 
 		//declaration
 			var _widget = new Widget(),
 				_control = new Control(this),
-				_stack = new Stack();
+				_stack = new Stack(),
+				_notify = new Notify();
 
 		//setup
 			//labels have to configurable
@@ -30,6 +31,10 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				console.log("connectok");
 				_stack.getStack().add("#dashboard", new Dashboard());
 				console.log("dashboardok");
+				
+				// init notification engine
+				_notify.init();
+				
 				//set current stack view
 				_stack.getStack().show("#public");
 			};

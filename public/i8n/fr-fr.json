@@ -171,5 +171,6 @@
 	"sentdocmsg": " vous a envoyé un document Ideafy",
 	"notavalidaddress": " n'est pas une adress email valide",
 	"norecipient": "Pas de destinataire saisi",
-	"sendlbl": "Envoyer"
+	"sendlbl": "Envoyer",
+	"notificationlbl": "Notifications"
 }

@@ -82,6 +82,10 @@ define("Ideafy/Notify", ["Olives/OObject", "Config", "Map", "Store", "Olives/Mod
                         popup.classList.remove("show-notify");        
                 };
                 
+                notifyPopup.displayComCenter = function displayComCenter(event, node){
+                        var id = node.getAttribute("data-notify_id");
+                        observer.notify("display-message", id);        
+                };
                 
                 // init notifications engine
                  notify.init = function init(){

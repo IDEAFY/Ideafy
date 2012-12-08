@@ -39,6 +39,8 @@ define("Map", ["Store"], function(Store){
                         "library-sendmail" : document.querySelector("#ideas-detail .idea-sendmail"),
 		        "sessions" : document.getElementById("sessions"),
 		        "decks" : document.getElementById("decks"),
+		        "decklist" : document.getElementById("decklist"),
+		        "deckview" : document.getElementById("deckview"),
 		"connect" : document.getElementById("connect"),
 		        "connect-menu": document.getElementById("connect-menu"),
 		"dashboard" : document.getElementById("dashboard"),

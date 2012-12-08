@@ -160,6 +160,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                                 "object" : _labels.get("signupwelcomeobject"),
                                                                 "status" : "unread",
                                                                 "author" : "IDEAFY",
+                                                                "name" : "Ideafy",
                                                                 "body" : _labels.get("signupwelcomebody")
                                                         }]);
                                                         

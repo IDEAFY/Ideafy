@@ -25,13 +25,13 @@ define("Ideafy/Notify", ["Olives/OObject", "Config", "Map", "Store", "Olives/Mod
                                                 flash = setInterval(function(){
                                                         console.log("bip");
                                                         (node.classList.contains("orange")) ? node.classList.remove("orange") : node.classList.add("orange");
-                                                }, 500);
+                                                }, 600);
                                         
                                                 setTimeout(function(){
                                                         clearInterval(flash);
                                                         node.classList.remove("orange");
                                                         notif.set("newmsg", false);
-                                                }, 6000);
+                                                }, 3000);
                                         }
                                 }
                         }),
@@ -91,8 +91,7 @@ define("Ideafy/Notify", ["Olives/OObject", "Config", "Map", "Store", "Olives/Mod
                         notif.set("newmsg", false);
                         
                         messages.reset(user.get("notifications"));
-                        notifyPopup.place(popup);
-                        console.log(messages.toJSON(), notifyPopup.template);    
+                        notifyPopup.place(popup);    
                 };
                 
                 // watch for new/unread messages
@@ -104,6 +103,7 @@ define("Ideafy/Notify", ["Olives/OObject", "Config", "Map", "Store", "Olives/Mod
                                 notif.set("newmsg", true);
                                 notif.set("unread", unread);
                                 currentUnread = unread;
+                                if (user.get("settings") && user.get("settings").notifyPopup) popup.classList.add("show-notify");
                         }
                         else if (unread < currentUnread){
                                 notif.set("unread", unread);

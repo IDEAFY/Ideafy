@@ -308,7 +308,6 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
         
         // init
         this.reset();
-        TRSP = _transport;
         
         return _config;
 });

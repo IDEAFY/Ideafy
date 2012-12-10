@@ -93,7 +93,7 @@ define("Ideafy/Library/Idea-detail",
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
 					},
 					setRating : function setRating(rating) {
-                                                this.innerHTML = rating;
+                                                this.innerHTML = Math.round(rating*100)/100;
                                                 // this is necessary because the rating data is not supplied by the lucene design do --> to be investigated
                                                 if (rating === undefined) {
                                                         var _id = this.getAttribute("data-listideas_id"),

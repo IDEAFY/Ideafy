@@ -25,7 +25,7 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                 },
                                 setRating : function setRating(rating) {
-                                        this.innerHTML = rating;
+                                        this.innerHTML = Math.round(rating*100)/100;
                                         if (rating === undefined) {
                                                 var _id = this.getAttribute("data-listideas_id"),
                                                     _arr = _store.get(_id).doc.votes || [];

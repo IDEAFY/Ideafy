@@ -43,6 +43,10 @@ define("Map", ["Store"], function(Store){
 		        "deckview" : document.getElementById("deckview"),
 		"connect" : document.getElementById("connect"),
 		        "connect-menu": document.getElementById("connect-menu"),
+		        "connect-messages": document.getElementById("connect-messages"),
+		        "msg-detail": document.getElementById("msg-detail"),
+		        "connect-contacts": document.getElementById("connect-contacts"),
+		        "connect-twocents": document.getElementById("connect-twocents"),
 		"dashboard" : document.getElementById("dashboard"),
 		        "dashboard-menu": document.getElementById("dashboard-menu")
 	});

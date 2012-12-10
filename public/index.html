@@ -413,12 +413,13 @@
       		<div class="sub-menu">
       			<div class="left-caret"></div>
       			<ul class="menu-list" data-menucontrol="radio:li,selected,touchstart,setCurrentWidget">
-      				<li class="menu-item selected" data-menucontrol="init"><a class="connect-item" href="#connect-contacts" data-label="bind:innerHTML, connect-contacts">Contacts</a></li>
-      				<li class="menu-item"><a class="connect-item" href="#connect-messages" data-label="bind:innerHTML, connect-messages">Messgaes</a></li>
-      				<li class="menu-item"><a class="connect-item" href="#connect-twocents" data-label="bind:innerHTML, connect-twocents">Twocents</a></li>
+      				<li class="menu-item selected" data-menucontrol="init" name="#messages"><a class="connect-item" href="#connect-messages" data-label="bind:innerHTML, connect-messages"></a></li>
+      				<li class="menu-item" name="#contacts"><a class="connect-item" href="#connect-contacts" data-label="bind:innerHTML, connect-contacts"></a></li>
+      				<li class="menu-item" name="#twocents"><a class="connect-item" href="#connect-twocents" data-label="bind:innerHTML, connect-twocents"></a></li>
       			</ul>      		
       		</div>
-		</div>	
+		</div>
+		<div class="stack" data-connectstack="destination">	
       </div>
       
       <div id="dashboard">
@@ -487,6 +488,10 @@
   <script src="js/src2/library/decks/deckview/deckview.js"></script>
 
   <script src="js/src2/connect/connect.js"></script>
+  <script src="js/src2/connect/contacts/contacts.js"></script>
+  <script src="js/src2/connect/messages/messages.js"></script>
+  <script src="js/src2/connect/messages/message-detail.js"></script>
+  <script src="js/src2/connect/twocents/twocents.js"></script>
 
 
   <script src="js/src2/dashboard/dashboard.js"></script>

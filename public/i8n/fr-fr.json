@@ -160,7 +160,7 @@
 	"ideafytutorial": "Didacticiel",
 	"connect-contacts": "Contacts",
 	"connect-messages": "Messages",
-	"connect-twocent": "Two cents",
+	"connect-twocents": "Two cents",
 	"dashboard-profile": "Mon profil",
 	"dashboard-settings": "Paramètres",
 	"dashboard-about": "A propos d'Ideafy",
@@ -172,5 +172,10 @@
 	"notavalidaddress": " n'est pas une adress email valide",
 	"norecipient": "Pas de destinataire saisi",
 	"sendlbl": "Envoyer",
-	"notificationlbl": "Notifications"
+	"notificationlbl": "Notifications",
+	"allbtn": "Tous",
+	"msgbtn": "Messages",
+	"notifbtn": "Informations",
+	"unreadbtn": "Non lus",
+	"searchmsgplaceholder": "Rechercher..."
 }

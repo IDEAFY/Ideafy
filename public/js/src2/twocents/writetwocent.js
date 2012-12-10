@@ -15,7 +15,7 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                 this.plugins.addAll({
                         "twocent": new ModelPlugin(twocent,{
                                 setAvatar : function(author){
-                                        this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center;");
+                                        this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center;background-size:cover;");
                                 },
                                 date : function(date){
                                         if (date) {this.innerHTML = Utils.formatDate(date);}        

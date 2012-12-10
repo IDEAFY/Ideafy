@@ -160,7 +160,7 @@
 	"ideafytutorial": "ideafy tutorial",
 	"connect-contacts": "Contacts",
 	"connect-messages": "Messages",
-	"connect-twocent": "Two cents",
+	"connect-twocents": "Two cents",
 	"dashboard-profile": "My profile",
 	"dashboard-settings": "Settings",
 	"dashboard-about": "About Ideafy",
@@ -172,5 +172,10 @@
 	"notavalidaddress": " is not a valid email address",
 	"norecipient": "No email address specified",
 	"sendlbl": "Send",
-	"notificationlbl": "Notifications"
+	"notificationlbl": "Notifications",
+	"allbtn": "View all",
+	"msgbtn": "Messages",
+	"notifbtn": "Notifications",
+	"unreadbtn": "Unread",
+	"searchmsgplaceholder": "Search messages..."
 }

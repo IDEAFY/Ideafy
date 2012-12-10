@@ -63,7 +63,6 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 .header {
   position:relative;
-
   text-align:center;
   color:white;
 }
@@ -102,6 +101,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   position:absolute;
   width:630px;
   left:394px;
+  z-index: -10;
 }
 
 /* utils list */
@@ -127,7 +127,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   padding: 10px 20px;
 }
 
-.list-item div, .menu-item a{
+.list-item div, .menu-item a, .list-item p{
   /* prevent events */
   pointer-events:none;
 }
@@ -798,9 +798,9 @@ ul.notify-list{
 }
 
 
-#public-list .option.right, #idea-list .option.right {
+#public-list .option.right, #idea-list .option.right, #connect-messages .option.right {
   background:url('../img/public/plus2.png') no-repeat center center;
-  background-size:20px 20px;
+  background-size:20px;
 }
 
 #public-list .option.left,  #idea-list .option.left{
@@ -826,20 +826,22 @@ ul.notify-list{
 
 #public-detail .option.right[href="#public-favorites"], #ideas-detail .option.right[href="#library-favorites"]{
     background:url('../img/public/vote.png') no-repeat center center;
+    background-size: 15px;
 }
 
 #public-detail .option.right[href="#public-edit"], #ideas-detail .option.right[href="#library-edit"] {
     background:url('../img/wall/headerModifyYourIdea.png') no-repeat center center;
+    background-size: 20px;
 }
 
 #public-detail .option.left[href="#public-2cents"], #ideas-detail .option.left[href="#library-2cts"]{
     background:url('../img/public/2cents.png') no-repeat center center;
-    background-size:15px 15px;
+    background-size: 20px;
 }
 
 #public-detail .option.left[href="#public-share"], #ideas-detail .option.left[href="#library-share"]{
     background:url('../img/wall/25shareActive.png') no-repeat center center;
-    background-size: 80%;
+    background-size: 30px;
 }
 
 .idea-detail {
@@ -1378,7 +1380,7 @@ textarea.solution {
     padding: 20px 40px 20px 30px;    
 }
 
-.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar{
+.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar, .msglist .avatar{
   width:40px;
   height:40px;
   border-radius:20px;
@@ -3292,4 +3294,90 @@ li.color-item{
 
 #quickwrapup .cardlist{
     margin: 20px 0px 0px 20px;
+}
+
+
+/*CONNECT*/
+
+.messages{
+    text-align: center;
+}
+
+#connect-messages .selectors{
+    display: inline-block;
+    margin: 0 auto;
+    height: 55px;
+    padding-top:5px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+#connect-messages .selectors li{
+    width: 65px;
+    font-size: 11px;
+    border-radius: 0px;
+    border-right: none;
+    color: black;
+}
+
+#connect-messages .selectors li.pressed{
+    color: white;
+}
+
+#connect-messages .selectors li:first-child{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#connect-messages .selectors li:last-child{
+    border-right: 1px solid #CCCCCC;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.messages input{
+    margin-top: 10px;
+    margin-left: -70px;
+}
+
+.msglist{
+    margin-top: 20px;
+}
+
+.msg{
+    padding: 10px;
+    text-align: left;
+    min-height: 50px;
+    overflow: hidden; 
+}
+
+.msg:first-child{
+    border-top: 1px solid #cccccc;
+}
+
+.msg-author{
+    font-size:16px;
+    color: black;
+}
+
+.msg-subject{
+    font-style: italic;
+    font-size: 14px;
+    color: #4D4D4D;
+}
+
+.msg-author, .msg-subject{
+    margin-left: 50px;
+    font-weight: normal;
+    margin-bottom: 5px;
+}
+
+.msg .date{
+    color: #808080;
+    font-size: 12px;
+    margin-top: -20px;
+}
+
+.unread {
+    font-weight: bold;
 }

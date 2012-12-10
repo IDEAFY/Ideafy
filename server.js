@@ -54,6 +54,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                             dataurl,
                             sid;
                         
+                        console.log("UPLOAD REQUEST", res);
+                        
                         if (type === 'postit'){
                                 sid = req.body.sid;
                                 now = new Date();
@@ -112,7 +114,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         var parse = url.parse(req.url, false),
                             _path = parse.pathname,
                             readFile = wrap(fs.readFile);
-                  
+                        
                         if (req.method === 'GET' && _path.search("/attachments")>-1){    
                                 // get file extension
                                 var     ext,
@@ -148,7 +150,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         key : "ideafy.sid",
                         store : sessionStore,
                         cookie : {
-                                maxAge : 86400000,
+                                maxAge : 864000000,
                                 httpOnly : true,
                                 path : "/"
                         }
@@ -167,11 +169,17 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
         io.set("close timeout", 15);
         io.set("heartbeat interval", 10);
+        
         // we need lots of sockets
         http.globalAgent.maxSockets = Infinity;
 
         // register transport
         olives.registerSocketIO(io);
+        
+        // check or set cookie on connection
+        io.sockets.on('connection', function(client){
+                console.log(client.id, client.handshake);
+        });
         
         // couchdb config update (session authentication)
         olives.config.update("CouchDB", "sessionStore", sessionStore);
@@ -342,7 +350,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         olives.handlers.set("CheckLogin", function(json, onEnd){
                 var cookieJSON = cookie.parse(json.handshake.headers.cookie),
                     sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
-                    cdb = new CouchDBStore();    
+                    cdb = new CouchDBStore();
+                    
                 // return false if document does not exist in database
                 getDocAsAdmin(json.id, cdb).then(function(){
                                 sessionStore.get(sessionID, function(err, session){

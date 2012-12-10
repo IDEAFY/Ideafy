@@ -22,7 +22,7 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Map", "Amy/Stack-plug
                 defaultPage.template = '<div class="msgSplash"></div>';
                 
                 //init
-                detailStack.getStack.add("#default", defaultPage);
+                detailStack.getStack().add("#default", defaultPage);
                 
                 // show default page
                 detailStack.getStack().show("#default");

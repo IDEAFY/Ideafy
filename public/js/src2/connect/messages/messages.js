@@ -1,10 +1,11 @@
-define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "Config", "Ideafy/Avatar", "Ideafy/Utils", "Ideafy/Connect/MessageDetail"],
-        function(Widget, Map, Model, Event, Control, Store, Config, Avatar, Utils, MessageDetail){
+define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Amy/Stack-plugin", "Store", "Config", "Ideafy/Avatar", "Ideafy/Utils", "Ideafy/Connect/MessageDetail"],
+        function(Widget, Map, Model, Event, Control, Stack, Store, Config, Avatar, Utils, MessageDetail){
                 
                 return function MessagesConstructor(){
                         
                         var messageUI = new Widget(),
-                            detailUI = new MessageDetail(),
+                            detailStack = new Stack(),
+                            defaultPage = new Widget(), // to show in detail space when no message is selected
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "messages", "label": "msgbtn", "selected": false},
@@ -85,7 +86,8 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         }
                                 }),
                                 "msglistevent" : new Event(messageUI),
-                                "msglistcontrol" : new Control(messageUI)
+                                "msglistcontrol" : new Control(messageUI),
+                                "msgdetailstack" : detailStack
                         });
                         
                         messageUI.template = '<div id="connect-messages"><div class="messages list"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Mailbox</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchstart,selectMsg"><ul data-msg="foreach"><li class="msg list-item"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date">jj/mm/aaaa</span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:innerHTML, object">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
@@ -122,7 +124,16 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 
                         };
                         
+                        defaultPage.template = '<div class="msgsplash"><div class="header blue-dark"><span>'+Config.get("labels").get("messageview")+'</span></div><div class="innersplash"></div></div>';
+                       
+                        // initialize
+                        // get message list from user document
                         messageUI.init();
+                        // add UIs to detail stack
+                        detailStack.getStack().add("#defaultPage", defaultPage);
+                        detailStack.getStack().add("#msgdetail", new MessageDetail());
+                        // show default page
+                        detailStack.getStack().show("#defaultPage");
                         
                         return messageUI;
                 };

@@ -1,36 +1,16 @@
-define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Map", "Amy/Stack-plugin"],
-        function(Widget, Map, Stack){
+define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Map" , "Config"],
+        function(Widget, Map, Config){
                 
            return function MessageDetailConstructor(){
            
-                var msgDetailUI = new Widget(),
-                    defaultPage = new Widget(),
-                    detailStack = new Stack();
+                var msgDetailUI = new Widget();
                 
-                msgDetailUI.plugins.add("msgdetailstack", detailStack);
-                
-                msgDetailUI.alive(Map.get("msg-detail"));
-                
-                msgDetailUI.read = function read(msgId){
-                        
-                };
-                
-                msgDetailUI.write = function write(){
-                        
-                };
-                
-                defaultPage.template = '<div class="msgSplash"></div>';
+                msgDetailUI.template = '<div id="msgdetail"></div>';
                 
                 //init
-                detailStack.getStack().add("#default", defaultPage);
-                
-                // show default page
-                detailStack.getStack().show("#default");
-                
-                
-                
+                msgDetailUI.reset = function reset(msg){
+                };
                 
                 return msgDetailUI;
-                   
-           };      
+            };      
         });

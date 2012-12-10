@@ -3381,3 +3381,17 @@ li.color-item{
 .unread {
     font-weight: bold;
 }
+
+.msgsplash{
+    width: 630px;
+    height:100%;
+}
+
+.innersplash{
+    width:100%;
+    height:100%;
+    background: white;
+    background-image: url('../img/brainstorm/doctordeedee87x85.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}

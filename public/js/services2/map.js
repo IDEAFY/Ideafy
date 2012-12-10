@@ -44,7 +44,7 @@ define("Map", ["Store"], function(Store){
 		"connect" : document.getElementById("connect"),
 		        "connect-menu": document.getElementById("connect-menu"),
 		        "connect-messages": document.getElementById("connect-messages"),
-		        "msg-detail": document.getElementById("msg-detail"),
+		        "msgdetail": document.getElementById("msgdetail"),
 		        "connect-contacts": document.getElementById("connect-contacts"),
 		        "connect-twocents": document.getElementById("connect-twocents"),
 		"dashboard" : document.getElementById("dashboard"),

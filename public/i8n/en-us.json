@@ -177,5 +177,6 @@
 	"msgbtn": "Messages",
 	"notifbtn": "Notifications",
 	"unreadbtn": "Unread",
-	"searchmsgplaceholder": "Search messages..."
+	"searchmsgplaceholder": "Search ...",
+	"messageview" : "Message panel"
 }

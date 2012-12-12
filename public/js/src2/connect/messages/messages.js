@@ -26,6 +26,7 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                             display = false,
                             currentBar = null,
                             user = Config.get("user"),
+                            observer = Config.get("observer"),
                             sortMessages = function(id){
                                     var type = sortButtons.get(id).name,
                                         msgs = user.get("notifications"),
@@ -227,6 +228,28 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 if (currentSort>-1) {
                                         msgList.reset(sortMessages(currentSort));
                                 }            
+                        });
+                        
+                        observer.watch("display-message", function(id){
+                                var arr = user.get("notifications"), idx, message = msgList.get(id);
+                                
+                                // change message status to read
+                                // first need to retrieve message in user notifications
+                                for (i=0, l=arr.length; i<l;i++){
+                                        if (JSON.stringify(arr[i]) === JSON.stringify(message)) {
+                                                index = i;
+                                                break;
+                                        }
+                                }
+                                arr[index].status = "read";
+                                user.set("notifications", arr);
+                                user.upload();
+                                
+                                // display message detail
+                                detailStack.getStack().show("#msgdetail");
+                                messageDetail.reset(msgList.get(id));
+                                previousScreen = "#msgdetail";        
+                                        
                         });
                         
                         return messageUI;

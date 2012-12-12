@@ -81,7 +81,15 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
                                 document.querySelector(".dock-item.selected").classList.remove("selected");
                                 document.querySelector(".dock-item[href='#library']").classList.add("selected");
                         });
-
+                        
+                        // display message center
+                        _observer.watch("display-message", function(id){
+                                _stack.getStack().show("#connect");
+                                document.querySelector(".dock-item.selected").classList.remove("selected");
+                                document.querySelector(".dock-item[href='#connect']").classList.add("selected");
+                        });
+                        
+                        
 		//return
 			return _widget;
 

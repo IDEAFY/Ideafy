@@ -29,7 +29,7 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                                 },
                                 showCcList : function(ccList){
                                         (ccList)?this.classList.remove("invisible"):this.classList.add("invisible");
-                                }
+                                },
                                 setAvatar : function setAvatar(author){
                                                 var _frag = document.createDocumentFragment(),
                                                     _ui = new Avatar([author]);

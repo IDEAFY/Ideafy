@@ -5,9 +5,13 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         
                         var messageUI = new Widget(),
                             detailStack = new Stack(),
+                            close = function (){
+                                    detailStack.getStack().show(previousScreen)
+                            },
+                            previousScreen = "#defaultPage",
                             defaultPage = new Widget(), // to show in detail space when no message is selected
                             messageDetail = new MessageDetail(),
-                            newMessage = new NewMessage(),
+                            newMessage = new NewMessage(close),
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "messages", "label": "msgbtn", "selected": false},
@@ -79,7 +83,19 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 }),
                                 "msg" : new Model(msgList,{
                                         date : function date(date){
-                                                if (date) {this.innerHTML = Utils.formatDate(date);}
+                                                var now = new Date();
+                                                if (date && date[0] === now.getFullYear() && date[1] === now.getMonth() && date[2] === now.getDate()){
+                                                        var hrs = date[3],
+                                                            min = date[4],
+                                                            sec = date[5];
+                                                        if (hrs<10) {hrs = "0" + hrs;}
+                                                        if (min<10) {min = "0" + min;}
+                                                        if (sec<10) {sec = "0" + sec;}
+                                                        this.innerHTML = hrs+":"+min+":"+sec;
+                                                }
+                                                else {
+                                                        this.innerHTML = Utils.formatDate(date);
+                                                }
                                         },
                                         highlight: function(status){
                                                 (status === "unread") ? this.classList.add("unread"):this.classList.remove("unread");
@@ -148,8 +164,9 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 user.upload();
                                 
                                 // display message detail
-                                messageDetail.reset(msgList.get(id));
                                 detailStack.getStack().show("#msgdetail");
+                                messageDetail.reset(msgList.get(id));
+                                previousScreen = "#msgdetail";
                                       
                         };
                         
@@ -185,7 +202,7 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 }
                         };
                 
-                        this.hideActionBar = function hideActionBar(ui){
+                        messageUI.hideActionBar = function hideActionBar(ui){
                                 var parent = ui.dom.parentElement;
                                 parent.removeChild(parent.lastChild);
                                 display = false;

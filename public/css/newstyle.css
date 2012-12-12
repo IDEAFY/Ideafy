@@ -864,7 +864,7 @@ ul.notify-list{
   border-bottom:1px solid #CCC;
 }
 
-.detail-header .avatar, #newmsg .avatar{
+.detail-header .avatar, #newmsg .avatar, #msgreply .avatar{
   float:left;
   width: 60px;
   height: 60px;
@@ -1021,7 +1021,7 @@ ul.notify-list{
     z-index: 1000;
 }
 
-.idea-edit .input, .idea-sendmail .input, #newmsg .input {
+.idea-edit .input, .idea-sendmail .input, #newmsg .input, #msgreply .input {
     font-size: 14px;
 }
 
@@ -1053,7 +1053,7 @@ textarea.input {
   font-size: 14px;
 }
 
-.idea-sendmail .mail-header, #newmsg .mail-header{
+.idea-sendmail .mail-header, #newmsg .mail-header, #msgreply .mail-header{
   -webkit-box-sizing:border-box;
   width:100%;
   padding:10px 0 0 10px;
@@ -1062,8 +1062,8 @@ textarea.input {
   outline:0;
   background-image: -webkit-linear-gradient(top, #F2F2F2, #F2F2F2);
   -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
-  line-height: 20px;
-  min-height: 30px;
+  line-height: 15px;
+  min-height: 25px;
   max-height: 75px;
   font-size: 14px;
 }
@@ -1172,13 +1172,13 @@ textarea.solution {
     padding: 20px;
 }
 
-.idea-sendmail .input, #newmsg .input{
+.idea-sendmail .input, #newmsg .input, #msgreply .input{
     height:30px;
     padding-left: 10px;
     font-size: 14px;
 }
 
-.idea-sendmail textarea.input, #newmsg textarea.input{
+.idea-sendmail textarea.input, #newmsg textarea.input, #msgreply textarea.input{
     padding: 20px;
     min-height: 150px;
 }
@@ -3382,6 +3382,11 @@ li.color-item{
     font-weight: bold;
 }
 
+#msg-detail{
+    overflow-y: scroll;
+   -webkit-overflow-scrolling: touch;
+                                                                                     }
+
 .msgsplash{
     width: 630px;
     height:100%;
@@ -3427,6 +3432,10 @@ li.color-item{
 #msgdetail .detail-header .date{
     font-size: 12px;
     float: none;
+}
+
+#msgdetail .detail-body{
+    padding-bottom: 20px;
 }
 
 .msgoptions{
@@ -3512,13 +3521,43 @@ li.color-item{
     border-bottom-right-radius: 5px; 
 }
 
-#newmsg .avatar{
+#newmsg .avatar, #msgreply .avatar{
     margin: 20px;
 }
 
-#newmsg .form{
+#newmsg .form, #msgreply .form{
     margin-left: 80px;
     padding: 20px;
 }
 
+#newmsg .form p, #msgreply .form p{
+    margin-bottom: 10px;
+}
 
+.form legend, #msgreply .subject{
+    font-family: pacifico;
+    font-size: 12px;
+}
+
+#msgreply blockquote{
+    font-size: 12px;
+    font-style: italic;
+    padding: 5px;
+    border: 1px dashed #657B99;
+}
+
+.signature{
+    -webkit-box-sizing: border-box;
+    width: 100%;
+    padding: 10px 0 0 10px;
+    border: 0px;
+    border-radius: 0px;
+    outline: 0;
+    background-image: -webkit-linear-gradient(top, #F2F2F2, #F2F2F2);
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.3);
+    line-height: 15px;
+    min-height: 65px;
+    max-height: 75px;
+    font-size: 14px;
+}
+}

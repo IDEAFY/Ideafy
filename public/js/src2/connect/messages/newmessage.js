@@ -1,7 +1,7 @@
 define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "Promise"],
         function(Widget, Model, Event, Config, Store, Promise){
                 
-                return function NewMessageConstructor(){
+                return function NewMessageConstructor($close){
                         
                         var newMessageUI = new Widget(),
                             message = new Store(),
@@ -9,7 +9,7 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                             labels = Config.get("labels"),
                             user = Config.get("user"),
                             transport = Config.get("transport"),
-                            sendInProgress = false;
+                            sendInProgress = false,
                             validateRecipients = function(onEnd){
                                     var to = message.get("toList").toLowerCase().split(/,|;/),
                                         cc = message.get("ccList").toLowerCase().split(/,|;/),
@@ -17,7 +17,6 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                         dest = [],
                                         json = {},
                                         promise = new Promise();
-                                    
                                     // reset recipient list
                                     arr = [];    
                                     // check recipients
@@ -46,7 +45,6 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                                 }      
                                             }
                                     }
-                                    
                                     //obtain userids from usernames
                                     if (!error.get("errormsg")){
                                                 json.list = dest;
@@ -79,10 +77,11 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                 "newmessageevent" : new Event(newMessageUI)
                         });
                         
-                        newMessageUI.template = '<div id="newmsg"><div class="header blue-dark"><span data-labels="bind: innerHTML, newmsg">New message</span></div><div class="avatar" data-newmessage="bind: setAvatar, author"></div><form class="form"><p><textarea class="mail-header" data-newmessage="bind: value, toList" data-labels="bind:placeholder, tocontactlbl"></textarea></p><p><textarea class="mail-header" data-newmessage="bind: value, ccList" data-labels="bind:placeholder, cclbl"></textarea></p><p><input type="text" class="input" data-newmessage="bind:value, object" data-labels="bind:placeholder, subjectlbl"></textarea></p><p><textarea class="input" data-newmessage="bind:value, body"></textarea></p><p><legend>Signature</legend><textarea class="mail-header" data-newmessage="bind:innerHTML, signature"></textarea></p><div class="sendmail-footer"><p class="send"><label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-newmessageevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-labels="bind:innerHTML, sendlbl" data-newmessageevent="listen:touchstart, press; listen:touchend, send">Send</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div>';
+                        newMessageUI.template = '<div id="newmsg"><div class="header blue-dark"><span data-labels="bind: innerHTML, newmsg">New message</span></div><div class="avatar" data-newmessage="bind: setAvatar, author"></div><form class="form"><p><textarea class="mail-header" data-newmessage="bind: value, toList" data-labels="bind:placeholder, tocontactlbl"></textarea></p><p><textarea class="mail-header" data-newmessage="bind: value, ccList" data-labels="bind:placeholder, cclbl"></textarea></p><p><input type="text" class="input" data-newmessage="bind:value, object" data-labels="bind:placeholder, subjectlbl"></p><p><textarea class="input" data-newmessage="bind:value, body"></textarea></p><p><legend>Signature</legend><textarea class="signature" data-newmessage="bind:value, signature"></textarea></p><div class="sendmail-footer"><p class="send"><label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-newmessageevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-labels="bind:innerHTML, sendlbl" data-newmessageevent="listen:touchstart, press; listen:touchend, send">Send</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div>';
                         
                         newMessageUI.reset = function reset(){
-                                message.reset({"author": user.get("_id"), "username": user.get("username"), "type": "MSG", "signature": user.get("username"), "toList":"", "ccList":"", "object":"", "body":"", date: null}); 
+                                message.reset({"author": user.get("_id"), "username": user.get("username"), "firstname": user.get("firstname"), "type": "MSG", "signature": user.get("username"), "toList":"", "ccList":"", "object":"", "body":"", date: null}); 
+                                (user.get("signature")) ? message.set("signature", user.get("signature")) : message.set("signature", user.get("username"));
                                 error.reset({"errormsg":""});       
                         };
                         
@@ -91,7 +90,10 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                         };
                         
                         newMessageUI.cancel = function(event, node){
-                                node.classList.remove ("pressed");       
+                                node.classList.remove ("pressed");
+                                sendInProgress = false;
+                                newMessageUI.reset();
+                                $close();      
                         };
                         
                         newMessageUI.send = function(event, node){
@@ -121,7 +123,7 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                                                 sendInProgress = false;
                                                                 newMessageUI.reset();
                                                                 error.set("errormsg", labels.get("messagesentok"));
-                                                                setTimeout(function(){error.set("errormsg", "");sendInProgress=false;}, 3000);
+                                                                setTimeout(function(){error.set("errormsg", "");sendInProgress=false;$close();}, 2000);
                                                         });
                                                 }
                                                 else{

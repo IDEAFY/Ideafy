@@ -188,5 +188,6 @@
 	"tocontactlbl": "Contact :",
 	"entersubjectlbl": "Please enter a subject",
 	"notavalidcontact": " is not a contact",
-	"messagesentok": "Your message has been sent"
+	"messagesentok": "Your message has been sent",
+	"on" : "On "
 }

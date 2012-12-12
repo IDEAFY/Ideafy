@@ -605,6 +605,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         "date" : json.date,
                         "author" : json.author,
                         "username" : json.username,
+                        "firstname" : json.firstname,
                         "toList" : json.toList,
                         "ccList" : json.ccList,
                         "object" : json.object,

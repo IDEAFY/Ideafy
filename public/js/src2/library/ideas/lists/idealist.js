@@ -25,16 +25,16 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                 },
                                 setRating : function setRating(rating) {
-                                        this.innerHTML = Math.round(rating*100)/100;
                                         if (rating === undefined) {
                                                 var _id = this.getAttribute("data-listideas_id"),
                                                     _arr = _store.get(_id).doc.votes || [];
-                                                if (_arr.length === 0) {this.innerHTML = ""}
+                                                if (_arr.length === 0) {this.innerHTML = "0";}
                                                 else {
                                                         this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
                                                 }
                                                 
                                         }
+                                        else this.innerHTML = Math.round(rating*100)/100;
                                 },
                                 setAvatar : function setAvatar(authors){
                                         var _ui, _frag;
@@ -53,11 +53,15 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                         return _store;
                 };
                 this.resetQuery = function(query) {
+                        var promise = new Promise();
                         _options.query = query;
 
                         _store.unsync();
                         _store.reset([]);
-                        _store.sync(_options.db, _options.design, _options.view, _options.query);
+                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                promise.resolve();
+                        });
+                        return promise;
                 };
 
                 this.setStart = function(event, node){

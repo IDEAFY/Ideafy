@@ -102,7 +102,6 @@ define("Ideafy/Notify", ["Olives/OObject", "Config", "Map", "Store", "Olives/Mod
                 
                 user.watchValue("notifications", function(){
                         var unread = notify.getUnread();
-                        console.log("unread");
                         if (unread > currentUnread){
                                 notif.set("newmsg", true);
                                 notif.set("unread", unread);

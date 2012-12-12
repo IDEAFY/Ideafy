@@ -172,10 +172,21 @@
 	"notavalidaddress": " n'est pas une adress email valide",
 	"norecipient": "Pas de destinataire saisi",
 	"sendlbl": "Envoyer",
+	"msglistheadertitle": "Mes Messages",
 	"notificationlbl": "Notifications",
 	"allbtn": "Tous",
 	"msgbtn": "Messages",
 	"notifbtn": "Informations",
 	"unreadbtn": "Non lus",
-	"searchmsgplaceholder": "Rechercher..."
+	"searchmsgplaceholder": "Rechercher...",
+	"messageview" : "Panneau d'affichage",
+	"replyalllbl" : "Répondre à tous",
+	"forwardlbl" : "Faire suivre",
+	"deletelbl" : "Supprimer",
+	"newmsg": "Nouveau message",
+	"cclbl": "Cc:",
+	"tocontactlbl": "Contact :",
+	"entersubjectlbl": "Veuillez renseigner le champ objet",
+	"notavalidcontact": " n'est pas un contact",
+	"messagesentok": "Votre message a été envoyé"
 }

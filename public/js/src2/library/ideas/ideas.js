@@ -10,6 +10,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 				byDate = _dom.querySelector(".bydate"),             // header buttons need to be declared
                                 byRating =  _dom.querySelector(".byrating"),        // disabled if search is active
 				_db = Config.get("db"),
+				_observer = Config.get("observer"),
 				_radio = new Control(this),
 				_detail = new Detail(),
                                 _menu = new Menu(Map.get("library-menu")),
@@ -66,7 +67,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			        Map.get("cache").classList.add("appear");        
 			};
 			
-			this.search = function(event, node){
+			this.search = function (event, node){
 			        if (event.keyCode === 13){
 			             if (node.value === ""){
 			                     byDate.setAttribute("style", "display: inline-block;");
@@ -76,14 +77,21 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			                     byDate.classList.add("pushed");
 			             }
 			             else{
-			                     // hide sorting buttons (not available for the time being in search mode)
-			                     byDate.setAttribute("style", "display: none;");
-			                     byRating.setAttribute("style", "display: none;");
-			                     listSearch.resetQuery({q: node.value, sort: '\\creation_date<date>', include_docs: true});
-			                     _stack.getStack().show("#list-search");
+			                     _widget.searchIdea(node.value);
 			             }
 			        }
 			};
+			
+			_widget.searchIdea = function searchIdea(query){
+			     // hide sorting buttons (not available for the time being in search mode)
+                                byDate.setAttribute("style", "display: none;");
+                                byRating.setAttribute("style", "display: none;");
+                                listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
+                                        _stack.getStack().show("#list-search");
+                                        LS=listSearch.getModel();
+                                        _detail.reset(listSearch.getModel(), 0);        
+                                });
+                        };
 			
 			//may be set the list dom (not the public dom)
                         _widget.alive(_dom);
@@ -104,7 +112,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			
 			var listDate = new List(_db, "library", "_view/ideas", {key: Config.get("uid"), descending: true, include_docs:true}),
 			   //listRating = new List(_db, "ideas", "_view/ideasbyvotes", {key: Config.get("uid"), descending: true, include_docs:true}),
-			    listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
+			    listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
 			
 			_stack.getStack().add("#list-date", listDate);
 			
@@ -115,9 +123,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			// show private ideas sorted by most recent
 		        //listRating.init(_detail.reset);
 		        
-		        listDate.init(_detail.reset);
-			
-			listDate.init(_detail.reset).then(function(){
+		        listDate.init(_detail.reset).then(function(){
                               _stack.getStack().show("#list-date"); 
                         });
 			

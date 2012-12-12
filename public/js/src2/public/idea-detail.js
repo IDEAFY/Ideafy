@@ -93,16 +93,17 @@ define("Ideafy/Public/Idea-detail",
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
 					},
 					setRating : function setRating(rating) {
-                                                this.innerHTML = rating;
                                                 // this is necessary because the rating data is not supplied by the lucene design do --> to be investigated
                                                 if (rating === undefined) {
                                                         var _id = this.getAttribute("data-listideas_id"),
                                                             _arr = _store.get(_id).doc.votes;
+                                                            console.log(arr);
                                                         if (_arr.length === 0) this.innerHTML = ""
                                                         else {
                                                                 this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
                                                         }
                                                 }
+                                                else this.innerHTML = rating;
                                         },
                                         // display a vote button or the number of votes on an idea
 					toggleVoteButton : function(votes){
@@ -120,10 +121,10 @@ define("Ideafy/Public/Idea-detail",
                                                         _voted = true;
                                                         this.classList.remove("publicButton");
                                                         this.setAttribute("name", "voted");
-                                                        if (votes === 0){
+                                                        if (votes.length === 0){
                                                                 this.innerHTML = "("+_labels.get("novotesyet")+")";
                                                         }
-                                                        else if (votes === 1){
+                                                        else if (votes.length === 1){
                                                                 this.innerHTML = "("+ _labels.get("onevote")+")";
                                                         }
                                                         else{

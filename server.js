@@ -176,11 +176,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         // register transport
         olives.registerSocketIO(io);
         
-        // check or set cookie on connection
-        io.sockets.on('connection', function(client){
-                console.log(client.id, client.handshake);
-        });
-        
         // couchdb config update (session authentication)
         olives.config.update("CouchDB", "sessionStore", sessionStore);
         
@@ -554,136 +549,82 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
          *             - notify to notify one or several users
          *
          */
-        olives.handlers.set("CheckEmailList", function(json, onEnd) {
+        olives.handlers.set("CheckRecipientList", function(json, onEnd) {
 
-                var result = {}, cdb = new CouchDBStore(), list = json.list;
+                var result = {}, cdb = new CouchDBStore(), list = json.list, options = {}, bulkDocs = new Store(), req;
 
                 /**
                  * Building a temporary solution before changes in couchDBStore (one bulk query of the view)
                  */
 
-                // if there is only one recipient
-                if (list.length === 1) {
-                        cdb.setTransport(new Transport(olives.handlers));
-                        cdb.sync(_db, "users", "_view/tomail", {
-                                key : '"' + list[0] + '"'
-                        }).then(function(doc) {
-                                if (doc.getNbItems()) {
-                                        result.check = "Ok";
-                                        result.output = [{
-                                                "username" : doc.get(0).value.username,
-                                                "userid" : doc.get(0).value.userid
-                                        }];
-                                        onEnd(result);
-                                } else {
-                                        result.check = "error";
-                                        result.missing = [list[0]];
-                                        onEnd(result);
-                                }
-                                cdb.unsync();
-                        });
-                } else {
-                        var options = {}, bulkDocs = new Store(), req;
+                // manually build the http request to couchDB
+                options.hostname = "127.0.0.1";
+                options.port = 5984;
+                options.method = "POST";
+                options.auth = cdbAdminCredentials;
+                options.path = "/"+_db+"/_design/users/_view/username";
+                options.headers = {
+                        "Content-Type" : "application/json"
+                };
+                options.data = JSON.stringify({
+                        keys : json.list
+                });
 
-                        // manually build the http request to couchDB
-                        options.hostname = "127.0.0.1";
-                        options.port = 5984;
-                        options.method = "POST";
-                        options.auth = {
-                                user : "admin",
-                                pass : fs.readFileSync(".password", "utf8").trim()
-                        };
-                        options.path = "/"+_db+"/_design/users/_view/tomail";
-                        options.headers = {
-                                "Content-Type" : "application/json"
-                        };
-                        options.data = JSON.stringify({
-                                keys : json.list
+                /**
+                * Http request callback, handles couchDB response
+                * @param {Object} res the response
+                */
+                var callback = function(res) {
+                        var body = "";
+                        res.on('data', function(chunk) {
+                                body += chunk;
                         });
 
-                        /**
-                         * Http request callback, handles couchDB response
-                         * @param {Object} res the response
-                         */
-                        var callback = function(res) {
-                                var body = "";
-                                res.on('data', function(chunk) {
-                                        body += chunk;
-                                });
-
-                                res.on('end', function() {
-                                        bulkDocs.reset(JSON.parse(body).rows);
-                                        result = scanResults(body, bulkDocs);
+                        res.on('end', function() {
+                                if (JSON.parse(body).rows.length === json.list.length){
+                                        result = JSON.parse(body).rows;
                                         onEnd(result);
-                                });
-                        };
-
-                        /**
-                         * A function scanning the output of couchDB, checking for missing users and formatting results
-                         * @param {String} body the data sent back by couchdb
-                         * @param {Store} store the store containing the view documents
-                         */
-                        var scanResults = function(body, store) {
-                                var res = {
-                                        "check" : "",
-                                        "output" : [],
-                                        "missing" : []
-                                };
-                                for ( i = 0, l = list.length; i < l; i++) {
-                                        // if document not found, place  entry in the list of users not found
-                                        console.log(list[i], body.search(list[i]));
-                                        if (body.search(list[i]) < 0) {
-                                                res.missing.push(list[i]);
-                                        } else {
-                                                // need to check for multiple matches (homonyms)
-                                                store.loop(function(v) {
-                                                        if (v.value.username.toLowerCase() === list[i] || v.value.userid === list[i]) {
-                                                                res.output.push({
-                                                                        "username" : v.value.username,
-                                                                        "userid" : v.value.userid
-                                                                });
-                                                        }
-                                                });
-                                        }
                                 }
-                                (res.missing.length) ? res.check = "error" : res.check = "Ok";
-                                return res;
-                        };
-                        // emit the http request and the data
-                        req = http.request(options, callback);
-                        req.end(options.data, "utf8");
-                }
+                                else {
+                                        onEnd({error: "Error : one of more recipients not found in Ideafy"});
+                                }
+                        });
+                };
+                // emit the http request and the data
+                req = http.request(options, callback);
+                req.end(options.data, "utf8");
         });
 
         olives.handlers.set("Notify", function(json, onEnd) {
 
                 var dest = json.dest, sendResults = new Store([]),
-                
                 // build message
                 message = {
                         "type" : json.type,
                         "status" : "unread",
                         "date" : json.date,
                         "author" : json.author,
-                        "picture_file" : json.picture_file,
+                        "username" : json.username,
+                        "toList" : json.toList,
+                        "ccList" : json.ccList,
                         "object" : json.object,
-                        "body" : json.body
+                        "body" : json.body,
+                        "signature" : json.signature
                 },
 
                 /**
                  * A function to push message to couchDB
-                 * @param {Object} message the message to deliver
+                 * @param {Object} msg the message to deliver
                  * @param {String} userid the userid in couchDB to deliver the message to
                  */
-                sendMessage = function(message, userid) {
+                sendMessage = function(msg, userid) {
                         var cdb = new CouchDBStore();
-                        cdb.setTransport(new Transport(olives.handlers));
                         getDocAsAdmin(userid, cdb).then(function() {
                                 var arr = [];
                                 // retrieve notifications array
                                 if (cdb.get("notifications")[0]){arr = cdb.get("notifications");}
                                 // add message
-                                arr.unshift(message);
+                                arr.unshift(msg);
                                 // update store and upload
                                 cdb.set("notifications", arr);
                                 updateDocAsAdmin(userid, cdb).then(function() {
@@ -693,8 +634,22 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         });
                                 });
                         });
+                },
+                /**
+                 * A function to add message to sender's document in couchDB
+                 * @param {Object} msg the message to deliver
+                 */
+                addMessageToSent = function(msg){
+                        var cdb = new CouchDBStore();
+                        getDocAsAdmin(msg.author, cdb).then(function(){
+                                var arr = cdb.get("sentMessages")||[];
+                                arr.unshift(msg);
+                                cdb.set('sentMessages', arr);
+                                updateDocAsAdmin(msg.author, cdb).then(function(){
+                                        console.log("private copy saved");
+                                });    
+                        });
                 };
-                 
                  
                 // add specificities depending on message type
                 if (json.type === "CXR") {
@@ -705,24 +660,18 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         message.docType = json.docType;
                 }
 
-                // check if dest is a string (single recipient) or an array
-                if ( typeof dest === "string") {
-                        sendMessage(message, dest);
-                } else if ( dest instanceof Array) {
-                        for ( i = 0, l = dest.length; i < l; i++) {
-                                sendMessage(message, dest[i]);
-                        }
+                // send message to all recipients
+                for ( i = 0, l = dest.length; i < l; i++) {
+                        sendMessage(message, dest[i]);
                 }
+                
+                // add message to sent list
+                addMessageToSent(message);
+                
                 // return sendResults if all messages have been delivered
                 sendResults.watch("added", function() {
-                        if ( typeof dest === "string") {
-                                if (sendResults.getNbItems()) {
-                                        onEnd(sendResults.toJSON());
-                                }
-                        } else if ( dest instanceof Array) {
-                                if (sendResults.getNbItems() === dest.length) {
-                                        onEnd(sendResults.toJSON());
-                                }
+                        if (sendResults.getNbItems() === dest.length) {
+                        onEnd(sendResults.toJSON());
                         }
                 });
         });

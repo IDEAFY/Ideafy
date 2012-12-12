@@ -864,7 +864,7 @@ ul.notify-list{
   border-bottom:1px solid #CCC;
 }
 
-.detail-header .avatar {
+.detail-header .avatar, #newmsg .avatar{
   float:left;
   width: 60px;
   height: 60px;
@@ -1021,7 +1021,7 @@ ul.notify-list{
     z-index: 1000;
 }
 
-.idea-edit .input, .idea-sendmail.input{
+.idea-edit .input, .idea-sendmail .input, #newmsg .input {
     font-size: 14px;
 }
 
@@ -1053,7 +1053,7 @@ textarea.input {
   font-size: 14px;
 }
 
-.idea-sendmail .mail-header{
+.idea-sendmail .mail-header, #newmsg .mail-header{
   -webkit-box-sizing:border-box;
   width:100%;
   padding:10px 0 0 10px;
@@ -1172,13 +1172,13 @@ textarea.solution {
     padding: 20px;
 }
 
-.idea-sendmail .input{
+.idea-sendmail .input, #newmsg .input{
     height:30px;
     padding-left: 10px;
     font-size: 14px;
 }
 
-.idea-sendmail textarea.input{
+.idea-sendmail textarea.input, #newmsg textarea.input{
     padding: 20px;
     min-height: 150px;
 }
@@ -3395,3 +3395,130 @@ li.color-item{
     background-repeat: no-repeat;
     background-position: center;
 }
+
+#msgdetail .header{
+    text-align: left;
+}
+
+#msgdetail .header span{
+    margin-left: 10px;
+    font-size: 14px;
+    letter-spacing: 0;
+}
+
+#msgdetail .header .subjectlbl{
+    margin-left: 20px;
+}
+
+#msgdetail .detail-header{
+    margin: 0 20px 0 20px;
+}
+
+#msgdetail .detail-header p{
+    margin-left: 80px;
+    margin-top: 3px;
+}
+
+#msgdetail .toList{
+    font-size: 14px;
+    color: #808080;
+}
+
+#msgdetail .detail-header .date{
+    font-size: 12px;
+    float: none;
+}
+
+.msgoptions{
+    float: right;
+}
+
+.msgoptions .defaultmsgoption{
+    display: inline-block;
+}
+
+.msgoptions .msgoptionlist{
+    position: absolute;
+    top: 103px;
+    right: 20px;
+    display: inline-block;
+}
+
+.defaultmsgoption div, .msgoptionlist div{
+    float: left;
+    background-size: contain;
+}
+
+.msgoptionlist div{
+    height: 30px;
+    text-align: right;
+}
+
+.msgreply{
+    background: url('../img/connect/buttonMinSendDisable.png') no-repeat center;
+    width: 40px;
+    height: 40px;
+}
+
+.msgreply.pushed{
+    background: url('../img/connect/buttonMinSendActive.png') no-repeat center;
+    background-size: contain;
+}
+
+.more{
+    background: url('../img/connect/buttonMinSeeMoreDisable.png') no-repeat center;
+    width:30px;
+    height: 40px;  
+}
+
+.more.pushed{
+    background: url('../img/connect/buttonMinSeeMoreActive.png') no-repeat center;
+    background-size: contain;  
+}
+
+.msgoptionlist.invisible{
+    display: none;
+}
+
+.msgoptionlist .sort-button{
+    border-radius: 0px;
+    border-left: none;
+    margin: 0;
+    line-height: 30px;
+    font-size: 11px;
+    width: 100px;
+    text-align: center;
+    float: left;
+}
+
+.msgoptionlist .sort-button.pushed{
+    color: white;
+    background: #4D4D4D;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+}
+
+.msgoptionlist .replyall{
+    border-left: 1px solid #cccccc;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;    
+}
+
+.forward{
+    
+}
+
+.msgoptionlist .deletemsg{    
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px; 
+}
+
+#newmsg .avatar{
+    margin: 20px;
+}
+
+#newmsg .form{
+    margin-left: 80px;
+    padding: 20px;
+}
+
+

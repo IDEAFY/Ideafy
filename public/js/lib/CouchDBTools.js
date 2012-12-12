@@ -391,7 +391,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                         query: _syncInfo.query
                                 }, function (view) {
                                         var json = JSON.parse(view);
-
                                         if (json.rows.length == this.getNbItems()) {
                                                 json.rows.some(function (value, idx) {
                                                         if (value.id == id) {

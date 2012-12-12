@@ -1,11 +1,13 @@
-define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Amy/Stack-plugin", "Store", "Config", "Ideafy/Avatar", "Ideafy/Utils", "Ideafy/Connect/MessageDetail"],
-        function(Widget, Map, Model, Event, Control, Stack, Store, Config, Avatar, Utils, MessageDetail){
+define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Amy/Stack-plugin", "Store", "Config", "Ideafy/Avatar", "Ideafy/Utils", "Ideafy/Connect/MessageDetail", "Ideafy/Connect/NewMessage", "Ideafy/ActionBar"],
+        function(Widget, Map, Model, Event, Control, Stack, Store, Config, Avatar, Utils, MessageDetail, NewMessage, ActionBar){
                 
                 return function MessagesConstructor(){
                         
                         var messageUI = new Widget(),
                             detailStack = new Stack(),
                             defaultPage = new Widget(), // to show in detail space when no message is selected
+                            messageDetail = new MessageDetail(),
+                            newMessage = new NewMessage(),
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "messages", "label": "msgbtn", "selected": false},
@@ -15,6 +17,10 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                             currentSort = 0,
                             msgList = new Store([]),
                             labels = Config.get("labels"),
+                            touchStart,
+                            touchPoint,
+                            display = false,
+                            currentBar = null,
                             user = Config.get("user"),
                             sortMessages = function(id){
                                     var type = sortButtons.get(id).name,
@@ -90,19 +96,27 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 "msgdetailstack" : detailStack
                         });
                         
-                        messageUI.template = '<div id="connect-messages"><div class="messages list"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Mailbox</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchstart,selectMsg"><ul data-msg="foreach"><li class="msg list-item"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date">jj/mm/aaaa</span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:innerHTML, object">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
+                        messageUI.template = '<div id="connect-messages"><div class="messages list"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchstart,selectMsg"><ul data-msg="foreach"><li class="msg list-item"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date">jj/mm/aaaa</span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:innerHTML, object">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
                         
                         messageUI.place(Map.get("connect-messages"));
                         
                         messageUI.plus = function plus(event, node){
-                                
+                                detailStack.getStack().get("#newmsg").reset();
+                                detailStack.getStack().show("#newmsg");      
                         };
                         
                         messageUI.displaySort = function(event, node){
                                 var id = node.getAttribute("data-sort_id");
+                                // reset list selection
+                                msgList.reset([]);
+                                // show default page
+                                detailStack.getStack().show("#defaultPage");
+                                // cancel current sort
                                 if (currentSort >-1) sortButtons.update(currentSort, "selected", false);
+                                // perform sorting
                                 sortButtons.update(id, "selected", true);
                                 currentSort = id;
+                                // display sorted list
                                  msgList.reset(sortMessages(id));
                         };
                         
@@ -115,6 +129,30 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 } 
                         };
                         
+                        messageUI.selectMsg = function selectMsg(event, node){
+                                var id = event.target.getAttribute("data-msg_id"),
+                                    arr = user.get("notifications"),
+                                    idx,
+                                    message = msgList.get(id);
+                                
+                                // change message status to read
+                                // first need to retrieve message in user notifications
+                                for (i=0, l=arr.length; i<l;i++){
+                                        if (JSON.stringify(arr[i]) === JSON.stringify(message)) {
+                                                index = i;
+                                                break;
+                                        }
+                                }
+                                arr[index].status = "read";
+                                user.set("notifications", arr);
+                                user.upload();
+                                
+                                // display message detail
+                                messageDetail.reset(msgList.get(id));
+                                detailStack.getStack().show("#msgdetail");
+                                      
+                        };
+                        
                         messageUI.init = function init(){
                                 msgList.reset(user.get("notifications"));       
                         };
@@ -124,6 +162,36 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 
                         };
                         
+                        // Action bar
+                        messageUI.setStart = function(event, node){
+                                touchStart = [event.pageX, event.pageY];
+                        
+                                if (currentBar) this.hideActionBar(currentBar);  // hide previous action bar 
+                        };
+                
+                        messageUI.showActionBar = function(event, node){
+                                var id = node.getAttribute("data-listideas_id");
+                        
+                                touchPoint = [event.pageX, event.pageY];
+                        
+                                if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                        var actionBar = new ActionBar("message", node, _store.get(id).doc, this.hideActionBar),
+                                           frag = document.createDocumentFragment();  
+                                
+                                        actionBar.place(frag); // render action bar    
+                                        node.appendChild(frag); // display action bar
+                                        currentBar = actionBar; // store current action bar
+                                        display = true; // prevent from showing it multiple times
+                                }
+                        };
+                
+                        this.hideActionBar = function hideActionBar(ui){
+                                var parent = ui.dom.parentElement;
+                                parent.removeChild(parent.lastChild);
+                                display = false;
+                                currentBar = null;
+                        };
+                        
                         defaultPage.template = '<div class="msgsplash"><div class="header blue-dark"><span>'+Config.get("labels").get("messageview")+'</span></div><div class="innersplash"></div></div>';
                        
                         // initialize
@@ -131,9 +199,18 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         messageUI.init();
                         // add UIs to detail stack
                         detailStack.getStack().add("#defaultPage", defaultPage);
-                        detailStack.getStack().add("#msgdetail", new MessageDetail());
+                        detailStack.getStack().add("#msgdetail", messageDetail);
+                        detailStack.getStack().add("#newmsg", newMessage);
                         // show default page
                         detailStack.getStack().show("#defaultPage");
+                        
+                        // watch for changes in notifications
+                        user.watchValue("notifications", function(){
+                                // if no search is active
+                                if (currentSort>-1) {
+                                        msgList.reset(sortMessages(currentSort));
+                                }            
+                        });
                         
                         return messageUI;
                 };

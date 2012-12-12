@@ -7,6 +7,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 		//declaration
 			var _widget = new Widget(),
 				_control = new Control(this),
+				_observer = Config.get("observer"),
 				_stack = new Stack();
 
 		//setup
@@ -68,10 +69,17 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
                 */
                         
                         // replay session
-                        Config.get("observer").watch("replay-session", function(sid, mode){
+                        _observer.watch("replay-session", function(sid, mode){
                                 _stack.getStack().show("#brainstorm");
                                 document.querySelector(".dock-item.selected").classList.remove("selected");
                                 document.querySelector(".dock-item[href='#brainstorm']").classList.add("selected");              
+                        });
+                        
+                        // display document
+                        _observer.watch("display-doc", function(){
+                                _stack.getStack().show("#library");
+                                document.querySelector(".dock-item.selected").classList.remove("selected");
+                                document.querySelector(".dock-item[href='#library']").classList.add("selected");
                         });
 
 		//return

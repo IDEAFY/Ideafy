@@ -26,16 +26,16 @@ define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olive
                                         this.innerHTML = Utils.formatDate(date);
                                 },
                                 setRating : function setRating(rating) {
-                                        this.innerHTML = rating;
                                         if (rating === undefined) {
                                                 var _id = this.getAttribute("data-listideas_id"),
-                                                    _arr = _store.get(_id).doc.votes;
+                                                    _arr = _store.get(_id).doc.votes || [];
                                                 if (_arr.length === 0) {this.innerHTML = ""}
                                                 else {
                                                         this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
                                                 }
                                                 
                                         }
+                                        else this.innerHTML = rating;
                                 },
                                 setAvatar : function setAvatar(authors){
                                         var _ui, _frag;
@@ -53,11 +53,15 @@ define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olive
                 };
                 
                 this.resetQuery = function(query) {
+                        var promise=new Promise();
                         _options.query = query;
 
                         _store.unsync();
                         _store.reset([]);
-                        _store.sync(_options.db, _options.design, _options.view, _options.query);
+                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                promise.resolve();
+                        });
+                        return promise;
                 };
                 
                 this.setStart = function(event, node){

@@ -1,9 +1,10 @@
-define("Ideafy/Library", ["Olives/OObject", "Amy/Stack-plugin", "Map", "Ideafy/SubMenu", "Ideafy/Library/Ideas", "Ideafy/Library/Sessions", "Ideafy/Library/Decks"], 
-	function(Widget, Stack, Map, Menu, Ideas, Sessions, Decks){
+define("Ideafy/Library", ["Olives/OObject", "Amy/Stack-plugin", "Map", "Ideafy/SubMenu", "Ideafy/Library/Ideas", "Ideafy/Library/Sessions", "Ideafy/Library/Decks", "Config"], 
+	function(Widget, Stack, Map, Menu, Ideas, Sessions, Decks, Config){
 		return function LibraryConstructor(){
 		//declaration
 			var _widget = new Widget(),
 			    _stack = new Stack(),
+			    _observer = Config.get("observer"),
 			    setView = function setView(name){
 			         _stack.getStack().show(name);       
 			    },
@@ -28,7 +29,20 @@ define("Ideafy/Library", ["Olives/OObject", "Amy/Stack-plugin", "Map", "Ideafy/S
 	               _stack.getStack().add("#decks", new Decks());
 	               
 	               // set current view
-	               _stack.getStack().show("#ideas");		
+	               _stack.getStack().show("#ideas");
+	               
+	        // library events
+	        _observer.watch("display-doc", function(id, type){
+	               switch(type){
+	                       case "idea":
+	                               var ideasUI = _stack.getStack().get("#ideas");
+	                               ideasUI.searchIdea(id.substr(2));
+	                               if (_stack.getStack().getCurrentScreen() !== ideasUI) _stack.getStack().show("#ideas");  
+                                        break;
+	                       default:
+	                               break;
+	                }        
+	        });
 
 		//return
 			return _widget;

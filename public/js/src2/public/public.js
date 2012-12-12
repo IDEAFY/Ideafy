@@ -76,14 +76,21 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			                     byDate.classList.add("pushed");
 			             }
 			             else{
-			                     // hide sorting buttons (not available for the time being in search mode)
-			                     byDate.setAttribute("style", "display: none;");
-			                     byRating.setAttribute("style", "display: none;");
-			                     listSearch.resetQuery({q: node.value, sort: '\\creation_date<date>', include_docs: true});
-			                     _stack.getStack().show("#list-search");
+			                     _widget.searchIdea(node.value);
 			             }
 			        }
 			};
+			
+			_widget.searchIdea = function searchIdea(query){
+                             // hide sorting buttons (not available for the time being in search mode)
+                                byDate.setAttribute("style", "display: none;");
+                                byRating.setAttribute("style", "display: none;");
+                                listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
+                                        _stack.getStack().show("#list-search");
+                                        LS=listSearch.getModel();
+                                        _detail.reset(listSearch.getModel(), 0);        
+                                });
+                        };
 			
 			//may be set the list dom (not the public dom)
                         _widget.alive(_dom);

@@ -798,7 +798,7 @@ ul.notify-list{
 }
 
 
-#public-list .option.right, #idea-list .option.right, #connect-messages .option.right {
+#public-list .option.right, #idea-list .option.right, #connect-messages .option.right, #connect-contacts .option.right {
   background:url('../img/public/plus2.png') no-repeat center center;
   background-size:20px;
 }
@@ -1380,7 +1380,7 @@ textarea.solution {
     padding: 20px 40px 20px 30px;    
 }
 
-.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar, .msglist .avatar{
+.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar, .msglist .avatar, .contactlist .avatar{
   width:40px;
   height:40px;
   border-radius:20px;
@@ -3299,11 +3299,11 @@ li.color-item{
 
 /*CONNECT*/
 
-.messages{
+.messages, .contacts{
     text-align: center;
 }
 
-#connect-messages .selectors{
+#connect-messages .selectors, #connect-contacts .selectors{
     display: inline-block;
     margin: 0 auto;
     height: 55px;
@@ -3312,7 +3312,7 @@ li.color-item{
     border-bottom: 1px solid #CCCCCC;
 }
 
-#connect-messages .selectors li{
+#connect-messages .selectors li, #connect-contacts .selectors li{
     width: 65px;
     font-size: 11px;
     border-radius: 0px;
@@ -3320,53 +3320,57 @@ li.color-item{
     color: black;
 }
 
-#connect-messages .selectors li.pressed{
+#connect-messages .selectors li.pressed, #connect-contacts .selectors li.pressed{
     color: white;
 }
 
-#connect-messages .selectors li:first-child{
+#connect-messages .selectors li:first-child, #connect-contacts .selectors li:first-child{
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
 }
 
-#connect-messages .selectors li:last-child{
+#connect-messages .selectors li:last-child, #connect-contacts .selectors li:last-child{
     border-right: 1px solid #CCCCCC;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 
-.messages input{
+.messages input, .contacts input{
     margin-top: 10px;
     margin-left: -70px;
 }
 
-.msglist{
+.msglist, .contactlist{
     margin-top: 20px;
 }
 
-.msg{
+.msg, .contact{
     padding: 10px;
     text-align: left;
     min-height: 50px;
     overflow: hidden; 
 }
 
-.msg:first-child{
+.msg .actionbar{
+    margin-left: -10px;
+}
+
+.msg:first-child, .contact:first-child{
     border-top: 1px solid #cccccc;
 }
 
-.msg-author{
+.msg-author, .contact-name{
     font-size:16px;
     color: black;
 }
 
-.msg-subject{
+.msg-subject, .contact-intro{
     font-style: italic;
     font-size: 14px;
     color: #4D4D4D;
 }
 
-.msg-author, .msg-subject{
+.msg-author, .msg-subject, .contact-name, .contact-intro{
     margin-left: 50px;
     font-weight: normal;
     margin-bottom: 5px;
@@ -3559,5 +3563,4 @@ li.color-item{
     min-height: 65px;
     max-height: 75px;
     font-size: 14px;
-}
 }

@@ -8,7 +8,7 @@ define("Ideafy/Connect", ["Olives/OObject", "Map", "Amy/Stack-plugin","Ideafy/Su
 			    setView = function setView(name){
                                  _stack.getStack().show(name);       
                             },
-			    _menu = new Menu(Map.get("connect-menu"));
+			    _menu = new Menu(Map.get("connect-menu"), setView);
 			    
 			_widget.plugins.add("connectstack", _stack);
 

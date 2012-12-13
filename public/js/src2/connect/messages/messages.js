@@ -113,7 +113,7 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 "msgdetailstack" : detailStack
                         });
                         
-                        messageUI.template = '<div id="connect-messages"><div class="messages list"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchstart,selectMsg"><ul data-msg="foreach"><li class="msg list-item"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date">jj/mm/aaaa</span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:innerHTML, object">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
+                        messageUI.template = '<div id="connect-messages"><div class="messages list"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchstart,selectMsg"><ul data-msg="foreach"><li class="msg list-item" data-msglistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date"></span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:innerHTML, object">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
                         
                         messageUI.place(Map.get("connect-messages"));
                         
@@ -138,7 +138,6 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         };
                         
                         messageUI.search = function(event, node){
-                                var msgs = [];
                                 if (event.keyCode === 13){
                                         sortButtons.update(currentSort, "selected", false);
                                         currentSort = -1;
@@ -183,17 +182,14 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         // Action bar
                         messageUI.setStart = function(event, node){
                                 touchStart = [event.pageX, event.pageY];
-                        
                                 if (currentBar) this.hideActionBar(currentBar);  // hide previous action bar 
                         };
                 
                         messageUI.showActionBar = function(event, node){
                                 var id = node.getAttribute("data-listideas_id");
-                        
                                 touchPoint = [event.pageX, event.pageY];
-                        
                                 if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        var actionBar = new ActionBar("message", node, _store.get(id).doc, this.hideActionBar),
+                                        var actionBar = new ActionBar("message", node, msgList.get(id), this.hideActionBar),
                                            frag = document.createDocumentFragment();  
                                 
                                         actionBar.place(frag); // render action bar    

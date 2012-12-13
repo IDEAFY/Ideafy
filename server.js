@@ -539,6 +539,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 }
                         });
                 }
+                if (type === "message"){
+                        
+                }
+                if (type === "contact"){
+                        
+                }
 
         });
 

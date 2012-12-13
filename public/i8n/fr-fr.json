@@ -179,7 +179,7 @@
 	"notifbtn": "Informations",
 	"unreadbtn": "Non lus",
 	"searchmsgplaceholder": "Rechercher...",
-	"messageview" : "Panneau d'affichage",
+	"messageview" : "Affichage des messages",
 	"replyalllbl" : "Répondre à tous",
 	"forwardlbl" : "Faire suivre",
 	"deletelbl" : "Supprimer",
@@ -188,5 +188,10 @@
 	"tocontactlbl": "Contact :",
 	"entersubjectlbl": "Veuillez renseigner le champ objet",
 	"notavalidcontact": " n'est pas un contact",
-	"messagesentok": "Votre message a été envoyé"
+	"messagesentok": "Votre message a été envoyé",
+	"on" : "Le ",
+	"contactview" : "Affichage des contacts",
+	"contactlistheadertitle" : "Mes Contacts",
+	"usrbtn": "Personnes",
+	"grpbtn": "Groupes"
 }

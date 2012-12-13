@@ -139,9 +139,16 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 if (data.authors.indexOf(user.get("_id")) === -1 && data.sharedwith.indexOf(user.get("_id")) >-1 && document.getElementById("library")){
                                                         buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                 }
-                                                
-                                                
-                                                
+                                                break;
+                                        case "message":
+                                                // export vi email -- if you can see it you can email it
+                                                buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});
+                                                buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
+                                                break;
+                                        case "contact":
+                                                // export vi email -- if you can see it you can email it
+                                                buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});
+                                                buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                 break;
                                         default:
                                                 break;
@@ -168,6 +175,22 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                         });       
                                                 }
                                                 break;
+                                        case "message":
+                                                 var arr = user.get("notifications"),
+                                                     index;
+                        
+                                                for (i=0, l=arr.length; i<l; i++){
+                                                        if (JSON.stringify(arr[i]) === msg){
+                                                                index = i;
+                                                                break;
+                                                        }
+                                                }
+                                                arr.splice(index, 1);
+                                                user.set("notifications", arr);
+                                                user.upload();
+                                                break;
+                                        case "contact":
+                                                break;
                                         default:
                                                 break;        
                                 }
@@ -191,6 +214,10 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                 switch($type){
                                         case "idea":
                                                 (document.getElementById("public")) ? observer.notify("public-sendmail", $data) : observer.notify("library-sendmail", $data);
+                                                break;
+                                        case "message":
+                                                break;
+                                        case "contact":
                                                 break;
                                         default:
                                                 break;        

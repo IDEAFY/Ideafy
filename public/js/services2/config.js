@@ -50,7 +50,6 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                         {"name" : "", "comment" : ""},
                                         {"name" : "", "comment" : ""},
                                         {"name" : "", "comment" : ""}],
-                                "useascharacter" : 0,
                                 "type" : 7,
                                 "notifications" : [],
                                 "facebook" : "",
@@ -60,7 +59,6 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "username" : "",
                                 "sessionInProgress" : {},
                                 "organization" : "",
-                                "groups" : [],
                                 "rated" : [],
                                 "rated_ideas" : [],
                                 "favorites" : [],
@@ -77,7 +75,7 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "news" : [],
                                 "twocents" : [],
                                 "twoquestions" : [],
-                                "settings": {"notifyPopup": true}
+                                "settings": {"notifyPopup": true, "useascharacter": false}
                         },
                         ideaTemplate:{
                                 "title": "",

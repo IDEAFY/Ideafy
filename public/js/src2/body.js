@@ -156,11 +156,12 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
 
                                                         user.set("notifications", [{
                                                                 "type" : "MSG",
+                                                                "toList": fn + " " + ln,
                                                                 "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
                                                                 "object" : _labels.get("signupwelcomeobject"),
                                                                 "status" : "unread",
                                                                 "author" : "IDEAFY",
-                                                                "name" : "Ideafy",
+                                                                "usernname" : "Ideafy",
                                                                 "body" : _labels.get("signupwelcomebody")
                                                         }]);
                                                         

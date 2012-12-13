@@ -189,5 +189,9 @@
 	"entersubjectlbl": "Please enter a subject",
 	"notavalidcontact": " is not a contact",
 	"messagesentok": "Your message has been sent",
-	"on" : "On "
+	"on" : "On ",
+	"contactview" : "Contact panel",
+	"contactlistheadertitle" : "My Contacts",
+	"usrbtn": "Users",
+	"grpbtn": "Groups"
 }

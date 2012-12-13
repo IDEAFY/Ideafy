@@ -1,10 +1,11 @@
-define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "Ideafy/Avatar", "Ideafy/ActionBar"],
-        function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar){
+define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "Ideafy/Avatar", "Ideafy/ActionBar", "Ideafy/Connect/AddContact"],
+        function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact){
                 
                 return function ContactsConstructor(){
                         
                         var contactsUI = new Widget(),
                             detailStack = new Stack(),
+                            addContact = new AddContact(),
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "users", "label": "usrbtn", "selected": false},
@@ -150,13 +151,11 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                         // initialize
                         // get message list from user document
                         contactsUI.init();
-                        /*
                         // add UIs to detail stack
-                        detailStack.getStack().add("#contactdetail", contactDetail);
+                        //detailStack.getStack().add("#contactdetail", contactDetail);
                         detailStack.getStack().add("#addcontact", addContact);
                         // show add Contact page by default
-                        detailStack.getStack().show("#addContact");
-                        */
+                        detailStack.getStack().show("#addcontact");
                         
                         return contactsUI;    
                 }

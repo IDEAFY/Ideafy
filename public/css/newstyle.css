@@ -1021,7 +1021,7 @@ ul.notify-list{
     z-index: 1000;
 }
 
-.idea-edit .input, .idea-sendmail .input, #newmsg .input, #msgreply .input {
+.idea-edit .input{
     font-size: 14px;
 }
 
@@ -2092,7 +2092,7 @@ textarea.solution {
     color: #254066;
 }
 
-.whiteboard .doctor-deedee{
+.whiteboard .doctor-deedee, #addcontact .doctor-deedee{
     float: left;
     width: 87px;
     height: 85px;
@@ -3405,7 +3405,7 @@ li.color-item{
     background-position: center;
 }
 
-#msgdetail .header{
+#msgdetail .header, #addcontact .header{
     text-align: left;
 }
 
@@ -3415,7 +3415,7 @@ li.color-item{
     letter-spacing: 0;
 }
 
-#msgdetail .header .subjectlbl{
+#msgdetail .header .subjectlbl, #addcontact .header span{
     margin-left: 20px;
 }
 
@@ -3563,4 +3563,56 @@ li.color-item{
     min-height: 65px;
     max-height: 75px;
     font-size: 14px;
+}
+
+#addcontact .detail-contents{
+    padding: 20px;
+    background: none;
+}
+
+.addcontactform{
+    color: #657b99;
+    margin-left: 100px;
+}
+
+.addcontactform legend{
+    width:100%;
+    padding-bottom: 5px;
+    font-family: Pacifico;
+    border-bottom: 2px solid #cccccc;
+    margin-top: 15px;
+}
+
+.addcontactform p.half{
+    width: 46%;
+    padding: 2%;
+    padding-top: 0;
+    float: left;
+    font-size: 14px;
+    text-align: justify;
+}
+
+.addcontactform .search{
+    margin-top: 15px;
+    width: 460px;
+    background-position: 475px center;
+}
+
+.addcontactform .searchcontact{
+    width: 495px;
+}
+
+.addcontactform .search.half{
+    width: 205px;
+    background-position: 220px center;
+}
+
+.addcontactform .search.half.right{
+    margin-left: 15px;
+}
+
+.addcontactform .searchresult{
+    min-height: 20px;
+    margin-top: 10px;
+    line-height: 20px;
 }

@@ -193,5 +193,8 @@
 	"contactview" : "Affichage des contacts",
 	"contactlistheadertitle" : "Mes Contacts",
 	"usrbtn": "Personnes",
-	"grpbtn": "Groupes"
+	"grpbtn": "Groupes",
+	"newcontactlbl": "Nouveau contact",
+	"addcontactnow": "Ajout d'un contact",
+	"lookup": "Ou recherche dans la base de données Ideafy"
 }

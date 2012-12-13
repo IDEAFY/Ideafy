@@ -193,5 +193,12 @@
 	"contactview" : "Contact panel",
 	"contactlistheadertitle" : "My Contacts",
 	"usrbtn": "Users",
-	"grpbtn": "Groups"
+	"grpbtn": "Groups",
+	"newcontactlbl": "New contact",
+	"addcontactnow": "Add your contact now",
+	"lookup": "Or look up the Ideafy database",
+	"beforecount": "The <strong>Ideafy community</strong> now counts <strong>",
+	"aftercount": " <strong>users </strong> merrily crafting and exchanging ideas.<br>Look up your acquaintances and friends in the community and connect.",
+	"addcontactrightintro": "Building up your address book is the best and fastest way to increase exposure of your ideas and thoughts, but also to get access to a much broader content.",
+	"searchcontactplaceholder": "Enter email address of the person you wish to connect with ..."
 }

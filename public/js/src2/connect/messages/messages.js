@@ -1,5 +1,5 @@
-define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Amy/Stack-plugin", "Store", "Config", "Ideafy/Avatar", "Ideafy/Utils", "Ideafy/Connect/MessageDetail", "Ideafy/Connect/NewMessage", "Ideafy/ActionBar"],
-        function(Widget, Map, Model, Event, Control, Stack, Store, Config, Avatar, Utils, MessageDetail, NewMessage, ActionBar){
+define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Amy/Stack-plugin", "Store", "Config", "Ideafy/Avatar", "Ideafy/Utils", "Ideafy/Connect/MessageDetail", "Ideafy/Connect/NewMessage", "Ideafy/ActionBar", "Promise"],
+        function(Widget, Map, Model, Event, Control, Stack, Store, Config, Avatar, Utils, MessageDetail, NewMessage, ActionBar, Promise){
                 
                 return function MessagesConstructor(){
                         
@@ -171,12 +171,36 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         };
                         
                         messageUI.init = function init(){
-                                msgList.reset(user.get("notifications"));       
+                                messageUI.cleanOld().then(function(){
+                                        msgList.reset(user.get("notifications"));
+                                });
                         };
                        
                         //delete messages older than 30 days
                         messageUI.cleanOld = function(){
+                                var promise = new Promise(),
+                                    now = new Date(),
+                                    msgdate, sentdate,
+                                    n = user.get("notifications"),
+                                    s = user.get("sentMessages") || [];
                                 
+                                for (i=n.length-1;i>=0;i--){
+                                        msgdate = new Date(n[i].date[0], n[i].date[1], n[i].date[2], n[i].date[3], n[i].date[4], n[i].date[5]);
+                                        if ((now.getTime()-msgdate.getTime()) > 2592000000) n.pop();      
+                                }
+                                for (i=s.length-1;i>=0;i--){
+                                        sentdate = new Date(s[i].date[0], s[i].date[1], s[i].date[2], s[i].date[3], s[i].date[4], s[i].date[5]);
+                                        if ((now.getTime()-sentdate.getTime()) > 2592000000) s.pop();      
+                                }
+                                
+                                user.set("notifications", n);
+                                user.set("sentMessages", s);
+                                
+                                user.upload().then(function(){
+                                        promise.resolve();
+                                });
+                                
+                                return promise;                
                         };
                         
                         // Action bar

@@ -200,5 +200,15 @@
 	"beforecount": "The <strong>Ideafy community</strong> now counts <strong>",
 	"aftercount": " <strong>users </strong> merrily crafting and exchanging ideas.<br>Look up your acquaintances and friends in the community and connect.",
 	"addcontactrightintro": "Building up your address book is the best and fastest way to increase exposure of your ideas and thoughts, but also to get access to a much broader content.",
-	"searchcontactplaceholder": "Enter email address of the person you wish to connect with ..."
+	"searchcontactplaceholder": "Enter email address of the person you wish to connect with ...",
+	"clearemailfirst": "Please clear the email field first",
+	"needbothfnln": "Both first and last names are required",
+	"selectcontact": "Select contact and press + to invite",
+	"noentryfound": "No matching entry in the database",
+	"cannotaddself": "You cannot add a connection to yourself",
+	"alreadyconnected": " is already a contact",
+	"alreadysentCXR": "You already sent a connection request to ",
+	"CXRobject": " wants to be a connection",
+	"CXRsent" : "Your connection request has been sent",
+	"addamessage": "Add a message"
 }

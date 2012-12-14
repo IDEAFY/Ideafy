@@ -437,6 +437,10 @@ ul.notify-list{
     background-size: 40px 40px;
 }
 
+.menu-item.selected a{
+    color: white;
+}
+
 .menu-list .menu-item:nth-child(n+2) {
     border-top:1px solid #666666;
 }
@@ -479,27 +483,27 @@ ul.notify-list{
 }
 
 .connect-item[href="#connect-contacts"]{
-    background-image: url('../img/libraryIdeaDisabled40.png');   
+    background-image: url('../img/profileDisable.png');   
 }
 
 .connect-item[href="#connect-messages"]{
-    background-image: url('../img/librarySessionDisabled40.png');
+    background-image: url('../img/messageDisable.png');
 }
 
 .connect-item[href="#connect-twocents"]{
-    background-image: url('../img/libraryDeckDisabled40.png');
+    background-image: url('../img/2centDisable.png');
 }
 
 .menu-item.selected .connect-item[href="#connect-contacts"]{
-    background-image: url('../img/libraryIdeaActive40.png');   
+    background-image: url('../img/profileActive.png');   
 }
 
 .menu-item.selected .connect-item[href="#connect-messages"]{
-    background-image: url('../img/librarySessionActive40.png');
+    background-image: url('../img/messageActive.png');
 }
 
 .menu-item.selected .connect-item[href="#connect-twocents"]{
-    background-image: url('../img/libraryDeckActive40.png');
+    background-image: url('../img/2centActive.png');
 }
 
 #dashboard-menu{
@@ -510,27 +514,27 @@ ul.notify-list{
 }
 
 .dashboard-item[href="#dashboard-profile"]{
-    background-image: url('../img/libraryIdeaDisabled40.png');   
+    background-image: url('../img/profileDisable.png');   
 }
 
 .dashboard-item[href="#dashboard-settings"]{
-    background-image: url('../img/librarySessionDisabled40.png');
+    background-image: url('../img/settingsDisable.png');
 }
 
 .dashboard-item[href="#dashboard-about"]{
-    background-image: url('../img/libraryDeckDisabled40.png');
+    background-image: url('../img/aboutDisable.png');
 }
 
 .menu-item.selected .dashboard-item[href="#dashboard-profile"]{
-    background-image: url('../img/libraryIdeaActive40.png');   
+    background-image: url('../img/profileActive.png');   
 }
 
 .menu-item.selected .dashboard-item[href="#dashboard-settings"]{
-    background-image: url('../img/librarySessionActive40.png');
+    background-image: url('../img/settingsActive.png');
 }
 
 .menu-item.selected .dashboard-item[href="#dashboard-about"]{
-    background-image: url('../img/libraryDeckActive40.png');
+    background-image: url('../img/aboutActive.png');
 }
 
 /* New idea popup */
@@ -2012,7 +2016,7 @@ textarea.solution {
 
 .previousbutton{
     position: absolute;
-    width: 130px;
+    width: 200px;
     height: 36px;
     top: 0px;
     margin-left: 15px;
@@ -2051,7 +2055,7 @@ textarea.solution {
 
 .leftarea{
     width: 167px;
-    height: 732px;
+    height: 712px;
     float: left;
     background: -webkit-gradient(linear,left top,right top,color-stop(0%,#ffffff),color-stop(100%,#f2f2f2));
     background: -webkit-linear-gradient(left,#ffffff 0%,#f2f2f2 100%);
@@ -2261,8 +2265,8 @@ textarea.solution {
 
 .wb-item.postit{
     font-family: Pacifico;
-    overfloz-y: scroll;
-    text-algin: center;
+    overflow-y: scroll;
+    text-align: center;
 }
 
 .inner-postit{
@@ -3575,10 +3579,11 @@ li.color-item{
     margin-left: 100px;
 }
 
-.addcontactform legend{
+#addcontact legend{
     width:100%;
     padding-bottom: 5px;
     font-family: Pacifico;
+    color: #657b99;
     border-bottom: 2px solid #cccccc;
     margin-top: 15px;
 }
@@ -3615,4 +3620,77 @@ li.color-item{
     min-height: 20px;
     margin-top: 10px;
     line-height: 20px;
+    font-style: italic;
+    color: #F27B3D;
 }
+
+#addcontact .contactlist{
+    padding: 0px 20px 0px 20px;
+    margin-top: 0px;
+}
+
+#addcontact .contact{
+    width: 48%;
+    float: left;
+    border-top: none;
+    padding-bottom: 5px;
+    padding-left:1%;
+    padding-right: 1%;
+}
+
+#addcontact .select-contact{
+    pointer-events:auto;
+    display: block;
+    float:right;
+    margin-top: -45px;
+    width: 14px;
+    height:14px;
+    border: 1px solid #cccccc;
+    color: #5F8F28;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: bold;
+}
+
+#addcontact textarea.input{
+    margin-top: 20px;
+    height: 100px;
+}
+
+.addcontactbtns{
+    display: inline-block;
+    text-align: right;
+    position: absolute;
+    bottom: 310px;
+    right: 20px;
+}
+
+.addct{
+    display: block;
+    float: left;
+    width:40px;
+    height: 40px;
+    background: url('../img/connect/buttonAddDisable.png') no-repeat center center;
+    background-size: contain;   
+}
+
+.cancelct{
+    display: block;
+    float: left;
+    width:40px;
+    height: 40px;
+    background: url('../img/connect/buttonDeleteDisable.png') no-repeat center center;
+    background-size: contain;
+}
+
+
+.addct.pushed{
+    background: url('../img/connect/buttonAddActive.png') no-repeat center center;
+    background-size: contain;    
+}
+
+.cancelct.pushed{
+    background: url('../img/connect/buttonDeleteActive.png') no-repeat center center;
+    background-size: contain;    
+}
+

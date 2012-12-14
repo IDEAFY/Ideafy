@@ -41,6 +41,11 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
                         
                         // start || continue the desired brainstorming type based on session in progress ({id:"", type:""}) parameter
                         _widget.selectScreen = function selectScreen(name, sip){
+                                
+                                if (name === "continue"){
+                                        name = sip.type;
+                                }
+                                
                                 // if ui already exists - reset and show
                                 if (_stack.getStack().get(name)){
                                       _stack.getStack().get(name).reset(sip);

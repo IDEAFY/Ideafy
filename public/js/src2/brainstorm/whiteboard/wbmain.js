@@ -23,7 +23,7 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                                                         node.classList.remove("photo");
                                                         node.classList.remove("drawing");
                                                         node.innerHTML = '<div class="inner-postit">'+content+"</div>";
-                                                        node.setAttribute("style", "background:transparent; background:url('img/brainstorm/"+style.img+"'); color:"+style.marker+";");
+                                                        node.setAttribute("style", "background:url('img/brainstorm/"+style.img+"') no-repeat center center; background-size: contain; color:"+style.marker+";");
                                                         break;
                                                 case "import":
                                                         node.classList.add("photo");
@@ -31,7 +31,7 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                                                         this.innerHTML="";
                                                         json = {"sid":_sid, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center;");   
+                                                                node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
                                                         });
                                                         break;
                                                 case "drawing":
@@ -40,7 +40,7 @@ define("Ideafy/Whiteboard/Main", ["Olives/OObject", "Olives/Model-plugin", "Oliv
                                                         this.innerHTML="";
                                                         json = {"sid":_sid, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center;");   
+                                                                node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
                                                         });
                                                         break;
                                                 default:

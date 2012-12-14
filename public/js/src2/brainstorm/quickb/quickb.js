@@ -68,21 +68,13 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                            _session.sync(Config.get("db"), sip.id).then(function(){
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
-                                console.log("retrieving session", _session.toJSON());
-                                
                                 // reset step UIs
                                 _stack.getStack().get("quickstart").reset(sip);
-                                console.log("quickstart ok");
                                 _stack.getStack().get("quicksetup").reset(sip);
-                                console.log("quicksetup ok");
                                 _stack.getStack().get("quickscenario").reset(sip);
-                                console.log("quickscenario ok");
                                 _stack.getStack().get("quicktech").reset(sip);
-                                console.log("quicktech ok");
                                 _stack.getStack().get("quickidea").reset(sip);
-                                console.log("quickidea ok");
                                 _stack.getStack().get("quickwrapup").reset(sip);
-                                console.log("quickwrapup ok");
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
@@ -174,9 +166,6 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                         }
                         else {
                                 alert("Exiting session");
-                                _session.reset(Config.get("sessionTemplate"));
-                                // return to main menu
-                                console.log($exit)
                                 $exit();
                         }            
                    };
@@ -199,7 +188,6 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                                         _steps.update(_id+1, "currentStep", true);
                                         
                                         _session.set("step", _steps.get(_id+1).name);
-                                        console.log("next step", _session.toJSON());
                                         _session.upload();
                                         _nextui = _stack.getStack().get(_steps.get(_id+1).name);
                                         if (_nextui.initTimer) _nextui.initTimer();

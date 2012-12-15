@@ -126,7 +126,7 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                                                 setTimeout(function(){
                                                                         error.set("errormsg", "");
                                                                         sendInProgress=false;
-                                                                        $close("#defaultPage");}, 2);
+                                                                        $close("#defaultPage");}, 2000);
                                                         });
                                                 }
                                                 else{

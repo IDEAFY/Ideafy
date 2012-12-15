@@ -93,7 +93,11 @@ define("Ideafy/Connect/AddContact", ["Olives/OObject", "Config", "Olives/Model-p
                                 
                                 transport.request("Notify", json, function(result){
                                         var result = JSON.parse(result);
-                                        if (result[0].res === "ok") search.set("result", labels.get("CXRsent"));
+                                        if (result[0].res === "ok") {
+                                                search.set("result", labels.get("CXRsent"));
+                                                // wait 2 seconds then clear the UI
+                                                setTimeout(function(){addContactUI.reset();}, 2000);
+                                        }
                                         else {
                                                 model.set("result", "There was an error, please try again later");
                                         }

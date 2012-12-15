@@ -3686,6 +3686,7 @@ li.color-item{
 #addcontact .contact{
     width: 48%;
     float: left;
+    height:70px;
     border-top: none;
     padding-bottom: 5px;
     padding-left:1%;
@@ -3696,7 +3697,7 @@ li.color-item{
     pointer-events:auto;
     display: block;
     float:right;
-    margin-top: -25px;
+    margin-top: -43px;
     width: 14px;
     height:14px;
     border: 1px solid #cccccc;

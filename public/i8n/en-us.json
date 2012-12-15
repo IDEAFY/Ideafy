@@ -210,5 +210,11 @@
 	"alreadysentCXR": "You already sent a connection request to ",
 	"CXRobject": " wants to be a connection",
 	"CXRsent" : "Your connection request has been sent",
-	"addamessage": "Add a message"
+	"addamessage": "Add a message",
+	"accept": "Accept",
+	"reject": "Reject",
+	"acceptedCXR": " has accepted your connection request",
+	"CXRaccepted": "Request accepted, ",
+	"CXRrejected": "Contact request rejected",
+	"isnowacontact": :" is now a contact"
 }

@@ -83,12 +83,13 @@ define("Ideafy/Connect/AddContact", ["Olives/OObject", "Config", "Olives/Model-p
                                 json.date = [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
                                 json.author = user.get("_id");
                                 json.username = user.get("username");
+                                json.firstname = user.get("firstname");
                                 json.toList = contact.username;
                                 json.ccList = "";
                                 json.object = user.get("username")+ labels.get("CXRobject");
                                 json.body = search.get("message");
                                 json.signature = user.get("signature");
-                                json.contactInfo = { "firstname": user.get("firstname"), "lastname": user.get("lastname"), "userid": user.get("_id"), "intro": user.get("intro"), "type":"user"};
+                                json.contactInfo = { "firstname": user.get("firstname"), "lastname": user.get("lastname"), "userid": user.get("_id"), "username": user.get("username"), "intro": user.get("intro"), "type":"user"};
                                 
                                 transport.request("Notify", json, function(result){
                                         var result = JSON.parse(result);

@@ -656,7 +656,33 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         console.log("private copy saved");
                                 });    
                         });
+                },
+                /*
+                 * A function to insert contact in a user's connectio list when a request was accepted
+                 */
+                insertContact = function(userid, contact, onEnd){
+                        var cdb = new CouchDBStore(), contacts = [], pos=0;
+                        console.log("USERID", userid, "CONTACT", contact);
+                        getDocAsAdmin(userid, cdb).then(function(){
+                                contacts = cdb.get("connections") || [];
+                                for (i=0,l=contacts.length;i<l;i++){
+                                        // check if contact is of type user or group first
+                                        if (contacts[i].type === "user"){
+                                                if (contacts[i].lastname < contact.lastname) pos++; 
+                                                if (contacts[i].lastname ===contact.lastname){
+                                                        if (contacts[i].firstname < contact.firstname) pos++; 
+                                                }
+                                        }
+                                        else if (contacts[i].username < contact.lastname)  pos++;   
+                                }
+                                (pos) ? contacts.splice(pos, 0, contact) : contacts.push(contact);
+                                cdb.set("connections", contacts);
+                                updateDocAsAdmin(userid, cdb).then(function(){
+                                        onEnd("ok");
+                                });       
+                        });
                 };
+                
                  
                 // add specificities depending on message type
                 if (json.type === "CXR") {
@@ -678,7 +704,19 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 // return sendResults if all messages have been delivered
                 sendResults.watch("added", function() {
                         if (sendResults.getNbItems() === dest.length) {
-                        onEnd(sendResults.toJSON());
+                                //adding some post-treatment
+                                if (json.type === "CXRaccept"){
+                                         insertContact(json.dest[0], json.contactInfo, function(result){
+                                                if (result){
+                                                        // add to both users' score
+                                                        updateUserIP(json.dest[0], "CXR", 2, function(result){console.log(result)});
+                                                        updateUserIP(json.author, "CXR", 2, function(result){
+                                                                onEnd(sendResults.toJSON());
+                                                        });
+                                                }
+                                         });
+                                }
+                                else onEnd(sendResults.toJSON());
                         }
                 });
         });
@@ -886,76 +924,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 })        
         });
 
-        // Connection events
-        olives.handlers.set("CxEvent", function(json, onEnd) {
-
-                var cdb = new CouchDBStore(),
-                    connections = [],
-                    groups = [],
-                    notifications = [];
-                    now = new Date();
-                    message = {
-                        "type" : "INFO",
-                        "status" : "unread",
-                        "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]
-                };
-
-                cdb.setTransport(transport);
-
-                cdb.sync(_db, json.dest).then(function() {
-                        if (cdb.get("connections") && cdb.get("connections")[0]) {connections = cdb.get("connections");}
-                        if (cdb.get("groups") && cdb.get("groups")[0]) {groups = cdb.get("groups");}
-                        if (cdb.get("notifications") && cdb.get("notifications")[0]) {notifications = cdb.get("notifications");}
-                        
-                        // Cancelling an existing connection
-                        if (json.type === "cancel") {
-
-                                // remove json.origin from list of connections
-                                for ( i = connections.length-1; i>=0; i--) {
-                                        if (connections[i].userid === json.author) {
-                                                connections.splice(i, 1);
-                                        }
-                                }
-                                // also remove json.author from groups
-                                // check if contact was part of a group -- if yes delete contact in group as well
-                                if (groups[0]) {
-                                        for (i=groups.length-1; i>=0; i--){
-                                                var gc = groups[i].contacts;
-                                                for (j=gc.length-1; j>=0; j--){
-                                                        if (gc[j].userid === userid) {
-                                                                // if userid is found delete this contact entry
-                                                                gc.splice(j, 1);
-                                                                // if group is empty remove the entire group
-                                                                if (!gc.length){
-                                                                        groups.splice(i,1);   
-                                                                }
-                                                        }
-                                                }  
-                                        }
-                                }
-
-                                // notify destination of cancellation
-                                message.author = json.author;
-                                message.object = json.username + " has cancelled your connection";
-                                message.body = "You are no longer connected with " + json.username;
-                                cdb.set("notifications", notifications.unshift(message));
-                        }
-
-                        // Accepting a new connection
-                        if (json.type === "INFO" && json.resp === "yes") {
-                                // add new contact info to the list of connections
-                                connections.push(json.contactInfo);
-                        }
-                        
-                        cdb.set("connections", connections);
-                        cdb.set("groups", groups);
-                        cdb.upload().then(function(){
-                                onEnd("ok");
-                                cdb.unsync();
-                        });
-                });
-
-        });
 });
 
 process.on('uncaughtException', function(error) {

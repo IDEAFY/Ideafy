@@ -5,12 +5,12 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         
                         var messageUI = new Widget(),
                             detailStack = new Stack(),
-                            close = function (){
-                                    detailStack.getStack().show(previousScreen)
+                            close = function (screen){
+                                    detailStack.getStack().show(screen);
                             },
                             previousScreen = "#defaultPage",
                             defaultPage = new Widget(), // to show in detail space when no message is selected
-                            messageDetail = new MessageDetail(),
+                            messageDetail = new MessageDetail(close),
                             newMessage = new NewMessage(close),
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},

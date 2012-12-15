@@ -3529,6 +3529,60 @@ li.color-item{
     border-bottom-right-radius: 5px; 
 }
 
+.acceptrejectCXR{
+    height: 50px;
+    margin-right: 20px;
+    text-align: right;
+}
+
+.acceptCXR, .rejectCXR{
+    display: inline-block;
+    padding-left: 35px;
+    height: 35px;
+    line-height: 35px;
+    width: 50px;
+    text-align: left;
+    border: 1px solid #CCCCCC;
+    font-family: helvetica;
+    color: #404040;
+    font-size: 12px;
+}
+
+.acceptCXR{
+    background-image: url('../img/connect/accept.png');
+    background-size: 25px 25px;
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;   
+}
+
+.rejectCXR{
+    background-image: url('../img/connect/reject.png');
+    background-size: 25px 25px;
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    border-left: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;    
+}
+
+.acceptCXR.pushed, .rejectCXR.pushed{
+    color: white;
+    background: #4D4D4D;
+    background-size: 25px 25px;
+    background-position: 5px center;
+    background-repeat: no-repeat;    
+}
+
+.acceptCXR.pushed{
+    background-image: url('../img/connect/accept.png');    
+}
+
+.rejectCXR.pushed{
+   background-image: url('../img/connect/reject.png'); 
+}
+
 #newmsg .avatar, #msgreply .avatar{
     margin: 20px;
 }
@@ -3694,3 +3748,24 @@ li.color-item{
     background-size: contain;    
 }
 
+#CXRconfirm{
+    width: 100%;
+    height: 100%;
+    background: #4D4D4D;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+#CXRconfirm span{
+    display: inline-block;
+    margin-top: 300px;
+    padding: 20px;
+    font-size: 18px;
+    font-family: Helvetica;
+    border : 2px solid #657B99;
+    border-radius: 5px;
+    background: white;
+}

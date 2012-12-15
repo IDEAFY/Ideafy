@@ -93,7 +93,7 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                 node.classList.remove ("pressed");
                                 sendInProgress = false;
                                 newMessageUI.reset();
-                                $close();      
+                                $close("#defaultPage");      
                         };
                         
                         newMessageUI.send = function(event, node){

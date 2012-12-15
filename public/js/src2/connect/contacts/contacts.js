@@ -157,6 +157,14 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                         // show add Contact page by default
                         detailStack.getStack().show("#addcontact");
                         
+                        // watch for changes in connections
+                        user.watchValue("connections", function(){
+                                // if no search is active
+                                if (currentSort>-1) {
+                                        contactList.reset(sortContacts(currentSort));
+                                }            
+                        });
+                        
                         return contactsUI;    
                 }
         })

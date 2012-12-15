@@ -214,6 +214,7 @@
 	"accept": "Accept",
 	"reject": "Reject",
 	"acceptedCXR": " has accepted your connection request",
+	"rejectedCXR": " has declined your connection request",
 	"CXRaccepted": "Request accepted, ",
 	"CXRrejected": "Contact request rejected",
 	"isnowacontact": " is now a contact"

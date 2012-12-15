@@ -181,7 +181,7 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 var promise = new Promise(),
                                     now = new Date(),
                                     msgdate, sentdate,
-                                    n = user.get("notifications"),
+                                    n = user.get("notifications") || [],
                                     s = user.get("sentMessages") || [];
                                 
                                 for (i=n.length-1;i>=0;i--){

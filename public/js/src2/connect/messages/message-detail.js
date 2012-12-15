@@ -132,6 +132,7 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                         user.upload().then(function(){
                                 var json = {
                                         "dest":[message.get("author")],
+                                        "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
                                         "original":"",
                                         "type": "CXRaccept",
                                         "author": user.get("_id"),
@@ -157,19 +158,47 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                                         if (JSON.parse(result)[0].res === "ok"){
                                                 // delete this message, confirmation popup, return to default page
                                                 setTimeout(function(){
-                                                        console.log("time out function");
                                                         msgDetailUI.deletemsg(message.toJSON());
                                                         $close("#defaultPage");
-                                                }, 2000);
+                                                }, 1500);
                                                 
                                         }
-                                })
+                                });
                                        
                         });
                 };
                 
                 msgDetailUI.rejectCXR = function(event, node){
-                        node.classList.remove("pushed");        
+                        var json, now=new Date();
+                        node.classList.remove("pushed");
+                        cxrConfirm.set("response", "NO");
+                        //notify sender of rejection
+                        json = {
+                                "dest":[message.get("author")],
+                                "original": "",
+                                "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                "type": "CXRreject",
+                                "author": user.get("_id"),
+                                "username" : user.get("username"),
+                                "firstname" : user.get("firstname"),
+                                "toList": message.get("username"),
+                                "ccList": "",
+                                "object": user.get("username")+labels.get("rejectedCXR"),
+                                "body": "",
+                                "signature": ""
+                      };
+                      //send response
+                        transport.request("Notify", json, function(result){
+                                if (JSON.parse(result)[0].res === "ok"){
+                                        // delete this message, confirmation popup, return to default page
+                                        setTimeout(function(){
+                                                msgDetailUI.deletemsg(message.toJSON());
+                                                $close("#defaultPage");
+                                        }, 1500);
+                                                
+                                }
+                        });
+                              
                 };
                 
                 //init

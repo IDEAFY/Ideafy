@@ -123,7 +123,10 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                                                 sendInProgress = false;
                                                                 newMessageUI.reset();
                                                                 error.set("errormsg", labels.get("messagesentok"));
-                                                                setTimeout(function(){error.set("errormsg", "");sendInProgress=false;$close("#defaultPage");}, 2000);
+                                                                setTimeout(function(){
+                                                                        error.set("errormsg", "");
+                                                                        sendInProgress=false;
+                                                                        $close("#defaultPage");}, 2);
                                                         });
                                                 }
                                                 else{

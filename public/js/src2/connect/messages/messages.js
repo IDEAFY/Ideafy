@@ -175,6 +175,12 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         msgList.reset(user.get("notifications"));
                                 });
                         };
+                        
+                        messageUI.getSelectedmsg = function(){
+                                var node = document.querySelector(".msg.selected"), id = -1;
+                                if (node) id = node.getAttribute("data-msg_id");
+                                return id;
+                        };
                        
                         //delete messages older than 30 days
                         messageUI.cleanOld = function(){
@@ -213,7 +219,7 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 var id = node.getAttribute("data-listideas_id");
                                 touchPoint = [event.pageX, event.pageY];
                                 if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        var actionBar = new ActionBar("message", node, msgList.get(id), this.hideActionBar),
+                                        var actionBar = new ActionBar("message", node, msgList.get(id), messageUI.hideActionBar),
                                            frag = document.createDocumentFragment();  
                                 
                                         actionBar.place(frag); // render action bar    
@@ -244,10 +250,15 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         
                         // watch for changes in notifications
                         user.watchValue("notifications", function(){
+                                var id;
                                 // if no search is active
                                 if (currentSort>-1) {
                                         msgList.reset(sortMessages(currentSort));
-                                }            
+                                }
+                                if (detailStack.getStack().getCurrentName === "#msgdetail"){
+                                        id = messageUI.getSelectedmsg();
+                                        (id>-1)? messageDetail.reset(msgList.get(id)): detailStack.getStack().show("#defaultPage");
+                                } 
                         });
                         
                         observer.watch("display-message", function(id){

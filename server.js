@@ -662,20 +662,21 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                  */
                 insertContact = function(userid, contact, onEnd){
                         var cdb = new CouchDBStore(), contacts = [], pos=0;
-                        console.log("USERID", userid, "CONTACT", contact);
                         getDocAsAdmin(userid, cdb).then(function(){
-                                contacts = cdb.get("connections") || [];
+                                contacts = cdb.get("connections");
                                 for (i=0,l=contacts.length;i<l;i++){
                                         // check if contact is of type user or group first
                                         if (contacts[i].type === "user"){
                                                 if (contacts[i].lastname < contact.lastname) pos++; 
-                                                if (contacts[i].lastname ===contact.lastname){
+                                                if (contacts[i].lastname === contact.lastname){
                                                         if (contacts[i].firstname < contact.firstname) pos++; 
                                                 }
                                         }
-                                        else if (contacts[i].username < contact.lastname)  pos++;   
+                                        else {
+                                                if (contacts[i].username < contact.lastname)  pos++;
+                                        }  
                                 }
-                                (pos) ? contacts.splice(pos, 0, contact) : contacts.push(contact);
+                                contacts.splice(pos, 0, contact);
                                 cdb.set("connections", contacts);
                                 updateDocAsAdmin(userid, cdb).then(function(){
                                         onEnd("ok");

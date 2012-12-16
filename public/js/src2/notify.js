@@ -23,7 +23,6 @@ define("Ideafy/Notify", ["Olives/OObject", "Config", "Map", "Store", "Olives/Mod
                                         
                                         if(newmsg){
                                                 flash = setInterval(function(){
-                                                        console.log("bip");
                                                         (node.classList.contains("orange")) ? node.classList.remove("orange") : node.classList.add("orange");
                                                 }, 600);
                                         

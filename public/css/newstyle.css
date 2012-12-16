@@ -3355,7 +3355,7 @@ li.color-item{
     overflow: hidden; 
 }
 
-.msg .actionbar{
+.msg .actionbar, .contact .actionbar{
     margin-left: -10px;
 }
 

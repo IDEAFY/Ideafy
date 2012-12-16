@@ -72,7 +72,6 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                 "contact": new Model(contactList,{
                                         setAvatar : function setAvatar(type){
                                                 var id = this.getAttribute("data-contact_id"), frag, ui;
-                                                console.log(type);
                                                 if (type === "group"){
                                                         if (this.hasChildNodes()) this.removeChild(this.firstChild);
                                                         this.setAttribute("style", "background: url('../img/connect/"+contactList.get(id).color+"') no-repeat center center; background-size: contain;display:block; width:40px; height:40px;float:left;");
@@ -83,6 +82,9 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                                         _ui.place(_frag);
                                                         (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                                 }
+                                        },
+                                        setIntro : function(intro){
+                                                (intro) ? this.innerHTML = intro : this.innerHTML="";
                                         }
                                 }),
                                 "contactdetailstack": detailStack,
@@ -90,12 +92,18 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                 "contactlistevent": new Event(contactsUI)
                         });
                         
-                        contactsUI.template = '<div id="connect-contacts"><div class="contacts list"><div class="header blue-light"><span data-label="bind: innerHTML, contactlistheadertitle">My Contacts</span><div class="option right" data-contactlistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-contactlistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-contactlistevent="listen: keypress, search"><div class="contactlist overflow" data-contactlistcontrol="radio:li,selected,touchstart,selectContact"><ul data-contact="foreach"><li class="contact list-item" data-contactlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-contact="bind:setAvatar, type"></div><p class="contact-name" data-contact="bind:innerHTML, username"></p><p class="contact-intro" data-contact="bind:innerHTML, intro"></p><div class="select-contact"></div></li></ul></div></div><div id="contact-detail" class="details" data-contactdetailstack="destination"></div></div>';
+                        contactsUI.template = '<div id="connect-contacts"><div class="contacts list"><div class="header blue-light"><span data-label="bind: innerHTML, contactlistheadertitle">My Contacts</span><div class="option right" data-contactlistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-contactlistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-contactlistevent="listen: keypress, search"><div class="contactlist overflow" data-contactlistcontrol="radio:li,selected,touchstart,selectContact"><ul data-contact="foreach"><li class="contact list-item" data-contactlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-contact="bind:setAvatar, type"></div><p class="contact-name" data-contact="bind:innerHTML, username"></p><p class="contact-intro" data-contact="bind:setIntro, intro"></p><div class="select-contact"></div></li></ul></div></div><div id="contact-detail" class="details" data-contactdetailstack="destination"></div></div>';
                         
                         contactsUI.place(Map.get("connect-contacts"));
                         
                         contactsUI.init = function init(){
                                 contactList.reset(user.get("connections"));       
+                        };
+                        
+                        contactsUI.getSelectedContact = function(){
+                                var node = document.querySelector(".contact.selected"), id = -1;
+                                if (node) id = node.getAttribute("data-contact_id");
+                                return id;
                         };
                         
                         contactsUI.displaySort = function(event, node){
@@ -131,7 +139,7 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                 var id = node.getAttribute("data-contact_id");
                                 touchPoint = [event.pageX, event.pageY];
                                 if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        var actionBar = new ActionBar("contact", node, contactList.get(id), this.hideActionBar),
+                                        var actionBar = new ActionBar("contact", node, contactList.get(id), contactsUI.hideActionBar),
                                            frag = document.createDocumentFragment();  
                                 
                                         actionBar.place(frag); // render action bar    
@@ -159,10 +167,15 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                         
                         // watch for changes in connections
                         user.watchValue("connections", function(){
+                                var id;
                                 // if no search is active
                                 if (currentSort>-1) {
                                         contactList.reset(sortContacts(currentSort));
-                                }            
+                                }
+                                if (detailStack.getStack().getCurrentName === "#contactdetail"){
+                                        id = contactsUI.getSelectedContact();
+                                        (id>-1)? contactDetail.reset(contactList.get(id)): detailStack.getStack().show("#addcontact");
+                                }          
                         });
                         
                         return contactsUI;    

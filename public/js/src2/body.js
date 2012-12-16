@@ -161,7 +161,9 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                                 "object" : _labels.get("signupwelcomeobject"),
                                                                 "status" : "unread",
                                                                 "author" : "IDEAFY",
-                                                                "usernname" : "Ideafy",
+                                                                "firstname": "DeeDee",
+                                                                "signature": "-- Ideas made easy!",
+                                                                "username" : "Ideafy",
                                                                 "body" : _labels.get("signupwelcomebody")
                                                         }]);
                                                         
@@ -203,8 +205,22 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                 }
         };
 
-        _body.resetError = function() {
+        _body.resetError = function(event, node) {
                 _store.set("error", "");
+        };
+        
+        _body.enterlogin = function(event, node){
+                if (event.keyCode === 13){
+                        event.target.blur();
+                        _body.login();        
+                }        
+        };
+        
+        _body.entersignup = function(event, node){
+                if (event.keyCode === 13){
+                        event.target.blur();
+                        _body.signup();        
+                }        
         };
         
         _body.press = function(event){

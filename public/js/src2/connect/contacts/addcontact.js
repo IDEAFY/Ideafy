@@ -136,13 +136,15 @@ define("Ideafy/Connect/AddContact", ["Olives/OObject", "Config", "Olives/Model-p
              
              addContactUI.init = function init(){
                 count.setTransport(transport);
-                count.sync(Config.get("db"), "users", "_view/count").then(function(){console.log(count.toJSON())});        
+                count.sync(Config.get("db"), "users", "_view/count");        
              };
              
              addContactUI.searchDB = function (event, node){
                      var field;
                      if (event.keyCode === 13){
                                // validate search
+                               event.target.blur();
+                               console.log(event.target);
                                field = node.getAttribute("name");
                                validateSearch(field, node.value);
                      }        

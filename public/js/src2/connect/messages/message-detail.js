@@ -128,9 +128,9 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                         }
                         contacts.splice(pos, 0, message.get("contactInfo"));
                         user.set("connections", contacts);
-                        // upload and send notification to send
+                        // upload and send notification to sender
                         user.upload().then(function(){
-                                var json = {
+                                var now = new Date(), json = {
                                         "dest":[message.get("author")],
                                         "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
                                         "original":"",

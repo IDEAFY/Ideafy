@@ -128,7 +128,7 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                         };
                 
                         contactsUI.showActionBar = function(event, node){
-                                var id = node.getAttribute("data-listideas_id");
+                                var id = node.getAttribute("data-contact_id");
                                 touchPoint = [event.pageX, event.pageY];
                                 if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
                                         var actionBar = new ActionBar("contact", node, contactList.get(id), this.hideActionBar),

@@ -658,12 +658,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         });
                 },
                 /*
-                 * A function to insert contact in a user's connectio list when a request was accepted
+                 * A function to insert contact in a user's connection list when a request was accepted
                  */
                 insertContact = function(userid, contact, onEnd){
-                        var cdb = new CouchDBStore(), contacts = [], pos=0;
+                        var cdb = new CouchDBStore(), contacts = [], pos=0, news =[];
                         getDocAsAdmin(userid, cdb).then(function(){
                                 contacts = cdb.get("connections");
+                                news = cdb.get("news") || [];
                                 for (i=0,l=contacts.length;i<l;i++){
                                         // check if contact is of type user or group first
                                         if (contacts[i].type === "user"){
@@ -677,7 +678,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         }  
                                 }
                                 contacts.splice(pos, 0, contact);
+                                news.unshift({"type": "CX+", "content": {userid:json.author, username:contact.username}});
                                 cdb.set("connections", contacts);
+                                cdb.set("news", news);
                                 updateDocAsAdmin(userid, cdb).then(function(){
                                         onEnd("ok");
                                 });       

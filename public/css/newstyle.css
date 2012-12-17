@@ -3601,6 +3601,62 @@ li.color-item{
     font-size: 12px;
 }
 
+.autocontact{
+    position: absolute;
+    background: white;
+    border: 1px solid #CCC;
+    display: block;
+    width: 488px;
+    margin-top: -10px;
+    height: 120px;
+    padding: 10px;
+    -webkit-box-shadow: inset 0 0 3px 1px rgba(0,0,0,0.7);
+    z-index: 100;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.autocontact li{
+    float: left;
+    font-size: 14px;
+    border-bottom: 1px solid #cccccc;
+    color: #404040;
+    width: 190px;
+    margin-left: 15px;
+    height: 30px;
+    height: 25px;
+    line-height: 25px;
+    padding-left: 25px;
+    background: url('../img/connect/contactDisable.png') no-repeat left center;
+    background-size: 25px 25px;
+}
+
+.autocontact li.group{
+    background: url('../img/connect/folderDisable.png') no-repeat left center;
+    background-size: 25px 25px;    
+}
+
+.autocontact li.selected{
+    color: black;
+    font-weight: bold;
+    background: url('../img/connect/contactActive.png') no-repeat left center;
+    background-size: 25px 25px;   
+}
+
+.autocontact li.selected.group{
+    background: url('../img/connect/folderActive.png') no-repeat left center;
+    background-size: 25px 25px;
+}
+
+.autoclose{
+    float: right;
+    width: 20px;
+    height: 20px;
+    display: block;
+    background: url('../img/brainstorm/closeFrame.png') no-repeat center center;
+    background-size: 15px 15px;
+}
+
 #msgreply blockquote{
     font-size: 12px;
     font-style: italic;

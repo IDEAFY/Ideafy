@@ -1,5 +1,5 @@
-define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "Promise"],
-        function(Widget, Model, Event, Config, Store, Promise){
+define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "Promise", "Ideafy/AutoContact"],
+        function(Widget, Model, Event, Config, Store, Promise, AutoContact){
                 
                 return function NewMessageConstructor($close){
                         
@@ -10,6 +10,7 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                             user = Config.get("user"),
                             transport = Config.get("transport"),
                             sendInProgress = false,
+                            autoCompleteUIs = {},
                             validateRecipients = function(onEnd){
                                     var to = message.get("toList").toLowerCase().split(/,|;/),
                                         cc = message.get("ccList").toLowerCase().split(/,|;/),
@@ -18,7 +19,8 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                         json = {},
                                         promise = new Promise();
                                     // reset recipient list
-                                    arr = [];    
+                                    arr = [];
+                                    console.log(to, cc);   
                                     // check recipients
                                     for (i=0, l=to.length; i<l; i++){
                                         if (contacts.search(to[i].trim()) > -1){
@@ -77,7 +79,7 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                 "newmessageevent" : new Event(newMessageUI)
                         });
                         
-                        newMessageUI.template = '<div id="newmsg"><div class="header blue-dark"><span data-labels="bind: innerHTML, newmsg">New message</span></div><div class="avatar" data-newmessage="bind: setAvatar, author"></div><form class="form"><p><textarea class="mail-header" data-newmessage="bind: value, toList" data-labels="bind:placeholder, tocontactlbl"></textarea></p><p><textarea class="mail-header" data-newmessage="bind: value, ccList" data-labels="bind:placeholder, cclbl"></textarea></p><p><input type="text" class="input" data-newmessage="bind:value, object" data-labels="bind:placeholder, subjectlbl"></p><p><textarea class="input" data-newmessage="bind:value, body"></textarea></p><p><legend>Signature</legend><textarea class="signature" data-newmessage="bind:value, signature"></textarea></p><div class="sendmail-footer"><p class="send"><label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-newmessageevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-labels="bind:innerHTML, sendlbl" data-newmessageevent="listen:touchstart, press; listen:touchend, send">Send</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div>';
+                        newMessageUI.template = '<div id="newmsg"><div class="header blue-dark"><span data-labels="bind: innerHTML, newmsg">New message</span></div><div class="avatar" data-newmessage="bind: setAvatar, author"></div><form class="form"><p><textarea class="mail-header" name="toList" data-newmessage="bind: value, toList" data-newmessageevent="listen: touchstart, displayAutoContact; listen:keypress, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"></textarea></p><div id="tolistauto" class="invisible"></div><p><textarea class="mail-header" name="ccList" data-newmessage="bind: value, ccList" data-labels="bind:placeholder, cclbl" data-newmessageevent="listen: touchstart, displayAutoContact; listen:keypress, updateAutoContact"></textarea></p><div id="cclistauto" class="invisible"></div><p><input type="text" class="input" data-newmessage="bind:value, object" data-labels="bind:placeholder, subjectlbl"></p><p><textarea class="input" data-newmessage="bind:value, body"></textarea></p><p><legend>Signature</legend><textarea class="signature" data-newmessage="bind:value, signature"></textarea></p><div class="sendmail-footer"><p class="send"><label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-newmessageevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-labels="bind:innerHTML, sendlbl" data-newmessageevent="listen:touchstart, press; listen:touchend, send">Send</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div>';
                         
                         newMessageUI.reset = function reset(){
                                 message.reset({"author": user.get("_id"), "username": user.get("username"), "firstname": user.get("firstname"), "type": "MSG", "signature": user.get("username"), "toList":"", "ccList":"", "object":"", "body":"", date: null}); 
@@ -94,6 +96,32 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                 sendInProgress = false;
                                 newMessageUI.reset();
                                 $close("#defaultPage");      
+                        };
+                        
+                        newMessageUI.displayAutoContact = function(event, node){
+                                var name=node.getAttribute("name"), dom, ui,
+                                    updateField = function(value){
+                                           message.set(name, value);
+                                    };
+                                
+                                (name === "toList")?dom = document.getElementById("tolistauto"):dom = document.getElementById("cclistauto");
+                                ui = new AutoContact(dom, node, updateField);
+                                // add to autoCompleteUIs object
+                                autoCompleteUIs.name = ui;
+                                dom.classList.remove("invisible");      
+                        };
+                        
+                        newMessageUI.updateAutoContact = function(event, node){
+                                var name = node.getAttribute("name");
+                                if (event.keyCode === 13){
+                                        node.removeChild(node.firstChild);
+                                }
+                                else if (event.keyCode === 186 || event.keyCode === 188){
+                                        autoCompleteUIs.name.init();        
+                                }
+                                else {
+                                        autoCompleteUIs.name.updateList();
+                                }    
                         };
                         
                         newMessageUI.send = function(event, node){

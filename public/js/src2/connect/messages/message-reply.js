@@ -1,10 +1,12 @@
-define("Ideafy/Connect/MessageReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Utils", "Promise"],
-        function(Widget, Store, Model, Event, Config, Utils, Promise){
+define("Ideafy/Connect/MessageReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Utils", "Promise", "Ideafy/AutoContact"],
+        function(Widget, Store, Model, Event, Config, Utils, Promise, AutoContact){
                 
            return function MessageReplyConstructor(){
            
                 var messageReplyUI = new Widget(),
                     msgReply = new Store(),
+                    originalMsg,
+                    autoCompleteUIs = {},
                     error = new Store({"errormsg":""}),
                     labels = Config.get("labels"),
                     user = Config.get("user"),
@@ -24,9 +26,9 @@ define("Ideafy/Connect/MessageReply", ["Olives/OObject", "Store", "Olives/Model-
                             promise = new Promise();
                         // reset recipient list
                         arr = [];    
-                        // check recipients
+                        // check recipients -- should be in original message or in user contact list
                         for (i=0, l=to.length; i<l; i++){
-                                if (contacts.search(to[i].trim()) > -1){
+                                if (contacts.search(to[i].trim()) > -1 || originalMsg.toList.search(to[i].trim())>-1 || originalMsg.ccList.search(to[i].trim())>-1){
                                         dest.push(to[i].trim());
                                 }
                                 else{
@@ -36,10 +38,10 @@ define("Ideafy/Connect/MessageReply", ["Olives/OObject", "Store", "Olives/Model-
                                         break;
                                 }       
                         }
-                        // check cc
+                        // check cc list -- should be original + addition of new users from contact
                         if (!error.get("errormsg") && cc[0] !== ""){
                                 for (i=0, l=cc.length; i<l; i++){
-                                        if (contacts.search(cc[i].trim()) > -1){
+                                        if (contacts.search(cc[i].trim()) > -1 || originalMsg.toList.search(cc[i].trim())>-1 || originalMsg.ccList.search(cc[i].trim())>-1){
                                                 dest.push(cc[i].trim()); 
                                         }
                                         else{
@@ -48,7 +50,7 @@ define("Ideafy/Connect/MessageReply", ["Olives/OObject", "Store", "Olives/Model-
                                                 promise.reject();
                                                 break;
                                         }      
-                                        }
+                                }
                         }
                         //obtain userids from usernames
                         if (!error.get("errormsg")){
@@ -104,9 +106,10 @@ define("Ideafy/Connect/MessageReply", ["Olives/OObject", "Store", "Olives/Model-
                         "replyevent" : new Event(messageReplyUI)
                 });
                 
-                messageReplyUI.template = '<div><div class="avatar" data-reply="bind: setAvatar, message.author"></div><form class="form"><p><textarea class="mail-header" data-labels="bind:placeholder, tocontactlbl" data-reply="bind: value, toList"></textarea></p><p><textarea class="mail-header" data-labels="bind:placeholder, cclbl" data-reply="bind: value, ccList"></textarea></p><p><span class="subject" data-labels="bind:innerHTML, subjectlbl"></span><span data-reply="bind:innerHTML, object"></span></p><p><textarea class="input" data-reply="bind:value, body"></textarea></p><blockquote class="original" data-reply="bind:innerHTML, original"></blockquote><p><legend>Signature</legend><textarea class="signature" data-reply="bind:value, signature"></textarea></p><div class="sendmail-footer"><p class="send"><label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-replyevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-labels="bind:innerHTML, sendlbl" data-replyevent="listen:touchstart, press; listen:touchend, send">Send</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div>';
+                messageReplyUI.template = '<div><div class="avatar" data-reply="bind: setAvatar, message.author"></div><form class="form"><p><textarea name="toList" class="mail-header" data-labels="bind:placeholder, tocontactlbl" data-reply="bind: value, toList" data-replyevent="listen: touchstart, displayAutoContact; listen:keypress, updateAutoContact"></textarea></p><div id="tolistauto" class="invisible"></div><p><textarea name="ccList" class="mail-header" data-labels="bind:placeholder, cclbl" data-reply="bind: value, ccList" data-replyevent="listen: touchstart, displayAutoContact; listen:keypress, updateAutoContact"></textarea></p><div id="cclistauto" class="invisible"></div><p><span class="subject" data-labels="bind:innerHTML, subjectlbl"></span><span data-reply="bind:innerHTML, object"></span></p><p><textarea class="input" data-reply="bind:value, body"></textarea></p><blockquote class="original" data-reply="bind:innerHTML, original"></blockquote><p><legend>Signature</legend><textarea class="signature" data-reply="bind:value, signature"></textarea></p><div class="sendmail-footer"><p class="send"><label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-replyevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-labels="bind:innerHTML, sendlbl" data-replyevent="listen:touchstart, press; listen:touchend, send">Send</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div>';
                 
                 messageReplyUI.reset = function reset(msg, type){
+                        originalMsg = msg;
                         msgReply.reset({
                                 "signature":"",
                                 "original":"",
@@ -139,6 +142,32 @@ define("Ideafy/Connect/MessageReply", ["Olives/OObject", "Store", "Olives/Model-
                         messageReplyUI.place(document.getElementById("msgreply"));      
                 };
                 
+                messageReplyUI.displayAutoContact = function(event, node){
+                                var name=node.getAttribute("name"), dom, ui,
+                                    updateField = function(value){
+                                           msgReply.set(name, value);
+                                    };
+                                
+                                (name === "toList")?dom = document.getElementById("tolistauto"):dom = document.getElementById("cclistauto");
+                                ui = new AutoContact(dom, node, updateField);
+                                // add to autoCompleteUIs object
+                                autoCompleteUIs.name = ui;
+                                dom.classList.remove("invisible");      
+                        };
+                        
+                messageReplyUI.updateAutoContact = function(event, node){
+                                var name = node.getAttribute("name");
+                                if (event.keyCode === 13){
+                                        node.removeChild(node.firstChild);
+                                }
+                                else if (event.keyCode === 186 || event.keyCode === 188){
+                                        autoCompleteUIs.name.init();        
+                                }
+                                else {
+                                        autoCompleteUIs.name.updateList();
+                                }    
+                        };
+                
                 messageReplyUI.press = function(event, node){
                         node.classList.add("pressed");
                 };
@@ -149,7 +178,7 @@ define("Ideafy/Connect/MessageReply", ["Olives/OObject", "Store", "Olives/Model-
                         document.getElementById("msgreply").classList.add("invisible");     
                 };
                         
-               messageReplyUI.send = function(event, node){
+                messageReplyUI.send = function(event, node){
                                 var now = new Date(), json={};
                                 node.classList.remove('pressed');
                                 

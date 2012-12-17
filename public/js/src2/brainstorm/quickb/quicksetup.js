@@ -34,7 +34,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 "labels" : new Model(_labels),
                                 "quicksetup" : new Model(_selection, {
                                         setReload : function(left){
-                                                (!left) ? this.classList.add("reload") : this.classList.remove("reload");
+                                                (left === 0) ? this.classList.add("reload") : this.classList.remove("reload");
                                         },
                                         updateNext : function(selected){
                                                 (_selection.get("char").selected && _selection.get("context").selected && _selection.get("problem").selected) ? this.classList.remove("invisible"):this.classList.add("invisible");
@@ -287,7 +287,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         if ($session.get("characters").length){
                                                 _next = "screen"; // read-only
                                                 // retrieve session deck
-                                                _widget.getDeck().then(function(){
+                                                _widget.getDeck($session.get("deck")).then(function(){
                                                         // retrieve card information
                                                         _widget.getCard($session.get("characters")[0], _currentCards.char).then(function(){
                                                                 var c = _currentCards.char;
@@ -333,12 +333,12 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         };
                         
                         // Method  called to retrieve the active deck from the database
-                        _widget.getDeck = function getDeck(){
+                        _widget.getDeck = function getDeck($deck){
                                 var promise = new Promise(),
                                     cdb = new CouchDBStore();
                                 
                                 cdb.setTransport(_transport);
-                                cdb.sync(_db, $session.get("deck")).then(function(){
+                                cdb.sync(_db, $deck).then(function(){
                                         var deck = {};
                                         deck.char = cdb.get("content").characters;
                                         deck.context = cdb.get("content").contexts;
@@ -421,31 +421,29 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                         
                         // initialize quicksetup step
                         _widget.init = function init(){
+                                
                                 // retrieve active deck
-                                _widget.getDeck().then(function(){
+                                _widget.getDeck(Config.get("user").get("active_deck")).then(function(){
                                         var _deck = $data.get("deck");
+                                        console.log("entering init function");
                                         // reset draw status
                                         _deckStack.char = _deck.char.concat();
                                         _deckStack.context = _deck.context.concat();
                                         _deckStack.problem = _deck.problem.concat();
-                                        _drawnCards.char = 0; _drawnCards.context = 0; _drawnCard.problem = 0;
+                                        _drawnCards.char = 0; _drawnCards.context = 0; _drawnCards.problem = 0;
                                         _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()};
                                         _currentPopup = "";
                                         _ready = true;
                                         // reset timer
                                         _start = null;
                                         // reset cards
-                                        _cards.reset({
-                                                char : {id:"",title:"", pic: ""},
-                                                context : {id:"",title:"", pic: ""},
-                                                problem : {id:"",title:"", pic: ""}
-                                         });
-                                         // reset selection
-                                         _selection.reset({
-                                                char : {selected: false, left: null, popup: false},
-                                                context : {selected: false, left: null, popup: false},
-                                                problem : {selected: false, left: null, popup: false}
-                                         });
+                                        _cards.set("char", {id:"",title:"", pic: ""});
+                                        _cards.set("context", {id:"",title:"", pic: ""});
+                                        _cards.set("problem", {id:"",title:"", pic: ""});
+                                        // reset selection
+                                        _selection.set("char", {selected: false, left: null, popup: false});
+                                        _selection.set("context", {selected: false, left: null, popup: false});
+                                        _selection.set("problem", {selected: false, left: null, popup: false});
                                 });
                                 _next = "step";        
                         };

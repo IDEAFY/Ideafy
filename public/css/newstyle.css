@@ -1692,8 +1692,8 @@ textarea.solution {
 #sessions .session-item .actionbar{
     display: none;
     width: 931px;
-    height: 61px;
     text-align: center;
+    margin-left: 0px;
     background-image: -webkit-linear-gradient(bottom,#292929,#404040);
     -webkit-box-shadow: 0 1px 0 white, inset 0 0 5px 1px rgba(0,0,0,0.8);
 }
@@ -1704,7 +1704,6 @@ textarea.solution {
     margin-left: -20px;
     z-index: 300;
     width: 301px;
-    height: 51px;
     text-align: center;
     background-image: -webkit-linear-gradient(bottom,#404040,#606060);
     -webkit-box-shadow: 0 1px black, inset 0 0 5px 1px rgba(0,0,0,0.8);
@@ -3357,6 +3356,8 @@ li.color-item{
 
 .msg .actionbar, .contact .actionbar{
     margin-left: -10px;
+    position: absolute;
+    border: 1px solid rgba(0,0,0,0.8);
 }
 
 .msg:first-child, .contact:first-child{
@@ -3645,7 +3646,7 @@ li.color-item{
 
 .autocontact li.selected.group{
     background: url('../img/connect/folderActive.png') no-repeat left center;
-    background-size: 25px 25px;
+    background-size: 25px 5px;
 }
 
 .autoclose{

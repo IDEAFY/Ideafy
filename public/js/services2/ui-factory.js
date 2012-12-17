@@ -44,9 +44,8 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                 
                         var buttons = new Store([]),
                             parentHeight = $parent.offsetHeight,
-                            padding = 20,
-                            margin = Math.floor((parentHeight-padding-51)/2)+51,
-                            style = new Store({"margin": margin}),
+                            style = new Store({"height": parentHeight}),
+                            padding = 10,
                             user = Config.get("user"),
                             observer = Config.get("observer"),
                             transport = Config.get("transport"),
@@ -60,14 +59,19 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                         }
                                 }),
                                 "style" : new Model(style,{
-                                        setPosition : function(mt){
-                                                this.setAttribute("style", "margin-top:-"+ mt +"px;");
+                                        setPosition : function(height){
+                                                this.setAttribute("style", "height:"+height+"px; margin-top:-"+ (height-padding) +"px;");
+                                        },
+                                        setButtons : function(height){
+                                                var mt = Math.floor((height-padding-40)/2);
+                                                console.log(mt);
+                                                this.setAttribute("style", "margin-top:"+ mt +"px;");        
                                         }
                                 }),
                                 "action" : new Event(this)
                         });
                         
-                        this.template = '<div class="actionbar" data-style="bind:setPosition, margin" data-action="listen:touchend, hide"><ul class="buttonlist" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:touchstart, press; listen:touchend, action"></li></ul></div>';
+                        this.template = '<div class="actionbar" data-style="bind:setPosition, height" data-action="listen:touchend, hide"><ul class="buttonlist" data-style="bind:setButtons, height" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:touchstart, press; listen:touchend, action"></li></ul></div>';
                         
                         this.hide = function(event, node){
                                 console.log("hide event");
@@ -110,7 +114,6 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                 switch (type){
                                         case "idea":
                                                 // actions: edit, delete, email, share, replaysession, add to favorites ?
-                                                console.log(user.toJSON(), data);
                                                 // edit : allow edits if user is one of the authors
                                                 // note: original idea is always saved with session
                                                 if (data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"edit", icon:"img/wall/35modify.png"});

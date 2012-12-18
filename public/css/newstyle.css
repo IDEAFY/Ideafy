@@ -1176,7 +1176,7 @@ textarea.solution {
     padding: 20px;
 }
 
-.idea-sendmail .input, #newmsg .input, #msgreply .input{
+.idea-sendmail .input, #newmsg .input, #msgreply .input, #addgroup .input{
     height:30px;
     padding-left: 10px;
     font-size: 14px;
@@ -3411,7 +3411,7 @@ li.color-item{
     background-position: center;
 }
 
-#msgdetail .header, #addcontact .header{
+#msgdetail .header, #addcontact .header, #addgroup .header{
     text-align: left;
 }
 
@@ -3421,7 +3421,7 @@ li.color-item{
     letter-spacing: 0;
 }
 
-#msgdetail .header .subjectlbl, #addcontact .header span{
+#msgdetail .header .subjectlbl, #addcontact .header span, #addgroup .header span{
     margin-left: 20px;
 }
 
@@ -3684,7 +3684,7 @@ li.color-item{
     font-size: 14px;
 }
 
-#addcontact .detail-contents{
+#addcontact .detail-contents, #addgroup .detail-contents{
     padding: 20px;
     background: none;
 }
@@ -3694,7 +3694,7 @@ li.color-item{
     margin-left: 100px;
 }
 
-#addcontact legend{
+#addcontact legend, #addgroup legend{
     width:100%;
     padding-bottom: 5px;
     font-family: Pacifico;
@@ -3830,4 +3830,71 @@ li.color-item{
     border : 1px solid #657B99;
     border-radius: 5px;
     background: white;
+}
+
+#toggleadd{
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 36px;
+    height: 36px;
+}
+
+#toggleadd.group{
+    display: block;
+    background: url('../img/connect/folderDisable.png') no-repeat center center;
+    background-size: contain;    
+}
+
+#toggleadd.user{
+    display: block;
+    background: url('../img/connect/contactDisable.png') no-repeat center center;
+    background-size: contain;    
+}
+
+#toggleadd.group.pressed{
+      background: url('../img/connect/folderActive.png') no-repeat center center;
+    background-size: contain;    
+}
+
+#toggleadd.user.pressed{
+    background: url('../img/connect/contactActive.png') no-repeat center center;
+    background-size: contain;    
+}
+
+#addgroup .folderpic{
+    float: left;
+    width: 60px;
+    height: 60px;
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url('../img/connect/graygroup.png');    
+}
+
+#addgroup form{
+    margin-left: 80px;
+}
+
+#addgroup textarea.input{
+    height: 80px;
+    margin-top: 10px;
+}
+
+#addgroup .groupcolors{
+    display: inline-block;
+    padding-top: 10px;
+}
+
+.groupcolors li{
+    display: block;
+    float:left;
+    margin-right: 5px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 16px;
+    color: white;
+    text-align: center;    
 }

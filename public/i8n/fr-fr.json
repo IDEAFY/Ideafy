@@ -218,5 +218,9 @@
 	"CXRaccepted": "Demande acceptée, ",
 	"CXRrejected": "Demande de contact rejetée",
 	"isnowacontact": " est maintenant un contact",
-	"canceledCX": " ne veut plus être un contact"
+	"canceledCX": " ne veut plus être un contact",
+	"newfolderlbl" : "Nouveau groupe",
+	"groupnamelbl": "Nom du groupe",
+	"groupdesclbl": "Description",
+	"colortouch": "Une petite touche de couleur"
 }

@@ -218,5 +218,9 @@
 	"CXRaccepted": "Request accepted, ",
 	"CXRrejected": "Contact request rejected",
 	"isnowacontact": " is now a contact",
-	"canceledCX": " has canceled your connection"
+	"canceledCX": " has canceled your connection",
+	"newfolderlbl" : "New group",
+	"groupnamelbl": "Group name",
+	"groupdesclbl": "Group description",
+	"colortouch": "A colorful touch is always nice"
 }

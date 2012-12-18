@@ -1,11 +1,12 @@
-define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "Ideafy/Avatar", "Ideafy/ActionBar", "Ideafy/Connect/AddContact"],
-        function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact){
+define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "Ideafy/Avatar", "Ideafy/ActionBar", "Ideafy/Connect/AddContact", "Ideafy/Connect/AddGroup"],
+        function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact, AddGroup){
                 
                 return function ContactsConstructor(){
                         
                         var contactsUI = new Widget(),
                             detailStack = new Stack(),
                             addContact = new AddContact(),
+                            addGroup = new AddGroup(),
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "users", "label": "usrbtn", "selected": false},
@@ -92,12 +93,19 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                 "contactlistevent": new Event(contactsUI)
                         });
                         
-                        contactsUI.template = '<div id="connect-contacts"><div class="contacts list"><div class="header blue-light"><span data-label="bind: innerHTML, contactlistheadertitle">My Contacts</span><div class="option right" data-contactlistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-contactlistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-contactlistevent="listen: keypress, search"><div class="contactlist overflow" data-contactlistcontrol="radio:li,selected,touchstart,selectContact"><ul data-contact="foreach"><li class="contact list-item" data-contactlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-contact="bind:setAvatar, type"></div><p class="contact-name" data-contact="bind:innerHTML, username"></p><p class="contact-intro" data-contact="bind:setIntro, intro"></p><div class="select-contact"></div></li></ul></div></div><div id="contact-detail" class="details" data-contactdetailstack="destination"></div></div>';
+                        contactsUI.template = '<div id="connect-contacts"><div class="contacts list"><div class="header blue-light"><span data-label="bind: innerHTML, contactlistheadertitle">My Contacts</span><div class="option right" data-contactlistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-contactlistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-contactlistevent="listen: keypress, search"><div class="contactlist overflow" data-contactlistcontrol="radio:li,selected,touchstart,selectContact"><ul data-contact="foreach"><li class="contact list-item" data-contactlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-contact="bind:setAvatar, type"></div><p class="contact-name" data-contact="bind:innerHTML, username"></p><p class="contact-intro" data-contact="bind:setIntro, intro"></p><div class="select-contact"></div></li></ul></div></div><div id="toggleadd" class="group" data-contactlistevent="listen:touchstart, press; listen:touchend, toggleAddUI"></div><div id="contact-detail" class="details" data-contactdetailstack="destination"></div></div>';
                         
                         contactsUI.place(Map.get("connect-contacts"));
                         
+                        contactsUI.plus = function plus(event, node){
+                                detailStack.getStack().get("#addcontact").reset();
+                                detailStack.getStack().show("#addcontact");      
+                        };
+                        
                         contactsUI.init = function init(){
-                                contactList.reset(user.get("connections"));       
+                                contactList.reset(user.get("connections"));
+                                // show add Contact page by default
+                                detailStack.getStack().show("#addcontact");      
                         };
                         
                         contactsUI.getSelectedContact = function(){
@@ -156,14 +164,34 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                 currentBar = null;
                         };
                         
+                        contactsUI.press = function(event, node){
+                                node.classList.add("pressed");
+                        };
+                        
+                        contactsUI.toggleAddUI = function(event, node){
+                                node.classList.remove("pressed");
+                                if (node.classList.contains("group")){
+                                        node.classList.remove("group");
+                                        detailStack.getStack().get("#addgroup").reset();
+                                        detailStack.getStack().show("#addgroup");
+                                        node.classList.add("user");
+                                }
+                                else{
+                                        node.classList.remove("user");
+                                        detailStack.getStack().get("#addcontact").reset();
+                                        detailStack.getStack().show("#addcontact");
+                                        node.classList.add("group");        
+                                } 
+                        };
+                        
                         // initialize
-                        // get message list from user document
-                        contactsUI.init();
                         // add UIs to detail stack
                         //detailStack.getStack().add("#contactdetail", contactDetail);
                         detailStack.getStack().add("#addcontact", addContact);
-                        // show add Contact page by default
-                        detailStack.getStack().show("#addcontact");
+                        detailStack.getStack().add("#addgroup", addGroup);
+                        // get message list from user document
+                        contactsUI.init();
+                        
                         
                         // watch for changes in connections
                         user.watchValue("connections", function(){
@@ -174,7 +202,13 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                 }
                                 if (detailStack.getStack().getCurrentName === "#contactdetail"){
                                         id = contactsUI.getSelectedContact();
-                                        (id>-1)? contactDetail.reset(contactList.get(id)): detailStack.getStack().show("#addcontact");
+                                        if (id>-1){
+                                                contactDetail.reset(contactList.get(id));
+                                        }
+                                        else{
+                                                detailStack.getStack().show("#addcontact");
+                                                document.getElementById("toggleadd").classList.add("group");        
+                                        } 
                                 }          
                         });
                         

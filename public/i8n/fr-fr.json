@@ -217,5 +217,6 @@
 	"rejectedCXR": " a décliné votre demande de contact",
 	"CXRaccepted": "Demande acceptée, ",
 	"CXRrejected": "Demande de contact rejetée",
-	"isnowacontact": " est maintenant un contact"
+	"isnowacontact": " est maintenant un contact",
+	"canceledCX": " ne veut plus être un contact"
 }

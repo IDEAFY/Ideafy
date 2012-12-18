@@ -47,6 +47,7 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                             style = new Store({"height": parentHeight}),
                             padding = 10,
                             user = Config.get("user"),
+                            labels = Config.get("labels"),
                             observer = Config.get("observer"),
                             transport = Config.get("transport"),
                             buildButtons,
@@ -193,6 +194,51 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 user.upload();
                                                 break;
                                         case "contact":
+                                                var arr = user.get("connections");
+                                                for (i=arr.length-1; i>=0; i--){
+                                                        if (arr[i].type === "user" && arr[i].userid === $data.userid) arr.splice(i,1)
+                                                        else if (arr[i].type === "group"){
+                                                                var grp = arr[i].contacts;
+                                                                for (j=grp.length-1; j>=0; j--){
+                                                                        if (grp[j].userid === $data.userid) grp.splice(j,1);
+                                                                }
+                                                        }
+                                                }
+                                                user.set("connections", arr);
+                                                // add contact deletion to news
+                                                user.get("news").unshift({type: "CX-", content:{userid: $data.userid, username: $data.username}});
+                                                user.upload().then(function(){
+                                                        // notify the other end that the contact is terminated.
+                                                        var now = new Date(),
+                                                            json = {
+                                                                "dest":[$data.userid],
+                                                                "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                                                "original":"",
+                                                                "type": "CXCancel",
+                                                                "author": user.get("_id"),
+                                                                "username" : user.get("username"),
+                                                                "firstname" : user.get("firstname"),
+                                                                "toList": $data.username,
+                                                                "ccList": "",
+                                                                "object": user.get("username")+ labels.get("canceledCX"),
+                                                                "body": "",
+                                                                "signature": "",
+                                                                "contactInfo": { 
+                                                                        "firstname": user.get("firstname"),
+                                                                        "lastname": user.get("lastname"),
+                                                                        "userid": user.get("_id"),
+                                                                        "username": user.get("username"),
+                                                                        "intro": user.get("intro"), 
+                                                                        "type": "user"
+                                                                }
+                                                             };
+                                                        //send response
+                                                        transport.request("Notify", json, function(result){
+                                                                console.log(result);
+                                                
+                                                        });        
+                                                });
+                                                
                                                 break;
                                         default:
                                                 break;        

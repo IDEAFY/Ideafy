@@ -161,9 +161,10 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               
               this.displayActionBar = function(event, node){
                       var _id = node.getAttribute("data-sessions_id"),
+                          _height = node.offsetHeight,
                           _sid = _sessions.get(_id);
                       
-                      node.querySelector(".actionbar").setAttribute("style", "display: block;");
+                      node.querySelector(".actionbar").setAttribute("style", "display: block;margin-top:-"+_height+"px;height: "+_height+"px;");
                       
                       // session cannot be deleted if initiated by another user or if has multiple users or if it is the current session in progress
                       if (_sid.participants.length>1 || _sid.participants[0] != _user.get("_id") || _sid.id === _user.get("sessionInProgress").id){
@@ -294,12 +295,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               // init session data
               _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
                                 _widget.resetSessionData();
-                                /* _sessionsCDB.watch("added", function(){
-                                        _widget.resetSessionData();
-                                        // apply current sorting methods
-                                        _widget.sortSessions(_currentSort);       
-                                });*/
-                               ["added", "deleted", "updated"].forEach(function(change){
+                                ["added", "deleted", "updated"].forEach(function(change){
                                         _sessionsCDB.watch(change, function(idx, value){
                                                 console.log(change, idx, value);
                                                 _widget.resetSessionData();

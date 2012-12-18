@@ -685,6 +685,34 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         onEnd("ok");
                                 });       
                         });
+                },
+                /*
+                 * A function to remove a contact in a user's connection list when a cancel request is sent
+                 */
+                removeContact = function(userid, contact, onEnd){
+                        var cdb = new CouchDBStore(), contacts = [], pos=0, news =[];
+                        getDocAsAdmin(userid, cdb).then(function(){
+                                contacts = cdb.get("connections");
+                                news = cdb.get("news") || [];
+                                for (i=contacts.length-1;i>=0;i--){
+                                        // check if contact is of type user or group first
+                                        if (contacts[i].type === "user"){
+                                                if (contacts[i].userid === contact.userid) contacts.splice(i,1);
+                                        }
+                                        else if ((contacts[i].type === "group")){
+                                                var grp = contacts[i].contacts;
+                                                for (j=grp.length-1;j>=0; j--){
+                                                        if (grp.userid === contact.userid) grp.splice(j,1)
+                                                }
+                                        } 
+                                }
+                                news.unshift({"type": "CX-", "content": {userid:contact.userid, username:contact.username}});
+                                cdb.set("connections", contacts);
+                                cdb.set("news", news);
+                                updateDocAsAdmin(userid, cdb).then(function(){
+                                        onEnd("ok");
+                                });       
+                        });
                 };
                 
                  
@@ -719,6 +747,17 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         });
                                                 }
                                          });
+                                }
+                                else if (json.type === "CXCancel"){
+                                        removeContact(json.dest[0], json.contactInfo, function(result){
+                                                if (result){
+                                                        // add to both users' score
+                                                        updateUserIP(json.dest[0], "CXC", -2, function(result){console.log(result)});
+                                                        updateUserIP(json.author, "CXC", -2, function(result){
+                                                                onEnd(sendResults.toJSON());
+                                                        });
+                                                }        
+                                        });
                                 }
                                 else onEnd(sendResults.toJSON());
                         }

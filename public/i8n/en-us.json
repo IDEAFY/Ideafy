@@ -217,5 +217,6 @@
 	"rejectedCXR": " has declined your connection request",
 	"CXRaccepted": "Request accepted, ",
 	"CXRrejected": "Contact request rejected",
-	"isnowacontact": " is now a contact"
+	"isnowacontact": " is now a contact",
+	"canceledCX": " has canceled your connection"
 }

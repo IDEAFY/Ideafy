@@ -1696,6 +1696,7 @@ textarea.solution {
     margin-left: 0px;
     background-image: -webkit-linear-gradient(bottom,#292929,#404040);
     -webkit-box-shadow: 0 1px 0 white, inset 0 0 5px 1px rgba(0,0,0,0.8);
+    padding: 0px;
 }
 
 .list .actionbar{
@@ -3426,6 +3427,8 @@ li.color-item{
 
 #msgdetail .detail-header{
     margin: 0 20px 0 20px;
+    height: auto;
+    padding-bottom: 20px;
 }
 
 #msgdetail .detail-header p{
@@ -3439,7 +3442,7 @@ li.color-item{
 }
 
 #msgdetail .detail-header .date{
-    font-size: 12px;
+    font-size: 14px;
     float: none;
 }
 
@@ -3457,9 +3460,10 @@ li.color-item{
 
 .msgoptions .msgoptionlist{
     position: absolute;
-    top: 103px;
+    top: 105px;
     right: 20px;
     display: inline-block;
+    background: white;
 }
 
 .defaultmsgoption div, .msgoptionlist div{
@@ -3773,7 +3777,7 @@ li.color-item{
     display: inline-block;
     text-align: right;
     position: absolute;
-    bottom: 310px;
+    bottom: 290px;
     right: 20px;
 }
 

@@ -84,7 +84,7 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                                 }
                                         },
                                         setIntro : function(intro){
-                                                (intro) ? this.innerHTML = intro : this.innerHTML="";
+                                                (intro) ? this.innerHTML = intro : this.innerHTML=" ";
                                         }
                                 }),
                                 "contactdetailstack": detailStack,

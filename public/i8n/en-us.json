@@ -222,5 +222,8 @@
 	"newfolderlbl" : "New group",
 	"groupnamelbl": "Group name",
 	"groupdesclbl": "Group description",
-	"colortouch": "A colorful touch is always nice"
+	"colortouch": "A colorful touch is always nice",
+	"char": "Character",
+	"context": "Context",
+	"problem": "Problem"
 }

@@ -3890,10 +3890,10 @@ li.color-item{
 .groupcolors li{
     display: block;
     float:left;
-    margin-right: 5px;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
+    margin-right: 10px;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
     font-size: 16px;
     color: white;
     text-align: center;    

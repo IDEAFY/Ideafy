@@ -281,9 +281,7 @@ define("Ideafy/Brainstorm/QuickScenario", ["Olives/OObject", "Map", "Olives/Mode
                                 
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));
-                                if ($session.get("scenarioWB").length) {
-                                        _wbContent.reset($session.get("scenarioWB"));
-                                }
+                                _wbContent.reset($session.get("scenarioWB"));
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if scenario is present show write up interface and board in readonly mode

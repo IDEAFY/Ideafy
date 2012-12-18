@@ -296,13 +296,16 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                         "tech2":{"popup": false, "selected":false},
                                         "tech3":{"popup": false, "selected": false}
                                 });
-                                
+                                console.log("quicktech", sip, sessionTech);
                                 if (sip && sessionTech.length){
                                         _next = "screen"; // read-only
                                         // retrieve card information from _sessionData
                                         _widget.getCardDetails(sessionTech[0], "tech1");
                                         _widget.getCardDetails(sessionTech[1], "tech2");
                                         _widget.getCardDetails(sessionTech[2], "tech3");
+                                        ["tech1", "tech2", "tech3"].forEach(function(value){
+                                                _techDisplay.set(value, {"popup": false, "selected": true});
+                                        });
                                         $data.set("techno", _techCards);
                                 }
                                 else{

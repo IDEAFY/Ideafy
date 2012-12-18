@@ -18,9 +18,9 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                      problem : {selected: false, left: null, popup: false}
                                      }),
                             _cards = new Store({
-                                     char : {id:"",title:"", pic: ""},
-                                     context : {id:"",title:"", pic: ""},
-                                     problem : {id:"",title:"", pic: ""}
+                                     char : {id:"",title:_labels.get("char"), pic: ""},
+                                     context : {id:"",title:_labels.get("context"), pic: ""},
+                                     problem : {id:"",title:_labels.get("problem"), pic: ""}
                                      }),
                             _drawnCards = {"char": 0, "context": 0, "problem" : 0},
                             _ready = true, // ready to draw a new card 
@@ -58,7 +58,8 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         formatTitle : function(title){
                                                 if (title) {
                                                         this.innerHTML = title.substring(0,1).toUpperCase()+title.substring(1).toLowerCase(); 
-                                                        }       
+                                                        }
+                                                else this.innerHTML = title;   
                                         },
                                         setPic : function(pic){
                                                 if (pic){
@@ -268,7 +269,6 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 
                                 _timer.set("display", false);
                                 _timer.set("timer", elapsed);
-                                console.log("inittimer quicksetup called", $session.get("step"));
                                 // make sure current step is ongoing before restarting timer
                                 if ($session.get("step") === "quicksetup"){
                                         _qsTimer = setInterval(function(){
@@ -425,7 +425,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 // retrieve active deck
                                 _widget.getDeck(Config.get("user").get("active_deck")).then(function(){
                                         var _deck = $data.get("deck");
-                                        console.log("entering init function");
+                                        console.log("entering init function", $data.toJSON);
                                         // reset draw status
                                         _deckStack.char = _deck.char.concat();
                                         _deckStack.context = _deck.context.concat();
@@ -437,9 +437,15 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         // reset timer
                                         _start = null;
                                         // reset cards
-                                        _cards.set("char", {id:"",title:"", pic: ""});
+                                        _cards.reset({
+                                                 char : {id:"",title:_labels.get("char"), pic: ""},
+                                                context : {id:"",title:_labels.get("context"), pic: ""},
+                                                problem : {id:"",title:_labels.get("problem"), pic: ""}
+                                        });
+                                        console.log(_cards.toJSON());
+                                        /*_cards.set("char", {id:"",title:"", pic: ""});
                                         _cards.set("context", {id:"",title:"", pic: ""});
-                                        _cards.set("problem", {id:"",title:"", pic: ""});
+                                        _cards.set("problem", {id:"",title:"", pic: ""});*/
                                         // reset selection
                                         _selection.set("char", {selected: false, left: null, popup: false});
                                         _selection.set("context", {selected: false, left: null, popup: false});

@@ -114,7 +114,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                         _session.unsync(); // just to be sure
                         _session.reset(Config.get("sessionTemplate"));
                          //reset local session data
-                        _sessionData.reset();
+                        _sessionData.reset({});
                         
                         // set session initiator to current user
                         _session.set("initiator", {"id": _user.get("_id"),"username": _user.get("username"),"picture_file": _user.get("picture_file")});

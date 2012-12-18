@@ -358,9 +358,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));
-                                if ($session.get("ideaWB").length){
-                                        _wbContent.reset($session.get("ideaWB"));
-                                }
+                                _wbContent.reset($session.get("ideaWB"));
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if idea is present show write up interface and board in readonly mode

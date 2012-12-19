@@ -78,10 +78,11 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                                         this.setAttribute("style", "background: url('../img/connect/"+contactList.get(id).color+"') no-repeat center center; background-size: contain;display:block; width:40px; height:40px;float:left;");
                                                 }
                                                 else{
+                                                    this.setAttribute("style", "background:none;");
                                                     _frag = document.createDocumentFragment();
                                                     _ui = new Avatar([contactList.get(id).userid]);
-                                                        _ui.place(_frag);
-                                                        (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                                    _ui.place(_frag);
+                                                     (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                                 }
                                         },
                                         setIntro : function(intro){
@@ -98,8 +99,13 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                         contactsUI.place(Map.get("connect-contacts"));
                         
                         contactsUI.plus = function plus(event, node){
+                                var toggle = document.getElementById("toggleadd");
                                 detailStack.getStack().get("#addcontact").reset();
-                                detailStack.getStack().show("#addcontact");      
+                                detailStack.getStack().show("#addcontact");
+                                if (toggle.classList.contains("user")){
+                                        toggle.classList.remove("user");      
+                                }
+                                toggle.classList.add("group");    
                         };
                         
                         contactsUI.init = function init(){

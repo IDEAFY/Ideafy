@@ -225,5 +225,11 @@
 	"colortouch": "A colorful touch is always nice",
 	"char": "Character",
 	"context": "Context",
-	"problem": "Problem"
+	"problem": "Problem",
+	"grpcontacts": "Group contacts",
+	"addgrpcontacts": "Add contacts",
+	"nogrpname": "Please enter a group name",
+	"nogrpintro": "Please provide a group desciption",
+	"grpnameexists": "A group with this name already exists",
+	"nocontactselected": "Please add at least one contact to your group"
 }

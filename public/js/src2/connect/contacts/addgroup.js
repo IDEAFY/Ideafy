@@ -21,6 +21,8 @@ define("Ideafy/Connect/AddGroup", ["Olives/OObject", "Config", "Olives/Model-plu
                          {"color":"#BD262C", "icon": "redgroup.png", "selected": false}
                  ]),
                  displayContacts = new Store([]),
+                 contactList = new Store([]),
+                 error = new Store({"error":""}),
                  selected = {},
                  user = Config.get("user"),
                  labels = Config.get("labels");
@@ -28,6 +30,7 @@ define("Ideafy/Connect/AddGroup", ["Olives/OObject", "Config", "Olives/Model-plu
              
              addGroupUI.plugins.addAll({
                      "label" : new Model(labels),
+                     "error" : new Model(error),
                      "color" : new Model(colors, {
                              setColor : function(color){
                                      this.setAttribute("style", "background:"+color+";");
@@ -42,6 +45,9 @@ define("Ideafy/Connect/AddGroup", ["Olives/OObject", "Config", "Olives/Model-plu
                              },
                              setStyle : function(sentok){
                                      (sentok) ? this.setAttribute("style", "color: #5F8F28;"):this.setAttribute("style", "color: #F27B3D;")
+                             },
+                             setVisible : function(contacts){
+                                     (contacts.length)?this.classList.remove("invisible"):this.classList.add("invisible");
                              }
                      }),
                      "contacts" : new Model(displayContacts, {
@@ -56,12 +62,22 @@ define("Ideafy/Connect/AddGroup", ["Olives/OObject", "Config", "Olives/Model-plu
                                         (selected)? this.innerHTML = "&#10003;":this.innerHTML="";
                                 }
                      }),
+                     "auto" : new Model(contactList, {
+                             highlight : function(selected){
+                                        (selected)? this.classList.add("selected") : this.classList.remove("selected");
+                                }
+                     }),
                      "addgrpevent" : new Event(addGroupUI)
              });
              
-             addGroupUI.template = '<div id="addgroup"><div class="header blue-dark"><span class="newfolderlbl" data-label="bind:innerHTML, newcontactlbl"></span></div><div class = "detail-contents"><div class="folderpic" data-group="bind: setColor, color"></div><form><p><input type="text" class="input" data-group="bind:value, username" data-label="bind:placeholder, groupnamelbl"></p><p><textarea class="input" data-group="bind:value, intro" data-label="bind:placeholder, groupdesclbl"></textarea></p><legend data-label="bind:innerHTML, colortouch"></legend><ul class="groupcolors" data-color="foreach"><li data-color="bind:setColor, color; bind:setSelected, selected" data-addgrpevent="listen: touchstart, selectColor"></li></ul></form><div class = "contactlist invisible" data-search="bind: setVisible, display"><legend data-label="bind:innerHTML, selectcontact"></legend><ul data-contacts="foreach"><li class = "contact list-item"><div data-contacts="bind:setAvatar, value.userid"></div><p class="contact-name" data-contacts="bind:innerHTML, value.username"></p><p class="contact-intro" data-contacts="bind:innerHTML, value.intro"></p><div class="select-contact" data-searchdbevent="listen:touchstart, check"></div></li></ul><textarea class="input" data-label="bind:placeholder, addamessage" data-search="bind:value, message"></textarea><div class="addcontactbtns"><div class="addct" data-searchdbevent="listen:touchstart, press; listen:touchend, add"></div><div class="cancelct" data-searchdbevent="listen:touchstart, press; listen:touchend, cancel"></div></div></div></div>';
+             addGroupUI.template = '<div id="addgroup"><div class="header blue-dark"><span class="newfolderlbl" data-label="bind:innerHTML, newfolderlbl"></span></div><div class = "detail-contents"><div class="folderpic" data-group="bind: setColor, color"></div><form><p><input type="text" class="input" data-group="bind:value, username" data-label="bind:placeholder, groupnamelbl"></p><p><textarea class="input" data-group="bind:value, intro" data-label="bind:placeholder, groupdesclbl"></textarea></p><legend data-label="bind:innerHTML, colortouch"></legend><ul class="groupcolors" data-color="foreach"><li data-color="bind:setColor, color; bind:setSelected, selected" data-addgrpevent="listen: touchstart, selectColor"></li></ul></form><div class = "contactlist" data-group="bind: setVisible, contacts"><legend name="list" data-label="bind:innerHTML, grpcontacts" data-addgrpevent="listen: touchstart, toggleHide"></legend><ul class="contactlistdetail" data-contacts="foreach"><li class = "contact list-item" data-addgrpevent="listen:touchstart, discardContact"><div data-contacts="bind:setAvatar, userid"></div><p class="contact-name" data-contacts="bind:innerHTML, username"></p><div class="remove-contact"></div><p class="contact-intro" data-contacts="bind:innerHTML, intro"></p></li></ul></div><div class="addgroupbtns"><span class="errormsg" data-error="bind:innerHTML, error"></span><div class="addct" data-addgrpevent="listen:touchstart, press; listen:touchend, add"></div><div class="cancelct" data-addgrpevent="listen:touchstart, press; listen:touchend, cancel"></div></div><div class="addgrpcontacts"><legend name="add" data-label="bind:innerHTML, addgrpcontacts" data-addgrpevent="listen: touchstart, toggleHide"></legend><div class="addgrpcontactdetails"><input class="search" data-addgrpevent="listen:keyup, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div class = "autocontact"><ul data-auto="foreach"><li data-auto="bind:innerHTML, contact.username; bind:highlight, selected" data-addgrpevent="listen:touchend, select"></li></ul></div></div></div></div>';
              
-             addGroupUI.init = function init(){       
+             addGroupUI.init = function init(){
+                     //initialize contact list with all user contacts in user's document
+                     user.get("connections").forEach(function(item){
+                        if (item.type === "user") contactList.alter("push", {"contact":item, "selected":false});        
+                     });
+                     
              };
              
              addGroupUI.selectColor = function(event, node){
@@ -73,33 +89,100 @@ define("Ideafy/Connect/AddGroup", ["Olives/OObject", "Config", "Olives/Model-plu
                 group.set("color", colors.get(id).icon);
              };
              
-             addGroupUI.searchDB = function (event, node){
-                     var field;
-                     if (event.keyCode === 13){
-                               // validate search
-                               event.target.blur();
-                               console.log(event.target);
-                               field = node.getAttribute("name");
-                               validateSearch(field, node.value);
-                     }        
-             };
-             
-             addGroupUI.check = function(event,node){
-                var id = node.getAttribute("data-contacts_id");
+             addGroupUI.toggleHide = function(event, node){
+                var name = node.getAttribute("name");
                 
-                if (node.innerHTML){
-                        node.innerHTML="";
-                        selected[id]=false;
+                if (node.classList.contains("hide")) {
+                        node.classList.remove("hide");
+                        (name === "add") ? document.querySelector(".addgrpcontactdetails").classList.remove("invisible"):document.querySelector(".contactlistdetail").classList.remove("invisible");
                 }
                 else{
-                        node.innerHTML = "&#10003;";
-                        selected[id]=true;
-                }      
+                        node.classList.add("hide");
+                        (name === "add") ? document.querySelector(".addgrpcontactdetails").classList.add("invisible"):document.querySelector(".contactlistdetail").classList.add("invisible");
+                }       
+             };
+             
+             addGroupUI.select = function(event, node){
+                     var id = node.getAttribute("data-auto_id");
+                     if (contactList.get(id).selected){
+                             addGroupUI.removeContact(id);
+                             setTimeout(function(){contactList.update(id, "selected", false);}, 200);
+                     }
+                     else {
+                             addGroupUI.addContact(id);
+                             setTimeout(function(){contactList.update(id, "selected", true);}, 200);        
+                     }
+             };
+             
+             addGroupUI.addContact = function addContact(id){
+                var current  = JSON.parse(displayContacts.toJSON()), contact = contactList.get(id).contact, index = 0;
+                // check if contact is no yet present in group
+                if (displayContacts.toJSON().search(contact.userid) < 0){
+                        for (i=0, l =current.length; i<l; i++){
+                                if (contact.lastname > current[i].lastname) index++
+                                else if (contact.lastname === current[i].lastname && contact.username > current[i].username) index++;
+                        }
+                        // insert new contact at index position
+                        current.splice(index, 0, contact);
+                        //display list
+                        displayContacts.reset(current);
+                        // update contacts array of group
+                        group.set("contacts", current);
+                }
+             };
+             
+             addGroupUI.removeContact = function removeContact(id){
+                var contacts = JSON.parse(displayContacts.toJSON());
+                for (i=contacts.length-1;i>=0;i--){
+                        if (contacts[i].userid === contactList.get(id).contact.userid) contacts.splice(i,1);
+                }
+                displayContacts.reset(contacts);
+             };
+             
+             addGroupUI.updateAutoContact = function(event, node){
+                     var arr = JSON.parse(contactList.toJSON()), connections = user.get("connections");
+                if (node.value === ""){
+                        arr = [];
+                        //initialize contact list with all user contacts in user's document
+                        for(i=0, l =connections.length; i<l; i++){
+                                if (connections[i].type === "user") {
+                                        arr.push({"contact":connections[i], "selected": false});
+                                }       
+                        }
+                        contactList.reset(arr);
+                }
+                else{
+                        for (i=arr.length-1; i>=0; i--){
+                                if (arr[i].contact.username.search(node.value) !== 0) arr.splice(i, 1);
+                        }
+                        contactList.reset(arr);    
+                        
+                }
+                // check if items are present in the group and set selected status accordingly
+                contactList.loop(function(v,i){
+                        
+                        if(displayContacts.toJSON().search(v.contact.userid) >-1) contactList.update(i, "selected", true);        
+                });
+             };
+             
+             addGroupUI.discardContact = function(event, node){
+                    var id = node.getAttribute("data-contacts_id"),
+                        userid = displayContacts.get(id).userid;
+                    displayContacts.alter("splice", id, 1);
+                    contactList.loop(function(v,i){
+                            if (v.contact.userid === userid) setTimeout(function(){contactList.update(i, "selected", false);}, 200);
+                    });
              };
              
              addGroupUI.reset = function reset(){
                 group.reset({"username": "", "intro": "", "type": "group", "color": "graygroup.png", "contacts": [] });
-                displayContacts.reset([]);       
+                displayContacts.reset([]);
+                contactList.reset([]);
+                error.reset({"error":""});
+                //initialize contact list with all user contacts in user's document
+                user.get("connections").forEach(function(item){
+                        if (item.type === "user") contactList.alter("push", {"contact":item, "selected": false});        
+                });       
              };
              
              addGroupUI.press = function(event, node){
@@ -112,15 +195,47 @@ define("Ideafy/Connect/AddGroup", ["Olives/OObject", "Config", "Olives/Model-plu
              };
              
              addGroupUI.add = function(event, node){
+                     var connections = user.get("connections"), index=0, grp = JSON.parse(group.toJSON());
                 
                 node.classList.remove("pushed");
-                // add selected contact(s)
-                for (i in Object.keys(selected)){
-                        addContact(displayContacts.get(i).value);                
+                error.set("error", "");
+                // add group to user contacts
+                if (grp.username === ""){
+                        error.set("error", labels.get("nogrpname"));
                 }
+                else if (grp.intro === ""){
+                        error.set("error", labels.get("nogrpintro"));
+                }
+                else if (!grp.contacts.length){
+                        error.set("error", labels.get("nocontactselected"));
+                }
+                else{
+                        for (i=0, l = connections.length; i<l; i++){
+                                if (connections[i].type === "user"){
+                                        if(grp.username > connections[i].lastname) index++;
+                                }
+                                else{
+                                        if (grp.username === connections[i].username) {
+                                                error.set("error", labels.get("grpnameexists"));
+                                        }
+                                        if (grp.username > connections[i].username) index++
+                                }
+                        }
+                        // insert new contact at index position
+                        if (!error.get("error")) {
+                                connections.splice(index, 0, grp);
+                                user.set("connections", connections);
+                                user.upload().then(function(){
+                                        addGroupUI.reset();        
+                                });
+                        }                     
+                }
+                
              };
              
              addGroupUI.init();
+             CL = contactList;
+             DC = displayContacts;
              
              return addGroupUI;
                    

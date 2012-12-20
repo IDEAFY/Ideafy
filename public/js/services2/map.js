@@ -33,6 +33,7 @@ define("Map", ["Store"], function(Store){
 		        "library-menu": document.getElementById("library-menu"),
 		        "ideas" : document.getElementById("ideas"),
 		        "ideas-detail" : document.getElementById("ideas-detail"),
+		        "library-idea" : document.querySelector("#ideas-detail .library-idea"),
 		        "library-writetwocents" : document.getElementById("library-writetwocents"),
                         "library-twocents" : document.getElementById("library-twocents"),
                         "library-edit" : document.querySelector("#ideas-detail .idea-edit"),
@@ -48,6 +49,9 @@ define("Map", ["Store"], function(Store){
 		        "connect-contacts": document.getElementById("connect-contacts"),
 		        "connect-twocents": document.getElementById("connect-twocents"),
 		"dashboard" : document.getElementById("dashboard"),
-		        "dashboard-menu": document.getElementById("dashboard-menu")
+		        "dashboard-menu": document.getElementById("dashboard-menu"),
+		        "dashboard-profile": document.getElementById("dashboard-profile"),
+		        "dashboard-settings": document.getElementById("dashboard-settings"),
+		        "dashboard-about": document.getElementById("dashboard-about")
 	});
 });

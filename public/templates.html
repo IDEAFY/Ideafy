@@ -251,3 +251,48 @@
 		<div class="next-button" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickideaevent="listen: touchstart, press; listen:touchend, next"></div>
 	</div>
 </div>
+
+
+<!-- PROFILE -->
+<div id="dashboard-profile">
+	<div class="header blue-dark">
+		<span data-label="bind:innerHTML, profilelbl"></span>
+	</div>
+	<div id="profile-content">
+		<div class="userdetails">
+			<div class="cd-picarea">
+				<div class="cardpicture" data-user="bind:setAvatar, _id"></div>
+				<div class="cardinfo">
+					<p>
+						<span class="cd-agelbl"></span>
+						<span data-carddetails="bind:innerHTML, age">age</span>
+						<span class="agesuffix" data-label="bind:innerHTML, agelbl"></span>
+					</p>
+					<p>
+						<span class="cd-locationlbl"></span>
+						<span class="cd-info" data-carddetails="bind: innerHTML, location"></span>
+					</p>
+					<p>
+						<span class="cd-joblbl"></span>
+						<span class="cd-info" data-carddetails="bind: innerHTML, occupation.description"></span>
+					</p>
+					<p>
+						<span class="cd-familylbl"></span>
+						<span class="cd-info" data-user="bind: setFamily, family"></span>
+					</p>
+					<p>
+						<span class="cd-introlbl"></span>
+						<span class="cd-info" data-user="bind:innerHTML, intro"></span>
+					</p>
+				</div>
+			</div>
+			<div class="cd-contentarea">
+				<span class="contentTitle" data-label="bind: innerHTML, hobbieslbl">Hobbies</span>
+				<p class = "dyknow" data-user="bind:setLeisure, leisure_activities">hobbies</p>
+				<span class="contentTitle" data-label="bind: innerHTML, interestslbl">Centers of interest</span>
+				<p class = "dyknow" data-user="bind: setInterests, interests">Centers of interest</p>
+			</div>
+			<div class="progressbar"></div>
+		</div>
+	</div>
+</div>

@@ -214,119 +214,9 @@
       			</div>
       			
       			<div id="ideas-detail" class="details">
-      				
-      				<div class="detail-stack" data-detailstack="destination">
-      					<div class="idea-edit">
-            				<div class="header blue-dark">
-            					<span data-editlabel="bind:innerHTML, modifyidealbl">Modify your idea</span>
-							</div>
-              				<form class="form">
-                				<p><input type="text" class="input" data-editidea="bind: value, title"></p>
-                				<p><textarea class="description input" data-editidea="bind: value, description"></textarea></p>
-                				<p><textarea class="solution input" data-editidea="bind: value, solution"></textarea></p>
-                				<div class="options">
-                					<div class="current-visibility" data-editidea="bind:setVisibleIcon, visibility">
-                						<span class="label" data-editlabel="bind:innerHTML,ideavisiblelbl"></span>
-                						<span data-editlabel="bind:innerHTML, privatelbl" data-editidea="bind:setVisibility, visibility"></span>
-                					</div>
-                					<div class="edit-visibility" data-editidea="bind:hideVisibility, visibility">
-                						<span class="label" data-editlabel="bind:innerHTML,setideavisiblelbl"></span>
-                						<div class="visibility public" data-editlabel="bind:innerHTML, publiclbl" data-editevent="listen:touchstart, editVisibility"></div>
-                					</div>
-                				</div>
-                				<div class="options invisible" data-editidea="bind:setReplay, sessionId">
-                					<div class="current-visibility replay">
-                						<span class="label" data-editlabel="bind:innerHTML,ideafyreplaylbl"></span>
-                						<span data-editlabel="bind:innerHTML, disabledreplaylbl" data-editidea="bind:setIdeafyStatus, sessionReplay"></span>
-                					</div>
-                					<div class="edit-visibility replay">
-                						<span class="label" data-editlabel="bind:innerHTML, ideafysetreplaylbl"></span>
-                						<div class="toggle-replay" data-editidea = "bind: setSessionReplay, sessionReplay" data-editevent="listen:touchstart, press; listen:touchend, enableReplay" data-editlabel="bind:innerHTML, enablereplaylbl"></div>
-                					</div>
-                				</div>
-                				<p class="submit">
-                					<label class="publish pressed-btn" data-editevent="listen:touchend, upload">Publish</label>
-                					<label class="cancel pressed-btn" data-editevent="listen:touchend, cancel">Cancel</label>
-                					<label class="editerror" data-errormsg="bind:setError, error"></label>
-                				</p>
-              				</form>
-            			</div>
-            			<div class="idea-sendmail">
-            				<div class="header blue-dark">
-            					<a href="#library-2cents" class="option left"></a>
-            					<span>Idea's Details</span>
-            					<a href="#library-favorites" class="option right"></a>
-          					</div>
-          					<div class="avatar" data-mail="bind:setUserAvatar, from"></div>
-              				<form class="form">
-              					<p><textarea class="mail-header" data-mail="bind: value, toField" data-labels="bind:placeholder, tolbl"></textarea></p>
-                				<p><input type="text" class="input" data-mail="bind:value, subject" data-labels="bind:placeholder, subjectlbl"></textarea></p>
-                				<p><textarea class="input" data-mail="bind:value, body"></textarea></p>
-                				<p><legend>Signature</legend><textarea class="signature" data-mail="bind:value, signature"></textarea></p>
-                					
-                				<div class="attachment">
-                  					<div class="attachment-header">
-                    					<div data-mail="bind:setAvatar, attachment.authors"></div>
-                    					<span class="date" data-mail="bind:date, attachment.creation_date"></span>
-                    					<h2 data-mail="bind:innerHTML,attachment.title"></h2>
-                    					<span class="author" data-mail="bind:innerHTML,attachment.authornames"></span>
-                    					<span data-labels="bind:innerHTML, ideawrotelbl"></span>
-                    					<div class="visibility-icon private"></div>
-                  					</div>
-                  					<div class="attachment-body">
-                    					<p data-mail="bind:innerHTML,attachment.description"></p>
-                    					<p data-mail="bind:innerHTML,attachment.solution"></p>
-                    					<div class = "rating" data-mail="bind:setRating, attachment.rating"></div>
-                    					<div class = "votes" data-mail="bind:setVotes, attachment. votes"></div>
-                 					</div>
-               					</div>
-                				<div class="sendmail-footer">
-                  					<p class="send">
-                						<label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-mailevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label>
-                						<label class="sendmail" data-labels="bind:innerHTML, sendlbl" data-mailevent="listen:touchstart, press; listen:touchend, send">Send</label>
-                						<label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label>
-                					</p>
-                  				</div>
-              				</form>
-            		</div>
-            	</div>
-      			<div class="idea-detail">
-          			<div class="header blue-dark">
-            			<a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a>
-            			<span data-label="bind: innerHTML, ideadetailsheadertitle">Idea's Details</span>
-           				<a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a>
-        			</div>
-            		<div class = "detail-contents">
-            			<div class="detail-header">
-              				<div class="avatar" data-ideadetail="bind:setAvatar, doc.authors"></div>
-              				<h2 data-ideadetail="bind:innerHTML,doc.title"></h2>
-              				<span class="date" data-ideadetail="bind:date, doc.creation_date"></span>
-              				<br>
-              				<span class="author" data-ideadetail="bind:setAuthor,doc.authornames"></span>
-              				<span class='commentlbl' data-labels='bind: setWrotelbl, doc.authornames'></span>
-            			</div>
-            			<div class="detail-body">
-              				<p data-ideadetail="bind:innerHTML,doc.description"></p>
-              				<p data-ideadetail="bind:innerHTML,doc.solution"></p>
-            			</div>
-            			<div class="detail-footer">
-            				<div class ="rateIdea">
-                				<a class="item-acorn"></a>
-               					<div class="rating" data-ideadetail="bind:setRating,value.rating"></div>	
-               					<div class="publicButton" data-ideadetail="bind: toggleVoteButton, doc.votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-labels="bind: innerHTML, votebuttonlbl">Vote</div>
-                			</div>
-                			<div id="ratingPopup" class="popup">
-                				<ul class="acorns" data-vote="foreach">
-                					<li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li> 
-                				</ul>
-                			</div>
-                		</div>
-            		</div>
-          			<div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, doc.authors"></div>
-            		<div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, doc.twocents"></div>
-          		</div>	
-      		</div>
-		</div>
+      				<div class="detail-stack" data-detailstack="destination"></div>
+      			</div>
+			</div>
 		<div id = "sessions">  		
    		  	<div id="session-list" class="list">
    	   			<div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div>
@@ -388,24 +278,23 @@
 	</div>
   </div>
       <div id="brainstorm">
-      		<div id="brainstorm-menu"></div>
-      		<div class="brainstorm-header header blue-light">
-      			<div class="date" data-header="bind: setDate, date">jj/mm/aaaa</div>
-      			<span class="headerTitle" data-header="bind: innerHTML, headertitle"></span>
-      			<div class="clock" data-header="bind: setTime, date">hh:mm</div>
+      	<div id="brainstorm-menu"></div>
+      	<div class="brainstorm-header header blue-light">
+      		<div class="date" data-header="bind: setDate, date">jj/mm/aaaa</div>
+      		<span class="headerTitle" data-header="bind: innerHTML, headertitle"></span>
+      		<div class="clock" data-header="bind: setTime, date">hh:mm</div>
+      	</div>
+      	<div class="stack" data-brainstormstack="destination">
+      		<div id="ideafy-menu">
+      			<div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, brainstormchoosemode"></div>
+      			<ul class="menu" data-ideafymenu = "foreach">
+      				<li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, selected" data-ideafyevent="listen:touchstart, press; listen: touchend, start"></li>
+      			</ul>
       		</div>
-      		<div class="stack" data-brainstormstack="destination">
-      			<div id="ideafy-menu">
-      				<div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, brainstormchoosemode"></div>
-      				<ul class="menu" data-ideafymenu = "foreach">
-      					<li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, selected" data-ideafyevent="listen:touchstart, press; listen: touchend, start"></li>
-      				</ul>
-      			</div>
-      			<div id="ideafy-quick">
-      				<div class="stack" data-quickstack="destination">
-      			</div>
-      			
+      		<div id="ideafy-quick">
+      			<div class="stack" data-quickstack="destination"></div>
       		</div>
+      	</div>
       </div>
 		
       <div id="connect">
@@ -419,7 +308,7 @@
       			</ul>      		
       		</div>
 		</div>
-		<div class="stack" data-connectstack="destination">	
+		<div class="stack" data-connectstack="destination"></div>
       </div>
       
       <div id="dashboard">
@@ -427,14 +316,16 @@
       		<div class="sub-menu">
       			<div class="left-caret"></div>
       			<ul class="menu-list" data-menucontrol="radio:li,selected,touchstart,setCurrentWidget">
-      				<li class="menu-item selected" data-menucontrol="init"><a class="dashboard-item" href="#dashboard-profile" data-label="bind:innerHTML, dashboard-profile">My Profile</a></li>
-      				<li class="menu-item"><a class="dashboard-item" href="#dashboard-settings" data-label="bind:innerHTML, dashboard-settings">Settings</a></li>
-      				<li class="menu-item"><a class="dashboard-item" href="#dashboard-about" data-label="bind:innerHTML, dashboard-about">About Ideafy</a></li>
+      				<li class="menu-item selected" name="#profile" data-menucontrol="init"><a class="dashboard-item" href="#dashboard-profile" data-label="bind:innerHTML, dashboard-profile"></a></li>
+      				<li class="menu-item" name="#settings"><a class="dashboard-item" href="#dashboard-settings" data-label="bind:innerHTML, dashboard-settings">Settings</a></li>
+      				<li class="menu-item" name="#about"><a class="dashboard-item" href="#dashboard-about" data-label="bind:innerHTML, dashboard-about">About Ideafy</a></li>
       			</ul>      		
       		</div>
-      	</div>	
+      	</div>
+      	<div class="stack" data-dashboardstack="destination">	
       </div>
     </div>
+  	</div>
   </div>
   <script src="js/lib/require.js"></script>
   <script src="/socket.io/socket.io.js"></script>
@@ -478,8 +369,9 @@
   
   <script src="js/src2/library/library.js"></script>
   <script src="js/src2/library/ideas/ideas.js"></script>
-  <script src="js/src2/library/ideas/idea-detail.js"></script>
+  <script src="js/src2/library/ideas/idea-stack.js"></script>
   <script src="js/src2/library/ideas/lists/idealist.js"></script>
+  <script src="js/src2/library/ideas/detail-stack/library-idea.js"></script>
   <script src="js/src2/library/ideas/detail-stack/library-edit.js"></script>
   <script src="js/src2/library/ideas/detail-stack/library-sendmail.js"></script>
   <script src="js/src2/library/sessions/sessions.js"></script>
@@ -497,9 +389,10 @@
   <script src="js/src2/connect/messages/message-reply.js"></script>
   <script src="js/src2/connect/twocents/twocents.js"></script>
 
-
   <script src="js/src2/dashboard/dashboard.js"></script>
-
+  <script src="js/src2/dashboard/profile/profile.js"></script>
+  <script src="js/src2/dashboard/settings/settings.js"></script>
+  <script src="js/src2/dashboard/about/about.js"></script>
 
   <script src="js/src2/dock.js"></script>
   <script src="js/src2/notify.js"></script>

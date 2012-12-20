@@ -1,6 +1,6 @@
 define("Ideafy/Library/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "Ideafy/Avatar", "Ideafy/Utils"], 
         function(Widget, Map, Config, Model, Event, Store, Avatar, Utils){
-                return function LibrarySendmailConstructor($obs){
+                return function LibrarySendmailConstructor($action){
                 //declaration
                         var _widget = new Widget(),
                             _error = new Store({"errormsg": ""}),
@@ -13,16 +13,21 @@ define("Ideafy/Library/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mo
                                 "labels": new Model(_labels),
                                 "mail" : new Model(_mail, {
                                         setUserAvatar : function(from){
-                                                if (from) this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center;");
+                                                console.log("from", from);
+                                                if (from) this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center; background-size: cover");
                                         },
                                         date : function date(date){
+                                                console.log("date", date);
                                                 if (date) this.innerHTML = Utils.formatDate(date);
                                         },
                                         setAvatar : function setAvatar(authors){
-                                                var _frag = document.createDocumentFragment(),
-                                                    _ui = new Avatar(authors);
-                                                _ui.place(_frag);
-                                                (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                                console.log("authors", authors);
+                                                if (authors){
+                                                        var _frag = document.createDocumentFragment(),
+                                                            _ui = new Avatar(authors);
+                                                        _ui.place(_frag);
+                                                        (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                                }
                                         },
                                         setRating : function(rating){
                                                 
@@ -35,13 +40,13 @@ define("Ideafy/Library/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mo
                                 "errormsg" : new Model(_error)
                         });
                         
-                        _widget.alive(Map.get("library-sendmail"));
+                        _widget.template = '<div class="idea-sendmail"><div class="header blue-dark"><span data-editlabel="bind:innerHTML, sendidealbl">Email your idea</span></div><div class="avatar" data-mail="bind:setUserAvatar, from"></div><form class="form"><p><textarea class="mail-header" data-mail="bind: value, toField" data-labels="bind:placeholder, tolbl"></textarea></p><p><input type="text" class="input" data-mail="bind:value, subject" data-labels="bind:placeholder, subjectlbl"></textarea></p><p><textarea class="input" data-mail="bind:value, body"></textarea></p><p><legend>Signature</legend><textarea class="signature" data-mail="bind:value, signature"></textarea></p><div class="attachment"><div class="attachment-header"><div data-mail="bind:setAvatar, attachment.authors"></div><span class="date" data-mail="bind:date, attachment.creation_date"></span><h2 data-mail="bind:innerHTML,attachment.title"></h2><span class="author" data-mail="bind:innerHTML,attachment.authornames"></span><span data-labels="bind:innerHTML, ideawrotelbl"></span><div class="visibility-icon private"></div></div><div class="attachment-body"><p data-mail="bind:innerHTML,attachment.description"></p><p data-mail="bind:innerHTML,attachment.solution"></p><div class = "rating" data-mail="bind:setRating, attachment.rating"></div><div class = "votes" data-mail="bind:setVotes, attachment.votes"></div></div></div><div class="sendmail-footer"><p class="send"><label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-mailevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-labels="bind:innerHTML, sendlbl" data-mailevent="listen:touchstart, press; listen:touchend, send">Send</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></form></div>';
                         
                         _widget.reset = function reset(idea){
+                                console.log(idea);
                              _error.reset({"errormsg": ""});
                              _mail.reset({"toField":"", "from": _user.get("username"), "subject":"", "body": "", "signature": _user.get("username")+" <"+_user.get("_id"), "attachment": idea, "sent": false});
-                             if (_user.get("signature")) _mail.set("signature", user.get("signature"));
-                             json = {};
+                             if (_user.get("signature")) _mail.set("signature", _user.get("signature"));
                         };
                         
                         _widget.validateAddress = function validateAddress(value){
@@ -66,6 +71,7 @@ define("Ideafy/Library/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mo
                         };
                         
                         _widget.sendMail = function sendMail(){
+                             var json ={};
                              // formatting message
                              json.type = "doc";
                              json.recipient = _mail.get("toField");
@@ -82,7 +88,7 @@ define("Ideafy/Library/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mo
                                      if (result.sendmail === "ok"){
                                              _error.set("errormsg", _labels.get("yourmessage")+result.recipient+_labels.get("sentoklbl"));
                                              //_widget.place(document.createDocumentFragment());
-                                             setTimeout(function(){$obs.notify("hide");}, 350);       
+                                             setTimeout(function(){$action("close");}, 350);       
                                      }
                                      else{
                                              _error.set("errormsg", _labels.get("somethingwrong"));
@@ -109,8 +115,10 @@ define("Ideafy/Library/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mo
                         
                         _widget.cancel = function(event, node){
                                 node.classList.remove("pressed");
-                                $obs.notify("hide");       
+                                $action("close");       
                         };
+                        
+                        _widget.place(Map.get("library-sendmail"));
 
                 //return
                         return _widget;

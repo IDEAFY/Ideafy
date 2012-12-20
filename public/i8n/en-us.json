@@ -43,6 +43,7 @@
 	"idealistheadertitle": "My Ideas",
 	"searchprivateplaceholder": "Search your ideas...",
 	"modifyidealbl": "Modify your idea",
+	"sendidealbl": "Email your idea",
 	"votebuttonlbl": "Vote",
 	"novotesyet": "No vote yet",
 	"onevote": "1 vote",
@@ -231,5 +232,10 @@
 	"nogrpname": "Please enter a group name",
 	"nogrpintro": "Please provide a group desciption",
 	"grpnameexists": "A group with this name already exists",
-	"nocontactselected": "Please add at least one contact to your group"
+	"nocontactselected": "Please add at least one contact to your group",
+	"profilelbl": "My Profile",
+	"aboutlbl": "About Ideafy",
+	"settingslbl": "Application parameters",
+	"completionprefix": "Your profile is ",
+	"completionsuffix": "% complete"
 }

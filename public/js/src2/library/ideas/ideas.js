@@ -1,6 +1,6 @@
 define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 	"Olives/Model-plugin", "Amy/Delegate-plugin", "CouchDBStore", "Map", "Config",
-	"Ideafy/Library/Idea-detail", "Ideafy/Utils", "Ideafy/Library/IdeaList", "Amy/Stack-plugin", "Ideafy/SubMenu"], 
+	"Ideafy/Library/IdeaStack", "Ideafy/Utils", "Ideafy/Library/IdeaList", "Amy/Stack-plugin", "Ideafy/SubMenu"], 
 	function(Widget, Control, Model, Delegate, Store, Map, 
 		Config, Detail, Utils, List, Stack, Menu){
 		return function IdeasConstructor(){
@@ -111,12 +111,9 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			// additional options (rating/favorites etc. may be offered in the future)
 			
 			var listDate = new List(_db, "library", "_view/ideas", {key: Config.get("uid"), descending: true, include_docs:true}),
-			   //listRating = new List(_db, "ideas", "_view/ideasbyvotes", {key: Config.get("uid"), descending: true, include_docs:true}),
-			    listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
+			   listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
 			
 			_stack.getStack().add("#list-date", listDate);
-			
-			//_stack.getStack().add("#list-rating", listRating);
 			
 			_stack.getStack().add("#list-search", listSearch);
 			

@@ -1,6 +1,6 @@
 define("Ideafy/Library/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Confirm"], 
 	function(Widget, Map, Store, Model, Event, Config, Confirm){
-		return function LibraryEditConstructor($obs){
+		return function LibraryEditConstructor($action){
 		//declaration
 			var _widget = new Widget(),
 			    _store = new Store(),  // the idea
@@ -23,7 +23,6 @@ define("Ideafy/Library/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/
 			                     (visibility === "public") ? this.setAttribute("style", "background:url('img/public/publicForList.png') no-repeat left center; background-size: 14px 12px;") : this.setAttribute("style", "background-image:url('img/public/privateForList.png');");         
 			                },
 			                setReplay : function(session){
-			                        console.log("hello anyone there", session);
 			                     (!session) ? this.setAttribute("style", "display:none"):this.setAttribute("style", "display:inline-block");      
 			                },
 			                setIdeafyStatus : function(replay){
@@ -53,7 +52,9 @@ define("Ideafy/Library/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/
 			        })
 			});
 			
-			_widget.alive(Map.get("library-edit"));
+			_widget.template='<div class="idea-edit"><div class="header blue-dark"><span data-editlabel="bind:innerHTML, modifyidealbl"></span></div><form class="form"><p><input type="text" class="input" data-editidea="bind: value, title"></p><p><textarea class="description input" data-editidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-editidea="bind: value, solution"></textarea></p><div class="options"><div class="current-visibility" data-editidea="bind:setVisibleIcon, visibility"><span class="label" data-editlabel="bind:innerHTML,ideavisiblelbl"></span><span data-editlabel="bind:innerHTML, privatelbl" data-editidea="bind:setVisibility, visibility"></span></div><div class="edit-visibility" data-editidea="bind:hideVisibility, visibility"><span class="label" data-editlabel="bind:innerHTML,setideavisiblelbl"></span><div class="visibility public" data-editlabel="bind:innerHTML, publiclbl" data-editevent="listen:touchstart, editVisibility"></div></div></div><div class="options invisible" data-editidea="bind:setReplay, sessionId"><div class="current-visibility replay"><span class="label" data-editlabel="bind:innerHTML,ideafyreplaylbl"></span><span data-editlabel="bind:innerHTML, disabledreplaylbl" data-editidea="bind:setIdeafyStatus, sessionReplay"></span></div><div class="edit-visibility replay"><span class="label" data-editlabel="bind:innerHTML, ideafysetreplaylbl"></span><div class="toggle-replay" data-editidea = "bind: setSessionReplay, sessionReplay" data-editevent="listen:touchstart, press; listen:touchend, enableReplay" data-editlabel="bind:innerHTML, enablereplaylbl"></div></div></div><p class="submit"><label class="publish pressed-btn" data-editlabel="bind:innerHTML, publishlbl" data-editevent="listen:touchend, upload"></label><label class="cancel pressed-btn" data-editlabel="bind:innerHTML, cancellbl" data-editevent="listen:touchend, cancel"></label><label class="editerror" data-errormsg="bind:setError, error"></label></p></form></div>';
+			
+			_widget.place(Map.get("library-edit"));
 
 
                         _widget.reset = function reset(id){
@@ -98,8 +99,8 @@ define("Ideafy/Library/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/
                                         _store.set("modification_date", modDate);
                                         _store.upload().then(function(){
                                                 // close window
-                                                _widget.place(document.createDocumentFragment());
-                                                $obs.notify("hide");
+                                                $action("close");
+                                                
                                         });
                                }
                                nide.classList.remove("pressed");     
@@ -107,7 +108,7 @@ define("Ideafy/Library/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/
                         
                         _widget.cancel = function(event, node){
                                 node.classList.remove("pressed");
-                                $obs.notify("hide");       
+                                $action("close");       
                         };
                         
 		//return

@@ -114,6 +114,7 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                 
                                 switch (type){
                                         case "idea":
+                                                console.log(data);
                                                 // actions: edit, delete, email, share, replaysession, add to favorites ?
                                                 // edit : allow edits if user is one of the authors
                                                 // note: original idea is always saved with session

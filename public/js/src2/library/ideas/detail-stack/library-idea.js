@@ -1,44 +1,28 @@
-//may be change the module id to have something nicer
-define("Ideafy/Library/Idea-detail", 
-	["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Map", "Ideafy/Utils", "Amy/Stack-plugin", "Ideafy/Library/Edit", "Ideafy/Library/Sendmail", "Ideafy/Avatar", "Config", "WriteTwocent", "TwocentList", "Observable"], 
-	function(Widget, Store, Model, Event, Map, Utils, Stack, Edit, Sendmail, Avatar, Config, WriteTwocent, TwocentList, Observable){
-		return function IdeaDetailConstructor(){
-		//declaration
-			var  _widget = new Widget(),
-			     _twocentWriteUI = new WriteTwocent(),
-			     _labels = Config.get("labels"),
-			     vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
-			     _voted = false,
-			     user = Config.get("user"),
+define("Ideafy/Library/IdeaDetail", 
+        ["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Map", "Ideafy/Utils", "Ideafy/Avatar", "Config", "WriteTwocent", "TwocentList", "Observable"], 
+        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable){
+                return function IdeaDetailConstructor($action){
+                //declaration
+                        var  _widget = new Widget(),
+                             _twocentWriteUI = new WriteTwocent(),
+                             _labels = Config.get("labels"),
+                             vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
+                             _voted = false,
+                             user = Config.get("user"),
                              transport = Config.get("transport"),
                              observer = Config.get("observer"),
-		             _store = new Store(),
-		             _stack = new Stack(),
-		             _dom = Map.get("ideas-detail"),
-		             _domWrite = Map.get("library-writetwocents"),
-		             _obs = new Observable(),
-		             _edit = new Edit(_obs),
-		             _sendMail = new Sendmail(_obs);
+                             _store = new Store(),
+                             _dom = Map.get("ideas-detail"),
+                             _domWrite = Map.get("library-writetwocents"),
+                             _obs = new Observable();
 
-		//setup
-		         // DUMMY to fix stack hide problem
-		         var dummy = new Widget();
-		         dummy.template='<div></div>';
-		              
-			_stack.getStack().add("#library-edit", _edit);
-			_stack.getStack().add("#library-sendmail", _sendMail);
-			_stack.getStack().add("dummy", dummy);
-			
-			_obs.watch("hide", function(){
-			     _stack.getStack().show("dummy");        
-			});
-			
-			_twocentWriteUI.place(_domWrite);
-			_widget.plugins.addAll({
-			        "label" : new Model(_labels),
-				"ideadetail" : new Model(_store, {
-				        // toggle header buttons right
-				        toggleRateEdit : function(authors){
+                //setup
+                        
+                        _widget.plugins.addAll({
+                                "label" : new Model(_labels),
+                                "ideadetail" : new Model(_store, {
+                                        // toggle header buttons right
+                                        toggleRateEdit : function(authors){
                                             (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#library-edit") : this.setAttribute("href", "#library-favorites");       
                                         },
                                         // toggle header buttons left
@@ -67,10 +51,10 @@ define("Ideafy/Library/Idea-detail",
                                                     }       
                                                 }        
                                         },
-					date : function date(date){
-						if (date) this.innerHTML = Utils.formatDate(date);
-					},
-					setAuthor : function(authornames){
+                                        date : function date(date){
+                                                if (date) this.innerHTML = Utils.formatDate(date);
+                                        },
+                                        setAuthor : function(authornames){
                                                 if (authornames === user.get("username") && _store.get("doc").authors.indexOf(user.get("_id"))>-1){
                                                         this.innerHTML = Config.get("labels").get("youlbl");
                                                 }
@@ -78,7 +62,7 @@ define("Ideafy/Library/Idea-detail",
                                                         this.innerHTML = authornames;
                                                 }
                                         },
-					setWrotelbl : function(authornames){
+                                        setWrotelbl : function(authornames){
                                                 if (authornames === user.get("username") && _store.get("doc").authors.indexOf(user.get("_id"))>-1){
                                                         this.innerHTML = _labels.get("youwrotelbl");
                                                 }
@@ -86,13 +70,13 @@ define("Ideafy/Library/Idea-detail",
                                                         this.innerHTML = _labels.get("ideawrotelbl");
                                                 }        
                                         },
-					setAvatar : function setAvatar(authors){
-					        var _frag = document.createDocumentFragment(),
+                                        setAvatar : function setAvatar(authors){
+                                                var _frag = document.createDocumentFragment(),
                                                     _ui = new Avatar(authors);
                                                 _ui.place(_frag);
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
-					},
-					setRating : function setRating(rating) {
+                                        },
+                                        setRating : function setRating(rating) {
                                                 // this is necessary because the rating data is not supplied by the lucene design do --> to be investigated
                                                 if (rating === undefined) {
                                                         var _id = this.getAttribute("data-listideas_id"),
@@ -105,7 +89,7 @@ define("Ideafy/Library/Idea-detail",
                                                 else this.innerHTML = Math.round(rating*100)/100;
                                         },
                                         // display a vote button or the number of votes on an idea
-					toggleVoteButton : function(votes){
+                                        toggleVoteButton : function(votes){
                                                 var idea = _store.get("id"),
                                                     authors = _store.get("doc").authors;   
                                                 // check if user has already voted on this idea or if user is author
@@ -132,79 +116,52 @@ define("Ideafy/Library/Idea-detail",
                                                         this.classList.add("votes");
                                                 }               
                                         }
-				}),
-				"vote" : new Model(vote,{
+                                }),
+                                "vote" : new Model(vote,{
                                         setIcon : function(active){
                                                 var styleActive = "background: url('../img/public/activeIdeaVote.png') no-repeat center center;",
                                                     styleInactive = "background: url('../img/public/rateForList.png') no-repeat center center;";
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
-				"ideadetailevent" : new Event(_widget),
-				"detailstack" : _stack
-			});
-			_widget.alive(_dom);
+                                "ideadetailevent" : new Event(_widget)
+                        });
 
-		//library
-			_widget.reset = function reset(viewStore, index){
-			        // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
-			        _voted = false;
-				_store.reset(viewStore.get(index));
-				_twocentWriteUI.reset(_store.get("id"));
-				
-				// hide edit and sendmail uis if present
-                                _stack.getStack().show("dummy"); 
-				
-				// watch viewStore for changes regarding this idea and update model accordingly
+                        _widget.template='<div class="library-idea"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, doc.authors"></div><h2 data-ideadetail="bind:innerHTML,doc.title"></h2><span class="date" data-ideadetail="bind:date, doc.creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,doc.authornames"></span><span class="commentlbl" data-labels="bind: setWrotelbl, doc.authornames"></span></div><div class="detail-body"><p data-ideadetail="bind:innerHTML,doc.description"></p><p data-ideadetail="bind:innerHTML,doc.solution"></p></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,value.rating"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, doc.votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-labels="bind: innerHTML, votebuttonlbl">Vote</div></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, doc.authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, doc.twocents"></div></div>';
+                
+                //library
+                        _widget.reset = function reset(viewStore, index){
+                                // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
+                                _voted = false;
+                                _store.reset(viewStore.get(index));
+                                _twocentWriteUI.reset(_store.get("id"));
+                                
+                                // watch viewStore for changes regarding this idea and update model accordingly
                                 viewStore.watch("updated", function(idx, value){
                                         if (idx === parseInt(index)){
                                             _store.reset(value);        
                                         }
                                 });
-			};
-			
-			_widget.action = function(event, node){
-                                var name = node.getAttribute("href");
-                                switch(name){
-                                        
-                                        case "#library-2cents":
-                                             _twocentWriteUI.reset(_store.get("id"));
-                                             document.getElementById("library-writetwocents").classList.remove("invisible");
-                                             break;
-                                        
-                                        case "#library-edit":
-                                                _edit.reset(_store.get("id"));
-                                                _stack.getStack().show('#library-edit');
-                                             break;
-                                        
-                                        case "#library-favorites":
-                                             break;
-                                             
-                                        case "#library-share":
-                                                _stack.getStack().show("#library-sendmail");
-                                             break;
-                                }       
                         };
-			
-			_widget.edit = function(){
-			     _stack.getStack().show("#public-edit");     
-			};
-			
-			observer.watch("library-edit", function(id){
-                                     _edit.reset(id);
-                                     _stack.getStack().show("#library-edit");        
-                        });
                         
-                        observer.watch("library-sendmail", function(idea){
-                                     _sendMail.reset(idea);
-                                     _stack.getStack().show("#library-sendmail");        
-                        });
-			
-			_widget.press = function(event, node){
+                        _widget.action = function(event, node){
+                                var name = node.getAttribute("href");
+                                if (name === "#library-2cents"){
+                                         _twocentWriteUI.reset(_store.get("id"));
+                                         _domWrite.classList.remove("invisible");
+                                }
+                                else $action(name);       
+                        };
+                        
+                        _widget.edit = function(){
+                             _stack.getStack().show("#public-edit");     
+                        };
+                        
+                        _widget.press = function(event, node){
                                 node.classList.add("pressed");        
                         };
-			
-			_widget.vote = function(event, node){
+                        
+                        _widget.vote = function(event, node){
                                 if (!_voted){
                                         //display voting popup
                                         document.getElementById("ratingPopup").classList.add("appear");
@@ -243,9 +200,12 @@ define("Ideafy/Library/Idea-detail",
                                         });
                                 }
                         };
+                        
+                        _widget.place(_dom);
+                        _twocentWriteUI.place(_domWrite);
 
-		//return
-			return _widget;
-		};
-	}
+                //return
+                        return _widget;
+                };
+        }
 );

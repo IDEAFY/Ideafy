@@ -2941,7 +2941,7 @@ li.color-item{
     margin-left: 2px;
 }
 
-.cd-creditslbl, .cd-sourcelbl, .cd-agelbl, .cd-locationlbl, .cd-joblbl, .cd-familylbl{
+.cd-creditslbl, .cd-sourcelbl, .cd-agelbl, .cd-locationlbl, .cd-joblbl, .cd-familylbl, .cd-introlbl{
     background-repeat: no-repeat;
     background-position: left bottom;
     background-size: 15px;
@@ -2957,7 +2957,7 @@ li.color-item{
     background-size: 15px;
 }
 
-.cd-agelbl, .cd-locationlbl, .cd-joblbl, .cd-familylbl{
+.cd-agelbl, .cd-locationlbl, .cd-joblbl, .cd-familylbl, .cd-introlbl{
     width: 15px;
     height: 15px;
     padding-right: 5px;
@@ -2981,7 +2981,7 @@ li.color-item{
 }
 
 .cd-joblbl{
-    background-image: url('../img/decks/lastModified14-01.png');
+    background-image: url('../img/decks/status14.png');
 }
 
 .cd-familylbl{
@@ -3702,7 +3702,7 @@ li.color-item{
     margin-left: 100px;
 }
 
-#addcontact legend, #addgroup legend{
+#addcontact legend, #addgroup legend, .userdetails legend{
     width:100%;
     padding-bottom: 5px;
     font-family: Pacifico;
@@ -3911,7 +3911,7 @@ li.color-item{
     display: inline-block;
 }
 
-.addgrpcontacts{
+.addgrpcontacts, #profile-content{
     padding: 20px;
 }
 
@@ -3964,4 +3964,59 @@ li.color-item{
     background: url('../img/connect/deleteBlue.png') no-repeat center center;
     background-size: contain;
     margin-top: -20px;
+}
+
+
+/* DASHBOARD */
+
+#dashboard-profile, #dashboard-settings, #dashboard-about{
+    background: white;
+    margin-left:93px;
+    width: 100%;
+    height: 748px;
+}
+
+.userdetails{
+    width: 576px;
+    padding: 20px;
+    border: 1px dashed #cccccc;
+    border-radius: 5px;
+}
+
+.userdetails .cd-picarea{
+    padding:0;
+    width: 100%;
+}
+
+.userdetails .cardpicture{
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+}
+
+.userdetails .cardinfo{
+    width: 481px;    
+}
+
+.userdetails .cd-contentarea{
+    padding: 0;
+    width: auto;
+    height: auto;
+}
+
+.userdetails .cd-contentarea p{
+    border-top: 1px solid #657b99;
+    font-size: 12px;
+}
+
+.userdetails .contentTitle{
+    color: #657B99;
+}
+
+.userdetails .cd-introlbl{
+    background-image: url('../img/decks/lastModified14-01.png');    
+}
+
+.userdetails legend{
+    border-bottom: 1px solid #657b99;
 }

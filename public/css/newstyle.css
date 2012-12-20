@@ -3972,11 +3972,33 @@ li.color-item{
     height: 748px;
 }
 
-.userdetails{
-    width: 576px;
+#dashboard-profile .leftprofile, #dashboard-profile .rightprofile{
+    height: 100%;
+    overflow-y: scroll;
+    float: left;    
+}
+
+#dashboard-profile .leftprofile{
+    width: 578px;
+}
+
+#dashboard-profile .rightprofile{
+    width: 313px;
+    background: blue;
+}
+
+.userdetails, .edituserdetails, .mystats, .recenthistory{
+    width: 536px;
     padding: 20px;
     border: 1px dashed #cccccc;
     border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.userscore, .userachievements{
+    border: 1px dashed #cccccc;
+    border-radius: 5px;
+    margin-top: 20px;   
 }
 
 .userdetails .cd-picarea{
@@ -3991,7 +4013,7 @@ li.color-item{
 }
 
 .userdetails .cardinfo{
-    width: 481px;    
+    width: 441px;    
 }
 
 .userdetails .cd-contentarea{
@@ -4015,4 +4037,52 @@ li.color-item{
 
 .userdetails legend{
     border-bottom: 1px solid #657b99;
+}
+
+.completionbar{
+    margin-top: 10px;
+    display: block;
+    width: 540px;
+    height: 20px;
+    border-radius: 5px;
+    background-image: url('../img/bg2.png');
+    background-size: cover;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+}
+
+.innerbar{
+    background: green;
+    display: inline-block;
+    height: 20px;
+    width: 150px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.edituserdetails{   
+}
+
+.mystats{    
+}
+
+.recenthistory{    
+}
+
+.infoslider{
+    float: leftt;
+    margin-left: 97px;
+    width: 140px;
+    height: 30px;
+    boder-radius: 15px;
+    color: white;
+    font-family: Pacifico;
+    font-size: 16px;
+    background: #9AC9CD;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);   
+}
+
+.userscore{   
+}
+
+.userachievements{   
 }

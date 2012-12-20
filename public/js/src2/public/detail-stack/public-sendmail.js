@@ -1,6 +1,6 @@
 define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "Ideafy/Avatar", "Ideafy/Utils"], 
 	function(Widget, Map, Config, Model, Event, Store, Avatar, Utils){
-		return function PublicSendmailConstructor($obs){
+		return function PublicSendmailConstructor($action){
 		//declaration
 			var _widget = new Widget(),
 			    _error = new Store({"errormsg": ""}),
@@ -82,7 +82,7 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			             if (result.sendmail === "ok"){
 			                     _error.set("errormsg", _labels.get("yourmessage")+result.recipient+_labels.get("sentoklbl"));
 			                     //_widget.place(document.createDocumentFragment());
-			                     setTimeout(function(){$obs.notify("hide");}, 350);       
+			                     setTimeout(function(){$action("close");}, 350);       
 			             }
 			             else{
 			                     _error.set("errormsg", _labels.get("somethingwrong"));
@@ -109,7 +109,7 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			
 			_widget.cancel = function(event, node){
                                 node.classList.remove("pressed");
-                                $obs.notify("hide");       
+                                $action("close");       
                         };
 
 		//return

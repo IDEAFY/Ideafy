@@ -1,6 +1,6 @@
 define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 	"Olives/Model-plugin", "Amy/Delegate-plugin", "CouchDBStore", "Map", "Config",
-	"Ideafy/Public/Idea-detail", "Ideafy/Utils", "Ideafy/Public/List", "Amy/Stack-plugin", "Ideafy/SubMenu"], 
+	"Ideafy/Public/IdeaStack", "Ideafy/Utils", "Ideafy/Public/List", "Amy/Stack-plugin", "Ideafy/SubMenu"], 
 	function(Widget, Control, Model, Delegate, Store, Map, 
 		Config, Detail, Utils, List, Stack, Menu){
 		return function PublicConstructor(){

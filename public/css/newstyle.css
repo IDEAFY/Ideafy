@@ -925,14 +925,12 @@ ul.notify-list{
 
 /* idea voting piece */
 #public-detail .rateIdea, #ideas-detail .rateIdea{
-  text-align: right;
-  float:right;
-  max-width: 150px;
-  margin: 20px 40px 0px 0px;
-  display: inline;
+  
+  margin: 20px 40px 0px 490px;
+  display: inline-block;
 }
 
-#public-detail .rateIdea .item-acorn, #ideas-detail .rateIdea .item-acorn{
+#public-detail a.item-acorn, #ideas-detail a.item-acorn{
     background-image: url('../img/wall/ideaVoteActive.png');
     height: 15px;
     width: 15px;
@@ -948,7 +946,7 @@ ul.notify-list{
   } 
 
 #public-detail .publicButton, #ideas-detail .publicButton{
-    float: right;
+    float: left;
     height: 20px;
     width: 60px;
     text-align: center;
@@ -972,11 +970,16 @@ ul.notify-list{
     width: 140px;
     height: 20px;
     margin: auto;
+    background: white;
+    padding: 3px;
+    text-align: center;
+    border: 1px dashed #657b99;
+    border-radius: 5px;
 }
  
 .acorns .item-acorn{
-    margin-left:6px;
-    padding-top: 3px;
+    margin-left:3px;
+    margin-right: 3px;
     width: 20px;
     height: 20px;
     /*background: url('../img/wall/rateForList.png') no-repeat center center;*/
@@ -1001,16 +1004,9 @@ ul.notify-list{
 }
 
 #ratingPopup{
-    position:absolute;
-    right: 245px;
-    top: 260px;
-    background: white;
-    width: 140px;
-    height: 45px;
-    line-height: 45px;
-    border: 3px outset #657B99;
-    border-radius: 5px;
-    z-index: 100;
+    position: relative;
+    margin-top: -5px;
+    margin-left: -250px;
 }
 
 /* public detail stack */

@@ -1,7 +1,7 @@
-define("Ideafy/Library/IdeaDetail", 
+define("Ideafy/Public/PublicDetail", 
         ["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Map", "Ideafy/Utils", "Ideafy/Avatar", "Config", "WriteTwocent", "TwocentList", "Observable"], 
         function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable){
-                return function IdeaDetailConstructor($action){
+                return function PublicDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
                              _twocentWriteUI = new WriteTwocent(),
@@ -12,22 +12,22 @@ define("Ideafy/Library/IdeaDetail",
                              transport = Config.get("transport"),
                              observer = Config.get("observer"),
                              _store = new Store(),
-                             _dom = Map.get("ideas-detail"),
-                             _domWrite = Map.get("library-writetwocents"),
+                             _dom = Map.get("public-detail"),
+                             _domWrite,
                              _obs = new Observable();
 
                 //setup
                         
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
-                                "ideadetail" : new Model(_store, {
+                                "publicdetail" : new Model(_store, {
                                         // toggle header buttons right
                                         toggleRateEdit : function(authors){
-                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#library-edit") : this.setAttribute("href", "#library-favorites");       
+                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#public-edit") : this.setAttribute("href", "#public-favorites");       
                                         },
                                         // toggle header buttons left
                                         toggleTwocentShare : function(authors){
-                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#library-share") : this.setAttribute("href", "#library-2cents");       
+                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#public-share") : this.setAttribute("href", "#public-2cents");       
                                         },
                                         // display twocents writing interface if applicable
                                         displayWriteTwocent : function(authors){
@@ -38,7 +38,7 @@ define("Ideafy/Library/IdeaDetail",
                                                  var twocentUI, _frag = document.createDocumentFragment();
                                                  if (twocents && twocents.length){
                                                     // hide twocent write interface    
-                                                    document.getElementById("library-writetwocents").classList.add("invisible");
+                                                    document.getElementById("public-writetwocents").classList.add("invisible");
                                                     twocentUI = new TwocentList(_store.get("id"), "public");
                                                     twocentUI.render();
                                                     twocentUI.place(_frag);
@@ -91,9 +91,9 @@ define("Ideafy/Library/IdeaDetail",
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){
                                                 var idea = _store.get("id"),
-                                                    authors = _store.get("doc").authors; 
+                                                    authors = _store.get("doc").authors;
                                                 // hide rating popup if present
-                                                document.getElementById("ratingPopup").classList.remove("appear");  
+                                                document.getElementById("ratingPopup").classList.remove("appear"); 
                                                 // check if user has already voted on this idea or if user is author
                                                 if (user.get("rated_ideas").indexOf(idea)<0 && authors.indexOf(user.get("_id"))<0 && !_voted)
                                                 {
@@ -126,19 +126,18 @@ define("Ideafy/Library/IdeaDetail",
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
-                                "ideadetailevent" : new Event(_widget)
+                                "publicdetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="library-idea"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, doc.authors"></div><h2 data-ideadetail="bind:innerHTML,doc.title"></h2><span class="date" data-ideadetail="bind:date, doc.creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,doc.authornames"></span><span class="commentlbl" data-labels="bind: setWrotelbl, doc.authornames"></span></div><div class="detail-body"><p data-ideadetail="bind:innerHTML,doc.description"></p><p data-ideadetail="bind:innerHTML,doc.solution"></p></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,value.rating"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, doc.votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-labels="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, doc.authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, doc.twocents"></div></div>';
+                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, doc.authors" data-publicdetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleRateEdit, doc.authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, doc.authors"></div><h2 data-publicdetail="bind:innerHTML,doc.title"></h2><span class="date" data-publicdetail="bind:date, doc.creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,doc.authornames"></span><span class="commentlbl" data-labels="bind: setWrotelbl, doc.authornames"></span></div><div class="detail-body"><p data-publicdetail="bind:innerHTML,doc.description"></p><p data-publicdetail="bind:innerHTML,doc.solution"></p></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,value.rating"></div><div class="publicButton" data-publicdetail="bind: toggleVoteButton, doc.votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote;" data-labels="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, doc.authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, doc.twocents"></div></div>';
                 
-                //library
+                //Public
                         _widget.reset = function reset(viewStore, index){
                                 // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                 _voted = false;
                                 _store.reset(viewStore.get(index));
                                 _twocentWriteUI.reset(_store.get("id"));
-                                
-                                _domWrite = document.getElementById("library-writetwocents");
+                                _domWrite = document.getElementById("public-writetwocents");
                                 _twocentWriteUI.place(_domWrite);
                                 
                                 // watch viewStore for changes regarding this idea and update model accordingly
@@ -151,8 +150,10 @@ define("Ideafy/Library/IdeaDetail",
                         
                         _widget.action = function(event, node){
                                 var name = node.getAttribute("href");
-                                if (name === "#library-2cents"){
+                                if (name === "#public-2cents"){
+                                        console.log("twocents action");
                                          _twocentWriteUI.reset(_store.get("id"));
+                                         console.log(_domWrite);
                                          _domWrite.classList.remove("invisible");
                                 }
                                 else $action(name);       
@@ -207,6 +208,7 @@ define("Ideafy/Library/IdeaDetail",
                         };
                         
                         _widget.place(_dom);
+                        
 
                 //return
                         return _widget;

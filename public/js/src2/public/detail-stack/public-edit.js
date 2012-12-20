@@ -1,6 +1,6 @@
 define("Ideafy/Public/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Confirm"], 
 	function(Widget, Map, Store, Model, Event, Config, Confirm){
-		return function PublicEditConstructor($obs){
+		return function PublicEditConstructor($action){
 		//declaration
 			var _widget = new Widget(),
 			    _store = new Store(),  // the idea
@@ -99,7 +99,7 @@ define("Ideafy/Public/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/M
                                         _store.upload().then(function(){
                                                 // close window
                                                 //_widget.place(document.createDocumentFragment());
-                                                $obs.notify("hide");
+                                                $action("close");
                                         });
                                }
                                nide.classList.remove("pressed");     
@@ -107,7 +107,7 @@ define("Ideafy/Public/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/M
                         
                         _widget.cancel = function(event, node){
                                 node.classList.remove("pressed");
-                                $obs.notify("hide");       
+                                $action("close");       
                         };
                         
 		//return

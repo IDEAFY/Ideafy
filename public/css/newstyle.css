@@ -3983,8 +3983,8 @@ li.color-item{
 }
 
 #dashboard-profile .rightprofile{
-    width: 313px;
-    background: blue;
+    width: 293px;
+    padding-left: 20px;
 }
 
 .userdetails, .edituserdetails, .mystats, .recenthistory{
@@ -4069,11 +4069,12 @@ li.color-item{
 }
 
 .infoslider{
+    -webkit-appearance: none;
     float: leftt;
-    margin-left: 97px;
+    margin-left: 77px;
     width: 140px;
     height: 30px;
-    boder-radius: 15px;
+    border-radius: 15px;
     color: white;
     font-family: Pacifico;
     font-size: 16px;
@@ -4081,8 +4082,32 @@ li.color-item{
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);   
 }
 
-.userscore{   
+.infoslider::-webkit-slider-thumb {
+     -webkit-appearance: none;
+     width:26px;
+     height:26px;
+     border-radius:13px;
+     background-image:-webkit-linear-gradient(top, #f2f2f2 0%, #d4d4d4 80%);
+     -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.4);
 }
 
-.userachievements{   
+.userscore .ip {
+    font-size: 20px;
+}
+
+.userscore{
+    height: 70px;
+    background-image: url('../img/brainstorm/yourScore40.png');
+    background-position: 15px center;
+    background-repeat: no-repeat;
+    background-size: 40px;
+    font-size: 14px;
+    padding-left: 65px;
+    font-family: pacifico;
+    color: #657B99;
+    line-height: 70px;
+}
+
+.userachievements{
+    background: #F2F2F2;  
 }

@@ -269,6 +269,19 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 	               transport.request("GetGrade", {ip: ip, lang: user.get("lang")}, function(res){
 	                       onEnd(res);        
 	               });
-	        }
+	        },
+	        /*
+                 * A function to obtain grade information from the server based on user's score
+                 * @Param {Number} ip the user's score
+                 * @Returns {Object} result the grade information in the user's language
+                 */
+                getAchievements : function(userid, onEnd){
+                       var transport = Config.get("transport"),
+                           user = Config.get("user"); 
+                       
+                       transport.request("GetAchievements", {user: user.toJSON(), lang: user.get("lang")}, function(res){
+                               onEnd(res);        
+                       });
+                }
 	};
 });

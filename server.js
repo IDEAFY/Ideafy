@@ -548,6 +548,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 });  
         });
         
+        // retrieve a user's achievements
+        olives.handlers.set("GetAchievements", function(json, onEnd){
+                
+        });
+        
         // Sending email messages from Ideafy
         olives.handlers.set("SendMail", function(json, onEnd) {
 

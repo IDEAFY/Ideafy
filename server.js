@@ -247,6 +247,28 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 
                 return promise;      
            },
+           getViewAsAdmin = function(design, view, query, cdbStore){
+                var promise = new Promise();
+                transport.request("CouchDB", {
+                        method : "GET",
+                        path:"/"+_db+"/_design/"+design+"/_view/"+view,
+                        query: query,
+                        auth: cdbAdminCredentials,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        }
+                }, function (res) {
+                        var json = JSON.parse(res);
+                        if (json.rows) {
+                                cdbStore.reset(json.rows);
+                                promise.resolve();
+                        } else {
+                                promise.reject();
+                        }});
+                
+                return promise;      
+           },
             sendSignupEmail = function(login, pwd, lang){
                 var mailOptions = {
                         from : "IDEAFY <ideafy@taiaut.com>", // sender address
@@ -483,6 +505,49 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         
         });
 
+        // retrieve a user's grade information
+        olives.handlers.set("GetGrade", function(json, onEnd){
+                var cdb = new CouchDBStore(), leadercdb = new CouchDBStore(), res={grade:null, distinction:null};
+                getDocAsAdmin("GRADES", cdb).then(function(){
+                        var arr = cdb.get(json.lang).grades, dis = cdb.get(json.lang).distinctions;
+                        for(i=0, l=arr.length; i<l; i++){
+                                if (json.ip >= arr[i].min_score) res.grade=arr[i];        
+                        }
+                        // check ranking
+                        getViewAsAdmin("users", "leaderboard", {descending:true, limit:100}, leadercdb).then(function(){
+                                var leaders = JSON.parse(leadercdb.toJSON()), l = leaders.length, i = 0;
+                                if (json.ip == leaders[0].key && json.ip >= arr[3].min_score) {
+                                        res.distinction = dis[5];
+                                }
+                                else if (json.ip == leaders[1].key && json.ip >= arr[3].min_score){
+                                       res.distinction = dis[4];
+                                }
+                                else if (json.ip == leaders[2].key && json.ip >= arr[3].min_score){
+                                        res.distinction = dis[3];
+                                }
+                                else {
+                                        i = Math.min(l-1,9); console.log(i)
+                                        if (json.ip >= leaders[i].key && json.ip >= arr[5].min_score){
+                                                res.distinction = dis[2];
+                                        }
+                                        else{
+                                                i = Math.min(l-1, 19);
+                                                if (json.ip >= leaders[i].key && json.ip >= arr[4].min_score){
+                                                        res.distinction = dis[1];
+                                                }
+                                                else {
+                                                        i = Math.min(l-1, 99);
+                                                        if (json.ip >= leaders[i].key && json.ip >= arr[3].min_score) {
+                                                                res.distinction = dis[0];
+                                                        }
+                                                }
+                                        }
+                                }
+                                onEnd(res);
+                        });       
+                });  
+        });
+        
         // Sending email messages from Ideafy
         olives.handlers.set("SendMail", function(json, onEnd) {
 
@@ -547,14 +612,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 }
 
         });
-
-        /*
-         * Handle notification events:
-         *     includes:
-         *             - checkUserList to verify recipients and return an array of userids
-         *             - notify to notify one or several users
-         *
-         */
+        
+        // Checking email recipient list
         olives.handlers.set("CheckRecipientList", function(json, onEnd) {
 
                 var result = {}, cdb = new CouchDBStore(), list = json.list, options = {}, bulkDocs = new Store(), req;
@@ -600,7 +659,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 req = http.request(options, callback);
                 req.end(options.data, "utf8");
         });
-
+        
+        // Ideafy messaging system
         olives.handlers.set("Notify", function(json, onEnd) {
 
                 var dest = json.dest, sendResults = new Store([]),
@@ -741,8 +801,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                          insertContact(json.dest[0], json.contactInfo, function(result){
                                                 if (result){
                                                         // add to both users' score
-                                                        updateUserIP(json.dest[0], "CXR", 2, function(result){console.log(result)});
-                                                        updateUserIP(json.author, "CXR", 2, function(result){
+                                                        updateUserIP(json.dest[0], "CXR", 25, function(result){console.log(result)});
+                                                        updateUserIP(json.author, "CXR", 25, function(result){
                                                                 onEnd(sendResults.toJSON());
                                                         });
                                                 }
@@ -752,8 +812,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         removeContact(json.dest[0], json.contactInfo, function(result){
                                                 if (result){
                                                         // add to both users' score
-                                                        updateUserIP(json.dest[0], "CXC", -2, function(result){console.log(result)});
-                                                        updateUserIP(json.author, "CXC", -2, function(result){
+                                                        updateUserIP(json.dest[0], "CXC", -25, function(result){console.log(result)});
+                                                        updateUserIP(json.author, "CXC", -25, function(result){
                                                                 onEnd(sendResults.toJSON());
                                                         });
                                                 }        

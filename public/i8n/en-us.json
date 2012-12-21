@@ -237,5 +237,7 @@
 	"aboutlbl": "About Ideafy",
 	"settingslbl": "Application parameters",
 	"completionprefix": "Your profile is ",
-	"completionsuffix": "% complete"
+	"completionsuffix": "% complete",
+	"info": "information",
+	"leaderboard": "leaderboard"
 }

@@ -255,6 +255,20 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 		              }      
 		      });
 		      return promise;         
-                 }
+                 },
+	
+	        /*
+	         * A function to obtain grade information from the server based on user's score
+	         * @Param {Number} ip the user's score
+	         * @Returns {Object} result the grade information in the user's language
+	         */
+	        getGrade : function(ip, onEnd){
+	               var transport = Config.get("transport"),
+	                   user = Config.get("user"); 
+	               
+	               transport.request("GetGrade", {ip: ip, lang: user.get("lang")}, function(res){
+	                       onEnd(res);        
+	               });
+	        }
 	};
 });

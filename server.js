@@ -704,7 +704,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 userIdeasCDB.loop(function(v,i){
                                                         var rating;
                                                         //8. 100 votes and minimum grade of 3.5
-                                                        if (v.votes.length >= 100){
+                                                        if (v.votes && v.votes.length >= 100){
                                                                 rating = Math.round(v.votes.reduce(function(x,y){return x+y;})/votes.length*100)/100;
                                                                 if (rating >= 3.5){
                                                                         if (!userRewards.get("silverspark")){
@@ -717,7 +717,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 }     
                                                         }
                                                         //9. 500 votes and minimum grade of 4
-                                                        if (v.votes.length >= 500){
+                                                        if (v.votes && v.votes.length >= 500){
                                                                 rating = Math.round(v.votes.reduce(function(x,y){return x+y;})/votes.length*100)/100;
                                                                 if (rating >= 4){
                                                                         if (!userRewards.get("silverflame")){
@@ -730,7 +730,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 }     
                                                         }
                                                         //10. 1000 votes and minimum grade of 4.5
-                                                        if (v.votes.length >= 1000){
+                                                        if (v.votes && v.votes.length >= 1000){
                                                                 rating = Math.round(v.votes.reduce(function(x,y){return x+y;})/votes.length*100)/100;
                                                                 if (rating >= 4.5){
                                                                         if (!userRewards.get("goldenflame")){
@@ -741,27 +741,28 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                                 update = true;
                                                                         }        
                                                                 }     
-                                                        }       
-                                                });
-                                                
-                                                // update user rewards documents
-                                                updateDocAsAdmin(userRewards.get("_id"), userRewards).then(function(){
-                                                        // update user doc (score and news) if necessary
-                                                        if (update){
-                                                                getDocAsAdmin(json.userid, userCDB).then(function(){
-                                                                        userCDB.set("ip", user.ip);
-                                                                        userCDB.set("news", user.news);
-                                                                        userCDB.set("achievements", user.achievements);
-                                                                        console.log(userCDB.toJSON());
-                                                                        updateDocAsAdmin(json.userid, userCDB).then(function(){
-                                                                                onEnd(result);
-                                                                        });        
-                                                                });
                                                         }
-                                                        else{
-                                                                onEnd(result);
-                                                        }       
-                                                });        
+                                                        
+                                                        
+                                                        // update user rewards documents
+                                                        updateDocAsAdmin(userRewards.get("_id"), userRewards).then(function(){
+                                                                // update user doc (score and news) if necessary
+                                                                if (update){
+                                                                        getDocAsAdmin(json.userid, userCDB).then(function(){
+                                                                                userCDB.set("ip", user.ip);
+                                                                                userCDB.set("news", user.news);
+                                                                                userCDB.set("achievements", user.achievements);
+                                                                                console.log(userCDB.toJSON());
+                                                                                updateDocAsAdmin(json.userid, userCDB).then(function(){
+                                                                                        onEnd(result);
+                                                                                });        
+                                                                        });
+                                                                }
+                                                                else{
+                                                                        onEnd(result);
+                                                                }       
+                                                        });               
+                                                });
                                         });
                                 });
                         });

@@ -279,7 +279,6 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                        var transport = Config.get("transport"),
                            user = Config.get("user"); 
                        
-                       console.log("gettings achievements");
                        transport.request("GetAchievements", {userid: userid, lang: user.get("lang")}, function(res){
                                onEnd(res);        
                        });

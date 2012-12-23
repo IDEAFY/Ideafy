@@ -606,6 +606,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         olives.handlers.set("GetAchievements", function(json, onEnd){
                 // start by fecthing the user document
                 var userCDB = new CouchDBStore(), // user doc
+                    userIdeasCDB = new CouchDBStore(), // all public ideas crafted by user
                     userRewards = new CouchDBStore(), // user rewards doc
                     achievementsCDB = new CouchDBStore(), // all achievements available
                     user = {},
@@ -656,20 +657,111 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         update = true;
                                                 }
                                         }
-                                        
-                                        // update user rewards documents
-                                        updateDocAsAdmin(userRewards.get("_id"), userRewards).then(function(){
-                                                // update user doc (score and news) if necessary
-                                                if (update){
-                                                        userCDB.reset(user);
-                                                        console.log("0000000000000000000000           ", userCDB.toJSON());
-                                                        updateDocAsAdmin(userCDB.get("_id"), userCDB).then(function(){
-                                                                onEnd(result);
-                                                        });     
+                                        //Check user ideas (public ones)
+                                        getViewAsAdmin("achievements", "publicideas", {key: '"'+json.userid+'"'}, userIdeasCDB).then(function(){
+                                                var idea_count = userIdeasCDB.getNbItems();
+                                                //4. If user has published at least 5 ideas
+                                                if (idea_count >= 5){
+                                                        if (!userRewards.get("ideas5")){
+                                                                user.ip += achievements.ideas5.reward;
+                                                                user.achievements.push(achievements.ideas5);
+                                                                user.news.push({type: "RWD", date: date, content: achievements.ideas5});
+                                                                userRewards.set("ideas5", 1);
+                                                                update = true;
+                                                        }
                                                 }
-                                                else{
-                                                        onEnd(result);
-                                               }       
+                                                //5. If user has published at least 25 ideas
+                                                if (idea_count >= 25){
+                                                        if (!userRewards.get("ideas25")){
+                                                                user.ip += achievements.ideas25.reward;
+                                                                user.achievements.push(achievements.ideas25);
+                                                                user.news.push({type: "RWD", date: date, content: achievements.ideas25});
+                                                                userRewards.set("ideas25", 1);
+                                                                update = true;
+                                                        }
+                                                }
+                                                //6. If user has published at least 100 ideas
+                                                if (idea_count >= 100){
+                                                        if (!userRewards.get("ideas100")){
+                                                                user.ip += achievements.ideas100.reward;
+                                                                user.achievements.push(achievements.ideas100);
+                                                                user.news.push({type: "RWD", date: date, content: achievements.ideas100});
+                                                                userRewards.set("ideas100", 1);
+                                                                update = true;
+                                                        }
+                                                }
+                                                //7. If user has published at least 5 ideas
+                                                if (idea_count >= 250){
+                                                        if (!userRewards.get("ideas250")){
+                                                                user.ip += achievements.ideas250.reward;
+                                                                user.achievements.push(achievements.ideas250);
+                                                                user.news.push({type: "RWD", date: date, content: achievements.ideas250});
+                                                                userRewards.set("ideas250", 1);
+                                                                update = true;
+                                                        }
+                                                }
+                                                //8. Check for hall of fame ideas
+                                                userIdeasCDB.loop(function(v,i){
+                                                        var rating;
+                                                        //8. 100 votes and minimum grade of 3.5
+                                                        if (v.votes.length >= 100){
+                                                                rating = Math.round(v.votes.reduce(function(x,y){return x+y;})/votes.length*100)/100;
+                                                                if (rating >= 3.5){
+                                                                        if (!userRewards.get("silverspark")){
+                                                                                user.ip += achievements.silverspark.reward;
+                                                                                user.achievements.push(achievements.silverspark);
+                                                                                user.news.push({type: "RWD", date: date, content: achievements.silverspark});
+                                                                                userRewards.set("silverspark", 1);
+                                                                                update = true;
+                                                                        }        
+                                                                }     
+                                                        }
+                                                        //9. 500 votes and minimum grade of 4
+                                                        if (v.votes.length >= 500){
+                                                                rating = Math.round(v.votes.reduce(function(x,y){return x+y;})/votes.length*100)/100;
+                                                                if (rating >= 4){
+                                                                        if (!userRewards.get("silverflame")){
+                                                                                user.ip += achievements.silverflame.reward;
+                                                                                user.achievements.push(achievements.silverflame);
+                                                                                user.news.push({type: "RWD", date: date, content: achievements.silverflame});
+                                                                                userRewards.set("silverflame", 1);
+                                                                                update = true;
+                                                                        }        
+                                                                }     
+                                                        }
+                                                        //10. 1000 votes and minimum grade of 4.5
+                                                        if (v.votes.length >= 1000){
+                                                                rating = Math.round(v.votes.reduce(function(x,y){return x+y;})/votes.length*100)/100;
+                                                                if (rating >= 4.5){
+                                                                        if (!userRewards.get("goldenflame")){
+                                                                                user.ip += achievements.goldenflame.reward;
+                                                                                user.achievements.push(achievements.goldenflame);
+                                                                                user.news.push({type: "RWD", date: date, content: achievements.goldenflame});
+                                                                                userRewards.set("goldenflame", 1);
+                                                                                update = true;
+                                                                        }        
+                                                                }     
+                                                        }       
+                                                });
+                                                
+                                                // update user rewards documents
+                                                updateDocAsAdmin(userRewards.get("_id"), userRewards).then(function(){
+                                                        // update user doc (score and news) if necessary
+                                                        if (update){
+                                                                getDocAsAdmin(json.userid, userCDB).then(function(){
+                                                                        userCDB.set("ip", user.ip);
+                                                                        userCDB.set("news", user.news);
+                                                                        userCDB.set("achievements", user.achievements);
+                                                                        console.log(userCDB.toJSON());
+                                                                        updateDocAsAdmin(json.userid, userCDB).then(function(){
+                                                                                onEnd(result);
+                                                                        });        
+                                                                });
+                                                        }
+                                                        else{
+                                                                onEnd(result);
+                                                        }       
+                                                });        
                                         });
                                 });
                         });

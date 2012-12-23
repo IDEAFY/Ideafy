@@ -55,7 +55,7 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                 });
                 
                 msgDetailUI.showDoc = function showDoc(event, node){
-                        observer.notify("display-doc", message.get("docId"), message.get("docType"));
+                        if (message.get("type") === "DOC") observer.notify("display-doc", message.get("docId"), message.get("docType"));
                 };
                 
                 msgDetailUI.press = function(event, node){

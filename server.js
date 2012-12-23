@@ -662,7 +662,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 // update user doc (score and news) if necessary
                                                 if (update){
                                                         userCDB.reset(user);
-                                                        updateDocAsAdmin(user._id, userCDB).then(function(){
+                                                        console.log("0000000000000000000000           ", userCDB.toJSON());
+                                                        updateDocAsAdmin(userCDB.get("_id"), userCDB).then(function(){
                                                                 onEnd(result);
                                                         });     
                                                 }

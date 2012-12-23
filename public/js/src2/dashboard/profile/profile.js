@@ -22,7 +22,13 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         (view === "leaderboard") ? this.classList.remove("invisible"):this.classList.add("invisible");        
                                    },
                                    setPercentage : function(completion){
-                                           this.innerHTML = labels.get("completionprefix")+completion+labels.get("completionsuffix")
+                                           this.innerHTML = labels.get("completionprefix")+completion+labels.get("completionsuffix");
+                                   },
+                                   setProgress : function(completion){
+                                           this.setAttribute("style", "width:"+completion+"%;");
+                                   },
+                                   showDetails : function(percentage){
+                                           (percentage === 100) ? this.classList.add("invisible"):this.classList.remove("invisible");
                                    }
                            }),
                            "achievements" : new Model(badges,{
@@ -39,6 +45,9 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         if (address.country){
                                                 this.innerHTML = address.country.toUpperCase();
                                         }
+                                        else {
+                                                this.innerHTML = labels.get("completeprofile");
+                                        }
                                         if (address.city && address.country) {
                                                 this.innerHTML=address.city+", "+address.country.toUpperCase();        
                                         }
@@ -47,22 +56,26 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         }    
                                 },
                                 setAge : function(dob){
-                                        var now = new Date(), then = new Date(dob[0], dob[1], dob[2]),
-                                            age = now.getTime() - then.getTime();
-                                            
-                                            this.innerHTML = Math.floor(age/1000/3600/24/365);        
+                                        var now = new Date(), then, age;
+                                        
+                                        if (dob.length === 3){
+                                                then = new Date(dob[0], dob[1], dob[2]);
+                                                age = now.getTime() - then.getTime();
+                                                this.innerHTML = Math.floor(age/1000/3600/24/365)+" "+ labels.get("agelbl");
+                                        }
+                                        else this.innerHTML = labels.get("completeprofile");        
                                 },
                                 setFamily : function(family){
                                         var couple = family.couple,
                                             children = family.children,
                                             res1, res2;
-                                                
-                                        if (couple === 0) res1 = labels.get("singlelbl")
+                                        if (couple === null) res1 = labels.get("completeprofile")     
+                                        else if (couple === 0) res1 = labels.get("singlelbl")
                                         else if (couple === 1) res1 = labels.get("marriedlbl")
                                         else if (couple === 2) res1 = labels.get("divorcedlbl")
                                         else if (couple === 3) res1 = labels.get("widowlbl")
                                                 
-                                        if (children === 0) {res2 = "";}
+                                        if (!children || children === 0) {res2 = "";}
                                         else{
                                                 if (user.get("age") < 20){
                                                         (children === 1) ? res2 = children + labels.get("onesiblinglbl") : res2 = children + labels.get("siblingslbl");
@@ -74,11 +87,20 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         }
                                         this.innerHTML = res1 + res2;
                                 },
+                                setOccupation : function(value){
+                                        (value.description) ? this.innerHTML=value.description : this.innerHTML=labels.get("completeprofile");        
+                                },
+                                showLeisure : function(hobbies){
+                                        (hobbies[0].name || hobbies[1].name || hobbies[2].name)?this.classList.remove("invisible"):this.classList.add("invisible");      
+                                },
                                 setLeisure : function(hobbies){
                                         var res = "<ul>";
                                         if (hobbies && hobbies.length){
                                                 for (i=0; i<hobbies.length; i++){
-                                                        res+="<li>"+hobbies[i].name+" ("+hobbies[i].comment+")</li>";
+                                                        if (hobbies[i].comment){
+                                                                res+="<li>"+hobbies[i].name+" ("+hobbies[i].comment+")</li>";
+                                                        }
+                                                        else res += "<li>"+hobbies[i].name+"</li>";
                                                 }
                                                 this.innerHTML = res+"</ul>";
                                         }
@@ -86,11 +108,19 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                                 this.innerHTML = "";
                                         } 
                                  },
+                                showInterests: function(interests){
+                                        (interests[0].name || interests[1].name || interests[2].name)?this.classList.remove("invisible"):this.classList.add("invisible");        
+                                 },
                                 setInterests : function(interests){
                                         var res = "<ul>";
                                         if (interests && interests.length){
                                                 for (i=0; i<interests.length; i++){
-                                                        res+="<li>"+interests[i].name+" ("+interests[i].comment+")</li>";
+                                                        if (interests[i].comment){
+                                                                res+="<li>"+interests[i].name+" ("+interests[i].comment+")</li>";
+                                                        }
+                                                        else{
+                                                                res+="<li>"+interests[i].name+"</li>";        
+                                                        }
                                                 }
                                                 this.innerHTML = res+"</ul>";
                                         }
@@ -102,7 +132,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                            "profileevent" : new Event(profileUI)
                    });
                    
-                   profileUI.template = '<div id="dashboard-profile"><div class="header blue-dark"><span data-label="bind:innerHTML, profilelbl"></span></div><input class="infoslider" type="range" min="0" max="1" value ="0" data-label="bind:innerHTML, information" data-profileevent="listen:touchend, switchLeaderboard"><span class="slidertext" data-stats="bind:setViewLbl, view"></span><div id="profile-content" data-stats="bind:toggleInformation, view"><div class="leftprofile"><div class="userdetails"><div class="cd-picarea"><div class="cardpicture" data-user="bind:setAvatar, _id"></div><div class="cardinfo"><p><span class="cd-agelbl"></span><span data-user="bind:setAge, birthdate"></span><span class="agesuffix" data-label="bind:innerHTML, agelbl"></span></p><p><span class="cd-locationlbl"></span><span class="cd-info" data-user="bind: setLocation, address"></span></p><p><span class="cd-joblbl"></span><span class="cd-info" data-user="bind: innerHTML, occupation.description"></span></p><p><span class="cd-familylbl"></span><span class="cd-info" data-user="bind: setFamily, family"></span></p><p><span class="cd-introlbl"></span><span class="cd-info" data-user="bind:innerHTML, intro"></span></p></div></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, hobbieslbl">Hobbies</span><p class = "dyknow" data-user="bind:setLeisure, leisure_activities">hobbies</p><span class="contentTitle" data-label="bind: innerHTML, interestslbl">Centers of interest</span><p class = "dyknow" data-user="bind: setInterests, interests">Centers of interest</p></div><div><legend data-stats="bind: setPercentage, completion"></legend><div class="completionbar"><div class="innerbar" data-stats = "bind:setProgress, completion"></div></div></div></div><div class="edituserdetails invisible"></div><div class="mystats">My stats</div><div class="recenthistory">Recent history</div></div><div class = "rightprofile"><div class="userscore"><span class="ip" data-user="bind:innerHTML, ip"></span><span> Ideafy Points</span></div><div class="userachievements"><p class="grade" data-stats="bind:innerHTML, title"></p><ul class="badges" data-achievements="foreach"><li class="badge"><div data-achievements="bind:showBadge, badge"></div><legend data-achievements="bind:innerHTML, label"</li></ul></div></div></div><div id="leaderboard" data-stats="bind:toggleLeaderboard, view">Leaderboard</div></div>';
+                   profileUI.template = '<div id="dashboard-profile"><div class="header blue-dark"><span data-label="bind:innerHTML, profilelbl"></span></div><input class="infoslider" type="range" min="0" max="1" value ="0" data-label="bind:innerHTML, information" data-profileevent="listen:touchend, switchLeaderboard"><span class="slidertext" data-stats="bind:setViewLbl, view"></span><div id="profile-content" data-stats="bind:toggleInformation, view"><div class="leftprofile"><div class="userdetails"><div class="editbtn" data-profileevent="listen:touchstart, edit"></div><div class="cd-picarea"><div class="cardpicture" data-user="bind:setAvatar, _id"></div><div class="cardinfo"><h2 data-user="bind:innerHTML,username"></h2><blockquote data-user="bind:innerHTML, intro"></blockquote><p><span class="cd-agelbl"></span><span data-user="bind:setAge, birthdate"></span></p><p><span class="cd-locationlbl"></span><span class="cd-info" data-user="bind: setLocation, address"></span></p><p><span class="cd-joblbl"></span><span class="cd-info" data-user="bind: setOccupation, occupation"></span></p><p><span class="cd-familylbl"></span><span class="cd-info" data-user="bind: setFamily, family"></span></p></div></div><div class="cd-contentarea"><span class="contentTitle" data-user="bind:showLeisure, leisure_activities" data-label="bind: innerHTML, hobbieslbl"></span><p class = "dyknow" data-user="bind:setLeisure, leisure_activities"></p><span class="contentTitle" data-user="bind:showInterests, interests"data-label="bind: innerHTML, interestslbl">Centers of interest</span><p class = "dyknow" data-user="bind: setInterests, interests"></p></div><div><legend data-stats="bind: setPercentage, completion"></legend><div class="completionbar"><div class="innerbar" data-stats = "bind:setProgress, completion"></div></div></div></div><div class="edituserdetails invisible">Edit profile</div><div class="mystats">My stats</div><div class="recenthistory">Recent history</div></div><div class = "rightprofile"><div class="userscore"><span class="ip" data-user="bind:innerHTML, ip"></span><span> Ideafy Points</span></div><div class="userachievements"><p class="grade" data-stats="bind:innerHTML, title"></p><ul class="badges" data-achievements="foreach"><li class="badge"><div data-achievements="bind:showBadge, badge"></div><legend data-achievements="bind:innerHTML, label"</li></ul></div></div></div><div id="leaderboard" data-stats="bind:toggleLeaderboard, view">Leaderboard</div></div>';
                    
                    profileUI.place(Map.get("dashboard-profile"));
                    
@@ -119,12 +149,27 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                         }
                    };
                    
+                   profileUI.edit = function(event, node){
+                        document.querySelector(".userdetails").classList.add("invisible");
+                        document.querySelector(".edituserdetails").classList.remove("invisible");        
+                   };
+                   
                    // watch for changes in user document
                    ["added", "deleted", "updated"].forEach(function(change){
                            user.watch(change, function(){
-                                   
+                                profileUI.checkProfileCompletion();       
                            });
                    });
+                   
+                   profileUI.checkProfileCompletion = function(){
+                        var result = Utils.checkProfileCompletion();
+                        stats.set("completion", result.percentage);
+                        stats.set("missing", result.missing);
+                        if (result.percentage === 100 && user.get("profile_complete") !== true) {
+                                user.set("profile_complete", true);
+                                user.upload();
+                        }
+                   };
                    
                    profileUI.updateGrade = function updateGrade(data){
                            var achievements = JSON.parse(badges.toJSON());
@@ -156,14 +201,21 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                            badges.reset(achievements);
                    };
                    
+                   profileUI.updateAchievements = function updateAchievements(data){
+                           console.log("achievements", data);
+                   };
+                   
                    //init
                    Utils.getGrade(user.get("ip"), function(result){
                         profileUI.updateGrade(result);
                    });
                    
                    Utils.getAchievements(user.get("_id"), function(result){
+                           console.log("checking achievements");
                         profileUI.updateAchievements(result);        
                    });
+                   
+                   profileUI.checkProfileCompletion();
                    
                    BADGES = badges;
                    

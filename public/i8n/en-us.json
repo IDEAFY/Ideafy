@@ -239,5 +239,16 @@
 	"completionprefix": "Your profile is ",
 	"completionsuffix": "% complete",
 	"info": "information",
-	"leaderboard": "leaderboard"
+	"leaderboard": "leaderboard",
+	"enterbirthdate": "Provide your date of birth",
+	"entergender": "Indicate your gender",
+	"enterfamily": "Complete your family status",
+	"enteraddress": "Specify your address",
+	"enterintro": "Change your introduction",
+	"enteroccupation": "Describe your occupation",
+	"enterleisure": "Provide at least two leisure activities",
+	"enterinterest": "Provide at least two areas of interest",
+	"entersocialnw": "Add a social network",
+	"enterownpic": "Customize your avatar",
+	"completeprofile": "<i>Complete your profile</i>"
 }

@@ -279,9 +279,41 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                        var transport = Config.get("transport"),
                            user = Config.get("user"); 
                        
-                       transport.request("GetAchievements", {user: user.toJSON(), lang: user.get("lang")}, function(res){
+                       console.log("gettings achievements");
+                       transport.request("GetAchievements", {userid: userid, lang: user.get("lang")}, function(res){
                                onEnd(res);        
                        });
+                },
+                /*
+                 * A function to check if user profile is completed
+                 * @Param
+                 * @Returns {Object} percentage and if applicable an array of string with the items that are missing
+                 */
+                checkProfileCompletion : function(){
+                        var user = Config.get("user"), labels = Config.get("labels"), res = {"percentage": 0, "missing":[]};
+                        if (user.get("firstname") && user.get("lastname")){ res.percentage += 5; }
+                        if (user.get("birthdate").length === 3){ res.percentage += 10; }
+                        else { res.missing.push(labels.get("enterbirthdate")); }
+                        if (user.get("gender")){ res.percentage+=5; }
+                        else { res.missing.push(labels.get("entergender")); }
+                        if (user.get("family").couple !== null && user.get("family").children !== null) { res.percentage += 10 ;}
+                        else { res.missing.push(labels.get("enterfamily")); }
+                        if (user.get("address").city && user.get("address").country ) { res.percentage += 10; }
+                        else { res.missing.push(labels.get("enteraddress")); }
+                        if (user.get("intro") && user.get("intro") !== "Ideafyer") { res.percentage +=10; }
+                        else { res.missing.push(labels.get("enterintro")); }
+                        if (user.get("occupation").description) { res.percentage +=10; }
+                        else { res.missing.push(labels.get("enteroccupation")); }
+                        if (user.get("leisure_activities")[0].name && user.get("leisure_activities")[1].name) {  res.percentage += 10; }
+                        else { res.missing.push(labels.get("enterleisure")); }
+                        if (user.get("interests")[0].name && user.get("interests")[1].name) { res.percentage += 10; }
+                        else { res.missing.push(labels.get("enterinterest")); }
+                        if (user.get("twitter") || user.get("facebook") || user.get("gplus") || user.get("linkedin")) { res.percentage += 10; }
+                        else { res.missing.push(labels.get("entersocialnw")); }
+                        if (user.get("picture_file").search("img/avatars/deedee") <0) { res.percentage += 10;}
+                        else { res.missing.push(labels.get("enterownpic")); }
+                        
+                        return res;
                 }
 	};
 });

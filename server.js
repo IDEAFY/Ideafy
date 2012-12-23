@@ -247,6 +247,29 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 
                 return promise;      
            },
+           createDocAsAdmin = function(docId, cdbStore){
+                var promise = new Promise();
+                transport.request("CouchDB", {
+                        method : "PUT",
+                        path:"/"+_db+"/"+docId,
+                        auth: cdbAdminCredentials,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        },
+                        data: cdbStore.toJSON()
+                }, function (res) {
+                        var json = JSON.parse(res);
+                        if (json.ok) {
+                                promise.resolve();
+                        }
+                        else {
+                                promise.reject();
+                        }
+                        });
+                
+                return promise;         
+           },
            getViewAsAdmin = function(design, view, query, cdbStore){
                 var promise = new Promise();
                 transport.request("CouchDB", {
@@ -337,6 +360,37 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 
                                                 // send confirmation Email
                                                 sendSignupEmail(json.name, json.password, json.lang);
+                                                
+                                                // create reward doc
+                                                 // create reward document
+                                                var rewards = new CouchDBStore({
+                                                        "profilecomplete": 0,
+                                                        "playthegame": 0,
+                                                        "tutorialcomplete": 0,
+                                                        "ideas5": 0,
+                                                        "ideas25": 0,
+                                                        "ideas100": 0,
+                                                        "ideas250": 0,
+                                                        "silverspark": 0,
+                                                        "silverflame": 0,
+                                                        "goldenflame": 0,
+                                                        "platinumflame": 0,
+                                                        "platinumwildfire": 0,
+                                                        "easybrainstormer": 0,
+                                                        "mindstormer": 0,
+                                                        "mastermindstormer": 0,
+                                                        "guide": 0,
+                                                        "leader": 0,
+                                                        "mindweaver": 0,
+                                                        "opinionator": 0,
+                                                        "feedbackartist": 0,
+                                                        "chatterbox": 0,
+                                                        "allday": 0,
+                                                        "curious": 0,
+                                                        "puzzled": 0,
+                                                        "whyarewehere": 0
+                                                });
+                                                createDocAsAdmin(json.name+"_rewards", rewards);
                                         }
                                 });
                         }, function (json) {
@@ -346,17 +400,17 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 message: "An account with this user name already exists."
                                         });
                                 }
-                        });
+                         });
                 });
         
-        olives.handlers.set('Welcome', function(userid, language, onEnd){
-                var Id = "", cdb = new CouchDBStore(), lang  = language.toUpperCase();
+        olives.handlers.set('Welcome', function(json, onEnd){
+                var Id = "", cdb = new CouchDBStore(), lang  = json.language.toUpperCase();
                 
                 (["US", "FR"].indexOf(lang.substr(2))>-1) ? Id = "I:WELCOME:"+lang : Id = "I:WELCOME:US";
                 
                 getDocAsAdmin(Id, cdb).then(function(){
                                         var shared = cdb.get("sharewith");
-                                        shared.alter("push", userid);
+                                        shared.alter("push", json.userid);
                                         updateDocAsAdmin(Id, cdb).then(function(){
                                                 onEnd({"res": "ok"});
                                         })
@@ -550,7 +604,75 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         
         // retrieve a user's achievements
         olives.handlers.set("GetAchievements", function(json, onEnd){
-                
+                // start by fecthing the user document
+                var userCDB = new CouchDBStore(), // user doc
+                    userRewards = new CouchDBStore(), // user rewards doc
+                    achievementsCDB = new CouchDBStore(), // all achievements available
+                    user = {},
+                    achievements = {},
+                    now = new Date(),
+                    date = [now.getFullYear(), now.getMonth(), now.getDate()],
+                    update = false;
+                    result = [];
+                getDocAsAdmin(json.userid, userCDB).then(function(){
+                        // set user
+                        user = JSON.parse(userCDB.toJSON());
+                        // get user rewards document
+                        getDocAsAdmin(json.userid+"_rewards", userRewards).then(function(){
+                                // get achievements and retrieve the appropriate language
+                                getDocAsAdmin("ACHIEVEMENTS", achievementsCDB).then(function(){
+                                        achievements = achievementsCDB.get(json.lang);
+                                        // check completed achievements
+                                        //1. profile complete
+                                        if (user.profile_complete) {
+                                                result.push(achievements.profilecomplete);
+                                                if (!userRewards.get("profilecomplete")){
+                                                        user.ip += achievements.profilecomplete.reward;
+                                                        user.achievements.push(achievements.profilecomplete);
+                                                        user.news.push({type: "RWD", date: date, content: achievements.profilecomplete});
+                                                        userRewards.set("profilecomplete", 1);
+                                                        update = true;
+                                                }
+                                        }
+                                        //2. tutorial complete
+                                        if (user.tutorial_complete){
+                                                result.push(achievements.tutorialcomplete);
+                                                if (!userRewards.get("tutorialcomplete")){
+                                                        user.ip += achievements.tutorialcomplete.reward;
+                                                        user.achievements.push(achievements.tutorialcomplete);
+                                                        user.news.push({type: "RWD", date: date, content: achievements.tutorialcomplete});
+                                                        userRewards.set("tutorialcomplete", 1);
+                                                        update = true;
+                                                }
+                                        }
+                                        //3. use as character
+                                        if (user.settings.useascharacter){
+                                                result.push(achievements.playthegame);
+                                                if (!userRewards.get("playthegame")){
+                                                        user.ip += achievements.playthegame.reward;
+                                                        user.achievements.push(achievements.playthegame);
+                                                        user.news.push({type: "RWD", date: date, content: achievements.playthegame});
+                                                        userRewards.set("playthegame", 1);
+                                                        update = true;
+                                                }
+                                        }
+                                        
+                                        // update user rewards documents
+                                        updateDocAsAdmin(userRewards.get("_id"), userRewards).then(function(){
+                                                // update user doc (score and news) if necessary
+                                                if (update){
+                                                        userCDB.reset(user);
+                                                        updateDocAsAdmin(user._id, userCDB).then(function(){
+                                                                onEnd(result);
+                                                        });     
+                                                }
+                                                else{
+                                                        onEnd(result);
+                                               }       
+                                        });
+                                });
+                        });
+                });        
         });
         
         // Sending email messages from Ideafy

@@ -133,6 +133,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                 if (password !== pwdConfirm) {
                                         _store.set("error", _labels.get("signuppwdnomatch"));
                                 } else {
+                                        console.log(Config.get("language"));
                                         _transport.request("Signup", {
                                                 name : userid,
                                                 password : password,
@@ -168,7 +169,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                         }]);
                                                         
                                                         // add welcome contents
-                                                        _transport.request("Welcome", userid, user.get("lang"), function(result){console.log(result);});
+                                                        _transport.request("Welcome", {userid:userid, language:user.get("lang")}, function(result){console.log(result);});
 
                                                         // get database info
                                                         if (result.db){

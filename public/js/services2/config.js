@@ -20,6 +20,7 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                         "street2" : "",
                                         "zip code" : null,
                                         "city" : "",
+                                        "state" :"",
                                         "country" : ""
                                 },
                                 "gender" : 1,
@@ -64,7 +65,7 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "favorites" : [],
                                 "ip" : 0,
                                 "picture_file" : "img/avatars/deedee0.png",
-                                "intro" : "Ideafy Apprentice",
+                                "intro" : "Ideafyer",
                                 "title" : null,
                                 "achievements" : [],
                                 "ideas_count" : 0,

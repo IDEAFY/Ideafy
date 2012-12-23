@@ -3987,6 +3987,21 @@ li.color-item{
     padding-left: 20px;
 }
 
+.userdetails h2{
+    font-family: Pacifico;
+    text-align:center;
+    margin: -20px 15px -20px 0;
+}
+
+.userdetails blockquote{
+    text-align: center;
+    font-family:Helvetica;
+    font-size:14px;
+    color: #808080;
+    -webkit-margin-after: 0px;
+    -webkit-margin-before: 18px;
+}
+
 .userdetails, .edituserdetails, .mystats, .recenthistory{
     width: 536px;
     padding: 20px;
@@ -4001,6 +4016,16 @@ li.color-item{
     margin-top: 20px;   
 }
 
+.userdetails .editbtn{
+    float: right;
+    width: 20px;
+    height: 20px;
+    background: url('../img/wall/lastModified14-01.png') no-repeat center center;
+    background-size: contain;
+    margin-top: -10px;
+    margin-right: -5px;
+}
+
 .userdetails .cd-picarea{
     padding:0;
     width: 100%;
@@ -4010,6 +4035,7 @@ li.color-item{
     width: 80px;
     height: 80px;
     border-radius: 40px;
+    margin-top: 32px;
 }
 
 .userdetails .cardinfo{
@@ -4020,6 +4046,7 @@ li.color-item{
     padding: 0;
     width: auto;
     height: auto;
+    margin-top: 15px;
 }
 
 .userdetails .cd-contentarea p{
@@ -4054,7 +4081,6 @@ li.color-item{
     background: green;
     display: inline-block;
     height: 20px;
-    width: 150px;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
 }

@@ -42,7 +42,7 @@ define("Ideafy/Public/Sendmail", ["Olives/OObject", "Map", "Config", "Olives/Mod
 			_widget.reset = function reset(idea){
 			     _error.reset({"errormsg": ""});
 			     _mail.reset({"toField":"", "from": _user.get("username"), "subject":"", "body": "", "signature": _user.get("username")+" <"+_user.get("_id"), "attachment": idea, "sent": false});
-			     if (_user.get("signature")) _mail.set("signature", user.get("signature"));
+			     if (_user.get("signature")) _mail.set("signature", _user.get("signature"));
 			     json = {};
 			};
 			

@@ -70,6 +70,7 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "achievements" : [],
                                 "ideas_count" : 0,
                                 "su_sessions_count" : 0,
+                                "mu_sessions_count": 0,
                                 "twocents_count" : 0,
                                 "twoquestions_count" : 0,
                                 "tutorial_complete" : false,

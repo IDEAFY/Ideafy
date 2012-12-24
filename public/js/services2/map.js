@@ -33,7 +33,7 @@ define("Map", ["Store"], function(Store){
 		        "library-menu": document.getElementById("library-menu"),
 		        "ideas" : document.getElementById("ideas"),
 		        "ideas-detail" : document.getElementById("ideas-detail"),
-		        "library-idea" : document.querySelector("#ideas-detail .library-idea"),
+		        "library-idea" : document.querySelector("library-idea"),
 		        "library-writetwocents" : document.getElementById("library-writetwocents"),
                         "library-twocents" : document.getElementById("library-twocents"),
                         "library-edit" : document.querySelector("#ideas-detail .idea-edit"),

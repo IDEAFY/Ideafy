@@ -201,8 +201,15 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                            badges.reset(achievements);
                    };
                    
-                   profileUI.updateAchievements = function updateAchievements(data){
-                           console.log("achievements", data);
+                   profileUI.updateAchievements = function updateAchievements(){
+                           var onDisplay = badges.toJSON(),
+                              achievements = user.get("achievements");
+                            
+                           for (i=0, l=achievements.length; i<l; i++){
+                                   if (onDisplay.search(achievements[i].badge) < 0) badges.alter("push", achievements[i]);
+                           }
+                           console.log(badges.toJSON());
+                           
                    };
                    
                    //init
@@ -211,8 +218,8 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                    });
                    
                    Utils.getAchievements(user.get("_id"), function(result){
-                           console.log("checking achievements");
-                        profileUI.updateAchievements(result);        
+                           console.log(result);
+                        if (result === "ok") profileUI.updateAchievements();        
                    });
                    
                    profileUI.checkProfileCompletion();

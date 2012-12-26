@@ -1123,7 +1123,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         }  
                                 }
                                 contacts.splice(pos, 0, contact);
-                                news.unshift({"type": "CX+", "content": {userid:json.author, username:contact.username}});
+                                news.unshift({"type": "CX+", "date": json.date, "content": {userid:json.author, username:contact.username}});
                                 cdb.set("connections", contacts);
                                 cdb.set("news", news);
                                 updateDocAsAdmin(userid, cdb).then(function(){
@@ -1151,7 +1151,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 }
                                         } 
                                 }
-                                news.unshift({"type": "CX-", "content": {userid:contact.userid, username:contact.username}});
+                                news.unshift({"type": "CX-", "date": json.date, "content": {userid:contact.userid, username:contact.username}});
                                 cdb.set("connections", contacts);
                                 cdb.set("news", news);
                                 updateDocAsAdmin(userid, cdb).then(function(){

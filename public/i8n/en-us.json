@@ -250,5 +250,10 @@
 	"enterinterest": "Provide at least two areas of interest",
 	"entersocialnw": "Add a social network",
 	"enterownpic": "Customize your avatar",
-	"completeprofile": "<i>Complete your profile</i>"
+	"completeprofile": "<i>Complete your profile</i>",
+	"ideaslbl": "Ideas",
+	"sessionslbl": "Sessions",
+	"contactslbl": "Contacts",
+	"toquestionslbl": "Toquestions"
+	
 }

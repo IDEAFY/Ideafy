@@ -4085,10 +4085,79 @@ li.color-item{
     border-top-left-radius: 5px;
 }
 
+
 .edituserdetails{   
 }
 
-.mystats{    
+.mystats legend{
+    font-family: Pacifico;
+    color: #657B99;    
+}
+
+li.innerbar{
+    float: left;
+    width: 25%;
+    background: yellow;
+}
+
+.mystats table{
+    width: 100%;
+    border-spacing: 0px;
+    margin-top: 10px;
+}
+
+.mystats th, .mystats td{
+    border-bottom: 2px solid #657b99;
+}
+
+.mystats th{
+    width: 90%;
+    text-align: left;
+    font-family: Pacifico;
+    font-size: 12px;
+}
+
+.mystats td{
+    width: 10%;
+    text-align: right;
+    font-family: Helvetica;
+    font-size: 12px;
+}
+
+.myids th{
+    color: #657B99;
+}
+
+li.myids{
+    background: #657B99;
+}
+
+.myss th{
+    color: #9ac9cd;
+}
+
+li.myss{
+    background: #9ac9cd;
+}
+
+.myctcts th{
+    color: #e3d71e;
+}
+
+li.myctcts{
+    background: #e3d71e;
+}
+
+.my2q th{
+    color: #f27b3d;
+}
+
+li.my2q{
+    background: #f27b3d;
+}
+
+.my2q th, .my2q td{
+    border-bottom: none;
 }
 
 .recenthistory{    
@@ -4165,16 +4234,21 @@ li.color-item{
 .userachievements .badge{
     float:left;
     text-align:center;
-    width: 84px;
+    width: 83px;
 }
 
 .userachievements .badge div{
     display: block;
     width: 60px;
     height: 60px;
-    margin-top: 10px;    
+    margin: 10px auto;
+    border-radius: 8px;    
 }
 
 .userachievements .badge legend{
-    
+    width: 60px;
+    margin: 0 auto;
+    -webkit-padding-start: 0px;
+    -webkit-padding-end: 0px;
+    line-height:100%;
 }

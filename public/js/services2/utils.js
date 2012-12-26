@@ -277,10 +277,17 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                  */
                 getAchievements : function(userid, onEnd){
                        var transport = Config.get("transport"),
-                           user = Config.get("user"); 
+                           user = Config.get("user"),
+                           userid = user.get("_id"); 
                        
                        transport.request("GetAchievements", {userid: userid, lang: user.get("lang")}, function(res){
-                               onEnd(res);        
+                               if (res === "ok"){
+                                        user.unsync();
+                                        user.sync(Config.get("db"), userid).then(function(){
+                                                console.log(user.toJSON());
+                                                onEnd(res);         
+                                        });        
+                               }
                        });
                 },
                 /*

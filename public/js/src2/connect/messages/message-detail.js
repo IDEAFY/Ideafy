@@ -113,7 +113,7 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                 };
                 
                 msgDetailUI.acceptCXR = function(event, node){
-                        var contacts = user.get("connections"), news = user.get("news")|| [], pos = 0, now = new Date();
+                        var contacts = user.get("connections"), news = user.get("news")|| [], pos = 0, now = new Date(), date=[now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
                         node.classList.remove("pushed");
                         // add contact info to user's connections -- insert in proper alphabetical position of last name
                         for (i=0,l=contacts.length;i<l;i++){
@@ -129,13 +129,14 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                         contacts.splice(pos, 0, message.get("contactInfo"));
                         user.set("connections", contacts);
                         // add new connection to news
-                        news.unshift({"type": "CX+", "content": {userid:message.get("author"), username:message.get("username")}});
+                        
+                        news.unshift({"type": "CX+", date: date, "content": {userid:message.get("author"), username:message.get("username")}});
                         user.set("news", news);
                         // upload and send notification to sender
                         user.upload().then(function(){
                                 var json = {
                                         "dest":[message.get("author")],
-                                        "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                        "date" : date,
                                         "original":"",
                                         "type": "CXRaccept",
                                         "author": user.get("_id"),

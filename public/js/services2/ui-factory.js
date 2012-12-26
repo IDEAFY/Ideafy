@@ -65,7 +65,6 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                         },
                                         setButtons : function(height){
                                                 var mt = Math.floor((height-padding-40)/2);
-                                                console.log(mt);
                                                 this.setAttribute("style", "margin-top:"+ mt +"px;");        
                                         }
                                 }),
@@ -75,7 +74,6 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                         this.template = '<div class="actionbar" data-style="bind:setPosition, height" data-action="listen:touchend, hide"><ul class="buttonlist" data-style="bind:setButtons, height" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:touchstart, press; listen:touchend, action"></li></ul></div>';
                         
                         this.hide = function(event, node){
-                                console.log("hide event");
                                 $hide(this);        
                         };
                         
@@ -114,7 +112,6 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                 
                                 switch (type){
                                         case "idea":
-                                                console.log(data);
                                                 // actions: edit, delete, email, share, replaysession, add to favorites ?
                                                 // edit : allow edits if user is one of the authors
                                                 // note: original idea is always saved with session
@@ -176,7 +173,6 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 }
                                                 else {
                                                         transport.request("RemoveFromLibrary", {"id": $data._id, "userid": user.get("_id")}, function(result){
-                                                                console.log(result);
                                                         });       
                                                 }
                                                 break;
@@ -195,7 +191,7 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 user.upload();
                                                 break;
                                         case "contact":
-                                                var arr = user.get("connections");
+                                                var arr = user.get("connections"), now = new Date(), date=[now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
                                                 // if deleted contact is of type user
                                                 if ($data.type ==="user"){
                                                         for (i=arr.length-1; i>=0; i--){
@@ -215,14 +211,14 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 }
                                                 user.set("connections", arr);
                                                 // add contact deletion to news
-                                                user.get("news").unshift({type: "CX-", content:{userid: $data.userid, username: $data.username}});
+                                                user.get("news").unshift({type: "CX-", date:date, content:{userid: $data.userid, username: $data.username}});
                                                 user.upload().then(function(){
                                                         // if contact is a user notify the other end that the contact is terminated.
                                                         if ($data.type === "user"){
                                                                 var now = new Date(),
                                                                     json = {
                                                                         "dest":[$data.userid],
-                                                                        "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                                                        "date" : date,
                                                                         "original":"",
                                                                         "type": "CXCancel",
                                                                         "author": user.get("_id"),
@@ -245,7 +241,6 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                                 //send response
                                                                 transport.request("Notify", json, function(result){
                                                                         console.log(result);
-                                                
                                                                 });
                                                         }        
                                                 });

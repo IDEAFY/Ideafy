@@ -4096,8 +4096,7 @@ li.color-item{
 
 li.innerbar{
     float: left;
-    width: 25%;
-    background: yellow;
+    border-radius: 0px;
 }
 
 .mystats table{
@@ -4130,6 +4129,8 @@ li.innerbar{
 
 li.myids{
     background: #657B99;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .myss th{
@@ -4154,6 +4155,8 @@ li.myctcts{
 
 li.my2q{
     background: #f27b3d;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .my2q th, .my2q td{

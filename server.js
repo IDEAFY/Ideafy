@@ -792,6 +792,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 // update user doc if needed
                                                                 user.mu_sessions_count = ms_count;
                                                                 
+                                                                console.log("MULTISESSIONSCDB.TOJSON()    ", msCDB.toJSON(), user);
                                                                 //14. If user has initiated and completed at least 5 multi user sessions
                                                                 if (ms_count >= 5){
                                                                         if (!userRewards.get("guide")){
@@ -829,6 +830,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                         // update user doc if needed
                                                                         user.twoquestions_count = tq_count;
                                                                         
+                                                                        console.log("QUESTIONSCDB.TOJSON()    ", questionsCDB.toJSON(), user);
                                                                         //17. If user has asked at least 5 twoquestions
                                                                         if (tq_count >= 5){
                                                                                 if (!userRewards.get("curious")){
@@ -904,7 +906,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                                         update = true;
                                                                                 }
                                                                         }
-                                                                                
+                                                                        
+                                                                        console.log("UPDATING USER REWARDS", userRewards);        
                                                                         // update user rewards documents
                                                                         updateDocAsAdmin(userRewards.get("_id"), userRewards).then(function(){
                                                                                 // update user doc (score and news) if necessary
@@ -919,6 +922,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                                                 userCDB.set("news", user.news);
                                                                                                 userCDB.set("achievements", user.achievements);
                                                                                                 updateDocAsAdmin(json.userid, userCDB).then(function(){
+                                                                                                        console.log("after update doc as admin", userCDB.toJSON());
                                                                                                         onEnd("ok");
                                                                                                 });        
                                                                                         });

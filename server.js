@@ -662,8 +662,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 // update user doc if needed
                                                 user.ideas_count = idea_count;
                                                 
-                                               console.log("IDEA QUERY", user);
-                                                
                                                 //4. If user has published at least 5 ideas
                                                 if (idea_count >= 5){
                                                         if (!userRewards.get("ideas5")){
@@ -752,9 +750,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 getViewAsAdmin("achievements", "singlesessions", {key: '"'+json.userid+'"'}, ssCDB).then(function(){
                                                         var ss_count = ssCDB.getNbItems();
                                                         // update user doc if needed
-                                                        user.su_sessions_count = ss_count;
-                                                        
-                                                        console.log("SESSIONSCDB.TOJSON()    ", ssCDB.toJSON(), user);
+                                                        if (user.su_sessions_count !== ss_count){
+                                                                user.su_sessions_count = ss_count;
+                                                                update = true;
+                                                        }
+                                                                
                                                         //11. If user has completed at least 5 single user sessions
                                                         if (ss_count >= 5){
                                                                 if (!userRewards.get("easybrainstormer")){
@@ -790,9 +790,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         getViewAsAdmin("achievements", "multisessions", {key: '"'+json.userid+'"'}, msCDB).then(function(){
                                                                 var ms_count = msCDB.getNbItems();
                                                                 // update user doc if needed
-                                                                user.mu_sessions_count = ms_count;
+                                                                if (user.mu_sessions_count !== ms_count){
+                                                                        user.mu_sessions_count = ms_count;
+                                                                        update = true;
+                                                                }
                                                                 
-                                                                console.log("MULTISESSIONSCDB.TOJSON()    ", msCDB.toJSON(), user);
                                                                 //14. If user has initiated and completed at least 5 multi user sessions
                                                                 if (ms_count >= 5){
                                                                         if (!userRewards.get("guide")){
@@ -828,9 +830,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 getViewAsAdmin("achievements", "twoquestions", {key: '"'+json.userid+'"'}, questionsCDB).then(function(){
                                                                         var tq_count = questionsCDB.getNbItems();
                                                                         // update user doc if needed
-                                                                        user.twoquestions_count = tq_count;
+                                                                        // update user doc if needed
+                                                                        if (user.twoquestions_count !== tq_count){
+                                                                                user.twoquestions_count = tq_count;
+                                                                                update = true;
+                                                                        }
                                                                         
-                                                                        console.log("QUESTIONSCDB.TOJSON()    ", questionsCDB.toJSON(), user);
                                                                         //17. If user has asked at least 5 twoquestions
                                                                         if (tq_count >= 5){
                                                                                 if (!userRewards.get("curious")){
@@ -907,12 +912,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                                 }
                                                                         }
                                                                         
-                                                                        console.log("UPDATING USER REWARDS", userRewards);        
                                                                         // update user rewards documents
                                                                         updateDocAsAdmin(userRewards.get("_id"), userRewards).then(function(){
                                                                                 // update user doc (score and news) if necessary
                                                                                 if (update){
-                                                                                        console.log("BEFORE UPLOAD", user);
                                                                                         getDocAsAdmin(json.userid, userCDB).then(function(){
                                                                                                 userCDB.set("ip", user.ip);
                                                                                                 userCDB.set("ideas_count", user.ideas_count);

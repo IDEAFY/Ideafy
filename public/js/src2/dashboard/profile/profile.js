@@ -254,9 +254,6 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                    
                    profileUI.updateAchievements = function updateAchievements(){
                            var onDisplay = badges.toJSON(), achievements = user.get("achievements").concat(), updated = [], i,l = achievements.length;
-                           // extract grade and distinction from current
-                           
-                           console.log("achievements", achievements, "on display", onDisplay);
                            for (i=0; i<l; i++){
                                         var pattern = achievements[i].badge;
                                         if (onDisplay.search(pattern) < 0) {
@@ -264,6 +261,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                                 badges.alter("push", achievements[i]);
                                         }
                            }
+                           console.log(user.toJSON());
                    };
                    
                    //init

@@ -8,7 +8,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                        labels = Config.get("labels"),
                        stats = new Store({"view": "info", "completion": 0}),
                        news = new Store(user.get("news")),
-                       badges = new Store([{type:"grade", badge:"beginner.png", label: "Beginner"}]); // always start with grade (or distinction then grade if distinction is present)
+                       badges = new Store([{type:"grade", badge:"beginner.png", label: "Beginner", text:"", reward: 0}]); // always start with grade (or distinction then grade if distinction is present)
                        
                    profileUI.plugins.addAll({
                            "label" : new Model(labels),
@@ -225,10 +225,14 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                            if (achievements[0].type === "grade") {
                                    achievements[0].badge = data.grade.badge;
                                    achievements[0].label = data.grade.title;
+                                   (data.grade.text) ? achievements[0].text = data.grade.text : achievements[0].text=""; // room to add a description later on
+                                   (data.grade.reward) ? achievements[0].reward = data.grade.reward : achievements[0].reward=0;
                            }
                            else if (achievements[1].type === "grade") {
                                    achievements[1].badge = data.grade.badge;
                                    achievements[1].label = data.grade.title;
+                                   (data.grade.text) ? achievements[1].text = data.grade.text : achievements[1].text=""; // room to add a description later on
+                                   (data.grade.reward) ? achievements[1].reward = data.grade.reward : achievements[1].reward=0;
                            }
                            
                            // check if there is a distinction and update accordingly
@@ -237,7 +241,9 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                    // insert new badge at the beginning or update existing one
                                    if (achievements[0].type === "distinction"  && achievements[0].badge !== data.distinction.badge){
                                         achievements[0].badge = data.distinction.badge;
-                                        achievements[0].label = data.distinction.title;      
+                                        achievements[0].label = data.distinction.title;
+                                        (data.grade.text) ? achievements[0].text = data.grade.text : achievements[0].text=""; // room to add a description later on
+                                        (data.grade.reward) ? achievements[0].reward = data.grade.reward : achievements[0].reward=0;      
                                    }
                                    else{
                                            achievements.unshift({type:"distinction", badge: data.distinction.badge, label: data.distinction.title});
@@ -247,15 +253,16 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                    };
                    
                    profileUI.updateAchievements = function updateAchievements(){
-                           var onDisplay = badges.toJSON(), achievements = user.get("achievements");
+                           var onDisplay = badges.toJSON(), achievements = user.get("achievements").concat(), updated = [], i,l = achievements.length;
+                           // extract grade and distinction from current
+                           
                            console.log("achievements", achievements, "on display", onDisplay);
-                           for (i=0, l=achievements.length; i<l; i++){
+                           for (i=0; i<l; i++){
                                         var pattern = achievements[i].badge;
-                                        console.log(onDisplay.search(pattern));
                                         if (onDisplay.search(pattern) < 0) {
+                                                achievements[i].type = "achievement";
                                                 badges.alter("push", achievements[i]);
                                         }
-                                        console.log(badges.toJSON());
                            }
                    };
                    

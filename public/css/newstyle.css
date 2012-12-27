@@ -3973,7 +3973,7 @@ li.color-item{
 }
 
 #dashboard-profile .leftprofile, #dashboard-profile .rightprofile{
-    height: 100%;
+    height: 692px;
     overflow-y: scroll;
     float: left;    
 }
@@ -4002,7 +4002,7 @@ li.color-item{
     -webkit-margin-before: 18px;
 }
 
-.userdetails, .edituserdetails, .mystats, .recenthistory{
+.userdetails, .edituserdetails, .mystats, .recentactivity{
     width: 536px;
     padding: 20px;
     border: 1px dashed #cccccc;
@@ -4089,7 +4089,7 @@ li.color-item{
 .edituserdetails{   
 }
 
-.mystats legend{
+.mystats legend, .recentactivity legend{
     font-family: Pacifico;
     color: #657B99;    
 }
@@ -4161,9 +4161,6 @@ li.my2q{
 
 .my2q th, .my2q td{
     border-bottom: none;
-}
-
-.recenthistory{    
 }
 
 .infoslider{

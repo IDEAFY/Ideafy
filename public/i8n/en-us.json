@@ -251,9 +251,11 @@
 	"entersocialnw": "Add a social network",
 	"enterownpic": "Customize your avatar",
 	"completeprofile": "<i>Complete your profile</i>",
+	"mystatslbl": "My Stats",
 	"ideaslbl": "Ideas",
 	"sessionslbl": "Sessions",
 	"contactslbl": "Contacts",
-	"toquestionslbl": "Toquestions"
+	"toquestionslbl": "Toquestions",
+	"recentactivitylbl": "Recent Activity"
 	
 }

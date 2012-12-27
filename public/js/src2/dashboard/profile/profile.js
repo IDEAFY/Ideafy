@@ -7,6 +7,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                        user = Config.get("user"),
                        labels = Config.get("labels"),
                        stats = new Store({"view": "info", "completion": 0}),
+                       news = new Store(user.get("news")),
                        badges = new Store([{type:"grade", badge:"beginner.png", label: "Beginner"}]); // always start with grade (or distinction then grade if distinction is present)
                        
                    profileUI.plugins.addAll({
@@ -129,7 +130,9 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 },
                                 setSessionCount : function(ip){
                                         // use IP because score changes everytime either a nw single or mutli user session is added
-                                        this.innerHTML = user.get("su_sessions_count") + user.get("mu_sessions_count");
+                                        var su = user.get("su_sessions_count") || 0,
+                                            mu = user.get("mu_sessions_count") || 0;
+                                        this.innerHTML = su + mu;
                                 },
                                 setContactCount : function(contacts){
                                         var count = 0;
@@ -146,9 +149,11 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 },
                                 setInnerBarLength : function(data){
                                         // first determine total number of items
-                                        var total, sessions_count, contacts = 0, width = 0;
+                                        var total, sessions_count, contacts = 0, width = 0,
+                                            su = user.get("su_sessions_count") || 0,
+                                            mu = user.get("mu_sessions_count") || 0;
                                         
-                                        sessions_count = user.get("su_sessions_count") + user.get("mu_sessions_count");
+                                        sessions_count = su + mu;
                                         for (i=0, l=user.get("connections").length; i<l; i++){
                                                 if (user.get("connections")[i].type === "user") contacts++;
                                         }
@@ -168,10 +173,11 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         this.setAttribute("style", "width:"+width+"%;");
                                 }
                            }),
+                           "news": new Model(news),
                            "profileevent" : new Event(profileUI)
                    });
                    
-                   profileUI.template = '<div id="dashboard-profile"><div class="header blue-dark"><span data-label="bind:innerHTML, profilelbl"></span></div><input class="infoslider" type="range" min="0" max="1" value ="0" data-label="bind:innerHTML, information" data-profileevent="listen:touchend, switchLeaderboard"><span class="slidertext" data-stats="bind:setViewLbl, view"></span><div id="profile-content" data-stats="bind:toggleInformation, view"><div class="leftprofile"><div class="userdetails"><div class="editbtn" data-profileevent="listen:touchstart, edit"></div><div class="cd-picarea"><div class="cardpicture" data-user="bind:setAvatar, _id"></div><div class="cardinfo"><h2 data-user="bind:innerHTML,username"></h2><blockquote data-user="bind:innerHTML, intro"></blockquote><p><span class="cd-agelbl"></span><span data-user="bind:setAge, birthdate"></span></p><p><span class="cd-locationlbl"></span><span class="cd-info" data-user="bind: setLocation, address"></span></p><p><span class="cd-joblbl"></span><span class="cd-info" data-user="bind: setOccupation, occupation"></span></p><p><span class="cd-familylbl"></span><span class="cd-info" data-user="bind: setFamily, family"></span></p></div></div><div class="cd-contentarea"><span class="contentTitle" data-user="bind:showLeisure, leisure_activities" data-label="bind: innerHTML, hobbieslbl"></span><p class = "dyknow" data-user="bind:setLeisure, leisure_activities"></p><span class="contentTitle" data-user="bind:showInterests, interests"data-label="bind: innerHTML, interestslbl">Centers of interest</span><p class = "dyknow" data-user="bind: setInterests, interests"></p></div><div><legend data-stats="bind: setPercentage, completion"></legend><div class="completionbar"><div class="innerbar" data-stats = "bind:setProgress, completion"></div></div></div></div><div class="edituserdetails invisible">Edit profile</div><div class="mystats"><legend>My Stats</legend><div class="completionbar"><ul data-user="bind: setBarLength, ip"><li class="innerbar myids" data-user="bind: setInnerBarLength, ideas_count"></li><li class="innerbar myss" data-user="bind:setInnerBarLength, ip"></li><li class="innerbar myctcts" data-user="bind: setInnerBarLength, connections"></li><li class="innerbar my2q" data-user="bind:setInnerBarLength, twoquestions_count"></li></ul></div><table><tr class ="myids"><th data-label="bind:innerHTML, ideaslbl"></th><td data-user="bind: innerHTML, ideas_count"></td></tr><tr class ="myss"><th data-label="bind:innerHTML, sessionslbl"></th><td data-user="bind: setSessionCount, ip"></td></tr><tr class="myctcts"><th data-label="bind:innerHTML, contactslbl"></th><td data-user="bind: setContactCount, connections"></td></tr><tr class="my2q"><th data-label="bind:innerHTML, toquestionslbl"></th><td data-user="bind: innerHTML, twoquestions_count"></td></tr></table></div><div class="recenthistory">Recent history</div></div><div class = "rightprofile"><div class="userscore"><span class="ip" data-user="bind:innerHTML, ip"></span><span> Ideafy Points</span></div><div class="userachievements"><p class="grade" data-stats="bind:innerHTML, title"></p><ul class="badges" data-achievements="foreach"><li class="badge"><div data-achievements="bind:showBadge, badge"></div><legend data-achievements="bind:innerHTML, label"</li></ul></div></div></div><div id="leaderboard" data-stats="bind:toggleLeaderboard, view">Leaderboard</div></div>';
+                   profileUI.template = '<div id="dashboard-profile"><div class="header blue-dark"><span data-label="bind:innerHTML, profilelbl"></span></div><input class="infoslider" type="range" min="0" max="1" value ="0" data-label="bind:innerHTML, information" data-profileevent="listen:touchend, switchLeaderboard"><span class="slidertext" data-stats="bind:setViewLbl, view"></span><div id="profile-content" data-stats="bind:toggleInformation, view"><div class="leftprofile"><div class="userdetails"><div class="editbtn" data-profileevent="listen:touchstart, edit"></div><div class="cd-picarea"><div class="cardpicture" data-user="bind:setAvatar, _id"></div><div class="cardinfo"><h2 data-user="bind:innerHTML,username"></h2><blockquote data-user="bind:innerHTML, intro"></blockquote><p><span class="cd-agelbl"></span><span data-user="bind:setAge, birthdate"></span></p><p><span class="cd-locationlbl"></span><span class="cd-info" data-user="bind: setLocation, address"></span></p><p><span class="cd-joblbl"></span><span class="cd-info" data-user="bind: setOccupation, occupation"></span></p><p><span class="cd-familylbl"></span><span class="cd-info" data-user="bind: setFamily, family"></span></p></div></div><div class="cd-contentarea"><span class="contentTitle" data-user="bind:showLeisure, leisure_activities" data-label="bind: innerHTML, hobbieslbl"></span><p class = "dyknow" data-user="bind:setLeisure, leisure_activities"></p><span class="contentTitle" data-user="bind:showInterests, interests"data-label="bind: innerHTML, interestslbl">Centers of interest</span><p class = "dyknow" data-user="bind: setInterests, interests"></p></div><div><legend data-stats="bind: setPercentage, completion"></legend><div class="completionbar"><div class="innerbar" data-stats = "bind:setProgress, completion"></div></div></div></div><div class="edituserdetails invisible">Edit profile</div><div class="mystats"><legend data-label="bind:innerHTML, mystatslbl"></legend><div class="completionbar"><ul data-user="bind: setBarLength, ip"><li class="innerbar myids" data-user="bind: setInnerBarLength, ideas_count"></li><li class="innerbar myss" data-user="bind:setInnerBarLength, ip"></li><li class="innerbar myctcts" data-user="bind: setInnerBarLength, connections"></li><li class="innerbar my2q" data-user="bind:setInnerBarLength, twoquestions_count"></li></ul></div><table><tr class ="myids"><th data-label="bind:innerHTML, ideaslbl"></th><td data-user="bind: innerHTML, ideas_count"></td></tr><tr class ="myss"><th data-label="bind:innerHTML, sessionslbl"></th><td data-user="bind: setSessionCount, ip"></td></tr><tr class="myctcts"><th data-label="bind:innerHTML, contactslbl"></th><td data-user="bind: setContactCount, connections"></td></tr><tr class="my2q"><th data-label="bind:innerHTML, toquestionslbl"></th><td data-user="bind: innerHTML, twoquestions_count"></td></tr></table></div><div class="recentactivity"><legend data-label="bind:innerHTML, recentactivitylbl"></legend><ul data-news="foreach"><li>news</li></ul></div></div><div class = "rightprofile"><div class="userscore"><span class="ip" data-user="bind:innerHTML, ip"></span><span> Ideafy Points</span></div><div class="userachievements"><p class="grade" data-stats="bind:innerHTML, title"></p><ul class="badges" data-achievements="foreach"><li class="badge"><div data-achievements="bind:showBadge, badge"></div><legend data-achievements="bind:innerHTML, label"</li></ul></div></div></div><div id="leaderboard" data-stats="bind:toggleLeaderboard, view">Leaderboard</div></div>';
                    
                    profileUI.place(Map.get("dashboard-profile"));
                    
@@ -262,7 +268,10 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                    
                    profileUI.checkProfileCompletion();
                    
-                   BADGES = badges;
+                   // monitor user document
+                   user.watchValue("news", function(){
+                           news.reset(user.get("news"));
+                   })
                    
                    return profileUI;
            };    

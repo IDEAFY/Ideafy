@@ -234,8 +234,6 @@ define("Ideafy/Connect/AddGroup", ["Olives/OObject", "Config", "Olives/Model-plu
              };
              
              addGroupUI.init();
-             CL = contactList;
-             DC = displayContacts;
              
              return addGroupUI;
                    

@@ -219,6 +219,7 @@
 	"CXRaccepted": "Request accepted, ",
 	"CXRrejected": "Contact request rejected",
 	"isnowacontact": " is now a contact",
+	"isnolongeracontact": " is no longer a contact",
 	"canceledCX": " has canceled your connection",
 	"newfolderlbl" : "New group",
 	"groupnamelbl": "Group name",
@@ -252,10 +253,16 @@
 	"enterownpic": "Customize your avatar",
 	"completeprofile": "<i>Complete your profile</i>",
 	"mystatslbl": "My Stats",
-	"ideaslbl": "Ideas",
+	"ideaslbl": "Public Ideas",
 	"sessionslbl": "Sessions",
 	"contactslbl": "Contacts",
-	"toquestionslbl": "Toquestions",
-	"recentactivitylbl": "Recent Activity"
+	"toquestionslbl": "Twoquestions",
+	"recentactivitylbl": "Recent Activity",
+	"enterednewidea": "You entered a new idea: ",
+	"reachedrank": "Congratulations ! You made a new rank :",
+	"gotaward": "You received an award : ",
+	"posted2q": "You posted a TwoQuestion :",
+	"commentedon": "You commented on : ",
+	"by": " by "
 	
 }

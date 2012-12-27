@@ -210,8 +210,8 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                         }
                                                 }
                                                 user.set("connections", arr);
-                                                // add contact deletion to news
-                                                user.get("news").unshift({type: "CX-", date:date, content:{userid: $data.userid, username: $data.username}});
+                                                // if contact is of type user add contact deletion to news
+                                                if ($data.type === "user") user.get("news").unshift({type: "CX-", date:date, content:{userid: $data.userid, username: $data.username}});
                                                 user.upload().then(function(){
                                                         // if contact is a user notify the other end that the contact is terminated.
                                                         if ($data.type === "user"){

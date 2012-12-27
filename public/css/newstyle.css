@@ -4163,6 +4163,56 @@ li.my2q{
     border-bottom: none;
 }
 
+.recentactivity{
+    padding: 20px;
+}
+
+.recentactivity ul{
+    width: 100%;
+    margin-top: 20px;
+}
+
+.recentactivity li{
+    min-height: 56px;
+}
+
+.recentactivity li:nth-child(odd){
+    background: #F2F2F2;
+}
+
+.recentactivity li > div, .recentactivity li > p{
+    float: left;
+}
+
+.newsdate{
+    font-family: Helvetica;
+    font-size: 14px;
+    line-height: 56px;
+    color: #808080;
+    text-align: center;
+    width: 112px;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #cccccc;
+}
+
+.newstype{
+    display: inline-block;
+    height: 56px;
+    width: 56px;
+    background: blue;
+}
+
+.newstext{
+    padding: 5px;
+    margin-top: 11px;
+    font-size: 12px;
+}
+
+.newsinfo{
+    font-family: Pacifico;
+    color: black;
+}
+
 .infoslider{
     -webkit-appearance: none;
     position: absolute;

@@ -751,7 +751,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         var ss_count = ssCDB.getNbItems();
                                                         // update user doc if needed
                                                         user.su_sessions_count = ss_count;
-                                                
+                                                        
+                                                        console.log("SESSIONSCDB.TOJSON()    ", ssCDB.toJSON());
                                                         //11. If user has completed at least 5 single user sessions
                                                         if (ss_count >= 5){
                                                                 if (!userRewards.get("easybrainstormer")){

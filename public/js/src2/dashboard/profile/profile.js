@@ -248,7 +248,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                    
                    profileUI.updateAchievements = function updateAchievements(){
                            var onDisplay = badges.toJSON(), achievements = user.get("achievements");
-                           console.log("achievements", achievemets);
+                           console.log("achievements", achievements);
                            for (i=0, l=achievements.length; i<l; i++){
                                         console.log(achievements[i].badge);
                                         if (onDisplay.search(achievements[i].badge) < 0) badges.alter("push", achievements[i]);

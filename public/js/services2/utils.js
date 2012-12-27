@@ -284,7 +284,6 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                                if (res === "ok"){
                                         user.unsync();
                                         user.sync(Config.get("db"), userid).then(function(){
-                                                console.log(user.toJSON());
                                                 onEnd(res);         
                                         });        
                                }

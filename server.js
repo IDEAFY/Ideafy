@@ -662,6 +662,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 // update user doc if needed
                                                 user.ideas_count = idea_count;
                                                 
+                                               console.log("IDEA QUERY", user);
+                                                
                                                 //4. If user has published at least 5 ideas
                                                 if (idea_count >= 5){
                                                         if (!userRewards.get("ideas5")){
@@ -752,7 +754,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         // update user doc if needed
                                                         user.su_sessions_count = ss_count;
                                                         
-                                                        console.log("SESSIONSCDB.TOJSON()    ", ssCDB.toJSON());
+                                                        console.log("SESSIONSCDB.TOJSON()    ", ssCDB.toJSON(), user);
                                                         //11. If user has completed at least 5 single user sessions
                                                         if (ss_count >= 5){
                                                                 if (!userRewards.get("easybrainstormer")){

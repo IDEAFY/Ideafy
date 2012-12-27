@@ -251,6 +251,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                            console.log("achievements", achievements, "on display", onDisplay);
                            for (i=0, l=achievements.length; i<l; i++){
                                         var pattern = achievements[i].badge;
+                                        console.log(onDisplay.search(pattern));
                                         if (onDisplay.search(pattern) < 0) {
                                                 badges.alter("push", achievements[i]);
                                         }

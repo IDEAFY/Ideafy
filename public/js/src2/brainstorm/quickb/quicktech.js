@@ -306,7 +306,9 @@ define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-pl
                                         ["tech1", "tech2", "tech3"].forEach(function(value){
                                                 _techDisplay.set(value, {"popup": false, "selected": true});
                                         });
-                                        $data.set("techno", _techCards);
+                                        _techCards.watch("updated", function(){
+                                                if (_techCards.getNbItems() === 3) $data.set("techno", _techCards);
+                                        });
                                 }
                                 else{
                                         // reset techstack

@@ -34,7 +34,7 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                            }),
                            "progressevent" : new Event(_progress)
                    });
-                   _progress.template = '<div class = "progressbar"><ul id = "quicksteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul></div>';
+                   _progress.template = '<div class = "progressbar"><ul id = "quicksteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
                    _progress.place(_frag);
                    
                    _widget.plugins.add("quickstack", _stack);
@@ -55,6 +55,15 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                         else {
                                 event.stopImmediatePropagation();
                         }              
+                   };
+                   
+                   _progress.press = function(event, node){
+                           node.classList.add("pressed");
+                   };
+                   
+                   _progress.exit = function(event, node){
+                           node.classList.remove("pressed");
+                           $exit();
                    };
                    
                    _widget.retrieveSession = function retrieveSession(sip){
@@ -218,8 +227,10 @@ define("Ideafy/Brainstorm/QuickB", ["Olives/OObject", "Map", "Amy/Stack-plugin",
                            var _progressBar = node.querySelector(".progressbar");
                            
                            if (_progressBar) {
-                                   node.removeChild(_progressBar);
-                                   _progress.place(_frag);
+                                   setTimeout(function(){
+                                           node.removeChild(_progressBar);
+                                        _progress.place(_frag);
+                                        }, 600);
                            }
                            else node.appendChild(_frag);        
                    };

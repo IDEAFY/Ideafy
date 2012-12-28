@@ -78,18 +78,22 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                       }
                                 }),
                                 "idea" : new Model(_idea, {
-                                        setPrivate : function(visibility){
-                                                (visibility === "private")?this.classList.add("pressed"):this.classList.remove("pressed");        
-                                        },
-                                        setPublic : function(visibility){
-                                                (visibility === "public")?this.classList.add("pressed"):this.classList.remove("pressed");        
+                                        setVisibility : function(visibility){
+                                                if (visibility === "public"){
+                                                        this.value = 0;
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/publicforslider.png'); background-position: 50px center; background-repeat:no-repeat; background-size: 30px;");
+                                                }
+                                                else{
+                                                        this.value = 1;
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/privateforslider.png'); background-position: 15px center; background-repeat:no-repeat; background-size: 20px;");        
+                                                }
                                         }
                                 }),
                                 "wbstack" : _wb,
                                 "quickideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quickidea"><div class="previousbutton" data-quickideaevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickidea" data-quickideaevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quickideatimer="bind:setTime, timer; bind: displayTimer, display" data-quickideaevent="listen:touchstart,toggleTimer"></div><div id="quickidea-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-quickideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.scenario"><div class="cardpicture"></div><div class="cardtitle" data-scenario="bind:innerHTML, title"></div></div><ul class="cardlist" data-techs="foreach"><li><div class="card tech defaultcard" data-quickideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.techs"><div class="cardpicture" data-techs="bind:setPic, pic"></div><div class="cardtitle" data-techs="bind:innerHTML,title"></div></div></li></ul></div><div id="quickidea-popup"></div><div id="quickidea-right" class="workarea"><div id="idea-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showidea"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickideaevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickideaevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickideaevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div id="finish-button" class="invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickideaevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickidea-writeup" class="writeup invisible" data-wbtools="bind: setReady,showidea"><textarea class = "enterTitle" maxlength="40" data-labels="bind:setPlaceholder, ideatitleplaceholder" data-idea="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="visibility public" name="public" data-labels="bind:innerHTML, publiclbl" data-idea="bind:setPublic, visibility" data-quickideaevent="listen: touchstart, toggleVisibility"></div><div name="private" class="visibility private" data-labels="bind:innerHTML, privatelbl" data-idea="bind:setPrivate, visibility" data-quickideaevent="listen: touchstart, toggleVisibility"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, ideadescplaceholder" data-idea="bind:value, description" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, ideasolplaceholder" data-idea="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea><div class = "finish-button finish-writeup"></div></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickideaevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
+                        _widget.template = '<div id = "quickidea"><div class="previousbutton" data-quickideaevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickidea" data-quickideaevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quickideatimer="bind:setTime, timer; bind: displayTimer, display" data-quickideaevent="listen:touchstart,toggleTimer"></div><div id="quickidea-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-quickideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.scenario"><div class="cardpicture"></div><div class="cardtitle" data-scenario="bind:innerHTML, title"></div></div><ul class="cardlist" data-techs="foreach"><li><div class="card tech defaultcard" data-quickideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.techs"><div class="cardpicture" data-techs="bind:setPic, pic"></div><div class="cardtitle" data-techs="bind:innerHTML,title"></div></div></li></ul></div><div id="quickidea-popup"></div><div id="quickidea-right" class="workarea"><div id="idea-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showidea"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickideaevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickideaevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickideaevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div id="finish-button" class="invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickideaevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickidea-writeup" class="writeup invisible" data-wbtools="bind: setReady,showidea"><textarea class = "enterTitle" maxlength="40" data-labels="bind:setPlaceholder, ideatitleplaceholder" data-idea="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><input class="visibility-slider" type="range" min="0" max="1" value ="1" data-idea="bind: setVisibility, visibility" data-quickideaevent="listen:touchend, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><textarea class = "enterDesc" data-labels="bind:setPlaceholder, ideadescplaceholder" data-idea="bind:value, description" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, ideasolplaceholder" data-idea="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea><div class = "finish-button finish-writeup"></div></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickideaevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
                         
                         _widget.place(Map.get("quickidea"));
                         
@@ -160,9 +164,10 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         
                         // toggle visibility (public/private) buttons
                         _widget.toggleVisibility = function(event, node){
-                                var name = node.getAttribute("name");
-                                if (_next === "step" && _idea.get("visibility") !== name){
-                                        _idea.set("visibility", name);
+                                if (_next === "step"){
+                                        (_idea.get("visibility") === "public") ? _idea.set("visibility", "private") : _idea.set("visibility", "public");
+                                        
+                                        console.log("toggle visibility : ", _idea.toJSON());        
                                 }
                         };
                         
@@ -361,6 +366,9 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 _wbContent.reset($session.get("ideaWB"));
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
+                                // reset timer if previous session was exited while in quickidea step
+                                clearInterval(_qiTimer);
+                                
                                 // if idea is present show write up interface and board in readonly mode
                                 if ($session.get("idea").length){
                                         _wb.setReadonly(true);
@@ -389,8 +397,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 // retrieve time already spent on this step
                                 ($session.get("elapsedTimers").quickidea) ? _elapsed = $session.get("elapsedTimers").quickidea : _elapsed = 0;
                                 _timer.set("timer", _elapsed);
-                                console.log($session.get("elapsedTimers").quickidea, _timer.get("timer"));
-                                (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
+                                (_next === "screen") ? _timer.set("display", true) : _widget.initTimer(_elapsed);
                          };
                          
                          _widget.initTimer = function(init){
@@ -414,8 +421,15 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 _wb.setSessionId(sid);        
                         });
                         
+                        // get scenario card from session data
+                       $data.watchValue("scenario", function(store){
+                                _scenario.reset($data.get("scenario"));
+                                console.log("scenario from data store", _scenario.toJSON());      
+                       });
+                        
                         // get technology cards from session data
                        $data.watchValue("techno", function(store){
+                               console.log("techno", $data.toJSON());
                                 _techs.reset(JSON.parse($data.get("techno").toJSON()));       
                        });
                         
@@ -438,7 +452,8 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         });
                         
                         
-                        
+                        SD = $data;
+                        TCH = _techs;
                         // Return
                         return _widget;
                 };    

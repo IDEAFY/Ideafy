@@ -4373,3 +4373,59 @@ li.my2q{
     -webkit-padding-end: 0px;
     line-height:100%;
 }
+
+#leaderboard{
+    padding-left: 20px;
+}
+
+#leaderboard ul{
+    margin-top: 75px;
+    width: 891px;
+}
+
+#leaderboard li:nth-child(odd){
+    background: #F2F2F2;
+}
+
+#leaderboard li{
+    height: 60px;
+}
+
+#leaderboard li > div {
+    float: left;
+}
+
+#leaderboard .avatar{
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-radius: 20px;
+    background-size: cover;
+}
+
+#leaderboard .username{
+    color: #292929;
+    font-size: 16px;
+    font-family: Pacifico;
+    line-height: 60px;
+    margin-left: 5px;
+    width: 583px;
+    border-right: 1px solid #CCCCCC;
+}
+
+#leaderboard .grade, #leaderboard .distinction{
+    width: 60px;
+    height: 60px;
+}
+
+#leaderboard .score{
+    font-family: Pacifico;
+    font-size: 21px;
+    text-align: center;
+    line-height: 60px;
+    width: 120px;
+    border-left: 1px solid #cccccc;
+}
+

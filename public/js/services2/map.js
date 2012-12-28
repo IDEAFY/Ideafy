@@ -51,6 +51,7 @@ define("Map", ["Store"], function(Store){
 		"dashboard" : document.getElementById("dashboard"),
 		        "dashboard-menu": document.getElementById("dashboard-menu"),
 		        "dashboard-profile": document.getElementById("dashboard-profile"),
+		        "leaderboard": document.getElementById("leaderboard"),
 		        "dashboard-settings": document.getElementById("dashboard-settings"),
 		        "dashboard-about": document.getElementById("dashboard-about")
 	});

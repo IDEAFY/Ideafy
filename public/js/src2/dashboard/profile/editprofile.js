@@ -34,6 +34,11 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                                                 this.value = this.options[children].innerHTML;
                                         }
                                 },
+                                setSituation : function(situation){
+                                        if (situation || situation === 0){
+                                                this.value = this.options[situation].innerHTML;
+                                        }
+                                },
                                 setLeisureName : function(leisure){
                                         var node = this, name = node.getAttribute("name");
                                         [0,1,2].forEach(function(i){

@@ -3769,7 +3769,7 @@ li.color-item{
     margin-left: 100px;
 }
 
-#addcontact legend, #addgroup legend, .userdetails legend{
+#addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend{
     width:100%;
     padding-bottom: 5px;
     font-family: Pacifico;
@@ -4133,7 +4133,7 @@ li.color-item{
     background-image: url('../img/decks/lastModified14-01.png');    
 }
 
-.userdetails legend{
+.userdetails legend, .edituserdetails .addtlinfo legend{
     border-bottom: 1px solid #657b99;
 }
 
@@ -4157,10 +4157,7 @@ li.color-item{
 }
 
 
-.edituserdetails{   
-}
-
-.mystats legend, .recentactivity legend{
+.mystats legend, .recentactivity legend, .edituserdetails .addtlinfo legend{
     font-family: Pacifico;
     color: #657B99;    
 }
@@ -4376,6 +4373,8 @@ li.my2q{
 
 #leaderboard{
     padding-left: 20px;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
 }
 
 #leaderboard ul{
@@ -4429,3 +4428,126 @@ li.my2q{
     border-left: 1px solid #cccccc;
 }
 
+.edituserdetails .setavatar{
+    float: left;
+    height: 671px;
+    width: 110px;
+    display: block;
+}
+
+.edituserdetails .currentavatar{
+    width:80px;
+    height: 80px;
+    border-radius: 40px;
+}
+
+.edituserdetails .profileinfo{
+    height: 671px;
+    width: 426px;
+    display: block;
+    float: left;
+}
+
+.edituserdetails label{
+    color: #292929;
+    font-family: Helvetica;
+    font-size: 14px;
+}
+
+.edituserdetails .input{
+    height: 30px;
+    margin-top: 3px;
+    margin-bottom: 10px;
+    color: #666666;
+    font-family: Helvetica;
+    font-size: 14px;
+}
+
+.edituserdetails .firstname, .edituserdetails .lastname, .edituserdetails .city, .edituserdetails .zipstate{
+    width: 208px;
+    float: left;    
+}
+
+.edituserdetails .firstname, .edituserdetails .city{
+    padding-right: 5px;    
+}
+
+.edituserdetails .lastname, .edituserdetails .zipstate{
+    padding-left: 5px;   
+}
+
+.edituserdetails .state{
+    float: left;
+    width: 58px;
+    margin-right: 10px;   
+}
+
+.edituserdetails .zip{
+    float: left;
+    width: 140px;  
+}
+
+.edituserdetails .dob{
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
+
+.edituserdetails .dob input, .edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select{
+    height: 30px;
+    border-radius: 5px;
+    line-height: 28px;
+    padding: 0px;
+    border: 1px solid #CCC;
+    text-align: center;
+    color: #292929;
+    font-family: Helvetica;
+    font-size: 14px;   
+}
+
+.edituserdetails .dob .day{
+    width: 40px;
+    margin-right: 10px;
+}
+
+.edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select{
+    -webkit-appearance: none;
+    text-align: center;
+    width: 120px;
+    padding-left: 5px;
+    padding-right: 30px;
+    margin-right: 10px;
+    background: url('../img/profile/buttonMinSeeMoreDisable.png') no-repeat right center;
+    background-size: 30px 30px;
+}
+
+.edituserdetails .dob .year{
+    width: 60px;
+}
+
+.edituserdetails .family, .edituserdetails .job select{
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
+
+.edituserdetails .family select.status{
+    width: 180px;
+    margin-bottom: 5px;
+}
+
+.edituserdetails .family select.children{
+    width: 50px;
+    margin-bottom: 5px;
+}
+
+.edituserdetails .addtlinfo input{
+    width: 200px;
+}
+
+.edituserdetails .addtlinfo input.description{
+    width: 326px;
+    margin-left: 10px;
+}
+
+.edituserdetails .addtlinfo legend{
+    margin-bottom: 5px;
+}

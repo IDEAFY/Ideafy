@@ -26,7 +26,6 @@ define("Ideafy/Dashboard/Leaderboard", ["Olives/OObject", "Config", "Olives/Mode
                                         setDistinction : function(ip){
                                                 var node = this;
                                                 Utils.getGrade(ip, function(result){
-                                                        console.log(result);
                                                         if (result.distinction) node.setAttribute("style", "background: url('../img/profile/"+result.distinction.badge+"') no-repeat center center; background-size: 40px 40px;");
                                                 })
                                         },
@@ -40,7 +39,6 @@ define("Ideafy/Dashboard/Leaderboard", ["Olives/OObject", "Config", "Olives/Mode
                         leaderboard.init = function init($dom){
                                 leaders.setTransport(Config.get("transport"));
                                 leaders.sync(Config.get("db"), "users", "_view/leaderboard", {limit:100, descending: true}).then(function(){
-                                        console.log(leaders.toJSON());
                                         leaderboard.place($dom);
                                 })
                         };

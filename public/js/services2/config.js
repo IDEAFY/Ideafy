@@ -18,7 +18,8 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "address" : {
                                         "street1" : "",
                                         "street2" : "",
-                                        "zip code" : null,
+                                        "zip" : null,
+                                        "state": "",
                                         "city" : "",
                                         "state" :"",
                                         "country" : ""
@@ -31,12 +32,9 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "custom_decks" : [],
                                 "active_deck": "INT",
                                 "occupation" : {
-                                        "description" : "",
-                                        "details" : {
-                                                "situation" : "",
-                                                "job" : "",
-                                                "organization" : ""
-                                        }
+                                        "situation" : "",
+                                        "job" : "",
+                                        "organization" : ""
                                 },
                                 "family" : {
                                         "couple" : null,

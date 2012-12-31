@@ -1,18 +1,45 @@
-define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Avatar", "Ideafy/Utils"],
-        function(Widget, Config, Model, Event, Avatar, Utils){
+define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Avatar", "Ideafy/Utils", "Store"],
+        function(Widget, Config, Model, Event, Avatar, Utils, Store){
                 
            return new function EditProfileConstructor(){
                    
                 var editProfile = new Widget(),
-                    profile = Config.get("user"),
+                    user = Config.get("user"),
+                    profile = new Store(),
+                    avatarList = [
+                                    {"name": "azur", "file": "img/avatars/deedee0.png", "selected": false},
+                                    {"name": "blue", "file": "img/avatars/deedee1.png", "selected": false},
+                                    {"name": "green", "file": "img/avatars/deedee2.png", "selected": false},
+                                    {"name": "grey", "file": "img/avatars/deedee3.png", "selected": false},
+                                    {"name": "orange", "file": "img/avatars/deedee4.png", "selected": false},
+                                    {"name": "red", "file": "img/avatars/deedee5.png", "selected": false},
+                                    {"name": "yellow", "file": "img/avatars/deedee6.png", "selected": false}
+                            ],
+                    defaultAvatars = new Store(avatarList),
+                    updates = {},
+                    progress = new Store({"status": null}),
                     labels = Config.get("labels");
                     
                 editProfile.plugins.addAll({
                         "label" : new Model(labels),
+                        "avatars": new Model(defaultAvatars, {
+                                setPic : function(file){
+                                        this.setAttribute("style", "background-image: url('"+file+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");
+                                },
+                                setChecked : function(checked){
+                                        (checked) ? this.innerHTML="&#10003;":this.innerHTML="";
+                                }
+                        }),
+                        "progress": new Model(progress,{
+                                 "showProgress" : function(status){
+                                        (status)?this.innerHTML = status+'%':this.innerHTML="";
+                                }        
+                        }),
                         "profile" : new Model(profile, {
-                                setAvatar : function(picture_file){
-                                                // make sure the picture_file field of user doc is set after successful upload of file
-                                                this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center;background-size:cover;");
+                                setAvatar : function(avatar){
+                                                // make sure the picture_file field of user doc && Config.get("avatar") is set after successful upload of file
+                                                console.log("current avatar", avatar);
+                                                this.setAttribute("style", "background-image: url('"+avatar+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");
                                 },
                                 setDay : function(birthdate){
                                         if (birthdate[2]) this.value = birthdate[2];
@@ -24,19 +51,19 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                                 setYear : function(birthdate){
                                         if (birthdate[0]) this.value = birthdate[0];
                                 },
-                                setStatus : function(couple){
+                                setFamilyStatus : function(couple){
                                         if (couple || couple === 0){
-                                                this.value = this.options[couple].innerHTML;
+                                                this.selectedIndex = couple;
                                         }
                                 },
                                 setChildren : function(children){
                                         if (children || children === 0){
-                                                this.value = this.options[children].innerHTML;
+                                                this.selectedIndex = children;
                                         }
                                 },
                                 setSituation : function(situation){
                                         if (situation || situation === 0){
-                                                this.value = this.options[situation].innerHTML;
+                                                this.selectedIndex = situation;
                                         }
                                 },
                                 setLeisureName : function(leisure){
@@ -67,10 +94,167 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         "editprofileevent" : new Event(editProfile)
                 });
                 
-                editProfile.template = '<div><div class = "setavatar"><div class="currentavatar" data-profile="bind:setAvatar, picture_file"></div></div><form class="profileinfo"><div class = "username"><div class = "firstname"><label>First name</label><input class="input" type="text" data-profile="bind: value, firstname"></div><div class = "lastname"><label>Last name</label><input class="input" type="text" data-profile="bind: value, lastname"></div></div><label>Profile introduction</label><input class="input" type="text" data-profile="bind:value, intro" placeholder="short profile description"><label>Date of birth</label><div class="dob"><input class="day" type="text" placeholder="day" data-profile="bind: setDay, birthdate"><select data-profile="bind: setMonth, birthdate"><option>January</option><option>February</option><option>March</option><option>April</option><option>May</option><option>June</option><option>July</option><option>August</option><option>September</option><option>October</option><option>November</option><option>December</option></select><input class="year" type="text" placeholder="year" data-profile="bind: setYear, birthdate"></div><div class="postal"><label class="streetaddress">Mail address</label><input class="streetaddress input" type="text" placeholder="Street" data-profile="bind:value, address.street1"><div class="city"><label>City</label><input class="input city" type="text" data-profile="bind:value, address.city"></div><div class="zipstate"><div class="state"><label>State</label><input class="input" type="text" data-profile="bind:value, address.state"></div><div class="zip"><label>ZIP</label><input class="input" type="text" data-profile="bind:value, address.zip"></div></div><label>Country</label><input class="input" type="text" data-profile="bind:value, address.country"></div><label>My Family</label><div class="family"><select class="status" data-profile="bind: setStatus, family.couple"><option>Single</option><option>Married</option><option>Divorced</option><option>Widow</option><option>In a relationship</option></select><select class="children" data-profile="bind: setChildren, family.children"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option></select><label>Children</label></div><label>My Occupation</label><div class="job"><select class="status" data-profile="bind: setSituation, occupation.situation"><option>Student</option><option>Active</option><option>Retired</option><option>Unemployed</option><option>Stay at home parent</option></select><div class="jobdesc"><label>Job title</label><input class="input" type="text" data-profile="bind:value, occupation.job" placeholder="Job title"></div><div class="org"><label>Organization</label><input class="input" type="text" data-profile="bind:value, occupation.organization" placeholder="Organization"></div></div></form><form class="addtlinfo"><legend>Leisure activities</legend><input name="leisure0" class="input" type="text" placeholder="Leisure name" data-profile="bind: setLeisureName, leisure_activities"><input class="input description" name="leisure0" type="text" placeholder="Description" data-profile="bind: setLeisureDesc, leisure_activities"><input name="leisure1" class="input" type="text" placeholder="Leisure name" data-profile="bind: setLeisureName, leisure_activities"><input class="input description" name="leisure1" type="text" placeholder="Description" data-profile="bind: setLeisureDesc, leisure_activities"><input class="input" name="leisure2" type="text" placeholder="Leisure name" data-profile="bind: setLeisureName, leisure_activities"><input class="input description" name="leisure2" type="text" placeholder="Description" data-profile="bind: setLeisureDesc, leisure_activities"><legend>Centers of interest</legend><input class="input" name="interest0" type="text" placeholder="Name" data-profile="bind: setInterestName, interests"><input class="input description" name="interest0" type="text" placeholder="Description" data-profile="bind: setInterestDesc, interests"><input class="input" name="interest1" type="text" placeholder="Name" data-profile="bind: setInterestName, interests"><input class="input description" name="interest1" type="text" placeholder="Description" data-profile="bind: setInterestDesc, interests"><input class="input" name="interest2" type="text" placeholder="Name" data-profile="bind: setInterestName, interests"><input class="input description" name="interest2" type="text" placeholder="Description" data-profile="bind: setInterestDesc, interests"></form><div class="useascharacter"></div></div>';
+                editProfile.template = '<div><div class = "setavatar"><div class="currentavatar" data-profile="bind:setAvatar, avatar" data-editprofileevent="listen:touchstart, changeAvatar"></div><div id="changeavatar" class="invisible"><div class="avatarcache"></div><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editprofileevent="listen: touchstart, selectpress; listen:touchend, check; listen: change, uploadnDisplay"><div data-label="bind:innerHTML, importlbl"></div></span><div class="uploadprogress" data-importprogress="bind:showProgress, status"></div><p data-label="bind:innerHTML, selectavatar"></p><ul class="defaultlist" data-avatars="foreach"><li><div class="defaultAvatar" data-avatars="bind: setPic, file"></div><div class="checkbox" data-avatars="bind: setChecked, selected" data-editprofileevent="listen: touchend, setDefaultAvatar"></div></li></ul></div></div><form class="profileinfo"><div class = "username"><div class = "firstname"><label data-label="bind:innerHTML, firstnameplaceholder"></label><input class="input" name="firstname" type="text" data-profile="bind: value, firstname" data-editprofileevent="listen: input, updateField"></div><div class = "lastname"><label data-label="bind:innerHTML, lastnameplaceholder"></label><input class="input" type="text" name="lastname" data-profile="bind: value, lastname" data-editprofileevent="listen: input, updateField"></div></div><label data-label="bind:innerHTML, profileintro"></label><input class="input" name="intro" type="text" data-profile="bind:value, intro" data-label="bind:placeholder, shortprofiledesc" data-editprofileevent="listen: input, updateField"><label data-label="bind:innerHTML, dob"></label><div class="dob"><input class="day" name="day" type="text" data-label="bind:placeholder, day" data-profile="bind: setDay, birthdate" data-editprofileevent="listen:input, updateDate"><select name="month" data-profile="bind: setMonth, birthdate" data-editprofileevent="listen:change, updateDate"><option data-label="bind:innerHTML, jan"></option><option data-label="bind:innerHTML, feb"></option><option data-label="bind:innerHTML, mar"></option><option data-label="bind:innerHTML, apr"></option><option data-label="bind:innerHTML, may"></option><option data-label="bind:innerHTML, jun"></option><option data-label="bind:innerHTML, jul"></option><option data-label="bind:innerHTML, aug"></option><option data-label="bind:innerHTML, sep"></option><option data-label="bind:innerHTML, oct"></option><option data-label="bind:innerHTML, nov"></option><option data-label="bind:innerHTML, dec"></option></select><input class="year" name="year" type="text" data-label="bind:placeholder,year" data-profile="bind: setYear, birthdate" data-editprofileevent="listen:input, updateDate"></div><div class="postal"><label class="streetaddress" data-label="bind:innerHTML, mailaddress"></label><input class="streetaddress input" name="street1" type="text" data-label="bind:placeholder, street" data-profile="bind:value, address.street1" data-editprofileevent="listen:input, updateAddress"><div class="city"><label data-label="bind:innerHTML, city"></label><input class="input city" name="city" type="text" data-profile="bind:value, address.city" data-editprofileevent="listen:input, updateAddress"></div><div class="zipstate"><div class="state"><label data-label="bind:innerHTML, state"></label><input class="input" name="state" type="text" data-profile="bind:value, address.state" data-editprofileevent="listen:input, updateAddress"></div><div class="zip"><label data-label="bind:innerHTML, zip"></label><input class="input" name="zip" type="text" data-profile="bind:value, address.zip" data-editprofileevent="listen:input, updateAddress"></div></div><label data-label="bind:innerHTML, country"></label><input class="input" name="country" type="text" data-profile="bind:value, address.country" data-editprofileevent="listen:input, updateAddress"></div><label data-label="bind:innerHTML, myfamily"></label><div class="family"><select class="status" name="couple" data-profile="bind: setFamilyStatus, family.couple" data-editprofileevent="listen:change, updateFamily"><option data-label="bind:innerHTML, single"></option><option data-label="bind:innerHTML, married"></option><option data-label="bind:innerHTML, divorced"></option><option data-label="bind:innerHTML, widow"></option><option data-label="bind:innerHTML, relation"></option></select><select class="children" name="children" data-profile="bind: setChildren, family.children" data-editprofileevent="listen:change, updateFamily"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option></select><label data-label="bind:innerHTML, children"></label></div><label data-label="bind:innerHTML, myoccupation"></label><div class="job"><select class="status" name="situation" data-profile="bind: setSituation, occupation.situation" data-editprofileevent="listen:change, updateJob"><option data-label="bind:innerHTML, student"></option><option data-label="bind:innerHTML, active"></option><option data-label="bind:innerHTML, retired"></option><option data-label="bind:innerHTML, unemployed"></option><option data-label="bind:innerHTML, stayathome"></option></select><div class="jobdesc"><label data-label="bind:innerHTML, jobtitle"></label><input class="input" type="text" name="job" data-profile="bind:value, occupation.job" data-label="bind:placeholder, jobtitle" data-editprofileevent="listen:change, updateJob"></div><div class="org"><label data-label="bind:innerHTML, organization"></label><input class="input" name="organization" type="text" data-profile="bind:value, occupation.organization" data-label="bind:placeholder,organization" data-editprofileevent="listen:change, updateJob"></div></div></form><form class="addtlinfo"><legend data-label="bind:innerHTML, hobbieslbl"></legend><label data-label="bind:innerHTML, name"></label><label class="description" data-label="bind:innerHTML, comment"></label><input name="leisure0" class="input" type="text" data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure0" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><input name="leisure1" class="input" type="text"  data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure1" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><input class="input" name="leisure2" type="text" data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure2" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><legend data-label="bind:innerHTML, interestslbl"></legend><label data-label="bind:innerHTML, field"></label><label class="description" data-label="bind:innerHTML, comment"></label><input class="input" name="interest0" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest0" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"><input class="input" name="interest1" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest1" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"><input class="input" name="interest2" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest2" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"></form><div class="useascharacter"></div><p class="update"><label class="cancelprofile" data-label="bind:innerHTML, cancellbl" data-editprofileevent="listen: touchstart, press; listen:touchend, cancel"></label><label class="updateprofile" data-label="bind:innerHTML, updatelbl" data-editprofileevent="listen:touchstart, press; listen:touchend, update"></label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div>';
                 
                 editProfile.init = function init($dom){
+                        editProfile.reset();
                         editProfile.place($dom);
+                };
+                
+                editProfile.selectpress = function(event, node){
+                        node.nextSibling.classList.add("pressed");
+                        node.value = "";       
+                };
+                
+                editProfile.check = function(event, node){
+                        node.nextSibling.classList.remove("pressed");
+                        if (node.files.length) editProfile.preview('change', node);
+                };
+                
+                editProfile.uploadnDisplay = function(event, node){
+                        var url = '/upload', fd = new FormData(), file = node.files[0], filename = user.get("_id")+"_@v@t@r", type = "avatar";
+                        fd.append("type", type);
+                        fd.append("filename", filename);
+                        fd.append("img", file);
+                        console.log(file);
+                        Utils.uploadFile(url, fd, progress, function(result){
+                                console.log(result);
+                            });
+                                
+                };
+                
+                editProfile.changeAvatar = function(event, node){
+                        document.getElementById("changeavatar").classList.remove("invisible");        
+                };
+                
+                editProfile.setDefaultAvatar = function(event, node){
+                        var idx = node.getAttribute("data-avatars_id");
+                        
+                        // set proper index as selected
+                        defaultAvatars.loop(function(v,i){
+                                (i === parseInt(idx)) ? defaultAvatars.update(i, "selected", true) : defaultAvatars.update(i, "selected", false);        
+                        });
+                        
+                        profile.set("avatar", defaultAvatars.get(idx).file);
+                        updates.picture_file = defaultAvatars.get(idx).file;
+                        document.getElementById("changeavatar").classList.add("invisible"); 
+                };
+                
+                editProfile.reset = function reset(){
+                        profile.reset(JSON.parse(user.toJSON()));
+                        profile.set("avatar", Config.get("avatar"));
+                        defaultAvatars.reset(avatarList);
+                        updates = {};
+                        
+                        // check avatar
+                        if (profile.get("picture_file").search("img/avatars/deedee") >-1){
+                                defaultAvatars.loop(function(v,i){
+                                        if (profile.get("picture_file").search(v.file) >-1) defaultAvatars.update(i, "selected", true);        
+                                });
+                        }       
+                };
+                
+                editProfile.updateField = function(event, node){
+                        var prop = node.getAttribute("name");
+                        updates[prop] = node.value;
+                };
+                
+                editProfile.updateDate = function(event, node){
+                        var date = updates.birthdate || profile.get("birthdate"), name = node.getAttribute("name"), value;
+                        switch(name){
+                                case "year":
+                                        date[0] = node.value;
+                                        break;
+                                case "month":
+                                        date[1] = node.selectedIndex;
+                                        break;
+                                case "day":
+                                        date[2] = node.value;
+                                        break;        
+                        }
+                        updates.birthdate = date;        
+                };
+                
+                editProfile.updateAddress = function(event, node){
+                        var address = updates.address || profile.get("address"), name = node.getAttribute("name");
+                        address[name] = node.value
+                        updates.address = address;        
+                };
+                
+                editProfile.updateFamily = function(event, node){
+                        var name = node.getAttribute("name"), family = updates.family || profile.get("family");
+                        family[name] = node.selectedIndex;
+                        updates.family = family;
+                                
+                };
+                
+                editProfile.updateJob = function(event, node){
+                        var occupation = updates.occupation || profile.get("occupation"), name = node.getAttribute("name"), value;
+                        switch(name){
+                                case "situation":
+                                        occupation.situation = node.selectedIndex;
+                                        break;
+                                case "job":
+                                        occupation.job = node.value;
+                                        break;
+                                case "organization":
+                                        occupation.organization = node.value;
+                                        break;        
+                        }
+                        updates.occupation = occupation;       
+                };
+                
+                editProfile.updateLeisureName = function(event, node){
+                        var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = updates.leisure_activities || profile.get("leisure_activities");
+                        leisure[idx].name = node.value;
+                        updates.leisure_activities = leisure;
+                };
+                
+                editProfile.updateLeisureDesc = function(event, node){
+                        var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = updates.leisure_activities || profile.get("leisure_activities");
+                        leisure[idx].comment = node.value;
+                        updates.leisure_activities = leisure;               
+                };
+                
+                editProfile.updateInterestName = function(event, node){
+                        var name = node.getAttribute("name"), idx = name.charAt(name.length-1), interests = updates.interests || profile.get("interests");
+                        console.log(name, idx, interests);
+                        interests[idx].name = node.value;
+                        updates.interests = interests;               
+                };
+                
+                editProfile.updateInterestDesc = function(event, node){
+                        var name = node.getAttribute("name"), idx = name.charAt(name.length-1), interests = updates.interests || profile.get("interests");
+                        interests[idx].comment = node.value;
+                        updates.interests = interests;               
+                };
+               
+               editProfile.press = function(event, node){
+                        node.classList.add("pressed");        
+               };
+                
+                editProfile.cancel = function cancel(event, node){
+                        node.classList.remove("pressed");
+                        document.querySelector(".edituserdetails").classList.add("invisible");
+                        document.querySelector(".userdetails").classList.remove("invisible");
+                };
+                
+                editProfile.update = function(event, node){
+                        var prop, changes=0;
+                        node.classList.remove("pressed");
+                        
+                        // loop through updates and update user document
+                        for (prop in updates){
+                                user.set(prop, updates[prop]);
+                                changes++;
+                        }
+                        if (changes) {
+                                user.upload().then(function(){
+                                        Config.get("observer").notify("profile-updated");        
+                                });
+                        }
+                        document.querySelector(".edituserdetails").classList.add("invisible");
+                        document.querySelector(".userdetails").classList.remove("invisible");       
                 };
                 
                 return editProfile;

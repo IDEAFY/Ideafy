@@ -1300,12 +1300,12 @@ textarea.solution {
     
 }
 
-.sendmail-footer p.send{
+.sendmail-footer p.send, .edituserdetails p.update{
     padding-bottom: 20px;
     margin-top: 20px;
 }
 
-.send .editerror{
+.send .editerror, .edituserdetails .update .editerror{
     float: left;
     font-weight: bold;
     color: black;
@@ -1394,7 +1394,7 @@ textarea.solution {
     font-family: Helvetica;
 }
 
-.writeTwocent .twocentPublish, .writeTwocent .twocentCancel, .sendmail, .cancelmail{
+.writeTwocent .twocentPublish, .writeTwocent .twocentCancel, .sendmail, .cancelmail, .edituserdetails label.updateprofile, .edituserdetails label.cancelprofile{
     height: 26px;
     width: 92px;
     border-radius: 5px;
@@ -1407,11 +1407,11 @@ textarea.solution {
     float: right;
 }
 
-.writeTwocent .twocentPublish, .sendmail{
+.writeTwocent .twocentPublish, .sendmail, .updateprofile{
     background: #8cab68;
 }
 
-.writeTwocent .twocentCancel, .cancelmail{
+.writeTwocent .twocentCancel, .cancelmail, .cancelprofile{
     margin-left: 15px;
     background: #e69b73;
 }
@@ -4539,15 +4539,75 @@ li.my2q{
     margin-bottom: 5px;
 }
 
-.edituserdetails .addtlinfo input{
+.edituserdetails .addtlinfo label{
+    display: block;
+    float: left;
+    margin-bottom: 3px;
+}
+
+.edituserdetails .addtlinfo input, .edituserdetails .addtlinfo label{
     width: 200px;
 }
 
-.edituserdetails .addtlinfo input.description{
+.edituserdetails .addtlinfo input.description, .edituserdetails .addtlinfo label.description{
     width: 326px;
     margin-left: 10px;
 }
 
 .edituserdetails .addtlinfo legend{
     margin-bottom: 5px;
+}
+
+.edituserdetails .importbutton{
+    margin: 10px 0;
+}
+
+.edituserdetails .importbutton div{
+    line-height: 15px;
+    margin-left: 0px;
+    width: 70px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.edituserdetails .defaultAvatar{
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+.edituserdetails .avatarcache{
+    width: 80px;
+    height: 80px;
+    background: url('../img/brainstorm/reload.png') no-repeat center center;
+    background-size: contain;
+    margin-top: -80px;
+    border-radius: 40px;
+    opacity: 0.6;
+}
+
+#changeavatar p{
+    font-size: 12px;
+    color: #292929;
+    text-align: center;
+    width: 60px;
+    padding: 10px;
+}
+
+#changeavatar .checkbox{
+    display: block;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #cccccc;
+    margin: 10px;
+    line-height: 18px;
+    color: #5F8F28;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#changeavatar .defaultlist div{
+    float: left;
 }

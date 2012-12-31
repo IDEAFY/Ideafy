@@ -165,9 +165,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         // toggle visibility (public/private) buttons
                         _widget.toggleVisibility = function(event, node){
                                 if (_next === "step"){
-                                        (_idea.get("visibility") === "public") ? _idea.set("visibility", "private") : _idea.set("visibility", "public");
-                                        
-                                        console.log("toggle visibility : ", _idea.toJSON());        
+                                        (_idea.get("visibility") === "public") ? _idea.set("visibility", "private") : _idea.set("visibility", "public");        
                                 }
                         };
                         
@@ -222,7 +220,6 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                         _popupUI.reset(details, pos, caret, document.getElementById("quickidea-popup"));
                                 }
                                 else {
-                                        console.log(id);
                                         if (id == 0) pos.y = 200;
                                         if (id == 1) pos.y = 260;
                                         if (id == 2) pos.y = 350;
@@ -423,14 +420,12 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                         
                         // get scenario card from session data
                        $data.watchValue("scenario", function(store){
-                                _scenario.reset($data.get("scenario"));
-                                console.log("scenario from data store", _scenario.toJSON());      
+                                _scenario.reset($data.get("scenario"));   
                        });
                         
                         // get technology cards from session data
                        $data.watchValue("techno", function(store){
-                               console.log("techno", $data.toJSON());
-                                _techs.reset(JSON.parse($data.get("techno").toJSON()));       
+                               _techs.reset(JSON.parse($data.get("techno").toJSON()));       
                        });
                         
                         // upload whiteboard content to database as soon as it is updated

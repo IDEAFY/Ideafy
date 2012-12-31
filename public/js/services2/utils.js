@@ -281,12 +281,13 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                            userid = user.get("_id"); 
                        
                        transport.request("GetAchievements", {userid: userid, lang: user.get("lang")}, function(res){
-                               if (res === "ok"){
+                               onEnd(res);
+                              /* if (res.length){
                                         user.unsync();
                                         user.sync(Config.get("db"), userid).then(function(){
                                                 onEnd(res);         
                                         });        
-                               }
+                               }*/
                        });
                 },
                 /*
@@ -307,7 +308,7 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                         else { res.missing.push(labels.get("enteraddress")); }
                         if (user.get("intro") && user.get("intro") !== "Ideafyer") { res.percentage +=10; }
                         else { res.missing.push(labels.get("enterintro")); }
-                        if (user.get("occupation").description) { res.percentage +=10; }
+                        if (user.get("occupation").situation >= 0 && user.get("occupation").job && user.get("occupation").organization) { res.percentage +=10; }
                         else { res.missing.push(labels.get("enteroccupation")); }
                         if (user.get("leisure_activities")[0].name && user.get("leisure_activities")[1].name) {  res.percentage += 10; }
                         else { res.missing.push(labels.get("enterleisure")); }

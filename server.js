@@ -53,9 +53,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                             now,
                             dataurl,
                             sid;
-                        
-                        console.log("UPLOAD REQUEST", res);
-                        
+                        console.log(req.files)
                         if (type === 'postit'){
                                 sid = req.body.sid;
                                 now = new Date();
@@ -85,6 +83,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 
                                         }       
                                 });
+                        }
+                        if (type === 'avatar'){
+                                filename = _path+'avatars/'+req.body.filename;
+                                console.log(req.files);
+                                
                         }
                         
                         
@@ -614,9 +617,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                     achievementsCDB = new CouchDBStore(), // all achievements available
                     user = {},
                     achievements = {},
+                    result = [],
+                    update = false,
                     now = new Date(),
-                    date = [now.getFullYear(), now.getMonth(), now.getDate()],
-                    update = false;
+                    date = [now.getFullYear(), now.getMonth(), now.getDate()];
                 getDocAsAdmin(json.userid, userCDB).then(function(){
                         // set user
                         user = JSON.parse(userCDB.toJSON());
@@ -630,77 +634,80 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         if (user.profile_complete) {
                                                 if (!userRewards.get("profilecomplete")){
                                                         user.ip += achievements.profilecomplete.reward;
-                                                        user.achievements.push(achievements.profilecomplete);
                                                         user.news.push({type: "RWD", date: date, content: achievements.profilecomplete});
                                                         userRewards.set("profilecomplete", 1);
                                                         update = true;
                                                 }
+                                                result.push(achievements.profilecomplete);
                                         }
                                         //2. tutorial complete
                                         if (user.tutorial_complete){
                                                 if (!userRewards.get("tutorialcomplete")){
                                                         user.ip += achievements.tutorialcomplete.reward;
-                                                        user.achievements.push(achievements.tutorialcomplete);
                                                         user.news.push({type: "RWD", date: date, content: achievements.tutorialcomplete});
                                                         userRewards.set("tutorialcomplete", 1);
                                                         update = true;
                                                 }
+                                                result.push(achievements.tutorialcomplete);
                                         }
                                         //3. use as character
                                         if (user.settings.useascharacter){
                                                 if (!userRewards.get("playthegame")){
                                                         user.ip += achievements.playthegame.reward;
-                                                        user.achievements.push(achievements.playthegame);
                                                         user.news.push({type: "RWD", date: date, content: achievements.playthegame});
                                                         userRewards.set("playthegame", 1);
                                                         update = true;
                                                 }
+                                                result.push(achievements.playthegame);
                                         }
                                         //Check user ideas (public ones)
                                         getViewAsAdmin("achievements", "publicideas", {key: '"'+json.userid+'"'}, userIdeasCDB).then(function(){
                                                 var idea_count = userIdeasCDB.getNbItems();
                                                 // update user doc if needed
-                                                user.ideas_count = idea_count;
+                                                if (user.ideas_count !== idea_count){
+                                                        user.ideas_count = idea_count;
+                                                        update = true;        
+                                                }
                                                 
                                                 //4. If user has published at least 5 ideas
                                                 if (idea_count >= 5){
                                                         if (!userRewards.get("ideas5")){
                                                                 user.ip += achievements.ideas5.reward;
-                                                                user.achievements.push(achievements.ideas5);
                                                                 user.news.push({type: "RWD", date: date, content: achievements.ideas5});
                                                                 userRewards.set("ideas5", 1);
                                                                 update = true;
                                                         }
+                                                        result.push(achievements.ideas5);
                                                 }
                                                 //5. If user has published at least 25 ideas
                                                 if (idea_count >= 25){
                                                         if (!userRewards.get("ideas25")){
                                                                 user.ip += achievements.ideas25.reward;
-                                                                user.achievements.push(achievements.ideas25);
                                                                 user.news.push({type: "RWD", date: date, content: achievements.ideas25});
                                                                 userRewards.set("ideas25", 1);
                                                                 update = true;
                                                         }
+                                                        result.push(achievements.ideas25);
                                                 }
                                                 //6. If user has published at least 100 ideas
                                                 if (idea_count >= 100){
                                                         if (!userRewards.get("ideas100")){
                                                                 user.ip += achievements.ideas100.reward;
-                                                                user.achievements.push(achievements.ideas100);
                                                                 user.news.push({type: "RWD", date: date, content: achievements.ideas100});
                                                                 userRewards.set("ideas100", 1);
                                                                 update = true;
                                                         }
+                                                        result.push(achievements.ideas100);
                                                 }
                                                 //7. If user has published at least 5 ideas
                                                 if (idea_count >= 250){
                                                         if (!userRewards.get("ideas250")){
                                                                 user.ip += achievements.ideas250.reward;
-                                                                user.achievements.push(achievements.ideas250);
                                                                 user.news.push({type: "RWD", date: date, content: achievements.ideas250});
                                                                 userRewards.set("ideas250", 1);
                                                                 update = true;
                                                         }
+                                                        result.push(achievements.ideas250);
                                                 }
                                                 //8. Check for hall of fame ideas
                                                 userIdeasCDB.loop(function(v,i){
@@ -711,11 +718,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 if (rating >= 3.5){
                                                                         if (!userRewards.get("bronzeacorn")){
                                                                                 user.ip += achievements.bronzeacorn.reward;
-                                                                                user.achievements.push(achievements.bronzeacorn);
                                                                                 user.news.push({type: "RWD", date: date, content: achievements.bronzeacorn});
                                                                                 userRewards.set("bronzeacorn", 1);
                                                                                 update = true;
-                                                                        }        
+                                                                        }
+                                                                        result.push(achievements.bronzeacorn);        
                                                                 }     
                                                         }
                                                         //9. 500 votes and minimum grade of 4
@@ -724,11 +731,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 if (rating >= 4){
                                                                         if (!userRewards.get("silveracorn")){
                                                                                 user.ip += achievements.silveracorn.reward;
-                                                                                user.achievements.push(achievements.silveracorn);
                                                                                 user.news.push({type: "RWD", date: date, content: achievements.silveracorn});
                                                                                 userRewards.set("silveracorn", 1);
                                                                                 update = true;
-                                                                        }        
+                                                                        }
+                                                                        result.push(achievements.silveracorn);        
                                                                 }     
                                                         }
                                                         //10. 1000 votes and minimum grade of 4.5
@@ -737,11 +744,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 if (rating >= 4.5){
                                                                         if (!userRewards.get("goldenacorn")){
                                                                                 user.ip += achievements.goldenacorn.reward;
-                                                                                user.achievements.push(achievements.goldenacorn);
                                                                                 user.news.push({type: "RWD", date: date, content: achievements.goldenacorn});
                                                                                 userRewards.set("goldenacorn", 1);
                                                                                 update = true;
-                                                                        }        
+                                                                        }
+                                                                        result.push(achievements.goldenacorn);        
                                                                 }     
                                                         }
                                                 });
@@ -759,31 +766,31 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         if (ss_count >= 5){
                                                                 if (!userRewards.get("easybrainstormer")){
                                                                         user.ip += achievements.easybrainstormer.reward;
-                                                                        user.achievements.push(achievements.easybrainstormer);
                                                                         user.news.push({type: "RWD", date: date, content: achievements.easybrainstormer});
                                                                         userRewards.set("easybrainstormer", 1);
                                                                         update = true;
                                                                 }
+                                                                result.push(achievements.easybrainstormer);
                                                         }
                                                         //12. If user has completed at least 20 single user sessions
                                                         if (ss_count >= 20){
                                                                 if (!userRewards.get("mindstormer")){
                                                                         user.ip += achievements.mindstormer.reward;
-                                                                        user.achievements.push(achievements.mindstormer);
                                                                         user.news.push({type: "RWD", date: date, content: achievements.mindstormer});
                                                                         userRewards.set("mindstormer", 1);
                                                                         update = true;
                                                                 }
+                                                                result.push(achievements.mindstormer);
                                                         }
                                                         //13. If user has completed at least 50 single user sessions
                                                         if (ss_count >= 50){
                                                                 if (!userRewards.get("mastermindstormer")){
                                                                         user.ip += achievements.mastermindstormer.reward;
-                                                                        user.achievements.push(achievements.mastermindstormer);
                                                                         user.news.push({type: "RWD", date: date, content: achievements.mastermindstormer});
                                                                         userRewards.set("mastermindstormer", 1);
                                                                         update = true;
                                                                 }
+                                                                result.push(achievements.mastermindstormer);
                                                         }
                                                                 
                                                         // do the same with multi-user sessions
@@ -799,31 +806,31 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 if (ms_count >= 5){
                                                                         if (!userRewards.get("guide")){
                                                                                 user.ip += achievements.guide.reward;
-                                                                                user.achievements.push(achievements.guide);
                                                                                 user.news.push({type: "RWD", date: date, content: achievements.guide});
                                                                                 userRewards.set("guide", 1);
                                                                                 update = true;
                                                                         }
+                                                                        result.push(achievements.guide);
                                                                 }
                                                                 //15. If user has initiated and completed at least 10 multi user sessions
                                                                 if (ms_count >= 10){
                                                                         if (!userRewards.get("leader")){
                                                                                 user.ip += achievements.leader.reward;
-                                                                                user.achievements.push(achievements.leader);
                                                                                 user.news.push({type: "RWD", date: date, content: achievements.leader});
                                                                                 userRewards.set("leader", 1);
                                                                                 update = true;
                                                                         }
+                                                                        result.push(achievements.leader);
                                                                 }
                                                                 //16. If user has initiated and completed at least 25 multi user sessions
                                                                 if (ms_count >= 25){
                                                                         if (!userRewards.get("mindweaver")){
                                                                                 user.ip += achievements.mindweaver.reward;
-                                                                                user.achievements.push(achievements.mindweaver);
                                                                                 user.news.push({type: "RWD", date: date, content: achievements.mindweaver});
                                                                                 userRewards.set("mindweaver", 1);
                                                                                 update = true;
                                                                         }
+                                                                        result.push(achievements.mindweaver);
                                                                 }
                                                                         
                                                                 // check twoquestions achievements
@@ -840,31 +847,31 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                         if (tq_count >= 5){
                                                                                 if (!userRewards.get("curious")){
                                                                                         user.ip += achievements.curious.reward;
-                                                                                        user.achievements.push(achievements.curious);
                                                                                         user.news.push({type: "RWD", date: date, content: achievements.curious});
                                                                                         userRewards.set("curious", 1);
                                                                                         update = true;
                                                                                 }
+                                                                                result.push(achievements.curious);
                                                                         }
                                                                         //18. If user has asked at least 15 twoquestions
                                                                         if (tq_count >= 15){
                                                                                 if (!userRewards.get("puzzled")){
                                                                                         user.ip += achievements.puzzled.reward;
-                                                                                        user.achievements.push(achievements.puzzled);
                                                                                         user.news.push({type: "RWD", date: date, content: achievements.puzzled});
                                                                                         userRewards.set("puzzled", 1);
                                                                                         update = true;
                                                                                 }
+                                                                                result.push(achievements.puzzled);
                                                                         }
                                                                         //19. If user has asked at least 50 twoquestions
                                                                         if (tq_count >= 50){
                                                                                 if (!userRewards.get("whyarewehere")){
                                                                                         user.ip += achievements.whyarewehere.reward;
-                                                                                        user.achievements.push(achievements.whyarewehere);
                                                                                         user.news.push({type: "RWD", date: date, content: achievements.whyarewehere});
                                                                                         userRewards.set("whyarewehere", 1);
                                                                                         update = true;
                                                                                 }
+                                                                                result.push(achievements.whyarewehere);
                                                                         }
                                                                                 
                                                                         // finally check user document for twocent counts
@@ -872,50 +879,50 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                         if (user.twocents_count >= 10){
                                                                                 if (!userRewards.get("opinionator")){
                                                                                         user.ip += achievements.opinionator.reward;
-                                                                                        user.achievements.push(achievements.opinionator);
                                                                                         user.news.push({type: "RWD", date: date, content: achievements.opinionator});
                                                                                         userRewards.set("opinionator", 1);
                                                                                         update = true;
                                                                                 }
+                                                                                result.push(achievements.opinionator);
                                                                         }
                                                                                 
                                                                         //21. If user has posted at least 100 twocents
                                                                         if (user.twocents_count >= 100){
                                                                                 if (!userRewards.get("feedbackartist")){
                                                                                         user.ip += achievements.feedbackartist.reward;
-                                                                                        user.achievements.push(achievements.feedbackartist);
                                                                                         user.news.push({type: "RWD", date: date, content: achievements.feedbackartist});
                                                                                         userRewards.set("feedbackartist", 1);
                                                                                         update = true;
                                                                                 }
+                                                                                result.push(achievements.feedbackartist);
                                                                         }
                                                                                 
                                                                         //22. If user has posted at least 1000 twocents
                                                                         if (user.twocents_count >= 1000){
                                                                                 if (!userRewards.get("chatterbox")){
                                                                                         user.ip += achievements.chatterbox.reward;
-                                                                                        user.achievements.push(achievements.chatterbox);
                                                                                         user.news.push({type: "RWD", date: date, content: achievements.chatterbox});
                                                                                         userRewards.set("chatterbox", 1);
                                                                                         update = true;
                                                                                 }
+                                                                                result.push(achievements.chatterbox);
                                                                         }
                                                                                 
                                                                         //23. If user has posted at least 5000 twocents
                                                                         if (user.twocents_count >= 5000){
                                                                                 if (!userRewards.get("allday")){
                                                                                         user.ip += achievements.allday.reward;
-                                                                                        user.achievements.push(achievements.allday);
                                                                                         user.news.push({type: "RWD", date: date, content: achievements.allday});
                                                                                         userRewards.set("allday", 1);
                                                                                         update = true;
                                                                                 }
+                                                                                result.push(achievements.allday);
                                                                         }
-                                                                        
-                                                                        // update user rewards documents
-                                                                        updateDocAsAdmin(userRewards.get("_id"), userRewards).then(function(){
-                                                                                // update user doc (score and news) if necessary
-                                                                                if (update){
+                                                                        console.log(result, update);
+                                                                        if (update){
+                                                                                // update user rewards documents
+                                                                                updateDocAsAdmin(userRewards.get("_id"), userRewards).then(function(){
+                                                                                        // update user doc (score and news) if necessary
                                                                                         getDocAsAdmin(json.userid, userCDB).then(function(){
                                                                                                 userCDB.set("ip", user.ip);
                                                                                                 userCDB.set("ideas_count", user.ideas_count);
@@ -923,17 +930,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                                                 userCDB.set("mu_sessions_count", user.mu_sessions_count);
                                                                                                 userCDB.set("twoquestions_count", user.twoquestions_count);
                                                                                                 userCDB.set("news", user.news);
-                                                                                                userCDB.set("achievements", user.achievements);
+                                                                                                userCDB.set("achievements", result);
                                                                                                 updateDocAsAdmin(json.userid, userCDB).then(function(){
-                                                                                                        console.log("after update doc as admin", userCDB.toJSON());
-                                                                                                        onEnd("ok");
+                                                                                                        onEnd(result);
                                                                                                 });        
                                                                                         });
-                                                                                }
-                                                                                else{
-                                                                                        onEnd("ok");
-                                                                                }
-                                                                        });       
+                                                                                });
+                                                                         } 
+                                                                         else onEnd(result);      
                                                                 });        
                                                         });               
                                                 });

@@ -4617,4 +4617,6 @@ li.my2q{
     height: 15px;
     background: #657B99;
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+    margin-right: 20px;
+    border-radius: 3px;
 }

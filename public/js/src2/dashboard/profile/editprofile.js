@@ -33,7 +33,10 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         "progress": new Model(progress,{
                                  "showProgress" : function(status){
                                          var width = 0;
-                                        if (status) width = Math.floor(status/100*this.parentNode.offsetWidth);
+                                        if (status) {
+                                                width = Math.floor(status/100*80);
+                                                console.log(width);
+                                        }
                                         this.setAttribute("style", "width:"+ width+ "px;") 
                                 }        
                         }),

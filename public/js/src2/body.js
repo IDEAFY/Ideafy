@@ -256,8 +256,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                 // get user avatar
                                 _transport.request("GetAvatar", {id: _user.get("_id")}, function(result){
                                         if (!result.error) {
-                                                _local.set("userAvatar", result);
-                                                _local.sync("ideafy-data");
                                                 Config.set("avatar", result);
                                                 _dock.init();
                                                 //if everything is downloaded
@@ -267,8 +265,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                         //handle avatar change
                                                         _transport.request("GetAvatar", {id: email}, function(result){
                                                                 if (!result.error) {
-                                                                        _local.set("userAvatar", result);
-                                                                        _local.sync("ideafy-data");
                                                                         Config.set("avatar", result);
                                                                 }
                                                         });

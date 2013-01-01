@@ -49,11 +49,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 .use('/upload', function(req, res){
                         var type = req.body.type,
                             _path = __dirname+'/attachments/',
-                            filename,
+                            filename, // final name of the file on server
+                            tempname, // temp name after file upload
                             now,
                             dataurl,
                             sid;
-                        console.log(req.files)
                         if (type === 'postit'){
                                 sid = req.body.sid;
                                 now = new Date();
@@ -86,32 +86,24 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         }
                         if (type === 'avatar'){
                                 filename = _path+'avatars/'+req.body.filename;
-                                console.log(req.files);
-                                
+                                tempname = req.files.img.path;
+                                console.log(filename, tempname);
+                                fs.exists(filename, function(exists){
+                                        if (exists) fs.unlinkSync(filename);
+                                        
+                                        fs.rename(tempname, filename, function(err){
+                                                console.log(err);
+                                                if (err) {
+                                                        throw(err);
+                                                }
+                                                else{
+                                                        fs.unlink(tempname);
+                                                        res.write("ok");
+                                                        res.end();
+                                                }
+                                        });
+                                });
                         }
-                        
-                        
-                        
-                        /* var avatarFile = req.files,
-                            uid = Object.keys(avatarFile)[0],
-                            avatarFileName=uid+"@@"+avatarFile[uid].name,
-                            newFile = __dirname+'/public/attachments/'+avatarFileName;
-                    
-                        fs.rename(avatarFile[uid].path, newFile, function(err){
-                                var updateAvatar = function(){
-                                        var cdb = new CouchDBStore();
-                                        cdb.setTransport(new Transport(olives.handlers));
-                                        cdb.sync("taiaut", uid).then(function(){
-                                                cdb.set("picture_file", avatarFileName);
-                                                cdb.upload(); 
-                                        });  
-                                };
-                        
-                                if(err) { throw err;}
-                                // update avatar in couchdb
-                                updateAvatar();
-                                fs.unlink(avatarFile[uid].path);
-                        });  */
                 })      
                 .use(function(req, res, next) {
                         var parse = url.parse(req.url, false),

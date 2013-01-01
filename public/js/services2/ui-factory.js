@@ -364,7 +364,12 @@ define("Ideafy/Avatar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-
                         
                         // init
                         if ($array.length>1) _store.set("img", "img/avatars/deedee6.png")
-                        else if (_id === Config.get("user").get("_id")) _store.set("img", Config.get("avatar"))
+                        else if (_id === Config.get("user").get("_id")) {
+                                _store.set("img", Config.get("avatar"));
+                                Config.watchValue("avatar", function(){
+                                        _store.set("img", Config.get("avatar"));        
+                                });
+                        }
                         else if (_id === "ideafy@taiaut.com" || _id === "IDEAFY") _store.set("img", "img/avatars/doctordeedee.png")
                         else if (_avatars.get(_id)) _store.set("img", _avatars.get(_id))
                         else {

@@ -2867,7 +2867,7 @@ li.color-item{
 
 .defaultscenario .cardpicture{
     background-image: url('../img/brainstorm/scenario-01.png');
-    background-size: 100px;;
+    background-size: 100px;
     background-position: center top;    
 }
 
@@ -4610,4 +4610,12 @@ li.my2q{
 
 #changeavatar .defaultlist div{
     float: left;
+}
+
+#changeavatar .uploadprogress{
+    float: none;
+    text-align: center;
+    font-family: Helvetica;
+    font-size: small;
+    color: #292929;
 }

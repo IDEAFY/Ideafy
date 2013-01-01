@@ -256,6 +256,12 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 		      });
 		      return promise;         
                  },
+                 
+                 getAvatarByFileName : function(filename, onEnd){
+                      Config.get("transport").request("GetAvatar", {file: filename}, function(result){
+                              onEnd(result);    
+                      });         
+                 },
 	
 	        /*
 	         * A function to obtain grade information from the server based on user's score

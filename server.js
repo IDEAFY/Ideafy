@@ -91,7 +91,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 fs.exists(filename, function(exists){
                                         if (exists) {
                                                 fs.renameSync(filename, filename+"_old");
-                                                fs.unlinkSync(filename);
                                         }
                                         
                                         fs.rename(tempname, filename, function(err){

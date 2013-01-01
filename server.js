@@ -89,6 +89,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 tempname = req.files.img.path;
                                 fs.exists(filename, function(exists){
                                         if (exists) {
+                                                if (fs.existsSync(filename+"_old")) {fs.unlinkSync(filename+"_old");}
                                                 fs.renameSync(filename, filename+"_old");
                                         }
                                         

@@ -132,7 +132,9 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         fd.append("type", type);
                         fd.append("filename", filename);
                         fd.append("img", file);
+                        console.log(file, filename);
                         Utils.uploadFile(url, fd, progress, function(result){
+                                console.log("upload result", result);
                                 if (result.response === "ok"){
                                         Utils.getAvatarByFileName(filename, function(avatar){
                                                 profile.set("avatar", avatar);

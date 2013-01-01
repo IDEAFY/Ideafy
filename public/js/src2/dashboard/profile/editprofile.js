@@ -35,9 +35,11 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                                          var width = 0;
                                         if (status) {
                                                 width = Math.floor(status/100*80);
-                                                console.log(width);
                                         }
-                                        this.setAttribute("style", "width:"+ width+ "px;") 
+                                        this.setAttribute("style", "width:"+ width+ "px;");
+                                        if (status === 100){
+                                                this.innerHTML = labels.get("uploadcomplete");
+                                        }
                                 }        
                         }),
                         "profile" : new Model(profile, {

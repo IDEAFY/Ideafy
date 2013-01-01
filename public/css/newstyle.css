@@ -4619,4 +4619,8 @@ li.my2q{
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
     margin-right: 20px;
     border-radius: 3px;
+    font-size: smaller;
+    line-height: 15px;
+    color: white;
+    
 }

@@ -306,6 +306,7 @@
 	"comment": "Comment",
 	"field": "Field",
 	"updatelbl": "Update",
-	"selectavatar": "Or select an avatar"
+	"selectavatar": "Or select an avatar",
+	"upload complete": "Upload complete"
 	
 }

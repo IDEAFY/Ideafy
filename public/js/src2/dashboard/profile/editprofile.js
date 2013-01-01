@@ -132,9 +132,7 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         fd.append("type", type);
                         fd.append("filename", filename);
                         fd.append("img", file);
-                        console.log(file, filename);
                         Utils.uploadFile(url, fd, progress, function(result){
-                                console.log("upload result", result);
                                 if (result.response === "ok"){
                                         Utils.getAvatarByFileName(filename, function(avatar){
                                                 profile.set("avatar", avatar);
@@ -262,13 +260,13 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         document.querySelector(".edituserdetails").classList.add("invisible");
                         document.querySelector(".userdetails").classList.remove("invisible");
                         if (updates.picture_file){
-                                Config.get("transport").request("Revert-Avatar", {filename: user.get("_id")+"_@v@t@r"}, function(result){
-                                        if (result !== "ok") {console.log("result");}
+                                Config.get("transport").request("Revert-Avatar", {filename: user.get("picture_file")}, function(result){
+                                        if (result !== "ok") {console.log(result);}
                                 });        
                         }
                 };
                 
-                editProfile.update = function(event, node){
+                editProfile.update = function update(event, node){
                         var prop, changes=0;
                         node.classList.remove("pressed");
                         

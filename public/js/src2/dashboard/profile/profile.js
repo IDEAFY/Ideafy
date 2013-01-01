@@ -256,7 +256,6 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 });
                    
                                 Utils.getAchievements(user.get("_id"), function(result){
-                                        console.log(result);
                                         if (result.length) profileUI.updateAchievements(result);        
                                 });        
                         });

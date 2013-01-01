@@ -54,7 +54,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                             now,
                             dataurl,
                             sid;
-                        console.log(req);
                         if (type === 'postit'){
                                 sid = req.body.sid;
                                 now = new Date();
@@ -88,7 +87,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         if (type === 'avatar'){
                                 filename = _path+'avatars/'+req.body.filename;
                                 tempname = req.files.img.path;
-                                console.log(req, filename, tempname);
                                 fs.exists(filename, function(exists){
                                         if (exists) {
                                                 fs.renameSync(filename, filename+"_old");
@@ -99,7 +97,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         throw(err);
                                                 }
                                                 else{
-                                                        fs.unlink(tempname);
                                                         res.write("ok");
                                                         res.end();
                                                 }

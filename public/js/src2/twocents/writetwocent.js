@@ -14,9 +14,6 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                 
                 this.plugins.addAll({
                         "twocent": new ModelPlugin(twocent,{
-                                setAvatar : function(author){
-                                        this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center;background-size:cover;");
-                                },
                                 date : function(date){
                                         if (date) {this.innerHTML = Utils.formatDate(date);}        
                                 },
@@ -24,12 +21,17 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                                         (date) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                 }
                         }),
+                        "config": new ModelPlugin(Config, {
+                                setAvatar : function(avatar){
+                                        this.setAttribute("style", "background: url('"+ avatar + "') no-repeat center center;background-size:cover;");
+                                }        
+                        }),
                         "labels": new ModelPlugin(Config.get("labels")),
                         "twocentevent": new EventPlugin(this)
                 });        
                 
                 
-                this.template = '<div class = "writeTwocent"><div class="userAvatar twocentAvatar" data-twocent="bind: setAvatar, author"></div><textarea class="twocentText" data-labels="bind: placeholder, addtwocentplaceholder" data-twocent="bind: value, message"></textarea><div class="writeFooter"><ul class="twocentContext"><li class="creadate"><span class="creadatelbl" data-labels="bind:innerHTML, twocentcreationdate"></span><span class="date" data-twocent="bind: date, date"></span></li><li class="moddate invisible" data-twocent="bind: setVisible, datemod"><span class="moddatelbl" data-labels="bind: innerHTML, twocentmodificationdate"></span><span class="date" data-twocent="bind: date, datemod"></span></li></ul><div class="twocentCancel" data-labels="bind: innerHTML, cancellbl" data-twocentevent="listen: touchstart, press; listen: touchend, cancel">Cancel</div><div class="twocentPublish" data-labels="bind: innerHTML, publishlbl" data-twocentevent="listen: touchstart, press; listen: touchend, publish">Publish</div></div></div>';
+                this.template = '<div class = "writeTwocent"><div class="userAvatar twocentAvatar" data-config="bind: setAvatar, avatar"></div><textarea class="twocentText" data-labels="bind: placeholder, addtwocentplaceholder" data-twocent="bind: value, message"></textarea><div class="writeFooter"><ul class="twocentContext"><li class="creadate"><span class="creadatelbl" data-labels="bind:innerHTML, twocentcreationdate"></span><span class="date" data-twocent="bind: date, date"></span></li><li class="moddate invisible" data-twocent="bind: setVisible, datemod"><span class="moddatelbl" data-labels="bind: innerHTML, twocentmodificationdate"></span><span class="date" data-twocent="bind: date, datemod"></span></li></ul><div class="twocentCancel" data-labels="bind: innerHTML, cancellbl" data-twocentevent="listen: touchstart, press; listen: touchend, cancel">Cancel</div><div class="twocentPublish" data-labels="bind: innerHTML, publishlbl" data-twocentevent="listen: touchstart, press; listen: touchend, publish">Publish</div></div></div>';
                         
                 
                 this.reset = function reset($id, $twocent, $pos, $cancel){

@@ -123,18 +123,20 @@ define("WriteTwocentReply", ["Olives/OObject", "Store", "Olives/Model-plugin", "
                             
                         this.plugins.addAll({
                                 "model": new ModelPlugin(reply, {
-                                        setAvatar : function(author){
-                                                this.setAttribute("style", "background-image: url('"+ Config.get("avatar") + "');");
-                                        },
                                         date : function date(date){
                                                 this.innerHTML = Utils.formatDate(date);
                                         }
+                                }),
+                                "config": new ModelPlugin(Config, {
+                                        setAvatar : function(avatar){
+                                                this.setAttribute("style", "background: url('"+ avatar + "') no-repeat center center;background-size:cover;");
+                                        }        
                                 }),
                                 "writereplyevent" : new EventPlugin(this),
                                 "labels" : new ModelPlugin(Config.get("labels"))
                         });
                         
-                        this.template = '<div class="writeTwocent writeTwocentReply"><div class="replyAvatar" data-model="bind: setAvatar, author"></div><textarea class="twocentText replyMessage" data-labels="bind: placeholder, addtwocentreplyplaceholder" data-model="bind: value, message"></textarea><div class="writeFooter"><ul class="twocentContext"><li class="creadate"><span class="creadatelbl" data-labels="bind:innerHTML, twocentcreationdate"></span><span class="date" data-model="bind: date, date"></span></li></ul><div class="twocentCancel" data-labels="bind: innerHTML, cancellbl" data-writereplyevent="listen: touchstart, press; listen: touchend, cancel">Cancel</div><div class="twocentPublish" data-labels="bind: innerHTML, publishlbl" data-writereplyevent="listen: touchstart, press; listen: touchend, publish;">Publish</div></div></div>';
+                        this.template = '<div class="writeTwocent writeTwocentReply"><div class="replyAvatar" data-config="bind: setAvatar, avatar"></div><textarea class="twocentText replyMessage" data-labels="bind: placeholder, addtwocentreplyplaceholder" data-model="bind: value, message"></textarea><div class="writeFooter"><ul class="twocentContext"><li class="creadate"><span class="creadatelbl" data-labels="bind:innerHTML, twocentcreationdate"></span><span class="date" data-model="bind: date, date"></span></li></ul><div class="twocentCancel" data-labels="bind: innerHTML, cancellbl" data-writereplyevent="listen: touchstart, press; listen: touchend, cancel">Cancel</div><div class="twocentPublish" data-labels="bind: innerHTML, publishlbl" data-writereplyevent="listen: touchstart, press; listen: touchend, publish;">Publish</div></div></div>';
                         
                         this.reset = function($id, $twocent, $reply, $pos, $replyTo, $cancel){
                                 var now = new Date(),

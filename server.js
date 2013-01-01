@@ -89,7 +89,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 tempname = req.files.img.path;
                                 console.log(filename, tempname);
                                 fs.exists(filename, function(exists){
-                                        if (exists) fs.rename(filename, filename+"_old");
+                                        if (exists) {
+                                                fs.rename(filename, filename+"_old");
+                                                fs.unlinkSync(filename);
+                                        }
                                         
                                         fs.rename(tempname, filename, function(err){
                                                 if (err) {

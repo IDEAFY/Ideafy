@@ -32,13 +32,14 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         }),
                         "progress": new Model(progress,{
                                  "showProgress" : function(status){
-                                        (status)?this.innerHTML = status+'%':this.innerHTML="";
+                                         var width = 0;
+                                        if (status) width = Math.floor(status/100*this.parentNode.offsetWidth);
+                                        this.setAttribute("style", "width:"+ width+ "px;") 
                                 }        
                         }),
                         "profile" : new Model(profile, {
                                 setAvatar : function(avatar){
                                                 // make sure the picture_file field of user doc && Config.get("avatar") is set after successful upload of file
-                                                console.log("current avatar", avatar);
                                                 this.setAttribute("style", "background-image: url('"+avatar+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");
                                 },
                                 setDay : function(birthdate){
@@ -223,7 +224,6 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                 
                 editProfile.updateInterestName = function(event, node){
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), interests = updates.interests || profile.get("interests");
-                        console.log(name, idx, interests);
                         interests[idx].name = node.value;
                         updates.interests = interests;               
                 };

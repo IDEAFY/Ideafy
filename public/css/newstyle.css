@@ -4614,8 +4614,7 @@ li.my2q{
 
 #changeavatar .uploadprogress{
     float: none;
-    text-align: center;
-    font-family: Helvetica;
-    font-size: small;
-    color: #292929;
+    height: 15px;
+    background: #657B99;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
 }

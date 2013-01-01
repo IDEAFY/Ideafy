@@ -89,10 +89,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 tempname = req.files.img.path;
                                 console.log(filename, tempname);
                                 fs.exists(filename, function(exists){
-                                        if (exists) fs.unlinkSync(filename);
+                                        if (exists) fs.rename(filename, filename+"_old");
                                         
                                         fs.rename(tempname, filename, function(err){
-                                                console.log(err);
                                                 if (err) {
                                                         throw(err);
                                                 }
@@ -553,7 +552,18 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
             }
                         
         });
-
+        
+        // retrieve the previous user avatar if changes are cancelled
+        olives.handlers.set("Revert-Avatar", function(json, onEnd){
+                var path = __dirname+'/attachments/',
+                    filename =  json.filename;
+                
+                fs.rename(filename+"_old", filename, function(err){
+                        if (err) onEnd(err)
+                        else onEnd("ok");
+                });     
+        });
+        
         // retrieve a user's grade information
         olives.handlers.set("GetGrade", function(json, onEnd){
                 var cdb = new CouchDBStore(), leadercdb = new CouchDBStore(), res={grade:null, distinction:null};

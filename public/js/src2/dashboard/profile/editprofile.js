@@ -40,6 +40,7 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                                         if (status === 100){
                                                 this.innerHTML = labels.get("uploadcomplete");
                                         }
+                                        else this.innerHTML = "";
                                 }        
                         }),
                         "profile" : new Model(profile, {
@@ -118,7 +119,16 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                 };
                 
                 editProfile.uploadnDisplay = function(event, node){
-                        var url = '/upload', fd = new FormData(), file = node.files[0], filename = user.get("_id")+"_@v@t@r", type = "avatar";
+                        var url = '/upload', fd = new FormData(), file = node.files[0], ext,
+                            gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
+                            jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
+                            pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/,
+                            filename = user.get("_id")+"_@v@t@r",
+                            type = "avatar";
+                        if (file.name.search(gifPattern)>-1) ext=".gif"
+                        else if (file.name.search(jpgPattern)>-1) ext=".jpg"
+                        else if (file.name.search(gifPattern)>-1) ext=".png"
+                        filename += ext;
                         fd.append("type", type);
                         fd.append("filename", filename);
                         fd.append("img", file);
@@ -135,7 +145,9 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                 };
                 
                 editProfile.changeAvatar = function(event, node){
-                        document.getElementById("changeavatar").classList.remove("invisible");        
+                        document.getElementById("changeavatar").classList.remove("invisible");
+                        // reset progress
+                        progress.set("status", 0);        
                 };
                 
                 editProfile.setDefaultAvatar = function(event, node){
@@ -247,6 +259,11 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         node.classList.remove("pressed");
                         document.querySelector(".edituserdetails").classList.add("invisible");
                         document.querySelector(".userdetails").classList.remove("invisible");
+                        if (updates.picture_file){
+                                Config.get("transport").request("Revert-Avatar", {filename: user.get("_id")+"_@v@t@r"}, function(result){
+                                        if (result !== "ok") {console.log("result");}
+                                });        
+                        }
                 };
                 
                 editProfile.update = function(event, node){

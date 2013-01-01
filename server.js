@@ -54,6 +54,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                             now,
                             dataurl,
                             sid;
+                        console.log(req);
                         if (type === 'postit'){
                                 sid = req.body.sid;
                                 now = new Date();

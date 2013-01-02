@@ -460,8 +460,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                     gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
                     jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
                     pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/,
-                    _file,
-                    readFile = wrap(fs.readFile);
+                    _file;
                 
                 // file info provided by client
                 if (json.file){
@@ -500,7 +499,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         // otherwise return file located in attachments directory (should already be base64)
                         else {
                                 _file = __dirname+"/attachments/avatars/"+_image;
-                                readFile(_file, function (error, data){
+                                fs.readFile(_file, 'utf8', function (error, data){
                                         if (data){
                                                 onEnd(data);  
                                         }

@@ -123,19 +123,19 @@ define("Ideafy/Connect/MessageReply", ["Olives/OObject", "Store", "Olives/Model-
                                 });
                         msgReply.set("type", type);
                         (user.get("signature")) ? msgReply.set("signature", user.get("signature")) : msgReply.set("signature", user.get("username"));
-                        msgReply.set("original", labels.get("on")+ Utils.formatDate(msg.date)+"</p><p>"+msg.username+labels.get("ideawrotelbl")+"</p><p>"+ labels.get("subjectlbl") + msg.object+"</p><hr><p>"+ cleanBody(msg.body) + "</p>")
+                        msgReply.set("original", labels.get("on")+ Utils.formatDate(msg.date)+"</p><p>"+msg.username+labels.get("ideawrotelbl")+"</p><p>"+ labels.get("subjectlbl") + msg.object+"</p><hr><p>"+ msg.body + "</p>")
                         switch(type){
                                 case "replyall":
                                         (msg.ccList) ? msgReply.set("toList", msg.username.concat(", "+msg.ccList)) : msgReply.set("toList", msg.username);
-                                        if (msg.object.search("Re:") !== 0) msgReply.set("object", "Re : "+msg.object);
+                                        (msg.object.search("Re :") !== 0)  ? msgReply.set("object", "Re : "+msg.object) : msgReply.set("object", msg.object);
                                         break;
                                 case "forward" :
                                         msgReply.set("toList", "");
-                                        if (msg.object.search("Fwd:") !== 0) msgReply.set("object", "Fwd : "+msg.object);
+                                        (msg.object.search("Fwd :") !== 0) ? msgReply.set("object", "Fwd : "+msg.object) : msgReply.set("object", msg.object)
                                         break;
                                 default:
                                         msgReply.set("toList", msg.username);
-                                        if (msg.object.search("Re:") !== 0) msgReply.set("object", "Re : "+msg.object);
+                                        (msg.object.search("Re :") !== 0) ? msgReply.set("object", "Re : "+msg.object) : msgReply.set("object", msg.object);
                                         break;
                         }
                         msgReply.set("message", msg);

@@ -126,14 +126,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			
 			//_stack.getStack().show("#list-date");
                         
-                        // watch list of ideas to keep ideas count current in user document
-                        ["added", "deleted", "updated"].forEach(function(change){
-                                listDate.getModel().watch(change, function(){
-                                        Config.get("user").set("ideas_count", listDate.getModel().getNbItems());
-                                });       
-                        });
-                        
-			//return
+                        //return
 			return _widget;
 		};
 	}

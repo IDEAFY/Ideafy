@@ -254,7 +254,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                 // update language if necessary
                                 if (_user.get("lang") !== Config.get("lang")) updateLabels(_user.get("lang"));
                                 // get user avatar
-                                _transport.request("GetAvatar", {id: _user.get("_id")}, function(result){
+                                _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                         if (!result.error) {
                                                 Config.set("avatar", result);
                                                 _dock.init();

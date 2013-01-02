@@ -86,14 +86,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         }
                         if (type === 'avatar'){
                                 filename = _path+'avatars/'+req.body.filename;
-                                tempname = req.files.img.path;
+                                dataurl = req.body.img;
                                 fs.exists(filename, function(exists){
                                         if (exists) {
-                                                if (fs.existsSync(filename+"_old")) {fs.unlinkSync(filename+"_old");}
-                                                fs.renameSync(filename, filename+"_old");
+                                                fs.unlinkSync(filename);
                                         }
-                                        
-                                        fs.rename(tempname, filename, function(err){
+                                        fs.writeFile(filename, dataurl, function(err){
                                                 if (err) {
                                                         throw(err);
                                                 }
@@ -106,38 +104,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         }
                 })      
                 .use(function(req, res, next) {
-                        var parse = url.parse(req.url, false),
-                            _path = parse.pathname,
-                            readFile = wrap(fs.readFile);
-                        
-                        if (req.method === 'GET' && _path.search("/attachments")>-1){    
-                                // get file extension
-                                var     ext,
-                                        gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
-                                        jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
-                                        pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/;
-
-                                if (_path.match(pngPattern)) { ext = "png";}
-                                if (_path.match(jpgPattern)) { ext = "jpg";}
-                                if (_path.match(gifPattern)) { ext = "gif";}              
-                                readFile("public"+_path, function (error, data){
-                                        if (data){
-                                                res.charset = 'utf-8';
-                                                //the type should be contained in the repsonse
-                                                var encode = "data:image/"+ext+";base64," + new Buffer(data, 'binary').toString('base64');
-                                                res.write(encode, encoding='utf8');  
-                                        }
-                                        else {
-                                                console.log(error);
-                                        }
-                                        res.end();
-                                });
-                        }
-                        else{
-                                res.setHeader("Ideady Server", "node.js/" + process.versions.node);
-                                res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
-                                next();
-                        }
+                        res.setHeader("Ideady Server", "node.js/" + process.versions.node);
+                        res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
+                        next();
                 })
                 .use(connect.cookieParser())
                 .use(connect.session({
@@ -472,7 +441,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         
         // retrieve an attachment document (e.g brainstorming session)
         olives.handlers.set("GetFile", function(json, onEnd){
-                var _filename =  __dirname+'/attachments/'+ json.sid+'/'+json.filename;;
+                var _filename =  __dirname+'/attachments/'+ json.sid+'/'+json.filename;
                     
                 fs.readFile(_filename, 'utf8', function(error, data){
                         if (data){

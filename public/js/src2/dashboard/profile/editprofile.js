@@ -18,7 +18,45 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                     defaultAvatars = new Store(avatarList),
                     updates = {},
                     progress = new Store({"status": null}),
-                    labels = Config.get("labels");
+                    labels = Config.get("labels"),
+                    MAX_WIDTH = 100, MAX_HEIGHT = 100,
+                    clearCanvas = function(canvas){
+                            var ctx = canvas.getContext("2d");
+                            ctx.clearRect(0,0,canvas.width, canvas.height);
+                    },
+                    resizeImage = function(img){
+                            var _width, _height, canvas = document.createElement('canvas'), ctx = canvas.getContext("2d");
+                                
+                            // resize image if needed
+                            _width = img.width;
+                            _height = img.height;
+                            if (_width>_height){
+                                if (_width > MAX_WIDTH) {
+                                        _height *= MAX_WIDTH / _width;
+                                        _width = MAX_WIDTH;
+                                }
+                            }
+                            else {
+                                if (_height > MAX_HEIGHT) {
+                                        _width *= MAX_HEIGHT / _height;
+                                        _height = MAX_HEIGHT;
+                                }
+                            }
+                            
+                            canvas.width = _width;
+                            canvas.height = _height;
+                            ctx.drawImage(img, 0, 0, _width, _height);
+                            return canvas.toDataURL("image/png");
+                    },
+                    uploadAvatar = function(canvas){
+                        var url = '/upload', fd = new FormData();
+                        fd.append("type", 'avatar');
+                        fd.append("filename", updates.picture_file);
+                        fd.append("img", profile.get("avatar"));
+                        Utils.uploadFile(url, fd, progress, function(result){
+                                if (result.response !== "ok") console.log(result);
+                        });         
+                    };
                     
                 editProfile.plugins.addAll({
                         "label" : new Model(labels),
@@ -101,7 +139,7 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         "editprofileevent" : new Event(editProfile)
                 });
                 
-                editProfile.template = '<div><div class = "setavatar"><div class="currentavatar" data-profile="bind:setAvatar, avatar" data-editprofileevent="listen:touchstart, changeAvatar"></div><div id="changeavatar" class="invisible"><div class="avatarcache"></div><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editprofileevent="listen: touchstart, selectpress; listen:touchend, check; listen: change, uploadnDisplay"><div data-label="bind:innerHTML, importlbl"></div></span><div class="uploadprogress" data-progress="bind:showProgress, status"></div><p data-label="bind:innerHTML, selectavatar"></p><ul class="defaultlist" data-avatars="foreach"><li><div class="defaultAvatar" data-avatars="bind: setPic, file"></div><div class="checkbox" data-avatars="bind: setChecked, selected" data-editprofileevent="listen: touchend, setDefaultAvatar"></div></li></ul></div></div><form class="profileinfo"><div class = "username"><div class = "firstname"><label data-label="bind:innerHTML, firstnameplaceholder"></label><input class="input" name="firstname" type="text" data-profile="bind: value, firstname" data-editprofileevent="listen: input, updateField"></div><div class = "lastname"><label data-label="bind:innerHTML, lastnameplaceholder"></label><input class="input" type="text" name="lastname" data-profile="bind: value, lastname" data-editprofileevent="listen: input, updateField"></div></div><label data-label="bind:innerHTML, profileintro"></label><input class="input" name="intro" type="text" data-profile="bind:value, intro" data-label="bind:placeholder, shortprofiledesc" data-editprofileevent="listen: input, updateField"><label data-label="bind:innerHTML, dob"></label><div class="dob"><input class="day" name="day" type="text" data-label="bind:placeholder, day" data-profile="bind: setDay, birthdate" data-editprofileevent="listen:input, updateDate"><select name="month" data-profile="bind: setMonth, birthdate" data-editprofileevent="listen:change, updateDate"><option data-label="bind:innerHTML, jan"></option><option data-label="bind:innerHTML, feb"></option><option data-label="bind:innerHTML, mar"></option><option data-label="bind:innerHTML, apr"></option><option data-label="bind:innerHTML, may"></option><option data-label="bind:innerHTML, jun"></option><option data-label="bind:innerHTML, jul"></option><option data-label="bind:innerHTML, aug"></option><option data-label="bind:innerHTML, sep"></option><option data-label="bind:innerHTML, oct"></option><option data-label="bind:innerHTML, nov"></option><option data-label="bind:innerHTML, dec"></option></select><input class="year" name="year" type="text" data-label="bind:placeholder,year" data-profile="bind: setYear, birthdate" data-editprofileevent="listen:input, updateDate"></div><div class="postal"><label class="streetaddress" data-label="bind:innerHTML, mailaddress"></label><input class="streetaddress input" name="street1" type="text" data-label="bind:placeholder, street" data-profile="bind:value, address.street1" data-editprofileevent="listen:input, updateAddress"><div class="city"><label data-label="bind:innerHTML, city"></label><input class="input city" name="city" type="text" data-profile="bind:value, address.city" data-editprofileevent="listen:input, updateAddress"></div><div class="zipstate"><div class="state"><label data-label="bind:innerHTML, state"></label><input class="input" name="state" type="text" data-profile="bind:value, address.state" data-editprofileevent="listen:input, updateAddress"></div><div class="zip"><label data-label="bind:innerHTML, zip"></label><input class="input" name="zip" type="text" data-profile="bind:value, address.zip" data-editprofileevent="listen:input, updateAddress"></div></div><label data-label="bind:innerHTML, country"></label><input class="input" name="country" type="text" data-profile="bind:value, address.country" data-editprofileevent="listen:input, updateAddress"></div><label data-label="bind:innerHTML, myfamily"></label><div class="family"><select class="status" name="couple" data-profile="bind: setFamilyStatus, family.couple" data-editprofileevent="listen:change, updateFamily"><option data-label="bind:innerHTML, single"></option><option data-label="bind:innerHTML, married"></option><option data-label="bind:innerHTML, divorced"></option><option data-label="bind:innerHTML, widow"></option><option data-label="bind:innerHTML, relation"></option></select><select class="children" name="children" data-profile="bind: setChildren, family.children" data-editprofileevent="listen:change, updateFamily"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option></select><label data-label="bind:innerHTML, children"></label></div><label data-label="bind:innerHTML, myoccupation"></label><div class="job"><select class="status" name="situation" data-profile="bind: setSituation, occupation.situation" data-editprofileevent="listen:change, updateJob"><option data-label="bind:innerHTML, student"></option><option data-label="bind:innerHTML, active"></option><option data-label="bind:innerHTML, retired"></option><option data-label="bind:innerHTML, unemployed"></option><option data-label="bind:innerHTML, stayathome"></option></select><div class="jobdesc"><label data-label="bind:innerHTML, jobtitle"></label><input class="input" type="text" name="job" data-profile="bind:value, occupation.job" data-label="bind:placeholder, jobtitle" data-editprofileevent="listen:change, updateJob"></div><div class="org"><label data-label="bind:innerHTML, organization"></label><input class="input" name="organization" type="text" data-profile="bind:value, occupation.organization" data-label="bind:placeholder,organization" data-editprofileevent="listen:change, updateJob"></div></div></form><form class="addtlinfo"><legend data-label="bind:innerHTML, hobbieslbl"></legend><label data-label="bind:innerHTML, name"></label><label class="description" data-label="bind:innerHTML, comment"></label><input name="leisure0" class="input" type="text" data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure0" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><input name="leisure1" class="input" type="text"  data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure1" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><input class="input" name="leisure2" type="text" data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure2" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><legend data-label="bind:innerHTML, interestslbl"></legend><label data-label="bind:innerHTML, field"></label><label class="description" data-label="bind:innerHTML, comment"></label><input class="input" name="interest0" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest0" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"><input class="input" name="interest1" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest1" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"><input class="input" name="interest2" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest2" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"></form><div class="useascharacter"></div><p class="update"><label class="cancelprofile" data-label="bind:innerHTML, cancellbl" data-editprofileevent="listen: touchstart, press; listen:touchend, cancel"></label><label class="updateprofile" data-label="bind:innerHTML, updatelbl" data-editprofileevent="listen:touchstart, press; listen:touchend, update"></label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div>';
+                editProfile.template = '<div><div class = "setavatar"><canvas id ="avatarcanvas" class="currentavatar" data-profile="bind:setAvatar, avatar" data-editprofileevent="listen:touchstart, changeAvatar"></canvas><div id="changeavatar" class="invisible"><div class="avatarcache"></div><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editprofileevent="listen: touchstart, selectpress; listen:touchend, check; listen: change, uploadnDisplay"><div data-label="bind:innerHTML, importlbl"></div></span><p data-label="bind:innerHTML, selectavatar"></p><ul class="defaultlist" data-avatars="foreach"><li><div class="defaultAvatar" data-avatars="bind: setPic, file"></div><div class="checkbox" data-avatars="bind: setChecked, selected" data-editprofileevent="listen: touchend, setDefaultAvatar"></div></li></ul></div></div><form class="profileinfo"><div class = "username"><div class = "firstname"><label data-label="bind:innerHTML, firstnameplaceholder"></label><input class="input" name="firstname" type="text" data-profile="bind: value, firstname" data-editprofileevent="listen: input, updateField"></div><div class = "lastname"><label data-label="bind:innerHTML, lastnameplaceholder"></label><input class="input" type="text" name="lastname" data-profile="bind: value, lastname" data-editprofileevent="listen: input, updateField"></div></div><label data-label="bind:innerHTML, profileintro"></label><input class="input" name="intro" type="text" data-profile="bind:value, intro" data-label="bind:placeholder, shortprofiledesc" data-editprofileevent="listen: input, updateField"><label data-label="bind:innerHTML, dob"></label><div class="dob"><input class="day" name="day" type="text" data-label="bind:placeholder, day" data-profile="bind: setDay, birthdate" data-editprofileevent="listen:input, updateDate"><select name="month" data-profile="bind: setMonth, birthdate" data-editprofileevent="listen:change, updateDate"><option data-label="bind:innerHTML, jan"></option><option data-label="bind:innerHTML, feb"></option><option data-label="bind:innerHTML, mar"></option><option data-label="bind:innerHTML, apr"></option><option data-label="bind:innerHTML, may"></option><option data-label="bind:innerHTML, jun"></option><option data-label="bind:innerHTML, jul"></option><option data-label="bind:innerHTML, aug"></option><option data-label="bind:innerHTML, sep"></option><option data-label="bind:innerHTML, oct"></option><option data-label="bind:innerHTML, nov"></option><option data-label="bind:innerHTML, dec"></option></select><input class="year" name="year" type="text" data-label="bind:placeholder,year" data-profile="bind: setYear, birthdate" data-editprofileevent="listen:input, updateDate"></div><div class="postal"><label class="streetaddress" data-label="bind:innerHTML, mailaddress"></label><input class="streetaddress input" name="street1" type="text" data-label="bind:placeholder, street" data-profile="bind:value, address.street1" data-editprofileevent="listen:input, updateAddress"><div class="city"><label data-label="bind:innerHTML, city"></label><input class="input city" name="city" type="text" data-profile="bind:value, address.city" data-editprofileevent="listen:input, updateAddress"></div><div class="zipstate"><div class="state"><label data-label="bind:innerHTML, state"></label><input class="input" name="state" type="text" data-profile="bind:value, address.state" data-editprofileevent="listen:input, updateAddress"></div><div class="zip"><label data-label="bind:innerHTML, zip"></label><input class="input" name="zip" type="text" data-profile="bind:value, address.zip" data-editprofileevent="listen:input, updateAddress"></div></div><label data-label="bind:innerHTML, country"></label><input class="input" name="country" type="text" data-profile="bind:value, address.country" data-editprofileevent="listen:input, updateAddress"></div><label data-label="bind:innerHTML, myfamily"></label><div class="family"><select class="status" name="couple" data-profile="bind: setFamilyStatus, family.couple" data-editprofileevent="listen:change, updateFamily"><option data-label="bind:innerHTML, single"></option><option data-label="bind:innerHTML, married"></option><option data-label="bind:innerHTML, divorced"></option><option data-label="bind:innerHTML, widow"></option><option data-label="bind:innerHTML, relation"></option></select><select class="children" name="children" data-profile="bind: setChildren, family.children" data-editprofileevent="listen:change, updateFamily"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option></select><label data-label="bind:innerHTML, children"></label></div><label data-label="bind:innerHTML, myoccupation"></label><div class="job"><select class="status" name="situation" data-profile="bind: setSituation, occupation.situation" data-editprofileevent="listen:change, updateJob"><option data-label="bind:innerHTML, student"></option><option data-label="bind:innerHTML, active"></option><option data-label="bind:innerHTML, retired"></option><option data-label="bind:innerHTML, unemployed"></option><option data-label="bind:innerHTML, stayathome"></option></select><div class="jobdesc"><label data-label="bind:innerHTML, jobtitle"></label><input class="input" type="text" name="job" data-profile="bind:value, occupation.job" data-label="bind:placeholder, jobtitle" data-editprofileevent="listen:change, updateJob"></div><div class="org"><label data-label="bind:innerHTML, organization"></label><input class="input" name="organization" type="text" data-profile="bind:value, occupation.organization" data-label="bind:placeholder,organization" data-editprofileevent="listen:change, updateJob"></div></div></form><form class="addtlinfo"><legend data-label="bind:innerHTML, hobbieslbl"></legend><label data-label="bind:innerHTML, name"></label><label class="description" data-label="bind:innerHTML, comment"></label><input name="leisure0" class="input" type="text" data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure0" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><input name="leisure1" class="input" type="text"  data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure1" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><input class="input" name="leisure2" type="text" data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure2" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><legend data-label="bind:innerHTML, interestslbl"></legend><label data-label="bind:innerHTML, field"></label><label class="description" data-label="bind:innerHTML, comment"></label><input class="input" name="interest0" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest0" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"><input class="input" name="interest1" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest1" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"><input class="input" name="interest2" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest2" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"></form><div class="useascharacter"></div><p class="update"><label class="cancelprofile" data-label="bind:innerHTML, cancellbl" data-editprofileevent="listen: touchstart, press; listen:touchend, cancel"></label><label class="updateprofile" data-label="bind:innerHTML, updatelbl" data-editprofileevent="listen:touchstart, press; listen:touchend, update"></label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p><div class="uploadprogress" data-progress="bind:showProgress, status"></div></div>';
                 
                 editProfile.init = function init($dom){
                         editProfile.reset();
@@ -119,29 +157,21 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                 };
                 
                 editProfile.uploadnDisplay = function(event, node){
-                        var url = '/upload', fd = new FormData(), file = node.files[0], ext,
-                            gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
-                            jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
-                            pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/,
-                            filename = user.get("_id")+"_@v@t@r",
-                            type = "avatar";
-                        if (file.name.search(gifPattern)>-1) ext=".gif"
-                        else if (file.name.search(jpgPattern)>-1) ext=".jpg"
-                        else if (file.name.search(gifPattern)>-1) ext=".png"
-                        filename += ext;
-                        fd.append("type", type);
-                        fd.append("filename", filename);
-                        fd.append("img", file);
-                        Utils.uploadFile(url, fd, progress, function(result){
-                                if (result.response === "ok"){
-                                        Utils.getAvatarByFileName(filename, function(avatar){
-                                                profile.set("avatar", avatar);
-                                                updates.picture_file = filename;
-                                                document.getElementById("changeavatar").classList.add("invisible");         
-                                        });
-                                }
-                            });
-                                
+                        var _img = new Image(),
+                            _reader = new FileReader(),
+                            canvas = document.getElementById("avatarcanvas");
+                        
+                        // first read the file to memory, once loaded resize and display upload button
+                        _reader.onload = function(e) {
+                                _img.src = e.target.result;
+                                // timeout is needed to render image and obtain its dimensions
+                                setTimeout(function(){
+                                        profile.set("avatar", resizeImage(_img));
+                                        updates.picture_file = user.get("_id")+"_@v@t@r";
+                                        document.getElementById("changeavatar").classList.add("invisible");
+                                        }, 300);
+                        };
+                        _reader.readAsDataURL(node.files[0]);
                 };
                 
                 editProfile.changeAvatar = function(event, node){
@@ -259,11 +289,6 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         node.classList.remove("pressed");
                         document.querySelector(".edituserdetails").classList.add("invisible");
                         document.querySelector(".userdetails").classList.remove("invisible");
-                        if (updates.picture_file){
-                                Config.get("transport").request("Revert-Avatar", {filename: user.get("picture_file")}, function(result){
-                                        if (result !== "ok") {console.log(result);}
-                                });        
-                        }
                 };
                 
                 editProfile.update = function update(event, node){
@@ -277,13 +302,22 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         }
                         if (changes) {
                                 user.upload().then(function(){
-                                        Config.get("observer").notify("profile-updated");
                                         // also update avatar in Config store
-                                        if (updates.picture_file) Config.set("avatar", profile.get("avatar"));       
+                                        if (updates.picture_file) {
+                                                Config.set("avatar", profile.get("avatar"));
+                                        }
+                                        if (updates.picture_file.search("img/avatars/deedee") <0){
+                                                uploadAvatar();
+                                        }
+                                        Config.get("observer").notify("profile-updated");
+                                        document.querySelector(".edituserdetails").classList.add("invisible");
+                                        document.querySelector(".userdetails").classList.remove("invisible");
                                 });
                         }
-                        document.querySelector(".edituserdetails").classList.add("invisible");
-                        document.querySelector(".userdetails").classList.remove("invisible");       
+                        else{
+                                document.querySelector(".edituserdetails").classList.add("invisible");
+                                document.querySelector(".userdetails").classList.remove("invisible");        
+                        }       
                 };
                 
                 return editProfile;

@@ -237,7 +237,7 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 		      var promise = new Promise,
 		          avatars = Config.get("avatars");
 		      
-		      Config.get("transport").request("GetAvatar", {id: id}, function(result){
+		      Config.get("transport").request("GetFile", {sid: "avatars", "filename":id+"_@v@t@r"}, function(result){
 		              if (result.error){
 		                      promise.reject();
 		              }

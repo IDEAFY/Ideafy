@@ -358,6 +358,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                    };
                    
                    profileUI.updateAchievements = function updateAchievements(achievements){
+                           console.log(achievements);
                            // add grade and distinction (if any) to achievements array and reset badges
                            if (badges.get(0).type === "grade") {
                                    achievements.unshift(badges.get(0));
@@ -367,6 +368,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 achievements.unshift(badges.get(0));        
                            }
                            badges.reset(achievements);
+                           console.log(badges.toJSON());
                    };
                    
                    profileUI.updateProgressBar = function updateProgressBar(){

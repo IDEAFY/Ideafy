@@ -127,15 +127,15 @@ define("Ideafy/Connect/MessageReply", ["Olives/OObject", "Store", "Olives/Model-
                         switch(type){
                                 case "replyall":
                                         (msg.ccList) ? msgReply.set("toList", msg.username.concat(", "+msg.ccList)) : msgReply.set("toList", msg.username);
-                                        msgReply.set("object", "Re : "+msg.object);
+                                        if (msg.object.search("Re:") !== 0) msgReply.set("object", "Re : "+msg.object);
                                         break;
                                 case "forward" :
                                         msgReply.set("toList", "");
-                                        msgReply.set("object", "Fwd : "+msg.object);
+                                        if (msg.object.search("Fwd:") !== 0) msgReply.set("object", "Fwd : "+msg.object);
                                         break;
                                 default:
                                         msgReply.set("toList", msg.username);
-                                        msgReply.set("object", "Re : "+msg.object);
+                                        if (msg.object.search("Re:") !== 0) msgReply.set("object", "Re : "+msg.object);
                                         break;
                         }
                         msgReply.set("message", msg);

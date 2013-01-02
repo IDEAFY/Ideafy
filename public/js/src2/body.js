@@ -254,23 +254,22 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                 // update language if necessary
                                 if (_user.get("lang") !== Config.get("lang")) updateLabels(_user.get("lang"));
                                 // get user avatar
-                                _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
-                                        if (!result.error) {
-                                                Config.set("avatar", result);
-                                                _dock.init();
-                                                //if everything is downloaded
-                                                _stack.getStack().show("#dock");
-                        
-                                                _user.watchValue("picture_file", function(){
-                                                        //handle avatar change
-                                                        _transport.request("GetAvatar", {id: email}, function(result){
-                                                                if (!result.error) {
-                                                                        Config.set("avatar", result);
-                                                                }
-                                                        });
-                                                });
-                                        }
-                                });
+                                if (_user.get("picture_file").search("img/avatars/deedee")>-1){
+                                        Config.set("avatar", _user.get("picture_file"));
+                                        _dock.init();
+                                        //if everything is downloaded
+                                        _stack.getStack().show("#dock");
+                                }
+                                else{
+                                        _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
+                                                if (!result.error) {
+                                                        Config.set("avatar", result);
+                                                        _dock.init();
+                                                        //if everything is downloaded
+                                                        _stack.getStack().show("#dock");
+                                                }
+                                        });
+                                }
                         });
                 
                   Config.watchValue("uid", function(uid){

@@ -497,20 +497,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         if (_image.search("img/avatars")>-1){
                                 onEnd(_image);
                         }
-                        // otherwise return base64 version of file located in attachments directory
+                        // otherwise return file located in attachments directory (should already be base64)
                         else {
                                 _file = __dirname+"/attachments/avatars/"+_image;
-                                
-                                // retrieve file extension
-
-                                if (_image.match(pngPattern)) { ext = "png";}
-                                if (_image.match(jpgPattern)) { ext = "jpg";}
-                                if (_image.match(gifPattern)) { ext = "gif";}
-                            
                                 readFile(_file, function (error, data){
                                         if (data){
-                                                _image = "data:image/"+ext+";base64," + new Buffer(data, 'binary').toString('base64');
-                                                onEnd(_image);  
+                                                onEnd(data);  
                                         }
                                         else {
                                                 console.log(error);

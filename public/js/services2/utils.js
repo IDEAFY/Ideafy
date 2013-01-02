@@ -237,7 +237,14 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 		      var promise = new Promise,
 		          avatars = Config.get("avatars");
 		      
-		      Config.get("transport").request("GetFile", {sid: "avatars", "filename":id+"_@v@t@r"}, function(result){
+		      if (id === Config.get("user").get("_id")) {
+		              Config.get("transport").request("GetFile", {sid: "avatars", "filename":id+"_@v@t@r"}, function(result){
+		                      Config.set("avatar", result);
+		                      promise.resolve()
+		              });
+		      }
+		      else {
+		              Config.get("transport").request("GetAvatar", {id: id}, function(result){
 		              if (result.error){
 		                      promise.reject();
 		              }
@@ -253,8 +260,9 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 		                      }
 		                      promise.resolve();
 		              }      
-		      });
-		      return promise;         
+		              });
+		              return promise;
+		      }      
                  },
                  
                  getAvatarByFileName : function(filename, onEnd){

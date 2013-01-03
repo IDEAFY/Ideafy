@@ -22,7 +22,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 			_widget.init = function(){
 			        var notify = new Notify();
 			        
-			        _stack.getStack().add("#public", new Public());
+			       _stack.getStack().add("#public", new Public());
 				console.log("publicok");
 				_stack.getStack().add("#library", new Library());
 				console.log("libraryok");
@@ -32,7 +32,6 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				console.log("connectok");
 				_stack.getStack().add("#dashboard", new Dashboard());
 				console.log("dashboardok");
-				
 				// init notification engine
 				notify.init();
 				

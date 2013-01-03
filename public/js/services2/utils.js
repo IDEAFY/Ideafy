@@ -296,6 +296,7 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                        
                        transport.request("GetAchievements", {userid: userid, lang: user.get("lang")}, function(res){
                                onEnd(res);
+                               console.log(res);
                               /* if (res.length){
                                         user.unsync();
                                         user.sync(Config.get("db"), userid).then(function(){

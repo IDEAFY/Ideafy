@@ -345,7 +345,7 @@ define("Ideafy/Avatar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-
                 
                 function AvatarConstructor($array){
 
-                        var _store = new Store([]),
+                        var _store = new Store(),
                             _avatars = Config.get("avatars"),
                             _id = $array[0]; 
                         
@@ -377,6 +377,7 @@ define("Ideafy/Avatar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-
                                         _store.set("img", _avatars.get(_id));
                                 });
                         }
+                        if (_avatars.get(_id)) console.log("avatar already loaded");
                              
                 }
                 

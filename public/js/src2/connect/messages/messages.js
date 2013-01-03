@@ -187,24 +187,33 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 var promise = new Promise(),
                                     now = new Date(),
                                     msgdate, sentdate,
+                                    update = false,
                                     n = user.get("notifications") || [],
                                     s = user.get("sentMessages") || [];
                                 
                                 for (i=n.length-1;i>=0;i--){
                                         msgdate = new Date(n[i].date[0], n[i].date[1], n[i].date[2], n[i].date[3], n[i].date[4], n[i].date[5]);
-                                        if ((now.getTime()-msgdate.getTime()) > 2592000000) n.pop();      
+                                        if ((now.getTime()-msgdate.getTime()) > 2592000000) {
+                                                n.pop();
+                                                update = true;
+                                        }   
                                 }
                                 for (i=s.length-1;i>=0;i--){
                                         sentdate = new Date(s[i].date[0], s[i].date[1], s[i].date[2], s[i].date[3], s[i].date[4], s[i].date[5]);
-                                        if ((now.getTime()-sentdate.getTime()) > 2592000000) s.pop();      
+                                        if ((now.getTime()-sentdate.getTime()) > 2592000000) {
+                                                s.pop();
+                                                update = true;
+                                        }      
                                 }
+                                if (update){
+                                        user.set("notifications", n);
+                                        user.set("sentMessages", s);
                                 
-                                user.set("notifications", n);
-                                user.set("sentMessages", s);
-                                
-                                user.upload().then(function(){
-                                        promise.resolve();
-                                });
+                                        user.upload().then(function(){
+                                                promise.resolve();
+                                        });
+                                }
+                                else promise.resolve();
                                 
                                 return promise;                
                         };

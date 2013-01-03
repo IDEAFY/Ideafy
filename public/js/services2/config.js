@@ -76,7 +76,7 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "news" : [],
                                 "twocents" : [],
                                 "twoquestions" : [],
-                                "settings": {"notifyPopup": true, "useascharacter": false}
+                                "settings": {"notifyPopup": true, "useascharacter": false, "ccme": false, "privacy_lvl": 0}
                         },
                         ideaTemplate:{
                                 "title": "",

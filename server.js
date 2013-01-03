@@ -473,9 +473,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 if (json.file.match(jpgPattern)) { ext = "jpg";}
                                 if (json.file.match(gifPattern)) { ext = "gif";}
                                 
-                                readFile(_file, function (error, data){
+                                fs.readFile(_file, 'utf8', function (error, data){
                                         if (data){
-                                                onEnd("data:image/"+ext+";base64," + new Buffer(data, 'binary').toString('base64'));
+                                                onEnd(data);
                                         }
                                         else {
                                                 console.log(error);

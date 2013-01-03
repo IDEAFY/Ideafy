@@ -334,6 +334,29 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                         else { res.missing.push(labels.get("enterownpic")); }
                         
                         return res;
+                },
+                /*
+                 * A function to convert a binary string to bytes
+                 */
+                stringToBytes : function( str ) {
+                        var ch, st, re = [], i, j=0, k;
+                        for (i = 0; i < str.length; i++ ) {
+                                ch = str.charCodeAt(i);  // get char 
+                                if (ch<127) re[j++] = ch & 0xFF;
+                                else{
+                                        st = [];                 // set up "stack"
+                                        do {
+                                                st.unshift( ch & 0xFF );  // push byte to stack
+                                                ch = ch >> 8;          // shift value down by 1 byte
+                                        }  
+                                        while ( ch );
+                                        // add stack contents to result
+                                        // done because chars have "wrong" endianness
+                                        for (k=0; k<st.length; k++) re[j++] = st[k];
+                                }
+                        }
+                        // return an array of bytes
+                        return re;
                 }
-	};
+	}
 });

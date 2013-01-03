@@ -4625,3 +4625,13 @@ li.my2q{
     text-align:center;
     
 }
+
+#rotate{
+    width: 20px;
+    height: 15px;
+    background: url('../img/profile/rotate.png') no-repeat center center;
+    background-size: contain;
+    float: right;
+    margin-right: 15px;
+    margin-top: -80px;
+}

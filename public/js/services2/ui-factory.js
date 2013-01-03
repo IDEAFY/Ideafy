@@ -295,9 +295,10 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
 define("Ideafy/AvatarList", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Utils", "Store"],
         function(Widget, Model, Event, Config, Utils, Store){
                 
-                function AvatarListConstructor($ids, $files){
+                function AvatarListConstructor($ids){
 
-                        var _store = new Store([]);
+                        var _store = new Store([]),
+                            i,
                             _avatars = Config.get("avatars"); 
                         // setup
                         this.plugins.addAll({
@@ -323,7 +324,8 @@ define("Ideafy/AvatarList", ["Olives/OObject", "Olives/Model-plugin", "Olives/Ev
                                 else {
                                         if ($files[i].search("img/avatars")>-1)  _store.alter("push", {id:$ids[i], img:$files[i]});
                                         else{
-                                                Config.get("transport").request("GetAvatar", {id: $ids[i], file:$files[i]}, function(result){
+                                                Config.get("transport").request("GetAvatar", {id: $ids[i]}, function(result){
+                                                        console.log($ids[i], result);
                                                         if (!result.error){
                                                                 _store.alter("push", {id: $ids[i], img: result});
                                                         }
@@ -334,9 +336,9 @@ define("Ideafy/AvatarList", ["Olives/OObject", "Olives/Model-plugin", "Olives/Ev
                              
                 }
                 
-                return function AvatarListFactory($ids, $files){
+                return function AvatarListFactory($ids){
                         AvatarListConstructor.prototype = new Widget();
-                        return new AvatarListConstructor($ids,$files);
+                        return new AvatarListConstructor($ids);
                 };     
         });
         

@@ -263,7 +263,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                 else{
                                         _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                                 if (!result.error) {
-                                                        console.log(result);
                                                         Config.set("avatar", result);
                                                         _dock.init();
                                                         //if everything is downloaded

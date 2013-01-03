@@ -67,9 +67,9 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         }
                                 },
                                 setAvatars: function(array){
-                                        var idx = this.getAttribute("data-sessions_id"),
-                                            frag = document.createDocumentFragment();
-                                            _ui = new AvatarList(_sessions.get(idx).participants, _sessions.get(idx).avatars);
+                                        var frag = document.createDocumentFragment(),
+                                            _ui = new AvatarList(array);
+                                            console.log(this.getAttribute("data-sessions_id"), array, _sessions.get(this.getAttribute("data-sessions_id")).participants);
                                             _ui.place(frag);
                                             (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
                                 },
@@ -230,7 +230,6 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         */
                         
                         // remove session from CouchDB
-                        console.log("delete", _sid);
                         var _cdb = new CouchDBStore();
                         _cdb.setTransport(Config.get("transport"));
                         _cdb.sync(_db, _sid).then(function(){
@@ -254,7 +253,6 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                                 idea:v.value.idea,
                                                 participants:[],
                                                 usernames:[],
-                                                avatars:[],
                                                 status:v.value.status,
                                                 score:v.value.score,
                                                 mode: v.value.mode
@@ -262,12 +260,11 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                          // merge initiator and participants
                                         _item.participants.push(v.value.initiator.id);
                                         _item.usernames.push(v.value.initiator.username);
-                                        _item.avatars.push(v.value.initiator.picture_file);
                                         
-                                        for (i=0; i<v.value.participants.length; i++){
-                                                _item.participants.push(v.value.participants[i].id);
-                                                _item.usernames.push(v.value.participants[i].username);
-                                                _item.avatars.push(v.value.participants[i].picture_file);        
+                                        for (j=0; j<v.value.participants.length; j++){
+                                                _item.participants.push(v.value.participants[j].id);
+                                                _item.usernames.push(v.value.participants[j].username);
+                                                console.log(_item.participants);        
                                         }
                                         // if there are multiple ideas in a session, sort them by title
                                         if (_item.idea && _item.idea.length>1){
@@ -275,13 +272,12 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         }
                                         _sessionData.push(_item);
                                 });
-                                _sessions.reset(_sessionData);        
+                                _sessions.reset(_sessionData);     
               };
               
               _widget.getMode = function getMode(sid){
                         var result;
-                        console.log(sid);
-                       _sessionsCDB.loop(function(v, i){
+                        _sessionsCDB.loop(function(v, i){
                                 if (v.id === sid) {
                                         result = v.value.mode;
                                 }         
@@ -297,7 +293,6 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                 _widget.resetSessionData();
                                 ["added", "deleted", "updated"].forEach(function(change){
                                         _sessionsCDB.watch(change, function(idx, value){
-                                                console.log(change, idx, value);
                                                 _widget.resetSessionData();
                                                 // apply current sorting methods
                                                 _widget.sortSessions(_currentSort);        
@@ -305,6 +300,8 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                });
               });
               
+              
+              SSLIST = _sessions;
               // return
               return _widget;
                    

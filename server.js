@@ -456,44 +456,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         
         // retrieve a given user's avatar
         olives.handlers.set("GetAvatar", function(json, onEnd){
-                var _ext,
-                    gifPattern = /[\w\-_\+\(\)]{0,}[\.gif|\.GIF]{4}/,
-                    jpgPattern = /[\w\-_\+\(\)]{0,}[\.jpg|\.JPG]{4}/,
-                    pngPattern = /[\w\-_\+\(\)]{0,}[\.png|\.PNG]{4}/,
-                    _file;
-                
-                // file info provided by client
-                if (json.file){
-                        if (json.file.search("img/avatars")>-1) onEnd(json.file)
-                        else {
-                                _file = __dirname+"/attachments/avatars/"+ json.file;
-                                
-                                // retrieve file extension
-                                if (json.file.match(pngPattern)) { ext = "png";}
-                                if (json.file.match(jpgPattern)) { ext = "jpg";}
-                                if (json.file.match(gifPattern)) { ext = "gif";}
-                                
-                                fs.readFile(_file, 'utf8', function (error, data){
-                                        if (data){
-                                                onEnd(data);
-                                        }
-                                        else {
-                                                console.log(error);
-                                                onEnd({"error": error});
-                                        }        
-                                });        
-                        }        
-                }
-                // need to fetch file info from couchDB
-                else {
-                        var _cdb = new CouchDBStore();
-                        _cdb.setTransport(transport);
+                var _file, _cdb = new CouchDBStore();
+                _cdb.setTransport(transport);
                         
-                        getDocAsAdmin(json.id, _cdb).then(function(){
-                                var _image = _cdb.get("picture_file");
+                getViewAsAdmin('users', 'short', {key:'"'+json.id+'"'}, _cdb).then(function(){
+                        var _image = _cdb.get(0).valueOf.picture_file;
                             
                         // if user avatar is one of the default choices then return path (available in local files)
-                        if (_image.search("img/avatars")>-1){
+                        if (_image.search("img/avatars/deedee")>-1){
                                 onEnd(_image);
                         }
                         // otherwise return file located in attachments directory (should already be base64)
@@ -510,8 +480,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 });      
                         }
                 });
-            }
-                        
         });
         
         // retrieve the previous user avatar if changes are cancelled

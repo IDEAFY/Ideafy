@@ -177,11 +177,11 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 }
                                                 break;
                                         case "message":
-                                                 var arr = user.get("notifications"),
+                                                 var arr = user.get("notifications"), i,
                                                      index;
                         
                                                 for (i=0, l=arr.length; i<l; i++){
-                                                        if (JSON.stringify(arr[i]) === $data){
+                                                        if (JSON.stringify(arr[i]) === JSON.stringify($data)){
                                                                 index = i;
                                                                 break;
                                                         }

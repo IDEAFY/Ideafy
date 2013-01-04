@@ -77,13 +77,13 @@ define("Ideafy/Notify", ["Olives/OObject", "Config", "Map", "Store", "Olives/Mod
                 notifyPopup.template = '<div><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:touchstart, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:touchstart, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:innerHTML, object"></span></p></li></ul></div>';
                 
                 notifyPopup.closePopup = function closePopup(event, node){
-                        console.log("close");
                         popup.classList.remove("show-notify");        
                 };
                 
                 notifyPopup.displayComCenter = function displayComCenter(event, node){
                         var id = node.getAttribute("data-notify_id");
-                        observer.notify("display-message", id);        
+                        observer.notify("display-message", id);
+                        notifyPopup.closePopup();       
                 };
                 
                 // init notifications engine

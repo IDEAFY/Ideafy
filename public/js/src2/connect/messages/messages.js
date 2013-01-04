@@ -24,13 +24,12 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                             touchStart,
                             touchPoint,
                             display = false,
-                            currentBar = null,
                             user = Config.get("user"),
                             observer = Config.get("observer"),
                             sortMessages = function(id){
                                     var type = sortButtons.get(id).name,
                                         msgs = user.get("notifications"),
-                                        l = msgs.length,
+                                        i, l = msgs.length,
                                         result = [];
                                     
                                     switch (type){
@@ -52,7 +51,6 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                             default:
                                                 result = msgs;
                                     }
-                                    
                                     return result;
                             },
                             searchMessages = function(text){
@@ -113,7 +111,7 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 "msgdetailstack" : detailStack
                         });
                         
-                        messageUI.template = '<div id="connect-messages"><div class="messages list"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchstart,selectMsg"><ul data-msg="foreach"><li class="msg list-item" data-msglistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date"></span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:innerHTML, object">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
+                        messageUI.template = '<div id="connect-messages"><div class="messages list"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchend,selectMsg"><ul data-msg="foreach"><li class="msg list-item" data-msglistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date"></span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:innerHTML, object">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
                         
                         messageUI.place(Map.get("connect-messages"));
                         
@@ -148,18 +146,18 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         messageUI.selectMsg = function selectMsg(event, node){
                                 var id = event.target.getAttribute("data-msg_id"),
                                     arr = user.get("notifications"),
-                                    idx,
-                                    message = msgList.get(id);
+                                    idx;
                                 
                                 // change message status to read
                                 // first need to retrieve message in user notifications
                                 for (i=0, l=arr.length; i<l;i++){
-                                        if (JSON.stringify(arr[i]) === JSON.stringify(message)) {
+                                        if (JSON.stringify(arr[i]) === JSON.stringify(msgList.get(id))) {
                                                 index = i;
                                                 break;
                                         }
                                 }
-                                arr[index].status = "read";
+                                msgList.update(id, "status", "read");
+                                arr[index]=msgList.get(id);
                                 user.set("notifications", arr);
                                 user.upload();
                                 
@@ -221,28 +219,28 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         // Action bar
                         messageUI.setStart = function(event, node){
                                 touchStart = [event.pageX, event.pageY];
-                                if (currentBar) this.hideActionBar(currentBar);  // hide previous action bar 
+                                if (document.querySelector(".actionbar")) messageUI.hideActionBar();  // hide previous action bar 
                         };
                 
                         messageUI.showActionBar = function(event, node){
-                                var id = node.getAttribute("data-listideas_id");
+                                var id = node.getAttribute("data-msg_id");
+                                console.log(node);
                                 touchPoint = [event.pageX, event.pageY];
                                 if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
                                         var actionBar = new ActionBar("message", node, msgList.get(id), messageUI.hideActionBar),
                                            frag = document.createDocumentFragment();  
                                 
-                                        actionBar.place(frag); // render action bar    
+                                        actionBar.place(frag); // render action bar
                                         node.appendChild(frag); // display action bar
-                                        currentBar = actionBar; // store current action bar
                                         display = true; // prevent from showing it multiple times
                                 }
                         };
                 
-                        messageUI.hideActionBar = function hideActionBar(ui){
-                                var parent = ui.dom.parentElement;
+                        messageUI.hideActionBar = function hideActionBar(){
+                                var ui = document.querySelector(".actionbar"),
+                                    parent = ui.parentNode;
                                 parent.removeChild(parent.lastChild);
                                 display = false;
-                                currentBar = null;
                         };
                         
                         defaultPage.template = '<div class="msgsplash"><div class="header blue-dark"><span>'+Config.get("labels").get("messageview")+'</span></div><div class="innersplash"></div></div>';
@@ -259,10 +257,11 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         
                         // watch for changes in notifications
                         user.watchValue("notifications", function(){
-                                var id;
+                                var id, newList = [];
                                 // if no search is active
                                 if (currentSort>-1) {
-                                        msgList.reset(sortMessages(currentSort));
+                                        newList = sortMessages(currentSort);
+                                        msgList.reset(newList);
                                 }
                                 if (detailStack.getStack().getCurrentName === "#msgdetail"){
                                         id = messageUI.getSelectedmsg();
@@ -271,23 +270,33 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                         });
                         
                         observer.watch("display-message", function(id){
-                                var arr = user.get("notifications"), idx, message = msgList.get(id);
+                                var arr = user.get("notifications"), message = arr[id];
+                                
+                                // check if message is of type message or notification
+                                sortButtons.update(currentSort, "selected", false);
+                                if (message.type === "MSG"){
+                                        sortButtons.update(1, "selected", true);
+                                        currentSort = 1;        
+                                }
+                                else{
+                                        sortButtons.update(2, "selected", true);
+                                        currentSort = 2;        
+                                }
                                 
                                 // change message status to read
-                                // first need to retrieve message in user notifications
-                                for (i=0, l=arr.length; i<l;i++){
-                                        if (JSON.stringify(arr[i]) === JSON.stringify(message)) {
-                                                index = i;
-                                                break;
-                                        }
-                                }
-                                arr[index].status = "read";
+                                message.status = "read";
+                                arr[id] = message;
                                 user.set("notifications", arr);
                                 user.upload();
                                 
+                                // display message
+                                msgList.reset([message]);
+                                // add "selected" class
+                                document.querySelector('li[data-msg_id="0"]').classList.add("selected");
+                                
                                 // display message detail
                                 detailStack.getStack().show("#msgdetail");
-                                messageDetail.reset(msgList.get(id));
+                                messageDetail.reset(message);
                                 previousScreen = "#msgdetail";        
                                         
                         });

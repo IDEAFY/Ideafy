@@ -312,7 +312,6 @@ define("Ideafy/AvatarList", ["Olives/OObject", "Olives/Model-plugin", "Olives/Ev
                         
                         // set template
                         this.template='<ul data-avatar="foreach"><li data-avatar="bind: setAvatar, img; bind: name, id"></li></ul>'
-                        
                         // init
                         for (i=0; i<$ids.length; i++){
                                 if ($ids[i] === Config.get("user").get("_id")){
@@ -322,15 +321,11 @@ define("Ideafy/AvatarList", ["Olives/OObject", "Olives/Model-plugin", "Olives/Ev
                                         _store.alter("push", {id:$ids[i], img:_avatars.get($ids[i])});       
                                 }
                                 else {
-                                        if ($files[i].search("img/avatars")>-1)  _store.alter("push", {id:$ids[i], img:$files[i]});
-                                        else{
-                                                Config.get("transport").request("GetAvatar", {id: $ids[i]}, function(result){
-                                                        console.log($ids[i], result);
+                                        Config.get("transport").request("GetAvatar", {id: $ids[i]}, function(result){
                                                         if (!result.error){
                                                                 _store.alter("push", {id: $ids[i], img: result});
                                                         }
-                                                });
-                                        }
+                                        });
                                 }
                         }
                              
@@ -379,7 +374,6 @@ define("Ideafy/Avatar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-
                                         _store.set("img", _avatars.get(_id));
                                 });
                         }
-                        if (_avatars.get(_id)) console.log("avatar already loaded");
                              
                 }
                 

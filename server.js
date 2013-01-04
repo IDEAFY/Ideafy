@@ -460,8 +460,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 _cdb.setTransport(transport);
                         
                 getViewAsAdmin('users', 'short', {key:'"'+json.id+'"'}, _cdb).then(function(){
-                        var _image = _cdb.get(0).valueOf.picture_file;
-                            
+                        var _image = _cdb.get(0).value.picture_file;
+                        
                         // if user avatar is one of the default choices then return path (available in local files)
                         if (_image.search("img/avatars/deedee")>-1){
                                 onEnd(_image);

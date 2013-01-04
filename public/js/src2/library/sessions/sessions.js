@@ -67,11 +67,11 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         }
                                 },
                                 setAvatars: function(array){
-                                        var frag = document.createDocumentFragment(),
-                                            _ui = new AvatarList(array);
-                                            console.log(this.getAttribute("data-sessions_id"), array, _sessions.get(this.getAttribute("data-sessions_id")).participants);
-                                            _ui.place(frag);
-                                            (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
+                                        var ui = new AvatarList(array),
+                                            frag = document.createDocumentFragment(),
+                                            node = this;
+                                            ui.place(frag);
+                                            (!node.hasChildNodes())?node.appendChild(frag):node.replaceChild(frag, node.firstChild);
                                 },
                                 setStatus : function(status){
                                         (status === "completed") ? this.innerHTML = _labels.get("completed") : this.innerHTML = _labels.get("inprogress");
@@ -91,11 +91,13 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         else this.innerHTML = "ip";
                                 }
                         }),
-                  "sortevent": new Event(this),
-                  "sessionevent": new Event(this)      
+                  "sortevent": new Event(_widget),
+                  "sessionevent": new Event(_widget)      
               });
               
-              this.sort = function(event, node){
+              _widget.template = '<div id="sessions"><div id="session-list" class="list"><div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div><div class="session-tools"><div class="session-sorting"><div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbytitle"></span><div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div></div><div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbydate"></span><div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div></div><div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyidea"></span><div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div></div><div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyscore"></span><div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div></div></div><input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sortevent="listen: keypress, search"><div id="sessionsearchresult"></div></div><div class="session-details"><ul data-sessions="foreach"><li class="session-item" data-sessionevent="listen: touchmove, displayActionBar"><table class="session-boxscore"><tr><td class="session-type"></td><td class="session-info"><p class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</p><p class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</p></td><td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td><td class="avatarlist" data-sessions="bind: setAvatars, participants"></td><td class="session-status" data-sessions="bind:setStatus, status">completed</td><td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td></tr></table><div class="actionbar" data-sessionevent="listen: touchend, hideActionBar"><div class="replaysession" name="replay" data-sessionevent="listen: touchstart, press; listen:touchend, replay"></div><div class="deletesession" name="delete" data-sessionevent="listen: touchstart, press; listen:touchend, deleteSession"></div></div></li></ul></div></div></div>';
+              
+              _widget.sort = function sort(event, node){
                         var mode = node.getAttribute("id");
                         
                         if (_sortStatus.get(mode).selected){
@@ -135,11 +137,11 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         _sessions.reset(_scope);        
               };
               
-              this.acceptinput = function(event, node){
+              _widget.acceptinput = function(event, node){
                 node.removeAttribute("readonly");        
               };
               
-              this.search = function(event, node){     
+              _widget.search = function search(event, node){     
                 var _resDiv = document.getElementById("sessionsearchresult");
                 
                 _resDiv.innerHTML ="";
@@ -159,7 +161,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                 }        
               };
               
-              this.displayActionBar = function(event, node){
+              _widget.displayActionBar = function(event, node){
                       var _id = node.getAttribute("data-sessions_id"),
                           _height = node.offsetHeight,
                           _sid = _sessions.get(_id);
@@ -176,15 +178,15 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                       setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
               };
               
-              this.hideActionBar = function(event, node){
+              _widget.hideActionBar = function(event, node){
                 node.setAttribute("style", "display: none;");        
               };
               
-              this.press = function(event, node){
+              _widget.press = function(event, node){
                        node.classList.add("pressed");        
               };
               
-              this.replay = function(event, node){
+              _widget.replay = function(event, node){
                       var _id = node.getAttribute("data-sessions_id"),
                           _sid = _sessions.get(_id).id,
                          _mode = _sessions.get(_id).mode;
@@ -263,8 +265,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         
                                         for (j=0; j<v.value.participants.length; j++){
                                                 _item.participants.push(v.value.participants[j].id);
-                                                _item.usernames.push(v.value.participants[j].username);
-                                                console.log(_item.participants);        
+                                                _item.usernames.push(v.value.participants[j].username);        
                                         }
                                         // if there are multiple ideas in a session, sort them by title
                                         if (_item.idea && _item.idea.length>1){
@@ -272,7 +273,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                                         }
                                         _sessionData.push(_item);
                                 });
-                                _sessions.reset(_sessionData);     
+                                _sessions.reset(_sessionData);
               };
               
               _widget.getMode = function getMode(sid){
@@ -286,7 +287,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                         return result;
               };
               
-              _widget.alive(_dom);
+              _widget.place(_dom);
               
               // init session data
               _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
@@ -301,7 +302,6 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               });
               
               
-              SSLIST = _sessions;
               // return
               return _widget;
                    

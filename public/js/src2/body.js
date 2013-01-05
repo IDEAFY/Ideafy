@@ -11,9 +11,9 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                 "password" : "",
                 "error" : ""
         }), updateLabels = function(lang) {
-                var json = {
-                        "lang" : lang
-                };
+                var json = {"lang" : lang},
+                    promise = new Promise();
+                    
                 _transport.request("Lang", json, function(result) {
                         if (result === "nok") {
                                 _local.set("labels", Config.get("defaultLabels"));
@@ -25,8 +25,10 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                         // save labels to local storage
                         _local.sync("ideafy-data");
                         // apply language
-                        Config.get("labels").reset(_local.get("labels"));
+                        _labels.reset(_local.get("labels"));
+                        promise.resolve();
                 });
+                return promise;
         }, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user");
 
         //setup
@@ -50,7 +52,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         _local.set("labels", "");
         
         // initialize labels to device language if available or US by default
-         (_local.get("labels")) ? Config.get("labels").reset(_local.get("labels")) : updateLabels(navigator.language);
+         (_local.get("labels")) ? _labels.reset(_local.get("labels")) : updateLabels(navigator.language);
 
         var current = _local.get("currentLogin");
         // if the last user is in the local storage
@@ -249,34 +251,47 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         
         _body.init = function() {
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
-                                // set uid for future queries
-                                Config.set("uid", '"' + _user.get("_id") + '"');
-                                // update language if necessary
-                                if (_user.get("lang") !== Config.get("lang")) updateLabels(_user.get("lang"));
-                                // get user avatar
-                                if (_user.get("picture_file").search("img/avatars/deedee")>-1){
-                                        Config.set("avatar", _user.get("picture_file"));
+                        var lblUpdate = false;
+                        // set uid for future queries
+                        Config.set("uid", '"' + _user.get("_id") + '"');
+                        // check user defined language
+                        if (_user.get("lang") !== Config.get("lang")) {
+                                lblUpdate = true;
+                        }
+                         // get user avatar and labels if necessary
+                         if (lblUpdate && _user.get("picture_file").search("img/avatars/deedee")>-1){
+                                Config.set("avatar", _user.get("picture_file"));
+                                updateLabels(_user.get("lang")).then(function(){
                                         _dock.init();
                                         //if everything is downloaded
-                                        _stack.getStack().show("#dock");
-                                }
-                                else{
-                                        _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
-                                                if (!result.error) {
-                                                        Config.set("avatar", result);
-                                                        _dock.init();
-                                                        //if everything is downloaded
-                                                        _stack.getStack().show("#dock");
-                                                }
-                                        });
-                                }
-                        });
+                                        stack.getStack().show("#dock");        
+                                }); 
+                         }
+                         else if (_user.get("picture_file").search("img/avatars/deedee")>-1){
+                                Config.set("avatar", _user.get("picture_file"));
+                                _dock.init();
+                                //if everything is downloaded
+                                stack.getStack().show("#dock");
+                        }
+                        // if avatar is customized no need to wait for labels download (shorter than avatar file)
+                        else{
+                                updateLabels(_user.get("lang"));
+                                _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
+                                        if (!result.error) {
+                                                Config.set("avatar", result);
+                                                _dock.init();
+                                                //if everything is downloaded
+                                                _stack.getStack().show("#dock");
+                                        }
+                                });
+                        }
+                });
                 
-                  Config.watchValue("uid", function(uid){
-                                // handle signout
-                                if (uid === ""){              
-                                }   
-                   });
+                Config.watchValue("uid", function(uid){
+                        // handle signout
+                        if (uid === ""){              
+                        }   
+                });
         };
 
 }); 

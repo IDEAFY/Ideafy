@@ -261,12 +261,15 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                         }
                          // get user avatar and labels if necessary
                          if (lblUpdate && _user.get("picture_file").search("img/avatars/deedee")>-1){
+                                console.log("need to download labels");
                                 Config.set("avatar", _user.get("picture_file"));
                                 updateLabels(_user.get("lang")).then(function(){
+                                        console.log("promise resolved");
                                         lblUpdate = false;
                                         _dock.init();
                                         //if everything is downloaded
-                                        stack.getStack().show("#dock");        
+                                        stack.getStack().show("#dock");
+                                        console.log(lblUpdate);        
                                 }); 
                          }
                          else if (_user.get("picture_file").search("img/avatars/deedee")>-1){

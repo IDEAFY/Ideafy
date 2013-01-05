@@ -53,6 +53,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
                                         
                                         //we show stack widgets this way to reduce listener
 					_stack.getStack().show(href);
+					
 					//display new submenu for a short duration <3s
 					_stack.getStack().getCurrentScreen().showMenu();
 					setTimeout(function(){_stack.getStack().getCurrentScreen().hideMenu();}, timeout);

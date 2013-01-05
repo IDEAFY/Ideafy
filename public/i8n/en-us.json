@@ -309,6 +309,8 @@
 	"selectavatar": "Or select an avatar",
 	"uploadcomplete": "Upload complete",
 	"mynotes" : "My Notes",
-	"writesomething" : "Write something"
+	"writesomething" : "Write something",
+	"stats" : "Stats",
+	"achievements" : "Achievements"
 	
 }

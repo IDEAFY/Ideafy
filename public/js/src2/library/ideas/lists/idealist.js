@@ -102,10 +102,9 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                 }
                 
                 
-                this.init = function init(initCallback){
+                this.init = function init(){
                         var promise = new Promise();
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                initCallback(_store, 0);
                                 promise.resolve();   
                         });
                         return promise;

@@ -59,7 +59,13 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			};
 
 			this.mosaic = function(){
+			        var domDetail = document.getElementById("ideas-detail");
 				_dom.classList.toggle("mosaic");
+				if (domDetail.classList.contains("invisible")) {
+				        domDetail.classList.remove("invisible");
+				        _detail.reset(listDate.getModel(), 0);
+				        _stack.getStack().show("#list-date");
+				}
 			};
 			
 			this.plus = function(){
@@ -120,9 +126,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			// show private ideas sorted by most recent
 		        //listRating.init(_detail.reset);
 		        
-		        listDate.init(_detail.reset).then(function(){
-                              _stack.getStack().show("#list-date"); 
-                        });
+		        listDate.init();
 			
 			//_stack.getStack().show("#list-date");
                         

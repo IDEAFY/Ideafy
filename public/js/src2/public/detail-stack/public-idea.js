@@ -5,6 +5,7 @@ define("Ideafy/Public/PublicDetail",
                 //declaration
                         var  _widget = new Widget(),
                              _twocentWriteUI = new WriteTwocent(),
+                             _twocentList = new TwocentList(),
                              _labels = Config.get("labels"),
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,
@@ -33,23 +34,12 @@ define("Ideafy/Public/PublicDetail",
                                         displayWriteTwocent : function(authors){
                                             (authors.indexOf(user.get("_id"))<0) ? this.classList.remove("invisible") : this.classList.add("invisible");    
                                         },
-                                        // display twocentlist if present
+                                        // hide twocent write if twocents are present
                                         displayTwocentList : function(twocents){
-                                                 var twocentUI, _frag = document.createDocumentFragment();
-                                                 if (twocents && twocents.length){
+                                                if (twocents && twocents.length){
                                                     // hide twocent write interface    
                                                     document.getElementById("public-writetwocents").classList.add("invisible");
-                                                    twocentUI = new TwocentList(_store.get("id"), "public");
-                                                    twocentUI.render();
-                                                    twocentUI.place(_frag);
-                                                    (this.hasChildNodes()) ? this.replaceChild(_frag, this.firstChild): this.appendChild(_frag);   
-                                                }
-                                                else {
-                                                    // remove child if present
-                                                    if (this.hasChildNodes()){
-                                                            this.removeChild(this.firstChild);
-                                                    }       
-                                                }        
+                                                 }        
                                         },
                                         date : function date(date){
                                                 if (date) this.innerHTML = Utils.formatDate(date);
@@ -137,6 +127,7 @@ define("Ideafy/Public/PublicDetail",
                                 _voted = false;
                                 _store.reset(viewStore.get(index));
                                 _twocentWriteUI.reset(_store.get("id"));
+                                _twocentList.reset(_store.get("id"), "public");
                                 _domWrite = document.getElementById("public-writetwocents");
                                 _twocentWriteUI.place(_domWrite);
                                 

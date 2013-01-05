@@ -1,27 +1,19 @@
 define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ideafy/Utils", "Olives/Model-plugin", "Olives/Event-plugin", "TwocentReplyList", "WriteTwocent", "WriteTwocentReply", "Ideafy/Avatar"],
         function(Widget, Config, CouchDBStore, Store, Utils, Model, Event, TwocentReplyList, WriteTwocent, WriteTwocentReply, Avatar){
                 
-                function TwocentListConstructor($id, $view){
+                return function TwocentListConstructor(){
                        
                         // declaration
-                        var cdb = new CouchDBStore(),
+                        var ui = new Widget(),
+                            cdb = new CouchDBStore(),
                             labels = Config.get("labels"),
                             store = new Store([]),
                             transport = Config.get("transport"),
                             user = Config.get("user"),
-                            ui = this;
+                            $id,
+                            $view;
                         
-                        // setup
-                        // retrieve twocents data from couchdb
                         cdb.setTransport(transport);
-                        cdb.sync(Config.get("db"), $id).then(function(){
-                                store.reset(cdb.get("twocents"));
-                                
-                                cdb.watchValue("twocents", function(value){
-                                        store.reset(value);        
-                        });
-                        });
-                        
                         // define plugins and methods
                         ui.plugins.addAll({
                                 "labels" : new Model(Config.get("labels")),
@@ -102,17 +94,17 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                         }
                                 }),
-                                "twocentevent" : new Event(this)        
+                                "twocentevent" : new Event(ui)        
                         });
                         
                         ui.template = '<ul class="twocentList" data-twocents="foreach"><li class="twocent"><div class="twocentHeader"><div class="twocentAvatar" data-twocents="bind: setAvatar, author"></div><div class="twocentAuthor"data-twocents="bind: setFirstName, firstname"></div><span class="commentLabel" data-labels="bind: setCommentlbl, firstname"></span><br/><div class="twocentDate date" data-twocents="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-twocents="bind: setVisible, author" data-twocentevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-twocents="bind: deleteOK, replies" data-twocentevent="listen: touchstart, deleteTwocent"></div><div class="twocentButton twocentReplyButton" data-twocents="bind: setInVisible, author" data-twocentevent="listen: touchstart, reply"></div></div></div><div class="twocentBody"><p class="twocentMessage" data-twocents="bind: innerHTML, message"></p><div class="repliesButton hideReplies" name="hide" data-twocents="bind: toggleHideButton, replies" data-twocentevent="listen: touchstart, toggleReplies" data-labels="bind:innerHTML, hidetwocentreplies"></div></div><div class="writePublicTwocentReply invisible"></div><div class="displayReplies" data-twocents="bind: displayReplies, replies"></div></li></ul>';
                         
                         ui.edit = function(event, node){
                                 var id = node.getAttribute("data-twocents_id"),
-                                    writeUI = new WriteTwocent(),
                                     currentUI = ui.dom.children[id],
+                                    writeUI = new WriteTwocent(),
                                     frag = document.createDocumentFragment(),
-                                    cancel = function(){
+                                    cancel = function cancel(){
                                             ui.dom.replaceChild(currentUI, writeUI.dom);        
                                     };
                                     
@@ -121,6 +113,33 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                 writeUI.place(frag);
                                 // replace current twocent with writeUI
                                 ui.dom.replaceChild(frag, currentUI);       
+                        };
+                        
+                        ui.reset = function reset(id, view){
+                                $id = id;
+                                $view = view; 
+                                cdb.unsync();
+                                cdb.reset();
+                                // retrieve twocents data from couchdb
+                                cdb.sync(Config.get("db"), $id).then(function(){
+                                        store.reset(cdb.get("twocents"));
+                                        
+                                        switch($view){
+                                                case "library":
+                                                        ui.place(document.getElementById("library-twocents"));
+                                                        break;
+                                                default:
+                                                        ui.place(document.getElementById("public-twocents"));
+                                                        break; 
+                                        }
+                                        
+                                        cdb.watchValue("twocents", function(value){
+                                                store.reset(value);        
+                                        });
+                                        
+                                });
+                                
+                                     
                         };
                         
                         ui.deleteTwocent = function(event, node){
@@ -176,11 +195,8 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                         node.classList.add("showReplies");
                                 }
                         };
-                }       
+                        
+                        return ui;
                 
-                return function TwocentListFactory($id, $view){
-                        TwocentListConstructor.prototype = new Widget;
-                        return new TwocentListConstructor($id, $view);
-                };      
-                
+                };
         });

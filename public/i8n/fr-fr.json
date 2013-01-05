@@ -307,5 +307,9 @@
 	"field": "Domaine",
 	"updatelbl": "Enregistrer",
 	"selectavatar": "Ou choisissez un avatar",
-	"uploadcomplete": "Enregistrement terminé"
+	"uploadcomplete": "Enregistrement terminé",
+	"mynotes" : "Mes Notes",
+	"writesomething" : "Tapez une note",
+	"stats" : "Stats",
+	"achievements" : "Médailles"
 }

@@ -794,9 +794,70 @@ ul.notify-list{
   -webkit-transition: -webkit-box-shadow 60ms ease-in;*/
 }
 
+.mosaic .tools{
+    padding-bottom: 10px;
+}
+
+.mosaic li:nth-child(5n){
+    background: rgba(101,123,153,0.3);    
+}
+
+.mosaic li:nth-child(5n+1){
+    background: rgba(154, 201, 206, 0.3);    
+}
+
+.mosaic li:nth-child(5n+2){
+    background: rgba(242, 229, 32, 0.3);    
+}
+
+.mosaic li:nth-child(5n+3){
+    background: rgba(242, 123, 61, 0.3);  
+}
+
+.mosaic li:nth-child(5n+4){
+    background: rgba(95, 143, 40, 0.3); 
+}
+
+
 .mosaic .list-item {
   /* */
-  display:none;
+    display: block;
+    width: 170px;
+    padding: 5px 10px;
+    float: left;
+    height: 180px;
+    margin: 8px;
+    border: 1px outset #cccccc;
+}
+
+.mosaic .list-item span.date{
+    margin-top: 5px;
+}
+
+.mosaic .item-body{
+    height: 108px;
+    overflow-y: scroll;    
+}
+
+.mosaic .list-item h3{
+    padding-top: 0px;
+    letter-spacing: 0px;
+}
+
+.mosaic .item-header{
+    height: 40px;
+    overflow: hidden;
+}
+
+.mosaic .item-body p{
+    margin-top: 5px;
+    height: 78px;
+    overflow-y: scroll;
+}
+
+.mosaic .item-footer{
+    float: left;
+    margin-top: 10px;
 }
 
 /*#public .option {
@@ -1486,11 +1547,13 @@ textarea.solution {
 }
 
 .twocentEditButton{
-    background: url('../img/wall/25modify.png') no-repeat;   
+    background: url('../img/wall/25modify.png') no-repeat;
+    background-size: 80%;   
 }
 
 .twocentDeleteButton{
-    background: url('../img/wall/25delete.png') no-repeat;   
+    background: url('../img/wall/25delete.png') no-repeat;
+    background-size: 80%;  
 }
 
 .twocentReplyButton{
@@ -3780,7 +3843,6 @@ li.color-item{
     width: 588px;
     margin-top: 30px;
     height: 240px;
-    background: yellow;
 }
 
 #contactdetails .contactstats, #contactdetails .contactbadges{
@@ -3789,17 +3851,43 @@ li.color-item{
     height: 240px;
 }
 
-#contactdetails .contactstats{
-    background: green;
+#contactdetails .contactstats legend, #contactdetails .contactbadges legend{
+    margin: 10px;
+    width: 90%;
+    border-bottom: 2px solid #cccccc;
+}
+
+.contactstats .userscore{
+    width: 90%;
+    margin: 0px 0px 0px 10px;
+    border: none;
+}
+
+.contactstats table{
+    margin-left: 10px;
+    width: 90%;
+    border-spacing: 0px;
+    
 }
 
 #contactdetails .contactbadges{
-    background: blue;
 }
 
 #contactdetails .contactnotes{
     height: 295px;
     padding: 20px;
+}
+
+#contactdetails .contactnotes textarea{
+    height: 260px;
+    margin-top: 10px;
+    background-color: transparent;
+    background-image: url('../img/connect/bg-note.png');
+    background-size: cover;
+    padding-left: 35px;
+    font-family: Pacifico;
+    font-size: large;
+    color: #292929;
 }
 
 #addcontact .detail-contents, #addgroup .detail-contents{
@@ -4205,7 +4293,7 @@ li.color-item{
 }
 
 
-.mystats legend, .recentactivity legend, .edituserdetails .addtlinfo legend, #contactdetails .contactnotes legend{
+.mystats legend, .recentactivity legend, .edituserdetails .addtlinfo legend, #contactdetails legend{
     font-family: Pacifico;
     color: #657B99;    
 }
@@ -4221,18 +4309,18 @@ li.innerbar{
     margin-top: 10px;
 }
 
-.mystats th, .mystats td{
+.mystats th, .mystats td, .contactstats th, .contactstats td{
     border-bottom: 2px solid #657b99;
 }
 
-.mystats th{
+.mystats th, .contactstats th{
     width: 90%;
     text-align: left;
     font-family: Pacifico;
     font-size: 12px;
 }
 
-.mystats td{
+.mystats td, .contactstats td{
     width: 10%;
     text-align: right;
     font-family: Helvetica;

@@ -4,6 +4,7 @@ define("Ideafy/Library/IdeaDetail",
                 return function IdeaDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
+                             _twocentList = new TwocentList(),
                              _twocentWriteUI = new WriteTwocent(),
                              _labels = Config.get("labels"),
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
@@ -35,21 +36,10 @@ define("Ideafy/Library/IdeaDetail",
                                         },
                                         // display twocentlist if present
                                         displayTwocentList : function(twocents){
-                                                 var twocentUI, _frag = document.createDocumentFragment();
                                                  if (twocents && twocents.length){
                                                     // hide twocent write interface    
-                                                    document.getElementById("library-writetwocents").classList.add("invisible");
-                                                    twocentUI = new TwocentList(_store.get("id"), "public");
-                                                    twocentUI.render();
-                                                    twocentUI.place(_frag);
-                                                    (this.hasChildNodes()) ? this.replaceChild(_frag, this.firstChild): this.appendChild(_frag);   
-                                                }
-                                                else {
-                                                    // remove child if present
-                                                    if (this.hasChildNodes()){
-                                                            this.removeChild(this.firstChild);
-                                                    }       
-                                                }        
+                                                    document.getElementById("public-writetwocents").classList.add("invisible");
+                                                 }        
                                         },
                                         date : function date(date){
                                                 if (date) this.innerHTML = Utils.formatDate(date);
@@ -137,6 +127,7 @@ define("Ideafy/Library/IdeaDetail",
                                 _voted = false;
                                 _store.reset(viewStore.get(index));
                                 _twocentWriteUI.reset(_store.get("id"));
+                                _twocentList.reset(_store.get("id"), "library");
                                 
                                 _domWrite = document.getElementById("library-writetwocents");
                                 _twocentWriteUI.place(_domWrite);

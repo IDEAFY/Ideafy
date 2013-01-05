@@ -32,6 +32,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         (view === "leaderboard") ? this.classList.remove("invisible"):this.classList.add("invisible");        
                                    },
                                    setPercentage : function(completion){
+                                           console.log(completion, labels.get("completionprefix"));
                                            this.innerHTML = labels.get("completionprefix")+completion+labels.get("completionsuffix");
                                    },
                                    setProgress : function(completion){

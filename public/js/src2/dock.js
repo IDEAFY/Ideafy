@@ -34,6 +34,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				console.log("dashboardok");
 				// init notification engine
 				notify.init();
+				console.log("notifyok");
 				
 				//set current stack view
 				_stack.getStack().show("#public");

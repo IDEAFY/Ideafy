@@ -51,7 +51,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   background:#657B99;
 }
 
-.header, .list h3, .detail-header h2{
+.header, .list h3, .detail-header h2, #contactdetails h2{
   font-family:pacifico;
   letter-spacing:1px;
 }
@@ -913,13 +913,13 @@ ul.notify-list{
   width: 60px;
   height: 60px;
   background: white;
-  bakcground-repeat: no-repeat;
+  background-repeat: no-repeat;
   background-position: center;
   border-radius: 30px;
   background-size: cover;
 }
 
-.detail-header h2{
+.detail-header h2, #contactdetails h2{
   margin-left:15px;
   font-size:24px;
   font-weight:normal;
@@ -3754,6 +3754,54 @@ li.color-item{
     font-size: 14px;
 }
 
+#contactdetails .avatar{
+  float:left;
+  width: 80px;
+  height: 80px;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 40px;
+  background-size: cover;
+}
+
+#contactdetails .detail-contents{
+    padding: 20px;
+}
+
+#contactdetails .basicinfo{
+    margin-left: 120px;
+}
+
+#contactdetails .contactdashboard{
+    margin-top: 10px;
+    border: 1px dashed #cccccc;
+    border-radius: 5px;
+    width: 588px;
+    margin-top: 30px;
+    height: 240px;
+    background: yellow;
+}
+
+#contactdetails .contactstats, #contactdetails .contactbadges{
+    float: left;
+    width: 50%;
+    height: 240px;
+}
+
+#contactdetails .contactstats{
+    background: green;
+}
+
+#contactdetails .contactbadges{
+    background: blue;
+}
+
+#contactdetails .contactnotes{
+    height: 295px;
+    padding: 20px;
+}
+
 #addcontact .detail-contents, #addgroup .detail-contents{
     padding: 20px;
     background: white;
@@ -4157,7 +4205,7 @@ li.color-item{
 }
 
 
-.mystats legend, .recentactivity legend, .edituserdetails .addtlinfo legend{
+.mystats legend, .recentactivity legend, .edituserdetails .addtlinfo legend, #contactdetails .contactnotes legend{
     font-family: Pacifico;
     color: #657B99;    
 }

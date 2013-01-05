@@ -1,5 +1,5 @@
-define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "Ideafy/Avatar", "Ideafy/ActionBar", "Ideafy/Connect/AddContact", "Ideafy/Connect/AddGroup"],
-        function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact, AddGroup){
+define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "Ideafy/Avatar", "Ideafy/ActionBar", "Ideafy/Connect/AddContact", "Ideafy/Connect/AddGroup", "Ideafy/Connect/ContactDetails"],
+        function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact, AddGroup, ContactDetails){
                 
                 return function ContactsConstructor(){
                         
@@ -7,6 +7,7 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                             detailStack = new Stack(),
                             addContact = new AddContact(),
                             addGroup = new AddGroup(),
+                            contactDetails = new ContactDetails(),
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "users", "label": "usrbtn", "selected": false},
@@ -17,7 +18,6 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                             touchStart,
                             touchPoint,
                             display = false,
-                            currentBar = null,
                             user = Config.get("user"),
                             labels = Config.get("labels"),
                             sortContacts = function(id){
@@ -120,6 +120,14 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                 return id;
                         };
                         
+                        contactsUI.selectContact = function(event){
+                                var id = event.target.getAttribute("data-contact_id");
+                                contactDetails.reset(contactList.get(id));
+                                document.getElementById("toggleadd").classList.remove("group");
+                                document.getElementById("toggleadd").classList.remove("user");
+                                if (detailStack.getStack().getCurrentName() !== "#contactdetails") detailStack.getStack().show("#contactdetails");
+                        };
+                        
                         contactsUI.displaySort = function(event, node){
                                 var id = node.getAttribute("data-sort_id");
                                 // reset list selection
@@ -146,7 +154,7 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                         // Action bar
                         contactsUI.setStart = function(event, node){
                                 touchStart = [event.pageX, event.pageY];
-                                if (currentBar) this.hideActionBar(currentBar);  // hide previous action bar 
+                                if (document.querySelector(".actionbar")) contactsUI.hideActionBar();  // hide previous action bar 
                         };
                 
                         contactsUI.showActionBar = function(event, node){
@@ -158,16 +166,15 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                 
                                         actionBar.place(frag); // render action bar    
                                         node.appendChild(frag); // display action bar
-                                        currentBar = actionBar; // store current action bar
                                         display = true; // prevent from showing it multiple times
                                 }
                         };
                 
                         contactsUI.hideActionBar = function hideActionBar(ui){
-                                var parent = ui.dom.parentElement;
+                                var ui = document.querySelector(".actionbar"),
+                                    parent = ui.parentNode;
                                 parent.removeChild(parent.lastChild);
                                 display = false;
-                                currentBar = null;
                         };
                         
                         contactsUI.press = function(event, node){
@@ -192,7 +199,7 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                         
                         // initialize
                         // add UIs to detail stack
-                        //detailStack.getStack().add("#contactdetail", contactDetail);
+                        detailStack.getStack().add("#contactdetails", contactDetails);
                         detailStack.getStack().add("#addcontact", addContact);
                         detailStack.getStack().add("#addgroup", addGroup);
                         // get message list from user document
@@ -206,10 +213,11 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                 if (currentSort>-1) {
                                         contactList.reset(sortContacts(currentSort));
                                 }
-                                if (detailStack.getStack().getCurrentName === "#contactdetail"){
+                                if (detailStack.getStack().getCurrentName === "#contactdetails"){
                                         id = contactsUI.getSelectedContact();
                                         if (id>-1){
                                                 contactDetail.reset(contactList.get(id));
+                                                detailStack.getStack().show('#contactdetails');
                                         }
                                         else{
                                                 detailStack.getStack().show("#addcontact");

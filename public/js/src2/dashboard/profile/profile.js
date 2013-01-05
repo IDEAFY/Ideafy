@@ -75,7 +75,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 setAge : function(dob){
                                         var now = new Date(), then, age;
                                         
-                                        if (dob.length === 3){
+                                        if (dob && dob.length === 3){
                                                 then = new Date(dob[0], dob[1], dob[2]);
                                                 age = now.getTime() - then.getTime();
                                                 this.innerHTML = Math.floor(age/1000/3600/24/365)+" "+ labels.get("agelbl");

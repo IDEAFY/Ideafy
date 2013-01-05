@@ -307,6 +307,8 @@
 	"field": "Field",
 	"updatelbl": "Update",
 	"selectavatar": "Or select an avatar",
-	"uploadcomplete": "Upload complete"
+	"uploadcomplete": "Upload complete",
+	"mynotes" : "My Notes",
+	"writesomething" : "Write something"
 	
 }

@@ -274,6 +274,7 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 	        /*
 	         * A function to obtain grade information from the server based on user's score
 	         * @Param {Number} ip the user's score
+	         * @Param {Function} onEnd the callback
 	         * @Returns {Object} result the grade information in the user's language
 	         */
 	        getGrade : function(ip, onEnd){
@@ -285,14 +286,14 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
 	               });
 	        },
 	        /*
-                 * A function to obtain grade information from the server based on user's score
-                 * @Param {Number} ip the user's score
+                 * A function to obtain a user's achievements from the server based on user's id
+                 * @Param {String} userid the user's score
+                 * @Param {Function} onEnd the callback
                  * @Returns {Object} result the grade information in the user's language
                  */
                 getAchievements : function(userid, onEnd){
                        var transport = Config.get("transport"),
-                           user = Config.get("user"),
-                           userid = user.get("_id"); 
+                           user = Config.get("user");
                        
                        transport.request("GetAchievements", {userid: userid, lang: user.get("lang")}, function(res){
                                onEnd(res);
@@ -304,6 +305,21 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                                }*/
                        });
                 },
+                
+                /*
+                 * A function to obtain details of a given user
+                 * @Param {String} userid the user's score
+                 * @Param {Function} onEnd the callback
+                 * @Returns {Object} result the user information (based on user privacy settings)
+                 */
+                getUserDetails : function(userid, onEnd){
+                       var transport = Config.get("transport"),
+                           user = Config.get("user"); 
+                       
+                       transport.request("GetUserDetails", {userid: userid, lang: user.get("lang")}, function(res){
+                               onEnd(res);
+                       });
+                },
                 /*
                  * A function to check if user profile is completed
                  * @Param
@@ -311,11 +327,9 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                  */
                 checkProfileCompletion : function(){
                         var user = Config.get("user"), labels = Config.get("labels"), res = {"percentage": 0, "missing":[]};
-                        if (user.get("firstname") && user.get("lastname")){ res.percentage += 5; }
+                        if (user.get("firstname") && user.get("lastname")){ res.percentage += 10; }
                         if (user.get("birthdate").length === 3){ res.percentage += 10; }
                         else { res.missing.push(labels.get("enterbirthdate")); }
-                        if (user.get("gender")){ res.percentage+=5; }
-                        else { res.missing.push(labels.get("entergender")); }
                         if (user.get("family").couple !== null && user.get("family").children !== null) { res.percentage += 10 ;}
                         else { res.missing.push(labels.get("enterfamily")); }
                         if (user.get("address").city && user.get("address").country ) { res.percentage += 10; }

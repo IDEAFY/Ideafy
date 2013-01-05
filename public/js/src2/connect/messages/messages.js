@@ -224,7 +224,6 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                 
                         messageUI.showActionBar = function(event, node){
                                 var id = node.getAttribute("data-msg_id");
-                                console.log(node);
                                 touchPoint = [event.pageX, event.pageY];
                                 if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
                                         var actionBar = new ActionBar("message", node, msgList.get(id), messageUI.hideActionBar),

@@ -135,7 +135,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                 if (password !== pwdConfirm) {
                                         _store.set("error", _labels.get("signuppwdnomatch"));
                                 } else {
-                                        console.log(Config.get("language"));
                                         _transport.request("Signup", {
                                                 name : userid,
                                                 password : password,
@@ -250,7 +249,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         };
         
         _body.init = function() {
-                console.log("init function");
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         var lblUpdate = false;
                         // set uid for future queries
@@ -261,22 +259,19 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                         }
                          // get user avatar and labels if necessary
                          if (lblUpdate && _user.get("picture_file").search("img/avatars/deedee")>-1){
-                                console.log("need to download labels");
                                 Config.set("avatar", _user.get("picture_file"));
                                 updateLabels(_user.get("lang")).then(function(){
-                                        console.log("promise resolved");
                                         lblUpdate = false;
                                         _dock.init();
                                         //if everything is downloaded
-                                        stack.getStack().show("#dock");
-                                        console.log(lblUpdate);        
+                                        _stack.getStack().show("#dock");      
                                 }); 
                          }
                          else if (_user.get("picture_file").search("img/avatars/deedee")>-1){
                                 Config.set("avatar", _user.get("picture_file"));
                                 _dock.init();
                                 //if everything is downloaded
-                                stack.getStack().show("#dock");
+                                _stack.getStack().show("#dock");
                         }
                         // if avatar is customized no need to wait for labels download (shorter than avatar file)
                         else{

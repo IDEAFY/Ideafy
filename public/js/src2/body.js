@@ -13,7 +13,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         }), updateLabels = function(lang) {
                 var json = {"lang" : lang},
                     promise = new Promise();
-                    
+                   
                 _transport.request("Lang", json, function(result) {
                         if (result === "nok") {
                                 _local.set("labels", Config.get("defaultLabels"));
@@ -250,6 +250,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
         };
         
         _body.init = function() {
+                console.log("init function");
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         var lblUpdate = false;
                         // set uid for future queries
@@ -262,6 +263,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                          if (lblUpdate && _user.get("picture_file").search("img/avatars/deedee")>-1){
                                 Config.set("avatar", _user.get("picture_file"));
                                 updateLabels(_user.get("lang")).then(function(){
+                                        lblUpdate = false;
                                         _dock.init();
                                         //if everything is downloaded
                                         stack.getStack().show("#dock");        
@@ -275,7 +277,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                         }
                         // if avatar is customized no need to wait for labels download (shorter than avatar file)
                         else{
-                                updateLabels(_user.get("lang"));
+                                if (lblUpdate) updateLabels(_user.get("lang")).then(function(){lblUpdate = false;});
                                 _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                         if (!result.error) {
                                                 Config.set("avatar", result);

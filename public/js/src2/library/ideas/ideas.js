@@ -64,7 +64,6 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 				if (domDetail.classList.contains("invisible")) {
 				        domDetail.classList.remove("invisible");
 				        _detail.reset(listDate.getModel(), 0);
-				        _stack.getStack().show("#list-date");
 				}
 			};
 			
@@ -126,7 +125,9 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			// show private ideas sorted by most recent
 		        //listRating.init(_detail.reset);
 		        
-		        listDate.init();
+		        listDate.init().then(function(){
+		              _stack.getStack().show("#list-date");        
+		        });
 			
 			//_stack.getStack().show("#list-date");
                         

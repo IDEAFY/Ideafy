@@ -1575,7 +1575,7 @@ textarea.solution {
     font-size: 12px;
 }
 
-.repliesButton{
+.repliesButton, .editnotes{
     height: 18px;
     line-height: 14px;
     font-family: Pacifico;
@@ -1589,7 +1589,7 @@ textarea.solution {
     background-size:15px 15px;
 }
 
-.showReplies{
+.showReplies, .editnotes{
     background-image:url('../img/public/show.png');
 }
 
@@ -3870,12 +3870,17 @@ li.color-item{
     
 }
 
-#contactdetails .contactbadges{
+#contactdetails .contactbadges label{
+    font-family: Pacifico;
 }
 
 #contactdetails .contactnotes{
     height: 295px;
     padding: 20px;
+}
+
+#contactdetails .editnotes{
+    margin-top: -20px; 
 }
 
 #contactdetails .contactnotes textarea{
@@ -4481,17 +4486,17 @@ li.my2q{
     font-size:16px;
 }
 
-.userachievements .badges{
+.userachievements .badges, #contactbadges .badges{
     display: inline-block;
 }
 
-.userachievements .badge{
+.userachievements .badge, .contactbadge{
     float:left;
     text-align:center;
     width: 83px;
 }
 
-.userachievements .badge div{
+.userachievements .badge div, .contactbadge div{
     display: block;
     width: 60px;
     height: 60px;
@@ -4499,7 +4504,7 @@ li.my2q{
     border-radius: 8px;    
 }
 
-.userachievements .badge legend{
+.userachievements .badge legend, .contactbadge label{
     width: 60px;
     margin: 0 auto;
     -webkit-padding-start: 0px;

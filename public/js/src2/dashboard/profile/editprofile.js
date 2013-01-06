@@ -245,6 +245,7 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                 editProfile.updateField = function(event, node){
                         var prop = node.getAttribute("name");
                         updates[prop] = node.value;
+                        profile.set(prop, node.value);
                 };
                 
                 editProfile.updateDate = function(event, node){
@@ -260,20 +261,22 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                                         date[2] = node.value;
                                         break;        
                         }
+                        profile.set("birthdate", date);
                         updates.birthdate = date;        
                 };
                 
                 editProfile.updateAddress = function(event, node){
                         var address = updates.address || profile.get("address"), name = node.getAttribute("name");
-                        address[name] = node.value
+                        address[name] = node.value;
+                        profile.set("address", address);
                         updates.address = address;        
                 };
                 
                 editProfile.updateFamily = function(event, node){
                         var name = node.getAttribute("name"), family = updates.family || profile.get("family");
                         family[name] = node.selectedIndex;
+                        profile.set("family", family);
                         updates.family = family;
-                                
                 };
                 
                 editProfile.updateJob = function(event, node){
@@ -289,30 +292,35 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                                         occupation.organization = node.value;
                                         break;        
                         }
+                        profile.set("occupation", occupation);
                         updates.occupation = occupation;       
                 };
                 
                 editProfile.updateLeisureName = function(event, node){
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = updates.leisure_activities || profile.get("leisure_activities");
                         leisure[idx].name = node.value;
+                        profile.set("leisure_activities", leisure);
                         updates.leisure_activities = leisure;
                 };
                 
                 editProfile.updateLeisureDesc = function(event, node){
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = updates.leisure_activities || profile.get("leisure_activities");
                         leisure[idx].comment = node.value;
+                        profile.set("leisure_activities", leisure);
                         updates.leisure_activities = leisure;               
                 };
                 
                 editProfile.updateInterestName = function(event, node){
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), interests = updates.interests || profile.get("interests");
                         interests[idx].name = node.value;
+                        profile.set("interests", interests);
                         updates.interests = interests;               
                 };
                 
                 editProfile.updateInterestDesc = function(event, node){
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), interests = updates.interests || profile.get("interests");
                         interests[idx].comment = node.value;
+                        profile.set("interests", interests);
                         updates.interests = interests;               
                 };
                
@@ -337,11 +345,12 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                         }
                         if (changes) {
                                 user.upload().then(function(){
+                                        console.log(updates);
                                         // also update avatar in Config store
                                         if (updates.picture_file) {
                                                 Config.set("avatar", profile.get("avatar"));
                                         }
-                                        if (updates.picture_file.search("img/avatars/deedee") <0){
+                                        if (updates.picture_file && updates.picture_file.search("img/avatars/deedee") <0){
                                                 uploadAvatar();
                                                 document.getElementById("rotate").classList.add("invisible");
                                         }

@@ -482,15 +482,40 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 });
         });
         
-        // retrieve the previous user avatar if changes are cancelled
-        olives.handlers.set("Revert-Avatar", function(json, onEnd){
-                var path = __dirname+'/attachments/',
-                    filename =  json.filename;
-                
-                fs.rename(filename+"_old", filename, function(err){
-                        if (err) onEnd(err)
-                        else onEnd("ok");
-                });     
+        // retrieve a given user profile information
+        olives.handlers.set("GetUserDetails", function(json, onEnd){
+                var cdb = new CouchDBStore();
+                getDocAsAdmin(json.userid, cdb).then(function(){
+                        // check privacy settings
+                        var privacy = 0, contacts = 0, i, l, result={};
+                        if (cdb.get("settings") && cdb.get("settings").privacy_lvl) privacy = cdb.get("settings").privacy_lvl;
+                        
+                        // return user basic info, stats and score
+                        result._id = cdb.get("_id");
+                        result.privacy = privacy;
+                        result.firstname = cdb.get("firstname");
+                        result.lastname = cdb.get("lastname");
+                        result.username = cdb.get("username");
+                        result.intro = cdb.get("intro");
+                        result.ip = cdb.get("ip");
+                        result.achievements = cdb.get("achievements");
+                        result.ideas_count = cdb.get("ideas_count");
+                        result.su_sessions_count = cdb.get("su_sessions_count");
+                        result.mu_sessions_count = cdb.get("mu_sessions_count");
+                        result.twoquestions_count = cdb.get("twoquestions_count");
+                        
+                        for (i=0, l=cdb.get("connections").length; i<l; i++){
+                                if (cdb.get("connections")[i].type === "user") contacts++
+                        }
+                        result.contacts = contacts;
+                        
+                        if (privacy >= 1){
+                        }
+                        if (privacy >=2){
+                                
+                        }
+                        onEnd(result);
+                });
         });
         
         // retrieve a user's grade information

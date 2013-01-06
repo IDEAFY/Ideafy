@@ -313,10 +313,11 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                  * @Returns {Object} result the user information (based on user privacy settings)
                  */
                 getUserDetails : function(userid, onEnd){
-                       var transport = Config.get("transport"),
-                           user = Config.get("user"); 
+                       var transport = Config.get("transport");
+                       console.log("calling server handler");
                        
-                       transport.request("GetUserDetails", {userid: userid, lang: user.get("lang")}, function(res){
+                       transport.request("GetUserDetails", {userid: userid}, function(res){
+                               console.log(res);
                                onEnd(res);
                        });
                 },

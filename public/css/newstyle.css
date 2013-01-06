@@ -3852,6 +3852,10 @@ li.color-item{
     overflow-y: scroll;
 }
 
+.contactbadge{
+    height: 86px;
+}
+
 .contactbadge div{
     display: block;
     width: 40px;

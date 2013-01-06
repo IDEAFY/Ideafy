@@ -17,7 +17,8 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                        stats = new Store({"view": "info", "completion": 0}),
                        news = new Store(user.get("news")),
                        LB, EP, // used to initialize leaderboard and editprofile UIs
-                       badges = new Store([{type:"grade", badge:"beginner.png", label: "Beginner", text:"", reward: 0}]); // always start with grade (or distinction then grade if distinction is present)
+                       grades = new Store([]),
+                       achievements = new Store(); // always start with grade (or distinction then grade if distinction is present)
                        
                    profileUI.plugins.addAll({
                            "label" : new Model(labels),
@@ -42,7 +43,12 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                            (percentage === 100) ? this.classList.add("invisible"):this.classList.remove("invisible");
                                    }
                            }),
-                           "achievements" : new Model(badges,{
+                           "grades" : new Model(grades,{
+                                   showBadge : function(badge){
+                                           this.setAttribute("style", "background: url('../img/profile/"+badge+"') no-repeat center center; background-size: cover;");
+                                   }
+                           }),
+                           "achievements" : new Model(achievements,{
                                    showBadge : function(badge){
                                            this.setAttribute("style", "background: url('../img/profile/"+badge+"') no-repeat center center; background-size: cover;");
                                    }
@@ -105,8 +111,22 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         }
                                         this.innerHTML = res1 + res2;
                                 },
-                                setOccupation : function(value){
-                                        (value.description) ? this.innerHTML=value.description : this.innerHTML=labels.get("completeprofile");        
+                                setOccupation : function(occupation){
+                                        if (occupation.situation === 4) this.innerHTML = labels.get("stayathome")
+                                        else if (occupation.situation === 3) this.innerHTML = labels.get("unemployed")
+                                        else if (occupation.situation === 0) {
+                                                (occupation.organization)?this.innerHTML = labels.get("student")+ " @ " + occupation.organization : this.innerHTML = labels.get("student");
+                                        }
+                                        else if (occupation.situation === 2){
+                                                (occupation.job)? this.innerHTML = occupation.job + " (" + labels.get("retired") + ")" : this.innerHTML = labels.get("retired")      
+                                        }
+                                        else if (occupation.situation === 1){
+                                                if (!occupation.job && !occupation.organization) this.innerHTML = labels.get("active")
+                                                else if (occupation.job && !occupation.organization) this.innerHTML=occupation.job
+                                                else if (!occupation.job && occupation.organization) this.innerHTML = labels.get("active") + " @ " + occupation.organization
+                                                else this.innerHTML = occupation.job + " @ " + occupation.organization
+                                        }
+                                        else this.innerHTML=labels.get("completeprofile");        
                                 },
                                 showLeisure : function(hobbies){
                                         (hobbies[0].name || hobbies[1].name || hobbies[2].name)?this.classList.remove("invisible"):this.classList.add("invisible");      
@@ -213,7 +233,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                            "profileevent" : new Event(profileUI)
                    });
                    
-                   profileUI.template = '<div id="dashboard-profile"><div class="header blue-dark"><span data-label="bind:innerHTML, profilelbl"></span></div><input class="infoslider" type="range" min="0" max="1" value ="0" data-profileevent="listen:touchend, switchLeaderboard"><span class="slidertext" data-stats="bind:setViewLbl, view"></span><div id="profile-content" data-stats="bind:toggleInformation, view"><div class="leftprofile"><div class="userdetails"><div class="editbtn" data-profileevent="listen:touchstart, edit"></div><div class="cd-picarea"><div class="cardpicture" data-config="bind:setAvatar, avatar"></div><div class="cardinfo"><h2 data-user="bind:innerHTML,username"></h2><blockquote data-user="bind:innerHTML, intro"></blockquote><p><span class="cd-agelbl"></span><span data-user="bind:setAge, birthdate"></span></p><p><span class="cd-locationlbl"></span><span class="cd-info" data-user="bind: setLocation, address"></span></p><p><span class="cd-joblbl"></span><span class="cd-info" data-user="bind: setOccupation, occupation"></span></p><p><span class="cd-familylbl"></span><span class="cd-info" data-user="bind: setFamily, family"></span></p></div></div><div class="cd-contentarea"><span class="contentTitle" data-user="bind:showLeisure, leisure_activities" data-label="bind: innerHTML, hobbieslbl"></span><p class = "dyknow" data-user="bind:setLeisure, leisure_activities"></p><span class="contentTitle" data-user="bind:showInterests, interests"data-label="bind: innerHTML, interestslbl">Centers of interest</span><p class = "dyknow" data-user="bind: setInterests, interests"></p></div><div><legend data-stats="bind: setPercentage, completion"></legend><div class="completionbar"><div class="innerbar" data-stats = "bind:setProgress, completion"></div></div></div></div><div class="edituserdetails invisible"></div><div class="mystats"><legend data-label="bind:innerHTML, mystatslbl"></legend><div class="completionbar"><ul data-user="bind: setBarLength, ip"><li class="innerbar myids" data-progressbar="bind: setWidth, ideas"></li><li class="innerbar myss" data-progressbar="bind:setWidth, sessions"></li><li class="innerbar myctcts" data-progressbar="bind: setWidth, contacts"></li><li class="innerbar my2q" data-progressbar="bind:setWidth, twoQ"></li></ul></div><table><tr class ="myids"><th data-label="bind:innerHTML, ideaslbl"></th><td data-user="bind: innerHTML, ideas_count"></td></tr><tr class ="myss"><th data-label="bind:innerHTML, sessionslbl"></th><td data-user="bind: setSessionCount, ip"></td></tr><tr class="myctcts"><th data-label="bind:innerHTML, contactslbl"></th><td data-user="bind: setContactCount, connections"></td></tr><tr class="my2q"><th data-label="bind:innerHTML, toquestionslbl"></th><td data-user="bind: innerHTML, twoquestions_count"></td></tr></table></div><div class="recentactivity"><legend data-label="bind:innerHTML, recentactivitylbl"></legend><ul data-news="foreach"><li><div class="newstype" data-news="bind:setType, type"></div><div class="newsdate" data-news="bind:formatDate, date"></div><p class="newstext" data-news="bind:setContent, content"></p></li></ul></div></div><div class = "rightprofile"><div class="userscore"><span class="ip" data-user="bind:innerHTML, ip"></span><span data-label="bind:innerHTML, ideafypoints"></span></div><div class="userachievements"><p class="grade" data-stats="bind:innerHTML, title"></p><ul class="badges" data-achievements="foreach"><li class="badge"><div data-achievements="bind:showBadge, badge"></div><legend data-achievements="bind:innerHTML, label"></legend></li></ul></div></div></div><div id="leaderboard" data-stats="bind:toggleLeaderboard, view"></div></div>';
+                   profileUI.template = '<div id="dashboard-profile"><div class="header blue-dark"><span data-label="bind:innerHTML, profilelbl"></span></div><input class="infoslider" type="range" min="0" max="1" value ="0" data-profileevent="listen:touchend, switchLeaderboard"><span class="slidertext" data-stats="bind:setViewLbl, view"></span><div id="profile-content" data-stats="bind:toggleInformation, view"><div class="leftprofile"><div class="userdetails"><div class="editbtn" data-profileevent="listen:touchstart, edit"></div><div class="cd-picarea"><div class="cardpicture" data-config="bind:setAvatar, avatar"></div><div class="cardinfo"><h2 data-user="bind:innerHTML,username"></h2><blockquote data-user="bind:innerHTML, intro"></blockquote><p><span class="cd-agelbl"></span><span data-user="bind:setAge, birthdate"></span></p><p><span class="cd-locationlbl"></span><span class="cd-info" data-user="bind: setLocation, address"></span></p><p><span class="cd-joblbl"></span><span class="cd-info" data-user="bind: setOccupation, occupation"></span></p><p><span class="cd-familylbl"></span><span class="cd-info" data-user="bind: setFamily, family"></span></p></div></div><div class="cd-contentarea"><span class="contentTitle" data-user="bind:showLeisure, leisure_activities" data-label="bind: innerHTML, hobbieslbl"></span><p class = "dyknow" data-user="bind:setLeisure, leisure_activities"></p><span class="contentTitle" data-user="bind:showInterests, interests"data-label="bind: innerHTML, interestslbl">Centers of interest</span><p class = "dyknow" data-user="bind: setInterests, interests"></p></div><div><legend data-stats="bind: setPercentage, completion"></legend><div class="completionbar"><div class="innerbar" data-stats = "bind:setProgress, completion"></div></div></div></div><div class="edituserdetails invisible"></div><div class="mystats"><legend data-label="bind:innerHTML, mystatslbl"></legend><div class="completionbar"><ul data-user="bind: setBarLength, ip"><li class="innerbar myids" data-progressbar="bind: setWidth, ideas"></li><li class="innerbar myss" data-progressbar="bind:setWidth, sessions"></li><li class="innerbar myctcts" data-progressbar="bind: setWidth, contacts"></li><li class="innerbar my2q" data-progressbar="bind:setWidth, twoQ"></li></ul></div><table><tr class ="myids"><th data-label="bind:innerHTML, ideaslbl"></th><td data-user="bind: innerHTML, ideas_count"></td></tr><tr class ="myss"><th data-label="bind:innerHTML, sessionslbl"></th><td data-user="bind: setSessionCount, ip"></td></tr><tr class="myctcts"><th data-label="bind:innerHTML, contactslbl"></th><td data-user="bind: setContactCount, connections"></td></tr><tr class="my2q"><th data-label="bind:innerHTML, toquestionslbl"></th><td data-user="bind: innerHTML, twoquestions_count"></td></tr></table></div><div class="recentactivity"><legend data-label="bind:innerHTML, recentactivitylbl"></legend><ul data-news="foreach"><li><div class="newstype" data-news="bind:setType, type"></div><div class="newsdate" data-news="bind:formatDate, date"></div><p class="newstext" data-news="bind:setContent, content"></p></li></ul></div></div><div class = "rightprofile"><div class="userscore"><span class="ip" data-user="bind:innerHTML, ip"></span><span data-label="bind:innerHTML, ideafypoints"></span></div><div class="userachievements"><p class="grade" data-stats="bind:innerHTML, title"></p><ul class="badges" data-grades="foreach"><li class="badge"><div data-grades="bind:showBadge, badge"></div><legend data-grades="bind:innerHTML, title"></legend></li></ul><ul class="badges" data-achievements="foreach"><li class="badge"><div data-achievements="bind:showBadge, badge"></div><legend data-achievements="bind:innerHTML, label"></legend></li></ul></div></div></div><div id="leaderboard" data-stats="bind:toggleLeaderboard, view"></div></div>';
                    
                    profileUI.place(Map.get("dashboard-profile"));
                    
@@ -323,51 +343,20 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                         return promise;
                    };
                    
-                   profileUI.updateGrade = function updateGrade(data){
-                           var achievements = JSON.parse(badges.toJSON());
-                           // update title with grade
-                           stats.set("title", data.grade.label);
-                           // udpate badge (position 0 or 1 in the array)
-                           if (achievements[0].type === "grade") {
-                                   achievements[0].badge = data.grade.badge;
-                                   achievements[0].label = data.grade.title;
-                                   (data.grade.text) ? achievements[0].text = data.grade.text : achievements[0].text=""; // room to add a description later on
-                                   (data.grade.reward) ? achievements[0].reward = data.grade.reward : achievements[0].reward=0;
-                           }
-                           else if (achievements[1].type === "grade") {
-                                   achievements[1].badge = data.grade.badge;
-                                   achievements[1].label = data.grade.title;
-                                   (data.grade.text) ? achievements[1].text = data.grade.text : achievements[1].text=""; // room to add a description later on
-                                   (data.grade.reward) ? achievements[1].reward = data.grade.reward : achievements[1].reward=0;
-                           }
-                           
-                           // check if there is a distinction and update accordingly
-                           if (data.distinction) {
-                                   stats.set("title", data.distinction.label);
-                                   // insert new badge at the beginning or update existing one
-                                   if (achievements[0].type === "distinction"  && achievements[0].badge !== data.distinction.badge){
-                                        achievements[0].badge = data.distinction.badge;
-                                        achievements[0].label = data.distinction.title;
-                                        (data.grade.text) ? achievements[0].text = data.grade.text : achievements[0].text=""; // room to add a description later on
-                                        (data.grade.reward) ? achievements[0].reward = data.grade.reward : achievements[0].reward=0;      
-                                   }
-                                   else{
-                                           achievements.unshift({type:"distinction", badge: data.distinction.badge, label: data.distinction.title});
-                                   }
-                           }
-                           badges.reset(achievements);
+                   profileUI.updateGrade = function updateGrade(){
+                           Utils.getGrade(user.get("ip"), function(result){
+                                   var array;
+                                   (result.distinction)?array=[result.grade, result.distinction]:array=[result.grade];
+                                grades.reset(array);
+                                // update title with grade
+                                stats.set("title", result.grade.label);
+                        });
                    };
                    
-                   profileUI.updateAchievements = function updateAchievements(achievements){
-                           // add grade and distinction (if any) to achievements array and reset badges
-                           if (badges.get(0).type === "grade") {
-                                   achievements.unshift(badges.get(0));
-                           }
-                           else if (badges.get(0).type === "distinction"){
-                                achievements.unshift(badges.get(1));
-                                achievements.unshift(badges.get(0));        
-                           }
-                           badges.reset(achievements);
+                   profileUI.updateAchievements = function updateAchievements(){
+                           Utils.getAchievements(user.get("_id"), function(result){
+                                if (result.length) achievements.reset(result);        
+                        });
                    };
                    
                    profileUI.updateProgressBar = function updateProgressBar(){
@@ -392,13 +381,8 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                    //init
                    
                    profileUI.checkProfileCompletion().then(function(){
-                        Utils.getGrade(user.get("ip"), function(result){
-                                profileUI.updateGrade(result);
-                        });
-                   
-                        Utils.getAchievements(user.get("_id"), function(result){
-                                if (result.length) profileUI.updateAchievements(result);        
-                        });        
+                        profileUI.updateGrade();
+                        profileUI.updateAchievements();        
                    });
                    
                    profileUI.updateProgressBar();

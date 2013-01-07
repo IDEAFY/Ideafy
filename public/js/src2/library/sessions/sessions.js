@@ -192,7 +192,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                          _mode = _sessions.get(_id).mode;
                       
                       // hide action bar and remove hightlight
-                        _dom.querySelector(".actionbar[data-sessions_id='"+_id+"']").setAttribute("style", "display: none;");
+                        node.parentNode.setAttribute("style", "display: none;");
                         node.classList.remove("pressed");
                       // notify replay-session event
                       Config.get("observer").notify("replay-session", _sid, _mode); 
@@ -201,7 +201,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               this.deleteSession = function(event, node){
                         var _id = node.getAttribute("data-sessions_id"), _sid = _sessions.get(_id).id;
                         // hide action bar and remove hightlight
-                        _dom.querySelector(".actionbar[data-sessions_id='"+_id+"']").setAttribute("style", "display: none;");
+                        node.parentNode.setAttribute("style", "display: none;");
                         node.classList.remove("pressed");
                         
                         /*

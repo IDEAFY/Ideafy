@@ -85,7 +85,7 @@
 	"completed": "achevée",
 	"inprogress": "en cours",
 	"noscore": "pas de score",
-	"library-decks": "Mes jeux",
+	"library-decks": "Mes Decks Ideafy",
 	"brainstormheadertitle": "Brainstorm",
 	"brainstormchoosemode": "Choisissez votre mode",
 	"continuesession": "Continuer la session",
@@ -312,5 +312,6 @@
 	"writesomething" : "Tapez une note",
 	"stats" : "Stats",
 	"achievements" : "Médailles",
-	"ideafypoints" : " Points Ideafy"
+	"ideafypoints" : " Points Ideafy",
+	"decklistheadertitle" : "Mes Decks"
 }

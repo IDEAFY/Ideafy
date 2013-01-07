@@ -2931,7 +2931,8 @@ li.color-item{
 .defaultscenario .cardpicture{
     background-image: url('../img/brainstorm/scenario-01.png');
     background-size: 100px;
-    background-position: center top;    
+    background-position: center top;
+    margin-bottom: 15px;    
 }
 
 .char.defaultcard.highlighted{
@@ -2948,10 +2949,6 @@ li.color-item{
 
 .tech.defaultcard.highlighted{
     background: url('../img/decks/fullcards/disableTechnology.png') no-repeat;
-}
-
-.defaultscenario.highlighted{
-    background: url('../img/decks/fullcards/disableProblem.png') no-repeat;
 }
 
 /* card popup */

@@ -56,7 +56,7 @@
     <div id="help-popup"></div>
     <div id="cache"></div>
     <div class="stack" data-dockstack="destination">
-      <div id="public">
+      <div id="public" class="mosaic">
       	<div id = "public-menu"></div>
         <div id="public-list" class="list">
           <div class="header blue-light">
@@ -111,9 +111,21 @@
 			</div>
 		<div id = "decks">  		
       		<div id="decklist" class="list">
+      			<div class="header blue-light">
+            			<div class="option left" data-deckscontrol=""></div>
+            			<span data-label="bind: innerHTML, decklistheadertitle">My Ideas</span>
+            			<div class="option right" data-decksevent="listen: touchstart, plus"></div>
+          			</div>
+          			<div class="overflow" data-deckliststack="destination" data-deckscontrol="radio:li,selected,touchstart,selectStart">
+            			<!-- <div class="tools">
+             				<input class="search" type="text" data-label="bind: placeholder, searchprivateplaceholder" data-decksevent="listen: keypress, search">
+             				<div name="#list-ideafy" class="tools-button ideafy pushed" data-decksevent="listen:touchstart,show"></div>
+             				<div name="#list-custom" class="tools-button custom" data-decksevent="listen:touchstart,show"></div>
+            			</div> -->
+
+          			</div>
       		</div>
-      		<div id="deckview" class="details">
-      		</div>
+      		<div id="deckview" class="details"></div>
 		</div>
 	</div>
   </div>

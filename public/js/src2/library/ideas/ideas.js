@@ -1,8 +1,8 @@
 define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 	"Olives/Model-plugin", "Amy/Delegate-plugin", "CouchDBStore", "Map", "Config",
-	"Ideafy/Library/IdeaStack", "Ideafy/Utils", "Ideafy/Library/IdeaList", "Amy/Stack-plugin", "Ideafy/SubMenu"], 
+	"Ideafy/Library/IdeaStack", "Ideafy/Library/IdeaList", "Amy/Stack-plugin"], 
 	function(Widget, Control, Model, Delegate, Store, Map, 
-		Config, Detail, Utils, List, Stack, Menu){
+		Config, Detail, List, Stack){
 		return function IdeasConstructor(){
 		//declaration
 			var _widget = new Widget(),
@@ -13,7 +13,6 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 				_observer = Config.get("observer"),
 				_radio = new Control(this),
 				_detail = new Detail(),
-                                _menu = new Menu(Map.get("library-menu")),
 				_stack = new Stack();
 
 		//setup
@@ -52,10 +51,6 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
                                              byDate.classList.remove("pushed"); 
 			             }
 			     }    
-			};
-
-			this.selectEnd = function(event){
-				//_detail.reset(_ideas.get(event.target.getAttribute("data-publicideas_id")));
 			};
 
 			this.mosaic = function(){
@@ -98,21 +93,12 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
                                 });
                         };
 			
-			//may be set the list dom (not the public dom)
+			//may be set the list dom
                         _widget.alive(_dom);
 
-			// not sure we need a submenu for public but it may be useful
-			_widget.showMenu = function showMenu(){
-			        _menu.toggleActive(true);
-			};
-			_widget.hideMenu = function hideMenu(){
-			        _menu.toggleActive(false);
-			};
-			
 			// init
-                       _menu.toggleActive(false);
 			
-			// for library for the time being only propose list by date or serach tool
+			// for library for the time being only propose list by date or search tool
 			// additional options (rating/favorites etc. may be offered in the future)
 			
 			var listDate = new List(_db, "library", "_view/ideas", {key: Config.get("uid"), descending: true, include_docs:true}),
@@ -122,14 +108,9 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			
 			_stack.getStack().add("#list-search", listSearch);
 			
-			// show private ideas sorted by most recent
-		        //listRating.init(_detail.reset);
-		        
-		        listDate.init().then(function(){
+			listDate.init().then(function(){
 		              _stack.getStack().show("#list-date");        
 		        });
-			
-			//_stack.getStack().show("#list-date");
                         
                         //return
 			return _widget;

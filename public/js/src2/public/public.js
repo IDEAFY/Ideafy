@@ -58,7 +58,12 @@ define("Ideafy/Public", ["Olives/OObject", "Amy/Control-plugin" ,
 			};
 
 			this.mosaic = function(){
-				_dom.classList.toggle("mosaic");
+				var domDetail = document.getElementById("public-detail");
+                                _dom.classList.toggle("mosaic");
+                                if (domDetail.classList.contains("invisible")) {
+                                        domDetail.classList.remove("invisible");
+                                        _detail.reset(listDate.getModel(), 0);
+                                }
 			};
 			
 			this.plus = function(){

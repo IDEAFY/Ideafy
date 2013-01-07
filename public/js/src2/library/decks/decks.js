@@ -1,29 +1,51 @@
-define("Ideafy/Library/Decks", ["Olives/OObject", "Map", "Ideafy/Library/DeckList", "Ideafy/Library/DeckView"],
-        function(Widget, Map, DeckList, DeckView){
+define("Ideafy/Library/Decks", ["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy/Delegate-plugin", "Config", "Map", "Ideafy/Library/DeckList", "Ideafy/Library/DeckView"],
+        function(Widget, Stack, Control, Delegate, Config, Map, List, DeckView){
                 
            return function MyDecksContructor(){
               
               // declaration     
-              var _widget = new Widget(),
-                  _deckList = new DeckList(),
-                  _deckView = new DeckView();
+              var widget = new Widget(),
+                  stack = new Stack(),  // in the future will allow to display taiaut decks or custom decks or search decks
+                  deckList = new List(),
+                  deckView = new DeckView();
               
+              
+              widget.plugins.addAll({
+                                "deckliststack" : stack,
+                                "decksevent" : new Delegate(widget),
+                                "deckscontrol" :new Control(widget)
+              });
               
               // setup
-              _widget.alive(Map.get("decks"));
+              widget.alive(Map.get("decks"));
               
-              _widget.reset = function(reset){
-                      _deckList.reset();
-                      _deckView.reset();
+              widget.reset = function(reset){
+                      deckList.reset();
+                      deckView.reset();
               };
               
-              _widget.init = function init(){
-                      _deckList.init();
-                      _deckVew.init();
+              widget.init = function init(){
+                      
+                      var ideafyDecks = new List("taiaut_decks");
+                          // customDecks = new List("custom_decks"); -- feature not available in the first release
+                      
+                      stack.getStack().add("ideafy", ideafyDecks);
+                      
+                      ideafyDecks.init().then(function(){
+                                deckView.reset()        
+                      });
+                      deckVew.init();
               };
+              
+              widget.selectStart = function(event){
+                        var list = stack.getStack().getCurrentScreen().getModel(),
+                            id = event.target.getAttribute("data-decks_id");
+                        deckView.reset(list, id);
+                                
+                        };
               
               // return
-              return _widget;
+              return widget;
                    
            } ;    
                 

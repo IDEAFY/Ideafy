@@ -31,10 +31,10 @@ define("Ideafy/Library/Decks", ["Olives/OObject", "Amy/Stack-plugin", "Amy/Contr
                       
                       stack.getStack().add("ideafy", ideafyDecks);
                       
-                      ideafyDecks.init().then(function(){
-                                deckView.reset()        
-                      });
-                      deckVew.init();
+                      // initial view should show active deck as highlighted and active deck content in the view
+                      ideafyDecks.init();
+                      stack.getStack().show("ideafy");
+                      deckView.init();
               };
               
               widget.selectStart = function(event){
@@ -43,6 +43,10 @@ define("Ideafy/Library/Decks", ["Olives/OObject", "Amy/Stack-plugin", "Amy/Contr
                         deckView.reset(list, id);
                                 
                         };
+              
+              
+              // init
+              widget.init();
               
               // return
               return widget;

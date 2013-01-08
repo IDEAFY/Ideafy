@@ -200,9 +200,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                 if (_syncInfo["keys"] instanceof Array) {
                                         reqData.method = "POST";
                                         reqData.data = JSON.stringify({keys:_syncInfo.keys});
-                                        reqData.headers = {
-                                                "Content-Type": "application/json"
-                                        };
+                                        reqData.headers = {"Content-Type": "application/json"};
                                         errorString = reqData.data;
 
                                 // Else, we just GET the documents using startkey/endkey
@@ -216,6 +214,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                 _transport.request(_channel,
                                         reqData,
                                         function (results) {
+                                                
 
                                         var json = JSON.parse(results);
 

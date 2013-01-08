@@ -1928,7 +1928,60 @@ textarea.solution {
     font-size: 21px;
 }
 /*decks*/
+#deckview .card-menu{
+    height: 100px;
+    padding: 20px;
+    text-align: center;
+}
 
+#deckview .card-menu li{
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}
+
+#deckview .card-menu .char{
+    background: url('../img/decks/charactersactive.png') no-repeat center center;
+    background-size: contain;
+}
+
+#deckview .card-menu .context{
+    background: url('../img/decks/contextactive.png') no-repeat center center;
+    background-size: contain;
+}
+
+#deckview .card-menu .problem{
+    background: url('../img/decks/problemactive.png') no-repeat center center;
+    background-size: contain;
+}
+
+#deckview .card-menu .tech{
+    background: url('../img/decks/technology.png') no-repeat center center;
+    background-size: contain;
+}
+
+#deckview .card-menu .char.active{
+    background: url('../img/decks/characters.png') no-repeat center center;
+    background-size: contain;
+}
+
+#deckview .card-menu .context.active{
+    background: url('../img/decks/context.png') no-repeat center center;
+    background-size: contain;
+}
+
+#deckview .card-menu .problem.active{
+    background: url('../img/decks/problem.png') no-repeat center center;
+    background-size: contain;
+}
+
+#deckview .card-menu .tech.active{
+    background: url('../img/decks/technologyactive.png') no-repeat center center;
+    background-size: contain;
+}
 
 /*BRAINSTORM*/
 

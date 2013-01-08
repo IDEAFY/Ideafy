@@ -1,5 +1,5 @@
-define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "Ideafy/Avatar", "Ideafy/ActionBar", "Ideafy/Connect/AddContact", "Ideafy/Connect/AddGroup", "Ideafy/Connect/ContactDetails"],
-        function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact, AddGroup, ContactDetails){
+define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "Ideafy/Avatar", "Ideafy/ActionBar", "Ideafy/Connect/AddContact", "Ideafy/Connect/AddGroup", "Ideafy/Connect/ContactDetails", "Ideafy/Connect/GroupDetails"],
+        function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact, AddGroup, ContactDetails, GroupDetails){
                 
                 return function ContactsConstructor(){
                         
@@ -8,6 +8,7 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                             addContact = new AddContact(),
                             addGroup = new AddGroup(),
                             contactDetails = new ContactDetails(),
+                            groupDetails = new GroupDetails(),
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "users", "label": "usrbtn", "selected": false},
@@ -121,11 +122,18 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                         };
                         
                         contactsUI.selectContact = function(event){
-                                var id = event.target.getAttribute("data-contact_id");
-                                contactDetails.reset(contactList.get(id));
+                                var id = event.target.getAttribute("data-contact_id"),
+                                    contact = contactList.get(id);
                                 document.getElementById("toggleadd").classList.remove("group");
                                 document.getElementById("toggleadd").classList.remove("user");
-                                if (detailStack.getStack().getCurrentName() !== "#contactdetails") detailStack.getStack().show("#contactdetails");
+                                if (contact.type === "user"){
+                                        contactDetails.reset(contactList.get(id));
+                                        if (detailStack.getStack().getCurrentName() !== "#contactdetails") detailStack.getStack().show("#contactdetails");
+                                }
+                                else {
+                                        groupDetails.reset(contactList.get(id));
+                                        if (detailStack.getStack().getCurrentName() !== "#groupdetails") detailStack.getStack().show("#groupdetails");
+                                }
                         };
                         
                         contactsUI.displaySort = function(event, node){
@@ -200,6 +208,7 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                         // initialize
                         // add UIs to detail stack
                         detailStack.getStack().add("#contactdetails", contactDetails);
+                        detailStack.getStack().add("#groupdetails", groupDetails);
                         detailStack.getStack().add("#addcontact", addContact);
                         detailStack.getStack().add("#addgroup", addGroup);
                         // get message list from user document

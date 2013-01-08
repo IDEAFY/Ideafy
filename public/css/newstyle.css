@@ -1273,7 +1273,7 @@ textarea.solution {
     padding: 20px;
 }
 
-.idea-sendmail .input, #newmsg .input, #msgreply .input, #addgroup .input{
+.idea-sendmail .input, #newmsg .input, #msgreply .input, #addgroup .input, #groupdetails .input{
     height:30px;
     padding-left: 10px;
     font-size: 14px;
@@ -1361,7 +1361,7 @@ textarea.solution {
     
 }
 
-.sendmail-footer p.send, .edituserdetails p.update{
+.sendmail-footer p.send, .edituserdetails p.update, #groupdetails p.update{
     padding-bottom: 20px;
     margin-top: 20px;
 }
@@ -3958,12 +3958,12 @@ li.color-item{
     color: #292929;
 }
 
-#addcontact .detail-contents, #addgroup .detail-contents{
+#addcontact .detail-contents, #addgroup .detail-contents, #groupdetails .detail-contents{
     padding: 20px;
     background: white;
 }
 
-#addgroup .detail-contents{
+#addgroup .detail-contents, #groupdetails details-contents{
     max-height: 672px;
     overflow-y: scroll;
 }
@@ -3973,7 +3973,7 @@ li.color-item{
     margin-left: 100px;
 }
 
-#addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend{
+#addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend, #groupdetails legend{
     width:100%;
     padding-bottom: 5px;
     font-family: Pacifico;
@@ -4142,7 +4142,7 @@ li.color-item{
     background-size: contain;    
 }
 
-#addgroup .folderpic{
+#addgroup .folderpic, #groupdetails .folderpic{
     float: left;
     width: 60px;
     height: 60px;
@@ -4152,16 +4152,16 @@ li.color-item{
     background-image: url('../img/connect/graygroup.png');    
 }
 
-#addgroup form{
+#addgroup form, #groupdetails form{
     margin-left: 80px;
 }
 
-#addgroup textarea.input{
+#addgroup textarea.input, #groupdetails textarea.input{
     height: 80px;
     margin-top: 10px;
 }
 
-#addgroup .groupcolors{
+#addgroup .groupcolors, #groupdetails .groupcolors{
     display: inline-block;
     padding-top: 10px;
 }
@@ -4196,17 +4196,17 @@ li.color-item{
     margin-top: 10px;
 }
 
-#addgroup .contactlist legend, #addgroup .addgrpcontacts legend{
+#addgroup .contactlist legend, #addgroup .addgrpcontacts legend, #groupdetails .contactlist legend, #groupdetails .addgrpcontacts legend{
     background: url('../img/public/hide.png') no-repeat right center;
     background-size: 15px 15px;
 }
 
-#addgroup legend.hide{
+#addgroup legend.hide, #groupdetails legend.hide{
     background: url('../img/public/show.png') no-repeat right center;
     background-size: 15px 15px;    
 }
 
-#addgroup .contactlist li{
+#addgroup .contactlist li, #groupdetails .contactlist li{
     border-top: none;
     width: 45%;
     margin-right: 10px;
@@ -4215,7 +4215,11 @@ li.color-item{
     padding-bottom: 0px;
 }
 
-#addgroup .errormsg{
+#groupdetails .contactlistdetail{
+    display: inline-block;
+}
+
+#addgroup .errormsg, #groupdetails .errormsg{
     float: left;
     display: block;
     line-height: 40px;
@@ -4228,7 +4232,7 @@ li.color-item{
     font-weight: bold;
 }
 
-#addgroup .remove-contact{
+#addgroup .remove-contact, #group-details .remove-contact{
     width: 20px;
     height: 20px;
     float: right;

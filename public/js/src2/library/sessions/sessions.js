@@ -198,38 +198,11 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                       Config.get("observer").notify("replay-session", _sid, _mode); 
               };
               
-              this.deleteSession = function(event, node){
+              _widget.deleteSession = function(event, node){
                         var _id = node.getAttribute("data-sessions_id"), _sid = _sessions.get(_id).id;
                         // hide action bar and remove hightlight
-                        node.parentNode.setAttribute("style", "display: none;");
                         node.classList.remove("pressed");
-                        
-                        /*
-                         * Use store.watch deleted aand resetting the store instead
-                         
-                        // remove session from display
-                        _sid = _sessions.get(_id).id;
-                        
-                        // start with _sessionData
-                        for (i=_sessionData.length-1; i>=0; i--){
-                                if (_sessionData[i].id === _sid) {
-                                        _sessionData.splice(i,1);
-                                        break;
-                                }
-                        }
-                        // same with searchData if applicable
-                        if (_currentSearch){
-                                for (i=_searchData.length-1; i>=0; i--){
-                                        if (_searchData[i].id === _sid) {
-                                                _searchData.splice(i,1);
-                                                break;
-                                        }
-                                }        
-                        }
-                        
-                        // apply current sorting method
-                        _widget.sortSessions(_currentSort);
-                        */
+                        node.parentNode.setAttribute("style", "display: none;");
                         
                         // remove session from CouchDB
                         var _cdb = new CouchDBStore();

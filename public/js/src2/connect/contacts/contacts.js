@@ -235,6 +235,11 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                 }          
                         });
                         
+                        // watch for delete events to display addcontact UI
+                        Config.get("observer").watch("contact-deleted", function(){
+                                detailStack.getStack().show('#addcontact');
+                        })
+                        
                         return contactsUI;    
                 }
         })

@@ -154,10 +154,10 @@ define("Ideafy/Connect/GroupDetails", ["Olives/OObject", "Config", "Olives/Model
              
                         groupDetails.discardContact = function(event, node){
                                 var id = node.getAttribute("data-contacts_id"),
-                                    userid = grpcontacts.get(id).userid;
+                                    username = grpcontacts.get(id).username;
                                 grpcontacts.alter("splice", id, 1);
                                 contactList.loop(function(v,i){
-                                        if (v.contact.userid === userid) setTimeout(function(){contactList.update(i, "selected", false);}, 200);
+                                        if (v.contact.type === "group" && v.contact.username === username) setTimeout(function(){contactList.update(i, "selected", false);}, 200);
                                 });
                         };
                         
@@ -172,7 +172,8 @@ define("Ideafy/Connect/GroupDetails", ["Olives/OObject", "Config", "Olives/Model
              
                         groupDetails.update = function(event, node){
                                 var connections = user.get("connections"), index=0, grp = JSON.parse(group.toJSON());
-                
+                                
+                                console.log(grp, currentGroupInfo);
                                 node.classList.remove("pressed");
                                 error.set("error", "");
                                 // add group to user contacts
@@ -186,25 +187,20 @@ define("Ideafy/Connect/GroupDetails", ["Olives/OObject", "Config", "Olives/Model
                                         error.set("error", labels.get("nocontactselected"));
                                 }
                                 else{
-                                        for (i=0, l = connections.length; i<l; i++){
+                                        for (i = connections.length-1; i>=0; i--){
                                                 if (connections[i].type === "group" && connections[i].username === currentGroupInfo.username){
-                                                        index = i;
-                                                }
-                                                else{
-                                                        index++;
+                                                        // insert new contact at index position
+                                                        if (!error.get("error")) {
+                                                                connections.splice(i, 1, grp);
+                                                                user.set("connections", connections);
+                                                                user.upload().then(function(){
+                                                                        groupDetails.reset(grp);
+                                                                        error.set("error", labels.get("groupupdated"));       
+                                                                });
+                                                        }                    
                                                 }
                                         }
-                                        // insert new contact at index position
-                                        if (!error.get("error")) {
-                                                connections.splice(index, 0, grp);
-                                                user.set("connections", connections);
-                                                user.upload().then(function(){
-                                                        groupDetails.reset(grp);
-                                                        error.set("error", labels.get("groupupdated"));       
-                                                });
-                                        }                     
                                 }
-                
                         };
                         
                         
@@ -213,7 +209,6 @@ define("Ideafy/Connect/GroupDetails", ["Olives/OObject", "Config", "Olives/Model
                                 colors.loop(function(v,i){
                                         if (v.icon === contactinfo.color) colors.update(i, "selected", true);        
                                 });
-                                console.log(contactinfo);
                                 group.reset(contactinfo);
                                 currentGroupInfo = contactinfo;
                                 grpcontacts.reset(contactinfo.contacts);

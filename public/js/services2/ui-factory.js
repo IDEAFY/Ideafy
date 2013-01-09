@@ -242,7 +242,9 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                                 transport.request("Notify", json, function(result){
                                                                         console.log(result);
                                                                 });
-                                                        }        
+                                                        }
+                                                        
+                                                        observer.notify("contact-deleted");        
                                                 });
                                                 
                                                 break;

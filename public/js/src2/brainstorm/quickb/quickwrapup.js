@@ -19,7 +19,7 @@ define("Ideafy/Brainstorm/QuickWrapup", ["Olives/OObject", "Map", "Olives/Model-
                                                         }       
                                         },
                                         setScore : function(score){
-                                                if (score) this.innerHTML = score + "ip";
+                                                if (score) this.innerHTML = score + " ip";
                                         },
                                         setTime : function(duration){
                                                 if (duration) this.innerHTML = Utils.formatDuration(duration);

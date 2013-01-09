@@ -71,11 +71,12 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                 };
                 
                 this.showActionBar = function(event, node){
-                        var id = node.getAttribute("data-listideas_id");
+                        var id = node.getAttribute("data-listideas_id"),
+                            dom = document.getElementById("ideas");
                         
                         touchPoint = [event.pageX, event.pageY];
                         
-                        if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                        if (!dom.classList.contains("mosaic") && !display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
                                 var actionBar = new ActionBar("idea", node, _store.get(id).doc, this.hideActionBar),
                                     frag = document.createDocumentFragment();  
                                 

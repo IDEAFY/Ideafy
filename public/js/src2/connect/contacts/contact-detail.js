@@ -37,7 +37,7 @@ define("Ideafy/Connect/ContactDetails", ["Olives/OObject", "Config", "Map", "Sto
                                 "ctdetailsevent" : new Event(contactDetails)        
                         });
                         
-                        contactDetails.template = '<div id = "contactdetails"><div class="header blue-dark"><span class="subjectlbl" data-details="bind:innerHTML, username"></span></div><div class = "detail-contents"><div class = "contactessentials"><div class="avatar" data-basicinfo="bind:setAvatar, userid"></div><div class="basicinfo"><h2 data-basicinfo="bind:innerHTML,username"></h2><p data-basicinfo="bind:innerHTML, intro"></p></div><div class="contactdashboard"><div class="contactstats"><legend data-label="bind:innerHTML, stats"></legend><div class="userscore"><span class="ip" data-ctdetails="bind:innerHTML, ip"></span><span data-label="bind:innerHTML, ideafypoints"></span></div><table><tr class ="myids"><th data-label="bind:innerHTML, ideaslbl"></th><td data-ctdetails="bind: innerHTML, ideas_count"></td></tr><tr class ="myss"><th data-label="bind:innerHTML, sessionslbl"></th><td data-ctdetails="bind: innerHTML, sessions"></td></tr><tr class="myctcts"><th data-label="bind:innerHTML, contactslbl"></th><td data-ctdetails="bind: innerHTML, contacts"></td></tr><tr class="my2q"><th data-label="bind:innerHTML, toquestionslbl"></th><td data-ctdetails="bind: innerHTML, twoquestions_count"></td></tr></table></div><div class="contactbadges"><legend data-label="bind:innerHTML, achievements"></legend><p class="grade" data-stats="bind:innerHTML, title"></p><ul class="badges" data-grades="foreach"><li class="contactbadge"><div data-grades="bind:showBadge, badge"></div><label data-grades="bind:innerHTML, title"></label></li></ul><ul class="badges" data-achievements="foreach"><li class="contactbadge"><div data-achievements="bind:showBadge, badge"></div><label data-achievements="bind:innerHTML, label"></label></li></ul></div></div></div></div><div class = "contactnotes"><legend data-label="bind: innerHTML, mynotes"></legend><div class="editnotes" data-ctdetailsevent="listen:touchstart, editNotes"></div><textarea id="ctnotes" class = "input" readonly="readonly" data-label="bind:placeholder,writesomething" data-basicinfo="bind: value, notes"></textarea><div id = "uploadnotes" data-ctdetailsevent="listen:touchstart, uploadNotes"></div><div id = "cancelnotes" data-ctdetailsevent="listen:touchstart, cancelNotes"></div></div></div></div>';
+                        contactDetails.template = '<div id = "contactdetails"><div class="header blue-dark"><span class="subjectlbl" data-details="bind:innerHTML, username"></span></div><div class = "detail-contents"><div class = "contactessentials"><div class="avatar" data-basicinfo="bind:setAvatar, userid"></div><div class="basicinfo"><h2 data-basicinfo="bind:innerHTML,username"></h2><p data-basicinfo="bind:innerHTML, intro"></p></div><div class="contactdashboard"><div class="contactstats"><legend data-label="bind:innerHTML, stats"></legend><div class="userscore"><span class="ip" data-ctdetails="bind:innerHTML, ip"></span><span data-label="bind:innerHTML, ideafypoints"></span></div><table><tr class ="myids"><th data-label="bind:innerHTML, ideaslbl"></th><td data-ctdetails="bind: innerHTML, ideas_count"></td></tr><tr class ="myss"><th data-label="bind:innerHTML, sessionslbl"></th><td data-ctdetails="bind: innerHTML, sessions"></td></tr><tr class="myctcts"><th data-label="bind:innerHTML, contactslbl"></th><td data-ctdetails="bind: innerHTML, contacts"></td></tr><tr class="my2q"><th data-label="bind:innerHTML, toquestionslbl"></th><td data-ctdetails="bind: innerHTML, twoquestions_count"></td></tr></table></div><div class="contactbadges"><legend data-label="bind:innerHTML, achievements"></legend><p class="grade" data-stats="bind:innerHTML, title"></p><ul class="badges" data-grades="foreach"><li class="contactbadge"><div data-grades="bind:showBadge, badge"></div><label data-grades="bind:innerHTML, title"></label></li></ul><ul class="badges" data-achievements="foreach"><li class="contactbadge"><div data-achievements="bind:showBadge, badge"></div><label data-achievements="bind:innerHTML, label"></label></li></ul></div></div></div></div><div class = "contactnotes"><legend data-label="bind: innerHTML, mynotes"></legend><div id = "cancelnotes" class="invisible" data-ctdetailsevent="listen:touchstart, push; listen:touchend, cancelNotes"></div><div id = "uploadnotes" class="invisible" data-ctdetailsevent="listen:touchstart, push;listen:touchend, uploadNotes"></div><textarea id="ctnotes" class = "input" data-label="bind:placeholder,writesomething" data-basicinfo="bind: value, notes" data-ctdetailsevent="listen:input, displayNoteBtns"></textarea></div></div></div>';
                         
                        contactDetails.place(Map.get("contactdetails"));
                        
@@ -93,40 +93,45 @@ define("Ideafy/Connect/ContactDetails", ["Olives/OObject", "Config", "Map", "Sto
                        };
                        
                        contactDetails.reset = function reset(contactinfo){
-                                console.log(contactinfo);
                                 contact.reset(contactinfo);
                                 grades.reset([]);
                                 achievements.reset([]);
                                 // if there are no notes for this contact init with empty string
                                 if (!contact.get("notes")) contact.set("notes", "");
-                                contactDetails.getUserInfo(contactinfo.userid);        
+                                contactDetails.getUserInfo(contactinfo.userid); 
+                                console.log(contact.toJSON());       
                        };
                        
-                       contactDetails.editNotes = function(event, node){
-                                var notes = document.getElementById("ctnotes"),
-                                    upload = document.getElementById("uploadnotes"),
-                                    cancel = document.getElementById("cancelnotes");
-                                notes.removeAttribute("readonly");
-                                upload.classList.remove("invisible");
-                                cancel.classList.remove("invisible");      
+                       contactDetails.displayNoteBtns = function(event,node){
+                                document.getElementById("uploadnotes").classList.remove("invisible");
+                                document.getElementById("cancelnotes").classList.remove("invisible");     
+                       };
+                       
+                       contactDetails.hideNoteBtns = function hideNoteBtns(event,node){
+                                document.getElementById("uploadnotes").classList.add("invisible");
+                                document.getElementById("cancelnotes").classList.add("invisible");     
+                       };
+                       
+                       contactDetails.push = function(event, node){
+                                node.classList.add("pushed");      
                        };
                        
                        contactDetails.uploadNotes = function(event, node){
                                 var contacts = user.get("connections"), i, l=contacts.length, g, j,
-                                    notes = document.getElementById("ctnotes"),
                                     upload = document.getElementById("uploadnotes"),
                                     cancel = document.getElementById("cancelnotes");
                                 
+                                console.log(contact.get("notes"));
                                 for (i=0; i<l; i++){
-                                       if (contacts[i].userid === contact._id){
-                                               contacts[i].notes = notes.value;
+                                       if (contacts[i].userid === contact.get("userid")){
+                                               contacts[i].notes = contact.get("notes");
                                        }
                                        // also update contact info in groups
                                        if (contacts[i].type === "group"){
                                                 g = contacts[i].contacts;
                                                 for (j=0; j<g.length; j++){
-                                                        if (g[j].userid === contact._id){
-                                                                g[j].notes = notes.value;       
+                                                        if (g[j].userid === contact.get("userid")){
+                                                                g[j].notes = contact.get("notes");       
                                                         }
                                                 }
                                                 contacts[i].contacts = g;       
@@ -134,20 +139,19 @@ define("Ideafy/Connect/ContactDetails", ["Olives/OObject", "Config", "Map", "Sto
                                 }
                                 user.set("connections", contacts);
                                 user.upload().then(function(){
-                                        notes.setAttribute("readonly", "readonly");
-                                        upload.classList.add("invisible");
-                                        cancel.classList.add("invisible");        
+                                        node.classList.remove("pushed");
+                                        contactDetails.hideNoteBtns();      
                                 });        
                        };
                        
                        contactDetails.cancelNotes = function(event, node){
-                                var notes = document.getElementById("ctnotes"),
-                                    upload = document.getElementById("uploadnotes"),
-                                    cancel = document.getElementById("cancelnotes");
-                                notes.setAttribute("readonly", "readonly");
-                                notes.value = contact.get("notes") || "";
-                                upload.classList.add("invisible");
-                                cancel.classList.add("invisible");        
+                                // reload notes from user connections
+                                var contacts = user.get("connections"), l=contacts.length; i;
+                                for (i=0; i<l;i++){
+                                        if (contacts[i].userid === contact.get("userid")) contact.set("notes", contacts[i].notes)
+                                }
+                                node.classList.add("pushed");
+                                contactDetails.hideNoteBtns();     
                        };
                        
                        return contactDetails; 

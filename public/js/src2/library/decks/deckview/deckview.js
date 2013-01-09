@@ -20,7 +20,6 @@ define("Ideafy/Library/DeckView", ["Olives/OObject", "Olives/Model-plugin", "Oli
                                         setActive : function(active){
                                                 console.log(active);
                                                 (active)?this.classList.add("active"):this.classList.remove("active");
-                                                console.log(this.classList);
                                         }
                                 }),
                                 "deckviewevent" : new Event(deckView)

@@ -4366,26 +4366,22 @@ li.color-item{
 .userdetails .cd-contentarea p.fb{
     border-top: 1px solid #657b99;
     background: url('../img/profile/fb.png') no-repeat;
-    background-position: 5px center;
-    background-size: 15px 15px;    
+    background-size: contain;    
 }
 
 .userdetails .cd-contentarea p.gp{
     background: url('../img/profile/google.png') no-repeat;
-    background-position: 5px center;
-    background-size: 15px 15px;    
+    background-size: contain;    
 }
 
 .userdetails .cd-contentarea p.tw{
     background: url('../img/profile/twitter.png') no-repeat;
-    background-position: 5px center;
-    background-size: 15px 15px;    
+    background-size: contain;    
 }
 
 .userdetails .cd-contentarea p.lin{
     background: url('../img/profile/linkedin.png') no-repeat;
-    background-position: 5px bottom;
-    background-size: 15px 15px;    
+    background-size: contain;    
 }
 
 .userdetails .contentTitle{
@@ -4398,6 +4394,37 @@ li.color-item{
 
 .userdetails legend, .edituserdetails .addtlinfo legend{
     border-bottom: 1px solid #657b99;
+}
+
+
+.edituserdetails .socialnw li{
+    float: left;
+    padding-left: 48px;
+    width: 220px;
+    background-size: 35px;
+    background-position: left 0px;
+    background-repeat: no-repeat;
+}
+
+.socialnw li.fb{
+    background-image:url('../img/profile/fb.png');
+}
+
+.socialnw li.gp{
+    background-image:url('../img/profile/google.png');
+}
+
+.socialnw li.lin{
+    background-image:url('../img/profile/linkedin.png');
+}
+
+.socialnw li.tw{
+    background-image:url('../img/profile/twitter.png');
+}
+
+.edituserdetails .socialnw input{
+   width: 225px;
+   font-size: 12px;
 }
 
 .completionbar{
@@ -4601,6 +4628,7 @@ li.my2q{
     padding: 20px;
     font-family: Pacifico;
     font-size: 14px;
+    display: table-cell;
 }
 
 .userachievements .grade{
@@ -4609,7 +4637,8 @@ li.my2q{
 }
 
 .userachievements .badges, #contactbadges .badges{
-    display: inline-block;
+    display: inline;
+    height: 125px;
 }
 
 .userachievements .badge, .contactbadge{

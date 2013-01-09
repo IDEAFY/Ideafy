@@ -11,6 +11,7 @@ define("Ideafy/Library/DeckList", ["Olives/OObject", "Map", "Config", "Olives/Mo
                         decks.setTransport(Config.get("transport"));
                         
                         deckList.plugins.addAll({
+                                "labels" : new Model(labels),
                                 "active" : new Model(user, {
                                         
                                 }),
@@ -19,7 +20,14 @@ define("Ideafy/Library/DeckList", ["Olives/OObject", "Map", "Config", "Olives/Mo
                                                 (version)?this.innerHTML=labels.get("version")+version: this.innerHTML="";        
                                         },
                                         setAuthor: function(author){
-                                                
+                                                console.log(author);
+                                                if (author === "Taïaut"){
+                                                        this.innerHTML = "";
+                                                        this.setAttribute("style", "background-image:url('../img/logo.png');")
+                                                }
+                                                else {
+                                                        this.innerHTML = author; //need to make sure that author field is filled with username and userid needs to be saved along somewhere with the deck document
+                                                }    
                                         },
                                         date : function(date){
                                                 (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
@@ -28,7 +36,7 @@ define("Ideafy/Library/DeckList", ["Olives/OObject", "Map", "Config", "Olives/Mo
                                 "decksevent" : new Event(deckList)
                         });
                         
-                        deckList.template = '<ul id="decklist" data-decks="foreach"><li class="list-item" data-decklistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, doc.title"></h3><span class="version" data-decks="bind:setVersion, doc.version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,doc.description"></p></div><div class="item-footer"><span class="author" data-decks="bind:setAuthor, author"></span><span class="date" data-decks="bind:date, doc.date"></div></div></li></ul>';
+                        deckList.template = '<ul id="decklist" data-decks="foreach"><li class="list-item" data-decklistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, doc.title"></h3><span class="version" data-decks="bind:setVersion, doc.version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,doc.description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, doc.author"></div><span class="date" data-decks="bind:date, doc.date"></div></div></li></ul>';
                         
                         deckList.reset = function reset(){       
                         };

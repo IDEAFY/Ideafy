@@ -1928,6 +1928,37 @@ textarea.solution {
     font-size: 21px;
 }
 /*decks*/
+
+#decklist .item-footer{
+    display: inline-block;
+    width: 100%;
+}
+
+#decklist .item-footer label, #decklist .item-footer .author, #decklist .item-footer span.date{
+    color: #808080;
+    font-size: 12px;
+}
+
+#decklist .item-footer label, #decklist{
+    float: left;
+    margin-right: 10px;
+}
+
+#decklist .item-footer .author{
+    display: inline-block;
+    color: #657b99;
+    font-weight: bold;
+    height: 30px;
+    min-width: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    float: left;
+}
+
+#decklist .item-footer .date{
+    float: right;
+}
+
 #deckview .card-menu{
     height: 100px;
     padding: 20px;

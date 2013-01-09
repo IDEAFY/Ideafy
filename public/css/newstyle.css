@@ -1939,7 +1939,7 @@ textarea.solution {
     font-size: 12px;
 }
 
-#decklist .item-footer label, #decklist{
+#decklist .item-footer label{
     float: left;
     margin-right: 10px;
 }

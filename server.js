@@ -590,7 +590,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         if (user.profile_complete) {
                                                 if (!userRewards.get("profilecomplete")){
                                                         user.ip += achievements.profilecomplete.reward;
-                                                        user.news.push({type: "RWD", date: date, content: achievements.profilecomplete});
+                                                        user.news.unshift({type: "RWD", date: date, content: achievements.profilecomplete});
                                                         userRewards.set("profilecomplete", 1);
                                                         update = true;
                                                 }
@@ -600,7 +600,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         if (user.tutorial_complete){
                                                 if (!userRewards.get("tutorialcomplete")){
                                                         user.ip += achievements.tutorialcomplete.reward;
-                                                        user.news.push({type: "RWD", date: date, content: achievements.tutorialcomplete});
+                                                        user.news.unshift({type: "RWD", date: date, content: achievements.tutorialcomplete});
                                                         userRewards.set("tutorialcomplete", 1);
                                                         update = true;
                                                 }
@@ -610,7 +610,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         if (user.settings.useascharacter){
                                                 if (!userRewards.get("playthegame")){
                                                         user.ip += achievements.playthegame.reward;
-                                                        user.news.push({type: "RWD", date: date, content: achievements.playthegame});
+                                                        user.news.unshift({type: "RWD", date: date, content: achievements.playthegame});
                                                         userRewards.set("playthegame", 1);
                                                         update = true;
                                                 }
@@ -629,7 +629,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 if (idea_count >= 5){
                                                         if (!userRewards.get("ideas5")){
                                                                 user.ip += achievements.ideas5.reward;
-                                                                user.news.push({type: "RWD", date: date, content: achievements.ideas5});
+                                                                user.news.unshift({type: "RWD", date: date, content: achievements.ideas5});
                                                                 userRewards.set("ideas5", 1);
                                                                 update = true;
                                                         }
@@ -639,7 +639,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 if (idea_count >= 25){
                                                         if (!userRewards.get("ideas25")){
                                                                 user.ip += achievements.ideas25.reward;
-                                                                user.news.push({type: "RWD", date: date, content: achievements.ideas25});
+                                                                user.news.unshift({type: "RWD", date: date, content: achievements.ideas25});
                                                                 userRewards.set("ideas25", 1);
                                                                 update = true;
                                                         }
@@ -649,7 +649,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 if (idea_count >= 100){
                                                         if (!userRewards.get("ideas100")){
                                                                 user.ip += achievements.ideas100.reward;
-                                                                user.news.push({type: "RWD", date: date, content: achievements.ideas100});
+                                                                user.news.unshift({type: "RWD", date: date, content: achievements.ideas100});
                                                                 userRewards.set("ideas100", 1);
                                                                 update = true;
                                                         }
@@ -659,7 +659,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 if (idea_count >= 250){
                                                         if (!userRewards.get("ideas250")){
                                                                 user.ip += achievements.ideas250.reward;
-                                                                user.news.push({type: "RWD", date: date, content: achievements.ideas250});
+                                                                user.news.unshift({type: "RWD", date: date, content: achievements.ideas250});
                                                                 userRewards.set("ideas250", 1);
                                                                 update = true;
                                                         }
@@ -674,7 +674,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 if (rating >= 3.5){
                                                                         if (!userRewards.get("bronzeacorn")){
                                                                                 user.ip += achievements.bronzeacorn.reward;
-                                                                                user.news.push({type: "RWD", date: date, content: achievements.bronzeacorn});
+                                                                                user.news.unshift({type: "RWD", date: date, content: achievements.bronzeacorn});
                                                                                 userRewards.set("bronzeacorn", 1);
                                                                                 update = true;
                                                                         }
@@ -687,7 +687,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 if (rating >= 4){
                                                                         if (!userRewards.get("silveracorn")){
                                                                                 user.ip += achievements.silveracorn.reward;
-                                                                                user.news.push({type: "RWD", date: date, content: achievements.silveracorn});
+                                                                                user.news.unshift({type: "RWD", date: date, content: achievements.silveracorn});
                                                                                 userRewards.set("silveracorn", 1);
                                                                                 update = true;
                                                                         }
@@ -700,7 +700,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 if (rating >= 4.5){
                                                                         if (!userRewards.get("goldenacorn")){
                                                                                 user.ip += achievements.goldenacorn.reward;
-                                                                                user.news.push({type: "RWD", date: date, content: achievements.goldenacorn});
+                                                                                user.news.unshift({type: "RWD", date: date, content: achievements.goldenacorn});
                                                                                 userRewards.set("goldenacorn", 1);
                                                                                 update = true;
                                                                         }
@@ -722,7 +722,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         if (ss_count >= 5){
                                                                 if (!userRewards.get("easybrainstormer")){
                                                                         user.ip += achievements.easybrainstormer.reward;
-                                                                        user.news.push({type: "RWD", date: date, content: achievements.easybrainstormer});
+                                                                        user.news.unshift({type: "RWD", date: date, content: achievements.easybrainstormer});
                                                                         userRewards.set("easybrainstormer", 1);
                                                                         update = true;
                                                                 }
@@ -732,7 +732,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         if (ss_count >= 20){
                                                                 if (!userRewards.get("mindstormer")){
                                                                         user.ip += achievements.mindstormer.reward;
-                                                                        user.news.push({type: "RWD", date: date, content: achievements.mindstormer});
+                                                                        user.news.unshift({type: "RWD", date: date, content: achievements.mindstormer});
                                                                         userRewards.set("mindstormer", 1);
                                                                         update = true;
                                                                 }
@@ -742,7 +742,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         if (ss_count >= 50){
                                                                 if (!userRewards.get("mastermindstormer")){
                                                                         user.ip += achievements.mastermindstormer.reward;
-                                                                        user.news.push({type: "RWD", date: date, content: achievements.mastermindstormer});
+                                                                        user.news.unshift({type: "RWD", date: date, content: achievements.mastermindstormer});
                                                                         userRewards.set("mastermindstormer", 1);
                                                                         update = true;
                                                                 }
@@ -762,7 +762,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 if (ms_count >= 5){
                                                                         if (!userRewards.get("guide")){
                                                                                 user.ip += achievements.guide.reward;
-                                                                                user.news.push({type: "RWD", date: date, content: achievements.guide});
+                                                                                user.news.unshift({type: "RWD", date: date, content: achievements.guide});
                                                                                 userRewards.set("guide", 1);
                                                                                 update = true;
                                                                         }
@@ -772,7 +772,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 if (ms_count >= 10){
                                                                         if (!userRewards.get("leader")){
                                                                                 user.ip += achievements.leader.reward;
-                                                                                user.news.push({type: "RWD", date: date, content: achievements.leader});
+                                                                                user.news.unshift({type: "RWD", date: date, content: achievements.leader});
                                                                                 userRewards.set("leader", 1);
                                                                                 update = true;
                                                                         }
@@ -782,7 +782,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                 if (ms_count >= 25){
                                                                         if (!userRewards.get("mindweaver")){
                                                                                 user.ip += achievements.mindweaver.reward;
-                                                                                user.news.push({type: "RWD", date: date, content: achievements.mindweaver});
+                                                                                user.news.unshift({type: "RWD", date: date, content: achievements.mindweaver});
                                                                                 userRewards.set("mindweaver", 1);
                                                                                 update = true;
                                                                         }
@@ -803,7 +803,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                         if (tq_count >= 5){
                                                                                 if (!userRewards.get("curious")){
                                                                                         user.ip += achievements.curious.reward;
-                                                                                        user.news.push({type: "RWD", date: date, content: achievements.curious});
+                                                                                        user.news.unshift({type: "RWD", date: date, content: achievements.curious});
                                                                                         userRewards.set("curious", 1);
                                                                                         update = true;
                                                                                 }
@@ -813,7 +813,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                         if (tq_count >= 15){
                                                                                 if (!userRewards.get("puzzled")){
                                                                                         user.ip += achievements.puzzled.reward;
-                                                                                        user.news.push({type: "RWD", date: date, content: achievements.puzzled});
+                                                                                        user.news.unshift({type: "RWD", date: date, content: achievements.puzzled});
                                                                                         userRewards.set("puzzled", 1);
                                                                                         update = true;
                                                                                 }
@@ -823,7 +823,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                         if (tq_count >= 50){
                                                                                 if (!userRewards.get("whyarewehere")){
                                                                                         user.ip += achievements.whyarewehere.reward;
-                                                                                        user.news.push({type: "RWD", date: date, content: achievements.whyarewehere});
+                                                                                        user.news.unshift({type: "RWD", date: date, content: achievements.whyarewehere});
                                                                                         userRewards.set("whyarewehere", 1);
                                                                                         update = true;
                                                                                 }
@@ -835,7 +835,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                         if (user.twocents_count >= 10){
                                                                                 if (!userRewards.get("opinionator")){
                                                                                         user.ip += achievements.opinionator.reward;
-                                                                                        user.news.push({type: "RWD", date: date, content: achievements.opinionator});
+                                                                                        user.news.unshift({type: "RWD", date: date, content: achievements.opinionator});
                                                                                         userRewards.set("opinionator", 1);
                                                                                         update = true;
                                                                                 }
@@ -846,7 +846,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                         if (user.twocents_count >= 100){
                                                                                 if (!userRewards.get("feedbackartist")){
                                                                                         user.ip += achievements.feedbackartist.reward;
-                                                                                        user.news.push({type: "RWD", date: date, content: achievements.feedbackartist});
+                                                                                        user.news.unshift({type: "RWD", date: date, content: achievements.feedbackartist});
                                                                                         userRewards.set("feedbackartist", 1);
                                                                                         update = true;
                                                                                 }
@@ -857,7 +857,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                         if (user.twocents_count >= 1000){
                                                                                 if (!userRewards.get("chatterbox")){
                                                                                         user.ip += achievements.chatterbox.reward;
-                                                                                        user.news.push({type: "RWD", date: date, content: achievements.chatterbox});
+                                                                                        user.news.unshift({type: "RWD", date: date, content: achievements.chatterbox});
                                                                                         userRewards.set("chatterbox", 1);
                                                                                         update = true;
                                                                                 }
@@ -868,7 +868,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                         if (user.twocents_count >= 5000){
                                                                                 if (!userRewards.get("allday")){
                                                                                         user.ip += achievements.allday.reward;
-                                                                                        user.news.push({type: "RWD", date: date, content: achievements.allday});
+                                                                                        user.news.unshift({type: "RWD", date: date, content: achievements.allday});
                                                                                         userRewards.set("allday", 1);
                                                                                         update = true;
                                                                                 }

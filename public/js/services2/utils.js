@@ -233,6 +233,37 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                              req.send(body);
                   },	
 			
+                /**
+                 * A function to retrieve the labels in the desired language
+                 * @Param {String} lang the desired language (ab-cd)
+                 * @Returns {Promise} promise 
+                 */
+                updateLabels : function(lang) {
+                        var json = {"lang" : lang},
+                            local = new LocalStore(),
+                            labels = Config.get("labels"),
+                            promise = new Promise();
+                   
+                        // retrieve ideafy-data
+                        local.sync("ideafy-data");
+                        Config.get("transport").request("Lang", json, function(result) {
+                                if (result === "nok") {
+                                        local.set("labels", Config.get("defaultLabels"));
+                                        Config.set("language", "en-us");
+                                }
+                                else {
+                                        local.set("labels", result);
+                                        Config.set("language", result.language);
+                                }
+                                // save labels to local storage
+                                local.sync("ideafy-data");
+                                // apply language
+                                labels.reset(local.get("labels"));
+                                promise.resolve();
+                        });
+                        return promise;
+                },
+                
                 getAvatarById : function(id){
 		      var promise = new Promise,
 		          avatars = Config.get("avatars");

@@ -51,7 +51,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   background:#657B99;
 }
 
-.header, .list h3, .detail-header h2, #contactdetails h2{
+.header, .list h3, .detail-header h2, #contactdetails h2, #deckview .deckheader h2{
   font-family:pacifico;
   letter-spacing:1px;
 }
@@ -787,6 +787,8 @@ ul.notify-list{
 
 .mosaic .list{
   width:834px;
+  background: url('../img/library/bgdeck.jpg');
+  background-size: cover;
 }
 
 .list li {
@@ -798,24 +800,33 @@ ul.notify-list{
     padding-bottom: 10px;
 }
 
+.mosaic .tools input{
+    background: white;
+}
+
 .mosaic li:nth-child(5n){
-    background: rgba(101,123,153,0.3);    
+    /*background: rgba(101,123,153,0.3);*/
+    background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(101,123,153,0.05) 10%, rgba(101,123,153,0.1) 50%, rgba(101,123,153,0.2) 75%, rgba(101,123,153,0.5) 100%);
 }
 
 .mosaic li:nth-child(5n+1){
-    background: rgba(154, 201, 206, 0.3);    
+    /*background: rgba(154, 201, 206, 0.4);*/
+    background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(154, 201, 206,0.05) 10%, rgba(154, 201, 206,0.1) 50%, rgba(154, 201, 206,0.2) 75%, rgba(154, 201, 206,0.5) 100%);   
 }
 
 .mosaic li:nth-child(5n+2){
-    background: rgba(242, 229, 32, 0.3);    
+    /*background: rgba(242, 229, 32, 0.4);*/
+    background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(242, 229, 32,0.05) 10%, rgba(242, 229, 32,0.1) 50%, rgba(242, 229, 32,0.2) 75%, rgba(242, 229, 32,0.5) 100%);    
 }
 
 .mosaic li:nth-child(5n+3){
-    background: rgba(242, 123, 61, 0.3);  
+    /*background: rgba(242, 123, 61, 0.4);*/
+    background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(242, 123, 61,0.05) 10%, rgba(242, 123, 61,0.1) 50%, rgba(242, 123, 61,0.2) 75%, rgba(242, 123, 61,0.5) 100%);  
 }
 
 .mosaic li:nth-child(5n+4){
-    background: rgba(95, 143, 40, 0.3); 
+    /*background: rgba(95, 143, 40, 0.4);*/
+    background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(95, 143, 40,0.05) 10%, rgba(95, 143, 40,0.1) 50%, rgba(95, 143, 40,0.2) 75%, rgba(95, 143, 40,0.5) 100%); 
 }
 
 
@@ -826,8 +837,11 @@ ul.notify-list{
     padding: 5px 10px;
     float: left;
     height: 180px;
-    margin: 8px;
-    border: 1px outset #cccccc;
+    margin: 9px;
+    border-radius: 5px;
+    background: white;
+    -webkit-box-shadow: inset 0px 0px 10px #CCCCCC;
+    /*border: 1px outset #cccccc;*/
 }
 
 .mosaic .list-item span.date{
@@ -908,10 +922,14 @@ ul.notify-list{
 }
 
 #public-list .option.left,  #idea-list .option.left{
-  background:url('../img/public/mosaique.png') no-repeat center center;
-  background-size:15px 15px;
+  background:url('../img/public/listenabled.png') no-repeat center center;
+  background-size:30px 30px;
 }
 
+#public-list .option.left.mosaic,  #idea-list .option.left.mosaic{
+  background:url('../img/public/mosaicenabled.png') no-repeat center center;
+  background-size:30px 30px;
+}
 
 /* public details */ 
 #public-detail, #ideas-detail, #message-detail {
@@ -2016,7 +2034,7 @@ textarea.solution {
     background-size: contain;
 }
 
-#deckview .cardlist{
+#deckview .cardlist, #deckview .deckdetails{
     width: 100%;
     height: 608px;
     background-image:url('../img/library/bgdeck.jpg');
@@ -2028,6 +2046,50 @@ textarea.solution {
 #deckview .cardlist .card{
     background: white;
     margin: 20px;
+}
+
+#deckview .deckdetails{
+    background: none;
+    padding: 25px 0;
+    font-family: Helvetica;
+}
+
+#deckview .deckinfo{
+    background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
+}
+
+#deckview .deckheader{
+    padding: 12px;  
+    background: transparent; 
+}
+
+#deckview .deckheader span{
+    font-size: 0px 20px;   
+}
+
+#deckview .deckheader .decklogo{
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    float: left;
+    background-size: contain;
+    margin-right: 20px;    
+}
+
+#deckview .deckdescription{
+    margin: 20px 40px 0px 40px;
+    height: 150px;
+    border-top: 1px solid #CCC;
+    padding: 12px 0px 50px 0px;
+    font-size: 12px; 
+    text-align: justify;  
+}
+
+#deckview .deckcarousel{
+    height: 303px;
+    z-index: 0;
+    background: #333333;
+    -webkit-box-shadow: inset 0 1px 10px 1px rgba(0,0,0,0.8);    
 }
 
 /*BRAINSTORM*/

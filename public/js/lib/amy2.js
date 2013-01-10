@@ -81,8 +81,8 @@ define("Amy/Event-controller", ["Amy/TestUtils", "Tools"],
 				},
 				//put in the test lib
 				_isString = function(){
-					var bool = true;
-					for(var l = arguments.length; l--;){
+					var bool = true,l;
+					for(l = arguments.length; l>=0; l--){
 						bool = bool && (typeof arguments[l] == "string");
 					}
 					return bool;
@@ -198,7 +198,7 @@ define("Amy/Control-plugin", ["Amy/Event-controller","Amy/DomUtils"],
 
 			//mettre peut être la classe
 			this.init = function(node){
-				_current = node;
+			        _current = node;
 			};
 
 			this.radio = function(node, query, className, type, callback, useCapture){

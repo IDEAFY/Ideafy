@@ -5,6 +5,7 @@ define("Ideafy/Library/Decks", ["Olives/OObject", "Amy/Stack-plugin", "Amy/Contr
               
               // declaration     
               var widget = new Widget(),
+                  deckControl = new Control(widget),
                   stack = new Stack(),  // in the future will allow to display taiaut decks or custom decks or search decks
                   deckList = new List(),
                   deckView = new DeckView();
@@ -13,7 +14,7 @@ define("Ideafy/Library/Decks", ["Olives/OObject", "Amy/Stack-plugin", "Amy/Contr
               widget.plugins.addAll({
                                 "deckliststack" : stack,
                                 "decksevent" : new Delegate(widget),
-                                "deckscontrol" :new Control(widget)
+                                "deckscontrol" : deckControl
               });
               
               // setup
@@ -32,16 +33,21 @@ define("Ideafy/Library/Decks", ["Olives/OObject", "Amy/Stack-plugin", "Amy/Contr
                       stack.getStack().add("ideafy", ideafyDecks);
                       
                       // initial view should show active deck as highlighted and active deck content in the view
-                      ideafyDecks.init();
-                      stack.getStack().show("ideafy");
-                      deckView.init();
+                      ideafyDecks.init(function(sync){
+                              if (sync){
+                                      stack.getStack().show("ideafy");
+                                      deckView.init();
+                                      ideafyDecks.initSelected(deckControl.init,0);
+                                      deckView.reset(ideafyDecks.getModel().get(0).doc);
+                              }
+                      });
               };
               
               widget.selectStart = function(event){
                         var list = stack.getStack().getCurrentScreen().getModel(),
                             id = event.target.getAttribute("data-decks_id");
                         deckView.reset(list.get(id).doc);
-                        };
+              };
               
               
               // init

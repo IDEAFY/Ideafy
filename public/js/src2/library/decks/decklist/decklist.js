@@ -36,7 +36,7 @@ define("Ideafy/Library/DeckList", ["Olives/OObject", "Map", "Config", "Olives/Mo
                                 "decksevent" : new Event(deckList)
                         });
                         
-                        deckList.template = '<ul id="decklist" data-decks="foreach"><li class="list-item" data-decklistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, doc.title"></h3><span class="version" data-decks="bind:setVersion, doc.version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,doc.description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, doc.author"></div><span class="date" data-decks="bind:date, doc.date"></div></div></li></ul>';
+                        deckList.template = '<ul id="deck-list" data-decks="foreach"><li class="list-item" data-decklistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, doc.title"></h3><span class="version" data-decks="bind:setVersion, doc.version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,doc.description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, doc.author"></div><span class="date" data-decks="bind:date, doc.date"></div></div></li></ul>';
                         
                         deckList.reset = function reset(){       
                         };
@@ -45,16 +45,22 @@ define("Ideafy/Library/DeckList", ["Olives/OObject", "Map", "Config", "Olives/Mo
                                 return decks;        
                         };
                         
-                        deckList.getDecks = function getDecks(type){
-                                var promise = new Promise();
+                        deckList.getDecks = function getDecks(type, onEnd){
                                 decks.sync(Config.get("db"), {keys : user.get(type)}).then(function(){
-                                        promise.resolve();
-                                });
-                                return promise;              
+                                        onEnd("ok");
+                                });             
                         };
                         
-                        deckList.init = function init(){
-                                deckList.getDecks($type);
+                        // initialize selection (could be first item or active item)
+                        deckList.initSelected = function initSelected(init, id){
+                                var dom = deckList.dom,
+                                    node = dom.querySelector(".list-item[data-decks_id='"+id+"']");
+                                init(node);
+                                node.classList.add("selected");       
+                        };
+                        
+                        deckList.init = function init(onEnd){
+                                deckList.getDecks($type, onEnd);
                                 
                         };
                         

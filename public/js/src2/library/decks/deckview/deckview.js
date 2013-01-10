@@ -8,7 +8,7 @@ define("Ideafy/Library/DeckView", ["Olives/OObject", "Olives/Model-plugin", "Oli
                                     {name: "characters", active: false},
                                     {name: "contexts", active: false},
                                     {name: "problems", active: false},
-                                    {name: "techno", active: false},
+                                    {name: "techno", active: false}
                             ]),
                             innerStack = new Stack();
                         
@@ -49,6 +49,7 @@ define("Ideafy/Library/DeckView", ["Olives/OObject", "Olives/Model-plugin", "Oli
                         
                                 // initialize inner stack
                                 innerStack.getStack().add("details", new DeckDetails());
+                                console.log("deckdetail ok");
                                 innerStack.getStack().add("characters", new CardList("characters"));
                                 innerStack.getStack().add("contexts", new CardList("contexts"));
                                 innerStack.getStack().add("problems", new CardList("problems"));

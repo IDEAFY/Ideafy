@@ -10,26 +10,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                 "confirm-password" : "",
                 "password" : "",
                 "error" : ""
-        }), updateLabels = function(lang) {
-                var json = {"lang" : lang},
-                    promise = new Promise();
-                   
-                _transport.request("Lang", json, function(result) {
-                        if (result === "nok") {
-                                _local.set("labels", Config.get("defaultLabels"));
-                                Config.set("language", "en-us");
-                        } else {
-                                _local.set("labels", result);
-                                Config.set("language", result.language);
-                        }
-                        // save labels to local storage
-                        _local.sync("ideafy-data");
-                        // apply language
-                        _labels.reset(_local.get("labels"));
-                        promise.resolve();
-                });
-                return promise;
-        }, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user");
+        }), updateLabels = Utils.updateLabels, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user");
 
         //setup
         _body.plugins.addAll({

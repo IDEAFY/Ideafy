@@ -41,10 +41,13 @@ define("Ideafy/Library/DeckList", ["Olives/OObject", "Map", "Config", "Olives/Mo
                         deckList.reset = function reset(){       
                         };
                         
+                        deckList.getModel = function getModel(){
+                                return decks;        
+                        };
+                        
                         deckList.getDecks = function getDecks(type){
                                 var promise = new Promise();
                                 decks.sync(Config.get("db"), {keys : user.get(type)}).then(function(){
-                                        console.log(decks.get(0));
                                         promise.resolve();
                                 });
                                 return promise;              

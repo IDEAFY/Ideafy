@@ -40,8 +40,7 @@ define("Ideafy/Library/Decks", ["Olives/OObject", "Amy/Stack-plugin", "Amy/Contr
               widget.selectStart = function(event){
                         var list = stack.getStack().getCurrentScreen().getModel(),
                             id = event.target.getAttribute("data-decks_id");
-                        deckView.reset(list, id);
-                                
+                        deckView.reset(list.get(id).doc);
                         };
               
               

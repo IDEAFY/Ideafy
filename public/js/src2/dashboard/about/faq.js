@@ -5,7 +5,7 @@ define("Ideafy/Dashboard/FAQ", ["Olives/OObject", "Config"],
                 
                 var FAQ = new Widget();
                 
-                FAQ.template = '<div><Frequently asked questions/div>';
+                FAQ.template = '<div class="aboutcontent"><Frequently asked questions/div>';
                 
                 return FAQ;         
            };   

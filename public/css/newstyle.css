@@ -786,7 +786,7 @@ ul.notify-list{
 }
 
 .mosaic .list{
-  width:834px;
+  width:874px;
   background: url('../img/library/bgdeck.jpg');
   background-size: cover;
 }
@@ -804,24 +804,36 @@ ul.notify-list{
     background: white;
 }
 
-.mosaic li:nth-child(5n){
-    background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(101,123,153,0.05) 10%, rgba(101,123,153,0.1) 50%, rgba(101,123,153,0.2) 75%, rgba(101,123,153,0.5) 100%);
+.mosaic li:nth-child(7n){
+    border-left: 10px solid #657B99;
 }
 
-.mosaic li:nth-child(5n+1){
-    background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(154, 201, 206,0.05) 10%, rgba(154, 201, 206,0.1) 50%, rgba(154, 201, 206,0.2) 75%, rgba(154, 201, 206,0.5) 100%);   
+.mosaic li:nth-child(7n+1){
+    /*background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(154, 201, 206,0.05) 10%, rgba(154, 201, 206,0.1) 50%, rgba(154, 201, 206,0.2) 75%, rgba(154, 201, 206,0.5) 100%);*/
+   border-left: 10px solid #F27B3D;   
 }
 
-.mosaic li:nth-child(5n+2){
-    background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(242, 229, 32,0.05) 10%, rgba(242, 229, 32,0.1) 50%, rgba(242, 229, 32,0.2) 75%, rgba(242, 229, 32,0.5) 100%);    
+.mosaic li:nth-child(7n+2){
+    /*background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(242, 229, 32,0.05) 10%, rgba(242, 229, 32,0.1) 50%, rgba(242, 229, 32,0.2) 75%, rgba(242, 229, 32,0.5) 100%);*/
+   border-left: 10px solid #9AC9CD;   
 }
 
-.mosaic li:nth-child(5n+3){
-    background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(242, 123, 61,0.05) 10%, rgba(242, 123, 61,0.1) 50%, rgba(242, 123, 61,0.2) 75%, rgba(242, 123, 61,0.5) 100%);  
+.mosaic li:nth-child(7n+3){
+    /*background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(242, 123, 61,0.05) 10%, rgba(242, 123, 61,0.1) 50%, rgba(242, 123, 61,0.2) 75%, rgba(242, 123, 61,0.5) 100%); */
+   border-left: 10px solid #4D4D4D; 
 }
 
-.mosaic li:nth-child(5n+4){
-    background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(95, 143, 40,0.05) 10%, rgba(95, 143, 40,0.1) 50%, rgba(95, 143, 40,0.2) 75%, rgba(95, 143, 40,0.5) 100%); 
+.mosaic li:nth-child(7n+4){
+    /*background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(95, 143, 40,0.05) 10%, rgba(95, 143, 40,0.1) 50%, rgba(95, 143, 40,0.2) 75%, rgba(95, 143, 40,0.5) 100%); */
+   border-left: 10px solid #F2E520;
+}
+
+.mosaic li:nth-child(7n+5){
+    border-left: 10px solid #BD262C;
+}
+
+.mosaic li:nth-child(7n+6){
+    border-left: 10px solid #5F8F28;
 }
 
 
@@ -838,7 +850,8 @@ ul.notify-list{
 }
 
 .mosaic .list-item span.date{
-    margin-top: 5px;
+    float: none;
+    display: block;
 }
 
 .mosaic .item-body{
@@ -857,14 +870,14 @@ ul.notify-list{
 }
 
 .mosaic .item-body p{
-    margin-top: 5px;
-    height: 78px;
+    margin-top: 10px;
+    height: 83px;
     overflow-y: scroll;
 }
 
 .mosaic .item-footer{
     float: left;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 /*#public .option {
@@ -5056,4 +5069,19 @@ li.my2q{
     background: #f2f2f2;
     border: 1px dashed #cccccc;
     border-radius: 5px;
+}
+
+#dashboard-about .progressbar{
+    position: relative;
+    margin-bottom: 30px;
+}
+
+#dashboard-about .aboutcontent{
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #657b99;
+    border-radius: 5px;
+    width: 851px;
+    height: 530px;
+    overflow-y: scroll;
 }

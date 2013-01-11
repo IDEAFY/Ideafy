@@ -3,7 +3,7 @@ define("Ideafy/Dashboard/Tutorials", ["Olives/OObject", "Config"],
                 return function TutorialsConstructor(){
                         var tutorials = new Widget();
                         
-                        tutorials.template = '<div>Tutorials</div>';
+                        tutorials.template = '<div class="aboutcontent">Tutorials</div>';
                         
                         return tutorials;   
                 };

@@ -5,7 +5,7 @@ define("Ideafy/Dashborad/AboutIdeafy",["Olives/OObject", "Config"],
                         
                         var aboutIdeafy = new Widget();
                         
-                        aboutIdeafy.template = '<div></div>';
+                        aboutIdeafy.template = '<div>About Ideafy, About Taiaut, Credits</div>';
                         
                         return aboutIdeafy;
                 };

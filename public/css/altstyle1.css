@@ -11,7 +11,7 @@ html, body, ul {
 }
 
 html, body {
-  font-family:Helvetica;
+  font-family:chalkboard;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   background:rgba(0,0,0,0.65) url('../img/bg.png') repeat;
   width:1024px;
@@ -33,11 +33,6 @@ button{
   -webkit-overflow-scrolling: touch; 
 }
 
-@font-face {  
-  font-family: pacifico ;  
-  src: url('../fonts/Pacifico.ttf') format("truetype");  
-} 
-
 textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     font-size: 14px;
 }
@@ -52,7 +47,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .header, .list h3, .detail-header h2, #contactdetails h2, #deckview .deckheader h2{
-  font-family:pacifico;
+  font-family:palatino;
   letter-spacing:1px;
 }
 
@@ -65,6 +60,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   position:relative;
   text-align:center;
   color:white;
+  line-height: 36px;
 }
 
 .header .option {
@@ -193,7 +189,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 .item-footer .rating {
     display:inline-block;
-    font-family:Helvetica;
+    font-family:chalkboard;
     font-size:12px;
     color:#B3B3B3;
   }
@@ -328,7 +324,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     display: inline-block;
     line-height: 25px;
     text-align: center;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 12px;
     color: white;
 }
@@ -348,7 +344,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .notify-header{
-    font-family: Pacifico;
+    font-family: palatino;
     background: #333333;
     color: white;
     text-align: center;
@@ -426,7 +422,7 @@ ul.notify-list{
 }
 
 .menu-item a{
-    font-family: Pacifico;
+    font-family: palatino;
     padding-left: 60px;
     height: 36px;
     line-height: 36px;
@@ -589,7 +585,7 @@ ul.notify-list{
 
 .help-screen{
     color: #657B99;
-    font-family: Helvetica;
+    font-family: chalkboard;
     border: 1px solid #657B99;
     padding: 30px;
     border-radius: 10px;
@@ -598,7 +594,7 @@ ul.notify-list{
 }
 
 .help-screen h2, .settingmodule legend{
-    font-family: pacifico;    
+    font-family: palatino;    
 }
 
 .help-screen p{
@@ -627,7 +623,7 @@ ul.notify-list{
 .confirm p{
     text-align: left;
     color: white;
-    font-family: Pacifico;
+    font-family: palatino;
     line-height: 20px;
     margin-top: 10px;
     font-size: 16px;
@@ -657,7 +653,7 @@ ul.notify-list{
 .confirm .option{
     display: inline-block;
     width: 60px;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 12px;
     border-color: white;
     margin: 5px;
@@ -1023,7 +1019,7 @@ ul.notify-list{
     display: inline;
     margin-left: 2px;
     font-size: 14px;
-    font-family:Helvetica;
+    font-family:chalkboard;
     color: black;
 }
 
@@ -1057,7 +1053,7 @@ ul.notify-list{
   
 #public-detail .rateIdea .rating, #ideas-detail .rateIdea .rating{
     float: left;
-    font-family: Helvetica;
+    font-family: chalkboard;
     margin-right: 5px;
     font-size: 13px;
     line-height: 20px; 
@@ -1070,7 +1066,7 @@ ul.notify-list{
     text-align: center;
     border-radius: 5px;
     line-height: 20px;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 12px;
     font-weight: bold;
     color: white;
@@ -1109,7 +1105,7 @@ ul.notify-list{
     line-height: 20px;
     font-size: 10px;
     font-style:italic;
-    font-family: Helvetica;
+    font-family: chalkboard;
     float: left; 
 }
 
@@ -1233,12 +1229,12 @@ textarea.solution {
 }
 
 .edit-visibility .label, .current-visibility .label{
-    font-family: Pacifico;
+    font-family: palatino;
     line-height: 30px;
 }
 
 .edit-visibility span, .current-visibility span{
-    font-family: Helvetica;
+    font-family: chalkboard;
 }
 /* may be create a class button ...they are label to stay in p*/
 
@@ -1257,7 +1253,7 @@ textarea.solution {
 .submit .editerror{
     width: 50%;
     font-size: 10px;
-    font-family: Helvetica;
+    font-family: chalkboard;
     color: #4D4D4D;
 }
 
@@ -1327,7 +1323,7 @@ textarea.solution {
 
 .attachment-header h2{
     margin-left:75px;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 24px;
     line-height: 40px;
 }
@@ -1396,7 +1392,7 @@ textarea.solution {
 #public-twocents, #library-twocents{
     width: 628px;
     overflow-y: scroll;
-    font-family: Helvetica;
+    font-family: chalkboard;
 }
 
 .twocentList li:nth-child(even){
@@ -1426,7 +1422,7 @@ textarea.solution {
     border-radius: 0;
     height: 150px;
     overflow-y: scroll;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 12px;
     color: #808080;
     /*background-image: -webkit-gradient(linear, center top, center bottom, from(white 74%), to(#e5e5e5))*/
@@ -1465,19 +1461,19 @@ textarea.solution {
 .writeTwocent .twocentContext .userlbl, .writeTwocent .twocentContext .creadatelbl, .writeTwocent .twocentContext .moddatelbl{
     margin-left: 20px;
     font-size: 12px;
-    font-family: Helvetica;
+    font-family: chalkboard;
 }
 
 .writeTwocent .twocentContext .userlbl{
     color: #F27B3D;
-    font-family: Helvetica;
+    font-family: chalkboard;
 }
 
 .writeTwocent .twocentPublish, .writeTwocent .twocentCancel, .sendmail, .cancelmail, .edituserdetails label.updateprofile, .edituserdetails label.cancelprofile{
     height: 26px;
     width: 92px;
     border-radius: 5px;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-weight: bold;
     font-size: 12px;
     line-height: 26px;
@@ -1524,7 +1520,7 @@ textarea.solution {
 .twocentAuthor, .twocent .commentLabel{
     float: left;
     font-size: 14px;
-    font-family:Helvetica
+    font-family:chalkboard
 }
 
 .twocentAuthor{
@@ -1596,7 +1592,7 @@ textarea.solution {
 .repliesButton, .editnotes{
     height: 18px;
     line-height: 14px;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 14px;
     color: #657B99;
     margin-left: 10px;
@@ -1905,7 +1901,7 @@ textarea.solution {
     text-align: left;
     padding-left: 10px;
     width: 220px;
-    font-family: Pacifico;
+    font-family: palatino;
 }
 
 .session-item .avatarlist ul{
@@ -1938,7 +1934,7 @@ textarea.solution {
 .session-score{
     width: 145px;
     color: #666666;
-    font-family: Pacifico;
+    font-family: palatino;
     text-align: center;
 }
 
@@ -2051,7 +2047,7 @@ textarea.solution {
 #deckview .deckdetails{
     background: none;
     padding: 25px 0;
-    font-family: Helvetica;
+    font-family: chalkboard;
 }
 
 #deckview .deckinfo{
@@ -2172,7 +2168,7 @@ textarea.solution {
     border-radius: 5px;
     -webkit-box-shadow: 0px 5px 5px 0px rgba(23,41,48,0.4);
     background: white;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 16px;
     letter-spacing: 1px;
     color: #4D4D4D;
@@ -2225,7 +2221,7 @@ textarea.solution {
     background-size: 70px 70px;
 }
 
-#quicksteplist, #dashboard-about .steplist{
+#quicksteplist{
     list-style: none;
     display: inline-block;
     -webkit-margin-before: 0px;
@@ -2236,25 +2232,23 @@ textarea.solution {
     border-radius: 5px;  
 }
 
-#quicksteplist .step, #dashboard-about .step{
+#quicksteplist .step{
     list-style: none;
     padding-left: 20px;
     padding-right: 20px;
     float: left;
     color: #B3B3B3;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 12px;
     height: 34px;
-    line-height: 34px;
-    text-shadow: 1px 1px #f2f2f2;
     border-right: 1px solid #aeb9bf;   
 }
 
-#quicksteplist .step:nth-last-child, #dashboard-about .step:nth-last-child{
+#quicksteplist .step:nth-last-child{
     border-right: none;
 }
 
-#quicksteplist .step.pressed, #dashboard-about .step.pressed{
+#quicksteplist .step.pressed{
     color: white;
 }
 
@@ -2365,7 +2359,7 @@ textarea.solution {
     display: inline-block;
     color: #657B99;
     font-size: 14px;
-    font-family: Helvetica;
+    font-family: chalkboard;
     width: 567px;
     margin-left: 75px;
     margin-top: 100px;
@@ -2440,7 +2434,7 @@ textarea.solution {
     padding-left: 5px;
     padding-right: 5px;
     background: white;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 14px;
     color: #292929;
     text-align: center;
@@ -2466,7 +2460,7 @@ textarea.solution {
 .import .uploadprogress{
     float: right;
     margin-right: 5px;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: small;
     color: #292929;
 }
@@ -2508,7 +2502,7 @@ textarea.solution {
 .postit textarea{
     font-size: 16px;
     text-align: center;       
-    font-family: Pacifico;
+    font-family: palatino;
     color: #4D4D4D;
     border: none;
     background: transparent;
@@ -2556,7 +2550,7 @@ textarea.solution {
 }
 
 .wb-item.postit{
-    font-family: Pacifico;
+    font-family: palatino;
     overflow-y: scroll;
     text-align: center;
 }
@@ -2607,7 +2601,7 @@ textarea.solution {
     margin-top: 20px;
     disaply: block;
     color: #657B99;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 14px;
     border-bottom: 2px solid #AEB9BF;
 }
@@ -2668,7 +2662,7 @@ textarea.solution {
         border-bottom-left-radius: 10px;
         text-align:center;
         color:white;
-        font-family: Helvetica;
+        font-family: chalkboard;
         font-size:10px;
         -webkit-box-shadow: 0 0 5px 1px gray;
 }
@@ -2881,7 +2875,7 @@ li.color-item{
     width: 100px;
     padding: 0px;
     text-align: center;
-    font-family: Pacifico;
+    font-family: palatino;
     margin-top: 15px;
     line-height: 15px;
     color: #808080;
@@ -2932,7 +2926,7 @@ li.color-item{
 }
 
 #quickstart .quickstart-form label{
-    font-family: Pacifico;
+    font-family: palatino;
     color: #657B99;
     font-size: 14px;
     letter-spacing: 1px;
@@ -3061,7 +3055,7 @@ li.color-item{
 .card .cardtitle{
     font-size: 14px;
     line-height: 14px;
-    font-family: Pacifico;
+    font-family: palatino;
     color: #808080;
 }
 
@@ -3071,7 +3065,7 @@ li.color-item{
 }
 
 .card.tech .cardtitle{
-    font-family: Helvetica;
+    font-family: chalkboard;
 }
 
 /*default cards in case picture is missing */
@@ -3168,7 +3162,7 @@ li.color-item{
     padding-left: 15px;
     padding-right: 15px;
     color: white;
-    font-family: Pacifico;
+    font-family: palatino;
     line-height: 30px;
     font-size: 16px;
 }
@@ -3214,7 +3208,7 @@ li.color-item{
     width: 158px;
     float: left;
     margin-left: 15px;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 12px;
     height: 87px;
 }
@@ -3290,7 +3284,7 @@ li.color-item{
 }
 
 .cd-contentarea .contentTitle{
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 14px;
     color: #4D4D4D;
 }
@@ -3339,7 +3333,7 @@ li.color-item{
 
 .writeup{
     padding: 20px 20px 10px 20px;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 12px;
 }
 
@@ -3437,7 +3431,7 @@ li.color-item{
     border: 1px dashed #CCCCCC;
     border-radius: 5px;
     color: #657B99;
-    font-family: Pacifico;    
+    font-family: palatino;    
 }
 
 #quickwrapup .congrats .messagetitle{
@@ -3483,7 +3477,7 @@ li.color-item{
 
 #quickwrapup .storyheader, #quickwrapup .storytitle, #quickwrapup .ideaheader, #quickwrapup .ideatitle{
     color: white;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 16px;
     text-overflow: ellipsis;        
 }
@@ -3512,13 +3506,13 @@ li.color-item{
 
 #quickwrapup .storycontent .summaryheader, #quickwrapup .ideacontent .summaryheader{
     text-align: left;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 14px;
     height: 25px;
 }
 
 #quickwrapup .storycontent .content, #quickwrapup .ideacontent .content{
-    font-family: Helvetica;
+    font-family: chalkboard;
     border-top: 1px solid #CCCCCC;
     margin-top: 5px;
     padding-top: 5px;
@@ -3548,7 +3542,7 @@ li.color-item{
     display: block;
     text-align: left;
     line-height:20px;
-    font-family: Pacifico;
+    font-family: palatino;
     color: #808080;
     font-size: 16px;
     width: 80px;
@@ -3582,7 +3576,7 @@ li.color-item{
 }
 
 #quickwrapup .sessioncards legend{
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 14px;
     margin: 0 auto;
     color: #666666;
@@ -3841,7 +3835,7 @@ li.color-item{
     width: 50px;
     text-align: left;
     border: 1px solid #CCCCCC;
-    font-family: helvetica;
+    font-family: chalkboard;
     color: #404040;
     font-size: 12px;
 }
@@ -3895,7 +3889,7 @@ li.color-item{
 }
 
 .form legend, #msgreply .subject{
-    font-family: pacifico;
+    font-family: palatino;
     font-size: 12px;
 }
 
@@ -4044,7 +4038,7 @@ li.color-item{
 }
 
 #contactdetails .contactbadges label{
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: small;
 }
 
@@ -4088,7 +4082,7 @@ li.color-item{
     background-image: url('../img/connect/bg-note.jpg');
     background-size: cover;
     padding-left: 35px;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: large;
     color: #292929;
 }
@@ -4112,7 +4106,7 @@ li.color-item{
 #addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend, #groupdetails legend{
     width:100%;
     padding-bottom: 5px;
-    font-family: Pacifico;
+    font-family: palatino;
     color: #657b99;
     border-bottom: 2px solid #cccccc;
     margin-top: 15px;
@@ -4241,7 +4235,7 @@ li.color-item{
     margin-top: 300px;
     padding: 10px;
     font-size: 16px;
-    font-family: Helvetica;
+    font-family: chalkboard;
     border : 1px solid #657B99;
     border-radius: 5px;
     background: white;
@@ -4363,7 +4357,7 @@ li.color-item{
     height:40px;
     margin-left: 80px;
     font-style: italic;
-    font-family: helvetica;
+    font-family: chalkboard;
     font-size: 14px;
     font-weight: bold;
 }
@@ -4403,14 +4397,14 @@ li.color-item{
 }
 
 .userdetails h2{
-    font-family: Pacifico;
+    font-family: palatino;
     text-align:center;
     margin: -20px 15px -20px 0;
 }
 
 .userdetails blockquote{
     text-align: center;
-    font-family:Helvetica;
+    font-family:chalkboard;
     font-size:14px;
     color: #808080;
     -webkit-margin-after: 0px;
@@ -4559,7 +4553,7 @@ li.color-item{
 
 
 .mystats legend, .recentactivity legend, .edituserdetails .addtlinfo legend, #contactdetails legend{
-    font-family: Pacifico;
+    font-family: palatino;
     color: #657B99;    
 }
 
@@ -4581,14 +4575,14 @@ li.innerbar{
 .mystats th, .contactstats th{
     width: 90%;
     text-align: left;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 12px;
 }
 
 .mystats td, .contactstats td{
     width: 10%;
     text-align: right;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 12px;
 }
 
@@ -4654,7 +4648,7 @@ li.my2q{
 }
 
 .newsdate{
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 14px;
     line-height: 56px;
     color: #808080;
@@ -4678,7 +4672,7 @@ li.my2q{
 }
 
 .newsinfo{
-    font-family: Pacifico;
+    font-family: palatino;
     color: black;
 }
 
@@ -4712,7 +4706,7 @@ li.my2q{
     line-height: 30px;
     right: 97px;
     color: white;
-    font-family: Pacifico;
+    font-family: palatino;
     text-align: center;
 }
 
@@ -4729,7 +4723,7 @@ li.my2q{
     background-size: 40px;
     font-size: 14px;
     padding-left: 65px;
-    font-family: pacifico;
+    font-family: palatino;
     color: #657B99;
     line-height: 70px;
 }
@@ -4737,7 +4731,7 @@ li.my2q{
 .userachievements{
     background: #F2F2F2;
     padding: 20px;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 14px;
     display: table-cell;
 }
@@ -4809,7 +4803,7 @@ li.my2q{
 #leaderboard .username{
     color: #292929;
     font-size: 16px;
-    font-family: Pacifico;
+    font-family: palatino;
     line-height: 60px;
     margin-left: 5px;
     width: 583px;
@@ -4822,7 +4816,7 @@ li.my2q{
 }
 
 #leaderboard .score{
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 21px;
     text-align: center;
     line-height: 60px;
@@ -4852,7 +4846,7 @@ li.my2q{
 
 .edituserdetails label{
     color: #292929;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 14px;
 }
 
@@ -4861,7 +4855,7 @@ li.my2q{
     margin-top: 3px;
     margin-bottom: 10px;
     color: #666666;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 14px;
 }
 
@@ -4902,7 +4896,7 @@ li.my2q{
     border: 1px solid #CCC;
     text-align: center;
     color: #292929;
-    font-family: Helvetica;
+    font-family: chalkboard;
     font-size: 14px;   
 }
 
@@ -5040,7 +5034,7 @@ li.my2q{
 
 .comingsoon{
     color: gray;
-    font-family: Pacifico;
+    font-family: palatino;
     font-size: 48px;
     display: table-cell;
     width: 630px;

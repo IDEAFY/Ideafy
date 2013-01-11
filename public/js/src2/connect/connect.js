@@ -1,5 +1,5 @@
-define("Ideafy/Connect", ["Olives/OObject", "Map", "Amy/Stack-plugin","Ideafy/SubMenu", "Ideafy/Connect/Contacts", "Ideafy/Connect/Messages", "Ideafy/Connect/Twocents", "Config"], 
-	function(Widget, Map, Stack, Menu, Contacts, Messages, Twocents, Config){
+define("Ideafy/Connect", ["Olives/OObject", "Map", "Amy/Stack-plugin","Ideafy/SubMenu", "Ideafy/Connect/Contacts", "Ideafy/Connect/Messages", "Ideafy/Connect/MyTwocents", "Config"], 
+	function(Widget, Map, Stack, Menu, Contacts, Messages, MyTwocents, Config){
 		return function ConnectConstructor(){
 		//declaration
 			var _widget = new Widget(),
@@ -25,7 +25,7 @@ define("Ideafy/Connect", ["Olives/OObject", "Map", "Amy/Stack-plugin","Ideafy/Su
                        _menu.toggleActive(false);
                        _stack.getStack().add("#messages", new Messages());
                        _stack.getStack().add("#contacts", new Contacts());
-                       _stack.getStack().add("#twocents", new Twocents());
+                       _stack.getStack().add("#twocents", new MyTwocents());
                        
                        // set current view
                        _stack.getStack().show("#messages");

@@ -404,6 +404,15 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                         }
                         // return an array of bytes
                         return re;
+                },
+                /*
+                 * A function to change the style
+                 */
+                changeStyle : function(newStyle){
+                        var styleNode = document.querySelector(".currentStyle"),
+                            currentStyle = styleNode.getAttribute("href");
+                        
+                        if (currentStyle !== "css/"+newStyle) styleNode.setAttribute("href", "css/"+newStyle);
                 }
 	}
 });

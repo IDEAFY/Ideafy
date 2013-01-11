@@ -316,6 +316,15 @@
 	"version": "Version : ",
 	"groupupdated": "Group updated",
 	"socialnwlbl": "Social networks",
-	"designedby": "Designed by : "
+	"designedby": "Designed by : ",
+	"mtcheadertitle": "My Two Cents Wall",
+	"userpref": "User Preferences",
+	"brainstormsettings": "Brainstorm Settings",
+	"aboutIdeafy": "About Ideafy",
+	"faq": "FAQ",
+	"tutorials": "Tutorials",
+	"userguide": "User Guide",
+	"support": "Support",
+	"eula": "View License Agreement"
 	
 }

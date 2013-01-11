@@ -317,5 +317,7 @@
 	"version": "Version : ",
 	"groupupdated": "Groupe mis à jour",
 	"socialnwlbl": "Réseaux sociaux",
-	"designedby": "Réalisé par : "
+	"designedby": "Réalisé par : ",
+	"userpref": "Préférences Utilisateur",
+	"brainstormsettings": "Paramétrage du Brainstorming"
 }

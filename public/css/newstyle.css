@@ -787,7 +787,14 @@ ul.notify-list{
 
 .mosaic .list{
   width:874px;
-  background: url('../img/library/bgdeck.jpg');
+  background: white;
+}
+
+.mosaic .list ul{
+    padding-top: 10px;
+    background: url('../img/library/bgdeck.jpg');
+    -webkit-box-shadow: inset 0px 5px 5px #ccc;
+    
   background-size: cover;
 }
 
@@ -801,7 +808,7 @@ ul.notify-list{
 }
 
 .mosaic .tools input{
-    background: white;
+    width: 300px;
 }
 
 .mosaic li:nth-child(7n){

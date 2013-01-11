@@ -27,6 +27,9 @@ define("Ideafy/Dashboard/About", ["Olives/OObject", "Map", "Olives/Model-plugin"
                    
                    aboutUI.place(Map.get("dashboard-about"));
                    
+                   //init stack
+                   
+                   
                    return aboutUI;
            };    
         });

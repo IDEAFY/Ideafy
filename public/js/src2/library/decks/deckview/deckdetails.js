@@ -5,6 +5,7 @@ define("Ideafy/Library/DeckDetails", ["Olives/OObject", "Config", "Olives/Model-
                  
                         var deckDetails = new Widget(),
                             deckModel = new Store(),
+                            allCards = new Store(),
                             labels = Config.get("labels");
                         
                         deckDetails.plugins.addAll({
@@ -29,17 +30,18 @@ define("Ideafy/Library/DeckDetails", ["Olives/OObject", "Config", "Olives/Model-
                                 "carouselevent" : new Event(deckDetails)        
                         });
                         
-                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, author"></div><p><h2 data-deckdetails="bind:innerHTML, title"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, created_by"></span></p><span class="date" ></span></div><p class="deckdescription" data-deckdetails="bind: innerHTML, description"></p></div><div class="deckcarousel"><div class="innercarousel"><ul><li><div class="card"><div class="cardreflection"></div></div></li><li><div class="card"></div><div class="cardreflection"></div></li><li><div class="card"></div><div class="cardreflection"></div></li><li><div class="card"></div><div class="cardreflection"></div></li><li><div class="card"></div><div class="cardreflection"></div></li></ul><input type="range"></div></div></div>';
+                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, author"></div><p><h2 data-deckdetails="bind:innerHTML, title"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, created_by"></span></p><span class="date" ></span></div><p class="deckdescription" data-deckdetails="bind: innerHTML, description"></p></div><div class="deckcarousel"><div class="innercarousel"></div><ul><li><div class="card"><div class="cardreflection"></div></div></li><li><div class="card"></div><div class="cardreflection"></div></li><li><div class="card"></div><div class="cardreflection"></div></li><li><div class="card"></div><div class="cardreflection"></div></li><li><div class="card"></div><div class="cardreflection"></div></li></ul><input type="range"></div></div>';
                         
                         deckDetails.reset = function reset(deck){
-                                var lang = Config.get("user").get("lang");
+                                var lang = Config.get("user").get("lang"), arr1, arr2, arr3, arr4;
                                 // check deck default language -- if it does not match user language look for a translation
                                 if (!deck.default_lang || (deck.default_lang === lang)) {
                                         deckModel.reset(deck);
                                 }
                                 else {
                                         (deck.translations && deck.translations[lang]) ? deckModel.reset(deck.translations[lang]) : deckModel.reset(deck);
-                                }        
+                                }
+                                // get all cards.     
                         };
                         
                         DD= deckDetails;

@@ -2104,14 +2104,16 @@ textarea.solution {
     height: 303px;
     z-index: 0;
     background: #555555;
-    -webkit-box-shadow: inset 0 1px 10px 1px rgba(0,0,0,0.8); 
+    -webkit-box-shadow: inset 0 1px 10px 1px rgba(0,0,0,0.8);
+    text-align: center; 
 }
 
 #deckview .innercarousel{
     height: 303px;
+    width: 100%;
     z-index: 200;
     background: -webkit-linear-gradient(left, #333333 0%,transparent 25%,transparent 75%,#333333 100%);
-    text-align: center;
+    position: absolute;
 }
 
 #deckview .deckcarousel ul{
@@ -2124,6 +2126,7 @@ textarea.solution {
     float: left;
     width: 107px;
     height: 155px;
+    -webkit-box-reflect: below 0 -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(255,255,255,0.3)));
 }
 
 #deckview .deckcarousel li:last-child, #deckview .deckcarousel li:first-child{
@@ -2139,21 +2142,28 @@ textarea.solution {
 #deckview .deckcarousel .card{
     display: inline-block;
     float: left;
+    z-index: 100;
     margin: 0px;
     height: inherit;
     width: inherit;
-    -webkit-box-shadow: inset 0 0 2px 1px rgba(0, 0, 0, 0.3);
+   -webkit-box-shadow: inset 0px 0px 3px #CCC;
+    background: white;
     border-radius: 5px;
     text-align: center;
     background-size: 107px 155px;
 }
 
 #deckview .deckcarousel input{
-    display: inline-block;
+    -webkit-appearance: none;
+    bottom: 35px;
+    left: 70px;
     width: 490px;
     height: 4px;
-    border: 1px solid #999999;
+    border: 1px solid #999;
+    background: transparent;
     border-radius: 2px;
+    z-index: 5000;
+    position: absolute;
 }
 
 /*BRAINSTORM*/

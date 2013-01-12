@@ -2063,11 +2063,14 @@ textarea.solution {
 
 #deckview .deckdetails{
     background: none;
-    padding: 25px 0;
+    padding: 0;
     font-family: Helvetica;
+    -webkit-box-shadow: none;
 }
 
 #deckview .deckinfo{
+    padding: 25px 40px 50px 20px;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
     background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
 }
 
@@ -2090,10 +2093,9 @@ textarea.solution {
 }
 
 #deckview .deckdescription{
-    margin: 20px 40px 0px 40px;
-    height: 150px;
+    height: 118px;
     border-top: 1px solid #CCC;
-    padding: 12px 0px 50px 0px;
+    padding: 12px 0px;
     font-size: 12px; 
     text-align: justify;  
 }
@@ -2101,8 +2103,57 @@ textarea.solution {
 #deckview .deckcarousel{
     height: 303px;
     z-index: 0;
-    background: #333333;
-    -webkit-box-shadow: inset 0 1px 10px 1px rgba(0,0,0,0.8);    
+    background: #555555;
+    -webkit-box-shadow: inset 0 1px 10px 1px rgba(0,0,0,0.8); 
+}
+
+#deckview .innercarousel{
+    height: 303px;
+    z-index: 200;
+    background: -webkit-linear-gradient(left, #333333 0%,transparent 25%,transparent 75%,#333333 100%);
+    text-align: center;
+}
+
+#deckview .deckcarousel ul{
+    margin-top: 55px;
+    display: inline-block;
+}
+
+#deckview .deckcarousel li{
+    margin: 0px 8px 0px 8px;
+    float: left;
+    width: 107px;
+    height: 155px;
+}
+
+#deckview .deckcarousel li:last-child, #deckview .deckcarousel li:first-child{
+    -webkit-transform: scale(0.7);
+    margin: 0px;
+}
+
+#deckview .deckcarousel ul li:nth-child(2), #deckview .deckcarousel ul li:nth-child(4){
+    -webkit-transform: scale(0.8);
+    margin: 0px 5px 0px 5px;;
+}
+
+#deckview .deckcarousel .card{
+    display: inline-block;
+    float: left;
+    margin: 0px;
+    height: inherit;
+    width: inherit;
+    -webkit-box-shadow: inset 0 0 2px 1px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    text-align: center;
+    background-size: 107px 155px;
+}
+
+#deckview .deckcarousel input{
+    display: inline-block;
+    width: 490px;
+    height: 4px;
+    border: 1px solid #999999;
+    border-radius: 2px;
 }
 
 /*BRAINSTORM*/

@@ -2114,6 +2114,7 @@ textarea.solution {
     z-index: 200;
     background: -webkit-linear-gradient(left, #333333 0%,transparent 25%,transparent 75%,#333333 100%);
     position: absolute;
+    pointer-events:none;
 }
 
 #deckview .deckcarousel ul{
@@ -2155,15 +2156,24 @@ textarea.solution {
 
 #deckview .deckcarousel input{
     -webkit-appearance: none;
-    bottom: 35px;
+    bottom: 30px;
     left: 70px;
     width: 490px;
-    height: 4px;
-    border: 1px solid #999;
+    height: 6px;
+    border: 1px solid #999999;
     background: transparent;
     border-radius: 2px;
     z-index: 5000;
     position: absolute;
+}
+
+#deckview .deckcarousel input::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    background: rgba(204,204,204, 0.3);
+    height: 6px;
+    border-radius: 3px;
+    width: 50px;
+    border: none;
 }
 
 /*BRAINSTORM*/

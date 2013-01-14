@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin", "Config"],
         function(Widget, Model, Control, Config){
                 
@@ -422,13 +429,15 @@ define("Ideafy/CardPopup", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 }
                                         },
                                         formatTitle : function(title){
-                                                if (title) {
+                                                if (title) this.innerHTML = title.toUpperCase();
+                                                /*if (title) {
                                                         this.innerHTML = title.substring(0,1).toUpperCase()+title.substring(1).toLowerCase(); 
-                                                        }       
+                                                        }
+                                                if (title && cardDetails.get("type") == 4) this.innerHTML = title.toUpperCase();    */  
                                         },
                                         formatName : function(firstname){
                                                 if (firstname) {
-                                                        this.innerHTML = firstname.substring(0,1).toUpperCase()+firstname.substring(1).toLowerCase()+"  "+cardDetails.get("lastname").substring(0,1).toUpperCase()+cardDetails.get("lastname").substring(1).toLowerCase(); 
+                                                        this.innerHTML = firstname.substring(0,1).toUpperCase()+firstname.substring(1).toLowerCase()+"  "+cardDetails.get("lastname").toUpperCase(); 
                                                         }       
                                         },
                                         setFamily : function(family){

@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Login", ["Olives/OObject" ,"Amy/Stack-plugin", 
 	"Map", "Amy/Delegate-plugin", "Config", "Olives/Model-plugin"],
 	function(Widget, Stack, Map, Event, Config, Model){

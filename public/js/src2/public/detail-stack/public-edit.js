@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Public/Edit", ["Olives/OObject", "Map", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Confirm"], 
 	function(Widget, Map, Store, Model, Event, Config, Confirm){
 		return function PublicEditConstructor($action){

@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/Model-plugin", "Olives/UI-plugin", "Amy/Delegate-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Ideafy/Connect/MTCDetails"],
         function(Widget, Map, Config, Model, UIPlugin, Delegate, Stack, Control, MTCDetails){
                 

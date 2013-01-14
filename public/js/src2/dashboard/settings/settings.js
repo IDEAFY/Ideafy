@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Dashboard/Settings", ["Olives/OObject", "Map", "Olives/Model-plugin", "Config"],
         function(Widget, Map, Model, Config){
                 

@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Library/IdeaDetail", 
         ["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Map", "Ideafy/Utils", "Ideafy/Avatar", "Config", "WriteTwocent", "TwocentList", "Observable"], 
         function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable){

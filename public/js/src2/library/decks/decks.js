@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Library/Decks", ["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy/Delegate-plugin", "Config", "Map", "Ideafy/Library/DeckList", "Ideafy/Library/DeckView"],
         function(Widget, Stack, Control, Delegate, Config, Map, List, DeckView){
                 

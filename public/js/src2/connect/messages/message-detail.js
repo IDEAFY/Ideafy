@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Avatar", "Ideafy/Utils", "Ideafy/Connect/MessageReply"],
         function(Widget, Config, Store, Model, Event, Avatar, Utils, Reply){
                 

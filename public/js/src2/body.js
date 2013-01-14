@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugin", "Olives/Model-plugin", "Amy/Delegate-plugin", "Ideafy/Dock", "Ideafy/Login", "Config", "CouchDBStore", "Ideafy/Utils", "Ideafy/NewIdea", "Ideafy/Help", "Promise"], function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils, NewIdea, Help, Promise) {
 
         //declaration

@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Brainstorm/QuickTech", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Ideafy/Help", "Store", "CouchDBStore", "Promise", "Ideafy/CardPopup", "Ideafy/Utils"],
         function(Widget, Map, Model, Event, Config, Help, Store, CouchDBStore, Promise, CardPopup, Utils){
                 

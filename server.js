@@ -1,6 +1,11 @@
 /**
  * IDEAFY
- * Copyright(c) 2012 Taïaut
+ * ======
+ * 
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
  *
  */
 

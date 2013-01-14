@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Stack-plugin", "Olives/Model-plugin", "Config", "Store", "Ideafy/Utils", "Ideafy/Brainstorm/Menu", "Ideafy/Brainstorm/QuickB"], 
 	function(Widget, Map, Menu, Stack, Model, Config, Store, Utils, IdeafyMenu, QuickB){
 		return function BrainstormConstructor(){

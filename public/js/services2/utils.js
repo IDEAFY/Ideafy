@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */ 
+
 define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"], function(Config, Observable, Promise, LocalStore){
 	return {
 		formatDate : function(array){

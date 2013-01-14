@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 	"Olives/Model-plugin", "Amy/Delegate-plugin", "CouchDBStore", "Map", "Config",
 	"Ideafy/Library/IdeaStack", "Ideafy/Library/IdeaList", "Amy/Stack-plugin"], 

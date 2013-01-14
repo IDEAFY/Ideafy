@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Dashboard", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Stack-plugin", "Ideafy/Dashboard/Profile", "Ideafy/Dashboard/Settings", "Ideafy/Dashboard/About", "Config"], 
 	function(Widget, Map, Menu, Stack, Profile, Settings, About, Config){
 		return function DashboardConstructor(){

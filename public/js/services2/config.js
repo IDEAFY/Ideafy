@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], function(Store, Transport, CouchDBStore, Observable) {
         var _transport, _user, _observer, _config = new Store();
         

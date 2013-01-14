@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Library/IdeaStack", 
 	["Olives/OObject", "Map", "Amy/Stack-plugin", "Ideafy/Library/IdeaDetail", "Ideafy/Library/Edit", "Ideafy/Library/Sendmail", "Config", "Store"], 
 	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Config, Store){

@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Whiteboard", ["Amy/Stack-plugin", "Ideafy/Whiteboard/Default", "Ideafy/Whiteboard/Main", "Ideafy/Whiteboard/Postit", "Ideafy/Whiteboard/Import", "Ideafy/Whiteboard/Drawing", "Store"],
         function(Stack, Default, Main, Postit, Import, Drawing, Store){
         

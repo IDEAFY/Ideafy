@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Utils", "Config", "WriteTwocentReply", "Ideafy/Avatar"],
         function(Widget, Store, ModelPlugin, EventPlugin, Utils, Config, WriteTwocentReply, Avatar){
                 

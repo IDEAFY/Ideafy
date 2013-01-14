@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Library/DeckList", ["Olives/OObject", "Map", "Config", "Olives/Model-plugin", 'Olives/Event-plugin', 'CouchDBStore', "Promise", "Ideafy/Utils"],
         function(Widget, Map, Config, Model, Event, CouchDBStore, Promise, Utils){
                 

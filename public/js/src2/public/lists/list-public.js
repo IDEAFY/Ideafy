@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Public/List", ["Olives/OObject", "CouchDBStore", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Utils", "Ideafy/Avatar", "Ideafy/ActionBar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function ListPublicConstructor($db, $design, $view, $query) {
                 var _store = new Store([]),

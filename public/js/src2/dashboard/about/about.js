@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Ideafy/Dashboard/About", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Stack-plugin", "Config", "Store", "Ideafy/Dashboard/AboutIdeafy", "Ideafy/Dashboard/FAQ", "Ideafy/Dashboard/UserGuide", "Ideafy/Dashboard/Tutorials", "Ideafy/Dashboard/Support", "Ideafy/Dashboard/EULA"],
         function(Widget, Map, Model, Event, Stack, Config, Store, AboutIdeafy, FAQ, UserGuide, Tutorials, Support, EULA){
                 

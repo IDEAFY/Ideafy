@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "Ideafy/Avatar", "Ideafy/ActionBar", "Ideafy/Connect/AddContact", "Ideafy/Connect/AddGroup", "Ideafy/Connect/ContactDetails", "Ideafy/Connect/GroupDetails"],
         function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact, AddGroup, ContactDetails, GroupDetails){
                 

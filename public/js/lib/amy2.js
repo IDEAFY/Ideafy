@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Olivier Wietrich <Olivier.Wietrich@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 define("Amy/DomUtils", ["Olives/DomUtils", "Tools"], 
 	function(Utils, Tools) {
 		return {

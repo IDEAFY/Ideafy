@@ -3295,13 +3295,14 @@ li.color-item{
     padding-left: 15px;
     padding-right: 15px;
     color: white;
-    font-family: Pacifico;
+    font-family: Helvetica;
     line-height: 30px;
     font-size: 16px;
 }
 
 .cd-header.story{
     height:72px;
+    fomt-family: Pacifico;
 }
 
 .cd-header span, .close-popup{

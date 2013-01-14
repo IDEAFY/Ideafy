@@ -2064,11 +2064,31 @@ textarea.solution {
 #deckview .cardlist .pagenb{
     position: absolute;
     margin-top: -10px;
-    right: 15px;
+    width: 150px;
+    height: 20px;
+    line-height: 20px;
     color: #404040;
+    text-align: center;
     font-family: Helvetica;
     font-size: 12px;
+    display: inline-block;
+    margin-left: 225px;
 }
+
+#deckview .cardlist .pagenb .leftcaret{
+    border-bottom: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-right: 10px solid #808080;
+    float: left;
+}
+
+#deckview .cardlist .pagenb .rightcaret{
+    border-bottom: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-left: 10px solid #808080;
+    float: right;
+}
+
 
 #deckview .cardlist .card{
     background: white;

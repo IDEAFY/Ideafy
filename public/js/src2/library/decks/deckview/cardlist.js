@@ -21,6 +21,12 @@ define ("Ideafy/Library/CardList", ["Olives/OObject", "Config", "Olives/Model-pl
                                                         this.innerHTML = labels.get("page") + nb + " / " + pagination.get("nbPages");        
                                                 }
                                                 else this.innerHTML = "";
+                                        },
+                                        setLeft : function(currentPage){
+                                                (currentPage > 0)? this.classList.remove("invisible"):this.classList.add("invisible");        
+                                        },
+                                        setRight : function(currentPage){
+                                                (currentPage < pagination.get("nbPages")-1)? this.classList.remove("invisible"):this.classList.add("invisible");         
                                         }
                                 }),
                                 "cards": new Model(cardPage, {
@@ -47,7 +53,7 @@ define ("Ideafy/Library/CardList", ["Olives/OObject", "Config", "Olives/Model-pl
                                 "cardlistevent": new Event(cardList)
                         });
                         
-                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:touchstart, setStart; listen:touchmove, changePage"><span class="pagenb" data-pagination="bind: setPage, currentPage"></span><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:touchstart, highlight; listen:touchend, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></li></ul></div></div>';
+                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:touchstart, setStart; listen:touchmove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:touchstart, press; listen:touchend, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:touchstart, press; listen:touchend, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:touchstart, highlight; listen:touchend, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></li></ul></div></div>';
                         
                         cardList.reset = function reset(deck){
                                 //reset highlight
@@ -85,6 +91,18 @@ define ("Ideafy/Library/CardList", ["Olives/OObject", "Config", "Olives/Model-pl
                                 for (i = 0; i< length; i++){
                                         cardPage.alter("push", cards.get(pageNB*12+i));        
                                 }
+                        };
+                        
+                        cardList.press = function(event, node){
+                                node.classList.add("invisible");        
+                        };
+                        
+                        cardList.previousPage = function(event, node){
+                                cardList.displayPrevious();        
+                        };
+                        
+                        cardList.nextPage = function(event, node){
+                                cardList.displayNext();
                         };
                         
                         cardList.displayPrevious = function displayPrevious(){

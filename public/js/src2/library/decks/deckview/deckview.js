@@ -1,5 +1,5 @@
-define("Ideafy/Library/DeckView", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Stack-plugin", "Store", "Map", "Ideafy/Library/DeckDetails", 'Ideafy/Library/CardList'],
-        function(Widget, Model, Event, Stack, Store, Map, DeckDetails, CardList){
+define("Ideafy/Library/DeckView", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Stack-plugin", "Store", "Map", "Ideafy/Library/DeckDetails", "Ideafy/Library/CardList", "Config"],
+        function(Widget, Model, Event, Stack, Store, Map, DeckDetails, CardList, Config){
                 
                 return function DeckViewConstructor(){
                         
@@ -39,8 +39,16 @@ define("Ideafy/Library/DeckView", ["Olives/OObject", "Olives/Model-plugin", "Oli
                         };
                         
                         deckView.reset = function reset(deck){
+                                var lang = Config.get("user").get("lang"), displayDeck;
+                                // check deck default language -- if it does not match user language look for a translation
+                                if (!deck.default_lang || (deck.default_lang === lang)) {
+                                        displayDeck = deck;
+                                }
+                                else {
+                                        (deck.translations && deck.translations[lang]) ? displayDeck = deck.translations[lang] : displayDeck = deck;
+                                }
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
-                                        innerStack.getStack().get(value).reset(deck);        
+                                        innerStack.getStack().get(value).reset(displayDeck);        
                                 });
                                 innerStack.getStack().show("details");        
                         };

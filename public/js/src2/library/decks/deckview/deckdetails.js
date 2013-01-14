@@ -89,15 +89,7 @@ define("Ideafy/Library/DeckDetails", ["Olives/OObject", "Config", "Olives/Model-
                         };
                         
                         deckDetails.reset = function reset(deck){
-                                var lang = Config.get("user").get("lang");
-                                // check deck default language -- if it does not match user language look for a translation
-                                if (!deck.default_lang || (deck.default_lang === lang)) {
-                                        deckModel.reset(deck);
-                                }
-                                else {
-                                        (deck.translations && deck.translations[lang]) ? deckModel.reset(deck.translations[lang]) : deckModel.reset(deck);
-                                }
-                                
+                                deckModel.reset(deck);
                                 //reset card range
                                 range.set("max", 0);
                                 // get all cards.

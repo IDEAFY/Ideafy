@@ -184,7 +184,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 var type, id;
                                 if (node.getAttribute("name") === "scenario") type="scenario"
                                 else{
-                                        type = "tech";
+                                        type = "techno";
                                         id = node.getAttribute("data-techs_id");
                                         
                                 }

@@ -332,18 +332,25 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                      
                         };
                         
-                        // Method  called to retrieve the active deck from the database
+                        // Method  called to retrieve the active deck from the database in the appropriate language
                         _widget.getDeck = function getDeck($deck){
                                 var promise = new Promise(),
                                     cdb = new CouchDBStore();
                                 
                                 cdb.setTransport(_transport);
                                 cdb.sync(_db, $deck).then(function(){
-                                        var deck = {};
-                                        deck.char = cdb.get("content").characters;
-                                        deck.context = cdb.get("content").contexts;
-                                        deck.problem = cdb.get("content").problems;
-                                        deck.techno = cdb.get("content").techno; // even though it is not for this step so there is only one request to read the deck going out to the database
+                                        var result, deck = {}, lang=Config.get("user").get("lang");
+                                        // check deck default language -- if it does not match user language look for a translation
+                                        if (!cdb.get("default_lang") || (cdb.get("default_lang") === lang)) {
+                                                result = JSON.parse(cdb.toJSON());
+                                        }
+                                        else {
+                                                (cdb.get('translations') && cdb.get("translations")[lang]) ? result = cdb.get("translations")[lang] : result = JSON.parse(cdb.toJSON());
+                                        }
+                                        deck.char = result.content.characters;
+                                        deck.context = result.content.contexts;
+                                        deck.problem = result.content.problems;
+                                        deck.techno = result.content.techno; // even though it is not for this step so there is only one request to read the deck going out to the database
                                         $data.set("deck", deck);
                                         promise.resolve();
                                         setTimeout(function(){cdb.unsync();}, 2000);

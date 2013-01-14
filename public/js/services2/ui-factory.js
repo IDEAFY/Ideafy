@@ -505,8 +505,8 @@ define("Ideafy/CardPopup", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                 // set the dom
                                 _dom = dom;
                                 this.template = "";
-                                // get card info
-                                cardDetails.reset(JSON.parse(card));
+                                // get card info (could be an object or a store.toJSON())
+                                (typeof card === "string") ? cardDetails.reset(JSON.parse(card)) : cardDetails.reset(card);
                                 // assign popup position and caret type
                                 cardDetails.set("position", position);
                                 (caret === "left") ? cardDetails.set("caret", {left:true, right: false}) : cardDetails.set("caret", {left:false, right: true});

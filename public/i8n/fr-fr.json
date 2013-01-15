@@ -322,5 +322,6 @@
 	"brainstormsettings": "Paramétrage du Brainstorming",
 	"page": "Page ",
 	"supportlegend" : "Une question ou un problème ?",
-	"supportplaceholder" : "Saisissez votre texte et envoyez"
+	"supportplaceholder" : "Saisissez votre texte et envoyez",
+	"requestsent": "Votre requête a été transmise"
 }

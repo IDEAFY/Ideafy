@@ -1384,8 +1384,30 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         else {
                                 onEnd({"err": "Directory not found"});
                         } 
-                })        
+                });        
         });
+        
+        // Receive support requests -- send mail to contact@taiaut.com
+        olives.handlers.set("Support", function(json, onEnd){
+                var     date = new Date(json.date),
+                        mailOptions = {
+                                from : "IDEAFY <ideafy@taiaut.com>", // sender address
+                                to : "contact@taiaut.com", // list of receivers
+                                cc : "vincent.weyl@taiaut.com", // automatic copy to sender
+                                replyTo : "", // recipient should reply to sender
+                                subject : "Support request from "+json.userid + " "+ date.toDateString(), // Subject line
+                                html : "Userid : "+json.userid+"\nDate : " + date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear()+ " "+date.getHours()+":"+date.getMinutes()+"\n\nRequest :\n"+ json.request // html body
+                        };
+                smtpTransport.sendMail(mailOptions, function(error, response) {
+                                if (error) {
+                                        onEnd(error);
+                                } else {
+                                        onEnd("ok");
+                                }
+                        });        
+        });
+        
+        
 
 });
 

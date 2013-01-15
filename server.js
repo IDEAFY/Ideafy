@@ -1398,6 +1398,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 subject : "Support request from "+json.userid + " "+ date.toDateString(), // Subject line
                                 html : "Userid : "+json.userid+"\nDate : " + date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear()+ " "+date.getHours()+":"+date.getMinutes()+"\n\nRequest :\n"+ json.request // html body
                         };
+                        
+                        console.log(mailOptions);
                 smtpTransport.sendMail(mailOptions, function(error, response) {
                                 if (error) {
                                         onEnd(error);

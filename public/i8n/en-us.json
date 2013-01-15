@@ -326,6 +326,8 @@
 	"userguide": "User Guide",
 	"support": "Support",
 	"eula": "View License Agreement",
-	"page" : "Page "
+	"page" : "Page ",
+	"supportlegend" : "A question or an issue?",
+	"supportplaceholder" : "Enter your text and send"
 	
 }

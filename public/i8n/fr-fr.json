@@ -320,5 +320,7 @@
 	"designedby": "Réalisé par : ",
 	"userpref": "Préférences Utilisateur",
 	"brainstormsettings": "Paramétrage du Brainstorming",
-	"page": "Page "
+	"page": "Page ",
+	"supportlegend" : "Une question ou un problème ?",
+	"supportplaceholder" : "Saisissez votre texte et envoyez"
 }

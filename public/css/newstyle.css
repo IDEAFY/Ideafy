@@ -1,3 +1,10 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
 /* reset */
 
 html, body, h2, h3, ul, p{
@@ -1486,7 +1493,7 @@ textarea.solution {
     font-family: Helvetica;
 }
 
-.writeTwocent .twocentPublish, .writeTwocent .twocentCancel, .sendmail, .cancelmail, .edituserdetails label.updateprofile, .edituserdetails label.cancelprofile{
+.writeTwocent .twocentPublish, .writeTwocent .twocentCancel, .sendmail, .cancelmail, .edituserdetails label.updateprofile, .edituserdetails label.cancelprofile, .aboutcontent .cancel, .aboutcontent .send{
     height: 26px;
     width: 92px;
     border-radius: 5px;
@@ -1499,11 +1506,11 @@ textarea.solution {
     float: right;
 }
 
-.writeTwocent .twocentPublish, .sendmail, .updateprofile{
+.writeTwocent .twocentPublish, .sendmail, .updateprofile, .aboutcontent .send{
     background: #8cab68;
 }
 
-.writeTwocent .twocentCancel, .cancelmail, .cancelprofile{
+.writeTwocent .twocentCancel, .cancelmail, .cancelprofile, .aboutcontent .cancel{
     margin-left: 15px;
     background: #e69b73;
 }
@@ -4237,7 +4244,7 @@ li.color-item{
     margin-left: 100px;
 }
 
-#addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend, #groupdetails legend{
+#addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend, #groupdetails legend, .aboutcontent legend{
     width:100%;
     padding-bottom: 5px;
     font-family: Pacifico;
@@ -5206,4 +5213,13 @@ li.my2q{
     width: 851px;
     height: 530px;
     overflow-y: scroll;
+}
+
+.aboutcontent textarea{
+    height: 300px;
+    margin-bottom: 15px;   
+}
+
+.aboutcontent legend.support{
+    border: none;    
 }

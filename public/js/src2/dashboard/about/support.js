@@ -22,7 +22,7 @@ define("Ideafy/Dashboard/Support", ["Olives/OObject", "Config", "Olives/Model-pl
                         
                         support.send = function(event, node){
                                 node.classList.remove("pressed");
-                                support.sendRequest(node.value);
+                                support.sendRequest(model.get("body"));
                                 model.set("body", "");                
                         };
                         

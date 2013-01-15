@@ -18,7 +18,7 @@ define("Ideafy/Dashboard/Support", ["Olives/OObject", "Config", "Olives/Model-pl
                                 "supportevent": new Event(support)
                         });
                         
-                        support.template = '<div class="aboutcontent"><legend class"support" data-labels="bind:innerHTML, supportlegend"></legend><textarea class="input" data-labels="bind:placeholder, supportplaceholder" data-support="bind: value, body"></textarea><span data-support="bind:innerHTML, result"></span><div class="cancel" data-labels="bind: innerHTML, cancellbl" data-supportevent="listen: touchstart, press; listen: touchend, cancel"></div><div class="send" data-labels="bind: innerHTML, sendlbl" data-twocentevent="listen: touchstart, press; listen: touchend, send"></div></div>';
+                        support.template = '<div class="aboutcontent"><legend class"support" data-labels="bind:innerHTML, supportlegend"></legend><textarea class="input" data-labels="bind:placeholder, supportplaceholder" data-support="bind: value, body"></textarea><span data-support="bind:innerHTML, result"></span><div class="cancel" data-labels="bind: innerHTML, cancellbl" data-supportevent="listen: touchstart, press; listen: touchend, cancel"></div><div class="send" data-labels="bind: innerHTML, sendlbl" data-supportevent="listen: touchstart, press; listen: touchend, send"></div></div>';
                         
                         support.send = function(event, node){
                                 node.classList.remove("pressed");

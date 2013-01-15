@@ -28,6 +28,12 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                         
                         myTwocentUI.place(Map.get("connect-twocents"));
                         
+                        // ask a twoquestion
+                        myTwocentUI.plus = function(){
+                                Map.get("new2q-popup").classList.add("appear");
+                                Map.get("cache").classList.add("appear");        
+                        };
+                        
                         // add twocent and twoquestion lists to the stack
                         
                         // display twoQ list (default and init details with first item)

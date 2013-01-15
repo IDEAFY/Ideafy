@@ -544,8 +544,8 @@ ul.notify-list{
     background-image: url('../img/aboutActive.png');
 }
 
-/* New idea popup */
-#newidea-popup{
+/* New idea / new Twoquestion popup */
+#newidea-popup, #new2q-popup{
     position: absolute;
     width: 480px;
     height: 560px;
@@ -554,6 +554,13 @@ ul.notify-list{
     background: white;
     left: 270px;
     bottom: -565px;
+}
+
+#new2q-popup{
+    width: 560px;
+    height: 300px;
+    left: 230px;
+    bottom: -305px
 }
 
 #help-popup{
@@ -645,12 +652,17 @@ ul.notify-list{
     -webkit-transform:translateY(-689px);
 }
 
+#new2q-popup.appear{
+    -webkit-transition:-webkit-transform 0.2s linear;
+    -webkit-transform:translateY(-550px);
+}
+
 #help-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
     -webkit-transform:translateX(-797px);    
 }
 
-#newidea-popup .option, .confirm .option{
+#newidea-popup .option, .confirm .option, #new2q-popup .option{
     width: 60px;
     height: 24px;
     margin-top: 5px;
@@ -675,25 +687,25 @@ ul.notify-list{
     background: #4D4D4D;
 }
 
-#newidea-popup .option.pressed, .confirm .option.pressed{
+#newidea-popup .option.pressed, .confirm .option.pressed, #new2q-popup .option.pressed{
     background: #94A3B8;
     border: 1px solid #657B99;
 }
 
-#newidea-popup .left{
+#newidea-popup .left, #new2q-popup .left{
     left: 5px;
 }
 
-#newidea-popup .right{
+#newidea-popup .right, #new2q-popup .right{
     right: 5px;
 }
 
-#newidea-popup .form{
+#newidea-popup .form, #new2q-popup .form{
     font-size: 16px;
     padding: 30px 20px 30px 20px;
 }
 
-#newidea-popup .form p{
+#newidea-popup .form p, #new2q-popup .form p{
     margin-bottom: 30px;
     font-size: 14px;
 }

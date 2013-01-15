@@ -329,6 +329,7 @@
 	"page" : "Page ",
 	"supportlegend" : "A question or an issue?",
 	"supportplaceholder" : "Enter your text and send",
-	"requestsent": "Thank you ! Your request has been sent"
+	"requestsent": "Thank you ! Your request has been sent",
+	"createquestion" : "Ask a twoQuestion"
 	
 }

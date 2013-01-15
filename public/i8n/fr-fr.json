@@ -323,5 +323,6 @@
 	"page": "Page ",
 	"supportlegend" : "Une question ou un problème ?",
 	"supportplaceholder" : "Saisissez votre texte et envoyez",
-	"requestsent": "Merci! Votre requête a été transmise"
+	"requestsent": "Merci! Votre requête a été transmise",
+	"createquestion" : "Poser une twoQuestion"
 }

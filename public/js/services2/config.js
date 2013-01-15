@@ -108,6 +108,18 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                                 "authornames": "",
                                 "twocents": []
                         },
+                        TQTemplate:{
+                                "author": [],
+                                "question": "",
+                                "creation_date": [],
+                                "lang": "en-us",
+                                "type": 10,
+                                "modification_date": [],
+                                "votes": [],
+                                "rating": "",
+                                "username": "",
+                                "twocents": []
+                        },
                         sessionTemplate : {
                                 "title" : "",
                                 "description" : "",

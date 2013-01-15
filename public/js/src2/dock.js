@@ -7,15 +7,17 @@
 
 define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"Ideafy/Public", "Ideafy/Library", "Ideafy/Brainstorm", "Ideafy/Connect", "Ideafy/Dashboard",
-	"Map", "Config", "Ideafy/Notify"], 
-	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify){
+	"Map", "Config", "Ideafy/Notify", "Ideafy/NewIdea", "Ideafy/Help", "Ideafy/New2Q"], 
+	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q){
 		return function DockConstructor(){
 
 		//declaration
 			var _widget = new Widget(),
-				_control = new Control(this),
-				_observer = Config.get("observer"),
-				_stack = new Stack();
+			    _newIdea = new NewIdea(),
+			    _new2q = new New2Q(),
+			    _control = new Control(this),
+			    _observer = Config.get("observer"),
+			    _stack = new Stack();
 
 		//setup
 			//labels have to configurable

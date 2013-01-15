@@ -619,7 +619,7 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                                 else if (!_store.get("description")) _error.set("error", "nodesc");
                                 else if (!_store.get("solution")) _error.set("error", "nosol");
 
-                                if (!_error.get("error") && !_store.get("_id                               ")){                                
+                                if (!_error.get("error") && !_store.get("_id")){                                
                                         // fill cdb document
                                         _store.set("authors", [_user.get("_id")]);
                                         _store.set("authornames", _user.get("username"));
@@ -638,6 +638,99 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                                                 // reset _store and _error
                                                 _store.unsync();
                                                 _store.reset(Config.get("ideaTemplate"));
+                                                _error.reset({"error":""});
+                                        }, 200);
+                                }  
+                        };
+                        
+                        return _widget;
+                };
+                
+        });
+        
+define("Ideafy/New2Q", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "CouchDBStore"],
+        function(Widget, Map, Model, Event, Config, Store){
+                
+                return function new2QConstructor(){
+                
+                        var _widget = new Widget(),
+                            _store = new Store(Config.get("TQTemplate")),
+                            _user = Config.get("user"),
+                            _labels = Config.get("labels"),
+                            _error = new Store({"error": ""});
+                            
+                        _store.setTransport(Config.get("transport"));
+                        
+                        _widget.plugins.addAll({
+                                "new2q" : new Model(_store),
+                                "labels" : new Model(_labels),
+                                "errormsg" : new Model(_error, {
+                                        setError : function(error){
+                                                switch (error){
+                                                        case "notitle":
+                                                             this.innerHTML = _labels.get("titlefield")+ _labels.get("emptyfielderror");
+                                                             break;
+                                                        case "nodesc":
+                                                             this.innerHTML = _labels.get("descriptionfield")+ _labels.get("emptyfielderror");
+                                                             break;
+                                                        case "nosol":
+                                                             this.innerHTML = _labels.get("solutionfield")+ _labels.get("emptyfielderror");
+                                                             break;
+                                                        default:
+                                                             this.innerHTML = "";
+                                                }
+                                        }
+                                }),
+                                "new2qevent" : new Event(_widget)
+                        });
+                        
+                        _widget.template = '<div><div class = "header blue-dark"><div class="option left" data-new2qevent="listen:touchstart, press; listen:touchend, cancel" data-labels="bind: innerHTML, cancellbl">Cancel</div><span data-labels="bind: innerHTML, createquestion"></span><div class="option right" data-new2qevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, oklbl">Ok</div></div><form class="form"><p><textarea class="description input" data-labels="bind:placeholder, 2qplaceholder" data-new2q="bind: value, question"></textarea></p><p><span class="errormsg" data-errormsg="bind:setError, error"></span></p></form></div>';
+                        
+                        _widget.render();
+                        _widget.place(Map.get("new2q-popup"));
+                        
+                        _widget.press = function(event, node){
+                                node.classList.add("pressed");
+                        };
+                        
+                        _widget.cancel = function(event, node){
+                                node.classList.remove("pressed");
+                                // hide window
+                                document.getElementById("new2q-popup").classList.remove("appear");
+                                document.getElementById("cache").classList.remove("appear");
+                                // reset _store and _error
+                                _store.unsync();
+                                _store.reset(Config.get("TQTemplate"));
+                                _error.reset({"error":""});       
+                        };
+                        
+                        _widget.upload = function(event, node){
+                                var now = new Date(),
+                                    id = "Q:"+now.getTime();
+                                    
+                                // check for errors (missing fields)
+                                if (!_store.get("question")) _error.set("error", "noquestion");
+                                else if (!_store.get("solution")) _error.set("error", "nosol");
+
+                                if (!_error.get("error") && !_store.get("_id")){                                
+                                        // fill cdb document
+                                        _store.set("author", _user.get("_id"));
+                                        _store.set("username", _user.get("username"));
+                                        _store.set("creation_date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
+                                        // set language to the user's language by default
+                                        _store.set("lang", _user.get("lang"));
+                                        
+                                        // create document in couchdb and upload
+                                        _store.sync(Config.get("db"), id);
+                                        setTimeout(function(){
+                                                _store.upload();
+                                                node.classList.remove("pressed");
+                                                // hide window
+                                                document.getElementById("new2q-popup").classList.remove("appear");
+                                                document.getElementById("cache").classList.remove("appear");
+                                                // reset _store and _error
+                                                _store.unsync();
+                                                _store.reset(Config.get("TQTemplate"));
                                                 _error.reset({"error":""});
                                         }, 200);
                                 }  

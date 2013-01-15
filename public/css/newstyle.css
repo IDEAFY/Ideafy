@@ -5220,6 +5220,6 @@ li.my2q{
     margin-bottom: 15px;   
 }
 
-.aboutcontent legend.support{
+#dashboard-about .aboutcontent legend.support{
     border: none;    
 }

@@ -324,5 +324,15 @@
 	"supportlegend" : "Une question ou un problème ?",
 	"supportplaceholder" : "Saisissez votre texte et envoyez",
 	"requestsent": "Merci! Votre requête a été transmise",
-	"createquestion" : "Poser une twoQuestion"
+	"createquestion" : "Nouvelle TwoQuestion",
+	"questionplaceholder" : "Posez votre question",
+	"noquestion" : "Veuillez saisir une question",
+	"lengthexceeded" : "Limite atteinte",
+	"characters" : " caractères",
+	"publicidealbl" : "Idée publique",
+	"privateidealbl" : "Idée privée",
+	"publicwarning" : "<b>ATTENTION :</b> publier votre idée en tant que publique est irréversible.Rendez-vous dans le tableau de bord d'Ideafy pour en savoir plus.",
+	"uploadinprogress" : "En attente de publication",
+	"notifyingcontacts" : "Informer mes contacts",
+	"askednew" : " a posé une nouvelle <i>TwoQuestion</i>"
 }

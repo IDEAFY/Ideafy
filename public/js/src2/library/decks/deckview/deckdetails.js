@@ -24,7 +24,7 @@ define("Ideafy/Library/DeckDetails", ["Olives/OObject", "Config", "Olives/Model-
                                 "labels": new Model(labels),
                                 "range": new Model(range, {
                                         setCursorWidth : function(max){
-                                                console.log(document.querySelector(".deckslider"));        
+                                                //how to set attribute on slider (shadowDOM)        
                                         }
                                 }),
                                 "cards": new Model(deckCards,{
@@ -87,7 +87,6 @@ define("Ideafy/Library/DeckDetails", ["Olives/OObject", "Config", "Olives/Model-
                                 for(i=0;i<5;i++){
                                         (allCards.get(id-2+i))?arr[i]=allCards.get(id-2+i).value : arr[i] = {style: "null"};
                                 }
-                                console.log(arr);
                                 deckCards.reset(arr);
                         };
                         
@@ -107,8 +106,6 @@ define("Ideafy/Library/DeckDetails", ["Olives/OObject", "Config", "Olives/Model-
                                         deckDetails.displayCards(0);   
                                 });
                         };
-                        
-                        DD= deckDetails;
                         
                         return deckDetails;
                 };

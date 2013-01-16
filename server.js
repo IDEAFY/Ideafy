@@ -357,7 +357,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         "allday": 0,
                                                         "curious": 0,
                                                         "puzzled": 0,
-                                                        "whyarewehere": 0
+                                                        "whyarewehere": 0,
+                                                        "scored":[],
+                                                        "type": 11
                                                 });
                                                 createDocAsAdmin(json.name+"_rewards", rewards);
                                         }
@@ -1050,6 +1052,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 var arr = [];
                                 // retrieve notifications array
                                 if (cdb.get("notifications")[0]){arr = cdb.get("notifications");}
+                                
+                                // add username to toList if it is empty
+                                if (!msg.toList) msg.toList = cdb.get("username");
+                                
                                 // add message
                                 arr.unshift(msg);
                                 // update store and upload
@@ -1283,6 +1289,54 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         });     
                 });
 
+        });
+        
+        // updating user document and score following certain actions
+        olives.handlers.set("UpdateUIP", function(json, onEnd){
+                var cdb = new CouchDBStore(),
+                    userRewards = new CouchDBStore();
+                
+                getDocAsAdmin(json.userid+"_rewards", userRewards).then(function(){
+                        var scored = userRewards.get("scored") || [];
+                        
+                        getDocAsAdmin(json.userid, cdb).then(function(){
+                                var score = cdb.get("ip"),
+                                    ideas_count = cdb.get("ideas_count") || 0,
+                                    tq_count = cdb.get("twoquestions_count") || 0,
+                                    news = cdb.get("news"),
+                                    now = new Date(),
+                                    date = [now.getFullYear(), now.getMonth(), now.getDate()];
+                                
+                                // userRewards doc is used ot make sure ideas and twoquestions are only counted once.
+                                // a further step would be to double check existence of docId in the database
+                                if (json.type === 6 && scored.indexOf(json.docId)<0){
+                                        score += 5;
+                                        ideas_count++;
+                                        news.unshift({type:"IDEA+", date:date, content:{title:json.docTitle, docId:json.docId}});
+                                        cdb.set("ip", score);
+                                        cdb.set("ideas_count", ideas_count);
+                                        cdb.set("news", news);
+                                        scored.unshift(json.docId);
+                                }
+                        
+                                if (json.type === 10 && scored.indexOf(json.docId)<0){
+                                        score += 3;
+                                        tq_count++;
+                                        news.unshift({type:"2Q+", date:date, content:{question: json.question, docId: json.docId}});
+                                        cdb.set("ip", score);
+                                        cdb.set("twoquestions_count", tq_count);
+                                        cdb.set("news", news);
+                                        scored.unshift(json.docId);
+                                }
+                                userRewards.set("scored", scored);
+                                updateDocAsAdmin(json.userid+"_rewards", userRewards).then(function(){
+                                        updateDocAsAdmin(json.userid, cdb).then(function(){
+                                                onEnd("ok");
+                                        });        
+                                });
+                        });        
+                });
+                       
         });
 
         // updating a session's score

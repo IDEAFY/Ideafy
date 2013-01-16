@@ -330,6 +330,17 @@
 	"supportlegend" : "A question or an issue?",
 	"supportplaceholder" : "Enter your text and send",
 	"requestsent": "Thank you ! Your request has been sent",
-	"createquestion" : "Ask a twoQuestion"
+	"createquestion" : "New TwoQuestion",
+	"questionplaceholder" : "Enter your question",
+	"noquestion" : "Please enter a question",
+	"lengthexceeded" : "Maximum question length reached",
+	"characters" : " characters",
+	"publicidealbl" : "Public Idea",
+	"privateidealbl" : "Private Idea",
+	"publicwarning" : "<b>WARNING :</b> publishing your idea as a public one is irreversible. Visit Ideafy's dashboard to learn more.",
+	"uploadinprogress" : "Upload in progress",
+	"notifyingcontacts" : " Notifying contacts",
+	"askednew" : " has asked a new TwoQuestion"
+	
 	
 }

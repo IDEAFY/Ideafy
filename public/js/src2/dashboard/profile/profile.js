@@ -230,7 +230,7 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                                                         this.innerHTML = labels.get("gotaward") +"<span class='newsinfo'>" +news.get(id).content.label + "</span>";
                                                         break;
                                                 case "2Q+":
-                                                        this.innerHTML = labels.get("posted2q") +"<span class='newsinfo'>" +news.get(id).content.title + "</span>";
+                                                        this.innerHTML = labels.get("posted2q") +"<span class='newsinfo'>" +news.get(id).content.question + "</span>";
                                                         break;
                                                 case "2CTS":
                                                         this.innerHTML = labels.get("commentedon") +"<span class='newsinfo'>" + news.get(id).content.title + "</span>" + labels.get("by")+news.get("id").content.username;

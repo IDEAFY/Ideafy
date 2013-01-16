@@ -141,7 +141,7 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 }
                                                 
                                                 // if user is sole author, idea has not been shared and no twocents, then delete is ok
-                                                if (data.authors.length === 1 && data.authors[0] === user.get("_id") && !data.twocents.length && !data.sharedwith.length) {
+                                                if (data.authors.length === 1 && data.authors[0] === user.get("_id") && !data.twocents.length && !data.sharedwith.length && data.visibility !== "public") {
                                                         buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                 }
                                                 // if user is not an author but idea has been shared with him, he can delete it from his library
@@ -546,21 +546,25 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                             _store = new Store(Config.get("ideaTemplate")),
                             _user = Config.get("user"),
                             _labels = Config.get("labels"),
-                            _error = new Store({"error": ""});
+                            _error = new Store({"error": ""}),
+                            upload = false;
                             
                         _store.setTransport(Config.get("transport"));
                         
                         _widget.plugins.addAll({
                                 "newidea" : new Model(_store, {
                                         setVisibility : function(visibility){
-                                                if (visibility === "private"){
-                                                        this.classList.remove("public");
-                                                        this.innerHTML = _labels.get("privatelbl");
+                                                if (visibility === "public"){
+                                                        this.innerHTML = _labels.get("publicidealbl");
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/publicforslider.png'); background-position: 135px center; background-repeat:no-repeat; background-size: 30px;");
                                                 }
                                                 else{
-                                                        this.classList.add("public");
-                                                        this.innerHTML = _labels.get("publiclbl");        
+                                                        this.innerHTML = _labels.get("privateidealbl");
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/privateforslider.png'); background-position: 15px center; background-repeat:no-repeat; background-size: 20px;");       
                                                 }
+                                        },
+                                        setWarning : function(visibility){
+                                                (visibility === "public") ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         }
                                 }),
                                 "labels" : new Model(_labels),
@@ -577,14 +581,14 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                                                              this.innerHTML = _labels.get("solutionfield")+ _labels.get("emptyfielderror");
                                                              break;
                                                         default:
-                                                             this.innerHTML = "";
+                                                             this.innerHTML = error;
                                                 }
                                         }
                                 }),
                                 "newideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><div class="option left" data-newideaevent="listen:touchstart, press; listen:touchend, cancel" data-labels="bind: innerHTML, cancellbl">Cancel</div><span data-labels="bind: innerHTML, createidealbl"></span><div class="option right" data-newideaevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, oklbl">Ok</div></div><form class="form"><p><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title"></p><p><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution"></textarea></p><p><span class="errormsg" data-errormsg="bind:setError, error"></span><span class="visibility" data-labels="bind:innerHTML, privatelbl" data-newideaevent="listen: touchstart, press; listen:touchend,toggleVisibility" data-newidea="bind: setVisibility, visibility"></span></p></form></div>';
+                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:touchstart, cancel"></div></div><form class="form"><p><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title"></p><p><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea></p><div class="visibility-input"><input class="visibility-slider" type="range" min="0" max="1" value ="1" data-newideaevent="listen:touchend, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
@@ -597,33 +601,65 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
+                                document.querySelector(".publicwarning").classList.add("invisible");
                         };
                         
-                        _widget.cancel = function(event, node){
-                                node.classList.remove("pressed");
+                        _widget.closePopup = function closePopup(){
                                 // hide window
                                 document.getElementById("newidea-popup").classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
                                 // reset _store and _error
                                 _store.unsync();
                                 _store.reset(Config.get("ideaTemplate"));
-                                _error.reset({"error":""});       
+                                _error.reset({"error":""});
+                                
+                                //reset visibility slider
+                                document.querySelector(".visibility-slider").value = 1;        
+                        };
+                        
+                        _widget.resetError = function(event, node){
+                                var name;
+                                if (node.classList.contains("description")) name = "nodesc"
+                                else if (node.classList.contains("solution")) name = "nosol"
+                                else name = "notitle";
+                                
+                                if (_error.get("error") === name && node.value) _error.set("error", "");
+                                
+                                        
+                        };
+                        
+                        _widget.cancel = function(event, node){
+                                _widget.closePopup();    
                         };
                         
                         _widget.upload = function(event, node){
                                 var now = new Date(),
-                                    id = "I:"+now.getTime();
+                                    id = "I:"+now.getTime(),
+                                    timer;
                                     
+                                node.classList.remove("pressed");
                                 // check for errors (missing fields)
                                 if (!_store.get("title")) _error.set("error", "notitle");
                                 else if (!_store.get("description")) _error.set("error", "nodesc");
                                 else if (!_store.get("solution")) _error.set("error", "nosol");
 
-                                if (!_error.get("error") && !_store.get("_id")){                                
+                                if (!_error.get("error") && !_store.get("_id") && !upload){ 
+                                        
+                                        // set upload flag to true
+                                        upload = true;
+                                        timer = setInterval(function(){
+                                                if (_error.get("error") === _labels.get("uploadinprogress")){
+                                                        _error.set("error", _labels.get("uploadinprogress")+"...");
+                                                }
+                                                else _error.set("error", _labels.get("uploadinprogress"));
+                                        }, 100);
+                                                                   
+                                        
                                         // fill cdb document
                                         _store.set("authors", [_user.get("_id")]);
                                         _store.set("authornames", _user.get("username"));
                                         _store.set("creation_date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
+                                        
                                         // set language to the user's language by default
                                         _store.set("lang", _user.get("lang"));
                                         
@@ -631,16 +667,22 @@ define("Ideafy/NewIdea", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olive
                                         _store.sync(Config.get("db"), id);
                                         setTimeout(function(){
                                                 _store.upload();
-                                                node.classList.remove("pressed");
-                                                // hide window
-                                                document.getElementById("newidea-popup").classList.remove("appear");
-                                                document.getElementById("cache").classList.remove("appear");
-                                                // reset _store and _error
-                                                _store.unsync();
-                                                _store.reset(Config.get("ideaTemplate"));
-                                                _error.reset({"error":""});
-                                        }, 200);
-                                }  
+                                                if (_store.get("visibility") === "public"){
+                                                        Config.get("transport").request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "docTitle": _store.get("title")}, function(result){
+                                                                if (result !== "ok") console.log(result);
+                                                                _widget.closePopup();
+                                                                clearInterval(timer);
+                                                        });       
+                                                }
+                                                else{
+                                                        _widget.closePopup();
+                                                        clearInterval(timer);
+                                                }
+                                        }, 500); // timeout to retrieve _id field in _store
+                                }
+                                else{
+                                        node.classList.remove("pressed");
+                                } 
                         };
                         
                         return _widget;
@@ -657,34 +699,37 @@ define("Ideafy/New2Q", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/
                             _store = new Store(Config.get("TQTemplate")),
                             _user = Config.get("user"),
                             _labels = Config.get("labels"),
+                            _maxLength = 140,
+                            upload = false,
                             _error = new Store({"error": ""});
                             
                         _store.setTransport(Config.get("transport"));
                         
                         _widget.plugins.addAll({
-                                "new2q" : new Model(_store),
+                                "new2q" : new Model(_store, {
+                                        setLength : function(type){
+                                                if (type === 10) this.setAttribute("maxlength", _maxLength);
+                                        }
+                                }),
                                 "labels" : new Model(_labels),
                                 "errormsg" : new Model(_error, {
                                         setError : function(error){
                                                 switch (error){
-                                                        case "notitle":
-                                                             this.innerHTML = _labels.get("titlefield")+ _labels.get("emptyfielderror");
+                                                        case "noquestion":
+                                                             this.innerHTML = _labels.get("noquestion");
                                                              break;
-                                                        case "nodesc":
-                                                             this.innerHTML = _labels.get("descriptionfield")+ _labels.get("emptyfielderror");
-                                                             break;
-                                                        case "nosol":
-                                                             this.innerHTML = _labels.get("solutionfield")+ _labels.get("emptyfielderror");
+                                                        case "lengthexceeded":
+                                                             this.innerHTML = _labels.get("lengthexceeded") + " (" + _maxLength + _labels.get("characters") + ")";
                                                              break;
                                                         default:
-                                                             this.innerHTML = "";
+                                                             this.innerHTML = error;
                                                 }
                                         }
                                 }),
                                 "new2qevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><div class="option left" data-new2qevent="listen:touchstart, press; listen:touchend, cancel" data-labels="bind: innerHTML, cancellbl">Cancel</div><span data-labels="bind: innerHTML, createquestion"></span><div class="option right" data-new2qevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, oklbl">Ok</div></div><form class="form"><p><textarea class="description input" data-labels="bind:placeholder, 2qplaceholder" data-new2q="bind: value, question"></textarea></p><p><span class="errormsg" data-errormsg="bind:setError, error"></span></p></form></div>';
+                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createquestion"></span><div class="close-popup" data-new2qevent="listen:touchstart, cancel"></div></div><form class="form"><p><textarea class="description input" data-labels="bind:placeholder, questionplaceholder" data-new2q="bind: value, question; bind: setLength, type" data-new2qevent="listen:input, checkLength"></textarea></p><div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-new2qevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("new2q-popup"));
@@ -693,26 +738,43 @@ define("Ideafy/New2Q", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/
                                 node.classList.add("pressed");
                         };
                         
-                        _widget.cancel = function(event, node){
-                                node.classList.remove("pressed");
+                        _widget.closePopup = function closePopup(){
                                 // hide window
                                 document.getElementById("new2q-popup").classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
                                 // reset _store and _error
                                 _store.unsync();
                                 _store.reset(Config.get("TQTemplate"));
-                                _error.reset({"error":""});       
+                                _error.reset({"error":""});
+                                
+                                //reset visibility slider
+                                document.querySelector(".visibility-slider").value = 1;        
+                        };
+                        
+                        _widget.cancel = function(event, node){
+                                _widget.closePopup();      
                         };
                         
                         _widget.upload = function(event, node){
                                 var now = new Date(),
+                                    timer,
                                     id = "Q:"+now.getTime();
-                                    
+                                
+                                
                                 // check for errors (missing fields)
-                                if (!_store.get("question")) _error.set("error", "noquestion");
-                                else if (!_store.get("solution")) _error.set("error", "nosol");
+                                if (!_store.get("question")) _error.set("error", "noquestion")
 
-                                if (!_error.get("error") && !_store.get("_id")){                                
+                                if (!_error.get("error") && !_store.get("_id") && !upload){
+                                        
+                                        // set upload flag to true
+                                        upload = true;
+                                        timer = setInterval(function(){
+                                                if (_error.get("error") === _labels.get("uploadinprogress")){
+                                                        _error.set("error", _labels.get("uploadinprogress")+"...");
+                                                }
+                                                else _error.set("error", _labels.get("uploadinprogress"));
+                                        }, 100);
+                                                                       
                                         // fill cdb document
                                         _store.set("author", _user.get("_id"));
                                         _store.set("username", _user.get("username"));
@@ -724,16 +786,53 @@ define("Ideafy/New2Q", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/
                                         _store.sync(Config.get("db"), id);
                                         setTimeout(function(){
                                                 _store.upload();
-                                                node.classList.remove("pressed");
-                                                // hide window
-                                                document.getElementById("new2q-popup").classList.remove("appear");
-                                                document.getElementById("cache").classList.remove("appear");
-                                                // reset _store and _error
-                                                _store.unsync();
-                                                _store.reset(Config.get("TQTemplate"));
-                                                _error.reset({"error":""});
-                                        }, 200);
-                                }  
+                                                Config.get("transport").request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "question": _store.get("question")}, function(result){
+                                                        var i, contacts = _user.get("connections"), l=contacts.length, dest =[], 
+                                                            json = {
+                                                                "type" : "2Q+",
+                                                                "status" : "unread",
+                                                                "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                                                "author" : _user.get("_id"),
+                                                                "username" : _user.get("username"),
+                                                                "firstname" : _user.get("firstname"),
+                                                                "toList" : "",
+                                                                "ccList" : "",
+                                                                "object" : _user.get("username")+_labels.get("askednew"),
+                                                                "body" : _store.get("question"),
+                                                                "signature" : ""
+                                                             };
+                                                        if (result !== "ok") console.log(result);
+                                                        _widget.closePopup();
+                                                        clearInterval(timer);
+                                                                
+                                                        // notifying contacts
+                                                        timer = setInterval(function(){
+                                                                if (_error.get("error") === _labels.get("notifyingcontacts")){
+                                                                        _error.set("error", _labels.get("notifyingcontacts")+"...");
+                                                                }
+                                                                else _error.set("error", _labels.get("notifyingcontacts"));
+                                                        }, 100);
+                                                        
+                                                        // building recipient list
+                                                        for(i=0; i<l; i++){
+                                                                if (contacts[i].type === "user") dest.push(contacts[i].userid);
+                                                        }
+                                                        json.dest = dest;
+                                                        // notification request
+                                                        Config.get("transport").request("Notify", json, function(result){
+                                                                var result = JSON.parse(result);
+                                                                console.log(result);
+                                                        });
+                                                });
+                                        }, 500);
+                                }
+                                else{
+                                        node.classList.remove("pressed");        
+                                } 
+                        };
+                        
+                        _widget.checkLength = function(event, node){
+                                (node.value.length >= _maxLength) ? _error.set("error", "lengthexceeded") : _error.set("error", "");        
                         };
                         
                         return _widget;

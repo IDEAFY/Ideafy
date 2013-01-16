@@ -13,8 +13,8 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 
 		//declaration
 			var _widget = new Widget(),
-			    _newIdea = new NewIdea(),
-			    _new2q = new New2Q(),
+			    _newIdea,
+			    _new2q,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),
 			    _stack = new Stack();
@@ -45,6 +45,9 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				notify.init();
 				console.log("notifyok");
 				
+				// initialize popups
+				_newIdea = new NewIdea();
+                                _new2q = new New2Q();
 				//set current stack view
 				_stack.getStack().show("#public");
 			};

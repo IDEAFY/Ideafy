@@ -553,14 +553,82 @@ ul.notify-list{
     z-index: 2000;
     background: white;
     left: 270px;
-    bottom: -565px;
+    bottom: -580px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 #new2q-popup{
     width: 560px;
     height: 300px;
     left: 230px;
-    bottom: -305px
+    bottom: -320px
+}
+
+#new2q-popup .form textarea{
+    height: 180px;
+    font-size: 18px;
+    line-height: 30px;
+}
+
+#newidea-popup .form p, #new2q-popup .form p{
+    margin-bottom:  20px;
+    font-size: 14px;
+}
+
+#new2q-popup .close-popup, #newidea-popup .close-popup{
+    right: 0px;
+    -webkit-box-shadow: 0px -3px 3px 0px rgba(0,0,0,0.6);
+}
+
+#newidea-popup .visibility-input{
+    text-align: center;
+}
+
+#newidea-popup .visibility-slider{
+    height: 30px;
+    border-radius: 15px;
+    width: 180px;
+    background: transparent;
+    margin: 0 auto;
+    border: none;
+}
+
+#newidea-popup .visibility-input div{
+    background: #657B99;
+    width: 180px;
+    height:30px;
+    border-radius: 15px;
+    color: white;
+    font-family: Pacifico;
+    font-size: 14px;
+    margin: -33px auto;
+    line-height: 30px;
+}
+
+#newidea-popup .visibility-slider::-webkit-slider-thumb{
+    height: 30px;
+    width:30px;
+    border-radius: 15px;
+}
+
+#newidea-popup .newidea-footer{
+    margin-top: 70px;
+}
+
+#newidea-popup .publicwarning{
+    height: 50px;
+    width: 230px;
+    background-image: url('../img/brainstorm/deedeetopright.png');
+    background-size: 30px 30px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding: 5px 10px 5px 40px;
+    float: left;
+    margin-top: -20px;
+    font-family: helvetica;
+    font-size: 12px;
+    color: #404040;
 }
 
 #help-popup{
@@ -702,12 +770,7 @@ ul.notify-list{
 
 #newidea-popup .form, #new2q-popup .form{
     font-size: 16px;
-    padding: 30px 20px 30px 20px;
-}
-
-#newidea-popup .form p, #new2q-popup .form p{
-    margin-bottom: 30px;
-    font-size: 14px;
+    padding: 20px;
 }
 
 .newideatitle{
@@ -948,7 +1011,7 @@ ul.notify-list{
 }
 
 
-#public-list .option.right, #idea-list .option.right, #connect-messages .option.right, #connect-contacts .option.right {
+#public-list .option.right, #idea-list .option.right, #connect-messages .option.right, #connect-contacts .option.right, #mtc-list .option.right {
   background:url('../img/public/plus2.png') no-repeat center center;
   background-size:20px;
 }
@@ -4790,6 +4853,7 @@ li.my2q{
 
 .recentactivity li{
     min-height: 56px;
+    display: table-row;
 }
 
 .recentactivity li:nth-child(odd){
@@ -4797,13 +4861,14 @@ li.my2q{
 }
 
 .recentactivity li > div, .recentactivity li > p{
-    float: left;
+    /*float: left;*/
+   display: table-cell;
+   vertical-align: middle;
 }
 
 .newsdate{
     font-family: Helvetica;
     font-size: 14px;
-    line-height: 56px;
     color: #808080;
     text-align: center;
     width: 112px;
@@ -4819,9 +4884,11 @@ li.my2q{
 }
 
 .newstext{
-    padding: 5px;
-    margin-top: 11px;
+    padding-left: 5px;
+    padding-right: 5px;
     font-size: 12px;
+    display: table-cell;
+    width: 356px;
 }
 
 .newsinfo{

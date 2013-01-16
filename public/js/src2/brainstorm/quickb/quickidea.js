@@ -345,7 +345,7 @@ define("Ideafy/Brainstorm/QuickIdea", ["Olives/OObject", "Map", "Olives/Model-pl
                                 cdb.sync(Config.get("db"), _id);
                                 setTimeout(function(){
                                         cdb.upload();
-                                }, 250);      
+                                }, 300);      
                         };
                         
                         // INIT QUICKIDEA STEP

@@ -9,7 +9,8 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
         var _transport, _user, _observer, _config = new Store();
         
         this.reset = function(){
-                _transport = new Transport(io, "http://37.153.96.26:1664");
+                // uncomment for server deployment _transport = new Transport(io, "http://37.153.96.26:1664");
+                _transport = new Transport(io, location.origin);
                 _user =  new CouchDBStore();
                 _observer = new Observable();
                 _user.setTransport(_transport);

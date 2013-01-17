@@ -1049,15 +1049,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 sendMessage = function(msg, userid) {
                         var cdb = new CouchDBStore();
                         getDocAsAdmin(userid, cdb).then(function() {
-                                var arr = [];
+                                var arr = [], empty = false;
                                 // retrieve notifications array
                                 if (cdb.get("notifications")[0]){arr = cdb.get("notifications");}
                                 
-                                // add username to toList if it is empty
-                                if (!msg.toList) msg.toList = cdb.get("username");
-                                
                                 // add message
                                 arr.unshift(msg);
+                                
                                 // update store and upload
                                 cdb.set("notifications", arr);
                                 updateDocAsAdmin(userid, cdb).then(function() {

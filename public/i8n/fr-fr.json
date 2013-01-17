@@ -334,5 +334,6 @@
 	"publicwarning" : "<b>ATTENTION :</b> publier votre idée en tant que publique est irréversible.Rendez-vous dans le tableau de bord d'Ideafy pour en savoir plus.",
 	"uploadinprogress" : "En attente de publication",
 	"notifyingcontacts" : "Informer mes contacts",
-	"askednew" : " a posé une nouvelle <i>TwoQuestion</i>"
+	"askednew" : " a posé une nouvelle <i>TwoQuestion</i>",
+	"melbl" : "Moi"
 }

@@ -340,7 +340,8 @@
 	"publicwarning" : "<b>WARNING :</b> publishing your idea as a public one is irreversible. Visit Ideafy's dashboard to learn more.",
 	"uploadinprogress" : "Upload in progress",
 	"notifyingcontacts" : " Notifying contacts",
-	"askednew" : " has asked a new TwoQuestion"
+	"askednew" : " has asked a new TwoQuestion",
+	"melbl" : "Me"
 	
 	
 }

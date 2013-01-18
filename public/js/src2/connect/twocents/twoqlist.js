@@ -29,7 +29,7 @@ define("Ideafy/Connect/TwoQList", ["Olives/OObject", "CouchDBStore", "Config", "
                 // adjust list height to take into account contact selection UI
                 ($type === "contact") ? className = "contacttwoqlist" : className = "";
                 
-                this.template = '<ul class="twoq-list '+className+'" data-twoqlist="foreach"><li class="list-item" data-twoqlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><span class="date" data-twoqlist="bind:date,value.creation_date"></span></div><div class="item-body"><p data-twoqlist="bind:innerHTML,value.question"></p></div><div class="item-footer"><a class="item-twocent"></a><span class="replies" data-twoqlist="bind:showReplies, value.twocents"></span></div></li></ul>';
+                this.template = '<div><ul class="twoq-list '+className+'" data-twoqlist="foreach"><li class="list-item" data-twoqlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><span class="date" data-twoqlist="bind:date,value.creation_date"></span></div><div class="item-body"><p data-twoqlist="bind:innerHTML,value.question"></p></div><div class="item-footer"><a class="item-twocent"></a><span class="replies" data-twoqlist="bind:showReplies, value.twocents"></span></div></li></ul></div>';
 
                 this.plugins.addAll({
                         "twoqlist": new Model(_store, {
@@ -63,8 +63,9 @@ define("Ideafy/Connect/TwoQList", ["Olives/OObject", "CouchDBStore", "Config", "
                 };
                 this.resetQuery = function(query) {
                         var promise = new Promise();
+                        
                         _options.query = query;
-
+                        console.log(query);
                         _store.unsync();
                         _store.reset([]);
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
@@ -114,9 +115,8 @@ define("Ideafy/Connect/TwoQList", ["Olives/OObject", "CouchDBStore", "Config", "
                 
                 this.init = function init(){
                         var promise = new Promise();
-                        console.log(_options);
+                            
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                console.log(_store.toJSON());
                                 promise.resolve();   
                         });
                         return promise;

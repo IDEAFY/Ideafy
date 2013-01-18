@@ -164,7 +164,7 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 // hide contact selection popup
                                 auto.classList.add("invisible");
                                 // fetch and display contact twoquestions
-                                contacttwoq.resetQuery(db, "questions", "_view/questionsbyauthor", {key: "'"+contactList.get(idx).contact.userid+"'", descending: true});
+                                contacttwoq.resetQuery({key: '"'+contactList.get(idx).contact.userid+'"', descending: true});
                         };
                         
                         // init contactList

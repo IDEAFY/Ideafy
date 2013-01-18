@@ -347,5 +347,6 @@
 	"mytwoquestions" : "My TwoQuestions",
 	"mytwocents" : "My Twocents",
 	"twoqprefix" : "",
-	"twoqsuffix" :"'s TwoQuestions"
+	"twoqsuffix" :"'s TwoQuestions",
+	"notwoqyet" : "This Ideafyer has not posted any TwoQuestion yet"
 }

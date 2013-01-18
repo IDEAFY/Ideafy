@@ -123,7 +123,7 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                 if (event.keyCode === 13){
                                         node.removeChild(node.firstChild);
                                 }
-                                else if (event.keyCode === 186 || event.keyCode === 188){
+                                else if (event.keyCode === 186 || event.keyCode === 188){ // , or ;
                                         autoCompleteUIs.name.init();        
                                 }
                                 else {

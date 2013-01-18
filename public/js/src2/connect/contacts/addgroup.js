@@ -147,7 +147,8 @@ define("Ideafy/Connect/AddGroup", ["Olives/OObject", "Config", "Olives/Model-plu
              };
              
              addGroupUI.updateAutoContact = function(event, node){
-                     var arr = JSON.parse(contactList.toJSON()), connections = user.get("connections");
+                     var arr = JSON.parse(contactList.toJSON()), connections = user.get("connections"), 
+                         clc, vlc = node.value.toLowerCase(); // lowercase conversion
                 if (node.value === ""){
                         arr = [];
                         //initialize contact list with all user contacts in user's document
@@ -160,7 +161,8 @@ define("Ideafy/Connect/AddGroup", ["Olives/OObject", "Config", "Olives/Model-plu
                 }
                 else{
                         for (i=arr.length-1; i>=0; i--){
-                                if (arr[i].contact.username.search(node.value) !== 0) arr.splice(i, 1);
+                                clc = arr[i].contact.username.toLowerCase();
+                                if (clc.search(vlc) !== 0) arr.splice(i, 1);
                         }
                         contactList.reset(arr);    
                         

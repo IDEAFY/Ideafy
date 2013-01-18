@@ -95,8 +95,25 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 #dock, .list, .details, .idea-edit, .idea-sendmail{
   background:white;
 }
-#dock, .list, .details, .list ul{
+
+#dock, .list, .details{
   height:748px;
+}
+
+.list ul{
+    height: 652px;
+}
+
+#deck-list{
+    height: 712px;
+}
+
+.msglist ul, .contactlist ul, .twoq-list{
+    height: 577px;
+}
+
+.contacttwoqlist{
+    height: 500px;
 }
 
 #dock, .list {
@@ -122,7 +139,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 }
 
-.ideas-list {
+.ideas-list, .twoq-list {
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; 
@@ -183,6 +200,19 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   margin-bottom: 10px;
 }
 
+.twoq-list .item-body p{
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.twoq-list .item-footer .replies{
+    font-size: 12px;
+    color: #B3B3B3;
+    padding-left: 30px;
+    background: url('../img/2centDisable.png') no-repeat left center;
+    background-size: 30px 30px;
+}
+
 .item-acorn{
     margin-left:5px;
     display: inline-block;
@@ -204,6 +234,25 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     font-size:12px;
     color:#B3B3B3;
   }
+  
+.idea-type{
+    width: 20px;
+    height: 20px;
+    float: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.idea-type.private{
+    background-image: url('../img/public/privateForList.png');
+    background-size: 15px 15px;
+}
+
+.idea-type.public{
+    background-image: url('../img/public/publicForList.png');
+    background-size:19px 14px;
+}
 
 .tools {
   padding:15px;
@@ -967,6 +1016,7 @@ ul.notify-list{
 .mosaic .item-footer{
     float: left;
     margin-top: 5px;
+    width: 100%;
 }
 
 /*#public .option {
@@ -1885,6 +1935,7 @@ textarea.solution {
 .session-details{
     width: 931px;
     height: 600px;
+    overflow-y: scroll;
 }
 
 .session-details ul{
@@ -3248,7 +3299,7 @@ li.color-item{
     background-size: 107px 155px;   
 }
 
-.card.highlighted{
+.highlighted{
     -webkit-box-shadow: inset 0 0 10px 1px rgba(0,0,0,0.3);    
 }
 
@@ -4113,7 +4164,6 @@ li.color-item{
     position: absolute;
     background: white;
     border: 1px solid #CCC;
-    display: block;
     width: 488px;
     margin-top: -10px;
     height: 120px;
@@ -4587,6 +4637,108 @@ li.color-item{
     margin-top: -20px;
 }
 
+#mtc-list{
+    width: 301px;
+    float: left;
+    height: 748px;
+    background: white;
+    -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+}
+
+#mtc-list legend{
+    font-family: Pacifico;
+    color: #657B99;    
+    border-bottom: 1px solid #657B99;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    width: 261px;
+    -webkit-padding-start: 0px;
+    -webkit-padding-end: 0px;
+}
+
+#mtc-list input{
+    margin-left: 20px;
+    margin-bottom: 10px;
+    width: 226px;
+}
+
+#mtc-list .selectcontact .rightcaret{
+    border-bottom: 12px solid transparent;
+    border-top: 12px solid transparent;
+    border-left: 10px solid #808080;
+    margin-right: 5px;
+    float: right;
+}
+
+#mtc-list .autocontact{
+    float: right;
+    margin-left: 321px;
+    margin-top: -40px;
+}
+
+#mtc-list .entercontact{
+    width: 200px;
+    hight: 30px;
+    line-height: 30px;
+    font-size: 12px;
+}
+
+#connect-twocents .twoqbuttons{
+    margin: 20px 73px 0px 74px;
+    height: 40px;
+}
+
+#connect-twocents .twoqbuttons li{
+    width: 50px;
+    height: 30px;
+    float: left;
+    border: 1px solid #cccccc;
+}
+#connect-twocents .twoqbuttons li.pushed{
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+}
+
+#connect-twocents .twoqbuttons li:first-child{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: none;
+}
+
+#connect-twocents .twoqbuttons li:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: none;
+}
+
+#connect-twocents .twoqbuttons li.mytwoq{
+    background: url('../img/connect/2questiondisabled.png') no-repeat center center;
+    background-size: 35px 35px;
+}
+
+#connect-twocents .twoqbuttons li.contacttwoq{
+    background: url('../img/connect/contactDisable.png') no-repeat center center;
+    background-size: 35px 35px;
+}
+
+#connect-twocents .twoqbuttons li.mytwoc{
+    background: url('../img/connect/twocent.png') no-repeat center center;
+    background-size: 35px 35px;
+}
+
+#connect-twocents .twoqbuttons li.mytwoq.pushed{
+    background: #4D4D4D url('../img/connect/2questionactive.png') no-repeat center center;
+    background-size: 35px 35px;    
+}
+
+#connect-twocents .twoqbuttons li.contacttwoq.pushed{
+    background: #4D4D4D url('../img/connect/contactActive.png') no-repeat center center;
+    background-size: 35px 35px;    
+}
+
+#connect-twocents .twoqbuttons li.mytwoc.pushed{
+    background: #4D4D4D url('../img/connect/twocentactive.png') no-repeat center center; 
+    background-size: 35px 35px;   
+}
 
 /* DASHBOARD */
 

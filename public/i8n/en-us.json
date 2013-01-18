@@ -341,7 +341,11 @@
 	"uploadinprogress" : "Upload in progress",
 	"notifyingcontacts" : " Notifying contacts",
 	"askednew" : " has asked a new TwoQuestion",
-	"melbl" : "Me"
-	
-	
+	"melbl" : "Me",
+	"nowconnected" : " are now connected with ",
+	"noreplyyet" : "No reply yet",
+	"mytwoquestions" : "My TwoQuestions",
+	"mytwocents" : "My Twocents",
+	"twoqprefix" : "",
+	"twoqsuffix" :"'s TwoQuestions"
 }

@@ -318,6 +318,7 @@
 	"groupupdated": "Groupe mis à jour",
 	"socialnwlbl": "Réseaux sociaux",
 	"designedby": "Réalisé par : ",
+	"mtcheadertitle": "Mon Espace Twocents",
 	"userpref": "Préférences Utilisateur",
 	"brainstormsettings": "Paramétrage du Brainstorming",
 	"page": "Page ",
@@ -335,5 +336,11 @@
 	"uploadinprogress" : "En attente de publication",
 	"notifyingcontacts" : "Informer mes contacts",
 	"askednew" : " a posé une nouvelle <i>TwoQuestion</i>",
-	"melbl" : "Moi"
+	"melbl" : "Moi",
+	"nowconnected" : " êtes maintenant connecté à ",
+	"noreplyyet" : "Pas encore de réponse",
+	"mytwoquestions" : "Mes TwoQuestions",
+	"mytwocents" : "Mes Twocents",
+	"twoqprefix" : "Les TwoQuestions de ",
+	"twoqsuffix" : ""
 }

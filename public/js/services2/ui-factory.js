@@ -133,11 +133,13 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                                 buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});
                                                 
                                                 // if user has contacts or twitter/facebook/google profiles then share is ok
-                                                if (user.get("connections") && user.get("connections").length){
-                                                        buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
-                                                }
-                                                else if (user.get("facebook") || user.get("twitter") || user.get("gplus") || user.get("linkedin")){
-                                                        buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
+                                                if ( data.authors.indexOf(user.get("_id")) > -1){
+                                                        if(user.get("connections") && user.get("connections").length){
+                                                                buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
+                                                        }
+                                                        else if (user.get("facebook") || user.get("twitter") || user.get("gplus") || user.get("linkedin")){
+                                                                buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
+                                                        }
                                                 }
                                                 
                                                 // if user is sole author, idea has not been shared and no twocents, then delete is ok

@@ -13,6 +13,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
               // declaration     
               var _widget = new Widget(),
                   _actionWidget = new Widget(),
+                  touchStart, touchPoint, // used to trigger action bar
                   _dom = Map.get("sessions"),
                   _sessions = new Store(),
                   _db = Config.get("db"),
@@ -102,7 +103,7 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                   "sessionevent": new Event(_widget)      
               });
               
-              _widget.template = '<div id="sessions"><div id="session-list" class="list"><div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div><div class="session-tools"><div class="session-sorting"><div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbytitle"></span><div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div></div><div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbydate"></span><div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div></div><div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyidea"></span><div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div></div><div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyscore"></span><div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div></div></div><input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sortevent="listen: keypress, search"><div id="sessionsearchresult"></div></div><div class="session-details"><ul data-sessions="foreach"><li class="session-item" data-sessionevent="listen: touchmove, displayActionBar"><table class="session-boxscore"><tr><td class="session-type"></td><td class="session-info"><p class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</p><p class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</p></td><td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td><td class="avatarlist" data-sessions="bind: setAvatars, participants"></td><td class="session-status" data-sessions="bind:setStatus, status">completed</td><td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td></tr></table><div class="actionbar" data-sessionevent="listen: touchend, hideActionBar"><div class="replaysession" name="replay" data-sessionevent="listen: touchstart, press; listen:touchend, replay"></div><div class="deletesession" name="delete" data-sessionevent="listen: touchstart, press; listen:touchend, deleteSession"></div></div></li></ul></div></div></div>';
+              _widget.template = '<div id="sessions"><div id="session-list" class="list"><div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div><div class="session-tools"><div class="session-sorting"><div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbytitle"></span><div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div></div><div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbydate"></span><div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div></div><div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyidea"></span><div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div></div><div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyscore"></span><div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div></div></div><input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sortevent="listen: keypress, search"><div id="sessionsearchresult"></div></div><div class="session-details"><ul data-sessions="foreach"><li class="session-item" data-sessionevent="listen:touchstart, setStart; listen: touchmove, displayActionBar"><table class="session-boxscore"><tr><td class="session-type"></td><td class="session-info"><p class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</p><p class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</p></td><td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td><td class="avatarlist" data-sessions="bind: setAvatars, participants"></td><td class="session-status" data-sessions="bind:setStatus, status">completed</td><td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td></tr></table><div class="actionbar" data-sessionevent="listen: touchend, hideActionBar"><div class="replaysession" name="replay" data-sessionevent="listen: touchstart, press; listen:touchend, replay"></div><div class="deletesession" name="delete" data-sessionevent="listen: touchstart, press; listen:touchend, deleteSession"></div></div></li></ul></div></div></div>';
               
               _widget.sort = function sort(event, node){
                         var mode = node.getAttribute("id");
@@ -168,21 +169,29 @@ define("Ideafy/Library/Sessions", ["Olives/OObject", "Map", "Olives/Model-plugin
                 }        
               };
               
+              _widget.setStart = function(event, node){
+                        touchStart = [event.pageX, event.pageY];
+                };
+              
               _widget.displayActionBar = function(event, node){
                       var _id = node.getAttribute("data-sessions_id"),
                           _height = node.offsetHeight,
                           _sid = _sessions.get(_id);
                       
-                      node.querySelector(".actionbar").setAttribute("style", "display: block;margin-top:-"+_height+"px;height: "+_height+"px;");
+                      touchPoint = [event.pageX, event.pageY];
                       
-                      // session cannot be deleted if initiated by another user or if has multiple users or if it is the current session in progress
-                      if (_sid.participants.length>1 || _sid.participants[0] != _user.get("_id") || _sid.id === _user.get("sessionInProgress").id){
-                        node.querySelector(".deletesession").setAttribute("style", "display: none;");        
-                      }
-                      else node.querySelector(".deletesession").setAttribute("style", "display: inline-block;"); 
+                      if ((touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                              node.querySelector(".actionbar").setAttribute("style", "display: block;margin-top:-"+_height+"px;height: "+_height+"px;");
                       
-                      // Automatically hide bar after 3s
-                      setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
+                                // session cannot be deleted if initiated by another user or if has multiple users or if it is the current session in progress
+                                if (_sid.participants.length>1 || _sid.participants[0] != _user.get("_id") || _sid.id === _user.get("sessionInProgress").id){
+                                        node.querySelector(".deletesession").setAttribute("style", "display: none;");        
+                                }
+                                else node.querySelector(".deletesession").setAttribute("style", "display: inline-block;"); 
+                      
+                                // Automatically hide bar after 2s
+                                setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
+                        }
               };
               
               _widget.hideActionBar = function(event, node){

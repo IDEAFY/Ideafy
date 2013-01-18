@@ -48,6 +48,9 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                         },
                                         popup : function(pop){
                                                 (pop) ? this.classList.add("highlighted") : this.classList.remove("highlighted");
+                                        },
+                                        setSelected : function(selected){
+                                                (selected)?this.classList.add("pushed"):this.classList.remove("pushed");
                                         }
                                 }),
                                 "quicksetuptimer" : new Model(_timer, {
@@ -80,7 +83,7 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 "quicksetupevent": new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quicksetup"><div class="previousbutton" data-quicksetupevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="quicksetup-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicksetup" data-quicksetupevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quicksetuptimer="bind:setTime, timer; bind: displayTimer, display" data-quicksetupevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-quicksetupevent="listen:touchstart, help"></div><div class="drawarea"><div class="decks"><div class="drawbutton drawchar" name="char" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind: setReload, char.left"></div><div class="drawbutton drawcontext" name="context" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind:setReload, context.left"></div><div class="drawbutton drawproblem" name="problem" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind:setReload, problem.left"></div></div><div class="cards"><div class="card char defaultcard" name="char" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, char.pic" data-quicksetup="bind: popup, char.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, char.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, char.title">Character</div></div><div class="card context defaultcard" name="context" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, context.pic" data-quicksetup="bind: popup, context.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, context.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, context.title">Context</div></div><div class="card problem defaultcard" name="problem" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, problem.pic" data-quicksetup="bind: popup, problem.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, problem.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, problem.title">Problem</div></div></div><div class="confirmdraw"><div class="drawok" name="char" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="context" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="problem" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button invisible" data-labels="bind:innerHTML, nextbutton" data-quicksetupevent="listen: touchstart, press; listen:touchend, next" data-quicksetup="bind:updateNext, char.selected;bind:updateNext, context.selected;bind:updateNext, problem.selected"></div></div></div>';
+                        _widget.template = '<div id = "quicksetup"><div class="previousbutton" data-quicksetupevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="quicksetup-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicksetup" data-quicksetupevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quicksetuptimer="bind:setTime, timer; bind: displayTimer, display" data-quicksetupevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-quicksetupevent="listen:touchstart, help"></div><div class="drawarea"><div class="decks"><div class="drawbutton drawchar" name="char" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind: setReload, char.left"></div><div class="drawbutton drawcontext" name="context" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind:setReload, context.left"></div><div class="drawbutton drawproblem" name="problem" data-quicksetupevent="listen: touchstart, push; listen:touchend, draw" data-quicksetup="bind:setReload, problem.left"></div></div><div class="cards"><div class="card char defaultcard" name="char" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, char.pic" data-quicksetup="bind: popup, char.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, char.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, char.title">Character</div></div><div class="card context defaultcard" name="context" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, context.pic" data-quicksetup="bind: popup, context.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, context.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, context.title">Context</div></div><div class="card problem defaultcard" name="problem" data-quicksetupevent="listen:touchstart, zoom" data-quicksetupcards="bind:removeDefault, problem.pic" data-quicksetup="bind: popup, problem.popup"><div class="cardpicture" data-quicksetupcards="bind: setPic, problem.pic"></div><div class="cardtitle" data-quicksetupcards="bind:formatTitle, problem.title">Problem</div></div></div><div class="confirmdraw"><div class="drawok" name="char" data-quicksetup="bind:setSelected, char.selected" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="context" data-quicksetup="bind:setSelected, context.selected" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="problem" data-quicksetup="bind:setSelected, problem.selected" data-quicksetupevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button invisible" data-labels="bind:innerHTML, nextbutton" data-quicksetupevent="listen: touchstart, press; listen:touchend, next" data-quicksetup="bind:updateNext, char.selected;bind:updateNext, context.selected;bind:updateNext, problem.selected"></div></div></div>';
                         
                         _widget.place(_dom);
                         
@@ -206,10 +209,8 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                     _sel = _selection.get(_type); 
                                 
                                 if (_next === "step"){
-                                // disable if no card is present
                                         if (_cards.get(_type).id){
                                                 if (_sel.selected){
-                                                        node.classList.remove("pushed");
                                                         // update store
                                                         _sel.selected = false;
                                                         _selection.set(_type, _sel);
@@ -221,7 +222,8 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                                 } 
                                         }
                                         else {
-                                                node.classList.remove("pushed");        
+                                                _sel.selected = false;
+                                                _selection.set(_type, _sel);        
                                         }
                                 }      
                         };
@@ -422,7 +424,6 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 };
                                 
                                 _transport.request("UpdateSessionScore", json, function(result){
-                                        console.log(result);
                                         if (result.res === "ok"){
                                                 promise.resolve();
                                         }
@@ -439,7 +440,6 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                 // retrieve active deck
                                 _widget.getDeck(Config.get("user").get("active_deck")).then(function(){
                                         var _deck = $data.get("deck");
-                                        console.log("entering init function", $data.toJSON);
                                         // reset draw status
                                         _deckStack.char = _deck.char.concat();
                                         _deckStack.context = _deck.context.concat();
@@ -456,14 +456,11 @@ define("Ideafy/Brainstorm/QuickSetup", ["Olives/OObject", "Map", "Olives/Model-p
                                                 context : {id:"",title:_labels.get("context"), pic: ""},
                                                 problem : {id:"",title:_labels.get("problem"), pic: ""}
                                         });
-                                        console.log(_cards.toJSON());
-                                        /*_cards.set("char", {id:"",title:"", pic: ""});
-                                        _cards.set("context", {id:"",title:"", pic: ""});
-                                        _cards.set("problem", {id:"",title:"", pic: ""});*/
                                         // reset selection
-                                        _selection.set("char", {selected: false, left: null, popup: false});
-                                        _selection.set("context", {selected: false, left: null, popup: false});
-                                        _selection.set("problem", {selected: false, left: null, popup: false});
+                                        _selection.reset({"char" : {selected: false, left: null, popup: false},
+                                                          "context" : {selected: false, left: null, popup: false},
+                                                          "problem" : {selected: false, left: null, popup: false}
+                                        });
                                 });
                                 _next = "step";        
                         };

@@ -5,49 +5,48 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Utils", "Ideafy/Avatar", "Ideafy/ActionBar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
-        function IdeaListConstructor($db, $design, $view, $query) {
+define("Ideafy/Connect/TwoQList", ["Olives/OObject", "CouchDBStore", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Utils", "Ideafy/Avatar", "Ideafy/ActionBar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
+        function TwoQListConstructor($type, $db, $design, $view, $query) {
                 var _store = new Store([]),
                 touchStart,
                 touchPoint,
                 display = false,
+                className = "",
                 currentBar = null,
-                    _options = {
+                _options = {
                         db : $db,
                         view : $view,
                         design : $design,
                         query : {
-                                descending : true,
-                                include_docs : true
+                                descending : true
                         }
-                };
+                },
+                labels = Config.get("labels");
 
                 //setup
                 _store.setTransport(Config.get("transport"));
-                this.template = '<ul class="ideas-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames"></h2><span class="date" data-listideas="bind:date,doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:innerHTML,doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, value.rating"></span></div></li></ul>';
+                
+                // adjust list height to take into account contact selection UI
+                ($type === "contact") ? className = "contacttwoqlist" : className = "";
+                
+                this.template = '<ul class="twoq-list '+className+'" data-twoqlist="foreach"><li class="list-item" data-twoqlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><span class="date" data-twoqlist="bind:date,value.creation_date"></span></div><div class="item-body"><p data-twoqlist="bind:innerHTML,value.question"></p></div><div class="item-footer"><a class="item-twocent"></a><span class="replies" data-twoqlist="bind:showReplies, value.twocents"></span></div></li></ul>';
 
                 this.plugins.addAll({
-                        "listideas": new Model(_store, {
+                        "twoqlist": new Model(_store, {
                                 date : function date(date) {
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                 },
-                                setRating : function setRating(rating) {
-                                        if (rating === undefined) {
-                                                var _id = this.getAttribute("data-listideas_id"),
-                                                    _arr = _store.get(_id).doc.votes || [];
-                                                if (_arr.length === 0) {this.innerHTML = "0";}
-                                                else {
-                                                        this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
-                                                }
-                                                
-                                        }
-                                        else this.innerHTML = Math.round(rating*100)/100;
+                                showReplies : function showReplies(twocents) {
+                                        var nb = twocents.length;
+                                        if (nb === 0) this.innerHTML = labels.get("noreplyyet")
+                                        else if (nb === 1) this.innerHTML = nb +" "+labels.get("showonetcreply")
+                                        else this.innerHTML = nb + " " + labels.get("showtcrepliesafter")
                                 },
-                                setAvatar : function setAvatar(authors){
+                                setAvatar : function setAvatar(author){
                                         var _ui, _frag;
-                                        if (authors){
+                                        if (author){
                                                 _frag = document.createDocumentFragment();
-                                                _ui = new Avatar(authors);
+                                                _ui = new Avatar([author]);
                                                 _ui.place(_frag);
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                         }
@@ -56,7 +55,7 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                                         (visibility === "public") ? this.classList.add("public") : this.classList.remove("public");
                                 }
                         }),
-                        "listevent" : new Event(this)
+                        "twoqlistevent" : new Event(this)
                         });
 
                 this.getModel = function() {
@@ -81,13 +80,13 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                 };
                 
                 this.showActionBar = function(event, node){
-                        var id = node.getAttribute("data-listideas_id"),
-                            dom = document.getElementById("ideas");
+                        var id = node.getAttribute("data-twoqlist_id"),
+                            dom = document.getElementById("mtc-list");
                         
                         touchPoint = [event.pageX, event.pageY];
                         
                         if (!dom.classList.contains("mosaic") && !display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                var actionBar = new ActionBar("idea", node, _store.get(id).doc, this.hideActionBar),
+                                var actionBar = new ActionBar("2Q", node, _store.get(id).value, this.hideActionBar),
                                     frag = document.createDocumentFragment();  
                                 
                                 actionBar.place(frag); // render action bar    
@@ -115,15 +114,17 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                 
                 this.init = function init(){
                         var promise = new Promise();
+                        console.log(_options);
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                console.log(_store.toJSON());
                                 promise.resolve();   
                         });
                         return promise;
                 };
         }
 
-        return function IdeaListFactory($db, $design, $view, $query) {
-                IdeaListConstructor.prototype = new Widget();
-                return new IdeaListConstructor($db, $design, $view, $query);
+        return function TwoQListFactory($type, $db, $design, $view, $query) {
+                TwoQListConstructor.prototype = new Widget();
+                return new TwoQListConstructor($type, $db, $design, $view, $query);
         };
-}); 
+});

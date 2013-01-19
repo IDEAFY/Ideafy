@@ -85,8 +85,6 @@ define("Ideafy/Library/IdeaStack",
                                      _widget.sendMail(idea);        
                         });
 			
-			
-                        IDS = _stack;
 		//return
 			return _widget;
 		};

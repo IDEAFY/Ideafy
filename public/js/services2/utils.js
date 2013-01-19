@@ -385,8 +385,6 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                         else { res.missing.push(labels.get("entersocialnw")); }
                         if (user.get("picture_file").search("img/avatars/deedee") <0) { res.percentage += 10;}
                         else { res.missing.push(labels.get("enterownpic")); }
-                        
-                        console.log(res);
                         return res;
                 },
                 /*

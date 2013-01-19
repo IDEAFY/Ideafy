@@ -132,6 +132,9 @@ define("TwocentList", ["Olives/OObject", "Config", "CouchDBStore", "Store", "Ide
                                         store.reset(cdb.get("twocents"));
                                         
                                         switch($view){
+                                                case "connect":
+                                                        ui.place(document.getElementById("connect-twocents"));
+                                                        break;
                                                 case "library":
                                                         ui.place(document.getElementById("library-twocents"));
                                                         break;

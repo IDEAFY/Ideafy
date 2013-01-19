@@ -71,9 +71,7 @@ define("TwocentReplyList", ["Olives/OObject", "Store", "Olives/Model-plugin", "O
                                 writeUI.place(frag);
                                 //replace current twocent with writeUI
                                 ui.dom.replaceChild(frag, currentUI);
-                                UI = ui.dom;
-                                CURRENT = currentUI;
-                                WRITE = writeUI.dom;       
+                                UI = ui.dom;      
                         };
                         
                         ui.deleteTwocentReply = function(event, node){

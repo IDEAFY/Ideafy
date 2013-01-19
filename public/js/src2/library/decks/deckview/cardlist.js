@@ -71,8 +71,6 @@ define ("Ideafy/Library/CardList", ["Olives/OObject", "Config", "Olives/Model-pl
                         cardList.getCardList = function getCardList(idlist){
                                 var cdb = new CouchDBStore();
                                 cdb.setTransport(Config.get("transport"));
-                                
-                                console.log(idlist);
                                 cdb.sync(Config.get("db"), {keys:idlist}).then(function(){
                                         cards.reset([]);
                                         cdb.loop(function(v,i){

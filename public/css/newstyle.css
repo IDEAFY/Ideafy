@@ -4740,6 +4740,12 @@ li.color-item{
     background-size: 35px 35px;   
 }
 
+.twocent-detail p{
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 75px;
+}
+
 /* DASHBOARD */
 
 #dashboard-profile, #dashboard-settings, #dashboard-about{

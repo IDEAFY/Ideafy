@@ -27,7 +27,6 @@ define("Ideafy/Library/DeckList", ["Olives/OObject", "Map", "Config", "Olives/Mo
                                                 (version)?this.innerHTML=labels.get("version")+version: this.innerHTML="";        
                                         },
                                         setAuthor: function(author){
-                                                console.log(author);
                                                 if (author === "Taïaut"){
                                                         this.innerHTML = "";
                                                         this.setAttribute("style", "background-image:url('../img/logo.png');")

@@ -167,6 +167,18 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 contacttwoq.resetQuery({key: '"'+contactList.get(idx).contact.userid+'"', descending: true});
                         };
                         
+                        myTwocentUI.selectStart = function(event, node){
+                                var store = mtcStack.getStack().getCurrentScreen().getModel(),
+                                    id;
+                                console.log(store.toJSON(), mtcTools.get("view"));
+                                if (mtcTools.get("view") === "#mytwoq" || mtcTools.get("view") === "#contacttwoq"){
+                                        id = event.target.getAttribute("data-twoqlist_id");
+                                        mtcDetails.reset("2Q", store.get(id));       
+                                }      
+                        };
+                        
+                        //INIT
+                        
                         // init contactList
                         for (i=0, l=connections.length; i<l; i++){
                                 if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false})

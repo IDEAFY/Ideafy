@@ -183,13 +183,24 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 mtcStack.getStack().getCurrentScreen().search(node.value);              
                         };
                         
+                        // Manage events
+                        Config.get("observer").watch("display-twoq", function(id, userid){
+                                contacttwoq.resetQuery({key: '"'+userid+'"', descending: true}).then(function(){
+                                        mtcStack.getStack().show("#contacttwoq");
+                                        mtcTools.set("view", "#contacttwoq");
+                                        contacttwoq.search(id);
+                                        // hightlight first item
+                                        mtcControl.init(0);
+                                        mtcDetails.reset("2Q", contacttwoq.getModel().get(0));        
+                                });
+                        });
+                        
                         //INIT
                         
                         // init contactList
                         for (i=0, l=connections.length; i<l; i++){
                                 if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false})
                         }
-                        
                         
                         // add twocent and twoquestion lists to the stack
                         mytwoq = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: Config.get("uid"), descending: true});
@@ -205,8 +216,6 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 mtcControl.init(0);
                                 mtcDetails.reset("2Q", mytwoq.getModel().get(0));
                         });
-                        
-                        // search tools (searches twoquestions or a contact)
                         
                         return myTwocentUI;
                 };

@@ -4088,6 +4088,19 @@ li.color-item{
     border-bottom-right-radius: 5px; 
 }
 
+.goto2q{
+    width: 50px;
+    height: 50px;
+    background: url('../img/connect/twocent.png') no-repeat center center;
+    background-size: contain;
+    margin: 0 auto;
+}
+
+.goto2q.pushed{
+    background: url('../img/connect/twocentactive.png') no-repeat center center;
+    background-size: contain;
+}
+
 .acceptrejectCXR{
     height: 50px;
     margin-right: 20px;

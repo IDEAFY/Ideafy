@@ -1144,9 +1144,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 if (json.type === "CXR") {
                         message.contactInfo = json.contactInfo;
                 }
+                
                 if (json.type === "DOC") {
                         message.docId = json.docId;
                         message.docType = json.docType;
+                }
+                
+                if (json.type === "2Q+") {
+                        message.docId = json.docId;
+                        message.docType = json.type;
                 }
 
                 // send message to all recipients

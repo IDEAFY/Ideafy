@@ -792,6 +792,7 @@ define("Ideafy/New2Q", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/
                                                         var i, contacts = _user.get("connections"), l=contacts.length, dest =[], 
                                                             json = {
                                                                 "type" : "2Q+",
+                                                                "docId" : id,
                                                                 "status" : "unread",
                                                                 "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
                                                                 "author" : _user.get("_id"),

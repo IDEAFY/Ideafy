@@ -95,7 +95,6 @@ define("Ideafy/Connect/MTCDetails", ["Olives/OObject", "Config", "Store", "Olive
                        
                        mtcDetailUI.reset = function reset(type, content){
                                 ui.set("type", type);
-                                console.log(type, content);
                                 model.reset(content.value);
                                 twocentWriteUI.reset(model.get("_id"));
                                 twocentList.reset(model.get("_id"), "connect");

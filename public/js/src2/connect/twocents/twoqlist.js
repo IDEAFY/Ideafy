@@ -89,7 +89,6 @@ define("Ideafy/Connect/TwoQList", ["Olives/OObject", "CouchDBStore", "Config", "
                         var promise = new Promise();
                         
                         _options.query = query;
-                        console.log(query);
                         _store.unsync();
                         _store.reset([]);
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
@@ -154,7 +153,6 @@ define("Ideafy/Connect/TwoQList", ["Olives/OObject", "CouchDBStore", "Config", "
                 // search twoquestions
                 this.search = function search(text){
                         _searchList.reset([]);
-                        console.log("new search :", text);
                         if (text){
                                 this.showSearch();
                                 _store.loop(function(v,i){

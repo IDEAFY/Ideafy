@@ -40,7 +40,11 @@ define("Ideafy/Connect", ["Olives/OObject", "Map", "Amy/Stack-plugin","Ideafy/Su
                 // watch for events
                         _observer.watch("display-message", function(id){
                                 _stack.getStack().show("#messages");        
-                        }); 
+                        });
+                        
+                        _observer.watch("display-twoq", function(){
+                                _stack.getStack().show("#twocents");         
+                        });
                        
 		//return
 			return _widget;

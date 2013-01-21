@@ -67,7 +67,6 @@ define("Ideafy/Library/DeckList", ["Olives/OObject", "Map", "Config", "Olives/Mo
                         
                         deckList.init = function init(onEnd){
                                 deckList.getDecks($type, onEnd);
-                                
                         };
                         
                         DL = deckList;

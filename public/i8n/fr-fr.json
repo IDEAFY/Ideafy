@@ -321,6 +321,12 @@
 	"mtcheadertitle": "Mon Espace Twocents",
 	"userpref": "Préférences Utilisateur",
 	"brainstormsettings": "Paramétrage du Brainstorming",
+	"aboutIdeafy": "A propos",
+	"faq": "FAQ",
+	"tutorials": "Tutoriels",
+	"userguide": "Guide",
+	"support": "Support",
+	"eula": "Licence",
 	"page": "Page ",
 	"supportlegend" : "Une question ou un problème ?",
 	"supportplaceholder" : "Saisissez votre texte et envoyez",
@@ -343,5 +349,9 @@
 	"mytwocents" : "Mes Twocents",
 	"twoqprefix" : "Les TwoQuestions de ",
 	"twoqsuffix" : "",
-	"notwoqyet" : "Cet Ideafyer n'a pas encore posé de question"
+	"notwoqyet" : "Cet Ideafyer n'a pas encore posé de question",
+	"mytqdetailheader" : "Ma TwoQuestion",
+	"tqheaderprefix" : "TwoQuestion de ",
+	"tqheadersuffix" : "",
+	"selecttq" : "Choisissez un contact pour afficher ses TwoQuestions"
 }

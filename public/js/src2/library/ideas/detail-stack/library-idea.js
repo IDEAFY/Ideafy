@@ -12,7 +12,7 @@ define("Ideafy/Library/IdeaDetail",
                 //declaration
                         var  _widget = new Widget(),
                              _twocentList = new TwocentList(),
-                             _twocentWriteUI = new WriteTwocent(),
+                             _twocentWriteUI = new WriteTwocent("library"),
                              _labels = Config.get("labels"),
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,

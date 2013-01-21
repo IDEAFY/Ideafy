@@ -348,5 +348,9 @@
 	"mytwocents" : "My Twocents",
 	"twoqprefix" : "",
 	"twoqsuffix" :"'s TwoQuestions",
-	"notwoqyet" : "This Ideafyer has not posted any TwoQuestion yet"
+	"notwoqyet" : "This Ideafyer has not posted any TwoQuestion yet",
+	"mytqdetailheader" : "My TwoQuestion",
+	"tqheaderprefix" : "",
+	"tqheadersuffix" : "'s TwoQuestion",
+	"selecttq" : "Select a contact to diplay TwoQuestions"
 }

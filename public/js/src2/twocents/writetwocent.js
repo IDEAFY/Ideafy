@@ -8,7 +8,7 @@
 define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "Ideafy/Utils"],
         function(Widget, Config, ModelPlugin, EventPlugin, Store, Utils){
                 
-                return function WriteTwocentConstructor(){
+                return function WriteTwocentConstructor($view){
                 
                 var ui = new Widget(),
                     user = Config.get("user"),
@@ -17,6 +17,7 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                     twocent = new Store({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": [now.getFullYear(), now.getMonth(), now.getDate()], "datemod": "", "plusones": 0, "replies": []}),
                     currentIdea,
                     cancel,
+                    view = $view || "public",
                     editTC = "new", // to distinguish between new and edit mode
                     position=0; // to know which position to update
                 
@@ -66,7 +67,7 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                 ui.cancel = function(event, node){
                         node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
                         // hide twocent writing interface -- currently does not work if it is in edit mode
-                        (cancel)?cancel():document.getElementById("public-writetwocents").classList.add("invisible");
+                        (cancel)?cancel(): document.getElementById(view+"-writetwocents").classList.add("invisible");
                 };
                 
                 ui.publish = function(event, node){

@@ -82,7 +82,7 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 "mtcevent" : new Delegate(myTwocentUI)
                         });    
                         
-                        myTwocentUI.template = '<div id="connect-twocents"><div id="mtc-list"><div class="header blue-light"><span data-labels="bind: innerHTML, mtcheadertitle"></span><div class="option right" data-mtcevent="listen: touchstart, plus"></div></div><ul class="twoqbuttons" data-twoqbuttons="foreach"><li data-twoqbuttons="bind: setBg,name; bind:setActive, active" data-mtcevent="listen:touchstart, selectView; listen: touchend, showView"></li></ul><div class="selectcontact" name = "#contacttwoq" data-mtctools="bind:setVisible, view"><legend>Select a contact</legend><input class="search" data-mtcevent="listen:touchstart, updateAutoContact; listen:keyup, updateAutoContact" data-labels="bind:placeholder, tocontactlbl" data-mtctools = "bind:value, contact"><div class="rightcaret" data-mtcevent="listen: touchstart, updateAutoContact"></div><div class = "autocontact invisible"><ul data-auto="foreach"><li data-auto="bind:innerHTML, contact.username; bind:highlight, selected" data-mtcevent="listen:touchstart, highlightContact; listen:touchend, selectContact"></li></ul></div></div><legend data-mtctools="bind:setLegend, view; bind: updateLegend, contact"></legend><input name="#mytwoq" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: keypress, search"><input name="#contacttwoq" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: keypress, search"><input name="#mytwoc" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: keypress, search"><div data-mtcliststack="destination" data-mtccontrol="radio:li,selected,touchstart,selectStart"></div></div><div id="mtc-detail" data-mtcdetails="place:mtcDetails" class="details"></div></div>';
+                        myTwocentUI.template = '<div id="connect-twocents"><div id="mtc-list"><div class="header blue-light"><span data-labels="bind: innerHTML, mtcheadertitle"></span><div class="option right" data-mtcevent="listen: touchstart, plus"></div></div><ul class="twoqbuttons" data-twoqbuttons="foreach"><li data-twoqbuttons="bind: setBg,name; bind:setActive, active" data-mtcevent="listen:touchstart, selectView; listen: touchend, showView"></li></ul><div class="selectcontact" name = "#contacttwoq" data-mtctools="bind:setVisible, view"><legend>Select a contact</legend><input class="search" data-mtcevent="listen:touchstart, updateAutoContact; listen:keyup, updateAutoContact" data-labels="bind:placeholder, tocontactlbl" data-mtctools = "bind:value, contact"><div class="rightcaret" data-mtcevent="listen: touchstart, updateAutoContact"></div><div class = "autocontact invisible"><ul data-auto="foreach"><li data-auto="bind:innerHTML, contact.username; bind:highlight, selected" data-mtcevent="listen:touchstart, highlightContact; listen:touchend, selectContact"></li></ul></div></div><legend data-mtctools="bind:setLegend, view; bind: updateLegend, contact"></legend><input name="#mytwoq" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: input, search"><input name="#contacttwoq" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: keypress, search"><input name="#mytwoc" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: keypress, search"><div data-mtcliststack="destination" data-mtccontrol="radio:li,selected,touchstart,selectStart"></div></div><div id="mtc-detail" data-mtcdetails="place:mtcDetails" class="details"></div></div>';
                         
                         myTwocentUI.place(Map.get("connect-twocents"));
                         
@@ -104,6 +104,9 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                         // switch between twocent views
                         myTwocentUI.showView = function(event, node){
                                 var id = node.getAttribute("data-twoqbuttons_id");
+                                
+                                // hide current details
+                                mtcDetails.hide();
                                 
                                 switch(twoQButtons.get(id).name){
                                         case "#mytwoq":
@@ -170,11 +173,14 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                         myTwocentUI.selectStart = function(event, node){
                                 var store = mtcStack.getStack().getCurrentScreen().getModel(),
                                     id;
-                                console.log(store.toJSON(), mtcTools.get("view"));
                                 if (mtcTools.get("view") === "#mytwoq" || mtcTools.get("view") === "#contacttwoq"){
                                         id = event.target.getAttribute("data-twoqlist_id");
                                         mtcDetails.reset("2Q", store.get(id));       
                                 }      
+                        };
+                        
+                        myTwocentUI.search = function(event, node){
+                                mtcStack.getStack().getCurrentScreen().search(node.value);              
                         };
                         
                         //INIT
@@ -183,6 +189,7 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                         for (i=0, l=connections.length; i<l; i++){
                                 if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false})
                         }
+                        
                         
                         // add twocent and twoquestion lists to the stack
                         mytwoq = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: Config.get("uid"), descending: true});
@@ -194,13 +201,13 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                         mytwoq.init().then(function(){
                                 mtcStack.getStack().show("#mytwoq");
                                 mtcTools.set("view", "#mytwoq");
+                                // hightlight first item
+                                mtcControl.init(0);
+                                mtcDetails.reset("2Q", mytwoq.getModel().get(0));
                         });
                         
-                        
-                        M2Q = mytwoq;
-                        C2Q = contacttwoq;
                         // search tools (searches twoquestions or a contact)
-                                                
+                        
                         return myTwocentUI;
                 };
         });

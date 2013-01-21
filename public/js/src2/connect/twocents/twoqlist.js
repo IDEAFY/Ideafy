@@ -8,20 +8,21 @@
 define("Ideafy/Connect/TwoQList", ["Olives/OObject", "CouchDBStore", "Config", "Olives/Model-plugin", "Olives/Event-plugin", "Ideafy/Utils", "Ideafy/Avatar", "Ideafy/ActionBar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function TwoQListConstructor($type, $db, $design, $view, $query) {
                 var _store = new Store([]),
-                touchStart,
-                touchPoint,
-                display = false,
-                className = "",
-                currentBar = null,
-                _options = {
+                    _searchList = new Store([]),
+                    touchStart,
+                    touchPoint,
+                    display = false,
+                    className = "",
+                    currentBar = null,
+                    _options = {
                         db : $db,
                         view : $view,
                         design : $design,
                         query : {
                                 descending : true
                         }
-                },
-                labels = Config.get("labels");
+                     },
+                     labels = Config.get("labels");
 
                 //setup
                 _store.setTransport(Config.get("transport"));
@@ -29,10 +30,33 @@ define("Ideafy/Connect/TwoQList", ["Olives/OObject", "CouchDBStore", "Config", "
                 // adjust list height to take into account contact selection UI
                 ($type === "contact") ? className = "contacttwoqlist" : className = "";
                 
-                this.template = '<div><ul class="twoq-list '+className+'" data-twoqlist="foreach"><li class="list-item" data-twoqlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><span class="date" data-twoqlist="bind:date,value.creation_date"></span></div><div class="item-body"><p data-twoqlist="bind:innerHTML,value.question"></p></div><div class="item-footer"><a class="item-twocent"></a><span class="replies" data-twoqlist="bind:showReplies, value.twocents"></span></div></li></ul></div>';
+                this.template = '<div><ul class="twoq-list '+ className + '" data-twoqlist="foreach"><li class="list-item" data-twoqlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><span class="date" data-twoqlist="bind:date,value.creation_date"></span></div><div class="item-body"><p data-twoqlist="bind:innerHTML,value.question"></p></div><div class="item-footer"><a class="item-twocent"></a><span class="replies" data-twoqlist="bind:showReplies, value.twocents"></span></div></li></ul><ul class="twoq-searchlist invisible ' + className + '" data-twoqsearch="foreach"><li class="list-item" data-twoqlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><span class="date" data-twoqsearch="bind:date,value.creation_date"></span></div><div class="item-body"><p data-twoqsearch="bind:innerHTML,value.question"></p></div><div class="item-footer"><a class="item-twocent"></a><span class="replies" data-twoqsearch="bind:showReplies, value.twocents"></span></div></li></ul></div>';
 
                 this.plugins.addAll({
                         "twoqlist": new Model(_store, {
+                                date : function date(date) {
+                                        (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
+                                },
+                                showReplies : function showReplies(twocents) {
+                                        var nb = twocents.length;
+                                        if (nb === 0) this.innerHTML = labels.get("noreplyyet")
+                                        else if (nb === 1) this.innerHTML = nb +" "+labels.get("showonetcreply")
+                                        else this.innerHTML = nb + " " + labels.get("showtcrepliesafter")
+                                },
+                                setAvatar : function setAvatar(author){
+                                        var _ui, _frag;
+                                        if (author){
+                                                _frag = document.createDocumentFragment();
+                                                _ui = new Avatar([author]);
+                                                _ui.place(_frag);
+                                                (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                        }
+                                },
+                                setVisibility : function(visibility){
+                                        (visibility === "public") ? this.classList.add("public") : this.classList.remove("public");
+                                }
+                        }),
+                        "twoqsearch" : new Model(_searchList, {
                                 date : function date(date) {
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                 },
@@ -105,7 +129,40 @@ define("Ideafy/Connect/TwoQList", ["Olives/OObject", "CouchDBStore", "Config", "
                         display = false;
                         currentBar = null;
                 };
-
+                
+                // toggle search list
+               this.showSearch = function showSearch(){
+                       var search = document.querySelector(".twoq-searchlist"),
+                           list = document.querySelector(".twoq-list");
+                        
+                        if (search.classList.contains("invisible")){
+                                list.classList.add("invisible");
+                                search.classList.remove("invisible");
+                        }     
+                };
+                
+                this.hideSearch = function hideSearch(){
+                       var search = document.querySelector(".twoq-searchlist"),
+                           list = document.querySelector(".twoq-list");
+                        
+                        if (!search.classList.contains("invisible")){
+                                list.classList.remove("invisible");
+                                search.classList.add("invisible");
+                        }     
+                };
+                
+                // search twoquestions
+                this.search = function search(text){
+                        _searchList.reset([]);
+                        console.log("new search :", text);
+                        if (text){
+                                this.showSearch();
+                                _store.loop(function(v,i){
+                                        if (JSON.stringify(v).search(text) > -1) _searchList.alter("push", v)        
+                                });
+                        }
+                        else this.hideSearch();  
+                };
 
                 // set default query parameters
                 if ($query) {

@@ -108,7 +108,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     height: 712px;
 }
 
-.msglist ul, .contactlist ul, .twoq-list{
+.msglist ul, .contactlist ul, .twoq-list, .twoq-searchlist{
     height: 577px;
 }
 
@@ -139,7 +139,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 }
 
-.ideas-list, .twoq-list {
+.ideas-list, .twoq-list, .twoq-searchlist{
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; 
@@ -200,12 +200,12 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   margin-bottom: 10px;
 }
 
-.twoq-list .item-body p{
+.twoq-list .item-body p, .twoq-searchlist .item-body p{
     margin-top: 0;
     font-size: 16px;
 }
 
-.twoq-list .item-footer .replies{
+.twoq-list .item-footer .replies, .twoq-searchlist .item-footer .replies{
     font-size: 12px;
     color: #B3B3B3;
     padding-left: 30px;
@@ -1102,7 +1102,7 @@ ul.notify-list{
     background-size: 20px;
 }
 
-#public-detail .option.left[href="#public-2cents"], #ideas-detail .option.left[href="#library-2cts"]{
+#public-detail .option.left[href="#public-2cents"], #ideas-detail .option.left[href="#library-2cents"]{
     background:url('../img/public/2cents.png') no-repeat center center;
     background-size: 20px;
 }
@@ -4744,6 +4744,32 @@ li.color-item{
     font-size: 16px;
     margin-top: 10px;
     margin-left: 75px;
+}
+
+.twocent-detail .detail-footer{
+    padding: 10px 40px 10px 30px;
+    height: 40px;
+}
+
+.twocent-detail .tcbutton{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    float: left;
+    background: url('../img/connect/twocent.png') no-repeat center center;
+    background-size: contain;    
+}
+
+.twocent-detail .tcbutton.pressed{
+    background: url('../img/connect/twocentactive.png') no-repeat center center;
+    background-size: contain;
+}
+
+.twocent-detail .tcreplies{
+    height: 40px;
+    line-height: 40px;
+    float: right;
+    font-size: 12px;   
 }
 
 /* DASHBOARD */

@@ -6,8 +6,8 @@
  */
 
 define("Ideafy/Connect/MTCDetailStack", 
-        ["Olives/OObject", "Map", "Amy/Stack-plugin", "Ideafy/Connect/MTCDetails", "Config", "Store"], 
-        function(Widget, Map, Stack, MTCDetail, Config, Store){
+        ["Olives/OObject", "Map", "Amy/Stack-plugin", "Ideafy/Connect/MTCDetails", "Ideafy/Connect/MTQDetails", "Config", "Store"], 
+        function(Widget, Map, Stack, MTCDetail, MTQDetail, Config, Store){
                 
 
                 return function MTCDetailStackConstructor(){
@@ -23,20 +23,27 @@ define("Ideafy/Connect/MTCDetailStack",
                         
                         widget.setView = function setView(view){
                                 var current = mtcDetailStack.getStack().getCurrentName();
-                                if (view === "2Q" && current !== "twoqdetail") mtcDetailStack.getStack().show("twoqdetail");        
+                                if (view === "2Q" && current !== "twoqdetail") mtcDetailStack.getStack().show("twoqdetail")
+                                else if (view === "2C" && current !== "twocdetail") {
+                                        mtcDetailStack.getStack().get("twocdetail").reset()
+                                        mtcDetailStack.getStack().show("twocdetail");
+                                }   
                         };
                         
                         widget.reset = function reset(type, data){
-                                if (type === "2Q") mtcDetailStack.getStack().get("twoqdetail").reset(type, data)
+                                if (type === "2Q") mtcDetailStack.getStack().get("twoqdetail").reset(data)
                         };
                         
                         // init
                         widget.init = function init(type, value){
-                                var twoqDetail = new MTCDetail();
+                                var twoqDetail = new MTQDetail(), twocDetail = new MTCDetail();
                                 mtcDetailStack.getStack().add("twoqdetail", twoqDetail);
+                                console.log("twoQ init ok");
+                                mtcDetailStack.getStack().add("twocdetail", twocDetail);
+                                console.log("twoC init ok");
                                 mtcDetailStack.getStack().show("twoqdetail");
-                                twoQDetail.reset(type, value);
-                        }
+                                twoQDetail.reset(value);
+                        };
                         
                         MTCS = mtcDetailStack;
                         

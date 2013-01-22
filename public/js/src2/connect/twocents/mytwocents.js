@@ -115,6 +115,7 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                                 mtcDetails.setView("2Q");
                                                 break;
                                         case "#mytwoc":
+                                                mtcStack.getStack().show("#blank");
                                                 mtcDetails.setView("2C");
                                                 break;
                                 }        
@@ -212,8 +213,11 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                         // add twocent and twoquestion lists to the stack
                         mytwoq = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: Config.get("uid"), descending: true});
                         contacttwoq = new TwoQList("contact", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
+                        blank = new TwoQList("contact", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
+                        
                         mtcStack.getStack().add("#mytwoq", mytwoq);
                         mtcStack.getStack().add("#contacttwoq", contacttwoq);
+                        mtcStack.getStack().add("#blank", blank);
                         
                         // display twoQ list (default and init details with first item)
                         mytwoq.init().then(function(){

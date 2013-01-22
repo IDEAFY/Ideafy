@@ -353,5 +353,6 @@
 	"mytqdetailheader" : "Ma TwoQuestion",
 	"tqheaderprefix" : "TwoQuestion de ",
 	"tqheadersuffix" : "",
-	"selecttq" : "Choisissez un contact pour afficher ses TwoQuestions"
+	"selecttq" : "Choisissez un contact pour afficher ses TwoQuestions",
+	"mytwocentwall" : "Ma boîte à Twocents"
 }

@@ -5,24 +5,22 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define("Ideafy/Connect/MTCDetails", ["Olives/OObject", "Config", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "WriteTwocent", "TwocentList", "Ideafy/Avatar", "Ideafy/Utils"],
+define("Ideafy/Connect/MTQDetails", ["Olives/OObject", "Config", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "WriteTwocent", "TwocentList", "Ideafy/Avatar", "Ideafy/Utils"],
         function(Widget, Config, Store, Model, Event, WriteTwocent, TwocentList, Avatar, Utils){
                 
-                return function MTCDetailsConstructor($type){
-                        //$type can be TC (twocents) or TQ (twoquestion)
+                return function MTQDetailsConstructor(){
                         
-                        var mtcDetailUI = new Widget(),
+                        var mtqDetailUI = new Widget(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),
-                            model = new Store(), 
-                            ui = new Store({type: $type}),
+                            model = new Store(),
                             twocentWriteUI = new WriteTwocent("connect"),
                             twocentList = new TwocentList(),
                             domWrite;
                         
-                        mtcDetailUI.plugins.addAll({
+                        mtqDetailUI.plugins.addAll({
                                 "labels" : new Model(labels),
-                                "tcdetail" : new Model(model, {
+                                "tqdetail" : new Model(model, {
                                         // set header title (user or user contact)
                                         setHeader : function(author){
                                                 if (!author) this.innerHTML = labels.get("selecttq")
@@ -73,29 +71,28 @@ define("Ideafy/Connect/MTCDetails", ["Olives/OObject", "Config", "Store", "Olive
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                         },
                                 }),
-                                "tcevent" : new Event(mtcDetailUI)       
+                                "tqevent" : new Event(mtqDetailUI)       
                         });
                         
-                        mtcDetailUI.template = '<div class="twocent-detail"><div class="header blue-dark"><span data-tcdetail="bind: setHeader, author"></span></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-tcdetail="bind:setAvatar, author"></div><span class="author" data-tcdetail="bind:setAuthor,username"></span><span class="commentlbl" data-tcdetail="bind: setWrotelbl, author"></span><p data-tcdetail="bind:innerHTML,question"></p><span class="date" data-tcdetail="bind:date, creation_date"></span></div><div class="detail-body"></div><div class="detail-footer"><div class="tcbutton" data-tcevent="listen:touchstart, press; listen: touchend, write"></div><div class="tcreplies" data-tcdetail = "bind: displayTwocentNB, twocents"></div></div><div id="connect-writetwocents" class="invisible" data-tcdetail="bind: displayWriteTwocent, author"></div><div id="connect-twocents" class="twocents" data-tcdetail="bind: displayTwocentList, twocents"></div></div></div>';
+                        mtqDetailUI.template = '<div class="twocent-detail"><div class="header blue-dark"><span data-tqdetail="bind: setHeader, author"></span></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-tqdetail="bind:setAvatar, author"></div><span class="author" data-tqdetail="bind:setAuthor,username"></span><span class="commentlbl" data-tqdetail="bind: setWrotelbl, author"></span><p data-tqdetail="bind:innerHTML,question"></p><span class="date" data-tqdetail="bind:date, creation_date"></span></div><div class="detail-body"></div><div class="detail-footer"><div class="tcbutton" data-tqevent="listen:touchstart, press; listen: touchend, write"></div><div class="tcreplies" data-tqdetail = "bind: displayTwocentNB, twocents"></div></div><div id="connect-writetwocents" class="invisible" data-tqdetail="bind: displayWriteTwocent, author"></div><div id="connect-twocents" class="twocents" data-tqdetail="bind: displayTwocentList, twocents"></div></div></div>';
                        
                        
-                       mtcDetailUI.press = function(event, node){
+                       mtqDetailUI.press = function(event, node){
                                 node.classList.add("pressed");        
                        };
                        
-                       mtcDetailUI.write = function(event, node){
+                       mtqDetailUI.write = function(event, node){
                                 node.classList.remove("pressed");
                                 document.getElementById("connect-writetwocents").classList.remove("invisible");       
                        };
                        
-                       mtcDetailUI.hide = function hide(){
+                       mtqDetailUI.hide = function hide(){
                                 document.querySelector(".detail-contents").classList.add("invisible");
                                 model.reset({});       
                        };
                        
-                       mtcDetailUI.reset = function reset(type, content){
-                               console.log(type, content);
-                                ui.set("type", type);
+                       mtqDetailUI.reset = function reset(content){
+                               console.log(content);
                                 model.reset(content.value);
                                 twocentWriteUI.reset(model.get("_id"));
                                 twocentList.reset(model.get("_id"), "connect");
@@ -103,6 +100,6 @@ define("Ideafy/Connect/MTCDetails", ["Olives/OObject", "Config", "Store", "Olive
                                 twocentWriteUI.place(domWrite);        
                        };
                                               
-                        return mtcDetailUI;       
+                        return mtqDetailUI;       
                 };
         });

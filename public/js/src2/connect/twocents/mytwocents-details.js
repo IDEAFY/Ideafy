@@ -76,7 +76,7 @@ define("Ideafy/Connect/MTCDetails", ["Olives/OObject", "Config", "Store", "Olive
                                 "tcevent" : new Event(mtcDetailUI)       
                         });
                         
-                        mtcDetailUI.template = '<div class="twocent-detail"><div class="header blue-dark"><span data-tcdetail="bind: setHeader, author"></span></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-tcdetail="bind:setAvatar, author"></div><span class="author" data-tcdetail="bind:setAuthor,username"></span><span class="commentlbl" data-tcdetail="bind: setWrotelbl, author"></span><p data-tcdetail="bind:innerHTML,question"></p><span class="date" data-tcdetail="bind:date, creation_date"></span></div><div class="detail-body"></div><div class="detail-footer"><div class="tcbutton" data-tcevent="listen:touchstart, press; listen: touchend, write"></div><div class="tcreplies" data-tcdetail = "bind: displayTwocentNB, twocents"></div></div></div><div id="connect-writetwocents" class="invisible" data-tcdetail="bind: displayWriteTwocent, author"></div><div id="connect-twocents" class="twocents" data-tcdetail="bind: displayTwocentList, twocents"></div></div>';
+                        mtcDetailUI.template = '<div class="twocent-detail"><div class="header blue-dark"><span data-tcdetail="bind: setHeader, author"></span></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-tcdetail="bind:setAvatar, author"></div><span class="author" data-tcdetail="bind:setAuthor,username"></span><span class="commentlbl" data-tcdetail="bind: setWrotelbl, author"></span><p data-tcdetail="bind:innerHTML,question"></p><span class="date" data-tcdetail="bind:date, creation_date"></span></div><div class="detail-body"></div><div class="detail-footer"><div class="tcbutton" data-tcevent="listen:touchstart, press; listen: touchend, write"></div><div class="tcreplies" data-tcdetail = "bind: displayTwocentNB, twocents"></div></div><div id="connect-writetwocents" class="invisible" data-tcdetail="bind: displayWriteTwocent, author"></div><div id="connect-twocents" class="twocents" data-tcdetail="bind: displayTwocentList, twocents"></div></div></div>';
                        
                        
                        mtcDetailUI.press = function(event, node){
@@ -94,6 +94,7 @@ define("Ideafy/Connect/MTCDetails", ["Olives/OObject", "Config", "Store", "Olive
                        };
                        
                        mtcDetailUI.reset = function reset(type, content){
+                               console.log(type, content);
                                 ui.set("type", type);
                                 model.reset(content.value);
                                 twocentWriteUI.reset(model.get("_id"));

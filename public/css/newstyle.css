@@ -1538,7 +1538,7 @@ textarea.solution {
 
 /* TWOCENTS */
 
-#public-twocents, #library-twocents{
+#public-twocents, #library-twocents, #connect-twocents{
     width: 628px;
     overflow-y: scroll;
     font-family: Helvetica;
@@ -4696,59 +4696,59 @@ li.color-item{
     font-size: 12px;
 }
 
-#connect-twocents .twoqbuttons{
+#connect-tc .twoqbuttons{
     margin: 20px 73px 0px 74px;
     height: 40px;
 }
 
-#connect-twocents .twoqbuttons li{
+#connect-tc .twoqbuttons li{
     width: 50px;
     height: 30px;
     float: left;
     border: 1px solid #cccccc;
 }
-#connect-twocents .twoqbuttons li.pushed{
+#connect-tc .twoqbuttons li.pushed{
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
 }
 
-#connect-twocents .twoqbuttons li:first-child{
+#connect-tc .twoqbuttons li:first-child{
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-right: none;
 }
 
-#connect-twocents .twoqbuttons li:last-child{
+#connect-tc .twoqbuttons li:last-child{
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-left: none;
 }
 
-#connect-twocents .twoqbuttons li.mytwoq{
+#connect-tc .twoqbuttons li.mytwoq{
     background: url('../img/connect/2questiondisabled.png') no-repeat center center;
     background-size: 35px 35px;
 }
 
-#connect-twocents .twoqbuttons li.contacttwoq{
+#connect-tc .twoqbuttons li.contacttwoq{
     background: url('../img/connect/contactDisable.png') no-repeat center center;
     background-size: 35px 35px;
 }
 
-#connect-twocents .twoqbuttons li.mytwoc{
+#connect-tc .twoqbuttons li.mytwoc{
     background: url('../img/connect/twocent.png') no-repeat center center;
     background-size: 35px 35px;
 }
 
-#connect-twocents .twoqbuttons li.mytwoq.pushed{
+#connect-tc .twoqbuttons li.mytwoq.pushed{
     background: #4D4D4D url('../img/connect/2questionactive.png') no-repeat center center;
     background-size: 35px 35px;    
 }
 
-#connect-twocents .twoqbuttons li.contacttwoq.pushed{
+#connect-tc .twoqbuttons li.contacttwoq.pushed{
     background: #4D4D4D url('../img/connect/contactActive.png') no-repeat center center;
     background-size: 35px 35px;    
 }
 
-#connect-twocents .twoqbuttons li.mytwoc.pushed{
+#connect-tc .twoqbuttons li.mytwoc.pushed{
     background: #4D4D4D url('../img/connect/twocentactive.png') no-repeat center center; 
     background-size: 35px 35px;   
 }

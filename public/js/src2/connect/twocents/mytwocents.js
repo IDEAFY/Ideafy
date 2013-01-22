@@ -5,15 +5,15 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/Model-plugin", "Olives/UI-plugin", "Amy/Delegate-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Ideafy/Connect/MTCDetails", "Ideafy/Connect/TwoQList", "Store"],
-        function(Widget, Map, Config, Model, UIPlugin, Delegate, Stack, Control, MTCDetails, TwoQList, Store){
+define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/Model-plugin", "Olives/UI-plugin", "Amy/Delegate-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Ideafy/Connect/MTCDetailStack", "Ideafy/Connect/TwoQList", "Store"],
+        function(Widget, Map, Config, Model, UIPlugin, Delegate, Stack, Control, MTCDetailStack, TwoQList, Store){
                 
                 return function MyTwocentsConstructor(){
                         
                         var myTwocentUI = new Widget(),
                             mtcStack = new Stack(),
                             mtcControl = new Control(myTwocentUI),
-                            mtcDetails = new MTCDetails(),
+                            mtcDetails = new MTCDetailStack(),
                             mytwoq, contacttwoq,
                             btns=[
                                 {name: "#mytwoq", active: true},
@@ -82,7 +82,7 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 "mtcevent" : new Delegate(myTwocentUI)
                         });    
                         
-                        myTwocentUI.template = '<div id="connect-twocents"><div id="mtc-list"><div class="header blue-light"><span data-labels="bind: innerHTML, mtcheadertitle"></span><div class="option right" data-mtcevent="listen: touchstart, plus"></div></div><ul class="twoqbuttons" data-twoqbuttons="foreach"><li data-twoqbuttons="bind: setBg,name; bind:setActive, active" data-mtcevent="listen:touchstart, selectView; listen: touchend, showView"></li></ul><div class="selectcontact" name = "#contacttwoq" data-mtctools="bind:setVisible, view"><legend>Select a contact</legend><input class="search" data-mtcevent="listen:touchstart, updateAutoContact; listen:keyup, updateAutoContact" data-labels="bind:placeholder, tocontactlbl" data-mtctools = "bind:value, contact"><div class="rightcaret" data-mtcevent="listen: touchstart, updateAutoContact"></div><div class = "autocontact invisible"><ul data-auto="foreach"><li data-auto="bind:innerHTML, contact.username; bind:highlight, selected" data-mtcevent="listen:touchstart, highlightContact; listen:touchend, selectContact"></li></ul></div></div><legend data-mtctools="bind:setLegend, view; bind: updateLegend, contact"></legend><input name="#mytwoq" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: input, search"><input name="#contacttwoq" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: keypress, search"><input name="#mytwoc" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: keypress, search"><div data-mtcliststack="destination" data-mtccontrol="radio:li,selected,touchstart,selectStart"></div></div><div id="mtc-detail" data-mtcdetails="place:mtcDetails" class="details"></div></div>';
+                        myTwocentUI.template = '<div id="connect-tc"><div id="mtc-list"><div class="header blue-light"><span data-labels="bind: innerHTML, mtcheadertitle"></span><div class="option right" data-mtcevent="listen: touchstart, plus"></div></div><ul class="twoqbuttons" data-twoqbuttons="foreach"><li data-twoqbuttons="bind: setBg,name; bind:setActive, active" data-mtcevent="listen:touchstart, selectView; listen: touchend, showView"></li></ul><div class="selectcontact" name = "#contacttwoq" data-mtctools="bind:setVisible, view"><legend>Select a contact</legend><input class="search" data-mtcevent="listen:touchstart, updateAutoContact; listen:keyup, updateAutoContact" data-labels="bind:placeholder, tocontactlbl" data-mtctools = "bind:value, contact"><div class="rightcaret" data-mtcevent="listen: touchstart, updateAutoContact"></div><div class = "autocontact invisible"><ul data-auto="foreach"><li data-auto="bind:innerHTML, contact.username; bind:highlight, selected" data-mtcevent="listen:touchstart, highlightContact; listen:touchend, selectContact"></li></ul></div></div><legend data-mtctools="bind:setLegend, view; bind: updateLegend, contact"></legend><input name="#mytwoq" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: input, search"><input name="#contacttwoq" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: keypress, search"><input name="#mytwoc" class="search" type="text" data-mtctools="bind:setVisible, view" data-labels="bind: placeholder, searchmsgplaceholder" data-mtcevent="listen: keypress, search"><div data-mtcliststack="destination" data-mtccontrol="radio:li,selected,touchstart,selectStart"></div></div><div id="mtc-detail" data-mtcdetails="place:mtcDetails" class="details"></div></div>';
                         
                         myTwocentUI.place(Map.get("connect-twocents"));
                         
@@ -105,17 +105,17 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                         myTwocentUI.showView = function(event, node){
                                 var id = node.getAttribute("data-twoqbuttons_id");
                                 
-                                // hide current details
-                                mtcDetails.hide();
-                                
                                 switch(twoQButtons.get(id).name){
                                         case "#mytwoq":
                                                 mtcStack.getStack().show("#mytwoq");
+                                                mtcDetails.setView("2Q");
                                                 break;
                                         case "#contacttwoq":
                                                 mtcStack.getStack().show("#contacttwoq");
+                                                mtcDetails.setView("2Q");
                                                 break;
                                         case "#mytwoc":
+                                                mtcDetails.setView("2C");
                                                 break;
                                 }        
                         };
@@ -188,8 +188,15 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 contacttwoq.resetQuery({key: '"'+userid+'"', descending: true}).then(function(){
                                         mtcStack.getStack().show("#contacttwoq");
                                         mtcTools.set("view", "#contacttwoq");
+                                        // set active button
+                                        twoQButtons.loop(function(v,i){
+                                                (v.name === "#contacttwoq") ? twoQButtons.update(i, "active", true) : twoQButtons.update(i, "active", false);      
+                                        });
+                                        
+                                        // search twoquestion by id
                                         contacttwoq.search(id);
-                                        // hightlight first item
+                                        
+                                        // hightlight item in the list
                                         mtcControl.init(0);
                                         mtcDetails.reset("2Q", contacttwoq.getModel().get(0));        
                                 });
@@ -214,7 +221,7 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 mtcTools.set("view", "#mytwoq");
                                 // hightlight first item
                                 mtcControl.init(0);
-                                mtcDetails.reset("2Q", mytwoq.getModel().get(0));
+                                mtcDetails.init("2Q", mytwoq.getModel().get(0));
                         });
                         
                         return myTwocentUI;

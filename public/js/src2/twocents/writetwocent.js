@@ -84,7 +84,7 @@ define("WriteTwocent", ["Olives/OObject", "Config", "Olives/Model-plugin", "Oliv
                                         }
                                         else{
                                                 // hide write interface
-                                                (editTC === "new")?document.getElementById("public-writetwocents").classList.add("invisible"):cancel();
+                                                (editTC === "new")?document.getElementById(view+"-writetwocents").classList.add("invisible"):cancel();
                                                 //need to reset store
                                                 ui.reset(currentIdea);
                                         }               

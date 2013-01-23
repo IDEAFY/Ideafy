@@ -7,8 +7,8 @@
 
 define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"Ideafy/Public", "Ideafy/Library", "Ideafy/Brainstorm", "Ideafy/Connect", "Ideafy/Dashboard",
-	"Map", "Config", "Ideafy/Notify", "Ideafy/NewIdea", "Ideafy/Help", "Ideafy/New2Q"], 
-	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q){
+	"Map", "Config", "Ideafy/Notify", "Ideafy/NewIdea", "Ideafy/Help", "Ideafy/New2Q", "Ideafy/New2C"], 
+	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C){
 		return function DockConstructor(){
 
 		//declaration

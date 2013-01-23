@@ -352,10 +352,8 @@ define("Ideafy/Utils", ["Config", "Observable", "Promise", "Olives/LocalStore"],
                  */
                 getUserDetails : function(userid, onEnd){
                        var transport = Config.get("transport");
-                       console.log("calling server handler");
                        
                        transport.request("GetUserDetails", {userid: userid}, function(res){
-                               console.log(res);
                                onEnd(res);
                        });
                 },

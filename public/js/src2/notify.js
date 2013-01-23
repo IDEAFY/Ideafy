@@ -68,6 +68,34 @@ define("Ideafy/Notify", ["Olives/OObject", "Config", "Map", "Store", "Olives/Mod
                 notifyPopup.plugins.addAll({
                         "labels" : new Model(labels),
                         "notify" : new Model(messages,{
+                                setObject : function(type){
+                                        var id = this.getAttribute("data-notify_id");
+                                        switch(type){
+                                                case "CXR":
+                                                        this.innerHTML = messages.get(id).username + labels.get("CXRobject");
+                                                        break;
+                                                case "CXRaccept":
+                                                        this.innerHTML = messages.get(id).username + labels.get("acceptedCXR");
+                                                        break;
+                                                case "CXRreject":
+                                                        this.innerHTML = messages.get(id).username + labels.get("rejectedCXR");
+                                                        break;
+                                                case "CXCancel":
+                                                        this.innerHTML = messages.get(id).username + labels.get("canceledCX");
+                                                        break;
+                                                case "DOC":
+                                                        this.innerHTML = messages.get(id).username + labels.get("sentdocmsg");
+                                                        break;
+                                                case "2Q+":
+                                                        this.innerHTML = messages.get(id).username + labels.get("askednew");
+                                                        break;
+                                                case "2C+":
+                                                        this.innerHTML = messages.get(id).username + labels.get("senttc");
+                                                        break;
+                                                default :
+                                                        this.innerHTML = messages.get(id).object;
+                                        }        
+                                },
                                 setStyle : function(status){
                                         (status === "unread") ? this.setAttribute("style", "font-weight: bold;") : this.setAttribute("style", "font-weight: normal;");
                                 },
@@ -81,7 +109,7 @@ define("Ideafy/Notify", ["Olives/OObject", "Config", "Map", "Store", "Olives/Mod
                         "notifyevent" : new Event(notifyPopup)
                 });
                 
-                notifyPopup.template = '<div><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:touchstart, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:touchstart, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:innerHTML, object"></span></p></li></ul></div>';
+                notifyPopup.template = '<div><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:touchstart, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:touchstart, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
                 
                 notifyPopup.closePopup = function closePopup(event, node){
                         popup.classList.remove("show-notify");        

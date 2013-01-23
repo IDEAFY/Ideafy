@@ -354,5 +354,11 @@
 	"tqheaderprefix" : "TwoQuestion de ",
 	"tqheadersuffix" : "",
 	"selecttq" : "Choisissez un contact pour afficher ses TwoQuestions",
-	"mytwocentwall" : "Ma boîte à Twocents"
+	"mytwocentwall" : "Ma boîte à Twocents",
+	"sendtcprefix" : "Envoyer un Twocent à ",
+	"sendtcsuffix" : "",
+	"twocentplaceholder" : "Ecrivez votre Twocent",
+	"nomessage" : "Veuillez saisir un message",
+	"sendinginprogress" : "Envoi en cours",
+	"senttc": " vous a écrit un nouveau Twocent"
 }

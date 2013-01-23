@@ -90,7 +90,6 @@ define("Ideafy/Connect/ContactDetails", ["Olives/OObject", "Config", "Map", "Sto
                                         details.set("sessions", details.get("su_sessions_count")+details.get("mu_sessions_count"));
                                         // get grades
                                         Utils.getGrade(result.ip, function(res){
-                                                console.log("grades : ", res);
                                                 grades.alter("push", res.grade);
                                                 if (res.distinction) grades.alter("push", res.distinction);  
                                         });
@@ -105,8 +104,7 @@ define("Ideafy/Connect/ContactDetails", ["Olives/OObject", "Config", "Map", "Sto
                                 achievements.reset([]);
                                 // if there are no notes for this contact init with empty string
                                 if (!contact.get("notes")) contact.set("notes", "");
-                                contactDetails.getUserInfo(contactinfo.userid); 
-                                console.log(contact.toJSON());       
+                                contactDetails.getUserInfo(contactinfo.userid);       
                        };
                        
                        contactDetails.displayNoteBtns = function(event,node){

@@ -353,5 +353,11 @@
 	"tqheaderprefix" : "",
 	"tqheadersuffix" : "'s TwoQuestion",
 	"selecttq" : "Select a contact to diplay TwoQuestions",
-	"mytwocentwall" : "Mt Twocent Wall"
+	"mytwocentwall" : "Mt Twocent Wall",
+	"sendtcprefix" : "Send a Twocent to ",
+	"sendtcsuffix" : "",
+	"twocentplaceholder" : "Write your two cents",
+	"nomessage" : "Please enter a message",
+	"sendinginprogress" : "Sending in progress",
+	"senttc": " wrote you a new Twocent"
 }

@@ -88,6 +88,34 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         }
                                 }),
                                 "msg" : new Model(msgList,{
+                                        setObject : function(type){
+                                                var id = this.getAttribute("data-msg_id");
+                                                switch(type){
+                                                        case "CXR":
+                                                                this.innerHTML = msgList.get(id).username + labels.get("CXRobject");
+                                                                break;
+                                                        case "CXRaccept":
+                                                                this.innerHTML = msgList.get(id).username + labels.get("acceptedCXR");
+                                                                break;
+                                                        case "CXRreject":
+                                                                this.innerHTML = msgList.get(id).username + labels.get("rejectedCXR");
+                                                                break;
+                                                        case "CXCancel":
+                                                                this.innerHTML = msgList.get(id).username + labels.get("canceledCX");
+                                                                break;
+                                                        case "DOC":
+                                                                this.innerHTML = msgList.get(id).username + labels.get("sentdocmsg");
+                                                                break;
+                                                        case "2Q+":
+                                                                this.innerHTML = msgList.get(id).username + labels.get("askednew");
+                                                                break;
+                                                        case "2C+":
+                                                                this.innerHTML = msgList.get(id).username + labels.get("senttc");
+                                                                break;
+                                                        default :
+                                                                this.innerHTML = msgList.get(id).object;
+                                                }        
+                                        },
                                         date : function date(date){
                                                 var now = new Date();
                                                 if (date && date[0] === now.getFullYear() && date[1] === now.getMonth() && date[2] === now.getDate()){
@@ -118,7 +146,7 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 "msgdetailstack" : detailStack
                         });
                         
-                        messageUI.template = '<div id="connect-messages"><div class="messages list"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchend,selectMsg"><ul data-msg="foreach"><li class="msg list-item" data-msglistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date"></span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:innerHTML, object">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
+                        messageUI.template = '<div id="connect-messages"><div class="messages list"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchend,selectMsg"><ul data-msg="foreach"><li class="msg list-item" data-msglistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date"></span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:setObject, type">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
                         
                         messageUI.place(Map.get("connect-messages"));
                         

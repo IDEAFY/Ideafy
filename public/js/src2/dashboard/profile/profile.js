@@ -338,7 +338,6 @@ define("Ideafy/Dashboard/Profile", ["Olives/OObject", "Map", "Olives/Model-plugi
                         // check presence of social networks
                         if (result.missing.indexOf(labels.get("entersocialnw")) < 0){
                                 stats.set("socialnw", 1);
-                                console.log(stats.get("socialnw"));
                         }
                         
                         if (result.percentage === 100 && user.get("profile_complete") !== true) {

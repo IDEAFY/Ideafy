@@ -1295,6 +1295,36 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
         });
         
+        // sending a twocent ot another user
+        olives.handlers.set("SendTwocent", function(json, onEnd){
+                var cdb = new CouchDBStore(), now = new Date();
+                
+                getDocAsAdmin(json.userid, cdb).then(function(){
+                        var twocents = cdb.get("twocents") || [],
+                            notifs = cdb.get("notifications") || [],
+                            message = {
+                                "type" : "2C+",
+                                "status" : "unread",
+                                "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                "author" : json.tc.author,
+                                "username" : json.tc.username,
+                                "firstname" : json.tc.firstname,
+                                "toList" : json.username,
+                                "ccList" : "",
+                                "object" : "",
+                                "body" : json.tc.message,
+                                "signature" : ""
+                             };
+                        twocents.unshift(json.tc);
+                        notifs.unshift(message);
+                        cdb.set("twocents", twocents);
+                        cdb.set("notifications", notifs);
+                        updateDocAsAdmin(json.userid, cdb).then(function(){
+                                onEnd("ok");        
+                        });
+                });  
+        });
+        
         // updating user document and score following certain actions
         olives.handlers.set("UpdateUIP", function(json, onEnd){
                 var cdb = new CouchDBStore(),

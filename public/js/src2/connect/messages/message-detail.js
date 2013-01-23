@@ -19,7 +19,7 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                     observer = Config.get("observer"),
                     transport = Config.get("transport");
                 
-                msgDetailUI.template = '<div id="msgdetail"><div class="header blue-dark"><span class="subjectlbl" data-label="bind:innerHTML, subjectlbl"></span><span data-message="bind:innerHTML, object"></span></div><div class = "detail-contents"><div class="detail-header"><div class="msgoptions" data-message="bind: showOptions, type"><div class="defaultmsgoption"><div name="reply" class="msgreply" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="more" class="more" data-messageevent="listen:touchstart, press; listen:touchend, action"></div></div><div class="msgoptionlist invisible"><div name="replyall" class="replyall sort-button" data-label="bind:innerHTML, replyalllbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="forward" class="forward sort-button" data-label="bind:innerHTML, forwardlbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="deletemsg" class="deletemsg sort-button" data-label="bind:innerHTML, deletelbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div></div></div><div data-message="bind:setAvatar, author"></div><p data-message="bind:innerHTML, username"></p><p class="toList"><span data-label="bind: innerHTML, tolbl"></span><span data-message="bind: setToList, toList"></span></p><p class="toList invisible" data-message="bind:showCcList, ccList"><span data-label="bind: innerHTML, cclbl"></span><span data-message="bind: innerHTML, ccList"></span></p><p class="msgdate"><span class="date" data-message="bind: date, date"></span></p></div><div class="detail-body"><p data-message="bind:innerHTML, body" data-messageevent="listen:touchstart, showDoc"></p></div><div class="goto2q invisible" data-message = "bind: showTwoQ, type" data-messageevent="listen: touchstart, press; listen: touchend, showTwoQ"></div><div class="acceptrejectCXR invisible" data-message="bind:showCXRbtn, type"><div class="acceptCXR" data-label="bind:innerHTML, accept" data-messageevent="listen:touchstart, press; listen:touchend, acceptCXR"></div><div class="rejectCXR" data-label="bind:innerHTML, reject" data-messageevent="listen:touchstart, press; listen:touchend, rejectCXR"></div></div></div><div id="msgreply" class="invisible"></div><div id="CXRconfirm" class="invisible" data-cxr="bind:setVisibility, response"><span class="CXRconfirmed" data-cxr="bind:setResponseMessage, response"></span></div></div>';
+                msgDetailUI.template = '<div id="msgdetail"><div class="header blue-dark"><span class="subjectlbl" data-label="bind:innerHTML, subjectlbl"></span><span data-message="bind:setObject, type"></span></div><div class = "detail-contents"><div class="detail-header"><div class="msgoptions" data-message="bind: showOptions, type"><div class="defaultmsgoption"><div name="reply" class="msgreply" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="more" class="more" data-messageevent="listen:touchstart, press; listen:touchend, action"></div></div><div class="msgoptionlist invisible"><div name="replyall" class="replyall sort-button" data-label="bind:innerHTML, replyalllbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="forward" class="forward sort-button" data-label="bind:innerHTML, forwardlbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="deletemsg" class="deletemsg sort-button" data-label="bind:innerHTML, deletelbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div></div></div><div data-message="bind:setAvatar, author"></div><p data-message="bind:innerHTML, username"></p><p class="toList"><span data-label="bind: innerHTML, tolbl"></span><span data-message="bind: setToList, toList"></span></p><p class="toList invisible" data-message="bind:showCcList, ccList"><span data-label="bind: innerHTML, cclbl"></span><span data-message="bind: innerHTML, ccList"></span></p><p class="msgdate"><span class="date" data-message="bind: date, date"></span></p></div><div class="detail-body"><p data-message="bind:setBody, type" data-messageevent="listen:touchstart, showDoc"></p></div><div class="goto2q invisible" data-message = "bind: showTwoQ, type" data-messageevent="listen: touchstart, press; listen: touchend, showTwoQ"></div><div class="acceptrejectCXR invisible" data-message="bind:showCXRbtn, type"><div class="acceptCXR" data-label="bind:innerHTML, accept" data-messageevent="listen:touchstart, press; listen:touchend, acceptCXR"></div><div class="rejectCXR" data-label="bind:innerHTML, reject" data-messageevent="listen:touchstart, press; listen:touchend, rejectCXR"></div></div></div><div id="msgreply" class="invisible"></div><div id="CXRconfirm" class="invisible" data-cxr="bind:setVisibility, response"><span class="CXRconfirmed" data-cxr="bind:setResponseMessage, response"></span></div></div>';
                 
                 msgDetailUI.plugins.addAll({
                         "label": new Model(labels),
@@ -35,6 +35,46 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                                         else {
                                                 this.innerHTML = Utils.formatDate(date)+ "  "+hrs+":"+min;
                                         }
+                                },
+                                setObject : function(type){
+                                        switch(type){
+                                                case "CXR":
+                                                        this.innerHTML = message.get("username") + labels.get("CXRobject");
+                                                        break;
+                                                case "CXRaccept":
+                                                        this.innerHTML = message.get("username") + labels.get("acceptedCXR");
+                                                        break;
+                                                case "CXRreject":
+                                                        this.innerHTML = message.get("username") + labels.get("rejectedCXR");
+                                                        break;
+                                                case "CXCancel":
+                                                        this.innerHTML = message.get("username") + labels.get("canceledCX");
+                                                        break;
+                                                case "DOC":
+                                                        this.innerHTML = message.get("username") + labels.get("sentdocmsg");
+                                                        break;
+                                                case "2Q+":
+                                                        this.innerHTML = message.get("username") + labels.get("askednew");
+                                                        break;
+                                                case "2C+":
+                                                        this.innerHTML = message.get("username") + labels.get("senttc");
+                                                        break;
+                                                default :
+                                                        this.innerHTML = message.get("object");
+                                        }        
+                                },
+                                setBody : function(type){
+                                        switch(type){
+                                                case "CXRaccept":
+                                                        this.innerHTML = labels.get("youlbl") + labels.get("nowconnected") + message.get("username");
+                                                        break;
+                                                case "DOC":
+                                                        // TBD --> maybe include the doc title
+                                                        this.innerHTML = message.get("username") + labels.get("sentdocmsg");
+                                                        break;
+                                                default :
+                                                        this.innerHTML = message.get("body");
+                                        }           
                                 },
                                 showOptions : function(type){
                                         console.log(type);

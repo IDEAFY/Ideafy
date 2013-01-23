@@ -45,8 +45,8 @@ define("Ideafy/SubMenu", ["Olives/OObject", "Olives/Model-plugin", "Amy/Control-
                 };     
         });
         
-define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "CouchDBStore", "Promise"],
-        function(Widget, Model, Event, Config, Store, CouchDBStore, Promise){
+define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store", "CouchDBStore", "Promise", "Ideafy/New2C"],
+        function(Widget, Model, Event, Config, Store, CouchDBStore, Promise, New2C){
                 function ActionBarConstructor($type, $parent, $data, $hide){
                 
                         var buttons = new Store([]),
@@ -105,11 +105,17 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                         case "edit":
                                                 this.editItem();
                                                 break;
+                                        case "share":
+                                                this.shareItem();
+                                                break;
                                         case "replay":
                                                 Config.get("observer").notify("replay-session", $data.sessionId);
                                                 break;
                                         case "mail":
                                                 this.mailItem();
+                                                break;
+                                        case "twocent":
+                                                this.sendTwocent();
                                         default:
                                                 break;        
                                 }
@@ -159,6 +165,7 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                         case "contact":
                                                 // export vi email -- if you can see it you can email it
                                                 buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});
+                                                if (data.type === "user") buttons.alter("push", {name: "twocent", icon:"img/2centDisable.png"})
                                                 buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                 break;
                                         default:
@@ -288,6 +295,14 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                         default:
                                                 break;        
                                 } 
+                        };
+                        
+                        this.shareItem = function shareItem(){
+                                
+                        };
+                        
+                        this.sendTwocent = function sendTwocent(){
+                                New2C.reset($data);       
                         };
                         
                         buildButtons($type, $data);
@@ -747,10 +762,7 @@ define("Ideafy/New2Q", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/
                                 // reset _store and _error
                                 _store.unsync();
                                 _store.reset(Config.get("TQTemplate"));
-                                _error.reset({"error":""});
-                                
-                                //reset visibility slider
-                                document.querySelector(".visibility-slider").value = 1;        
+                                _error.reset({"error":""});      
                         };
                         
                         _widget.cancel = function(event, node){
@@ -762,6 +774,210 @@ define("Ideafy/New2Q", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/
                                     timer,
                                     id = "Q:"+now.getTime();
                                 
+                                
+                                // check for errors (missing fields)
+                                if (!_store.get("question")) _error.set("error", "noquestion")
+
+                                if (!_error.get("error") && !_store.get("_id") && !upload){
+                                        
+                                        // set upload flag to true
+                                        upload = true;
+                                        timer = setInterval(function(){
+                                                if (_error.get("error") === _labels.get("uploadinprogress")){
+                                                        _error.set("error", _labels.get("uploadinprogress")+"...");
+                                                }
+                                                else _error.set("error", _labels.get("uploadinprogress"));
+                                        }, 150);
+                                                                       
+                                        // fill cdb document
+                                        _store.set("author", _user.get("_id"));
+                                        _store.set("username", _user.get("username"));
+                                        _store.set("creation_date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
+                                        // set language to the user's language by default
+                                        _store.set("lang", _user.get("lang"));
+                                        
+                                        // create document in couchdb and upload
+                                        _store.sync(Config.get("db"), id);
+                                        setTimeout(function(){
+                                                _store.upload();
+                                                Config.get("transport").request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "question": _store.get("question")}, function(result){
+                                                        var i, contacts = _user.get("connections"), l=contacts.length, dest =[], 
+                                                            json = {
+                                                                "type" : "2Q+",
+                                                                "docId" : id,
+                                                                "status" : "unread",
+                                                                "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                                                "author" : _user.get("_id"),
+                                                                "username" : _user.get("username"),
+                                                                "firstname" : _user.get("firstname"),
+                                                                "toList" : "",
+                                                                "ccList" : "",
+                                                                "object" : _user.get("username")+_labels.get("askednew"),
+                                                                "body" : _store.get("question"),
+                                                                "signature" : ""
+                                                             };
+                                                        if (result !== "ok") console.log(result);
+                                                        _widget.closePopup();
+                                                        clearInterval(timer);
+                                                                
+                                                        // notifying contacts
+                                                        timer = setInterval(function(){
+                                                                if (_error.get("error") === _labels.get("notifyingcontacts")){
+                                                                        _error.set("error", _labels.get("notifyingcontacts")+"...");
+                                                                }
+                                                                else _error.set("error", _labels.get("notifyingcontacts"));
+                                                        }, 150);
+                                                        
+                                                        // building recipient list
+                                                        for(i=0; i<l; i++){
+                                                                if (contacts[i].type === "user") dest.push(contacts[i].userid);
+                                                        }
+                                                        json.dest = dest;
+                                                        // notification request
+                                                        Config.get("transport").request("Notify", json, function(result){
+                                                                var result = JSON.parse(result);
+                                                                console.log(result);
+                                                        });
+                                                });
+                                        }, 500);
+                                }
+                                else{
+                                        node.classList.remove("pressed");        
+                                } 
+                        };
+                        
+                        _widget.checkLength = function(event, node){
+                                (node.value.length >= _maxLength) ? _error.set("error", "lengthexceeded") : _error.set("error", "");        
+                        };
+                        
+                        return _widget;
+                };
+                
+        });
+
+define("Ideafy/New2C", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/Event-plugin", "Config", "Store"],
+        function(Widget, Map, Model, Event, Config, Store){
+                
+                return new function new2CConstructor(){
+                
+                        var _widget = new Widget(),
+                            _dest = new Store({"userid":"", "username":""}),
+                            _user = Config.get("user"),
+                            _store = new Store(),
+                            _labels = Config.get("labels"),
+                            _transport = Config.get("transport"),
+                            contact,
+                            upload = false,
+                            _error = new Store({"error": ""});
+                            
+                        _widget.plugins.addAll({
+                                "new2c" : new Model(_store),
+                                "dest" : new Model(_dest, {
+                                        setHeader : function(username){
+                                                this.innerHTML = _labels.get("sendtcprefix") + username + _labels.get("sendtcsuffix");
+                                        }
+                                }),
+                                "labels" : new Model(_labels),
+                                "errormsg" : new Model(_error),
+                                "new2cevent" : new Event(_widget)
+                        });
+                        
+                        _widget.template = '<div><div class = "header blue-dark"><span data-dest="bind: setHeader, username"></span><div class="close-popup" data-new2cevent="listen:touchstart, cancel"></div></div><form class="form"><p><textarea class="description input" data-labels="bind:placeholder, twocentplaceholder" data-new2c="bind: value, message"></textarea></p><div><span class="errormsg" data-errormsg="bind:innerHTML, error"></span><div class="sendmail" data-new2cevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, sendlbl"></div></div></form></div>';
+                        
+                        _widget.render();
+                        _widget.place(Map.get("new2c-popup"));
+                        
+                        _widget.press = function(event, node){
+                                node.classList.add("pressed");
+                        };
+                        
+                        _widget.closePopup = function closePopup(){
+                                // hide window
+                                document.getElementById("new2c-popup").classList.remove("appear");
+                                document.getElementById("cache").classList.remove("appear");
+                                // reset _store, _dest and _error
+                                _store.reset();
+                                _dest.reset();
+                                _error.reset({"error":""});        
+                        };
+                        
+                        _widget.reset = function reset($contact){
+                                contact = $contact;
+                                Map.get("new2c-popup").classList.add("appear");
+                                Map.get("cache").classList.add("appear");  
+                                _dest.set("userid", contact.userid);
+                                _dest.set("username", contact.username);
+                                _store.reset({
+                                        "author": _user.get("_id"),
+                                        "message": "",
+                                        "firstname": _user.get("firstname"),
+                                        "username": _user.get("username"),
+                                        "date": [], // YY, MM, DD
+                                        "datemod": "",
+                                        "plusones": 0,
+                                        "replies": []
+                                });
+                                upload = false;       
+                        };
+                        
+                        _widget.cancel = function(event, node){
+                                _widget.closePopup();      
+                        };
+                        
+                        _widget.upload = function(event, node){
+                                var now = new Date(),
+                                    json = {},
+                                    timer;
+                                 
+                                if (!_store.get("message")){
+                                        _error.set("error", _labels.get("nomessage"));
+                                        node.classList.remove("pressed");
+                                }
+                                else{
+                                        upload = true;
+                                        timer = setInterval(function(){
+                                                if (_error.get("error") === _labels.get("sendinginprogress")){
+                                                        _error.set("error", _labels.get("sendinginprogress")+" ...");
+                                                }
+                                                else _error.set("error", _labels.get("sendinginprogress"));
+                                        }, 150);
+                                        
+                                        // finalize tc content
+                                        _store.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                
+                                        json.tc = JSON.parse(_store.toJSON());
+                                        json.userid = _dest.get("userid");
+                                        json.username = _dest.get("username");
+                                
+                                        _transport.request("SendTwocent", json, function(result){
+                                                var contact_tc = contact.twocents || [], i,
+                                                    connections = _user.get("connections");
+                                                if (result === "ok"){
+                                                        // add tc to contact information?
+                                                        contact_tc.unshift(json.tc);
+                                                        contact.twocents = contact_tc;
+                                                        for (i = connections.length-1; i>=0; i--){
+                                                                if (connections[i].type === "user" && connections[i].userid === contact.userid){
+                                                                        connections.splice(i, 1, contact);
+                                                                }
+                                                        }
+                                                        _user.set("connections", connections);
+                                                        _user.upload().then(function(){
+                                                                clearInterval(timer);
+                                                                node.classList.remove("pressed");
+                                                                _widget.closePopup();
+                                                        });
+                                                                
+                                                }
+                                                else {
+                                                        _error.set("error", "something went wrong - try again later");
+                                                        clearInterval(timer);
+                                                        node.classList.remove("pressed");
+                                                }
+                                        });
+                                }
+                                
+                         /*       
                                 
                                 // check for errors (missing fields)
                                 if (!_store.get("question")) _error.set("error", "noquestion")
@@ -831,11 +1047,7 @@ define("Ideafy/New2Q", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/
                                 }
                                 else{
                                         node.classList.remove("pressed");        
-                                } 
-                        };
-                        
-                        _widget.checkLength = function(event, node){
-                                (node.value.length >= _maxLength) ? _error.set("error", "lengthexceeded") : _error.set("error", "");        
+                                } */
                         };
                         
                         return _widget;

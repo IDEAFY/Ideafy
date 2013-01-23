@@ -1067,12 +1067,12 @@ ul.notify-list{
 }
 
 #public-list .option.left,  #idea-list .option.left{
-  background:url('../img/public/listenabled.png') no-repeat center center;
+  background:url('../img/public/mosaicenabled.png') no-repeat center center;
   background-size:30px 30px;
 }
 
 #public-list .option.left.mosaic,  #idea-list .option.left.mosaic{
-  background:url('../img/public/mosaicenabled.png') no-repeat center center;
+  background:url('../img/public/listenabled.png') no-repeat center center;
   background-size:30px 30px;
 }
 

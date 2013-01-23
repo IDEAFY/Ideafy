@@ -67,6 +67,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 				        domDetail.classList.remove("invisible");
 				        _detail.reset(listDate.getModel(), 0);
 				}
+				else domDetail.classList.add("invisible");
 			};
 			
 			this.plus = function(){
@@ -116,7 +117,8 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			_stack.getStack().add("#list-search", listSearch);
 			
 			listDate.init().then(function(){
-		              _stack.getStack().show("#list-date");        
+		              _stack.getStack().show("#list-date");
+		              _detail.reset(listDate.getModel(), 0);        
 		        });
                         
                         //return

@@ -291,6 +291,8 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                                         case "message":
                                                 break;
                                         case "contact":
+                                                //go to new Message and pre-set toField
+                                                observer.notify("message-contact", $data);
                                                 break;
                                         default:
                                                 break;        
@@ -298,7 +300,18 @@ define("Ideafy/ActionBar", ["Olives/OObject", "Olives/Model-plugin", "Olives/Eve
                         };
                         
                         this.shareItem = function shareItem(){
-                                
+                                // if type is "idea" we need to differentiate between public and private lists
+                                switch($type){
+                                        case "idea":
+                                                (document.getElementById("public")) ? observer.notify("public-share", $data) : observer.notify("library-share", $data);
+                                                break;
+                                        case "message":
+                                                break;
+                                        case "contact":
+                                                break;
+                                        default:
+                                                break;        
+                                }        
                         };
                         
                         this.sendTwocent = function sendTwocent(){
@@ -1165,6 +1178,9 @@ define("Ideafy/AutoContact", ["Olives/OObject", "Map", "Olives/Model-plugin", "O
                         
                         _widget.init = function init(){
                                 var arr = _user.get("connections"), usernames = [], currentList = [], types = {};
+                                // reset _contactList
+                                _contactList.reset([]);
+                                
                                 // get all contacts
                                 for (i=0, l=arr.length; i<l;i++){
                                         usernames.push(arr[i].username);

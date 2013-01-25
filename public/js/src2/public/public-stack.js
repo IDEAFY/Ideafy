@@ -6,8 +6,8 @@
  */
 
 define("Ideafy/Public/IdeaStack", 
-	["Olives/OObject", "Map", "Amy/Stack-plugin", "Ideafy/Public/PublicDetail", "Ideafy/Public/Edit", "Ideafy/Public/Sendmail", "Config", "Store"], 
-	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Config, Store){
+	["Olives/OObject", "Map", "Amy/Stack-plugin", "Ideafy/Public/PublicDetail", "Ideafy/Public/Edit", "Ideafy/Public/Sendmail", "Ideafy/Public/Share", "Config", "Store"], 
+	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store){
 		return function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
@@ -46,8 +46,8 @@ define("Ideafy/Public/IdeaStack",
                                              break;
                                              
                                         case "#public-share":
-                                                _stack.getStack().get("#public-sendmail").reset(_store.get(current).doc);
-                                                _stack.getStack().show("#public-sendmail");
+                                                _stack.getStack().get("#public-share").reset(_store.get(current).doc);
+                                                _stack.getStack().show("#public-share");
                                              break;
                                         case "close":
                                              _stack.getStack().show("#public-ideadetail");
@@ -68,10 +68,16 @@ define("Ideafy/Public/IdeaStack",
                                  _stack.getStack().show("#public-sendmail");        
 			};
 			
+			_widget.share = function share(idea){
+			_stack.getStack().get("#public-share").reset(idea);
+                                 _stack.getStack().show("#public-share");         
+			};
+			
 			// init
 			_stack.getStack().add("#public-ideadetail", new IdeaDetail(_widget.action));
                         _stack.getStack().add("#public-edit", new Edit(_widget.action));
                         _stack.getStack().add("#public-sendmail", new Sendmail(_widget.action));
+                        _stack.getStack().add("#public-share", new Share(_widget.action));
                         
                         _observer.watch("public-viewidea", function(id){
 			             _widget.viewIdea(id);       
@@ -83,6 +89,10 @@ define("Ideafy/Public/IdeaStack",
                         
                         _observer.watch("public-sendmail", function(idea){
                                      _widget.sendMail(idea);        
+                        });
+                        
+                        _observer.watch("public-share", function(idea){
+                                     _widget.share(idea);        
                         });
 			
 			

@@ -45,8 +45,6 @@ define("Ideafy/Connect/MTCDetailStack",
                                 twoQDetail.reset(value);
                         };
                         
-                        MTCS = mtcDetailStack;
-                        
                         return widget;
                 };
 });

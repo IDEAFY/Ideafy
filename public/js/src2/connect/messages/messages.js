@@ -335,6 +335,11 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                         
                         });
                         
+                        observer.watch("message-contact", function(data){
+                                newMessage.reset(data);
+                                detailStack.getStack().show("#newmsg");
+                        });
+                        
                         return messageUI;
                 };
         });

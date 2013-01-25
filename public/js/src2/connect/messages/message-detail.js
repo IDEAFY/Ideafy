@@ -91,7 +91,7 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                                         (type === "CXR")?this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 showTwoQ : function(type){
-                                        (type === "2Q+") ? this.classList.remove("invisible"):this.classList.add("invisible");        
+                                        (type === "2Q+" || type === "2C+") ? this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 setAvatar : function setAvatar(author){
                                                 var _frag = document.createDocumentFragment(),
@@ -117,7 +117,12 @@ define("Ideafy/Connect/MessageDetail", ["Olives/OObject", "Config", "Store", "Ol
                 
                 msgDetailUI.showTwoQ = function showTwoQ(event, node){
                         node.classList.remove("pushed");
-                        observer.notify("display-twoq", message.get("docId"), message.get("author"));        
+                        if (message.get("type") === "2Q+") {
+                                observer.notify("display-twoq", message.get("docId"), message.get("author"));
+                        }
+                        if (message.get("type") === "2C+") {
+                                observer.notify("display-twoc");
+                        }       
                 };
                 
                 msgDetailUI.press = function(event, node){

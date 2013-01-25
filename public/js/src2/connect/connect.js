@@ -45,6 +45,15 @@ define("Ideafy/Connect", ["Olives/OObject", "Map", "Amy/Stack-plugin","Ideafy/Su
                         _observer.watch("display-twoq", function(){
                                 _stack.getStack().show("#twocents");         
                         });
+                        
+                        _observer.watch("display-twoc", function(){
+                                _stack.getStack().show("#twocents");         
+                        });
+                        
+                        _observer.watch("message-contact", function(){
+                                _stack.getStack().show("#messages");        
+                        });
+
                        
 		//return
 			return _widget;

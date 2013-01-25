@@ -1148,6 +1148,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 if (json.type === "DOC") {
                         message.docId = json.docId;
                         message.docType = json.docType;
+                        message.docTitle = json.docTitle;
                 }
                 
                 if (json.type === "2Q+") {

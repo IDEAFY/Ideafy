@@ -6,8 +6,8 @@
  */
 
 define("Ideafy/Library/IdeaStack", 
-	["Olives/OObject", "Map", "Amy/Stack-plugin", "Ideafy/Library/IdeaDetail", "Ideafy/Library/Edit", "Ideafy/Library/Sendmail", "Config", "Store"], 
-	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Config, Store){
+	["Olives/OObject", "Map", "Amy/Stack-plugin", "Ideafy/Library/IdeaDetail", "Ideafy/Library/Edit", "Ideafy/Library/Sendmail", "Ideafy/Library/Share", "Config", "Store"], 
+	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store){
 		return function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
@@ -46,8 +46,8 @@ define("Ideafy/Library/IdeaStack",
                                              break;
                                              
                                         case "#library-share":
-                                                _stack.getStack().get("#library-sendmail").reset(_store.get(current).doc);
-                                                _stack.getStack().show("#library-sendmail");
+                                                _stack.getStack().get("#library-share").reset(_store.get(current).doc);
+                                                _stack.getStack().show("#library-share");
                                              break;
                                         case "close":
                                              _stack.getStack().show("#library-ideadetail");
@@ -68,10 +68,16 @@ define("Ideafy/Library/IdeaStack",
                                  _stack.getStack().show("#library-sendmail");        
 			};
 			
+			_widget.share = function share(idea){
+			         _stack.getStack().get("#library-share").reset(idea);
+                                 _stack.getStack().show("#library-share");        
+                        };
+			
 			// init
 			_stack.getStack().add("#library-ideadetail", new IdeaDetail(_widget.action));
                         _stack.getStack().add("#library-edit", new Edit(_widget.action));
                         _stack.getStack().add("#library-sendmail", new Sendmail(_widget.action));
+                        _stack.getStack().add("#library-share", new Share(_widget.action));
                         
                         _observer.watch("library-viewidea", function(id){
 			             _widget.viewIdea(id);       
@@ -83,6 +89,10 @@ define("Ideafy/Library/IdeaStack",
                         
                         _observer.watch("library-sendmail", function(idea){
                                      _widget.sendMail(idea);        
+                        });
+                        
+                        _observer.watch("library-share", function(idea){
+                                     _widget.share(idea);        
                         });
 			
 		//return

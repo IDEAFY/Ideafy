@@ -203,6 +203,16 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 });
                         });
                         
+                        Config.get("observer").watch("display-twoc", function(){
+                                mtcStack.getStack().show("#blank");
+                                mtcTools.set("view", "#mytwoc");
+                                // set active button
+                                twoQButtons.loop(function(v,i){
+                                        (v.name === "#mytwoc") ? twoQButtons.update(i, "active", true) : twoQButtons.update(i, "active", false);      
+                                });
+                                mtcDetails.setView("2C");       
+                        });
+                        
                         //INIT
                         
                         // init contactList

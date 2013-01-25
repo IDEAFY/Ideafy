@@ -51,6 +51,7 @@
 	"ideawrotelbl": " wrote : ",
 	"twocentcommentlbl": "commented :",
 	"youwrotelbl": "wrote :",
+	"theywrotelbl": "wrote :",
 	"youcommentedlbl": "commented :",
 	"youlbl" : "You",
 	"hidetwocentreplies": "Hide replies",
@@ -359,5 +360,9 @@
 	"twocentplaceholder" : "Write your two cents",
 	"nomessage" : "Please enter a message",
 	"sendinginprogress" : "Sending in progress",
-	"senttc": " wrote you a new Twocent"
+	"senttc": " wrote you a new Twocent",
+	"selectall" : "Select all",
+	"shareok" : "Document shared successfully",
+	"signaturelbl" : "Signature",
+	"sharing" : "Sharing : "
 }

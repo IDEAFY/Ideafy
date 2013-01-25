@@ -929,11 +929,12 @@ ul.notify-list{
 /* public */
 
 #public .list, #ideas .list {
-   -webkit-transition: width 140ms ease-in;
+   /*-webkit-transition: width 100ms ease-in;*/
    z-index:1000;
 }
 
 .mosaic .list{
+  /*-webkit-transition: width 100ms ease-in-out;*/
   width:874px;
   background: white;
 }
@@ -944,11 +945,6 @@ ul.notify-list{
     -webkit-box-shadow: inset 0px 5px 5px #ccc;
     
   background-size: cover;
-}
-
-.list li {
-  /* this is a test 
-  -webkit-transition: -webkit-box-shadow 60ms ease-in;*/
 }
 
 .mosaic .tools{
@@ -964,23 +960,19 @@ ul.notify-list{
 }
 
 .mosaic li:nth-child(7n+1){
-    /*background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(154, 201, 206,0.05) 10%, rgba(154, 201, 206,0.1) 50%, rgba(154, 201, 206,0.2) 75%, rgba(154, 201, 206,0.5) 100%);*/
-   border-left: 10px solid #F27B3D;   
+    border-left: 10px solid #F27B3D;   
 }
 
 .mosaic li:nth-child(7n+2){
-    /*background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(242, 229, 32,0.05) 10%, rgba(242, 229, 32,0.1) 50%, rgba(242, 229, 32,0.2) 75%, rgba(242, 229, 32,0.5) 100%);*/
-   border-left: 10px solid #9AC9CD;   
+    border-left: 10px solid #9AC9CD;   
 }
 
 .mosaic li:nth-child(7n+3){
-    /*background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(242, 123, 61,0.05) 10%, rgba(242, 123, 61,0.1) 50%, rgba(242, 123, 61,0.2) 75%, rgba(242, 123, 61,0.5) 100%); */
-   border-left: 10px solid #4D4D4D; 
+    border-left: 10px solid #4D4D4D; 
 }
 
 .mosaic li:nth-child(7n+4){
-    /*background-image: -webkit-radial-gradient(center center, ellipse farthest-corner, rgba(95, 143, 40,0.05) 10%, rgba(95, 143, 40,0.1) 50%, rgba(95, 143, 40,0.2) 75%, rgba(95, 143, 40,0.5) 100%); */
-   border-left: 10px solid #F2E520;
+    border-left: 10px solid #F2E520;
 }
 
 .mosaic li:nth-child(7n+5){
@@ -990,7 +982,6 @@ ul.notify-list{
 .mosaic li:nth-child(7n+6){
     border-left: 10px solid #5F8F28;
 }
-
 
 .mosaic .list-item {
     display: block;
@@ -1461,7 +1452,8 @@ textarea.solution {
 
 .idea-sendmail textarea.input, #newmsg textarea.input, #msgreply textarea.input{
     padding: 20px;
-    min-height: 150px;
+    min-height: 200px;
+    line-height: 20px;
 }
 
 /* send mail attachment styles */
@@ -1490,8 +1482,10 @@ textarea.solution {
 .attachment-header h2{
     margin-left:75px;
     font-family: Pacifico;
-    font-size: 24px;
-    line-height: 40px;
+    font-size: 18px;
+    line-height: 20px;
+    margin-bottom: 10px;
+    font-weight: normal;
 }
 
 .attachment-header .date{
@@ -1510,17 +1504,18 @@ textarea.solution {
     display: block;
     width: 20px;
     height: 20px;
-    background-size: contain;
     float: right;
     margin-top: -10px;
 }
 
 .visibility-icon.public{
-    background: url('../img/public/publicForList.png') no-repeat center center;  
+    background: url('../img/public/publicForList.png') no-repeat center center;
+    background-size: contain;   
 }
 
 .visibility-icon.private{
-    background: url('../img/public/privateForList.png') no-repeat center center;     
+    background: url('../img/public/privateForList.png') no-repeat center center;
+    background-size: contain;   
 }
 
 .attachment-body{
@@ -1533,14 +1528,6 @@ textarea.solution {
     font-size: 14px;    
 }
 
-.attachment-body .rating{
-    
-}
-
-.attachment-body .votes{
-    
-}
-
 .sendmail-footer p.send, .edituserdetails p.update, #groupdetails p.update{
     padding-bottom: 20px;
     margin-top: 20px;
@@ -1551,6 +1538,74 @@ textarea.solution {
     font-weight: bold;
     color: black;
     font-size: 12px;
+}
+
+/* detail stack send mail */
+#sharelistauto{
+    width: 568px;
+    margin-top: 2px;
+    position: relative;
+}
+
+.idea-share .selectall{
+    float: right;
+    background: #657B99;
+    color: white;
+    border-radius: 5px;
+    height : 25px;
+    line-height: 25px;
+    font-size: 12px;
+    width: 120px;
+    text-align: center;
+}
+
+.idea-share .form{
+    padding-bottom: 20px;
+}
+
+.idea-share .form legend{
+    width: 100%;
+    color: #657b99;
+    font-size: 16px;
+    padding-bottom: 3px;
+    margin-top: 10px;
+}
+
+.idea-share .search{
+    width: 300px;
+}
+
+.idea-share textarea.sharemessage{
+    height: 200px;
+    line-height: 20px;
+}
+
+.sharecontactlist{
+    margin-top: 10px;    
+}
+
+.sharecontactlist li{
+    float: left;
+    width: 284px;
+    height: 34px;
+    border-top: none;
+    padding: 3px 0px 3px 0px;
+    overflow-y: hidden;
+    min-height: 0;
+}
+
+.sharecontactlist p{
+    padding: 0;
+    margin: 0px 0px 0px 10px;
+}
+
+.sharecontactlist .remove-contact{
+    float:right;
+    margin-top: -10px;
+    width: 15px;
+    height: 15px;
+    background: url('../img/wall/35delete.png') no-repeat center center;
+    background-size: 15px 15px;
 }
 
 /* TWOCENTS */
@@ -4234,7 +4289,7 @@ li.color-item{
 
 .autocontact li.selected.group{
     background: url('../img/connect/folderActive.png') no-repeat left center;
-    background-size: 25px 5px;
+    background-size: 25px 25px;
 }
 
 .autoclose{
@@ -4622,7 +4677,7 @@ li.color-item{
     margin-top: 10px;
 }
 
-#addgroup .contactlist legend, #addgroup .addgrpcontacts legend, #groupdetails .contactlist legend, #groupdetails .addgrpcontacts legend{
+#addgroup .contactlist legend, #addgroup .addgrpcontacts legend, #groupdetails .contactlistdetail legend, #groupdetails .addgrpcontacts legend{
     background: url('../img/public/hide.png') no-repeat right center;
     background-size: 15px 15px;
 }
@@ -4632,7 +4687,7 @@ li.color-item{
     background-size: 15px 15px;    
 }
 
-#addgroup .contactlist li, #groupdetails .contactlist li{
+#addgroup .contactlist li, #groupdetails .contactlistdetail li{
     border-top: none;
     width: 45%;
     margin-right: 10px;
@@ -4643,6 +4698,7 @@ li.color-item{
 
 #groupdetails .contactlistdetail{
     display: inline-block;
+    width: 100%;
 }
 
 #addgroup .errormsg, #groupdetails .errormsg{

@@ -26,8 +26,7 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                                         json = {},
                                         promise = new Promise();
                                     // reset recipient list
-                                    arr = [];
-                                    console.log(to, cc);   
+                                    arr = [];   
                                     // check recipients
                                     for (i=0, l=to.length; i<l; i++){
                                         if (contacts.search(to[i].trim()) > -1){
@@ -88,10 +87,22 @@ define("Ideafy/Connect/NewMessage", ["Olives/OObject", "Olives/Model-plugin", "O
                         
                         newMessageUI.template = '<div id="newmsg"><div class="header blue-dark"><span data-labels="bind: innerHTML, newmsg">New message</span></div><div class="avatar" data-newmessage="bind: setAvatar, author"></div><form class="form"><p><textarea class="mail-header" name="toList" data-newmessage="bind: value, toList" data-newmessageevent="listen: touchstart, displayAutoContact; listen:keyup, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"></textarea></p><div id="tolistauto" class="invisible"></div><p><textarea class="mail-header" name="ccList" data-newmessage="bind: value, ccList" data-labels="bind:placeholder, cclbl" data-newmessageevent="listen: touchstart, displayAutoContact; listen:keyup, updateAutoContact"></textarea></p><div id="cclistauto" class="invisible"></div><p><input type="text" class="input" data-newmessage="bind:value, object" data-labels="bind:placeholder, subjectlbl"></p><p><textarea class="input" data-newmessage="bind:value, body"></textarea></p><p><legend>Signature</legend><textarea class="signature" data-newmessage="bind:value, signature"></textarea></p><div class="sendmail-footer"><p class="send"><label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-newmessageevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-labels="bind:innerHTML, sendlbl" data-newmessageevent="listen:touchstart, press; listen:touchend, send">Send</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></form></div>';
                         
-                        newMessageUI.reset = function reset(){
+                        newMessageUI.reset = function reset(data){
+                                var i, l, list = "";
                                 message.reset({"author": user.get("_id"), "username": user.get("username"), "firstname": user.get("firstname"), "type": "MSG", "signature": user.get("username"), "toList":"", "ccList":"", "object":"", "body":"", date: null}); 
                                 (user.get("signature")) ? message.set("signature", user.get("signature")) : message.set("signature", user.get("username"));
-                                error.reset({"errormsg":""});       
+                                error.reset({"errormsg":""});
+                                
+                                if (data){
+                                        console.log(data);
+                                        if (data.type === "user") message.set("toList", data.username)
+                                        else {
+                                                for (i=0, l=data.contacts.length; i<l;i++){
+                                                        (list)? list = list+", "+data.contacts[i].username : list = data.contacts[i].username;        
+                                                }
+                                                message.set("toList", list);
+                                        }
+                                }    
                         };
                         
                         newMessageUI.press = function(event, node){

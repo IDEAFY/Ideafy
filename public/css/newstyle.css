@@ -4484,7 +4484,7 @@ li.color-item{
     padding-bottom: 5px;
     font-family: Pacifico;
     color: #657b99;
-    border-bottom: 2px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
     margin-top: 15px;
 }
 
@@ -5601,3 +5601,26 @@ li.my2q{
 #dashboard-about .aboutcontent legend.support{
     border: none;    
 }
+
+.aboutcontent p, .aboutcontent ul{
+    line-height: 25px;
+    font-size: 18px;
+    font-family: Helvetica;
+    text-align: justify;
+    color: #404040;
+    margin-top: 10px;
+}
+
+.aboutcontent .contributor{
+    width: 150px;
+    display: inline-block;  
+}
+
+
+.aboutcontent .contribution{
+    font-family: Pacifico;
+    font-size: 16px;
+    color: #808080;    
+}
+
+

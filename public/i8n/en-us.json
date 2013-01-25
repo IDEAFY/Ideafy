@@ -367,5 +367,17 @@
 	"sharing" : "Sharing : ",
 	"messagecenter" : "Message Center",
 	"twocentview": "Twocent Center",
-	"twocentcenter" : "TwoQuestions & Twocents"
+	"twocentcenter" : "TwoQuestions & Twocents",
+	"about-taiaut" : "About Taiaut",
+	"ideafydesc" : "",
+	"taiautdesc" : "Taiaut was founded in May 2012 by three partners passionate about innovation and new technology. The aim of the conmpany is to take advantage of leading edge communication technologies to advance creative ideas and innovation best practices globally. The company is headquartered in Boersch, France",
+	"solene" : "Solène Troussé",
+	"oliviers" : "Olivier Scherrer",
+	"olivierw" : "Olivier Wietrich",
+	"vincent" : "Vincent Weyl",
+	"contribsolene" : "User interface design",
+	"contribscherrer" : "Framework design and development",
+	"contribwietrich" : "User Interface development and software packaging",
+	"contribvincent" : "Application conception & lead developer"
+	
 }

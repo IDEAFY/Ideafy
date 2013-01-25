@@ -368,5 +368,16 @@
 	"sharing" : "Partage de : ",
 	"messagecenter" : "Messagerie",
 	"twocentview" : "Twocenterie",
-	"twocentcenter" : "TwoQuestions & Twocents"
+	"twocentcenter" : "TwoQuestions & Twocents",
+	"about-taiaut" : "A propos de Taiaut",
+	"ideafydesc" : "",
+	"taiautdesc" : "La société Taiaut a été fondée en 2012 par trois associés passionnés par l'innovation et la technologie. L'objectif de la société est d'utiliser les dernières avancées en matière de technologies de communication pour promouvoir les idées créatives et la conduite de projets innovants à l'échelle globale. Taiaut est basée à Boersch, en France",
+	"solene" : "Solène Troussé",
+	"oliviers" : "Olivier Scherrer",
+	"olivierw" : "Olivier Wietrich",
+	"vincent" : "Vincent Weyl",
+	"contribsolene" : "User interface design",
+	"contribscherrer" : "Framework design and development",
+	"contribwietrich" : "User Interface development and software packaging",
+	"contribvincent" : "Application conception & lead developer"
 }

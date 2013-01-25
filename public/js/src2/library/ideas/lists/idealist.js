@@ -65,7 +65,7 @@ define("Ideafy/Library/IdeaList", ["Olives/OObject", "CouchDBStore", "Config", "
                 this.resetQuery = function(query) {
                         var promise = new Promise();
                         _options.query = query;
-
+                        
                         _store.unsync();
                         _store.reset([]);
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){

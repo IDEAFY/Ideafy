@@ -91,7 +91,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 			};
 			
 			_widget.searchIdea = function searchIdea(query){
-			     // hide sorting buttons (not available for the time being in search mode)
+			      // hide sorting buttons (not available for the time being in search mode)
                                 byDate.setAttribute("style", "display: none;");
                                 byRating.setAttribute("style", "display: none;");
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){

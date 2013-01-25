@@ -1584,6 +1584,10 @@ textarea.solution {
     margin-top: 10px;    
 }
 
+.sharecontactlist .contact:first-child{
+    border-top: none;
+}
+
 .sharecontactlist li{
     float: left;
     width: 284px;
@@ -4073,7 +4077,23 @@ li.color-item{
 }
 
 #msgdetail .detail-body{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+#msgdetail .showdoc{
+    margin: 10px auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background: url('../img/disableLibrary.png') no-repeat center center;
+    background-size: contain;
+    -webkit-box-shadow: inset 0px 0px 3px gray;
+}
+
+#msgdetail .showdoc.pushed{
+    background: gray url('../img/activeLibrary.png') no-repeat center center;
+    background-size: contain;
+    -webkit-box-shadow: inset 0px 0px 3px black;  
 }
 
 .msgoptions{

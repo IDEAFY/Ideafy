@@ -41,7 +41,7 @@ define("Ideafy/Library", ["Olives/OObject", "Amy/Stack-plugin", "Map", "Ideafy/S
 	        // library events
 	        _observer.watch("display-doc", function(id, type){
 	               switch(type){
-	                       case "idea":
+	                       case 6:
 	                               var ideasUI = _stack.getStack().get("#ideas");
 	                               ideasUI.searchIdea(id.substr(2));
 	                               if (_stack.getStack().getCurrentScreen() !== ideasUI) _stack.getStack().show("#ideas");  

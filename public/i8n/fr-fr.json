@@ -365,5 +365,8 @@
 	"selectall" : "Tout sélectionner",
 	"shareok" : "Document partagé avec succès",
 	"signaturelbl" : "Signature",
-	"sharing" : "Partage de : "
+	"sharing" : "Partage de : ",
+	"messagecenter" : "Messagerie",
+	"twocentview" : "Twocenterie",
+	"twocentcenter" : "TwoQuestions & Twocents"
 }

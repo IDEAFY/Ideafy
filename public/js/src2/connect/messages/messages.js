@@ -277,7 +277,9 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 display = false;
                         };
                         
-                        defaultPage.template = '<div class="msgsplash"><div class="header blue-dark"><span>'+Config.get("labels").get("messageview")+'</span></div><div class="innersplash"></div></div>';
+                        defaultPage.template = '<div class="msgsplash"><div class="header blue-dark"><span>'+Config.get("labels").get("messageview")+'</span></div><div class="innersplash" data-labels="bind: innerHTML, messagecenter"></div></div>';
+                        
+                        defaultPage.plugins.add("labels", new Model(labels));
                        
                         // initialize
                         // get message list from user document

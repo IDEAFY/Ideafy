@@ -6,13 +6,15 @@
  */
 
 define("Ideafy/Connect/MTCDetailStack", 
-        ["Olives/OObject", "Map", "Amy/Stack-plugin", "Ideafy/Connect/MTCDetails", "Ideafy/Connect/MTQDetails", "Config", "Store"], 
-        function(Widget, Map, Stack, MTCDetail, MTQDetail, Config, Store){
+        ["Olives/OObject", "Map", "Amy/Stack-plugin", "Olives/Model-plugin", "Ideafy/Connect/MTCDetails", "Ideafy/Connect/MTQDetails", "Config", "Store"], 
+        function(Widget, Map, Stack, Model, MTCDetail, MTQDetail, Config, Store){
                 
 
                 return function MTCDetailStackConstructor(){
                 
                         var widget = new Widget,
+                            defaultPage = new Widget(),
+                            labels = Config.get("labels"),
                             mtcDetailStack = new Stack();
                             
                         widget.template = '<div id = "mtcdetailstack" data-mtcdetailstack = "destination"></div>';
@@ -31,18 +33,30 @@ define("Ideafy/Connect/MTCDetailStack",
                         };
                         
                         widget.reset = function reset(type, data){
-                                if (type === "2Q") mtcDetailStack.getStack().get("twoqdetail").reset(data)
+                                if (type === "2Q") {
+                                        mtcDetailStack.getStack().get("twoqdetail").reset(data);
+                                        if (mtcDetailStack.getStack().getCurrentName !== "twoqdetail") mtcDetailStack.getStack().show("twoqdetail");
+                                }
                         };
+                        
+                        defaultPage.template = '<div class="msgsplash"><div class="header blue-dark" data-labels="bind: innerHTML, twocentview"><span></span></div><div class="innersplash" data-labels="bind: innerHTML, twocentcenter"></div></div>';
+                        
+                        defaultPage.plugins.add("labels", new Model(labels));
                         
                         // init
                         widget.init = function init(type, value){
                                 var twoqDetail = new MTQDetail(), twocDetail = new MTCDetail();
                                 mtcDetailStack.getStack().add("twoqdetail", twoqDetail);
-                                console.log("twoQ init ok");
                                 mtcDetailStack.getStack().add("twocdetail", twocDetail);
-                                console.log("twoC init ok");
-                                mtcDetailStack.getStack().show("twoqdetail");
-                                twoQDetail.reset(value);
+                                mtcDetailStack.getStack().add("defautlPage", defaultPage);
+                                
+                                if (type === "default"){
+                                        mtcDetailStack.getStack().show("defautlPage");        
+                                }
+                                if (type === "2Q"){
+                                        mtcDetailStack.getStack().show("twoqdetail");
+                                        twoQDetail.reset(value);
+                                }
                         };
                         
                         return widget;

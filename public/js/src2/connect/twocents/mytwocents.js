@@ -235,7 +235,8 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 mtcTools.set("view", "#mytwoq");
                                 // hightlight first item
                                 mtcControl.init(0);
-                                mtcDetails.init("2Q", mytwoq.getModel().get(0));
+                                // mtcDetails.init("2Q", mytwoq.getModel().get(0));
+                                mtcDetails.init("default");
                         });
                         
                         return myTwocentUI;

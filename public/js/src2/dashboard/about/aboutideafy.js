@@ -24,7 +24,7 @@ define("Ideafy/Dashboard/AboutIdeafy",["Olives/OObject", "Config", "Olives/Model
                                 "credits": new Model(credits)
                                 });
                         
-                        aboutIdeafy.template = '<div class="aboutcontent"><legend data-labels="bind:innerHTML, aboutlbl"></legend><p></p><legend data-labels="bind:innerHTML, about-taiaut"></legend><p data-labels="bind:innerHTML, taiautdesc"></p><legend data-labels="bind: innerHTML, credits"></legend><p><ul data-credits="foreach"><li><span class="contributor" data-credits="bind:innerHTML, name"></span><span class="contribution" data-credits="bind:innerHTML, contrib"></span></li></ul></p></div>';
+                        aboutIdeafy.template = '<div class="aboutcontent"><legend data-labels="bind:innerHTML, aboutlbl"></legend><p data-labels="bind:innerHTML, ideafydesc"></p><legend data-labels="bind:innerHTML, about-taiaut"></legend><p data-labels="bind:innerHTML, taiautdesc"></p><legend data-labels="bind: innerHTML, credits"></legend><p><ul data-credits="foreach"><li><span class="contributor" data-credits="bind:innerHTML, name"></span><span class="contribution" data-credits="bind:innerHTML, contrib"></span></li></ul></p></div>';
                         
                         return aboutIdeafy;
                 };

@@ -5598,6 +5598,14 @@ li.my2q{
     margin-bottom: 15px;   
 }
 
+.aboutcontent legend:first-child{
+    margin-top: 0px;
+}
+
+.aboutcontent legend{
+    padding: 0px;
+}
+
 #dashboard-about .aboutcontent legend.support{
     border: none;    
 }
@@ -5615,7 +5623,6 @@ li.my2q{
     width: 150px;
     display: inline-block;  
 }
-
 
 .aboutcontent .contribution{
     font-family: Pacifico;

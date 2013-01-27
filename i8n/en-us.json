@@ -378,6 +378,11 @@
 	"contribsolene" : "User interface design",
 	"contribscherrer" : "Framework design and development",
 	"contribwietrich" : "User Interface development and software packaging",
-	"contribvincent" : "Application conception & lead developer"
+	"contribvincent" : "Application conception & lead developer",
+	"public" : "Public wall",
+	"library" : "My Library",
+	"brainstorm" : "Brainstorming center",
+	"connect" : "Communication Center",
+	"dashboard" : "Dashboard"
 	
 }

@@ -12,7 +12,14 @@ define("Ideafy/Dashboard/Settings", ["Olives/OObject", "Map", "Olives/Model-plug
                    
                    var settingsUI = new Widget(),
                        labels = Config.get("labels"),
-                       options = new Store(),
+                       screens = [
+                                {"name": "public", "dest": "#public"},
+                                {"name": "library", "dest": "#library"},
+                                {"name": "brainstorm", "dest": "#brainstorm"},
+                                {"name": "connect", "dest": "#connect"},
+                                {"name": "dashboard", "dest": "#dahsboard"}
+                                ],
+                       options = new Store({"screens": screens}),
                        settings = new Store(),
                        transport = Config.get("transport"),
                        user = Config.get("user");
@@ -28,13 +35,22 @@ define("Ideafy/Dashboard/Settings", ["Olives/OObject", "Map", "Olives/Model-plug
                                         }
                                         this.innerHTML=res;
                                         this.selectedIndex = lang.indexOf(user.get("lang"));        
+                                   },
+                                   setStartupScreen: function(screens){
+                                        var i,l, res="", selected, idx;
+                                        for (i=0, l=screens.length;i<l;i++){
+                                                res+="<option>"+labels.get(screens[i].name)+"</option>";
+                                                if (screens[i].dest === user.get("settings").startupScreen) idx = i
+                                        }
+                                        this.innerHTML=res;
+                                        this.selectedIndex = idx;         
                                    }
                            }),
                            "settings" : new Model(settings),
                            "settingsevent" : new Event(settingsUI)
                    });
                    
-                   settingsUI.template = '<div id="dashboard-settings"><div class="header blue-dark"><span data-label="bind:innerHTML, settingslbl"></span></div><div class="settingscontent"><div class="settingmodule"><legend data-label="bind:innerHTML, userpref"></legend><ul><li><span>Language</span><select data-options="bind:setLang, lang" data-settingsevent="listen: change, updateLang"></select></li><li>Startup screen</li><li>Show tips at startup</li><li>Show notification popup</li><li>Set privacy level</li><li>Use as character</li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, brainstormsettings"></legend><ul><li>Select deck</li><li>Set timers</li><li>Automatic card draws</li></ul></div></div></div>';
+                   settingsUI.template = '<div id="dashboard-settings"><div class="header blue-dark"><span data-label="bind:innerHTML, settingslbl"></span></div><div class="settingscontent"><div class="settingmodule"><legend data-label="bind:innerHTML, userpref"></legend><ul><li><span>Language</span><select data-options="bind:setLang, lang" data-settingsevent="listen: change, updateLang"></select></li><li><span>Startup screen</span><select data-options="bind:setStartupScreen, screens" data-settingsevent="listen: change, updateStartup"></select></li><li>Show tips at startup</li><li>Show notification popup</li><li>Set privacy level</li><li>Use as character</li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, brainstormsettings"></legend><ul><li>Select deck</li><li>Set timers</li><li>Automatic card draws</li></ul></div></div></div>';
                    
                    settingsUI.place(Map.get("dashboard-settings"));
                    
@@ -45,6 +61,13 @@ define("Ideafy/Dashboard/Settings", ["Olives/OObject", "Map", "Olives/Model-plug
                                 user.upload();
                         }        
                         
+                   };
+                   
+                   settingsUI.updateStartup = function updateStartup(event,node){
+                        var id = node.selectedIndex, s = user.get("settings");
+                        s.startupScreen = screens[id].dest;
+                        user.set("settings", s);
+                        user.upload();
                    };
                    
                    // init

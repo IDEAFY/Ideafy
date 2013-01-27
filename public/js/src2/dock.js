@@ -17,6 +17,7 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 			    _new2q,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),
+			    _user = Config.get("user"),
 			    _stack = new Stack();
 
 		//setup
@@ -49,7 +50,8 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				_newIdea = new NewIdea();
                                 _new2q = new New2Q();
 				//set current stack view
-				_stack.getStack().show("#public");
+				if (!_user.get("settings").startupScreen) _stack.getStack().show("#public")
+				else _stack.getStack().show(_user.get("settings").startupScreen);
 			};
 			
 			_widget.reset = function(){

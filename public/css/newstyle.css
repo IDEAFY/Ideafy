@@ -5630,4 +5630,16 @@ li.my2q{
     color: #808080;    
 }
 
+.settingmodule ul{
+    font-family: Helvetica;
+    color: #404040;
+    font-size: 14px;   
+}
 
+.settingmodule li:nth-child(odd){
+    background: white;    
+}
+
+.settingmodule li:nth-child(even){
+    background: #e3e3e3;
+}

@@ -290,7 +290,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         
         // Application handlers
         olives.handlers.set("Lang", function(json, onEnd){
-                var _path = __dirname+'/public/i8n/'+json.lang+'.json';
+                var _path = __dirname+'/i8n/'+json.lang+'.json';
                 fs.exists(_path, function(exists){
                         if (exists){
                                 var labels=fs.readFileSync(_path, 'utf8');
@@ -300,6 +300,19 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 onEnd("nok");
                         }    
                 });
+        });
+        
+        olives.handlers.set("GetLanguages", function(json, onEnd){
+                fs.readdir(__dirname+'/i8n/', function(err, list){
+                        var res = [];
+                        if (err) onEnd(err)
+                        else {
+                                list.forEach(function(file){
+                                        res.push(file.substr(0,5));        
+                                });
+                                onEnd(res);
+                        }
+                })
         });
         
         olives.handlers.set("Signup", function (json, onEnd) {

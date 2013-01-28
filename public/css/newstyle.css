@@ -768,7 +768,7 @@ ul.notify-list{
     vertical-align: middle;
 }
 
-.tip-footer label, .settingmodule .showtip label{
+.tip-footer label, .settingmodule .showtip label, .settingmodule .shownotif label{
     margin-left: 5px;
 }
 

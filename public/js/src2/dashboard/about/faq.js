@@ -27,7 +27,6 @@ define("Ideafy/Dashboard/FAQ", ["Olives/OObject", "Config", "CouchDBStore", "Oli
                 
                 cdb.sync(Config.get("db"), "about", "_view/faq").then(function(){
                         cdb.loop(function(v,i){
-                                console.log(v);
                                 if (v.value.default_lang === lang || !v.value.translations[lang]) faqlist.alter("push", v.value)
                                 else faqlist.alter("push", v.value.translations[lang]);
                         });      

@@ -50,7 +50,7 @@ define("Ideafy/Dashboard/Settings", ["Olives/OObject", "Map", "Olives/Model-plug
                            "settingsevent" : new Event(settingsUI)
                    });
                    
-                   settingsUI.template = '<div id="dashboard-settings"><div class="header blue-dark"><span data-label="bind:innerHTML, settingslbl"></span></div><div class="settingscontent"><div class="settingmodule"><legend data-label="bind:innerHTML, userpref"></legend><ul><li><span>Language</span><select data-options="bind:setLang, lang" data-settingsevent="listen: change, updateLang"></select></li><li><span>Startup screen</span><select data-options="bind:setStartupScreen, screens" data-settingsevent="listen: change, updateStartup"></select></li><li>Show tips at startup</li><li>Show notification popup</li><li>Set privacy level</li><li>Use as character</li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, brainstormsettings"></legend><ul><li>Select deck</li><li>Set timers</li><li>Automatic card draws</li></ul></div></div></div>';
+                   settingsUI.template = '<div id="dashboard-settings"><div class="header blue-dark"><span data-label="bind:innerHTML, settingslbl"></span></div><div class="settingscontent"><div class="settingmodule"><legend data-label="bind:innerHTML, userpref"></legend><ul><li><span data-label="bind:innerHTML, setlang"></span><select data-options="bind:setLang, lang" data-settingsevent="listen: change, updateLang"></select></li><li class="startupscreen"><span data-label="bind: innerHTML, choosestartup">Startup screen</span><select data-options="bind:setStartupScreen, screens" data-settingsevent="listen: change, updateStartup"></select></li><li class="showtip"><input type="checkbox" data-settings="bind: checked, showTips" data-settingsevent="listen: touchstart, showTips"><label data-label="bind:innerHTML, showtips"></label></li><li><input type="checkbox" data-settings="bind: checked, notifyPopup" data-settingsevent="listen: touchstart, showNotif"><label data-label="bind:innerHTML, shownotif"></label></li><li>Set privacy level</li><li>Use as character</li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, brainstormsettings"></legend><ul><li>Select deck</li><li>Set timers</li><li>Automatic card draws</li></ul></div></div></div>';
                    
                    settingsUI.place(Map.get("dashboard-settings"));
                    
@@ -66,6 +66,28 @@ define("Ideafy/Dashboard/Settings", ["Olives/OObject", "Map", "Olives/Model-plug
                    settingsUI.updateStartup = function updateStartup(event,node){
                         var id = node.selectedIndex, s = user.get("settings");
                         s.startupScreen = screens[id].dest;
+                        user.set("settings", s);
+                        user.upload();
+                   };
+                   
+                   settingsUI.showTips = function(event, node){
+                           var s = user.get("settings");
+                        // update settings store
+                        settings.set("showTips", !settings.get("showTips"));
+                        
+                        // update user doc
+                        s.showTips = settings.get("showTips");
+                        user.set("settings", s);
+                        user.upload();
+                   };
+                   
+                   settingsUI.showNotif = function(event, node){
+                           var s = user.get("settings");
+                        // update settings store
+                        settings.set("notifyPopup", !settings.get("notifyPopup"));
+                        
+                        // update user doc
+                        s.showTips = settings.get("notifyPopup");
                         user.set("settings", s);
                         user.upload();
                    };

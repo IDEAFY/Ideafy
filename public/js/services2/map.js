@@ -19,6 +19,7 @@ define("Map", ["Store"], function(Store){
 		"new2q-popup" : document.getElementById("new2q-popup"),
 		"new2c-popup" : document.getElementById("new2c-popup"),
 		"help-popup" : document.getElementById("help-popup"),
+		"tip-popup" : document.getElementById("tip-popup"),
 		"cache" : document.getElementById("cache"),
 		"public" : document.getElementById("public"),
 		        "public-menu" : document.getElementById("public-menu"),

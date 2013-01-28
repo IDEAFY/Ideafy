@@ -384,5 +384,10 @@
 	"library" : "Ma Bibliothèque",
 	"brainstorm" : "Espace de Brainstorming",
 	"connect" : "Centre de Communications",
-	"dashboard" : "Tableau de bord"
+	"dashboard" : "Tableau de bord",
+	"notips" : "Ne pas afficher les astuces au démarrage",
+	"showtips" : "Afficher les astuces au démarrage",
+	"shownotif" : "Afficher la popup de notifications",
+	"setlang" : "Choisissez votre langue",
+	"choosestartup" : "Choisissez votre écran d'accueil"
 }

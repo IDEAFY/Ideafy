@@ -692,7 +692,7 @@ ul.notify-list{
     color: #404040;
 }
 
-#help-popup{
+#help-popup, #tip-popup{
     position: absolute;
     width: 480px;
     max-height: 400px;
@@ -715,7 +715,7 @@ ul.notify-list{
     background-size: 70px 69px;    
 }
 
-.close-help{
+.close-help, .close-tip{
     display:block;
     width: 50px;
     height:50px;
@@ -730,7 +730,7 @@ ul.notify-list{
     background-position: center;    
 }
 
-.help-screen{
+.help-screen, .tip-screen{
     color: #657B99;
     font-family: Helvetica;
     border: 1px solid #657B99;
@@ -744,9 +744,41 @@ ul.notify-list{
     font-family: pacifico;    
 }
 
-.help-screen p{
+.tip-screen .next-button{
+    margin: 20px auto;
+}
+
+.tip-screen{
+    padding-bottom: 10px;    
+}
+
+.tip-screen legend{
+    margin-top: -20px;
+    margin-left: 10px;
+    font-family: Pacifico;
+    font-size: 20px;
+}
+
+.tip-footer{
+    margin-top: 10px;
+    color: #808080;
+    display: inline-table;
+}
+.tip-footer input, .tip-footer label, .settingmodule .showtip input, .settingmodule .showtip label{
+    vertical-align: middle;
+}
+
+.tip-footer label, .settingmodule .showtip label{
+    margin-left: 5px;
+}
+
+.help-screen p, .tip-screen p{
     text-align: justify;
     margin-top: 10px;
+}
+
+.tip-screen p{
+    line-height: 20px;
 }
 
 .confirm{
@@ -794,6 +826,15 @@ ul.notify-list{
 #help-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
     -webkit-transform:translateX(-797px);    
+}
+
+#tip-popup.visible{
+    -webkit-transform:translateX(-797px);    
+}
+
+#cache.visible{
+    opacity: 0.75;
+    z-index: 1500;
 }
 
 #newidea-popup .option, .confirm .option, #new2q-popup .option{
@@ -5407,7 +5448,7 @@ li.my2q{
     margin-bottom: 5px;
 }
 
-.edituserdetails .dob input, .edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select{
+.edituserdetails .dob input, .edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select{
     height: 30px;
     border-radius: 5px;
     line-height: 28px;
@@ -5424,7 +5465,7 @@ li.my2q{
     margin-right: 10px;
 }
 
-.edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select{
+.edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select{
     -webkit-appearance: none;
     text-align: center;
     width: 120px;
@@ -5636,8 +5677,31 @@ li.my2q{
     font-size: 14px;   
 }
 
+.settingmodule li{
+    padding: 10px 20px;
+    display: inline-table;
+    width: 100%;
+}
+
+.settingmodule li > span{
+    vertical-align: middle;
+}
+
 .settingmodule li:nth-child(odd){
     background: white;    
+}
+
+#dashboard-settings .settingmodule select{
+    float: right;
+    margin-right: 50px;
+}
+
+.settingmodule option{
+    text-align: center;
+}
+
+#dashboard-settings .startupscreen select{
+    width: 250px;
 }
 
 .settingmodule li:nth-child(even){

@@ -180,7 +180,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                                                 
                                                          promise.then(function(){
                                                                  user.unsync();
-                                                                 setTimeout(function(){_body.init();}, 250);
+                                                                 setTimeout(function(){_body.init(true);}, 250);
                                                          });
 
                                                 } else {
@@ -236,7 +236,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                }    
         };
         
-        _body.init = function() {
+        _body.init = function(firstStart) {
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         var lblUpdate = false;
                         // set uid for future queries
@@ -257,7 +257,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                          }
                          else if (_user.get("picture_file").search("img/avatars/deedee")>-1){
                                 Config.set("avatar", _user.get("picture_file"));
-                                _dock.init();
+                                _dock.init(firstStart);
                                 //if everything is downloaded
                                 _stack.getStack().show("#dock");
                         }
@@ -267,7 +267,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "Map", "Amy/Stack-plugi
                                 _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                         if (!result.error) {
                                                 Config.set("avatar", result);
-                                                _dock.init();
+                                                _dock.init(firstStart);
                                                 //if everything is downloaded
                                                 _stack.getStack().show("#dock");
                                         }

@@ -7,14 +7,15 @@
 
 define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"Ideafy/Public", "Ideafy/Library", "Ideafy/Brainstorm", "Ideafy/Connect", "Ideafy/Dashboard",
-	"Map", "Config", "Ideafy/Notify", "Ideafy/NewIdea", "Ideafy/Help", "Ideafy/New2Q", "Ideafy/New2C"], 
-	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C){
+	"Map", "Config", "Ideafy/Notify", "Ideafy/NewIdea", "Ideafy/Help", "Ideafy/New2Q", "Ideafy/New2C", "Ideafy/Tips"], 
+	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){
 		return function DockConstructor(){
 
 		//declaration
 			var _widget = new Widget(),
 			    _newIdea,
 			    _new2q,
+			    _tips,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),
 			    _user = Config.get("user"),
@@ -26,32 +27,35 @@ define("Ideafy/Dock",["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin"
 				"dockstack" : _stack,
 				"dockcontrol" : _control
 			});
+			
 			_widget.alive(Map.get("dock"));
 
 		//logic
-			_widget.init = function(){
+			_widget.init = function init(firstStart){
 			        var notify = new Notify();
 			        
-			       _stack.getStack().add("#public", new Public());
-				console.log("publicok");
+			        _stack.getStack().add("#public", new Public());
 				_stack.getStack().add("#library", new Library());
-				console.log("libraryok");
 				_stack.getStack().add("#brainstorm", new Brainstorm());
-				console.log("brainstormok");
 				_stack.getStack().add("#connect", new Connect());
-				console.log("connectok");
 				_stack.getStack().add("#dashboard", new Dashboard());
-				console.log("dashboardok");
 				// init notification engine
 				notify.init();
-				console.log("notifyok");
 				
 				// initialize popups
 				_newIdea = new NewIdea();
                                 _new2q = new New2Q();
+                                
 				//set current stack view
 				if (!_user.get("settings").startupScreen) _stack.getStack().show("#public")
 				else _stack.getStack().show(_user.get("settings").startupScreen);
+				
+				// show tips if applicable
+				if (firstStart || _user.get("settings").showTips !== false){
+				        _tips = new Tips();
+				        _tips.init(firstStart);
+				}
+				
 			};
 			
 			_widget.reset = function(){

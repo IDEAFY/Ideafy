@@ -27,9 +27,10 @@ define("Ideafy/Connect/MTCDetailStack",
                                 var current = mtcDetailStack.getStack().getCurrentName();
                                 if (view === "2Q" && current !== "twoqdetail") mtcDetailStack.getStack().show("twoqdetail")
                                 else if (view === "2C" && current !== "twocdetail") {
-                                        mtcDetailStack.getStack().get("twocdetail").reset()
+                                        mtcDetailStack.getStack().get("twocdetail").reset();
                                         mtcDetailStack.getStack().show("twocdetail");
-                                }   
+                                }
+                                else mtcDetailStack.getStack().show("defaultPage");
                         };
                         
                         widget.reset = function reset(type, data){
@@ -48,10 +49,10 @@ define("Ideafy/Connect/MTCDetailStack",
                                 var twoqDetail = new MTQDetail(), twocDetail = new MTCDetail();
                                 mtcDetailStack.getStack().add("twoqdetail", twoqDetail);
                                 mtcDetailStack.getStack().add("twocdetail", twocDetail);
-                                mtcDetailStack.getStack().add("defautlPage", defaultPage);
+                                mtcDetailStack.getStack().add("defaultPage", defaultPage);
                                 
                                 if (type === "default"){
-                                        mtcDetailStack.getStack().show("defautlPage");        
+                                        mtcDetailStack.getStack().show("defaultPage");        
                                 }
                                 if (type === "2Q"){
                                         mtcDetailStack.getStack().show("twoqdetail");

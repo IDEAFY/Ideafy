@@ -108,17 +108,19 @@ define("Ideafy/Connect/MyTwocents", ["Olives/OObject", "Map", "Config", "Olives/
                                 switch(twoQButtons.get(id).name){
                                         case "#mytwoq":
                                                 mtcStack.getStack().show("#mytwoq");
-                                                mtcDetails.setView("2Q");
+                                               // mtcDetails.setView("2Q");
+                                               mtcDetails.setView("#defaultPage"); 
                                                 break;
                                         case "#contacttwoq":
                                                 mtcStack.getStack().show("#contacttwoq");
-                                                mtcDetails.setView("2Q");
+                                               // mtcDetails.setView("2Q");
+                                               mtcDetails.setView("#defaultPage"); 
                                                 break;
                                         case "#mytwoc":
                                                 mtcStack.getStack().show("#blank");
                                                 mtcDetails.setView("2C");
                                                 break;
-                                }        
+                                } 
                         };
                         
                         // update autocontact list

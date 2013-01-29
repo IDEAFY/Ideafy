@@ -389,5 +389,8 @@
 	"showtips" : "Afficher les astuces au démarrage",
 	"shownotif" : "Afficher la popup de notifications",
 	"setlang" : "Choisissez votre langue",
-	"choosestartup" : "Choisissez votre écran d'accueil"
+	"choosestartup" : "Choisissez votre écran d'accueil",
+	"usechar" : "Autoriser Ideafy à utiliser mon profil comme personnage (mon nom n'apparaîtra pas)",
+	"changepwd" : "Modifier le mot de passe",
+	"changelbl" : "Modifier"
 }

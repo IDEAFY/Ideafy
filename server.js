@@ -315,6 +315,50 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 })
         });
         
+        olives.handlers.set("ChangePWD", function(json, onEnd){
+                var cdb = new CouchDBStore(), userPath = "/_users/org.couchdb.user:"+json.userid,
+                    cookieJSON = cookie.parse(json.handshake.headers.cookie),
+                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0] ;
+                
+                transport.request("CouchDB", {
+                        method : "GET",
+                        path: userPath,
+                        auth: cdbAdminCredentials,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        }
+                }, function (res) {
+                        cdb.reset(JSON.parse(res));
+                        console.log(cdb.toJSON());
+                        cdb.set("password", json.pwd);
+                        transport.request("CouchDB", {
+                                method : "PUT",
+                                path:userPath,
+                                auth: cdbAdminCredentials,
+                                headers: {
+                                        "Content-Type": "application/json",
+                                        "Connection": "close"
+                                },
+                                data: cdb.toJSON()
+                        }, function (res) {
+                                var json = JSON.parse(res);
+                                if (json.ok) {
+                                        console.log("password successfully changed");
+                                        sessionStore.get(sessionID, function(err, session) {
+                                        if (err) {
+                                                throw new Error(err);
+                                        } else {
+                                                session.auth = json.userid + ":" + json.pwd;
+                                                sessionStore.set(sessionID, session);
+                                                onEnd("ok");
+                                        }
+                                });
+                                }
+                                });
+                        });        
+        });
+        
         olives.handlers.set("Signup", function (json, onEnd) {
                         var user = new CouchDBUser();
                         

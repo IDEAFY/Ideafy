@@ -388,6 +388,9 @@
 	"showtips" : "Show tips at startup",
 	"shownotif" : "Show notification popup",
 	"setlang" : "Choose your language",
-	"choosestartup" : "Choose your startup screen"
+	"choosestartup" : "Choose your startup screen",
+	"usechar" : "Allow my profile to be used as an Ideafy character (my name will not be shown)",
+	"changepwd" : "Change password",
+	"changelbl" : "Change"
 	
 }

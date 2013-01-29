@@ -764,11 +764,11 @@ ul.notify-list{
     color: #808080;
     display: inline-table;
 }
-.tip-footer input, .tip-footer label, .settingmodule .showtip input, .settingmodule .showtip label{
+.tip-footer input, .tip-footer label, .settingmodule .setting-input input, .settingmodule .setting-input label{
     vertical-align: middle;
 }
 
-.tip-footer label, .settingmodule .showtip label, .settingmodule .shownotif label{
+.tip-footer label, .settingmodule .setting-input label{
     margin-left: 5px;
 }
 
@@ -5674,7 +5674,8 @@ li.my2q{
 .settingmodule ul{
     font-family: Helvetica;
     color: #404040;
-    font-size: 14px;   
+    font-size: 14px;
+    margin-top: 5px;  
 }
 
 .settingmodule li{
@@ -5689,6 +5690,26 @@ li.my2q{
 
 .settingmodule li:nth-child(odd){
     background: white;    
+}
+
+.settingmodule input.input{
+    width: 215px;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 15px;
+}
+
+.settingmodule .changeok{
+    margin-left: 15px;
+    font-size: 24px;
+    color: #5F8F28;
+}
+
+.settingmodule .next-button{
+    float: right;
+    margin-right:50px;
+    width: 70px;
+    vertical-align: middle;
 }
 
 #dashboard-settings .settingmodule select{

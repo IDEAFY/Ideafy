@@ -342,8 +342,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 },
                                 data: cdb.toJSON()
                         }, function (res) {
-                                var json = JSON.parse(res);
-                                if (json.ok) {
+                                if (JSON.parse(res).ok) {
                                         console.log("password successfully changed");
                                         sessionStore.get(sessionID, function(err, session) {
                                         if (err) {

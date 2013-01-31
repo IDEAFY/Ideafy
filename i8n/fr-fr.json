@@ -392,5 +392,6 @@
 	"choosestartup" : "Choisissez votre écran d'accueil",
 	"usechar" : "Autoriser Ideafy à utiliser mon profil comme personnage (mon nom n'apparaîtra pas)",
 	"changepwd" : "Modifier le mot de passe",
-	"changelbl" : "Modifier"
+	"changelbl" : "Modifier",
+	"brainstormtutorial" : "Vidéoguide d'un brainstorming"
 }

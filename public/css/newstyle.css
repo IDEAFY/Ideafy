@@ -5728,3 +5728,11 @@ li.my2q{
 .settingmodule li:nth-child(even){
     background: #e3e3e3;
 }
+
+.videocontent{
+    text-align: center;
+}
+
+.videocontent video{
+    margin-top: 20px;
+}

@@ -1176,6 +1176,7 @@ define("Ideafy/Tips", ["Olives/OObject", "Map", "Olives/Model-plugin", "Olives/E
                         };
                         
                         _widget.next = function(event, node){
+                                node.classList.remove("pressed");
                                 _widget.getRandomTip();        
                         };
                         

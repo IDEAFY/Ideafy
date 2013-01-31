@@ -391,6 +391,7 @@
 	"choosestartup" : "Choose your startup screen",
 	"usechar" : "Allow my profile to be used as an Ideafy character (my name will not be shown)",
 	"changepwd" : "Change password",
-	"changelbl" : "Change"
+	"changelbl" : "Change",
+	"brainstormtutorial" : "Brainstorming tutorial"
 	
 }

@@ -10,7 +10,7 @@ define("Ideafy/Dashboard/Tutorials", ["Olives/OObject", "Config", "Olives/Model-
                 return function TutorialsConstructor(){
                         var tutorials = new Widget(),
                             labels = Config.get("labels"),
-                            tuto = [{"name": "brainstormtutorial", "src": "http://37.153.96.26:1664:tuto04.m4v"}],
+                            tuto = [{"name": "brainstormtutorial", "src": "http://37.153.96.26:1664/tuto04.m4v"}],
                             store = new Store(tuto);
                             
                             
@@ -23,7 +23,7 @@ define("Ideafy/Dashboard/Tutorials", ["Olives/OObject", "Config", "Olives/Model-
                                 })
                         });
                         
-                        tutorials.template = '<div class="aboutcontent"><ul data-tuto="foreach"><li><legend data-tuto="bind: setLabel, name"></legend><div class="videocontent"><video width = "640" height="480" controls="controls"><source data-tuto="bind:src,src" type="video/mp4" /></video></div><li><ul></div>';
+                        tutorials.template = '<div class="aboutcontent"><ul data-tuto="foreach"><li><legend data-tuto="bind: setLabel, name"></legend><div class="videocontent"><video width = "640" height="480" controls="controls"><source data-tuto="bind:src,src" type="video/mp4" /></video></div></li></ul></div>';
                         
                         return tutorials;   
                 };

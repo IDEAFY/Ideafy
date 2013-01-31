@@ -6,17 +6,20 @@
  */
 
 define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], function(Store, Transport, CouchDBStore, Observable) {
-        var _transport, _user, _observer, _config = new Store();
+        var _loation, _transport, _user, _observer, _config = new Store();
         
         this.reset = function(){
                  
                 //_transport = new Transport(io, "http://37.153.96.26:1664"); // uncomment for app deployment
-                _transport = new Transport(io, location.origin);
+                //_location = "http://37.153.96.26:1664";
+                _location = "";
+                _transport = new Transport(io, _location);
                 _user =  new CouchDBStore();
                 _observer = new Observable();
                 _user.setTransport(_transport);
                 
                 _config.reset({
+                        location : _location,
                         transport : _transport,
                         db : "ideafy",
                         user : _user,

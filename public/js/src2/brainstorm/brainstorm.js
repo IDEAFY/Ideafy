@@ -65,6 +65,9 @@ define("Ideafy/Brainstorm", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Sta
                                                 case "quick":
                                                         _stack.getStack().add("quick", new QuickB(sip, _widget.exitSession));
                                                         break;
+                                                case "tutorial":
+                                                        Config.get("observer").notify("display-tutorials");
+                                                        break;
                                                 default:
                                                         name = "";
                                                         break;                       

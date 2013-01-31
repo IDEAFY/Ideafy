@@ -41,8 +41,15 @@ define("Ideafy/Dashboard/About", ["Olives/OObject", "Map", "Olives/Model-plugin"
                    aboutUI.changeDisplay = function changeDisplay(event, node){
                         var id = node.getAttribute("data-aboutmenu_id");
                         
+                        aboutUI.show(aboutMenu.get(id).name);       
+                   };
+                   
+                   
+                   aboutUI.show = function show(name){
+                           var id;
                         aboutMenu.loop(function(v,i){
-                                aboutMenu.update(i, "currentUI", false);        
+                                aboutMenu.update(i, "currentUI", false);
+                                if (v.name === name) id = i;       
                         });
                         aboutMenu.update(id, "currentUI", true);
                         aboutStack.getStack().show(aboutMenu.get(id).name);        
@@ -58,6 +65,8 @@ define("Ideafy/Dashboard/About", ["Olives/OObject", "Map", "Olives/Model-plugin"
                    
                    aboutStack.getStack().show("#about");
                    aboutMenu.update(0, "currentUI", true);
+                   
+                   
                    
                    return aboutUI;
            };    

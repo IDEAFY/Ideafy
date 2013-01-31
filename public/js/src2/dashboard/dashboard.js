@@ -34,8 +34,14 @@ define("Ideafy/Dashboard", ["Olives/OObject", "Map", "Ideafy/SubMenu", "Amy/Stac
                        _stack.getStack().add("#settings", new Settings());
                        _stack.getStack().add("#about", new About());
                        
-                       // set current view
+               // set current view
                        _stack.getStack().show("#profile");
+                       
+               // watch for events
+                        Config.get("observer").watch("display-tutorials", function(){
+                                if (_stack.getStack().getCurrentName() !== "#about") _stack.getStack().show("#about");
+                                _stack.getStack().get("#about").show("#tutorials");       
+                        });
                  
                 //return
 			return _widget;

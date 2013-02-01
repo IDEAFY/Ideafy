@@ -16,6 +16,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 				_dom = Map.get("ideas"),
 				byDate = _dom.querySelector(".bydate"),             // header buttons need to be declared
                                 byRating =  _dom.querySelector(".byrating"),        // disabled if search is active
+				_searchInput = new Store({"search": ""}),
 				_db = Config.get("db"),
 				_observer = Config.get("observer"),
 				_radio = new Control(this),
@@ -25,6 +26,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 		//setup
 			_widget.plugins.addAll({
 				"idealiststack" : _stack,
+				"search" : new Model(_searchInput),
 
 				/* mays be have event plugin in control*/
 				"ideasevent" : new Delegate(this),
@@ -37,6 +39,8 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
 				    _id = event.target.getAttribute("data-listideas_id");
 				_detail.reset(_ideaList, _id);
+				// clear search field
+				_searchInput.set("search", "");
 				
 			};
 			
@@ -95,8 +99,9 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
                                 byDate.setAttribute("style", "display: none;");
                                 byRating.setAttribute("style", "display: none;");
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
+                                        // fill search field with idea title
+                                        _searchInput.set("search", listSearch.getModel().get(0).title);
                                         _stack.getStack().show("#list-search");
-                                        LS=listSearch.getModel();
                                         _detail.reset(listSearch.getModel(), 0);        
                                 });
                         };

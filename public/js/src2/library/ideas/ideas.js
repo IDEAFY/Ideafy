@@ -100,7 +100,7 @@ define("Ideafy/Library/Ideas", ["Olives/OObject", "Amy/Control-plugin" ,
                                 byRating.setAttribute("style", "display: none;");
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
                                         // fill search field with idea title
-                                        _searchInput.set("search", listSearch.getModel().get(0).title);
+                                        _searchInput.set("search", listSearch.getModel().get(0).value.title);
                                         _stack.getStack().show("#list-search");
                                         _detail.reset(listSearch.getModel(), 0);        
                                 });

@@ -4608,6 +4608,10 @@ li.color-item{
     right: 20px;
 }
 
+#addcontact .addcontactbtns{
+    bottom: 310px;
+}
+
 .addct{
     display: block;
     float: left;

@@ -27,13 +27,13 @@ define("Ideafy/Dashboard/Leaderboard", ["Olives/OObject", "Config", "Olives/Mode
                                         setGrade : function(ip){
                                                 var node = this;
                                                 Utils.getGrade(ip, function(result){
-                                                        node.setAttribute("style", "background: url('../img/profile/"+result.grade.badge+"') no-repeat center center; background-size: 40px 40px;");
+                                                        node.setAttribute("style", "background: url('img/profile/"+result.grade.badge+"') no-repeat center center; background-size: 40px 40px;");
                                                 });        
                                         },
                                         setDistinction : function(ip){
                                                 var node = this;
                                                 Utils.getGrade(ip, function(result){
-                                                        if (result.distinction) node.setAttribute("style", "background: url('../img/profile/"+result.distinction.badge+"') no-repeat center center; background-size: 40px 40px;");
+                                                        if (result.distinction) node.setAttribute("style", "background: url('img/profile/"+result.distinction.badge+"') no-repeat center center; background-size: 40px 40px;");
                                                 })
                                         },
                                         setScore : function(ip){

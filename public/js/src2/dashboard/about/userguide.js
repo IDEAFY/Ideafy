@@ -40,7 +40,7 @@ define("Ideafy/Dashboard/UserGuide", ["Olives/OObject", "Config", "CouchDBStore"
                 
                 // watch for language change
                 user.watchValue("lang", function(){
-                        alert(lang);
+                        console.log(user.get("lang"));
                         userGuide.fetch(user.get("lang"));                
                 });
                 

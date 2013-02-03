@@ -26,6 +26,8 @@ define("Ideafy/Dashboard/UserGuide", ["Olives/OObject", "Config", "CouchDBStore"
                 
                 // fetch faqs from database
                 userGuide.fetch = function fetch(lang){
+                        cdb.unsync();
+                        cdb.reset([]);
                         howTolist.reset([]);
                         cdb.sync(Config.get("db"), "about", "_view/howto").then(function(){
                                 cdb.loop(function(v,i){
@@ -40,7 +42,6 @@ define("Ideafy/Dashboard/UserGuide", ["Olives/OObject", "Config", "CouchDBStore"
                 
                 // watch for language change
                 user.watchValue("lang", function(){
-                        console.log(user.get("lang"));
                         userGuide.fetch(user.get("lang"));                
                 });
                 

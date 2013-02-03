@@ -12,7 +12,7 @@ define("Ideafy/Dashboard/UserGuide", ["Olives/OObject", "Config", "CouchDBStore"
                 
                 var userGuide = new Widget(),
                     cdb = new CouchDBStore(),
-                    lang = Config.get("user").get("lang");
+                    user = Config.get("user"),
                     howTolist = new Store([]);
                     
                 userGuide.plugins.addAll({
@@ -22,14 +22,26 @@ define("Ideafy/Dashboard/UserGuide", ["Olives/OObject", "Config", "CouchDBStore"
                 
                 userGuide.template = '<div class="aboutcontent"><ul data-howto="foreach"><li><legend data-howto="bind:innerHTML, title"></legend><p data-howto="bind: innerHTML, body"></p></li></ul></div>';
                 
-                // fetch faqs from database
                 cdb.setTransport(Config.get('transport'));
                 
-                cdb.sync(Config.get("db"), "about", "_view/howto").then(function(){
-                        cdb.loop(function(v,i){
-                                if (v.value.default_lang === lang || !v.value.translations[lang]) howTolist.alter("push", v.value)
-                                else howTolist.alter("push", v.value.translations[lang]);
-                        });      
+                // fetch faqs from database
+                userGuide.fetch = function fetch(lang){
+                        howTolist.reset([]);
+                        cdb.sync(Config.get("db"), "about", "_view/howto").then(function(){
+                                cdb.loop(function(v,i){
+                                        if (v.value.default_lang === lang || !v.value.translations[lang]) howTolist.alter("push", v.value)
+                                        else howTolist.alter("push", v.value.translations[lang]);
+                                });      
+                        });
+                };
+                
+                // init
+                userGuide.fetch(user.get("lang"));
+                
+                // watch for language change
+                user.watchValue("lang", function(){
+                        alert(lang);
+                        userGuide.fetch(user.get("lang"));                
                 });
                 
                 return userGuide;         

@@ -1161,8 +1161,15 @@ ul.notify-list{
     background-size: 30px;
 }
 
-.idea-detail {
-
+.idea-detail .detail-footer .sharedwith{
+    float: left;
+    padding-left: 20px;
+    margin-left: 40px;
+    font-size: 14px;
+    color: #292929;
+    font-style: italic;
+    background: url('../img/brainstorm/multiuser.png') no-repeat left center;
+    background-size: 20px 20px;
 }
 
 .detail-contents{
@@ -1237,9 +1244,7 @@ ul.notify-list{
 
 /* idea voting piece */
 #public-detail .rateIdea, #ideas-detail .rateIdea{
-  
   margin: 20px 40px 0px 490px;
-  display: inline-block;
 }
 
 #public-detail a.item-acorn, #ideas-detail a.item-acorn{

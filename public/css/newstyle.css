@@ -1172,6 +1172,12 @@ ul.notify-list{
     background-size: 15px;
 }
 
+#sharelist {
+    position: relative;
+    margin-left: 40px;
+    float: left;
+}
+
 .detail-contents{
     background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);  
@@ -1244,7 +1250,8 @@ ul.notify-list{
 
 /* idea voting piece */
 #public-detail .rateIdea, #ideas-detail .rateIdea{
-  margin: 20px 40px 0px 490px;
+  position: absolute;
+  left: 490px;
 }
 
 #public-detail a.item-acorn, #ideas-detail a.item-acorn{

@@ -119,8 +119,8 @@ define("Ideafy/Public/PublicDetail",
                                 }),
                                 "vote" : new Model(vote,{
                                         setIcon : function(active){
-                                                var styleActive = "background: url('../img/public/activeIdeaVote.png') no-repeat center center;",
-                                                    styleInactive = "background: url('../img/public/rateForList.png') no-repeat center center;";
+                                                var styleActive = "background: url('img/public/activeIdeaVote.png') no-repeat center center;",
+                                                    styleInactive = "background: url('img/public/rateForList.png') no-repeat center center;";
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),

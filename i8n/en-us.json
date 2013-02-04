@@ -177,6 +177,7 @@
 	"notavalidaddress": " is not a valid email address",
 	"norecipient": "No email address specified",
 	"sendlbl": "Send",
+	"sharelbl": "Share",
 	"msglistheadertitle": "My Messages",
 	"notificationlbl": "Notifications",
 	"allbtn": "View all",

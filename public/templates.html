@@ -371,3 +371,46 @@
 	<div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, doc.authors"></div>
 	<div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, doc.twocents"></div>
 </div>
+
+
+<!-- SHARE IDEA -->
+<div class="idea-share">
+	<div class="header blue-dark">
+		<span data-share="bind:setHeader, docTitle">Sharing idea</span>
+	</div>
+	<form class="form">
+		<legend>Select contacts</legend>
+		<div class="selectall" data-labels="bind:innerHTML, selectall" data-shareevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div>
+		<input class="search" data-shareevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl">
+		<div id="sharelistauto" class="autocontact invisible">
+			<div class="autoclose" data-shareevent="listen:touchstart,close"></div>
+			<ul data-auto="foreach">
+				<li data-auto="bind:innerHTML, username; bind:highlight, selected" data-shareevent="listen:touchend, select"></li>
+			</ul>
+		</div>
+		<div class="sharecontactlist">
+			<ul data-contacts="foreach">
+				<li class = "contact list-item" data-shareevent="listen:touchstart, discardContact">
+					<p class="contact-name" data-contacts="bind:innerHTML, username"></p>
+					<div class="remove-contact"></div>
+					<p class="contact-intro" data-contacts="bind:innerHTML, intro"></p>
+				</li>
+			</ul>
+		</div>
+		<p>
+			<legend>Add a message</legend>
+			<textarea class="input sharemessage" data-share="bind:value, body"></textarea>
+		</p>
+		<p>
+			<legend>Signature</legend>
+			<textarea class="signature" data-share="bind:value, signature"></textarea>
+		</p>
+		<div class="sendmail-footer">
+			<p class="send">
+				<label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-shareevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label>
+				<label class="sendmail" data-labels="bind:innerHTML, sharelbl" data-shareevent="listen:touchstart, press; listen:touchend, share">Share</label>
+				<label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label>
+			</p>
+		</div>
+	</form>
+</div>

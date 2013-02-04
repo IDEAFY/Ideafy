@@ -90,6 +90,29 @@ define("Ideafy/Brainstorm/Menu", ["Olives/OObject", "Map", "Store", "Olives/Mode
                                 (sip.id && sip.type) ? _widget.addContinue(sip) : _widget.removeContinue();
                         });
                         
+                        // watch for language change
+                        _user.watchValue("lang", function(){
+                                _menu.loop(function(v,i){
+                                        switch(v.name){
+                                                case "continue":
+                                                        _menu.update(i, "label", _labels.get("continuesession"));
+                                                        break;
+                                                case "quick":
+                                                        _menu.update(i, "label", _labels.get("quickbmode"));
+                                                        break;
+                                                case "musession":
+                                                        _menu.update(i, "label", _labels.get("musession"));
+                                                        break;
+                                                case "customb":
+                                                        _menu.update(i, "label", _labels.get("customsession"));
+                                                        break;
+                                                case "tutorial":
+                                                        _menu.update(i, "label", _labels.get("ideafytutorial"));
+                                                        break;        
+                                        }    
+                                });  
+                        });
+                        
                         //return
                         return _widget;
                 }; 

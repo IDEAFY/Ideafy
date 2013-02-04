@@ -83,7 +83,7 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                                                 var id = this.getAttribute("data-contact_id"), frag, ui;
                                                 if (type === "group"){
                                                         if (this.hasChildNodes()) this.removeChild(this.firstChild);
-                                                        this.setAttribute("style", "background: url('../img/connect/"+contactList.get(id).color+"') no-repeat center center; background-size: contain;display:block; width:40px; height:40px;float:left;");
+                                                        this.setAttribute("style", "background: url('img/connect/"+contactList.get(id).color+"') no-repeat center center; background-size: contain;display:block; width:40px; height:40px;float:left;");
                                                 }
                                                 else{
                                                     this.setAttribute("style", "background:none;");

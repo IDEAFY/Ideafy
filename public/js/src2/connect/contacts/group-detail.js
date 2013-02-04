@@ -45,7 +45,7 @@ define("Ideafy/Connect/GroupDetails", ["Olives/OObject", "Config", "Olives/Model
                                 }),
                                 "group" : new Model(group,{
                                         setColor : function(value){
-                                                this.setAttribute("style", "background: url('../img/connect/"+value+"') no-repeat top left; background-size: contain;");
+                                                this.setAttribute("style", "background: url('img/connect/"+value+"') no-repeat top left; background-size: contain;");
                                         },
                                         setStyle : function(sentok){
                                                 (sentok) ? this.setAttribute("style", "color: #5F8F28;"):this.setAttribute("style", "color: #F27B3D;")

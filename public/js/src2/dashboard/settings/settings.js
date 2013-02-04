@@ -56,9 +56,10 @@ define("Ideafy/Dashboard/Settings", ["Olives/OObject", "Map", "Olives/Model-plug
                    
                    settingsUI.updateLang = function updateLang(event, node){
                         if (node.value !== user.get("lang")){
-                                Utils.updateLabels(node.value);
-                                user.set("lang", node.value);
-                                user.upload();
+                                Utils.updateLabels(node.value).then(function(){
+                                        user.set("lang", node.value);
+                                        user.upload();        
+                                });
                         }        
                    };
                    

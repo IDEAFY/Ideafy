@@ -92,24 +92,23 @@ define("Ideafy/Brainstorm/Menu", ["Olives/OObject", "Map", "Store", "Olives/Mode
                         
                         // watch for language change
                         _user.watchValue("lang", function(){
-                                console.log(Config.get("labels").toJSON(), _labels.get("continuesessions"));
-                                setTimeout(function(){console.log(Config.get("labels").toJSON(), _labels.get("continuesessions"));}, 1000);
+                                var lbl = Config.get("labels");
                                 _menu.loop(function(v,i){
                                         switch(v.name){
                                                 case "continue":
-                                                        _menu.update(i, "label", _labels.get("continuesession"));
+                                                        _menu.update(i, "label", lbl.get("continuesession"));
                                                         break;
                                                 case "quick":
-                                                        _menu.update(i, "label", _labels.get("quickbmode"));
+                                                        _menu.update(i, "label", lbl.get("quickbmode"));
                                                         break;
                                                 case "musession":
-                                                        _menu.update(i, "label", _labels.get("musession"));
+                                                        _menu.update(i, "label", lbl.get("musession"));
                                                         break;
                                                 case "customb":
-                                                        _menu.update(i, "label", _labels.get("customsession"));
+                                                        _menu.update(i, "label", lbl.get("customsession"));
                                                         break;
                                                 case "tutorial":
-                                                        _menu.update(i, "label", _labels.get("ideafytutorial"));
+                                                        _menu.update(i, "label", lbl.get("ideafytutorial"));
                                                         break;        
                                         }    
                                 });  

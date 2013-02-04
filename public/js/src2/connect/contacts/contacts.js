@@ -245,7 +245,21 @@ define ("Ideafy/Connect/Contacts", ["Olives/OObject", "Map", "Config", "Amy/Stac
                         // watch for delete events to display addcontact UI
                         Config.get("observer").watch("contact-deleted", function(){
                                 detailStack.getStack().show('#addcontact');
-                        })
+                        });
+                        
+                        // watch for language change
+                        user.watchValue("lang", function(){
+                                var current;
+                                sortButtons.loop(function(v,i){
+                                        if (v.selected) current = i;        
+                                });
+                                sortButtons.reset([
+                                    {"name": "all", "label": "allbtn", "selected": false},
+                                    {"name": "users", "label": "usrbtn", "selected": false},
+                                    {"name": "groups", "label": "grpbtn", "selected": false}
+                                ]);
+                                sortButtons.update(current, "selected", true);
+                        });
                         
                         return contactsUI;    
                 }

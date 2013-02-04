@@ -92,6 +92,8 @@ define("Ideafy/Brainstorm/Menu", ["Olives/OObject", "Map", "Store", "Olives/Mode
                         
                         // watch for language change
                         _user.watchValue("lang", function(){
+                                console.log(_labels.get("continuesessions"));
+                                setTimeout(function(){console.log(_labels.get("continuesessions"));}, 1000);
                                 _menu.loop(function(v,i){
                                         switch(v.name){
                                                 case "continue":

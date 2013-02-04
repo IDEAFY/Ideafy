@@ -342,6 +342,21 @@ define ("Ideafy/Connect/Messages", ["Olives/OObject", "Map", "Olives/Model-plugi
                                 detailStack.getStack().show("#newmsg");
                         });
                         
+                        // watch for language change
+                        user.watchValue("lang", function(){
+                                var current;
+                                sortButtons.loop(function(v,i){
+                                        if (v.selected) current = i;        
+                                });
+                                sortButtons.reset([
+                                    {"name": "all", "label": "allbtn", "selected": false},
+                                    {"name": "messages", "label": "msgbtn", "selected": false},
+                                    {"name": "notifications", "label": "notifbtn", "selected": false},
+                                    {"name": "unread", "label": "unreadbtn", "selected": false}
+                            ]);
+                                sortButtons.update(current, "selected", true);
+                        });
+                        
                         return messageUI;
                 };
         });

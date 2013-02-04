@@ -966,6 +966,53 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 });        
         });
         
+        // Checking email recipient list
+        olives.handlers.set("GetUserNames", function(json, onEnd) {
+
+                var result = {}, cdb = new CouchDBStore(), list = json.list, options = {}, bulkDocs = new Store(), req;
+
+                /**
+                 * Building a temporary solution before changes in couchDBStore (one bulk query of the view)
+                 */
+
+                // manually build the http request to couchDB
+                options.hostname = "127.0.0.1";
+                options.port = 5984;
+                options.method = "POST";
+                options.auth = cdbAdminCredentials;
+                options.path = "/"+_db+"/_design/users/_view/short";
+                options.headers = {
+                        "Content-Type" : "application/json"
+                };
+                options.data = JSON.stringify({
+                        keys : json.list
+                });
+
+                /**
+                * Http request callback, handles couchDB response
+                * @param {Object} res the response
+                */
+                var callback = function(res) {
+                        var body = "";
+                        res.on('data', function(chunk) {
+                                body += chunk;
+                        });
+
+                        res.on('end', function() {
+                                if (JSON.parse(body).rows.length === json.list.length){
+                                        result = JSON.parse(body).rows;
+                                        onEnd(result);
+                                }
+                                else {
+                                        onEnd({error: "Error : one or more users not found in Ideafy"});
+                                }
+                        });
+                };
+                // emit the http request and the data
+                req = http.request(options, callback);
+                req.end(options.data, "utf8");
+        });
+        
         // Sending email messages from Ideafy
         olives.handlers.set("SendMail", function(json, onEnd) {
 

@@ -75,10 +75,9 @@ define("Ideafy/Library/IdeaDetail",
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                         },
                                         setRating : function setRating(rating) {
-                                                // this is necessary because the rating data is not supplied by the lucene design do --> to be investigated
+                                                // this is necessary because the rating data is not supplied by the lucene design doc --> to be investigated
                                                 if (rating === undefined) {
-                                                        var _id = this.getAttribute("data-listideas_id"),
-                                                            _arr = _store.get(_id).doc.votes;
+                                                        var _arr = _store.get("doc").votes;
                                                         if (_arr.length === 0) this.innerHTML = ""
                                                         else {
                                                                 this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
@@ -119,7 +118,7 @@ define("Ideafy/Library/IdeaDetail",
                                         setSharedWith : function(sharedwith){
                                                 if (sharedwith && sharedwith.length){
                                                         this.classList.remove("invisible");
-                                                        (sharedwith.length === 1)?this.innerHTML = _labels.get("sharedwith")+"<b><u>"+1+"</u></b>"+_labels.get("ideafyer"):this.innerHTML = _labels.get("sharedwith")+"<b><u>"+sharedwith.length+"</u></b>"+_labels.get("ideafyer");
+                                                        (sharedwith.length === 1)?this.innerHTML = _labels.get("sharedwith")+"<b><u>"+1+_labels.get("ideafyer")+"</u></b>":this.innerHTML = _labels.get("sharedwith")+"<b><u>"+sharedwith.length+_labels.get("ideafyer")+"</u></b>";
                                                 }
                                                 else this.classList.add("invisible");
                                         }
@@ -134,7 +133,7 @@ define("Ideafy/Library/IdeaDetail",
                                 "ideadetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="library-idea"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, doc.authors"></div><h2 data-ideadetail="bind:innerHTML,doc.title"></h2><span class="date" data-ideadetail="bind:date, doc.creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,doc.authornames"></span><span class="commentlbl" data-ideadetail="bind: setWrotelbl, doc.authors"></span></div><div class="detail-body"><p data-ideadetail="bind:innerHTML,doc.description"></p><p data-ideadetail="bind:innerHTML,doc.solution"></p></div><div class="detail-footer"><div class="sharedwith invisible" data-ideadetail="bind: setSharedWith, doc.sharedwith"></div><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,value.rating"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, doc.votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-labels="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, doc.authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, doc.twocents"></div></div>';
+                        _widget.template='<div class="library-idea"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, doc.authors"></div><h2 data-ideadetail="bind:innerHTML,doc.title"></h2><span class="date" data-ideadetail="bind:date, doc.creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,doc.authornames"></span><span class="commentlbl" data-ideadetail="bind: setWrotelbl, doc.authors"></span></div><div class="detail-body"><p data-ideadetail="bind:innerHTML,doc.description"></p><p data-ideadetail="bind:innerHTML,doc.solution"></p></div><div class="detail-footer"><div class="sharedwith invisible" data-ideadetail="bind: setSharedWith, doc.sharedwith" data-ideadetailevent="listen:touchstart, displayList"></div><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,value.rating"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, doc.votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-labels="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, doc.authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, doc.twocents"></div></div>';
                 
                 //library
                         _widget.reset = function reset(viewStore, index){
@@ -210,6 +209,12 @@ define("Ideafy/Library/IdeaDetail",
                                                 }
                                         });
                                 }
+                        };
+                        
+                        _widget.displayList = function(event, node){
+                                transport.request("GetUserNames", {list: _store.get("doc").sharedwith}, function(result){
+                                        console.log(result);        
+                                });  
                         };
                         
                         _widget.place(_dom);

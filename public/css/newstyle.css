@@ -5671,6 +5671,10 @@ li.my2q{
     padding: 0px;
 }
 
+.aboutcontent a{
+    text-decoration: underline;
+}
+
 #dashboard-about .aboutcontent legend.support{
     border: none;    
 }

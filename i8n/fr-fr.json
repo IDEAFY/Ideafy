@@ -408,5 +408,6 @@
 	"exechelp": "Si vous trouvez que votre entreprise pourrait être encore plus innovante en utilisant une plate-forme comme Ideafy en interne ou avec votre écosystème, sachez que nous proposons des déploiements de plates-formes personnalisées sur site ou sur des instances dédiées. Ce n'est bien sûr pas gratuit mais nos conditions sont extrêmement avantageuses. Contactez-nous pour en savoir plus, soit avec le formulaire depuis l'application soit à partir de notre <a onclick='window.open(\"http://www.taiaut.com\", \"_system\");'>site web</a>",
 	"devhelp": "Ideafy existe grâce à trois libraires javascript libraries écrites par les fondateurs de notre société. Ces librairies sont disponibles sous licence MIT: <a onclick='window.open(\"http://http://github.com/flams/emily\", \"_system\");'>emily</a>, <a onclick='window.open(\"http://github.com/flams/olives\", \"_system\");'>olives</a> et <a onclick='window.open(\"http://github.com/flams/CouchDB-emily-tools\", \"_system\");'>couchdb-emily-tools</a>. Allez voir et si le coeur vous en dit proposez vos contributions pour les améliorer.",
 	"investhelp": "Nous avons de nombreux projets de développement de la plate-forme Ideafy pour lesquels nous recherchons des financements. Si vous êtes intéressés par ce qu'Idefay peut proposer dans le futur et par vous impliquer dans ce futur merci de nous contacter.",
-	"toc" : "Sommaire"
+	"toc" : "Sommaire",
+	"backtotop": "Retour au sommaire"
 }

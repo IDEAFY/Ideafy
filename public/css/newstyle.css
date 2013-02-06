@@ -5764,3 +5764,16 @@ li.my2q{
 .videocontent video{
     margin-top: 20px;
 }
+
+#userguidetoc li{
+    margin-left: 20px;
+    text-decoration: underline;
+    color: #657B99;
+}
+
+.aboutcontent .backtotop{
+    float:right;
+    color: #AEB9BF;
+    font-size: 12px;
+    text-decoration: underline;
+}

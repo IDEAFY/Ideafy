@@ -23,8 +23,7 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                             var _width, _height,
                                 _canvas = document.getElementById("preview"),
                                 _ctx = _canvas.getContext("2d");
-                            
-                            console.log("attempting to resize and draw image in canvas");  
+                                
                             // resize image if needed
                             _width = img.width;
                             _height = img.height;
@@ -122,7 +121,6 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                         // first read the file to memory, once loaded resize and display upload button
                         _reader.onloadend = function(e) {
                                 _img.src = e.target.result;
-                                console.log(_img.src);
                                 // timeout is needed to render image and obtain its dimensions
                                 setTimeout(function(){
                                         _drawImage(_img);

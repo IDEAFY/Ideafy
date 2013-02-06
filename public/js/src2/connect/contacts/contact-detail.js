@@ -33,12 +33,12 @@ define("Ideafy/Connect/ContactDetails", ["Olives/OObject", "Config", "Map", "Sto
                                 "ctdetails" : new Model(details),
                                 "grades" : new Model(grades, {
                                         showBadge : function(badge){
-                                           this.setAttribute("style", "background: url('../img/profile/"+badge+"') no-repeat center center; background-size: cover;");
+                                           this.setAttribute("style", "background: url('img/profile/"+badge+"') no-repeat center center; background-size: cover;");
                                    }
                                 }),
                                 "achievements" : new Model(achievements, {
                                         showBadge : function(badge){
-                                           this.setAttribute("style", "background: url('../img/profile/"+badge+"') no-repeat center center; background-size: cover;");
+                                           this.setAttribute("style", "background: url('img/profile/"+badge+"') no-repeat center center; background-size: cover;");
                                    }
                                 }),
                                 "ctdetailsevent" : new Event(contactDetails)        

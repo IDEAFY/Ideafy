@@ -125,6 +125,8 @@
 	"quickscenariohelp": "<p>Voici votre <strong>tableau blanc.</strong></p><p>A vous de laisser parler votre créativité et votre imagination. Les cartes que vous avez choisies vous donnent un cadre de réflexion, des indications. Mais il ne s'agit pas forcément de s'y plier. Elles sont là pour aiguillonner vos pensées. Vous pouvez retenir un seul élement (eg. l'âge ou le pays pour un personnage) ou ignorer la carte complètement. L'objectif de cette étape est d'<strong>écrire votre propre histoire et décrire un cas d'usage.</strong>.</p><p>Identifier le problème à résoudre est souvent la partie la plus difficile d'une innovation et le formuler le premier pas vers la solution. C'est à vous de jouer, utilisez votre tableau blanc, collez-y des notes, des photos ou faites-y des dessins qui vous permettront d'élaborer les contours de votre histoire.</strong></p><br><p> Lorsque vous êtes prêt, appuyez sur le bouton au bas du tableau et rédigez votre scénario.</p>",
 	"choosecolorlbl": "Choisissez une couleur",
 	"importlbl": "Choisissez une image",
+	"importpiclbl": "Importez une image",
+	"importcameralbl": "Prenez une photo",
 	"pencilsizelbl": "Taille",
 	"pencilcolorlbl": "Couleur",
 	"drawbgcolorlbl": "Fond",

@@ -115,23 +115,8 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                         if (node.files.length) _widget.preview('change', node);
                 };
                 
-                _widget.preview = function(event, node){
-                        
-                        var _img = new Image();
-                        
-                        function onSuccess(imageData){
-                                _img.src = imageData;
-                                _drawImage(_img);
-                                document.getElementById("postpic").classList.remove("invisible");
-                        };
-                        
-                        function onFail(message){
-                                alert("error: "+message);
-                        }
-                        navigator.camera.getPicture(onSuccess, onFail, {quality:50, correctOrientation: true});
-                };
                 
-/*                _widget.preview = function(event, node){
+                _widget.preview = function(event, node){
                         
                         var _img = new Image(),
                             _reader = new FileReader();
@@ -146,7 +131,7 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                                         }, 300);
                         };
                         _reader.readAsDataURL(node.files[0]);
-                }; */
+                };
                 
                 _widget.selectpress = function(event, node){
                         node.nextSibling.classList.add("pressed");

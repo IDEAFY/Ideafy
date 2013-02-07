@@ -128,7 +128,7 @@ define("Ideafy/Whiteboard/Import", ["Olives/OObject", "Map", "Config", "Olives/M
                         function onFail(message){
                                 alert("error: "+message);
                         }
-                        navigator.camera.getPicture(onSuccess, onFail, {quality:50});
+                        navigator.camera.getPicture(onSuccess, onFail, {quality:50, correctOrientation: true});
                 };
                 
 /*                _widget.preview = function(event, node){

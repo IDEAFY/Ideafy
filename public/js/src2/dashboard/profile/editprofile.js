@@ -186,7 +186,7 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                                 setTimeout(function(){
                                         cropImage(resizeImage(_img));
                                         updates.picture_file = user.get("_id")+"_@v@t@r";
-                                        document.getElementById("rotate").classList.remove("invisible");
+                                        //document.getElementById("rotate").classList.remove("invisible");
                                         document.getElementById("changeavatar").classList.add("invisible");
                                         node.nextSibling.classList.remove("pressed");
                                         }, 300);

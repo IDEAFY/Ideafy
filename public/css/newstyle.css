@@ -4964,7 +4964,7 @@ li.color-item{
 #dashboard-profile .leftprofile, #dashboard-profile .rightprofile{
     height: 692px;
     overflow-y: scroll;
-    float: left;    
+    position: absolute;    
 }
 
 #dashboard-profile .leftprofile{
@@ -4973,7 +4973,8 @@ li.color-item{
 
 #dashboard-profile .rightprofile{
     width: 293px;
-    padding-left: 20px;
+    left: 710px;
+    top: 60px;
 }
 
 .userdetails h2{
@@ -5318,6 +5319,7 @@ li.my2q{
     font-family: Pacifico;
     font-size: 14px;
     display: table-cell;
+    width: 263px;
 }
 
 .userachievements .grade{

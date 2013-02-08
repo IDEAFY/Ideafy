@@ -331,8 +331,8 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                 
                 editProfile.cancel = function cancel(event, node){
                         node.classList.remove("pressed");
-                        document.querySelector(".edituserdetails").classList.add("invisible");
                         document.querySelector(".userdetails").classList.remove("invisible");
+                        document.querySelector(".edituserdetails").classList.add("invisible");
                 };
                 
                 editProfile.update = function update(event, node){
@@ -356,8 +356,8 @@ define("Ideafy/Dashboard/EditProfile", ["Olives/OObject", "Config", "Olives/Mode
                                                 document.getElementById("rotate").classList.add("invisible");
                                         }
                                         Config.get("observer").notify("profile-updated");
-                                        document.querySelector(".edituserdetails").classList.add("invisible");
                                         document.querySelector(".userdetails").classList.remove("invisible");
+                                        document.querySelector(".edituserdetails").classList.add("invisible");
                                 });
                         }
                         else{

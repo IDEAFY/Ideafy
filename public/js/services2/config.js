@@ -12,7 +12,7 @@ define("Config", ["Store", "Olives/Transport", "CouchDBStore", "Observable"], fu
                  
                 //_transport = new Transport(io, "http://37.153.96.26:1664"); // uncomment for app deployment
                 //_location = "http://37.153.96.26:1664";
-                _location = "";
+                _location = location.origin;
                 _transport = new Transport(io, _location);
                 _user =  new CouchDBStore();
                 _observer = new Observable();

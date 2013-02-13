@@ -58,5 +58,4 @@ define("Ideafy/Connect", ["Olives/OObject", "Map", "Amy/Stack-plugin","Ideafy/Su
 		//return
 			return _widget;
 		};
-	}
-);
+	});

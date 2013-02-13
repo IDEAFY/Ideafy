@@ -1,0 +1,248 @@
+.overflow {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; 
+}
+
+/* Main Stack */
+#cache{
+    height: 748px;
+    width: 1024px;
+    position: absolute;
+    z-index: -1500;
+    opacity: 0;
+    background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
+}
+
+#cache.appear{
+    opacity: 0.9;
+    z-index: 1500;
+    -webkit-transition: opacity 0.7s linear;
+}
+
+
+/*utils */
+.blue-light {
+  background:#9ac9cd;
+}
+
+.blue-dark {
+  background:#657B99;
+}
+
+.header, .list h3, .detail-header h2, #contactdetails h2, #deckview .deckheader h2{
+  font-family:pacifico;
+  letter-spacing:1px;
+}
+
+/* may be improve the .idea-edit .form input.input */
+.header, .header .option, .idea-edit .form input.input {
+  height:36px;
+}
+
+.header {
+  position:relative;
+  text-align:center;
+  color:white;
+}
+
+.header .option {
+  position:absolute;
+  top:0;
+  width:36px;
+}
+
+.invisible{
+    display: none;    
+}
+
+.left {
+  left:0;
+}
+
+.right {
+  right:0;
+}
+
+#dock, .list, .details, .idea-edit, .idea-sendmail{
+  background:white;
+}
+
+#dock, .list, .details{
+  height:748px;
+}
+
+.list ul{
+    height: 652px;
+}
+
+#deck-list{
+    height: 712px;
+}
+
+.msglist ul, .contactlist ul, .twoq-list, .twoq-searchlist{
+    height: 577px;
+}
+
+.contacttwoqlist{
+    height: 500px;
+}
+
+#dock, .list {
+  /* is absolute position better? */
+  float:left;
+}
+
+.details {
+  position:absolute;
+  width:630px;
+  left:394px;
+  z-index: -10;
+}
+
+/* utils list */
+
+.list {
+  /* the position has to be relative to apply the shadow */
+  position:relative;
+  width:301px;
+  /*factorize with every box-shadow */
+  -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+
+}
+
+.ideas-list, .twoq-list, .twoq-searchlist{
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; 
+}
+
+.list-item{
+  min-height: 85px;
+  border-bottom: 1px solid #CCC;
+  padding: 10px 20px;
+}
+
+.list-item div, .menu-item a, .list-item p{
+  /* prevent events */
+  pointer-events:none;
+}
+
+.list-item.selected {
+  /* background-image:-webkit-linear-gradient(top, #88A5CC 0%, #657B99 80%);*/
+  background-image:-webkit-linear-gradient(top, #f2f2f2 0%, #d4d4d4 80%); 
+  -webkit-box-shadow:inset 0 0 5px 1px rgba(0,0,0,0.3);
+}
+.item-header span, .item-body p, .detail-header .date{
+  color:gray;
+  font-size: 12px;
+}
+
+
+.item-header {
+  position:relative;
+  min-height:30px;
+}
+
+.item-header .avatar{
+    display: none;
+}
+
+.item-header h2 {
+  display:inline;
+  font-size: 14px;
+  font-weight:normal;
+}
+
+.date {
+  float:right;
+  font-style:italic;
+}
+
+.item-body h3 {
+  padding-top: 3px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: normal;
+  color: #404040;
+}
+
+.item-body p {
+  margin-top:10px;
+  margin-bottom: 10px;
+}
+
+.twoq-list .item-body p, .twoq-searchlist .item-body p{
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.twoq-list .item-footer .replies, .twoq-searchlist .item-footer .replies{
+    font-size: 12px;
+    color: #B3B3B3;
+    padding-left: 30px;
+    background: url('../images/tmp/2centDisable.png') no-repeat left center;
+    background-size: 30px 30px;
+}
+
+.item-acorn{
+    margin-left:5px;
+    display: inline-block;
+    width:15px;
+    height: 15px;
+    background-repeat: no-repeat;
+    background-position: bottom left;
+    background-size: contain;
+    background-image: url('../images/tmp/wall/rateForList.png');
+}
+  
+.item-acorn .selected {
+    background-image: url('../images/tmp/wall/vote.png');
+}
+
+.item-footer .rating {
+    display:inline-block;
+    font-family:Helvetica;
+    font-size:12px;
+    color:#B3B3B3;
+  }
+  
+.idea-type{
+    width: 20px;
+    height: 20px;
+    float: right;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.idea-type.private{
+    background-image: url('../images/tmp/public/privateForList.png');
+    background-size: 15px 15px;
+}
+
+.idea-type.public{
+    background-image: url('../images/tmp/public/publicForList.png');
+    background-size:19px 14px;
+}
+
+.tools {
+  padding:15px;
+  height: 30px;
+}
+
+.search  {
+  border:0;
+  outline:0;
+  height:25px;
+  line-height: 25px;
+  padding:0 25px 0 10px;
+  width:160px;
+  border-radius:5px;
+  background:#F2F2F2;
+  font-size: 12px;
+  background-image: url('../images/tmp/public/search.png');
+  background-size: 15px 15px;
+  background-position: 96%;
+  background-repeat: no-repeat;
+}

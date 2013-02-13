@@ -1,0 +1,294 @@
+/* TWOCENTS */
+
+#public-twocents, #library-twocents, #connect-twocents{
+    width: 628px;
+    overflow-y: scroll;
+    font-family: Helvetica;
+}
+
+.twocentList li:nth-child(even){
+    background-image:-webkit-linear-gradient(top, #fafafa 0%, #f8f8f8 90%);
+}
+
+.replies li:nth-child(even){
+    background: white;
+}
+
+.writeTwocent {
+    padding: 20px 20px 0px 20px;
+    -webkit-box-shadow: 0px 0px 3px #cccccc;
+}
+
+.writeTwocent .date{
+    float: none;
+    color: gray;
+    font-size: 12px;
+}
+
+.twocentText{
+    padding: 10px;
+    width: 500px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 0;
+    height: 150px;
+    overflow-y: scroll;
+    font-family: Helvetica;
+    font-size: 12px;
+    color: #808080;
+    /*background-image: -webkit-gradient(linear, center top, center bottom, from(white 74%), to(#e5e5e5))*/
+    background-image: -webkit-linear-gradient(top, #F2F2F2, #F2F2F2);
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3); 
+}
+
+.writeTwocent .writeFooter{
+    width:520px;
+    min-height: 30px;
+    padding-bottom: 15px;
+    margin-top:15px;
+    margin-left: 60px;
+}
+
+.writeTwocent .twocentContext .user, .writeTwocent .twocentContext .creadate, .writeTwocent .twocentContext .moddate{
+    background-repeat:no-repeat;
+    background-position: left 0.2em;
+    line-height: 20px;
+    margin-bottom: 2px;
+    background-size: 12px 12px;
+}
+
+.writeTwocent .twocentContext .user{
+    background-image: url('../images/tmp/wall/authoredBy14.png');
+}
+
+.writeTwocent .twocentContext .creadate{
+    background-image: url('../images/tmp/wall/creationDate14.png');
+}
+
+.writeTwocent .twocentContext .moddate{
+    background-image: url('../images/tmp/wall/lastModified14-01.png');
+}
+
+.writeTwocent .twocentContext .userlbl, .writeTwocent .twocentContext .creadatelbl, .writeTwocent .twocentContext .moddatelbl{
+    margin-left: 20px;
+    font-size: 12px;
+    font-family: Helvetica;
+}
+
+.writeTwocent .twocentContext .userlbl{
+    color: #F27B3D;
+    font-family: Helvetica;
+}
+
+.writeTwocent .twocentPublish, .writeTwocent .twocentCancel, .sendmail, .cancelmail, .edituserdetails label.updateprofile, .edituserdetails label.cancelprofile, .aboutcontent .cancel, .aboutcontent .send{
+    height: 26px;
+    width: 92px;
+    border-radius: 5px;
+    font-family: Helvetica;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 26px;
+    text-align: center;
+    color: white;
+    float: right;
+}
+
+.writeTwocent .twocentPublish, .sendmail, .updateprofile, .aboutcontent .send{
+    background: #8cab68;
+}
+
+.writeTwocent .twocentCancel, .cancelmail, .cancelprofile, .aboutcontent .cancel{
+    margin-left: 15px;
+    background: #e69b73;
+}
+
+.details .twocent{
+    padding: 20px 40px 20px 30px;    
+}
+
+.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar, .msglist .avatar, .contactlist .avatar{
+  width:40px;
+  height:40px;
+  border-radius:20px;
+  float:left;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
+}
+
+.replyAvatar{
+    margin-left: 15px;
+}
+/*
+#public .twocentAvatar{
+  background-image:url('../images/tmp/wall/60redProfile.png'); 
+}
+
+#public .replyAvatar{
+  background-image:url('../images/tmp/wall/60yellowProfile.png'); 
+}*/
+
+.twocentAuthor, .twocent .commentLabel{
+    float: left;
+    font-size: 14px;
+    font-family:Helvetica
+}
+
+.twocentAuthor{
+    margin-left: 10px;
+    color: #657B99;
+    font-weight: bold;
+}
+
+.twocent .commentLabel{
+    color: black;
+    margin-left: 2px;
+}
+
+.twocent .twocentDate{
+    float: none;
+    color:gray;
+    font-size: 12px;
+    line-height: 15px;
+    max-width: 150px;
+    margin-left: 50px;
+}
+
+.twocentMenu{
+    float: right;
+    width: 120px;
+    text-align: center;
+    height: 15px;
+    margin-top: -20px;
+}
+
+.twocentButton{
+    float: right;
+    height: 20px;
+    width: 25px;
+    margin-left: 10px;
+    background-position: center;
+    background-size: 80%;
+}
+
+.twocentEditButton{
+    background: url('../images/tmp/wall/25modify.png') no-repeat;
+    background-size: 80%;   
+}
+
+.twocentDeleteButton{
+    background: url('../images/tmp/wall/25delete.png') no-repeat;
+    background-size: 80%;  
+}
+
+.twocentReplyButton{
+    background: url('../images/tmp/wall/25x35reply.png') no-repeat;
+    background-size:120%;    
+}
+
+.twocentBody{
+    width: 100%;
+}
+
+.twocentMessage{
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px solid #CCCCCC;
+    font-size: 12px;
+}
+
+.repliesButton, .editnotes{
+    height: 18px;
+    line-height: 14px;
+    font-family: Pacifico;
+    font-size: 14px;
+    color: #657B99;
+    margin-left: 10px;
+    border-bottom: 1px solid #CCCCCC;
+    padding-bottom:4px;
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-size:15px 15px;
+}
+
+.showReplies, .editnotes{
+    background-image:url('../images/tmp/public/show.png');
+}
+
+.hideReplies{
+    background-image:url('../images/tmp/public/hide.png');
+}
+
+.replies{
+    width: 558px;
+}
+
+.twocentReply{
+    padding: 20px 30px 20px 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+    background: #f2f2f2;
+    border:1px dashed #CCCCCC;
+    border-radius: 5px;
+}
+
+.twocentReply .twocentDate{
+    margin-left: 65px;
+}
+
+.writePublicTwocentReply .writeTwocent{
+    padding-right: 0px;
+    min-height: 150px;
+}
+
+.writePublicTwocentReply .replyMessage{
+    max-height: 50px;
+    overflow-y: scroll;
+    width: 458px;
+}
+
+.writePublicTwocentReply .writeFooter{
+    padding-left: 0px;
+    width: 478px;
+}
+
+.writeTwocent .twocentContext{
+    float:left;
+    width: 250px;
+    text-overflow: ellipsis;
+    padding-left: 15px;
+}
+
+.replyToReply .writeTwocent{
+    padding-left: 0px;
+}
+
+.replyToReply textarea.replyMessage{
+    width: 390px;
+    margin-left: 15px;
+}
+
+.replyToReply div.writeFooter{
+    width: 420px;
+}
+
+.replyToReply .writeFooter .twocentContext{
+    width: 200px;
+    padding-left: 10px;
+}
+
+.writeTwocentReply{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.writeTwocentReply .twocentText{
+    width: 443px;
+    max-height: 80px;
+}
+.writeTwocentReply .writeFooter{
+    width: 480px;
+}

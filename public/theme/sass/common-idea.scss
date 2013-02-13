@@ -1,0 +1,372 @@
+/* New idea / new Twoquestion popup */
+#newidea-popup, #new2q-popup, #new2c-popup{
+    position: absolute;
+    width: 480px;
+    height: 560px;
+    -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.6);
+    z-index: 2000;
+    background: white;
+    left: 270px;
+    bottom: -580px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#new2q-popup{
+    width: 560px;
+    height: 300px;
+    left: 230px;
+    bottom: -320px
+}
+
+#new2c-popup{
+    height: 320px;
+    width: 650px;
+    left: 185px;
+    bottom : -340px;
+}
+
+#new2q-popup .form textarea, #new2c-popup .form textarea{
+    height: 180px;
+    font-size: 18px;
+    line-height: 30px;
+    padding-right: 5px;
+}
+
+#new2c-popup .form textarea{
+    height: 200px;
+}
+
+#newidea-popup .form p, #new2q-popup .form p, #new2c-popup .form p{
+    margin-bottom:  20px;
+    font-size: 14px;
+}
+
+#new2c-popup .close-popup, #new2q-popup .close-popup, #newidea-popup .close-popup{
+    right: 0px;
+    -webkit-box-shadow: 0px -3px 3px 0px rgba(0,0,0,0.6);
+}
+
+#newidea-popup .visibility-input{
+    text-align: center;
+}
+
+#newidea-popup .visibility-slider{
+    height: 30px;
+    border-radius: 15px;
+    width: 180px;
+    background: transparent;
+    margin: 0 auto;
+    border: none;
+}
+
+#newidea-popup .visibility-input div{
+    background: #657B99;
+    width: 180px;
+    height:30px;
+    border-radius: 15px;
+    color: white;
+    font-family: Pacifico;
+    font-size: 14px;
+    margin: -33px auto;
+    line-height: 30px;
+}
+
+#newidea-popup .visibility-slider::-webkit-slider-thumb{
+    height: 30px;
+    width:30px;
+    border-radius: 15px;
+}
+
+#newidea-popup .newidea-footer{
+    margin-top: 70px;
+}
+
+#newidea-popup .publicwarning{
+    height: 50px;
+    width: 230px;
+    background-image: url('../images/tmp/brainstorm/deedeetopright.png');
+    background-size: 30px 30px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding: 5px 10px 5px 40px;
+    float: left;
+    margin-top: -20px;
+    font-family: helvetica;
+    font-size: 12px;
+    color: #404040;
+}
+
+#help-popup, #tip-popup{
+    position: absolute;
+    width: 480px;
+    max-height: 400px;
+    padding: 40px;
+    -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.6);
+    z-index: 2000;
+    background: white;
+    top: 134px;
+    right: -565px;
+}
+
+.help-doctor{
+    display:block;
+    width: 70px;
+    height:69px;
+    position: absolute;
+    top: 5px;
+    left:5px;
+    background: url('../images/tmp/brainstorm/doctordeedee.png') no-repeat top right;
+    background-size: 70px 69px;    
+}
+
+.close-help, .close-tip{
+    display:block;
+    width: 50px;
+    height:50px;
+    position: absolute;
+    border-radius: 25px;
+    top: -25px;
+    right:0px;
+    background: white;
+    background-image: url('../images/tmp/brainstorm/delete28.png');
+    background-size: 28px;
+    background-repeat: no-repeat;
+    background-position: center;    
+}
+
+.help-screen, .tip-screen{
+    color: #657B99;
+    font-family: Helvetica;
+    border: 1px solid #657B99;
+    padding: 30px;
+    border-radius: 10px;
+    max-height: 340px;
+    overflow: scroll;
+}
+
+.help-screen h2, .settingmodule legend{
+    font-family: pacifico;    
+}
+
+.tip-screen .next-button{
+    margin: 20px auto;
+}
+
+.tip-screen{
+    padding-bottom: 10px;    
+}
+
+.tip-screen legend{
+    margin-top: -20px;
+    margin-left: 10px;
+    font-family: Pacifico;
+    font-size: 20px;
+}
+
+.tip-footer{
+    margin-top: 10px;
+    color: #808080;
+    display: inline-table;
+}
+.tip-footer input, .tip-footer label, .settingmodule .setting-input input, .settingmodule .setting-input label{
+    vertical-align: middle;
+}
+
+.tip-footer label, .settingmodule .setting-input label{
+    margin-left: 5px;
+}
+
+.help-screen p, .tip-screen p{
+    text-align: justify;
+    margin-top: 10px;
+}
+
+.tip-screen p{
+    line-height: 20px;
+}
+
+.confirm{
+    -webkit-box-shadow: 0px 0px 5px 2px #657B99;
+    z-index: 2000;
+    background: black;
+    margin-top: 5px;
+    position: absolute;
+}
+
+.idea-edit .confirm{
+    width: 280px;
+    padding: 40px 30px 10px 30px;
+    right:20px;   
+}
+
+.confirm .help-doctor{
+    width: 40px;
+}
+
+.confirm p{
+    text-align: left;
+    color: white;
+    font-family: Pacifico;
+    line-height: 20px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+#newidea-popup.appear{
+    -webkit-transition:-webkit-transform 0.2s linear;
+    -webkit-transform:translateY(-689px);
+}
+
+#new2q-popup.appear{
+    -webkit-transition:-webkit-transform 0.2s linear;
+    -webkit-transform:translateY(-550px);
+}
+
+#new2c-popup.appear{
+    -webkit-transition:-webkit-transform 0.2s linear;
+    -webkit-transform:translateY(-550px);
+}
+
+#help-popup.appear{
+    -webkit-transition:-webkit-transform 0.2s linear;
+    -webkit-transform:translateX(-797px);    
+}
+
+#tip-popup.visible{
+    -webkit-transform:translateX(-797px);    
+}
+
+#cache.visible{
+    opacity: 0.75;
+    z-index: 1500;
+}
+
+#newidea-popup .option, .confirm .option, #new2q-popup .option{
+    width: 60px;
+    height: 24px;
+    margin-top: 5px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 22px;
+    border: 1px solid #94A3B8;
+    border-radius: 5px;
+}
+
+.confirm .option{
+    display: inline-block;
+    width: 60px;
+    font-family: Pacifico;
+    font-size: 12px;
+    border-color: white;
+    margin: 5px;
+}
+
+.confirm .option.pressed{
+    color: white;
+    background: #4D4D4D;
+}
+
+#newidea-popup .option.pressed, .confirm .option.pressed, #new2q-popup .option.pressed{
+    background: #94A3B8;
+    border: 1px solid #657B99;
+}
+
+#newidea-popup .left, #new2q-popup .left{
+    left: 5px;
+}
+
+#newidea-popup .right, #new2q-popup .right{
+    right: 5px;
+}
+
+#newidea-popup .form, #new2q-popup .form{
+    font-size: 16px;
+    padding: 20px;
+}
+
+.newideatitle{
+    height: 36px;
+    font-size: 16px;
+}
+
+.visibility, .toggle-replay{
+    float: right;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    background-size: 15px 15px;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #B3B3B3;
+    text-align: center;
+    border: 1px solid #E6E6E6;
+    line-height: 30px;
+    display: inline-block;
+}
+
+.visibility{
+    background-image: url('../images/tmp/public/privateForList.png');
+}
+
+.toggle-replay{
+    background-image: url('../images/tmp/library/25goToSession.png');
+    margin-left: 10px;
+}
+
+.toggle-replay.pressed{
+    background-image: url('../images/tmp/library/25goToSessionActive.png');
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    color: white;
+}
+
+.visibility.public{
+    background-image: url('../images/tmp/public/publicForList.png');
+    background-size: 18px 15px; 
+    margin-left: 10px;
+}
+
+.visibility.pressed{
+    color : white;
+}
+
+.visibility.private.pressed{
+    background-image: url('../images/tmp/brainstorm/byPublicActive.png');
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+    background-position: 3px center;   
+}
+
+.visibility.public.pressed{
+    background-image: url('../images/tmp/brainstorm/byPrivateActive.png'); 
+    background-size: 22px 22px;
+    background-repeat: no-repeat;
+    background-position: 3px center;     
+}
+
+.visibility-slider{
+    -webkit-appearance: none;
+    width: 90px;
+    height: 40px;
+    border-radius: 20px;
+    background: #657B99;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+    background-image: url('../images/tmp/brainstorm/privateforslider.png');
+    background-repeat: no-repeat;
+    background-position: 20px center;
+    background-size: 20px 20px;
+    margin-left: 40px;
+}
+
+.visibility-slider::-webkit-slider-thumb {
+     -webkit-appearance: none;
+     z-index:200;
+     width:36px;
+     height:36px;
+     border-radius:18px;
+     background-image:-webkit-linear-gradient(top, #f2f2f2 0%, #d4d4d4 80%);
+     -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.4);
+}

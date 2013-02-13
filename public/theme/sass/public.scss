@@ -1,0 +1,704 @@
+/* public */
+
+#public .list, #ideas .list {
+   /*-webkit-transition: width 100ms ease-in;*/
+   z-index:1000;
+}
+
+.mosaic .list{
+  /*-webkit-transition: width 100ms ease-in-out;*/
+  width:874px;
+  background: white;
+}
+
+.mosaic .list ul{
+    padding-top: 10px;
+    background: url('../images/tmp/library/bgdeck.jpg');
+    -webkit-box-shadow: inset 0px 5px 5px #ccc;
+    
+  background-size: cover;
+}
+
+.mosaic .tools{
+    padding-bottom: 10px;
+}
+
+.mosaic .tools input{
+    width: 300px;
+}
+
+.mosaic li:nth-child(7n){
+    border-left: 10px solid #657B99;
+}
+
+.mosaic li:nth-child(7n+1){
+    border-left: 10px solid #F27B3D;   
+}
+
+.mosaic li:nth-child(7n+2){
+    border-left: 10px solid #9AC9CD;   
+}
+
+.mosaic li:nth-child(7n+3){
+    border-left: 10px solid #4D4D4D; 
+}
+
+.mosaic li:nth-child(7n+4){
+    border-left: 10px solid #F2E520;
+}
+
+.mosaic li:nth-child(7n+5){
+    border-left: 10px solid #BD262C;
+}
+
+.mosaic li:nth-child(7n+6){
+    border-left: 10px solid #5F8F28;
+}
+
+.mosaic .list-item {
+    display: block;
+    width: 170px;
+    padding: 5px 10px;
+    float: left;
+    height: 180px;
+    margin: 9px;
+    border-radius: 5px;
+    background: white;
+    -webkit-box-shadow: inset 0px 0px 10px #CCCCCC;
+}
+
+.mosaic .list-item span.date{
+    float: none;
+    display: block;
+}
+
+.mosaic .item-body{
+    height: 108px;
+    overflow-y: scroll;    
+}
+
+.mosaic .list-item h3{
+    padding-top: 0px;
+    letter-spacing: 0px;
+}
+
+.mosaic .item-header{
+    height: 40px;
+    overflow: hidden;
+}
+
+.mosaic .item-body p{
+    margin-top: 10px;
+    height: 83px;
+    overflow-y: scroll;
+}
+
+.mosaic .item-footer{
+    float: left;
+    margin-top: 5px;
+    width: 100%;
+}
+
+/*#public .option {
+
+}*/
+#public-list .search, #idea-list .search{
+    float: left;
+}
+
+#public-list .tools-button, #ideas-list .tools-button{
+    display: inline-block;
+    float: left;
+    width: 32px;
+    height: 23px;
+    border: 1px solid #CCCCCC;
+    background: white;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#public-list .tools-button.bydate, #ideas-list .tools-button.bydate{
+    margin-left: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-image: url('../images/tmp/public/byDateDisable.png');   
+}
+
+#public-list .tools-button.byrating, #ideas-list .tools-button.byrating{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: none;
+    background-image: url('../images/tmp/public/byRatingDisable.png');    
+}
+
+#public-list .tools-button.bydate.pushed, #ideas-list .tools-button.bydate.pushed{
+    background-image: url('../images/tmp/public/byDateActive.png');   
+}
+
+#public-list .tools-button.byrating.pushed, #ideas-list .tools-button.byrating.pushed{
+    background-image: url('../images/tmp/public/byRatingActive.png');   
+}
+
+
+#public-list .option.right, #idea-list .option.right, #connect-messages .option.right, #connect-contacts .option.right, #mtc-list .option.right {
+  background:url('../images/tmp/public/plus2.png') no-repeat center center;
+  background-size:20px;
+}
+
+#public-list .option.left,  #idea-list .option.left{
+  background:url('../images/tmp/public/mosaicenabled.png') no-repeat center center;
+  background-size:30px 30px;
+}
+
+#public-list .option.left.mosaic,  #idea-list .option.left.mosaic{
+  background:url('../images/tmp/public/listenabled.png') no-repeat center center;
+  background-size:30px 30px;
+}
+
+/* public details */ 
+#public-detail, #ideas-detail, #message-detail {
+    -webkit-transition: opacity 480ms ease-out;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mosaic #public-detail {
+  opacity: 0.3;
+}
+
+/* factorize with other header buttons */
+#public-detail .option.right, #ideas-detail .option.right {
+  background-size:40%;
+}
+
+#public-detail .option.right[href="#public-favorites"], #ideas-detail .option.right[href="#library-favorites"]{
+    background:url('../images/tmp/public/vote.png') no-repeat center center;
+    background-size: 15px;
+}
+
+#public-detail .option.right[href="#public-edit"], #ideas-detail .option.right[href="#library-edit"] {
+    background:url('../images/tmp/wall/headerModifyYourIdea.png') no-repeat center center;
+    background-size: 20px;
+}
+
+#public-detail .option.left[href="#public-2cents"], #ideas-detail .option.left[href="#library-2cents"]{
+    background:url('../images/tmp/public/2cents.png') no-repeat center center;
+    background-size: 20px;
+}
+
+#public-detail .option.left[href="#public-share"], #ideas-detail .option.left[href="#library-share"]{
+    background:url('../images/tmp/wall/25shareActive.png') no-repeat center center;
+    background-size: 30px;
+}
+
+#ideas-detail .detail-footer .sharedwith{
+    float: left;
+    padding-left: 20px;
+    margin-left: 40px;
+    font-size: 14px;
+    color: #292929;
+    font-style: italic;
+    background: url('../images/tmp/brainstorm/multiuser.png') no-repeat left center;
+    background-size: 15px;
+}
+
+#sharelist {
+    position: relative;
+    margin: 10px 40px;
+    float: left;
+    border-radius: 5px;
+    border: none;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.7);
+}
+
+.detail-contents{
+    background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);  
+}
+
+.detail-header, .detail-body {
+  margin-left:40px;
+  margin-right:40px;
+}
+
+.detail-header {
+  height:80px;
+  padding-top:25px;
+  border-bottom:1px solid #CCC;
+}
+
+.detail-header .avatar, #newmsg .avatar, #msgreply .avatar{
+  float:left;
+  width: 60px;
+  height: 60px;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 30px;
+  background-size: cover;
+}
+
+.detail-header h2, #contactdetails h2{
+  margin-left:15px;
+  font-size:24px;
+  font-weight:normal;
+  display:inline;
+}
+
+.detail-header .date {
+  margin-top:10px;
+}
+
+.detail-header .author {
+  /* may be use an other display */
+  display:inline;
+
+  margin-left:15px;
+  font-weight : bold;
+  font-size: 14 px;
+  color: #F27B3D;
+}
+
+.commentlbl{
+    display: inline;
+    margin-left: 2px;
+    font-size: 14px;
+    font-family:Helvetica;
+    color: black;
+}
+
+.detail-body {
+  font-size:14px;
+  overflow-y: scroll;
+}
+
+.detail-body p{
+    margin-top: 15px;
+    text-align: justify;
+}
+
+#public-detail .detail-footer, #ideas-detail .detail-footer{
+    height: 40px;
+    padding-top: 20px;
+}
+
+.detail-footer{
+    height: 60px;
+}
+
+/* idea voting piece */
+#public-detail .rateIdea, #ideas-detail .rateIdea{
+  position: absolute;
+  left: 490px;
+}
+
+#public-detail a.item-acorn, #ideas-detail a.item-acorn{
+    background-image: url('../images/tmp/wall/ideaVoteActive.png');
+    height: 15px;
+    width: 15px;
+    float: left;
+  }
+  
+#public-detail .rateIdea .rating, #ideas-detail .rateIdea .rating{
+    float: left;
+    font-family: Helvetica;
+    margin-right: 5px;
+    font-size: 13px;
+    line-height: 20px; 
+  } 
+
+#public-detail .publicButton, #ideas-detail .publicButton{
+    float: left;
+    height: 20px;
+    width: 60px;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 20px;
+    font-family: Helvetica;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    margin-left: 5px;
+    background: #657B99; 
+  }
+  
+.pressed{
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+    background: #666666;
+}
+
+.acorns{
+    display: inline-block;
+    width: 140px;
+    height: 20px;
+    margin: auto;
+    background: white;
+    padding: 3px;
+    text-align: center;
+    border: 1px dashed #657b99;
+    border-radius: 5px;
+}
+ 
+.acorns .item-acorn{
+    margin-left:3px;
+    margin-right: 3px;
+    width: 20px;
+    height: 20px;
+    /*background: url('../images/tmp/wall/rateForList.png') no-repeat center center;*/
+}
+
+.votes{
+    color:black;
+    margin-left: 5px;
+    line-height: 20px;
+    font-size: 10px;
+    font-style:italic;
+    font-family: Helvetica;
+    float: left; 
+}
+
+.popup{
+    display: none;
+}
+
+.appear{
+    display: block;
+}
+
+#ratingPopup{
+    position: relative;
+    margin-top: -5px;
+    margin-left: -250px;
+}
+
+/* public detail stack */
+
+/* refactor with .details position absolute */
+.detail-stack {
+  position:absolute;
+  width:630px;
+  overflow-y: scroll;
+}
+.idea-edit .header, .idea-sendmail .header{
+    z-index: 1000;
+}
+
+.idea-edit .input{
+    font-size: 14px;
+}
+
+.form{
+  /* may be set margin instead padding, in this way we don't have to set p margin */
+  padding:20px 20px 0px 20px;
+}
+
+.form p {
+  /* may be try to amelioreate margin and padding to have less css */
+  margin-bottom:20px;
+}
+
+.input {
+  /* keep width 100% size of container with padding */
+  -webkit-box-sizing:border-box;
+  width:100%;
+  padding:0 0 0 10px;
+  border:0px;
+  border-radius: 0px;
+  outline:0;
+  background-image: -webkit-linear-gradient(top, #F2F2F2, #F2F2F2);
+  -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+}
+
+textarea.input {
+  resize:none;
+  padding-top:15px;
+  font-size: 14px;
+}
+
+.idea-sendmail .mail-header, #newmsg .mail-header, #msgreply .mail-header{
+  -webkit-box-sizing:border-box;
+  width:100%;
+  padding:10px 0 0 10px;
+  border:0px;
+  border-radius: 0px;
+  outline:0;
+  background-image: -webkit-linear-gradient(top, #F2F2F2, #F2F2F2);
+  -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+  line-height: 15px;
+  min-height: 25px;
+  max-height: 75px;
+  font-size: 14px;
+}
+
+/* set input size...better solution*/
+textarea.description {
+  height:100px;
+}
+
+textarea.solution {
+  height:175px;
+}
+
+.options{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width: 100%;   
+}
+
+.edit-visibility, .current-visibility{
+    display: inline-block;
+    font-size: 12px;
+    height: 30px;
+}
+
+.edit-visibility{
+    text-align: right;
+    color: #b3b3b3;
+    width: 65%;
+}
+
+.current-visibility{
+    padding-left: 25px;
+    background-position: left center;
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    color: #F27B3D;
+    width: 30%;
+    background-image: url('../images/tmp/public/privateForList.png');
+}
+
+.current-visibility.replay{
+    background-image: url('../images/tmp/library/25goToSession.png');    
+}
+
+.edit-visibility.replay, .current-visibility.replay{
+    margin-top:5px;
+}
+
+.edit-visibility .label, .current-visibility .label{
+    font-family: Pacifico;
+    line-height: 30px;
+}
+
+.edit-visibility span, .current-visibility span{
+    font-family: Helvetica;
+}
+/* may be create a class button ...they are label to stay in p*/
+
+.submit label {
+  -webkit-border-radius:4px;
+  text-align:center;
+  /* inline-block because labels are inline */
+  display:inline-block;
+  padding:6px 0;
+  width:92px;
+  font-weight:bold;
+  font-size:12px;
+  color:white;
+}
+
+.submit .editerror{
+    width: 50%;
+    font-size: 10px;
+    font-family: Helvetica;
+    color: #4D4D4D;
+}
+
+.submit{
+    margin-top: 20px;
+}
+
+.publish {
+  background:#8CAB68;
+  margin-right:2%;
+  width: 24%;
+}
+
+.cancel {
+  background:#E69B73;
+  width: 24%;
+}
+
+/* detail stack send mail */
+.idea-sendmail{
+    background: white;
+}
+
+.idea-sendmail .avatar{
+    margin: 20px;
+}
+
+.idea-sendmail .form{
+    width: 530px;
+    margin-left: 60px;
+    padding: 20px;
+}
+
+.idea-sendmail .input, #newmsg .input, #msgreply .input, #addgroup .input, #groupdetails .input{
+    height:30px;
+    padding-left: 10px;
+    font-size: 14px;
+}
+
+.idea-sendmail textarea.input, #newmsg textarea.input, #msgreply textarea.input{
+    padding: 20px;
+    min-height: 200px;
+    line-height: 20px;
+}
+
+/* send mail attachment styles */
+
+.attachment {
+  border:1px solid #CCC;
+  -webkit-border-radius:5px;
+  padding: 30px 20px 30px 20px;
+}
+
+.attachment-header{
+    padding-bottom: 20px;  
+}
+
+.idea-sendmail .attachment-header .avatar{
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    margin: 0px;
+    float: left;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+.attachment-header h2{
+    margin-left:75px;
+    font-family: Pacifico;
+    font-size: 18px;
+    line-height: 20px;
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+
+.attachment-header .date{
+    font-size: 12px;
+    color: #808080;    
+}
+
+.attachment-header .author{
+    margin-left: 15px;
+    font-size: 16px;
+    color: #F27B3D;
+    font-weight: bold;  
+}
+
+.attachment-header .visibility-icon{
+    display: block;
+    width: 20px;
+    height: 20px;
+    float: right;
+    margin-top: -10px;
+}
+
+.visibility-icon.public{
+    background: url('../images/tmp/public/publicForList.png') no-repeat center center;
+    background-size: contain;   
+}
+
+.visibility-icon.private{
+    background: url('../images/tmp/public/privateForList.png') no-repeat center center;
+    background-size: contain;   
+}
+
+.attachment-body{
+    margin-left: 20px;
+    padding-top: 12px;
+    border-top: 1px solid #cccccc;
+}
+
+.attachment-body p{
+    font-size: 14px;    
+}
+
+.sendmail-footer p.send, .edituserdetails p.update, #groupdetails p.update{
+    padding-bottom: 20px;
+    margin-top: 20px;
+}
+
+.send .editerror, .edituserdetails .update .editerror{
+    float: left;
+    font-weight: bold;
+    color: black;
+    font-size: 12px;
+}
+
+/* detail stack send mail */
+#sharelistauto{
+    width: 568px;
+    margin-top: 2px;
+    position: relative;
+}
+
+.idea-share .selectall{
+    float: right;
+    background: #657B99;
+    color: white;
+    border-radius: 5px;
+    height : 25px;
+    line-height: 25px;
+    font-size: 12px;
+    width: 120px;
+    text-align: center;
+}
+
+.idea-share .form{
+    padding-bottom: 20px;
+}
+
+.idea-share .form legend{
+    width: 100%;
+    color: #657b99;
+    font-size: 16px;
+    padding-bottom: 3px;
+    margin-top: 10px;
+}
+
+.idea-share .search{
+    width: 300px;
+}
+
+.idea-share textarea.sharemessage{
+    height: 200px;
+    line-height: 20px;
+}
+
+.sharecontactlist{
+    margin-top: 10px;    
+}
+
+.sharecontactlist .contact:first-child{
+    border-top: none;
+}
+
+.sharecontactlist li{
+    float: left;
+    width: 284px;
+    height: 34px;
+    border-top: none;
+    padding: 3px 0px 3px 0px;
+    overflow-y: hidden;
+    min-height: 0;
+}
+
+.sharecontactlist p{
+    padding: 0;
+    margin: 0px 0px 0px 10px;
+}
+
+.sharecontactlist .remove-contact{
+    float:right;
+    margin-top: -10px;
+    width: 15px;
+    height: 15px;
+    background: url('../images/tmp/wall/35delete.png') no-repeat center center;
+    background-size: 15px 15px;
+}

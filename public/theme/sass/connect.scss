@@ -1,0 +1,960 @@
+/*CONNECT*/
+
+.messages, .contacts{
+    text-align: center;
+}
+
+#connect-messages .selectors, #connect-contacts .selectors{
+    display: inline-block;
+    margin: 0 auto;
+    height: 55px;
+    padding-top:5px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+#connect-messages .selectors li, #connect-contacts .selectors li{
+    width: 65px;
+    font-size: 11px;
+    border-radius: 0px;
+    border-right: none;
+    color: black;
+}
+
+#connect-messages .selectors li.pressed, #connect-contacts .selectors li.pressed{
+    color: white;
+}
+
+#connect-messages .selectors li:first-child, #connect-contacts .selectors li:first-child{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#connect-messages .selectors li:last-child, #connect-contacts .selectors li:last-child{
+    border-right: 1px solid #CCCCCC;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.messages input, .contacts input{
+    margin-top: 10px;
+    margin-left: -70px;
+}
+
+.msglist, .contactlist{
+    margin-top: 20px;
+}
+
+.msg, .contact{
+    padding: 10px;
+    text-align: left;
+    min-height: 50px;
+    overflow: hidden; 
+}
+
+.msg .actionbar, .contact .actionbar{
+    margin-left: -10px;
+    position: absolute;
+    border: 1px solid rgba(0,0,0,0.8);
+}
+
+.msg:first-child, .contact:first-child{
+    border-top: 1px solid #cccccc;
+}
+
+.msg-author, .contact-name{
+    font-size:16px;
+    color: black;
+}
+
+.msg-subject, .contact-intro{
+    font-style: italic;
+    font-size: 14px;
+    color: #4D4D4D;
+}
+
+.msg-author, .msg-subject, .contact-name, .contact-intro{
+    margin-left: 50px;
+    font-weight: normal;
+    margin-bottom: 5px;
+}
+
+.msg .date{
+    color: #808080;
+    font-size: 12px;
+    margin-top: -20px;
+}
+
+.unread {
+    font-weight: bold;
+}
+
+#msg-detail{
+    overflow-y: scroll;
+   -webkit-overflow-scrolling: touch;
+                                                                                     }
+
+.msgsplash{
+    width: 630px;
+    height:712px;;
+}
+
+.innersplash{
+    width:100%;
+    height:100%;
+    background: white;
+    background-image: url('../images/tmp/brainstorm/doctordeedee87x85.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    line-height: 200px;
+    font-family: Pacifico;
+    font-size: 24px;
+    color: #404040;
+}
+
+#msgdetail .header, #addcontact .header, #addgroup .header{
+    text-align: left;
+}
+
+
+#msgdetail .header span{
+    margin-left: 10px;
+    font-size: 14px;
+    letter-spacing: 0;
+}
+
+#msgdetail .header .subjectlbl, #addcontact .header span, #addgroup .header span{
+    margin-left: 20px;
+}
+
+#msgdetail .detail-header{
+    margin: 0 20px 0 20px;
+    height: auto;
+    padding-bottom: 20px;
+}
+
+#msgdetail .detail-header p{
+    margin-left: 80px;
+    margin-top: 3px;
+}
+
+#msgdetail .toList{
+    font-size: 14px;
+    color: #808080;
+}
+
+#msgdetail .detail-header .date{
+    font-size: 14px;
+    float: none;
+}
+
+#msgdetail .detail-body{
+    padding-bottom: 10px;
+}
+
+#msgdetail .showdoc{
+    margin: 10px auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background: url('../images/tmp/disableLibrary.png') no-repeat center center;
+    background-size: contain;
+    -webkit-box-shadow: inset 0px 0px 3px gray;
+}
+
+#msgdetail .showdoc.pushed{
+    background: gray url('../images/tmp/activeLibrary.png') no-repeat center center;
+    background-size: contain;
+    -webkit-box-shadow: inset 0px 0px 3px black;  
+}
+
+.msgoptions{
+    float: right;
+}
+
+.msgoptions .defaultmsgoption{
+    display: inline-block;
+}
+
+.msgoptions .msgoptionlist{
+    position: absolute;
+    top: 105px;
+    right: 20px;
+    display: inline-block;
+    background: white;
+}
+
+.defaultmsgoption div, .msgoptionlist div{
+    float: left;
+    background-size: contain;
+}
+
+.msgoptionlist div{
+    height: 30px;
+    text-align: right;
+}
+
+.msgreply{
+    background: url('../images/tmp/connect/buttonMinSendDisable.png') no-repeat center;
+    width: 40px;
+    height: 40px;
+}
+
+.msgreply.pushed{
+    background: url('../images/tmp/connect/buttonMinSendActive.png') no-repeat center;
+    background-size: contain;
+}
+
+.more{
+    background: url('../images/tmp/connect/buttonMinSeeMoreDisable.png') no-repeat center;
+    width:30px;
+    height: 40px;  
+}
+
+.more.pushed{
+    background: url('../images/tmp/connect/buttonMinSeeMoreActive.png') no-repeat center;
+    background-size: contain;  
+}
+
+.msgoptionlist.invisible{
+    display: none;
+}
+
+.msgoptionlist .sort-button{
+    border-radius: 0px;
+    border-left: none;
+    margin: 0;
+    line-height: 30px;
+    font-size: 11px;
+    width: 100px;
+    text-align: center;
+    float: left;
+}
+
+.msgoptionlist .sort-button.pushed{
+    color: white;
+    background: #4D4D4D;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+}
+
+.msgoptionlist .replyall{
+    border-left: 1px solid #cccccc;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;    
+}
+
+.forward{
+    
+}
+
+.msgoptionlist .deletemsg{    
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px; 
+}
+
+.goto2q{
+    width: 50px;
+    height: 50px;
+    background: url('../images/tmp/connect/twocent.png') no-repeat center center;
+    background-size: contain;
+    margin: 0 auto;
+}
+
+.goto2q.pushed{
+    background: url('../images/tmp/connect/twocentactive.png') no-repeat center center;
+    background-size: contain;
+}
+
+.acceptrejectCXR{
+    height: 50px;
+    margin-right: 20px;
+    text-align: right;
+}
+
+.acceptCXR, .rejectCXR{
+    display: inline-block;
+    padding-left: 35px;
+    height: 35px;
+    line-height: 35px;
+    width: 50px;
+    text-align: left;
+    border: 1px solid #CCCCCC;
+    font-family: helvetica;
+    color: #404040;
+    font-size: 12px;
+}
+
+.acceptCXR{
+    background-image: url('../images/tmp/connect/accept.png');
+    background-size: 25px 25px;
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;   
+}
+
+.rejectCXR{
+    background-image: url('../images/tmp/connect/reject.png');
+    background-size: 25px 25px;
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    border-left: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;    
+}
+
+.acceptCXR.pushed, .rejectCXR.pushed{
+    color: white;
+    background: #4D4D4D;
+    background-size: 25px 25px;
+    background-position: 5px center;
+    background-repeat: no-repeat;    
+}
+
+.acceptCXR.pushed{
+    background-image: url('../images/tmp/connect/accept.png');    
+}
+
+.rejectCXR.pushed{
+   background-image: url('../images/tmp/connect/reject.png'); 
+}
+
+#newmsg .avatar, #msgreply .avatar{
+    margin: 20px;
+}
+
+#newmsg .form, #msgreply .form{
+    margin-left: 80px;
+    padding: 20px;
+}
+
+#newmsg .form p, #msgreply .form p{
+    margin-bottom: 10px;
+}
+
+.form legend, #msgreply .subject{
+    font-family: pacifico;
+    font-size: 12px;
+}
+
+.autocontact{
+    position: absolute;
+    background: white;
+    border: 1px solid #CCC;
+    width: 488px;
+    margin-top: -10px;
+    height: 120px;
+    padding: 10px;
+    -webkit-box-shadow: inset 0 0 3px 1px rgba(0,0,0,0.7);
+    z-index: 1000;
+    
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.autocontact li{
+    float: left;
+    font-size: 14px;
+    border-bottom: 1px solid #cccccc;
+    color: #404040;
+    width: 190px;
+    margin-left: 15px;
+    height: 30px;
+    height: 25px;
+    line-height: 25px;
+    padding-left: 25px;
+    background: url('../images/tmp/connect/contactDisable.png') no-repeat left center;
+    background-size: 25px 25px;
+}
+
+.autocontact li.group{
+    background: url('../images/tmp/connect/folderDisable.png') no-repeat left center;
+    background-size: 25px 25px;    
+}
+
+.autocontact li.selected{
+    color: black;
+    font-weight: bold;
+    background: url('../images/tmp/connect/contactActive.png') no-repeat left center;
+    background-size: 25px 25px;   
+}
+
+.autocontact li.selected.group{
+    background: url('../images/tmp/connect/folderActive.png') no-repeat left center;
+    background-size: 25px 25px;
+}
+
+.autoclose{
+    float: right;
+    width: 20px;
+    height: 20px;
+    display: block;
+    background: url('../images/tmp/brainstorm/closeFrame.png') no-repeat center center;
+    background-size: 15px 15px;
+}
+
+#msgreply blockquote{
+    font-size: 12px;
+    font-style: italic;
+    padding: 5px;
+    border: 1px dashed #657B99;
+}
+
+.signature{
+    -webkit-box-sizing: border-box;
+    width: 100%;
+    padding: 10px 0 0 10px;
+    border: 0px;
+    border-radius: 0px;
+    outline: 0;
+    background-image: -webkit-linear-gradient(top, #F2F2F2, #F2F2F2);
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.3);
+    line-height: 15px;
+    min-height: 65px;
+    max-height: 75px;
+    font-size: 14px;
+}
+
+#contactdetails .avatar{
+  float:left;
+  width: 80px;
+  height: 80px;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 40px;
+  background-size: cover;
+}
+
+#contactdetails .detail-contents{
+    padding: 20px;
+}
+
+#contactdetails .basicinfo{
+    margin-left: 120px;
+}
+
+#contactdetails .contactdashboard{
+    margin-top: 10px;
+    border: 1px dashed #cccccc;
+    border-radius: 5px;
+    width: 588px;
+    margin-top: 30px;
+    height: 240px;
+}
+
+#contactdetails .contactstats, #contactdetails .contactbadges{
+    float: left;
+    width: 50%;
+    height: 240px;
+    overflow-y: scroll;
+}
+
+.contactbadge{
+    height: 86px;
+}
+
+.contactbadge div{
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 5px auto;   
+}
+
+#contactdetails .contactstats legend, #contactdetails .contactbadges legend{
+    margin: 10px;
+    width: 90%;
+    border-bottom: 2px solid #cccccc;
+}
+
+.contactstats .userscore{
+    width: 90%;
+    margin: 0px 0px 0px 10px;
+    border: none;
+}
+
+.contactstats table{
+    margin-left: 10px;
+    width: 90%;
+    border-spacing: 0px;
+    
+}
+
+#contactdetails .contactbadges label{
+    font-family: Pacifico;
+    font-size: small;
+}
+
+#contactdetails .contactnotes{
+    height: 295px;
+    padding: 20px;
+}
+
+#contactdetails .editnotes{
+    margin-top: -20px; 
+}
+
+#uploadnotes, #cancelnotes{
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    float: right;
+    margin-top: -20px;
+}
+
+#uploadnotes{
+    background: url('../images/tmp/connect/updateNote.png') no-repeat center center;
+    background-size: 25px 25px;
+    margin-right: 60px;   
+}
+
+#cancelnotes{
+    background: url('../images/tmp/connect/deleteNote.png') no-repeat center center;
+    background-size: 20px 20px;
+    margin-right: 20px;
+}
+
+#uploadnotes.pushed, #cancelnotes.pushed{
+    -webkit-box-shadow: inset 0 0 1px 1px #cccccc;
+}
+
+#contactdetails .contactnotes textarea{
+    height: 260px;
+    margin-top: 10px;
+    background-color: transparent;
+    background-image: url('../images/tmp/connect/bg-note.jpg');
+    background-size: cover;
+    padding-left: 35px;
+    font-family: Pacifico;
+    font-size: large;
+    color: #292929;
+}
+
+#addcontact .detail-contents, #addgroup .detail-contents, #groupdetails .detail-contents{
+    padding: 20px;
+    background: white;
+    -webkit-box-shadow: none;
+}
+
+#addgroup .detail-contents, #groupdetails details-contents{
+    max-height: 672px;
+    overflow-y: scroll;
+}
+
+.addcontactform{
+    color: #657b99;
+    margin-left: 100px;
+}
+
+#addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend, #groupdetails legend, .aboutcontent legend{
+    width:100%;
+    padding-bottom: 5px;
+    font-family: Pacifico;
+    color: #657b99;
+    border-bottom: 1px solid #cccccc;
+    margin-top: 15px;
+}
+
+.addcontactform p.half{
+    width: 46%;
+    padding: 2%;
+    padding-top: 0;
+    float: left;
+    font-size: 14px;
+    text-align: justify;
+}
+
+.addcontactform .search{
+    margin-top: 15px;
+    width: 460px;
+    background-position: 475px center;
+}
+
+.addcontactform .searchcontact{
+    width: 495px;
+}
+
+.addcontactform .search.half{
+    width: 205px;
+    background-position: 220px center;
+}
+
+.addcontactform .search.half.right{
+    margin-left: 15px;
+}
+
+.addcontactform .searchresult{
+    min-height: 20px;
+    margin-top: 10px;
+    line-height: 20px;
+    font-style: italic;
+    color: #F27B3D;
+}
+
+#addcontact .contactlist{
+    padding: 0px 20px 0px 20px;
+    margin-top: 0px;
+}
+
+#addcontact .contact{
+    width: 48%;
+    float: left;
+    height:70px;
+    border-top: none;
+    padding-bottom: 5px;
+    padding-left:1%;
+    padding-right: 1%;
+}
+
+#addcontact .select-contact{
+    pointer-events:auto;
+    display: block;
+    float:right;
+    margin-top: -43px;
+    width: 14px;
+    height:14px;
+    border: 1px solid #cccccc;
+    color: #5F8F28;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: bold;
+}
+
+#addcontact textarea.input{
+    margin-top: 20px;
+    height: 100px;
+}
+
+.addcontactbtns{
+    display: inline-block;
+    text-align: right;
+    position: absolute;
+    bottom: 290px;
+    right: 20px;
+}
+
+#addcontact .addcontactbtns{
+    bottom: 310px;
+}
+
+.addct{
+    display: block;
+    float: left;
+    width:40px;
+    height: 40px;
+    background: url('../images/tmp/connect/buttonAddDisable.png') no-repeat center center;
+    background-size: contain;   
+}
+
+.cancelct{
+    display: block;
+    float: left;
+    width:40px;
+    height: 40px;
+    background: url('../images/tmp/connect/buttonDeleteDisable.png') no-repeat center center;
+    background-size: contain;
+}
+
+
+.addct.pushed{
+    background: url('../images/tmp/connect/buttonAddActive.png') no-repeat center center;
+    background-size: contain;    
+}
+
+.cancelct.pushed{
+    background: url('../images/tmp/connect/buttonDeleteActive.png') no-repeat center center;
+    background-size: contain;    
+}
+
+#CXRconfirm{
+    width: 100%;
+    height: 100%;
+    background:rgba(0,0,0,0.65) url('../images/tmp/bg.png') repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+#CXRconfirm span{
+    display: inline-block;
+    margin-top: 300px;
+    padding: 10px;
+    font-size: 16px;
+    font-family: Helvetica;
+    border : 1px solid #657B99;
+    border-radius: 5px;
+    background: white;
+}
+
+#toggleadd{
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 36px;
+    height: 36px;
+}
+
+#toggleadd.group{
+    display: block;
+    background: url('../images/tmp/connect/folderDisable.png') no-repeat center center;
+    background-size: contain;    
+}
+
+#toggleadd.user{
+    display: block;
+    background: url('../images/tmp/connect/contactDisable.png') no-repeat center center;
+    background-size: contain;    
+}
+
+#toggleadd.group.pressed{
+      background: url('../images/tmp/connect/folderActive.png') no-repeat center center;
+    background-size: contain;    
+}
+
+#toggleadd.user.pressed{
+    background: url('../images/tmp/connect/contactActive.png') no-repeat center center;
+    background-size: contain;    
+}
+
+#addgroup .folderpic, #groupdetails .folderpic{
+    float: left;
+    width: 60px;
+    height: 60px;
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url('../images/tmp/connect/graygroup.png');    
+}
+
+#addgroup form, #groupdetails form{
+    margin-left: 80px;
+}
+
+#addgroup textarea.input, #groupdetails textarea.input{
+    height: 80px;
+    margin-top: 10px;
+}
+
+#addgroup .groupcolors, #groupdetails .groupcolors{
+    display: inline-block;
+    padding-top: 10px;
+}
+
+.groupcolors li{
+    display: block;
+    float:left;
+    margin-right: 10px;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 16px;
+    color: white;
+    text-align: center;    
+}
+
+.addgroupbtns{
+    display: inline-block;
+}
+
+#profile-content{
+    padding: 20px;
+}
+
+.addgrpcontacts .search{
+    margin-top: 10px;
+    width: 300px;
+}
+
+.addgrpcontacts .autocontact{
+    position: relative;
+    margin-top: 10px;
+}
+
+#addgroup .contactlist legend, #addgroup .addgrpcontacts legend, #groupdetails .contactlistdetail legend, #groupdetails .addgrpcontacts legend{
+    background: url('../images/tmp/public/hide.png') no-repeat right center;
+    background-size: 15px 15px;
+}
+
+#addgroup legend.hide, #groupdetails legend.hide{
+    background: url('../images/tmp/public/show.png') no-repeat right center;
+    background-size: 15px 15px;    
+}
+
+#addgroup .contactlist li, #groupdetails .contactlistdetail li{
+    border-top: none;
+    width: 45%;
+    margin-right: 10px;
+    float: left;
+    height: 65px;
+    padding-bottom: 0px;
+}
+
+#groupdetails .contactlistdetail{
+    display: inline-block;
+    width: 100%;
+}
+
+#addgroup .errormsg, #groupdetails .errormsg{
+    float: left;
+    display: block;
+    line-height: 40px;
+    width: 400px;
+    height:40px;
+    margin-left: 80px;
+    font-style: italic;
+    font-family: helvetica;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#addgroup .remove-contact, #group-details .remove-contact{
+    width: 20px;
+    height: 20px;
+    float: right;
+    background: url('../images/tmp/connect/deleteBlue.png') no-repeat center center;
+    background-size: contain;
+    margin-top: -20px;
+}
+
+#mtc-list{
+    width: 301px;
+    float: left;
+    height: 748px;
+    background: white;
+    -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+}
+
+#mtc-list legend{
+    font-family: Pacifico;
+    color: #657B99;    
+    border-bottom: 1px solid #657B99;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    width: 261px;
+    -webkit-padding-start: 0px;
+    -webkit-padding-end: 0px;
+}
+
+#mtc-list input{
+    margin-left: 20px;
+    margin-bottom: 10px;
+    width: 226px;
+}
+
+#mtc-list .selectcontact .rightcaret{
+    border-bottom: 12px solid transparent;
+    border-top: 12px solid transparent;
+    border-left: 10px solid #808080;
+    margin-right: 5px;
+    float: right;
+}
+
+#mtc-list .autocontact{
+    float: right;
+    margin-left: 321px;
+    margin-top: -40px;
+}
+
+#mtc-list .entercontact{
+    width: 200px;
+    hight: 30px;
+    line-height: 30px;
+    font-size: 12px;
+}
+
+#connect-tc .twoqbuttons{
+    margin: 20px 73px 0px 74px;
+    height: 40px;
+}
+
+#connect-tc .twoqbuttons li{
+    width: 50px;
+    height: 30px;
+    float: left;
+    border: 1px solid #cccccc;
+}
+#connect-tc .twoqbuttons li.pushed{
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
+}
+
+#connect-tc .twoqbuttons li:first-child{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: none;
+}
+
+#connect-tc .twoqbuttons li:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: none;
+}
+
+#connect-tc .twoqbuttons li.mytwoq{
+    background: url('../images/tmp/connect/2questiondisabled.png') no-repeat center center;
+    background-size: 35px 35px;
+}
+
+#connect-tc .twoqbuttons li.contacttwoq{
+    background: url('../images/tmp/connect/contactDisable.png') no-repeat center center;
+    background-size: 35px 35px;
+}
+
+#connect-tc .twoqbuttons li.mytwoc{
+    background: url('../images/tmp/connect/twocent.png') no-repeat center center;
+    background-size: 35px 35px;
+}
+
+#connect-tc .twoqbuttons li.mytwoq.pushed{
+    background: #4D4D4D url('../images/tmp/connect/2questionactive.png') no-repeat center center;
+    background-size: 35px 35px;    
+}
+
+#connect-tc .twoqbuttons li.contacttwoq.pushed{
+    background: #4D4D4D url('../images/tmp/connect/contactActive.png') no-repeat center center;
+    background-size: 35px 35px;    
+}
+
+#connect-tc .twoqbuttons li.mytwoc.pushed{
+    background: #4D4D4D url('../images/tmp/connect/twocentactive.png') no-repeat center center; 
+    background-size: 35px 35px;   
+}
+
+.twocent-detail .detail-header{
+    height: 120px;
+}
+
+.twocent-detail p{
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 75px;
+}
+
+.twocent-detail .detail-footer{
+    padding: 10px 40px 10px 30px;
+    height: 40px;
+}
+
+.twocent-detail .tcbutton{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    float: left;
+    background: url('../images/tmp/connect/twocent.png') no-repeat center center;
+    background-size: contain;    
+}
+
+.twocent-detail .tcbutton.pressed{
+    background: url('../images/tmp/connect/twocentactive.png') no-repeat center center;
+    background-size: contain;
+}
+
+.twocent-detail .tcreplies{
+    height: 40px;
+    line-height: 40px;
+    float: right;
+    font-size: 12px;   
+}

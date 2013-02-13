@@ -1,0 +1,835 @@
+#dashboard-profile, #dashboard-settings, #dashboard-about{
+    background: white;
+    margin-left:93px;
+    width: 100%;
+    height: 748px;
+}
+
+#dashboard-profile .leftprofile, #dashboard-profile .rightprofile{
+    height: 692px;
+    overflow-y: scroll;
+    position: absolute;     
+}
+
+#dashboard-profile .leftprofile{
+    width: 578px;
+}
+
+#dashboard-profile .rightprofile{
+    width: 293px;
+    left: 710px; top: 60px;
+}
+
+.userdetails h2{
+    font-family: Pacifico;
+    text-align:center;
+    margin: -20px 15px -20px 0;
+}
+
+.userdetails blockquote{
+    text-align: center;
+    font-family:Helvetica;
+    font-size:14px;
+    color: #808080;
+    -webkit-margin-after: 0px;
+    -webkit-margin-before: 18px;
+}
+
+.userdetails, .edituserdetails, .mystats, .recentactivity{
+    width: 536px;
+    padding: 20px;
+    border: 1px dashed #cccccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.userscore, .userachievements{
+    border: 1px dashed #cccccc;
+    border-radius: 5px;
+    margin-top: 20px;   
+}
+
+.userdetails .editbtn{
+    float: right;
+    width: 20px;
+    height: 20px;
+    background: url('../images/tmp/wall/lastModified14-01.png') no-repeat center center;
+    background-size: contain;
+    margin-top: -10px;
+    margin-right: -5px;
+}
+
+.userdetails .cd-picarea{
+    padding:0;
+    width: 100%;
+}
+
+.userdetails .cardpicture{
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    margin-top: 32px;
+}
+
+.userdetails .cardinfo{
+    width: 441px;    
+}
+
+.userdetails .cd-contentarea{
+    padding: 0;
+    width: auto;
+    height: auto;
+    margin-top: 15px;
+}
+
+.userdetails .cd-contentarea p{
+    border-top: 1px solid #657b99;
+    font-size: 12px;
+}
+
+.userdetails .cd-contentarea p.fb, .userdetails .cd-contentarea p.gp, .userdetails .cd-contentarea p.tw, .userdetails .cd-contentarea p.lin{
+    border-top: none;
+    padding-left: 25px;
+}
+
+.userdetails .cd-contentarea p.fb{
+    border-top: 1px solid #657b99;
+    background: url('../images/tmp/profile/fb.png') no-repeat;
+    background-size: contain;    
+}
+
+.userdetails .cd-contentarea p.gp{
+    background: url('../images/tmp/profile/google.png') no-repeat;
+    background-size: contain;    
+}
+
+.userdetails .cd-contentarea p.tw{
+    background: url('../images/tmp/profile/twitter.png') no-repeat;
+    background-size: contain;    
+}
+
+.userdetails .cd-contentarea p.lin{
+    background: url('../images/tmp/profile/linkedin.png') no-repeat;
+    background-size: contain;    
+}
+
+.userdetails .contentTitle{
+    color: #657B99;
+}
+
+.userdetails .cd-introlbl{
+    background-image: url('../images/tmp/decks/lastModified14-01.png');    
+}
+
+.userdetails legend, .edituserdetails .addtlinfo legend{
+    border-bottom: 1px solid #657b99;
+}
+
+
+.edituserdetails .socialnw li{
+    float: left;
+    padding-left: 48px;
+    width: 220px;
+    background-size: 35px;
+    background-position: left 0px;
+    background-repeat: no-repeat;
+}
+
+.socialnw li.fb{
+    background-image:url('../images/tmp/profile/fb.png');
+}
+
+.socialnw li.gp{
+    background-image:url('../images/tmp/profile/google.png');
+}
+
+.socialnw li.lin{
+    background-image:url('../images/tmp/profile/linkedin.png');
+}
+
+.socialnw li.tw{
+    background-image:url('../images/tmp/profile/twitter.png');
+}
+
+.edituserdetails .socialnw input{
+   width: 225px;
+   font-size: 12px;
+}
+
+.completionbar{
+    margin-top: 10px;
+    display: block;
+    width: 540px;
+    height: 20px;
+    border-radius: 5px;
+    background-image: url('../images/tmp/bg2.png');
+    background-size: cover;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+}
+
+.innerbar{
+    background: green;
+    display: inline-block;
+    height: 20px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+
+.mystats legend, .recentactivity legend, .edituserdetails .addtlinfo legend, #contactdetails legend{
+    font-family: Pacifico;
+    color: #657B99;    
+}
+
+li.innerbar{
+    float: left;
+    border-radius: 0px;
+}
+
+.mystats table{
+    width: 100%;
+    border-spacing: 0px;
+    margin-top: 10px;
+}
+
+.mystats th, .mystats td, .contactstats th, .contactstats td{
+    border-bottom: 2px solid #657b99;
+}
+
+.mystats th, .contactstats th{
+    width: 90%;
+    text-align: left;
+    font-family: Pacifico;
+    font-size: 12px;
+}
+
+.mystats td, .contactstats td{
+    width: 10%;
+    text-align: right;
+    font-family: Helvetica;
+    font-size: 12px;
+}
+
+.myids th{
+    color: #657B99;
+}
+
+li.myids{
+    background: #657B99;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.myss th{
+    color: #9ac9cd;
+}
+
+li.myss{
+    background: #9ac9cd;
+}
+
+.myctcts th{
+    color: #e3d71e;
+}
+
+li.myctcts{
+    background: #e3d71e;
+}
+
+.my2q th{
+    color: #f27b3d;
+}
+
+li.my2q{
+    background: #f27b3d;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.my2q th, .my2q td{
+    border-bottom: none;
+}
+
+.recentactivity{
+    padding: 20px;
+}
+
+.recentactivity ul{
+    width: 100%;
+    margin-top: 20px;
+}
+
+.recentactivity li{
+    min-height: 56px;
+    display: table-row;
+}
+
+.recentactivity li:nth-child(odd){
+    background: #F2F2F2;
+}
+
+.recentactivity li > div, .recentactivity li > p{
+    /*float: left;*/
+   display: table-cell;
+   vertical-align: middle;
+}
+
+.newsdate{
+    font-family: Helvetica;
+    font-size: 14px;
+    color: #808080;
+    text-align: center;
+    width: 112px;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #cccccc;
+}
+
+.newstype{
+    display: inline-block;
+    height: 56px;
+    width: 56px;
+    background: blue;
+}
+
+.newstext{
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 12px;
+    display: table-cell;
+    width: 356px;
+}
+
+.newsinfo{
+    font-family: Pacifico;
+    color: black;
+}
+
+.infoslider{
+    -webkit-appearance: none;
+    position: absolute;
+    top:56px;
+    right: 97px;
+    margin-left: 77px;
+    width: 140px;
+    height: 30px;
+    border-radius: 15px;
+    background: #9AC9CD;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);   
+}
+
+.infoslider::-webkit-slider-thumb {
+     -webkit-appearance: none;
+     z-index:200;
+     width:26px;
+     height:26px;
+     border-radius:13px;
+     background-image:-webkit-linear-gradient(top, #f2f2f2 0%, #d4d4d4 80%);
+     -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.4);
+}
+
+.slidertext{
+    position: absolute;
+    width: 140px;
+    top: 56px;
+    line-height: 30px;
+    right: 97px;
+    color: white;
+    font-family: Pacifico;
+    text-align: center;
+}
+
+.userscore .ip {
+    font-size: 20px;
+}
+
+.userscore{
+    height: 70px;
+    margin-top: 50px;
+    background-image: url('../images/tmp/brainstorm/yourScore40.png');
+    background-position: 15px center;
+    background-repeat: no-repeat;
+    background-size: 40px;
+    font-size: 14px;
+    padding-left: 65px;
+    font-family: pacifico;
+    color: #657B99;
+    line-height: 70px;
+}
+
+.userachievements{
+    background: #F2F2F2;
+    padding: 20px;
+    font-family: Pacifico;
+    font-size: 14px;
+    display: table-cell;
+}
+
+.userachievements .grade{
+    color: #657B99;
+    font-size:16px;
+}
+
+.userachievements .badges, #contactbadges .badges{
+    display: inline;
+    height: 125px;
+}
+
+.userachievements .badge, .contactbadge{
+    float:left;
+    text-align:center;
+    width: 83px;
+}
+
+.userachievements .badge div{
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 10px auto;  
+}
+
+.userachievements .badge legend, .contactbadge label{
+    width: 60px;
+    margin: 0 auto;
+    -webkit-padding-start: 0px;
+    -webkit-padding-end: 0px;
+    line-height:100%;
+}
+
+#leaderboard{
+    padding-left: 20px;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+}
+
+#leaderboard ul{
+    margin-top: 75px;
+    width: 891px;
+}
+
+#leaderboard li:nth-child(odd){
+    background: #F2F2F2;
+}
+
+#leaderboard li{
+    height: 60px;
+}
+
+#leaderboard li > div {
+    float: left;
+}
+
+#leaderboard .avatar{
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-radius: 20px;
+    background-size: cover;
+}
+
+#leaderboard .username{
+    color: #292929;
+    font-size: 16px;
+    font-family: Pacifico;
+    line-height: 60px;
+    margin-left: 5px;
+    width: 583px;
+    border-right: 1px solid #CCCCCC;
+}
+
+#leaderboard .grade, #leaderboard .distinction{
+    width: 60px;
+    height: 60px;
+}
+
+#leaderboard .score{
+    font-family: Pacifico;
+    font-size: 21px;
+    text-align: center;
+    line-height: 60px;
+    width: 120px;
+    border-left: 1px solid #cccccc;
+}
+
+.edituserdetails .setavatar{
+    float: left;
+    height: 671px;
+    width: 110px;
+    display: block;
+}
+
+.edituserdetails .currentavatar{
+    width:80px;
+    height: 80px;
+    border-radius: 40px;
+}
+
+.edituserdetails .profileinfo{
+    height: 671px;
+    width: 426px;
+    display: block;
+    float: left;
+}
+
+.edituserdetails label{
+    color: #292929;
+    font-family: Helvetica;
+    font-size: 14px;
+}
+
+.edituserdetails .input{
+    height: 30px;
+    margin-top: 3px;
+    margin-bottom: 10px;
+    color: #666666;
+    font-family: Helvetica;
+    font-size: 14px;
+}
+
+.edituserdetails .firstname, .edituserdetails .lastname, .edituserdetails .city, .edituserdetails .zipstate{
+    width: 208px;
+    float: left;    
+}
+
+.edituserdetails .firstname, .edituserdetails .city{
+    padding-right: 5px;    
+}
+
+.edituserdetails .lastname, .edituserdetails .zipstate{
+    padding-left: 5px;   
+}
+
+.edituserdetails .state{
+    float: left;
+    width: 58px;
+    margin-right: 10px;   
+}
+
+.edituserdetails .zip{
+    float: left;
+    width: 140px;  
+}
+
+.edituserdetails .dob{
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
+
+.edituserdetails .dob input, .edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select{
+    height: 30px;
+    border-radius: 5px;
+    line-height: 28px;
+    padding: 0px;
+    border: 1px solid #CCC;
+    text-align: center;
+    color: #292929;
+    font-family: Helvetica;
+    font-size: 14px;   
+}
+
+.edituserdetails .dob .day{
+    width: 40px;
+    margin-right: 10px;
+}
+
+.edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select{
+    -webkit-appearance: none;
+    text-align: center;
+    width: 120px;
+    padding-left: 5px;
+    padding-right: 30px;
+    margin-right: 10px;
+    background: url('../images/tmp/profile/buttonMinSeeMoreDisable.png') no-repeat right center;
+    background-size: 30px 30px;
+}
+
+.edituserdetails .dob .year{
+    width: 60px;
+}
+
+.edituserdetails .family, .edituserdetails .job select{
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
+
+.edituserdetails .family select.status{
+    width: 180px;
+    margin-bottom: 5px;
+}
+
+.edituserdetails .family select.children{
+    width: 50px;
+    margin-bottom: 5px;
+}
+
+.edituserdetails .addtlinfo label{
+    display: block;
+    float: left;
+    margin-bottom: 3px;
+}
+
+.edituserdetails .addtlinfo input, .edituserdetails .addtlinfo label{
+    width: 200px;
+}
+
+.edituserdetails .addtlinfo input.description, .edituserdetails .addtlinfo label.description{
+    width: 326px;
+    margin-left: 10px;
+}
+
+.edituserdetails .addtlinfo legend{
+    margin-bottom: 5px;
+}
+
+.edituserdetails .importbutton{
+    margin: 10px 0;
+}
+
+.edituserdetails .importbutton div{
+    line-height: 15px;
+    margin-left: 0px;
+    width: 70px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.edituserdetails .defaultAvatar{
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+.edituserdetails .avatarcache{
+    width: 80px;
+    height: 80px;
+    background: url('../images/tmp/brainstorm/reload.png') no-repeat center center;
+    background-size: contain;
+    margin-top: -84px;
+    border-radius: 40px;
+    opacity: 0.6;
+}
+
+#changeavatar p{
+    font-size: 12px;
+    color: #292929;
+    text-align: center;
+    width: 60px;
+    padding: 10px;
+}
+
+#changeavatar .checkbox{
+    display: block;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #cccccc;
+    margin: 10px;
+    line-height: 18px;
+    color: #5F8F28;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#changeavatar .defaultlist div{
+    float: left;
+}
+
+#changeavatar .uploadprogress{
+    float: none;
+    height: 15px;
+    background: #657B99;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+    margin-right: 20px;
+    border-radius: 3px;
+    font-size: smaller;
+    line-height: 15px;
+    color: white;
+    text-align:center;
+    
+}
+
+#rotate{
+    width: 20px;
+    height: 15px;
+    background: url('../images/tmp/profile/rotate.png') no-repeat center center;
+    background-size: contain;
+    float: right;
+    margin-right: 15px;
+    margin-top: -80px;
+}
+
+.comingsoon{
+    color: gray;
+    font-family: Pacifico;
+    font-size: 48px;
+    display: table-cell;
+    width: 630px;
+    height: 748px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.settingscontent{
+    width: 891px;
+    height: 672px;
+    padding: 20px;
+    overflow-y:scroll;
+}
+
+.settingmodule{
+    margin-bottom: 20px;
+    padding: 20px;
+    min-height: 260px;
+    background: #f2f2f2;
+    border: 1px dashed #cccccc;
+    border-radius: 5px;
+}
+
+#dashboard-about .progressbar{
+    position: relative;
+    margin-bottom: 30px;
+}
+
+#dashboard-about .aboutcontent{
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #657b99;
+    border-radius: 5px;
+    width: 851px;
+    height: 530px;
+    overflow-y: scroll;
+}
+
+.aboutcontent textarea{
+    height: 300px;
+    margin-bottom: 15px;   
+}
+
+.aboutcontent legend:first-child{
+    margin-top: 0px;
+}
+
+.aboutcontent legend{
+    padding: 0px;
+}
+
+.aboutcontent a{
+    text-decoration: underline;
+}
+
+#dashboard-about .aboutcontent legend.support{
+    border: none;    
+}
+
+.aboutcontent p, .aboutcontent ul{
+    line-height: 25px;
+    font-size: 18px;
+    font-family: Helvetica;
+    text-align: justify;
+    color: #404040;
+    margin-top: 10px;
+}
+
+.aboutcontent .contributor{
+    width: 150px;
+    display: inline-block;  
+}
+
+.aboutcontent .contribution{
+    font-family: Pacifico;
+    font-size: 16px;
+    color: #808080;    
+}
+
+.settingmodule ul{
+    font-family: Helvetica;
+    color: #404040;
+    font-size: 14px;
+    margin-top: 5px;  
+}
+
+.settingmodule li{
+    padding: 10px 20px;
+    display: inline-table;
+    width: 100%;
+}
+
+.settingmodule li > span{
+    vertical-align: middle;
+}
+
+.settingmodule li:nth-child(odd){
+    background: white;    
+}
+
+.settingmodule input.input{
+    width: 215px;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 15px;
+}
+
+.settingmodule .changeok{
+    margin-left: 15px;
+    font-size: 24px;
+    color: #5F8F28;
+}
+
+.settingmodule .next-button{
+    float: right;
+    margin-right:50px;
+    width: 70px;
+    vertical-align: middle;
+}
+
+#dashboard-settings .settingmodule select{
+    float: right;
+    margin-right: 50px;
+}
+
+.settingmodule option{
+    text-align: center;
+}
+
+#dashboard-settings .startupscreen select{
+    width: 250px;
+}
+
+.settingmodule li:nth-child(even){
+    background: #e3e3e3;
+}
+
+.videocontent{
+    text-align: center;
+}
+
+.videocontent video{
+    margin-top: 20px;
+}
+ 
+#userguidetoc li{
+    margin-left: 20px;
+    text-decoration: underline;
+    color: #657B99;}
+
+.aboutcontent .backtotop{
+    float:right;
+    color: #AEB9BF;
+    font-size: 12px;
+    text-decoration: underline;}
+
+p.p1 {margin: 0; font-size: 14px}
+p.p2 {margin: 0; font-size: 14px; min-height: 15px}
+p.p3 {margin: 0; text-align: justify; font-size: 18px}
+p.p4 {margin: 0; text-align: justify; font-size: 14.0px; min-height: 17.0px}
+p.p5 {margin: 0; font-size: 14px; min-height: 17.0px}
+p.p7 {margin: 0; text-align: justify; font-size: 14.0px; color: #021eaa}
+li.li3 {margin: 10px 0; text-align: justify; font-size: 14.0px}
+li.li6 {margin: 5px 0; line-height: 15.0px; font-size: 14.0px}
+span.s1 {letter-spacing: 0px}
+span.s3 {text-decoration: underline ; letter-spacing: 0.0px}
+ol.ol1 {list-style-type: lower-alpha}
+ol.ol2 {list-style-type: lower-roman}
+ol.ol3 {list-style-type: decimal}

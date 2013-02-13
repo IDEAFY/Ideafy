@@ -20,12 +20,12 @@ define("Ideafy/Dashboard/EULA", ["Olives/OObject", "Config", "Store", "CouchDBSt
                         
                         // fetch faqs from database
                         eula.fetch = function fetch(lang){
-                                var cdb = new CouchDBstore();
+                                var cdb = new CouchDBStore();
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), "EULA").then(function(){
                                         if (cdb.get("default_lang") === lang || !cdb.get("translations")[lang]){
                                                 model.set("title", cdb.get("title"));
-                                                model.set("eula", cdb.get("body"));
+                                                model.set("body", cdb.get("body"));
                                         }
                                        else {
                                                model.set("title", cdb.get("translations")[lang].title);

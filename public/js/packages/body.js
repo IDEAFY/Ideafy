@@ -34,8 +34,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
         _stack.getStack().setCurrentScreen(_login);
 
         _local.sync("ideafy-data");
-        LOCAL = _local;
-        CONF = Config;
         
         //reset labels (temporary to allow updates)
         _local.set("labels", "");

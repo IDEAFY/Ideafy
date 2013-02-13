@@ -261,4 +261,4 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                 //return
                         return _widget;
                 };
-        }
+        });

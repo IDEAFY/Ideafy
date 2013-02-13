@@ -5780,3 +5780,19 @@ li.my2q{
     font-size: 12px;
     text-decoration: underline;
 }
+
+/* EULA */
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px; min-height: 15.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 14.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 14.0px; min-height: 17.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px; min-height: 17.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 14.0px; color: #021eaa}
+li.li3 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 14.0px}
+li.li6 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 15.0px; font: 14.0px}
+span.s1 {letter-spacing: 0.0px}
+span.s2 {letter-spacing: 0.0px; color: #000000}
+span.s3 {text-decoration: underline ; letter-spacing: 0.0px}
+ol.ol1 {list-style-type: lower-alpha}
+ol.ol2 {list-style-type: lower-roman}
+ol.ol3 {list-style-type: decimal}

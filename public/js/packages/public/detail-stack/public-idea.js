@@ -89,6 +89,8 @@ define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin",
                                         toggleVoteButton : function(votes){
                                                 var idea = _store.get("id"),
                                                     authors = _store.get("doc").authors;
+                                                
+                                                console.log(idea, user.get("_id"),user.get("rated_ideas"), authors, voted);
                                                 // hide rating popup if present
                                                 document.getElementById("ratingPopup").classList.remove("appear"); 
                                                 // check if user has already voted on this idea or if user is author

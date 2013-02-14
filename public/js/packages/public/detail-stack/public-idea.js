@@ -134,7 +134,6 @@ define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin",
                                 // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                 _voted = false;
                                 _store.reset(viewStore.get(index));
-                                console.log(_store.toJSON());
                                 _twocentWriteUI.reset(_store.get("id"));
                                 _twocentList.reset(_store.get("id"), "public");
                                 _domWrite = document.getElementById("public-writetwocents");

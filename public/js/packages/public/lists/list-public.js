@@ -120,8 +120,7 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                         console.log("called every 60 seconds");
-                                        _store.reset(JSON.parse(cdb.toJSON()));
-                                        cdb.unsync();     
+                                        _store.reset(JSON.parse(cdb.toJSON()));     
                         });        
                 };
                 
@@ -129,6 +128,7 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                         var promise = new Promise(),
                             cdb = new Store();
                         if ($type === "polling"){
+                                console.log("init list date");
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                         console.log(cdb.toJSON());

@@ -118,7 +118,7 @@ define(["Olives/OObject", "Amy/Control-plugin" ,
 			// init
                        _menu.toggleActive(false);
 			
-			var listDate = new List(_db, "library", "_view/publicideas"),
+			var listDate = new List(_db, "library", "_view/publicideas", "polling"),
 			    listRating = new List(_db, "ideas", "_view/ideasbyvotes"),
 			    listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:60, include_docs: true});
 			_stack.getStack().add("#list-rating", listRating);

@@ -6,7 +6,7 @@
  */
 
 define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
-        function ListPublicConstructor($db, $design, $view, $query) {
+        function ListPublicConstructor($db, $design, $view, $query, $type) {
                 var _store = new Store([]),
                 touchStart,
                 touchPoint,
@@ -63,11 +63,17 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                         var promise=new Promise();
                         _options.query = query;
 
-                        _store.unsync();
-                        _store.reset([]);
-                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                promise.resolve();
-                        });
+                        
+                        if ($type === "polling"){
+                                        
+                        }
+                        else{
+                                _store.unsync();
+                                _store.reset([]);
+                                _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        promise.resolve();
+                                });
+                        }
                         return promise;
                 };
                 
@@ -108,18 +114,39 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                         _options.query = $query;
                 }
                 
+                // a function to poll fresh data from the database
+                this.refreshList = function refreshList(){
+                        var cdb = new CouchDBStore();
+                        cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        _store.reset(JSON.parse(cdb.toJSON()));
+                                        cdb.unsync();     
+                        });        
+                };
+                
                 this.init = function init(initCallback){
-                        var promise = new Promise();
-                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                initCallback(_store, 0);
-                                promise.resolve();      
-                        });
+                        var promise = new Promise(),
+                            cdb = new CouchDBStore();
+                        if ($type === "polling"){
+                                cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        _store.reset(JSON.parse(cdb.toJSON()));
+                                        initCallback(_store, 0);
+                                        setTimeout(function(){refreshList();}, Config.get("polling_interval"));
+                                        promise.resolve();
+                                        cdb.unsync();     
+                                });                
+                        }
+                        else{
+                                _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        initCallback(_store, 0);
+                                        promise.resolve();      
+                                });
+                        }
                         return promise;
                 };
 
         }
 
-        return function ListPublicFactory($db, $design, $view, $query) {
+        return function ListPublicFactory($db, $design, $view, $query, $type) {
                 ListPublicConstructor.prototype = new Widget();
                 return new ListPublicConstructor($db, $design, $view, $query);
         };

@@ -87,11 +87,10 @@ define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin",
                                         },
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){
-                                                console.log(votes, user.toJSON());
                                                 var idea = _store.get("id"),
                                                     authors = _store.get("doc").authors;
                                                 
-                                                console.log(idea, user.get("_id"),user.get("rated_ideas"), authors, voted);
+                                                console.log(idea, user.get("_id"),user.get("rated_ideas"), authors, _voted);
                                                 // hide rating popup if present
                                                 document.getElementById("ratingPopup").classList.remove("appear"); 
                                                 // check if user has already voted on this idea or if user is author

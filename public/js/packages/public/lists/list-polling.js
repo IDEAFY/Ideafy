@@ -109,7 +109,7 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                 
                 this.init = function init(initCallback){
                         var promise = new Promise(),
-                            cdb = new CopuchDBStore();
+                            cdb = new CouchDBStore();
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));

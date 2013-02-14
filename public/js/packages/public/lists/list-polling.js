@@ -65,6 +65,15 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));
+                                cdb.unsync();
+                                setTimeout(function(){
+                                        console.log("reset query: polling every 60 s");
+                                        cdb.reset();
+                                        cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                                _store.reset(JSON.parse(cdb.toJSON()));
+                                                cdb.unsync();
+                                        });
+                                },Config.get("polling_interval"));
                                 promise.resolve();
                         });
                         return promise;
@@ -114,6 +123,15 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));
                                 initCallback(_store, 0);
+                                cdb.unsync();
+                                setTimeout(function(){
+                                        console.log("polling every 60 s");
+                                        cdb.reset();
+                                        cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                                _store.reset(JSON.parse(cdb.toJSON()));
+                                                cdb.unsync();
+                                        });
+                                },Config.get("polling_interval"));
                                 promise.resolve();      
                         });
                         return promise;

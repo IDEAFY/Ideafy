@@ -90,7 +90,6 @@ define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin",
                                                 var idea = _store.get("id"),
                                                     authors = _store.get("doc").authors;
                                                 
-                                                console.log(idea, authors.indexOf(user.get("_id")),user.get("rated_ideas"), authors, _voted);
                                                 // hide rating popup if present
                                                 document.getElementById("ratingPopup").classList.remove("appear"); 
                                                 // check if user has already voted on this idea or if user is author

@@ -87,7 +87,7 @@ define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin",
                                         },
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){
-                                                console.log(votes);
+                                                console.log(votes, user.toJSON());
                                                 var idea = _store.get("id"),
                                                     authors = _store.get("doc").authors;
                                                 

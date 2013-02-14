@@ -116,7 +116,7 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                 
                 // a function to poll fresh data from the database
                 this.refreshList = function refreshList(){
-                        var cdb = new CouchDBStore();
+                        var cdb = new Store();
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                         _store.reset(JSON.parse(cdb.toJSON()));
@@ -126,7 +126,7 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                 
                 this.init = function init(initCallback){
                         var promise = new Promise(),
-                            cdb = new CouchDBStore();
+                            cdb = new Store();
                         if ($type === "polling"){
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){

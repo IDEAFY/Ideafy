@@ -24,7 +24,7 @@ define(["Store", "Olives/Transport", "CouchDBStore", "Observable"], function(Sto
                         db : "ideafy",
                         user : _user,
                         observer : _observer,
-                        polling_interval : 60000,
+                        polling_interval : 6000,
                         userTemplate : {
                                 "lastname" : "",
                                 "firstname" : "",

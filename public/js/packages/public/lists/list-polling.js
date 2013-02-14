@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
-        function ListPublicConstructor($db, $design, $view, $query) {
+define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBStore, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
+        function ListPollingConstructor($db, $design, $view, $query) {
                 var _store = new Store([]),
                 touchStart,
                 touchPoint,
@@ -23,8 +23,6 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                         }
                 };
 
-                //setup
-                _store.setTransport(Config.get("transport"));
                 this.template = "<ul class='ideas-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:innerHTML,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul>";
 
                 this.plugins.addAll({
@@ -60,12 +58,13 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                 };
                 
                 this.resetQuery = function(query) {
-                        var promise=new Promise();
+                        var promise=new Promise(),
+                            cdb = new CouchDBStore();
                         _options.query = query;
 
-                        _store.unsync();
-                        _store.reset([]);
-                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                        cdb.setTransport(Config.get("transport"));
+                        cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                _store.reset(JSON.parse(cdb.toJSON()));
                                 promise.resolve();
                         });
                         return promise;
@@ -109,8 +108,11 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                 }
                 
                 this.init = function init(initCallback){
-                        var promise = new Promise();
-                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                        var promise = new Promise(),
+                            cdb = new CopuchDBStore();
+                        cdb.setTransport(Config.get("transport"));
+                        cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                _store.reset(JSON.parse(cdb.toJSON()));
                                 initCallback(_store, 0);
                                 promise.resolve();      
                         });
@@ -119,8 +121,8 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
 
         }
 
-        return function ListPublicFactory($db, $design, $view, $query) {
-                ListPublicConstructor.prototype = new Widget();
-                return new ListPublicConstructor($db, $design, $view, $query);
+        return function ListPollingFactory($db, $design, $view, $query) {
+                ListPollingConstructor.prototype = new Widget();
+                return new ListPollingConstructor($db, $design, $view, $query);
         };
 }); 

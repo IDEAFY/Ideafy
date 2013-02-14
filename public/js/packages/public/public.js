@@ -7,9 +7,9 @@
 
 define(["Olives/OObject", "Amy/Control-plugin" ,
 	"Olives/Model-plugin", "Amy/Delegate-plugin", "CouchDBStore", "service/map", "service/config",
-	"./public-stack", "service/utils", "./lists/list-public", "Amy/Stack-plugin", "service/submenu"], 
+	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu"], 
 	function(Widget, Control, Model, Delegate, Store, Map, 
-		Config, Detail, Utils, List, Stack, Menu){
+		Config, Detail, Utils, List, Polling, Stack, Menu){
 		return function PublicConstructor(){
 		//declaration
 			var _widget = new Widget(),
@@ -118,7 +118,7 @@ define(["Olives/OObject", "Amy/Control-plugin" ,
 			// init
                        _menu.toggleActive(false);
 			
-			var listDate = new List(_db, "library", "_view/publicideas", "polling"),
+			var listDate = new Polling(_db, "library", "_view/publicideas"),
 			     // list date needs to be in polling mode with a polling_interval defined in Config to avoid traffic overload
 			    listRating = new List(_db, "ideas", "_view/ideasbyvotes"),
 			    listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:60, include_docs: true});

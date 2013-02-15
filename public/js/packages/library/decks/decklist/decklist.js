@@ -16,8 +16,6 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                             onEnd,
                             decks = new Store([]);
                         
-                        decks.setTransport(Config.get("transport"));
-                        
                         deckList.plugins.addAll({
                                 "labels" : new Model(labels),
                                 "active" : new Model(user, {

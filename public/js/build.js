@@ -19,4 +19,5 @@ require.config({
         brainstorm : "brainstorm",
         twocents : "twocents"
     }
+    out: "ideafy-build.js"
 });

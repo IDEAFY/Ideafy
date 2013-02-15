@@ -13,7 +13,6 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                         var deckList = new Widget(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),
-                            onEnd,
                             decks = new Store([]);
                         
                         deckList.plugins.addAll({
@@ -76,21 +75,19 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                                 node.classList.add("selected");      
                         };
                         
-                        deckList.init = function init(callback){
-                                onEnd = callback;
-                                console.log(onEnd);
+                        deckList.init = function init(onEnd){
                                 deckList.getDecks($type, onEnd);
                         };
                         
                         
                         // watch for changes for this particular type of decks in user doc 
                         user.watchValue($type, function(){
-                                deckList.getDecks($type, onEnd);        
+                                deckList.getDecks($type);        
                         });
                         
                         // also watch for change of language
                         user.watchValue("lang", function(){
-                                deckList.getDecks($type, onEnd);         
+                                deckList.getDecks($type);         
                         });
                         
                         

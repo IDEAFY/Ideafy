@@ -61,10 +61,11 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                                                         decks.alter("push", doc);
                                                 }
                                                  else {
-                                                        (v.doc.translations && v.doc.translations[lang]) ? decks.alter("push", v.doc.translations[lang]) : decks.alter("push", doc);;
+                                                        (v.doc.translations && v.doc.translations[lang]) ? decks.alter("push", v.doc.translations[lang]) : decks.alter("push", doc);
                                                 }                
                                         });
                                         if (onEnd) onEnd("ok");
+                                        console.log(decks.toJSON());
                                 });             
                         };
                         

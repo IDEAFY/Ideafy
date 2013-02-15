@@ -87,6 +87,11 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                                 deckList.getDecks($type, onEnd);        
                         });
                         
+                        // also watch for change of language
+                        user.watchValue("lang", function(){
+                                deckList.getDecks($type, onEnd);         
+                        });
+                        
                         
                         return deckList;
                         

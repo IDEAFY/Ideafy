@@ -45,7 +45,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy/Delegat
                                       stack.getStack().show("ideafy");
                                       deckView.init();
                                       ideafyDecks.initSelected(deckControl.init,0);
-                                      deckView.reset(ideafyDecks.getModel().get(0).doc);
+                                      deckView.reset(ideafyDecks.getModel().get(0));
                               }
                       });
               };
@@ -53,7 +53,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy/Delegat
               widget.selectStart = function(event){
                         var list = stack.getStack().getCurrentScreen().getModel(),
                             id = event.target.getAttribute("data-decks_id");
-                        deckView.reset(list.get(id).doc);
+                        deckView.reset(list.get(id));
               };
               
               

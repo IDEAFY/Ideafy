@@ -47,12 +47,13 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Sta
                         deckView.reset = function reset(deck){
                                 var lang = Config.get("user").get("lang"), displayDeck;
                                 // check deck default language -- if it does not match user language look for a translation
-                                if (!deck.default_lang || (deck.default_lang === lang)) {
+                                /*if (!deck.default_lang || (deck.default_lang === lang)) {
                                         displayDeck = deck;
                                 }
                                 else {
                                         (deck.translations && deck.translations[lang]) ? displayDeck = deck.translations[lang] : displayDeck = deck;
-                                }
+                                }*/
+                               displayDeck = deck;
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
                                         innerStack.getStack().get(value).reset(displayDeck);        
                                 });

@@ -78,6 +78,7 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                         
                         deckList.init = function init(callback){
                                 onEnd = callback;
+                                console.log(onEnd);
                                 deckList.getDecks($type, onEnd);
                         };
                         

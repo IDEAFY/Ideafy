@@ -5,15 +5,16 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin", 'Olives/Event-plugin', 'CouchDBStore', "Promise", "service/utils"],
-        function(Widget, Map, Config, Model, Event, CouchDBStore, Promise, Utils){
+define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin", 'Olives/Event-plugin', 'Store', 'CouchDBStore', "Promise", "service/utils"],
+        function(Widget, Map, Config, Model, Event, Store, CouchDBStore, Promise, Utils){
                 
                 return function DeckListConstructor($type){
                         
                         var deckList = new Widget(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),
-                            decks = new CouchDBStore([]);
+                            onEnd,
+                            decks = new Store([]);
                         
                         decks.setTransport(Config.get("transport"));
                         
@@ -42,7 +43,7 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                                 "decksevent" : new Event(deckList)
                         });
                         
-                        deckList.template = '<ul id="deck-list" data-decks="foreach"><li class="list-item" data-decklistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, doc.title"></h3><span class="version" data-decks="bind:setVersion, doc.version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,doc.description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, doc.author"></div><span class="date" data-decks="bind:date, doc.date"></div></div></li></ul>';
+                        deckList.template = '<ul id="deck-list" data-decks="foreach"><li class="list-item" data-decklistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, doc.title"></h3><span class="version" data-decks="bind:setVersion, version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, author"></div><span class="date" data-decks="bind:date, date"></div></div></li></ul>';
                         
                         deckList.reset = function reset(){       
                         };
@@ -52,8 +53,20 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                         };
                         
                         deckList.getDecks = function getDecks(type, onEnd){
-                                decks.sync(Config.get("db"), {keys : user.get(type)}).then(function(){
-                                        onEnd("ok");
+                                var cdb = new CouchDBStore();
+                                cdb.setTransport(Config.get("transport"));
+                                cdb.sync(Config.get("db"), {keys : user.get(type)}).then(function(){
+                                        var lang = user.get("lang");
+                                        decks.reset([]);
+                                        cdb.loop(function(v, i){
+                                                if (!v.doc.default_lang || (v.doc.default_lang === lang)) {
+                                                        decks.alter("push", doc);
+                                                }
+                                                 else {
+                                                        (v.doc.translations && v.doc.translations[lang]) ? decks.alter("push", v.doc.translations[lang]) : decks.alter("push", doc);;
+                                                }                
+                                        });
+                                        if (onEnd) onEnd("ok");
                                 });             
                         };
                         
@@ -62,14 +75,21 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                                 var dom = deckList.dom,
                                     node = dom.querySelector(".list-item[data-decks_id='"+id+"']");
                                 init(node);
-                                node.classList.add("selected");       
+                                node.classList.add("selected");      
                         };
                         
-                        deckList.init = function init(onEnd){
+                        deckList.init = function init(callback){
+                                onEnd = callback;
                                 deckList.getDecks($type, onEnd);
                         };
                         
-                        DL = deckList;
+                        
+                        // watch for changes for this particular type of decks in user doc 
+                        user.watchValue($type, function(){
+                                deckList.getDecks($type, onEnd);        
+                        });
+                        
+                        
                         return deckList;
                         
                 };

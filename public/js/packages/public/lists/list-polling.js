@@ -66,7 +66,7 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));
                                 cdb.unsync();
-                                setTimeout(function(){
+                                setInterval(function(){
                                         console.log("reset query: polling every 60 s");
                                         cdb.reset();
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){

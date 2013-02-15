@@ -54,10 +54,10 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                                 var cdb = new CouchDBStore();
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), {keys : user.get(type)}).then(function(){
-                                        console.log(cdb.toJSON());
                                         var lang = user.get("lang");
                                         decks.reset([]);
                                         cdb.loop(function(v, i){
+                                                console.log(v, v.doc.default_lang, lang);
                                                 if (!v.doc.default_lang || (v.doc.default_lang === lang)) {
                                                         decks.alter("push", v.doc);
                                                 }

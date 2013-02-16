@@ -8,7 +8,7 @@
 /* deps load before main script??*/
 require.config({
 	baseUrl : "js/packages",
-    deps : ["lib/socket.io.min", "lib/couchdbtools.min","lib/emily.min",  "lib/olives.min", "lib/amy2.min", "body"],
+    deps : ["main"],
     paths: {
         lib : "../libs",
         service : "../services",

@@ -248,7 +248,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                 checkServerStatus : function(){
                         var promise = new Promise();
                         
-                        promise.reject();
+                        promise.resolve();
                         
                         return promise;
                 },

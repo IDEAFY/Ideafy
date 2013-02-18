@@ -10,12 +10,19 @@ define(["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin", "service/
                 
                 function SubMenuConstructor($dom, $setWidget){
 
-                        var _active = false,
+                        var _active = false, publicTemplate, libraryTemplate, brainstormTemplate, connectTemplate, dashboardTemplate,
                             toggleActive = function (state){
                                 (state) ? $dom.setAttribute("style", "display : block;") : $dom.setAttribute("style", "display : none;");
                                 _active = state;        
                             };
                             
+                        // templates
+                        publicTemplate = '';
+                        
+                        libraryTemplate = '<div class="left-caret"></div><ul class="menu-list" data-menucontrol="radio:li,selected,touchend,setCurrentWidget"><li class="menu-item selected" name="#ideas" data-menucontrol="init"><a class="library-item" href="#ideas" data-label="bind:innerHTML, library-ideas"></a></li><li class="menu-item" name="#sessions"><a class="library-item" href="#sessions" data-label="bind:innerHTML, library-sessions"></a></li><li class="menu-item" name="#decks"><a class="library-item" href="#decks" data-label="bind:innerHTML, library-decks"></a></li></ul>';
+                        
+                       if ($dom.search("library")) this.template = libraryTemplate;
+                        
                         // setup
                         this.plugins.addAll({
                                 "label" : new Model(Config.get("labels")),
@@ -36,7 +43,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin", "service/
                                 setTimeout(function(){toggleActive(false);}, 200);
                         };
                         
-                        this.alive($dom);     
+                        this.place($dom);     
                 }
                 
                 return function SubMenuFactory($dom, $setWidget){

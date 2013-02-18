@@ -52,7 +52,9 @@ define(["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin", "service/
                                 setTimeout(function(){toggleActive(false);}, 200);
                         };
                         
-                        this.place($dom);   
+                        this.render();
+                        this.place($dom);
+                        console.log(this);   
                 }
                 
                 return function SubMenuFactory($dom, $setWidget){

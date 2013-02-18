@@ -100,8 +100,9 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     border-radius: 5px;
     line-height: 25px;
     background-image: url('../img/avatars/doctordeedee.png');
+    background-size: 60px;
     background-repeat: no-repeat;
-    background-position: left center;
+    background-position: 20px center;
 }
 
 #dock, .list, .details, .idea-edit, .idea-sendmail{

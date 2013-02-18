@@ -253,7 +253,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                         req.onreadystatechange = function(){
                                         console.log(req);
                                      if(req.readyState === 4){
-                                             (req.status === "200") ? promise.resolve() : promise.reject();
+                                             (req.status === 200) ? promise.resolve() : promise.reject();
                                      }
                              };
                         req.send();

@@ -61,7 +61,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
                 _stack.getStack().add("#dock", _dock);
                 
         }, function(error){
-                console.log("promise rejected", error);
                 _login.setScreen("#maintenance-screen");
                 _stack.getStack().setCurrentScreen(_login);
         });

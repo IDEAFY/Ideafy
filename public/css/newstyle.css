@@ -92,6 +92,11 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   right:0;
 }
 
+#login {
+    width: 100%;
+    height: 100%;
+}
+
 #dock, .list, .details, .idea-edit, .idea-sendmail{
   background:white;
 }

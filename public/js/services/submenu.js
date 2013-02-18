@@ -19,7 +19,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin", "service/
                         // templates
                         publicTemplate = '';
                         
-                        libraryTemplate = '<div class="left-caret"></div><ul class="menu-list" data-menucontrol="radio:li,selected,touchend,setCurrentWidget"><li class="menu-item selected" name="#ideas" data-menucontrol="init"><a class="library-item" href="#ideas" data-label="bind:innerHTML, library-ideas"></a></li><li class="menu-item" name="#sessions"><a class="library-item" href="#sessions" data-label="bind:innerHTML, library-sessions"></a></li><li class="menu-item" name="#decks"><a class="library-item" href="#decks" data-label="bind:innerHTML, library-decks"></a></li></ul>';
+                        libraryTemplate = '<div><div class="left-caret"></div><ul class="menu-list" data-menucontrol="radio:li,selected,touchend,setCurrentWidget"><li class="menu-item selected" name="#ideas" data-menucontrol="init"><a class="library-item" href="#ideas" data-label="bind:innerHTML, library-ideas"></a></li><li class="menu-item" name="#sessions"><a class="library-item" href="#sessions" data-label="bind:innerHTML, library-sessions"></a></li><li class="menu-item" name="#decks"><a class="library-item" href="#decks" data-label="bind:innerHTML, library-decks"></a></li></ul></div>';
                         
                        if ($dom.id.search("library")) this.template = libraryTemplate;
                         

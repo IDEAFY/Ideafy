@@ -44,7 +44,9 @@ define(["Olives/OObject", "service/config", "service/map", "Store", "Olives/Mode
                         "notifevent" : new Event(notify)
                 });
                 
-                notify.alive(dom);
+                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, press; listen:touchend, showPopup"></div><div id="notify-popup"></div></div>';
+                
+                notify.place(dom);
                 
                 notify.getUnread = function getUnread(){
                         var msg = user.get("notifications"),

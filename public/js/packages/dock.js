@@ -56,6 +56,9 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 				        _tips.init(firstStart);
 				}
 				
+				// display application content
+				Map.get("wrapper").classList.remove("invisible");
+				
 			};
 			
 			_widget.reset = function(){

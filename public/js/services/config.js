@@ -237,6 +237,7 @@ define(["Store", "Olives/Transport", "CouchDBStore", "Observable"], function(Sto
         "somethingwrong": "Something went wrong, please try again later",
         "thankyou": "Thank you",
         "loadingmessage": "Application loading, please wait...",
+        "maintenancemessage": "We're sorry. Our server is currently undergoing a scheduled maintenance. Please come back later.",
         "library-ideas": "My Ideas",
         "library-sessions": "My Ideafy Sessions",
         "sbytitle": "Session title",
@@ -480,6 +481,7 @@ define(["Store", "Olives/Transport", "CouchDBStore", "Observable"], function(Sto
         "writesomething" : "Write something",
         "stats" : "Stats",
         "achievements" : "Achievements",
+        "decklistheadertitle" : "My Decks",
         "ideafypoints" : " Ideafy Points",
         "version": "Version : ",
         "groupupdated": "Group updated",
@@ -572,8 +574,7 @@ define(["Store", "Olives/Transport", "CouchDBStore", "Observable"], function(Sto
         "investhelp": "We have plenty of ideas to expand the Ideafy service and we are constantly looking for funding opportunities. If you are interested, want to find out about our future and be part of it please contact us.",
         "toc" : "Table of contents",
         "backtotop": "Back to top"
-        
-},
+        },
                         labels : new Store({})        
                         });
                 };

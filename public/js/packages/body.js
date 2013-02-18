@@ -31,13 +31,14 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
         _body.alive(Map.get("body"));
         _login = new Login();
         
+        // retrieve local data
+        _local.sync("ideafy-data");
+        
         checkServerStatus().then(function(result){
         
                 _login.setScreen("#loading-screen");
                 _stack.getStack().setCurrentScreen(_login);
 
-                _local.sync("ideafy-data");
-        
                 //reset labels (temporary to allow updates)
                 //_local.set("labels", "");
         
@@ -61,6 +62,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
                 _stack.getStack().add("#dock", _dock);
                 
         }, function(error){
+                (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
                 _login.setScreen("#maintenance-screen");
                 _stack.getStack().setCurrentScreen(_login);
         });

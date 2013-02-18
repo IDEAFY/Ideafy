@@ -18,7 +18,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
                 "confirm-password" : "",
                 "password" : "",
                 "error" : ""
-        }), updateLabels = Utils.updateLabels, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user");
+        }), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user");
 
         //setup
         _body.plugins.addAll({
@@ -31,7 +31,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
         _body.alive(Map.get("body"));
         _login = new Login();
         
-        Utils.checkServerStatus().then(function(result){
+        checkServerStatus().then(function(result){
         
                 _login.setScreen("#loading-screen");
                 _stack.getStack().setCurrentScreen(_login);

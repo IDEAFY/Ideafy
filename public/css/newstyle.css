@@ -502,6 +502,7 @@ ul.notify-list{
 }
 
 #library-menu{
+    position: absolute;
     top: 141px;
     height: 110px;
     margin-top: -55px;   

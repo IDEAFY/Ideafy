@@ -26,7 +26,11 @@ define(["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin", "service/
                         
                         dashboardTemplate = '';
                         
-                       if ($dom.id.search("library")) this.template = libraryTemplate;
+                        if ($dom.id.search("public")) this.template = publicTemplate;
+                        if ($dom.id.search("library")) this.template = libraryTemplate;
+                        if ($dom.id.search("brainstorm")) this.template = brainstormTemplate;
+                        if ($dom.id.search("connect")) this.template = connectTemplate;
+                        if ($dom.id.search("dashboard")) this.template = dashboardTemplate;
                         
                         // setup
                         this.plugins.addAll({

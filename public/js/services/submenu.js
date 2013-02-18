@@ -32,6 +32,8 @@ define(["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin", "service/
                         if ($dom.id.search("connect")) this.template = connectTemplate;
                         if ($dom.id.search("dashboard")) this.template = dashboardTemplate;
                         
+                        this.place($dom);
+                        
                         // setup
                         this.plugins.addAll({
                                 "label" : new Model(Config.get("labels")),
@@ -50,9 +52,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin", "service/
                                 var ui = event.target.getAttribute("name");
                                 if ($setWidget) {$setWidget(ui);}
                                 setTimeout(function(){toggleActive(false);}, 200);
-                        };
-                        
-                        this.place($dom);     
+                        };    
                 }
                 
                 return function SubMenuFactory($dom, $setWidget){

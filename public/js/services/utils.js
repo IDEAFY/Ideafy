@@ -246,8 +246,16 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                  * @Returns {Promise} promise 
                  */
                 checkServerStatus : function(){
-                        var promise = new Promise();
+                        var promise = new Promise(),
+                            req = new XMLHttpRequest();
                         
+                        req.open('GET', Config.get("location"));
+                        req.onreadystatechange = function(){
+                                     if(req.readyState === 4){
+                                             (req.status === '200') ? promise.resolve() : promise.reject();
+                                     }
+                             };
+                        req.send();
                         promise.resolve();
                         
                         return promise;

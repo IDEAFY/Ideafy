@@ -30,32 +30,40 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
 
         _body.alive(Map.get("body"));
         _login = new Login();
-        _login.setScreen("#loading-screen");
-        _stack.getStack().setCurrentScreen(_login);
-
-        _local.sync("ideafy-data");
         
-        //reset labels (temporary to allow updates)
-        _local.set("labels", "");
+        Utils.checkServerStatus().then(function(result){
         
-        // initialize labels to device language if available or US by default
-         (_local.get("labels")) ? _labels.reset(_local.get("labels")) : updateLabels(navigator.language);
-
-        var current = _local.get("currentLogin");
-        // if the last user is in the local storage
-        if (!current) {
-                //display login
-                _login.setScreen("#signup-screen");
-        } else {
                 _login.setScreen("#loading-screen");
-                _transport.request("CheckLogin", {
-                        "id" : current
-                }, function(result) {
-                        (result.authenticated) ? _body.init() : _login.setScreen("#login-screen");
-                });
-        }
+                _stack.getStack().setCurrentScreen(_login);
 
-        _stack.getStack().add("#dock", _dock);
+                _local.sync("ideafy-data");
+        
+                //reset labels (temporary to allow updates)
+                //_local.set("labels", "");
+        
+                // initialize labels to device language if available or US by default
+                (_local.get("labels")) ? _labels.reset(_local.get("labels")) : updateLabels(navigator.language);
+
+                var current = _local.get("currentLogin");
+                // if the last user is in the local storage
+                if (!current) {
+                        //display login
+                        _login.setScreen("#signup-screen");
+                } else {
+                        _login.setScreen("#loading-screen");
+                        _transport.request("CheckLogin", {
+                                "id" : current
+                        }, function(result) {
+                                (result.authenticated) ? _body.init() : _login.setScreen("#login-screen");
+                        });
+                }
+
+                _stack.getStack().add("#dock", _dock);
+                
+        }, function(){
+                _login.setScreen("#maintenance-screen");
+                _stack.getStack().setCurrentScreen(_login);
+        });
 
         //logic
 

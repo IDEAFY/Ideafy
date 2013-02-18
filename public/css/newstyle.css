@@ -92,6 +92,18 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   right:0;
 }
 
+#serverdown {
+    padding: 20px 20px 20px 80px;
+    background: 
+    white;
+    border: 1px solid #657B99;
+    border-radius: 5px;
+    line-height: 25px;
+    background-image: url('../img/doctordeedee.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+}
+
 #dock, .list, .details, .idea-edit, .idea-sendmail{
   background:white;
 }

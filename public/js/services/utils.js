@@ -239,6 +239,21 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                              };
                              req.send(body);
                   },	
+		
+		/**
+                 * A function to check the status of the server
+                 * @Param none
+                 * @Returns {Promise} promise 
+                 */
+                checkServerStatus : function(){
+                        var promise = new Promise();
+                        
+                        Config.get("transport").request("Status", {}, function(result){
+                                console.log(result);
+                                (result) ? promise.resolve() : promise.reject();        
+                        });
+                },
+                
 			
                 /**
                  * A function to retrieve the labels in the desired language

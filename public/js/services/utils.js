@@ -252,6 +252,8 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                 console.log(result);
                                 (result) ? promise.resolve() : promise.reject();        
                         });
+                        
+                        return promise;
                 },
                 
 			

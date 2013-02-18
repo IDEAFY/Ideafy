@@ -12,6 +12,7 @@ define(["Store"], function(Store){
 			"login-form" : document.getElementById("login-form"),
 			"signup-form" : document.getElementById("signup-form"),
 			"loading" : document.getElementById("loading"),
+			"serverdown" : document.getElementById("serverdown"),
 		"dock" : document.getElementById("wrapper"),
 		"notify" : document.getElementById("notify"),
 		"notify-popup" : document.getElementById("notify-popup"),

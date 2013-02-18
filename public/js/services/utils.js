@@ -248,10 +248,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                 checkServerStatus : function(){
                         var promise = new Promise();
                         
-                        Config.get("transport").request("Status", {}, function(result){
-                                console.log(result);
-                                (result) ? promise.resolve() : promise.reject();        
-                        });
+                        promise.resolve();
                         
                         return promise;
                 },

@@ -256,7 +256,6 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                      }
                              };
                         req.send();
-                        promise.resolve();
                         
                         return promise;
                 },

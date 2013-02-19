@@ -69,6 +69,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
                 
         }, function(error){
                 (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
+                document.getElementById("serverdown").classList.remove("invisible");
                 _login.setScreen("#maintenance-screen");
                 _stack.getStack().setCurrentScreen(_login);
         });

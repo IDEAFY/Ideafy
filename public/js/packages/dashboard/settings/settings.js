@@ -55,7 +55,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin",  "Olives/Event-p
                                            var i, l, res="", selected, idx;
                                            for (i=0, l=timers.length; i<l; i++){
                                                    res+="<option>"+timers[i].name+"</option>";
-                                                   if (timers[i].value === user.get("settings").polling_interval)) idx = i
+                                                   if (timers[i].value === user.get("settings").polling_interval) idx = i
                                            }
                                            this.innerHTML=res;
                                            this.selectIndex = idx;

@@ -76,7 +76,7 @@
 	"somethingwrong": "Une erreur s'est produite, veuillez réessayer plus tard",
 	"thankyou": "Merci",
 	"loadingmessage": "Application en cours de chargement, veuillez patienter...",
-	"maintenancemessage": "Nous sommes désolés mais le serveur est en ce moment en maintenance. Veuillez vous réessayer ultérieurement.",
+	"maintenancemessage": "Nous sommes désolés mais le serveur est en ce moment en maintenance. Veuillez réessayer ultérieurement.",
 	"library-ideas": "Mes Idées",
 	"library-sessions": "Mes Sessions Ideafy",
 	"sbytitle": "Titre",
@@ -412,5 +412,10 @@
 	"devhelp": "Ideafy existe grâce à trois librairies javascript écrites par les fondateurs de notre société. Ces librairies sont disponibles sous licence MIT: <a onclick='window.open(\"http://http://github.com/flams/emily\", \"_system\");'>emily</a>, <a onclick='window.open(\"http://github.com/flams/olives\", \"_system\");'>olives</a> et <a onclick='window.open(\"http://github.com/flams/CouchDB-emily-tools\", \"_system\");'>couchdb-emily-tools</a>. Allez voir et si le coeur vous en dit proposez vos contributions pour les améliorer.",
 	"investhelp": "Nous avons de nombreux projets de développement de la plate-forme Ideafy pour lesquels nous recherchons des financements. Si vous êtes intéressés par ce qu'Ideafy peut proposer dans le futur et par vous impliquer dans ce futur merci de nous contacter.",
 	"toc" : "Sommaire",
-	"backtotop": "Retour au sommaire"
+	"backtotop": "Retour au sommaire",
+	"choosepolling": "Charger les nouvelles idées publiques",
+	"everymin": "Toutes les minutes",
+	"everyfive": "Toutes les 5 minutes",
+	"everyfifteen": "Toutes les 15 minutes",
+	"never": "Désactivé" 
 }

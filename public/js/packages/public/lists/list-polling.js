@@ -10,8 +10,10 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                 var _store = new Store([]),
                 touchStart,
                 touchPoint,
+                polling, // timer variable (to use clearInterval)
                 display = false,
                 currentBar = null,
+                user = Config.get("user"),
                 _options = {
                         db : $db,
                         view : $view,
@@ -59,21 +61,23 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                 
                 this.resetQuery = function(query) {
                         var promise=new Promise(),
+                            interval = user.get("settings").polling_interval || Config.get("polling_interval"),
                             cdb = new CouchDBStore();
                         _options.query = query;
-
+                        
+                        clearInterval(polling);
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));
                                 cdb.unsync();
-                                setInterval(function(){
+                                polling = setInterval(function(){
                                         console.log("reset query: polling every 60 s");
                                         cdb.reset();
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 _store.reset(JSON.parse(cdb.toJSON()));
                                                 cdb.unsync();
                                         });
-                                },Config.get("polling_interval"));
+                                },interval);
                                 promise.resolve();
                         });
                         return promise;
@@ -118,24 +122,42 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                 
                 this.init = function init(initCallback){
                         var promise = new Promise(),
+                            interval = user.get("settings").polling_interval || Config.get("polling_interval"),
                             cdb = new CouchDBStore();
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));
                                 initCallback(_store, 0);
                                 cdb.unsync();
-                                setInterval(function(){
-                                        console.log("polling every 60 s");
+                                polling = setInterval(function(){
                                         cdb.reset();
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 _store.reset(JSON.parse(cdb.toJSON()));
                                                 cdb.unsync();
                                         });
-                                },Config.get("polling_interval"));
+                                },interval);
                                 promise.resolve();      
                         });
                         return promise;
                 };
+                
+                // watch for change in polling interval in user settings
+                user.watchValue("settings", function(){
+                        var cdb = new CouchDBStore(), interval;
+                        if (user.get("settings").polling_interval !== Config.get("polling_interval")){
+                                Config.set("polling_interval", user.get("settings").polling_interval);
+                                interval = Config.get("polling_interval");
+                                clearInterval(polling);
+                                cdb.setTransport(Config.get("transport"));
+                                polling = setInterval(function(){
+                                        cdb.reset();
+                                        cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                                _store.reset(JSON.parse(cdb.toJSON()));
+                                                cdb.unsync();
+                                        });
+                                },interval);        
+                        }        
+                });
 
         }
 

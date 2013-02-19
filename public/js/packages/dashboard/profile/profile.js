@@ -304,24 +304,14 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                    
                    user.watchValue("tutorial_complete", function(){
                         // check score and achievements
-                        Utils.getGrade(user.get("ip"), function(result){
-                                profileUI.updateGrade(result);
-                        });
-                   
-                        Utils.getAchievements(user.get("_id"), function(result){
-                                if (result === "ok") profileUI.updateAchievements();        
-                        });        
+                        profileUI.updateGrade();
+                        profileUI.updateAchievements();       
                    });
                    
                    user.watchValue("settings", function(){
                         // check score and achievements
-                        Utils.getGrade(user.get("ip"), function(result){
-                                profileUI.updateGrade(result);
-                        });
-                   
-                        Utils.getAchievements(user.get("_id"), function(result){
-                                if (result === "ok") profileUI.updateAchievements();        
-                        });        
+                        profileUI.updateGrade();
+                        profileUI.updateAchievements();       
                    });
                    
                    // monitor user document

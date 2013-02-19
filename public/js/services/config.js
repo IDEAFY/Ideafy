@@ -89,7 +89,7 @@ define(["Store", "Olives/Transport", "CouchDBStore", "Observable"], function(Sto
                                 "news" : [],
                                 "twocents" : [],
                                 "twoquestions" : [],
-                                "settings": {"notifyPopup": true, "useascharacter": false, "ccme": false, "privacy_lvl": 0, "showTips": true, "startupScreen": "#public", "listSize": null}
+                                "settings": {"notifyPopup": true, "useascharacter": false, "ccme": false, "privacy_lvl": 0, "showTips": true, "startupScreen": "#public", "listSize": null, "polling_interval": 60000}
                         },
                         ideaTemplate:{
                                 "title": "",

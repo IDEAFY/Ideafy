@@ -153,6 +153,7 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                                         cdb.reset();
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 _store.reset(JSON.parse(cdb.toJSON()));
+                                                console.log("polling every "+interval+" ms");
                                                 cdb.unsync();
                                         });
                                 },interval);        

@@ -18,7 +18,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
                 "confirm-password" : "",
                 "password" : "",
                 "error" : ""
-        }), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user");
+        }), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user"), _domLogin = document.getElementById("login-form"), _domSignup = document.getElementById("signup-form");
 
         //setup
         _body.plugins.addAll({
@@ -31,14 +31,15 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
         _body.alive(Map.get("body"));
         _login = new Login();
         
+        // display loading screen
+        _login.setScreen("#loading-screen");
+        _stack.getStack().setCurrentScreen(_login);
+                
         // retrieve local data
         _local.sync("ideafy-data");
         
         checkServerStatus().then(function(result){
         
-                _login.setScreen("#loading-screen");
-                _stack.getStack().setCurrentScreen(_login);
-
                 //reset labels (temporary to allow updates)
                 //_local.set("labels", "");
         
@@ -49,13 +50,18 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
                 // if the last user is in the local storage
                 if (!current) {
                         //display login
+                        _domSignup.classList.remove("invisible");
                         _login.setScreen("#signup-screen");
                 } else {
                         _login.setScreen("#loading-screen");
                         _transport.request("CheckLogin", {
                                 "id" : current
                         }, function(result) {
-                                (result.authenticated) ? _body.init() : _login.setScreen("#login-screen");
+                                if (result.authenticated) _body.init()
+                                else {
+                                        _domLogin.classList.remove("invisible");
+                                        _login.setScreen("#login-screen");
+                                }
                         });
                 }
 

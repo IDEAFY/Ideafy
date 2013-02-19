@@ -26,16 +26,16 @@
 	<div id="login">
 		<img src="img/logoLogInPage.png">
 		<div id="login-stack" data-loginstack="destination">
-			<form id="login-form" data-event="selector:input,keypress,resetError;selector:.login-button,touchend,login">
+			<form id="login-form" class="invisible" data-event="selector:input,keypress,resetError;selector:.login-button,touchend,login">
 				<p class="login-fields">
 					<input data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text">
 					<input data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-event="listen:keypress, enterlogin">
 				</p>
 				<p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton"></label></p>
 				<p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p>
-				<p><label id="signup-button" class="pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginstack="show:touchstart,name"></label></p>
+				<p><label id="signup-button" class="pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginstack="show:touchend,name"></label></p>
 			</form>
-			<form id="signup-form" data-event="selector:input,keypress,resetError;selector:#signup,touchend,signup">
+			<form id="signup-form" class="invisible" data-event="selector:input,keypress,resetError;selector:#signup,touchend,signup">
 				<p class="login-fields">
 					<input data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text">
 					<input data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder">
@@ -45,7 +45,7 @@
 				</p>
 				<p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p>
 				<p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton"></label></p>
-				<p><label class="login-button pressed-btn" name="#login-screen" data-loginstack="show:touchstart,name" data-label="bind:innerHTML, loginbutton"></label></p>
+				<p><label class="login-button pressed-btn" name="#login-screen" data-loginstack="show:touchend,name" data-label="bind:innerHTML, loginbutton"></label></p>
 			</form>
 			<div id="loading" data-label="bind: innerHTML, loadingmessage">Loading...</div>
 			<div id="serverdown" data-label="bind: innerHTML, maintenancemessage">Server down for maintenance</div>

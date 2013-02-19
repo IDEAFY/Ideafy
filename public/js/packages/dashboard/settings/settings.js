@@ -58,7 +58,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin",  "Olives/Event-p
                                                    if (timers[i].value === user.get("settings").polling_interval) idx = i
                                            }
                                            this.innerHTML=res;
-                                           this.selectIndex = idx;
+                                           this.selectedIndex = idx;
                                    }
                            }),
                            "settings" : new Model(settings),

@@ -53,8 +53,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin", "service/
                         };
                         
                         this.render();
-                        this.place($dom);
-                        console.log($dom, this);   
+                        this.place($dom);  
                 }
                 
                 return function SubMenuFactory($dom, $setWidget){

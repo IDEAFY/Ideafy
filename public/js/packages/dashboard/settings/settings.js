@@ -76,19 +76,19 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin",  "Olives/Event-p
                                         user.upload();
                                         
                                         // reload timer and screens labels
-                                        timers = [
+                                        options.set("timers", [
                                                 {"name": labels.get("everymin"), "value": 60000},
                                                 {"name": labels.get("everyfive"), "value": 300000},
                                                 {"name": labels.get("everyfifteen"), "value": 900000},
                                                 {"name": labels.get("never"), "value": 86400000}
-                                                 ];
-                                        screens = [
+                                                 ]);
+                                        options.set("screens", [
                                                 {"name": labels.get("public"), "dest": "#public"},
                                                 {"name": labels.get("library"), "dest": "#library"},
                                                 {"name": labels.get("brainstorm"), "dest": "#brainstorm"},
                                                 {"name": labels.get("connect"), "dest": "#connect"},
                                                 {"name": labels.get("dashboard"), "dest": "#dahsboard"}
-                                                ];      
+                                                ]);      
                                 });
                         }        
                    };

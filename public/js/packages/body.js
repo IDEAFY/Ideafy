@@ -32,6 +32,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
         _login = new Login();
         
         // display loading screen
+        document.getElementById("loading").classList.remove("invisible");
         _login.setScreen("#loading-screen");
         _stack.getStack().setCurrentScreen(_login);
                 

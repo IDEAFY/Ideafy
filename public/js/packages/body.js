@@ -47,14 +47,18 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
                 // initialize labels to device language if available or US by default
                 (_local.get("labels")) ? _labels.reset(_local.get("labels")) : updateLabels(navigator.language);
 
+                // remove invisible class
+                _domSignup.classList.remove("invisible");
+                _domLogin.classList.remove("invisible");
+                _login.setScreen("#loading-screen");
+
                 var current = _local.get("currentLogin");
+                
                 // if the last user is in the local storage
                 if (!current) {
                         //display login
-                        _domSignup.classList.remove("invisible");
                         _login.setScreen("#signup-screen");
                 } else {
-                        _login.setScreen("#loading-screen");
                         _transport.request("CheckLogin", {
                                 "id" : current
                         }, function(result) {

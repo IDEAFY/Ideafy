@@ -116,7 +116,8 @@ define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin",
                                                 }               
                                         },
                                         setSharedWith : function(sharedwith){
-                                                if ((_store.get("id").search("I:WELCOME")) > -1 && sharedwith && sharedwith.length){
+                                                // do not display sharedwith field for welcome idea
+                                                if ((_store.get("id").search("I:WELCOME")) < 0 && sharedwith && sharedwith.length){
                                                         this.classList.remove("invisible");
                                                         (sharedwith.length === 1)?this.innerHTML = _labels.get("sharedwith")+"<b><u>"+1+_labels.get("ideafyer")+"</u></b>":this.innerHTML = _labels.get("sharedwith")+"<b><u>"+sharedwith.length+_labels.get("ideafyer")+"</u></b>";
                                                 }

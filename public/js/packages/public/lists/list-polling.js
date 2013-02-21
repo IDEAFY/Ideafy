@@ -71,7 +71,6 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                                 _store.reset(JSON.parse(cdb.toJSON()));
                                 cdb.unsync();
                                 polling = setInterval(function(){
-                                        console.log("reset query: polling every 60 s");
                                         cdb.reset();
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 _store.reset(JSON.parse(cdb.toJSON()));
@@ -153,7 +152,6 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                                         cdb.reset();
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                                console.log("polling every "+interval+" ms");
                                                 cdb.unsync();
                                         });
                                 },interval);        

@@ -64,7 +64,6 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
                         }, function(result) {
                                 if (result.authenticated) _body.init()
                                 else {
-                                        _domLogin.classList.remove("invisible");
                                         _login.setScreen("#login-screen");
                                 }
                         });

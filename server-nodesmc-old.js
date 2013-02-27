@@ -290,7 +290,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         
         // Application handlers
         olives.handlers.set("Lang", function(json, onEnd){
-                var _path = __dirname+'/i8n/'+json.lang+'.json';
+                var _path = __dirname+'/public/i8n/'+json.lang+'.json';
                 fs.exists(_path, function(exists){
                         if (exists){
                                 var labels=fs.readFileSync(_path, 'utf8');
@@ -300,62 +300,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 onEnd("nok");
                         }    
                 });
-        });
-        
-        olives.handlers.set("GetLanguages", function(json, onEnd){
-                fs.readdir(__dirname+'/i8n/', function(err, list){
-                        var res = [];
-                        if (err) onEnd(err)
-                        else {
-                                list.forEach(function(file){
-                                        res.push(file.substr(0,5));        
-                                });
-                                onEnd(res);
-                        }
-                })
-        });
-        
-        olives.handlers.set("ChangePWD", function(json, onEnd){
-                var cdb = new CouchDBStore(), userPath = "/_users/org.couchdb.user:"+json.userid,
-                    cookieJSON = cookie.parse(json.handshake.headers.cookie),
-                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0] ;
-                
-                transport.request("CouchDB", {
-                        method : "GET",
-                        path: userPath,
-                        auth: cdbAdminCredentials,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
-                        }
-                }, function (res) {
-                        cdb.reset(JSON.parse(res));
-                        console.log(cdb.toJSON());
-                        cdb.set("password", json.pwd);
-                        transport.request("CouchDB", {
-                                method : "PUT",
-                                path:userPath,
-                                auth: cdbAdminCredentials,
-                                headers: {
-                                        "Content-Type": "application/json",
-                                        "Connection": "close"
-                                },
-                                data: cdb.toJSON()
-                        }, function (res) {
-                                if (JSON.parse(res).ok) {
-                                        console.log("password successfully changed");
-                                        sessionStore.get(sessionID, function(err, session) {
-                                        if (err) {
-                                                throw new Error(err);
-                                        } else {
-                                                session.auth = json.userid + ":" + json.pwd;
-                                                sessionStore.set(sessionID, session);
-                                                onEnd("ok");
-                                        }
-                                });
-                                }
-                                });
-                        });        
         });
         
         olives.handlers.set("Signup", function (json, onEnd) {
@@ -966,53 +910,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 });        
         });
         
-        // Checking email recipient list
-        olives.handlers.set("GetUserNames", function(json, onEnd) {
-
-                var result = {}, cdb = new CouchDBStore(), list = json.list, options = {}, bulkDocs = new Store(), req;
-
-                /**
-                 * Building a temporary solution before changes in couchDBStore (one bulk query of the view)
-                 */
-
-                // manually build the http request to couchDB
-                options.hostname = "127.0.0.1";
-                options.port = 5984;
-                options.method = "POST";
-                options.auth = cdbAdminCredentials;
-                options.path = "/"+_db+"/_design/users/_view/short";
-                options.headers = {
-                        "Content-Type" : "application/json"
-                };
-                options.data = JSON.stringify({
-                        keys : json.list
-                });
-
-                /**
-                * Http request callback, handles couchDB response
-                * @param {Object} res the response
-                */
-                var callback = function(res) {
-                        var body = "";
-                        res.on('data', function(chunk) {
-                                body += chunk;
-                        });
-
-                        res.on('end', function() {
-                                if (JSON.parse(body).rows.length === json.list.length){
-                                        result = JSON.parse(body).rows;
-                                        onEnd(result);
-                                }
-                                else {
-                                        onEnd({error: "Error : one or more users not found in Ideafy"});
-                                }
-                        });
-                };
-                // emit the http request and the data
-                req = http.request(options, callback);
-                req.end(options.data, "utf8");
-        });
-        
         // Sending email messages from Ideafy
         olives.handlers.set("SendMail", function(json, onEnd) {
 
@@ -1247,16 +1144,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 if (json.type === "CXR") {
                         message.contactInfo = json.contactInfo;
                 }
-                
                 if (json.type === "DOC") {
                         message.docId = json.docId;
                         message.docType = json.docType;
-                        message.docTitle = json.docTitle;
-                }
-                
-                if (json.type === "2Q+") {
-                        message.docId = json.docId;
-                        message.docType = json.type;
                 }
 
                 // send message to all recipients
@@ -1397,36 +1287,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         });     
                 });
 
-        });
-        
-        // sending a twocent ot another user
-        olives.handlers.set("SendTwocent", function(json, onEnd){
-                var cdb = new CouchDBStore(), now = new Date();
-                
-                getDocAsAdmin(json.userid, cdb).then(function(){
-                        var twocents = cdb.get("twocents") || [],
-                            notifs = cdb.get("notifications") || [],
-                            message = {
-                                "type" : "2C+",
-                                "status" : "unread",
-                                "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
-                                "author" : json.tc.author,
-                                "username" : json.tc.username,
-                                "firstname" : json.tc.firstname,
-                                "toList" : json.username,
-                                "ccList" : "",
-                                "object" : "",
-                                "body" : json.tc.message,
-                                "signature" : ""
-                             };
-                        twocents.unshift(json.tc);
-                        notifs.unshift(message);
-                        cdb.set("twocents", twocents);
-                        cdb.set("notifications", notifs);
-                        updateDocAsAdmin(json.userid, cdb).then(function(){
-                                onEnd("ok");        
-                        });
-                });  
         });
         
         // updating user document and score following certain actions

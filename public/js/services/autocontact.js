@@ -27,7 +27,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                                 "select" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div class = "autocontact"><div class="autoclose" data-select="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:setType, type; bind:setSelected, selected" data-select="listen:touchstart, select"></li></ul></div>';
+                        _widget.template = '<div class = "autocontact"><div class="autoclose" data-select="listen:mousedown,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:setType, type; bind:setSelected, selected" data-select="listen:mousedown, select"></li></ul></div>';
                         
                         _widget.init = function init(){
                                 var arr = _user.get("connections"), usernames = [], currentList = [], types = {};

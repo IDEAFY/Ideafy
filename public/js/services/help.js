@@ -19,7 +19,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                                 "helpevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class="help-doctor"></div><div class="close-help" data-helpevent="listen:touchstart, close"></div><div class="help-screen" data-help="bind:innerHTML,html"></div></div>';
+                        _widget.template = '<div><div class="help-doctor"></div><div class="close-help" data-helpevent="listen:mousedown, close"></div><div class="help-screen" data-help="bind:innerHTML,html"></div></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("help-popup"));

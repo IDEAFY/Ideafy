@@ -38,7 +38,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "service
                                 "action" : new Event(this)
                         });
                         
-                        this.template = '<div class="actionbar" data-style="bind:setPosition, height" data-action="listen:touchend, hide"><ul class="buttonlist" data-style="bind:setButtons, height" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:touchstart, press; listen:touchend, action"></li></ul></div>';
+                        this.template = '<div class="actionbar" data-style="bind:setPosition, height" data-action="listen:mouseup, hide"><ul class="buttonlist" data-style="bind:setButtons, height" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:mousedown, press; listen:mouseup, action"></li></ul></div>';
                         
                         this.hide = function(event, node){
                                 $hide(this);        

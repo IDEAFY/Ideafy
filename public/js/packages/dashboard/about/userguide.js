@@ -22,7 +22,7 @@ define(["Olives/OObject", "service/config", "CouchDBStore", "Olives/Model-plugin
                         "howtoevent" : new Event(userGuide)
                 });
                 
-                userGuide.template = '<div class="aboutcontent"><div id="userguidetoc"><legend data-label="bind:innerHTML, toc"></legend><ul data-howto="foreach"><li><span data-howto="bind: innerHTML, title" data-howtoevent="listen: touchstart, press; listen:touchend, goto"></span></li></ul></div><br/><ul data-howto="foreach"><li data-howto="bind:id, _id"><legend data-howto="bind:innerHTML, title"></legend><p data-howto="bind: innerHTML, body"></p><span class="backtotop" data-label="bind:innerHTML, backtotop" data-howtoevent="listen: touchstart, backToTop"></span></li></ul></div>';
+                userGuide.template = '<div class="aboutcontent"><div id="userguidetoc"><legend data-label="bind:innerHTML, toc"></legend><ul data-howto="foreach"><li><span data-howto="bind: innerHTML, title" data-howtoevent="listen: mousedown, press; listen:touchend, goto"></span></li></ul></div><br/><ul data-howto="foreach"><li data-howto="bind:id, _id"><legend data-howto="bind:innerHTML, title"></legend><p data-howto="bind: innerHTML, body"></p><span class="backtotop" data-label="bind:innerHTML, backtotop" data-howtoevent="listen: mousedown, backToTop"></span></li></ul></div>';
                 
                 userGuide.press = function(event, node){
                         node.setAttribute("style", "font-weight: bold;");        

@@ -616,7 +616,7 @@ ul.notify-list{
     z-index: 2000;
     background: white;
     left: 270px;
-    bottom: -580px;
+    top: -580px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
@@ -824,17 +824,17 @@ ul.notify-list{
 
 #newidea-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateY(-689px);
+    -webkit-transform:translateY(689px);
 }
 
 #new2q-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateY(-550px);
+    -webkit-transform:translateY(550px);
 }
 
 #new2c-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateY(-550px);
+    -webkit-transform:translateY(550px);
 }
 
 #help-popup.appear{

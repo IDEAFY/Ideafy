@@ -325,46 +325,47 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   /*width:93px;
   height:94px;*/
   background-size:93px 93px;
+  background-repeat: no-repeat;
 }
 
 .dock-item[href="#public"]{
-  background:url('../img/disablePublicWall.png');
+  background-image:url('../img/disablePublicWall.png');
 }
 
 .dock-item[href="#library"]{
-  background:url('../img/disableLibrary.png');
+  background-image:url('../img/disableLibrary.png');
 }
 
 .dock-item[href="#brainstorm"]{
-  background:url('../img/disableBrainstorm.png');
+  background-image:url('../img/disableBrainstorm.png');
 }
 
 .dock-item[href="#connect"]{
-  background:url('../img/disableConnect.png');
+  background-image:url('../img/disableConnect.png');
 }
 
 .dock-item[href="#dashboard"]{
-  background:url('../img/disableSettings.png');
+  background-image:url('../img/disableSettings.png');
 }
 
 .dock-item[href="#public"].selected{
-  background:url('../img/activePublicWall.png');
+  background-image:url('../img/activePublicWall.png');
 }
 
 .dock-item[href="#library"].selected{
-  background:url('../img/activeLibrary.png');
+  background-image:url('../img/activeLibrary.png');
 }
 
 .dock-item[href="#brainstorm"].selected{
-  background:url('../img/activeBrainstorm.png');
+  background-image:url('../img/activeBrainstorm.png');
 }
 
 .dock-item[href="#connect"].selected{
-  background:url('../img/activeConnect.png');
+  background-image:url('../img/activeConnect.png');
 }
 
 .dock-item[href="#dashboard"].selected{
-  background:url('../img/activeSettings.png');
+  background-image:url('../img/activeSettings.png');
 }
 
 

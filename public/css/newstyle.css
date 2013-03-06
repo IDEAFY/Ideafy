@@ -3048,22 +3048,24 @@ textarea.solution {
     width: 95px;
     height: 34px;
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .postpostit{
-    background: url('../img/brainstorm/buttonPostDisable.png') no-repeat center center;
+    background-image: url('../img/brainstorm/buttonPostDisable.png');
 }
 
 .delpostit{
-    background: url('../img/brainstorm/buttonDeleteDisable.png') no-repeat center center;
+    background-image: url('../img/brainstorm/buttonDeleteDisable.png');
 }
 
 .postpostit.pressed{
-    background: url('../img/brainstorm/buttonPostActive.png') no-repeat center center;
+    background-image: url('../img/brainstorm/buttonPostActive.png');
 }
 
 .delpostit.pressed{
-    background: url('../img/brainstorm/buttonDeleteActive.png') no-repeat center center;
+    background-image: url('../img/brainstorm/buttonDeleteActive.png');
 }
 
 .wbdrawing{

@@ -829,12 +829,12 @@ ul.notify-list{
 
 #new2q-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateY(550px);
+    -webkit-transform:translateY(750px);
 }
 
 #new2c-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateY(550px);
+    -webkit-transform:translateY(750px);
 }
 
 #help-popup.appear{

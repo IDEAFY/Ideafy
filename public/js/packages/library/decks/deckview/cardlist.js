@@ -60,7 +60,7 @@ define (["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Even
                                 "cardlistevent": new Event(cardList)
                         });
                         
-                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:mousedown, setStart; listen:touchmove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:mousedown, press; listen:mouseup, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:mousedown, press; listen:mouseup, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:mousedown, highlight; listen:mouseup, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></li></ul></div></div>';
+                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:mousedown, setStart; listen:mousemove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:mousedown, press; listen:mouseup, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:mousedown, press; listen:mouseup, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:mousedown, highlight; listen:mouseup, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></li></ul></div></div>';
                         
                         cardList.reset = function reset(deck){
                                 //reset highlight
@@ -144,7 +144,7 @@ define (["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Even
                         };
                         
                         cardList.zoom = function(event, node){
-                                var id = node.getAttribute("data-cards_id");
+                                var id = parseInt(node.getAttribute("data-cards_id"))+12*pagination.get("currentPage");
                                 cardList.setPopup(id);        
                         };
                         

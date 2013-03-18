@@ -67,6 +67,7 @@ define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", 
                                                         _stack.getStack().add("quick", new QuickB(sip, _widget.exitSession));
                                                         break;
                                                  case "musession":
+                                                        console.log("add UI to stack");
                                                         _stack.getStack().add("musession", new MultiB(sip, _widget.exitSession));
                                                         break;
                                                 case "tutorial":

@@ -5805,19 +5805,19 @@ li.my2q{
 /* MULTI USER SESSION */
 #muinitslider{
     width: 300px;
-    height: 100px;
+    height: 150px;
     -webkit-appearance: none;
     display: block;
     background:#657B99;
     margin: 40px auto;
-    border-radius: 50px;
+    border-radius: 75px;
 }
 
 #muinitslider::-webkit-slider-thumb{
     -webkit-appearance: none;
-    height: 100px;
-    width:100px;
-    border-radius: 50px;
+    height: 150px;
+    width:150px;
+    border-radius: 75px;
     background-image: url('../img/brainstorm/multiuser.png');
     background-size: cover;
 }

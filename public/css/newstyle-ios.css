@@ -5813,10 +5813,10 @@ li.my2q{
 }
 
 #muinitslider::-webkit-slider-thumb{
-    height: 50px;
-    width:50px;
+    height: 100px;
+    width:100px;
     border-radius: 50px;
-    background: url('img/brainstorm/multiuser.png') no-repeat center center;
+    background-image: url('img/brainstorm/multiuser.png');
     background-size: contain;
 }
 

@@ -7,7 +7,7 @@
 
 /* deps load before main script??*/
 require.config({
-	baseUrl : "js/packages",
+	baseUrl : "js-touch/packages",
     deps : ["main"],
     paths: {
         lib : "../libs",

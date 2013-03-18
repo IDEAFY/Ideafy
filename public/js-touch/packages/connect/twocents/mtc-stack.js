@@ -34,9 +34,9 @@ define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "Olives/Model-plugi
                         
                         widget.reset = function reset(type, data){
                                 if (type === "2Q") {
-                                        
-                                        if (mtcDetailStack.getStack().getCurrentName !== "twoqdetail") mtcDetailStack.getStack().show("twoqdetail");
                                         mtcDetailStack.getStack().get("twoqdetail").reset(data);
+                                        if (mtcDetailStack.getStack().getCurrentName !== "twoqdetail") mtcDetailStack.getStack().show("twoqdetail");
+                                        
                                 }
                         };
                         

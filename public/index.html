@@ -1,166 +1,18 @@
-<!--
-/**
- * IDEAFY
- * ======
- * 
- * https://github.com/TAIAUT/Ideafy
- * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
- *
- */
--->
-
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Ideafy</title>
-	<meta id="mobile" name="apple-mobile-web-app-capable" content="yes">
-	<meta name="viewport" content="user-scalable=no,width=device-width, initial-scale=1.0">
-  	<link rel="stylesheet" href="css/login-min.css">
-  	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/newstyle.css">
-</head>
-<body data-stack="destination" data-event="selector:.pressed-btn, mousedown, press; selector:.pressed-btn, mouseup, release; listen: orientationchange, forceLandscape">
-	<iframe src="http://8.19.34.68:1664/blank.html" style="display:none" frameborder="0"></iframe>
-	<div id="login">
-		<img src="img/logoLogInPage.png">
-		<div id="login-stack" data-loginstack="destination">
-			<form id="login-form" class="invisible" data-event="selector:input,keypress,resetError;selector:.login-button,mouseup,login">
-				<p class="login-fields">
-					<input data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text">
-					<input data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-event="listen:keypress, enterlogin">
-				</p>
-				<p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton"></label></p>
-				<p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p>
-				<p><label id="signup-button" class="pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginstack="show:mouseup,name"></label></p>
-			</form>
-			<form id="signup-form" class="invisible" data-event="selector:input,keypress,resetError;selector:#signup,mouseup,signup">
-				<p class="login-fields">
-					<input data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text">
-					<input data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder">
-					<input data-loginmodel="bind:value,confirm-password" type="password" data-label="bind:placeholder, repeatpasswordplaceholder">
-					<input data-loginmodel="bind:value,firstname" type="text" data-label="bind:placeholder, firstnameplaceholder">
-					<input data-loginmodel="bind:value,lastname" type="text" data-label="bind:placeholder, lastnameplaceholder" data-event="listen:keypress, entersignup">
-				</p>
-				<p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p>
-				<p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton"></label></p>
-				<p><label class="login-button pressed-btn" name="#login-screen" data-loginstack="show:mouseup,name" data-label="bind:innerHTML, loginbutton"></label></p>
-			</form>
-			<div id="loading" class="invisible" data-label="bind: innerHTML, loadingmessage"></div>
-			<div id="serverdown" class="invisible" data-label="bind: innerHTML, maintenancemessage"></div>
-		</div>
-	</div>
-	<div id="newidea-popup"></div>
-	<div id="new2q-popup"></div>
-	<div id="new2c-popup"></div>
-	<div id="help-popup"></div>
-	<div id = "tip-popup"></div>
-	<div id="notify-popup"></div>
-	<div id="cache"></div>
-	<div id="wrapper">
-		<nav id="dock" data-dockcontrol="radio:a,selected,mousedown,setCurrentWidget">
-			<a class="dock-item selected" href="#public" data-dockcontrol="init"></a>
-			<a class="dock-item" href="#library"></a>
-			<a class="dock-item" href="#brainstorm"></a>
-			<a class="dock-item" href="#connect"></a>
-			<a class="dock-item" href="#dashboard"></a>
-		</nav>
-		<div id="notify"></div>
-		<div class="stack" data-dockstack="destination">
-			<div id="public">
-				<div id = "public-menu"></div>
-				<div id="public-list" class="list">
-					<div class="header blue-light">
-						<div class="option left" data-publiccontrol="toggle:.option.left,mosaic,mousedown,mosaic"></div>
-						<span data-label="bind: innerHTML, publicideasheadertitle"></span>
-						<div class="option right" data-publicevent="listen: mousedown, plus"></div>
-					</div>
-					<div data-liststack="destination" data-publiccontrol="radio:li,selected,mousedown,selectStart">
-						<div class="tools">
-							<input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search">
-							<div name="#list-date" class="tools-button bydate pushed" data-publicevent="listen:mousedown,show"></div>
-							<div name="#list-rating" class="tools-button byrating" data-publicevent="listen:mousedown,show"></div>
-						</div>
-
-					</div>
-				</div>
-				<div id="public-detail" class="details">
-					<div class="detail-stack" data-detailstack="destination"></div>
-				</div>
-			</div>
-
-			<div id="library">
-				<div id="library-menu"></div>
-				<div class="stack" data-librarystack="destination">
-					<div id = "ideas">  		
-						<div id="idea-list" class="list">
-							<div class="header blue-light">
-								<div class="option left" data-ideascontrol="toggle:.option.left,mosaic,mousedown,mosaic"></div>
-								<span data-label="bind: innerHTML, idealistheadertitle">My Ideas</span>
-								<div class="option right" data-ideasevent="listen: mousedown, plus"></div>
-							</div>
-							<div class="overflow" data-idealiststack="destination" data-ideascontrol="radio:li,selected,mousedown,selectStart">
-								<div class="tools">
-									<input class="search" type="text" data-search="bind: value, search" data-label="bind: placeholder, searchprivateplaceholder" data-ideasevent="listen: input, search">
-									<div name="#list-date" class="tools-button bydate pushed" data-ideasevent="listen:mousedown,show"></div>
-									<div name="#list-rating" class="tools-button byrating" data-ideasevent="listen:mousedown,show"></div>
-								</div>
-
-							</div>
-						</div>
-
-						<div id="ideas-detail" class="details">
-							<div class="detail-stack" data-detailstack="destination"></div>
-						</div>
-					</div>
-					<div id = "decks">  		
-						<div id="decklist" class="list">
-							<div class="header blue-light">
-								<div class="option left" data-deckscontrol=""></div>
-								<span data-label="bind: innerHTML, decklistheadertitle"></span>
-								<div class="option right" data-decksevent="listen: mousedown, plus"></div>
-							</div>
-							<div class="overflow" data-deckliststack="destination" data-deckscontrol="radio:li,selected,mousedown,selectStart">
-						</div>
-				</div>
-				<div id="deckview" class="details"></div>
-			</div>
-		</div>
-	</div>
-	<div id="brainstorm">
-		<div id="brainstorm-menu"></div>
-		<div class="brainstorm-header header blue-light">
-			<div class="date" data-header="bind: setDate, date">jj/mm/aaaa</div>
-			<span class="headerTitle" data-header="bind: innerHTML, headertitle"></span>
-			<div class="clock" data-header="bind: setTime, date">hh:mm</div>
-		</div>
-		<div class="stack" data-brainstormstack="destination">
-			<div id="ideafy-menu">
-				<div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, brainstormchoosemode"></div>
-				<ul class="menu" data-ideafymenu = "foreach">
-					<li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, selected" data-ideafyevent="listen:mousedown, press; listen: mouseup, start"></li>
-				</ul>
-			</div>
-			<div id="ideafy-quick">
-				<div class="stack" data-quickstack="destination"></div>
-			</div>
-		</div>
-	</div>
-
-	<div id="connect">
-		<div id="connect-menu"></div>
-		<div class="stack" data-connectstack="destination"></div>
-	</div>
-
-	<div id="dashboard">
-		<div id="dashboard-menu"></div>
-		<div class="stack" data-dashboardstack="destination">	
-		</div>
-	</div>
-</div>
-</div>
-
-<script data-main="js/build" src="js/libs/require.js"></script>
-</body>
-</html>
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+ 	<meta charset="utf-8">
+    <title>TAIAUT development platform</title>
+	
+ </head>
+ <body>
+ 	<script>
+ 		var touchDevice = false,
+ 		    agent = navigator.userAgent.toLowerCase();
+ 		
+ 		if (agent.search("ipad")>-1 || agent.search("android")>-1) touchDevice = true;
+ 		
+ 		(touchDevice) ? window.open ('index-touch.html','_self',false) : window.open ('index-default.html','_self',false)
+ 	</script>
+ </body>
+ </html>

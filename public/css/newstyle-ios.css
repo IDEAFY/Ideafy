@@ -325,46 +325,48 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   /*width:93px;
   height:94px;*/
   background-size:93px 93px;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .dock-item[href="#public"]{
-  background:url('../img/disablePublicWall.png');
+  background-image:url('../img/disablePublicWall.png');
 }
 
 .dock-item[href="#library"]{
-  background:url('../img/disableLibrary.png');
+  background-image:url('../img/disableLibrary.png');
 }
 
 .dock-item[href="#brainstorm"]{
-  background:url('../img/disableBrainstorm.png');
+  background-image:url('../img/disableBrainstorm.png');
 }
 
 .dock-item[href="#connect"]{
-  background:url('../img/disableConnect.png');
+  background-image:url('../img/disableConnect.png');
 }
 
 .dock-item[href="#dashboard"]{
-  background:url('../img/disableSettings.png');
+  background-image:url('../img/disableSettings.png');
 }
 
 .dock-item[href="#public"].selected{
-  background:url('../img/activePublicWall.png');
+  background-image:url('../img/activePublicWall.png');
 }
 
 .dock-item[href="#library"].selected{
-  background:url('../img/activeLibrary.png');
+  background-image:url('../img/activeLibrary.png');
 }
 
 .dock-item[href="#brainstorm"].selected{
-  background:url('../img/activeBrainstorm.png');
+  background-image:url('../img/activeBrainstorm.png');
 }
 
 .dock-item[href="#connect"].selected{
-  background:url('../img/activeConnect.png');
+  background-image:url('../img/activeConnect.png');
 }
 
 .dock-item[href="#dashboard"].selected{
-  background:url('../img/activeSettings.png');
+  background-image:url('../img/activeSettings.png');
 }
 
 
@@ -3677,9 +3679,9 @@ li.color-item{
 }
 
 .cd-contentarea{
-    width: 260px;
+    width: 280px;
     height: 193px;
-    padding: 0px 20px 20px 20px;
+    padding: 0px 10px 10px 10px;
 }
 
 .cd-contentarea.story p{
@@ -3698,6 +3700,15 @@ li.color-item{
     font-size: 10px;
     overflow-y: scroll;
     text-align: justify;
+}
+
+.cd-contentarea .dyknow{
+    font-size: 13px;
+    height: 160px;
+}
+
+.cd-contentarea .charinfo, .cd-contentarea .charinfo{
+    font-size: 10px;
 }
 
 .storytitlelbl{
@@ -4071,6 +4082,10 @@ li.color-item{
     margin-bottom: 5px;
 }
 
+.contact-intro{
+    min-height: 18px;
+}
+
 .msg .date{
     color: #808080;
     font-size: 12px;
@@ -4425,6 +4440,7 @@ li.color-item{
 
 #contactdetails .basicinfo{
     margin-left: 120px;
+    min-height: 60px;
 }
 
 #contactdetails .contactdashboard{
@@ -5541,6 +5557,11 @@ li.my2q{
 
 .edituserdetails .importbutton{
     margin: 10px 0;
+    font-size: 10px;
+    width: 60px;
+    line-height: 16px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .edituserdetails .importbutton div{

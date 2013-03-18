@@ -74,7 +74,7 @@ define(["Olives/OObject", "service/config", "Store", "Olives/Model-plugin", "Oli
                                 "tqevent" : new Event(mtqDetailUI)       
                         });
                         
-                        mtqDetailUI.template = '<div class="twocent-detail"><div class="header blue-dark"><span data-tqdetail="bind: setHeader, author"></span></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-tqdetail="bind:setAvatar, author"></div><span class="author" data-tqdetail="bind:setAuthor,username"></span><span class="commentlbl" data-tqdetail="bind: setWrotelbl, author"></span><p data-tqdetail="bind:innerHTML,question"></p><span class="date" data-tqdetail="bind:date, creation_date"></span></div><div class="detail-body"></div><div class="detail-footer"><div class="tcbutton" data-tqevent="listen:mousedown, press; listen: mouseup, write"></div><div class="tcreplies" data-tqdetail = "bind: displayTwocentNB, twocents"></div></div><div id="connect-writetwocents" class="invisible" data-tqdetail="bind: displayWriteTwocent, author"></div><div id="connect-twocents" class="twocents" data-tqdetail="bind: displayTwocentList, twocents"></div></div></div>';
+                        mtqDetailUI.template = '<div class="twocent-detail"><div class="header blue-dark"><span data-tqdetail="bind: setHeader, author"></span></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-tqdetail="bind:setAvatar, author"></div><span class="author" data-tqdetail="bind:setAuthor,username"></span><span class="commentlbl" data-tqdetail="bind: setWrotelbl, author"></span><p data-tqdetail="bind:innerHTML,question"></p><span class="date" data-tqdetail="bind:date, creation_date"></span></div><div class="detail-body"></div><div class="detail-footer"><div class="tcbutton" data-tqevent="listen:touchstart, press; listen: touchend, write"></div><div class="tcreplies" data-tqdetail = "bind: displayTwocentNB, twocents"></div></div><div id="connect-writetwocents" class="invisible" data-tqdetail="bind: displayWriteTwocent, author"></div><div id="connect-twocents" class="twocents" data-tqdetail="bind: displayTwocentList, twocents"></div></div></div>';
                        
                        
                        mtqDetailUI.press = function(event, node){
@@ -92,13 +92,14 @@ define(["Olives/OObject", "service/config", "Store", "Olives/Model-plugin", "Oli
                        };
                        
                        mtqDetailUI.reset = function reset(content){
-                                if (!domWrite) {domWrite = document.getElementById("connect-writetwocents");}
-                                twocentWriteUI.place(domWrite); 
                                 model.reset(content.value);
                                 twocentWriteUI.reset(model.get("_id"));
-                                twocentList.reset(model.get("_id"), "connect");        
+                                twocentList.reset(model.get("_id"), "connect");
+                                domWrite = mtqDetailUI.dom.querySelector("#connect-writetwocents");
+                                twocentWriteUI.place(domWrite);      
                        };
-                                              
+                       
+                       mtqDetailUI.place(document.createDocumentFragment()); // reply not displayed at first click                     
                         return mtqDetailUI;       
                 };
         });

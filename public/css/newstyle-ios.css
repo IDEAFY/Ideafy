@@ -5817,7 +5817,7 @@ li.my2q{
     height: 100px;
     width:100px;
     border-radius: 50px;
-    background-image: url('img/brainstorm/multiuser.png');
+    background-image: url('../img/brainstorm/multiuser.png');
     background-size: contain;
 }
 

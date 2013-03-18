@@ -5801,6 +5801,27 @@ li.my2q{
     text-decoration: underline;
 }
 
+
+/* MULTI USER SESSION */
+#muinitslider{
+    width: 400px;
+    height: 100px;
+    -webkit-appearance: none;
+    display: block;
+    margin: 40px auto;
+    border-radius: 50px;
+}
+
+#muinitslider::-webkit-slider-thumb{
+    height: 50px;
+    width:50px;
+    border-radius: 50px;
+    background: url('img/brainstorm/multiuser.png') no-repeat center center;
+    background-size: contain;
+}
+
+
+
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}
 p.p2 {margin: 0; font-size: 14px; min-height: 15px}

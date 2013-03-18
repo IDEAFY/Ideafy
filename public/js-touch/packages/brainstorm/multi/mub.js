@@ -15,7 +15,7 @@ define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "Olives/Model-plugi
                     
                 widget.plugins.add("mustack", stack);
                 
-                widget.template = '<div id="ideafy-multi"><input type="range"><div class="stack" data-mustack="destination"></div></div>';
+                widget.template = '<div id="ideafy-multi"><input id="muinitslider" type="range"><div class="stack" data-mustack="destination"></div></div>';
                 
                 widget.place(document.getElementById("ideafy-multi"));
                 

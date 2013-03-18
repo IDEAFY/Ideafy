@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mustart"],
-        function(Widget, Map, Stack, Model, Event, CouchDBStore, Config, Promise, Store, MUStart){
+define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store"],
+        function(Widget, Map, Stack, Model, Event, CouchDBStore, Config, Promise, Store){
                 
            return function MultiBConstructor($sip, $exit){
            
@@ -15,10 +15,15 @@ define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "Olives/Model-plugi
                     stack = new Stack();
                     
                 widget.plugins.add("mustack", _stack);
+                
+                widget.template = '<div><input type="range"></div>';
+                
                 widget.alive(dom);
                 
-                widget.init = function init(sip){
-                        
+                widget.replayMUSession = function replayMUSession(){}; // may should be an observer instead
+                
+                
+                widget.init = function init(sip){        
                 };
                 
                 return widget;

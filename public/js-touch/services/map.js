@@ -36,6 +36,7 @@ define(["Store"], function(Store){
 		        "ideafy-quick": document.getElementById("ideafy-quick"),
 		        "ideafy-multi": document.getElementById("ideafy-multi"),
 		        "quickstart": document.getElementById("quickstart"),
+		        "mustart": document.getElementById("mustart"),
 		        "quicksetup": document.getElementById("quicksetup"),
 		        "quickscenario": document.getElementById("quickscenario"),
 		        "scenario-whiteboard": document.getElementById("scenario-whiteboard"),

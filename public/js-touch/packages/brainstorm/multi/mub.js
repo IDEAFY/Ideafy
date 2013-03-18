@@ -11,14 +11,13 @@ define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "Olives/Model-plugi
            return function MultiBConstructor($sip, $exit){
            
                 var widget = new Widget(),
-                    dom = Map.get("ideafy-multi"),
                     stack = new Stack();
                     
                 widget.plugins.add("mustack", _stack);
                 
-                widget.template = '<div><input type="range"></div>';
+                widget.template = '<div id="ideafy-multi"><input type="range"><div class="stack" data-mustack="destination"></div></div>';
                 
-                widget.alive(dom);
+                widget.place(Map.get("ideafy-multi"));
                 
                 widget.replayMUSession = function replayMUSession(){}; // may should be an observer instead
                 

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Olives/Model-plugin", "service/config", "Store", "service/utils", "./ideafy-menu", "./quickb/quickb"], 
-	function(Widget, Map, Menu, Stack, Model, Config, Store, Utils, IdeafyMenu, QuickB){
+define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Olives/Model-plugin", "service/config", "Store", "service/utils", "./ideafy-menu", "./quickb/quickb", "./multi/mub"], 
+	function(Widget, Map, Menu, Stack, Model, Config, Store, Utils, IdeafyMenu, QuickB, MultiB){
 
 		return function BrainstormConstructor(){
 		//declaration
@@ -65,6 +65,9 @@ define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", 
                                         switch(name){
                                                 case "quick":
                                                         _stack.getStack().add("quick", new QuickB(sip, _widget.exitSession));
+                                                        break;
+                                                 case "musession":
+                                                        _stack.getStack().add("multi", new MultiB(sip, _widget.exitSession));
                                                         break;
                                                 case "tutorial":
                                                         Config.get("observer").notify("display-tutorials");

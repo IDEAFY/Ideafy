@@ -34,6 +34,7 @@ define(["Store"], function(Store){
 		        "brainstorm-menu": document.getElementById("brainstorm-menu"),
 		        "ideafy-menu": document.getElementById("ideafy-menu"),
 		        "ideafy-quick": document.getElementById("ideafy-quick"),
+		        "ideafy-multi": document.getElementById("ideafy-multi"),
 		        "quickstart": document.getElementById("quickstart"),
 		        "quicksetup": document.getElementById("quicksetup"),
 		        "quickscenario": document.getElementById("quickscenario"),

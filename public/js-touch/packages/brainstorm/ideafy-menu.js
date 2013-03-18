@@ -72,7 +72,7 @@ define(["Olives/OObject", "service/map", "Store", "Olives/Model-plugin", "Olives
                         _widget.reset = function reset(){
                                 _menu.reset([
                                 {"name": "quick", "active": true, "selected": false, "label": _labels.get("quickbmode"), "bg":"quick.png", "bgselected":"quickactive.png"},
-                                {"name": "musession", "active": false, "selected": false, "label": _labels.get("musession"), "bg":"multiuser.png", "bgselected":"multiuseractive.png"},
+                                {"name": "musession", "active": true, "selected": false, "label": _labels.get("musession"), "bg":"multiuser.png", "bgselected":"multiuseractive.png"},
                                 {"name": "customb", "active": false, "selected": false, "label": _labels.get("customsession"), "bg":"customb.png", "bgselected":"custombactive.png"},
                                 {"name": "tutorial", "active": true, "selected": false, "label": _labels.get("ideafytutorial"), "bg":"tutorial.png", "bgselected":"tutorialactive.png"}       
                                 ]);

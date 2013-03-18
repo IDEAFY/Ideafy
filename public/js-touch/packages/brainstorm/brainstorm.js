@@ -67,7 +67,7 @@ define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", 
                                                         _stack.getStack().add("quick", new QuickB(sip, _widget.exitSession));
                                                         break;
                                                  case "musession":
-                                                        _stack.getStack().add("multi", new MultiB(sip, _widget.exitSession));
+                                                        _stack.getStack().add("musession", new MultiB(sip, _widget.exitSession));
                                                         break;
                                                 case "tutorial":
                                                         Config.get("observer").notify("display-tutorials");

@@ -5871,6 +5871,15 @@ li.my2q{
     background: white;
 }
 
+#newmub legend{
+    margin: 0 auto;
+    font-weight: bold;
+}
+
+#newmub textarea{
+    width: 100%;
+}
+
 
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}

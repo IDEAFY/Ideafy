@@ -50,7 +50,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         "model": new Model(session)
                 });
                 
-                widget.template = '<div id="newmub"><form><legend>Session settings</legend><label>Select mode</label><hr/><select><option>Roulette</option><option>Campfire</option><option>Boardroom</option></select><span class="session-info">What does it mean?</span><label>Choose language</label><hr/><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" name="title" data-model="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form></div>';
+                widget.template = '<div id="newmub"><form><legend>Session settings</legend><label>Select mode</label><hr/><select><option>Roulette</option><option>Campfire</option><option>Boardroom</option></select><div class="session-info">What does it mean?</div><label>Choose language</label><hr/><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" name="title" data-model="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form></div>';
                 
                 widget.place(document.getElementById("newmub"));
                 

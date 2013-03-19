@@ -5877,6 +5877,11 @@ li.my2q{
     font-weight: bold;
 }
 
+#newmub .session-info{
+    width: 700px;
+    background: pink
+}
+
 #newmub textarea{
     width: 831px;
     font-size: 16px;
@@ -5889,6 +5894,7 @@ li.my2q{
 #newmub textarea.session-desc{
     
 }
+
 
 
 /* EULA */

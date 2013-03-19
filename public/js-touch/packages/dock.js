@@ -57,8 +57,9 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			         //set current stack view
                                 if (!_user.get("settings").startupScreen) _stack.getStack().show("#public")
                                 else {
-                                       pub.classList.remove("selected");
-                                       startScreen.classList.add("selected");
+                                       // pub.classList.remove("selected");
+                                       // startScreen.classList.add("selected");
+                                       _control.init(startScreen);
                                        _stack.getStack().show(_user.get("settings").startupScreen);
                                        
                                 }

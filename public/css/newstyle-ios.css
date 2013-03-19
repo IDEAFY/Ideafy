@@ -5810,7 +5810,7 @@ li.my2q{
     background: #657B99;
     color: white;
     font-family: Helvetica;
-    font-size: 16px;
+    font-size: 20px;
     text-align: center;
     margin: auto;
     margin-top: 20px;
@@ -5821,7 +5821,8 @@ li.my2q{
     width: 120px;
     height: 120px;
     border-radius: 60px;
-    word-wrap: break-word;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 #muinitslider{

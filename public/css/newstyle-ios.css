@@ -5878,6 +5878,15 @@ li.my2q{
 
 #newmub textarea{
     width: 831px;
+    font-size: 16px;
+}
+
+#newmub textarea.session-title{
+    
+}
+
+#newmub textarea.session-desc{
+    
 }
 
 

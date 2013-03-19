@@ -26,12 +26,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 
                 widget.toggleMode = function(event, node){
                         var ui;
-                        if (node.value === "1"){
-                                ui="new";
-                        }
+                        if (node.value === "1"){ui="new";}
                         else {ui="list";}
-                        console.log(node.value, ui);
-                        STA= stack;
                         stack.getStack().get(ui).reset();
                         stack.getStack().show(ui);       
                 };

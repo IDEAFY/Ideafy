@@ -5860,6 +5860,15 @@ li.my2q{
     -webkit-box-shadow: 1px 1px 5px black;
 }
 
+#newmub form{
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #657b99;
+    border-radius: 5px;
+    width: 851px;
+    height: 452px;
+    overflow-y: scroll;
+}
 
 
 /* EULA */

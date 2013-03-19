@@ -10,11 +10,15 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                 
            return function NewMUBConstructor($exit){
            
-                var widget = new Widget();
+                var widget = new Widget(),
+                    labels= Config.get("labels"),
+                    user = Config.get("user");
                 
-                widget.plugins.addAll({});
+                widget.plugins.addAll({
+                        "labels": new Model(labels)
+                });
                 
-                widget.template = '<div id="newmub">New multi-user session<form></form></div>';
+                widget.template = '<div id="newmub"><legend>New multi-user session</legend><form></form></div>';
                 
                 widget.place(document.getElementById("newmub"));
                 

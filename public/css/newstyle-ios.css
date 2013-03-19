@@ -5805,7 +5805,6 @@ li.my2q{
 /* MULTI USER SESSION */
 
 #muinitsliderlbl{
-    display: inline-block;
     width: 240px;
     height: 120px;
     background: #657B99;
@@ -5818,9 +5817,10 @@ li.my2q{
     border-radius: 60px;   
 }
 
-#muinitsliderlbl span{
+#muinitsliderlbl label{
     width: 120px;
-    
+    height: 120px;
+    border-radius: 60px;
 }
 
 #muinitslider{

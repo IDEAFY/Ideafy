@@ -5877,6 +5877,10 @@ li.my2q{
     font-weight: bold;
 }
 
+#newmub .select-mode{
+    display:inline-block;
+}
+
 #newmub .session-info{
     width: 700px;
     background: pink;

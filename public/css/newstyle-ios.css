@@ -5489,7 +5489,7 @@ li.my2q{
     margin-bottom: 5px;
 }
 
-.edituserdetails .dob input, .edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select{
+.edituserdetails .dob input, .edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select, #newmub select{
     height: 30px;
     border-radius: 5px;
     line-height: 28px;
@@ -5506,7 +5506,7 @@ li.my2q{
     margin-right: 10px;
 }
 
-.edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select{
+.edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select, #newmub select{
     -webkit-appearance: none;
     text-align: center;
     width: 120px;

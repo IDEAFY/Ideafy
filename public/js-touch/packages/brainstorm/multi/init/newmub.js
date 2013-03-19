@@ -41,12 +41,13 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 "idea" : [], //{"title" : "", "description" : "", "solution" : "", "visibility" : "private", "id" : "" }
                                 "score" : "",
                                 "chat" : []},
+                    session = new Store({}),
                     labels= Config.get("labels"),
                     user = Config.get("user");
                 
                 widget.plugins.addAll({
                         "labels": new Model(labels),
-                        "model": new Model()
+                        "model": new Model(session)
                 });
                 
                 widget.template = '<div id="newmub"><form><legend>Session settings</legend><label>Select mode</label><select><option>Roulette</option><option>Campfire</option><option>Boardroom</option></select><span class="session-info">What does it mean?</span><label>Choose language</label><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" name="title" data-model="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form></div>';

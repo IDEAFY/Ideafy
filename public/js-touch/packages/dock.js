@@ -60,6 +60,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                                        //pub.classList.remove("selected");
                                        //startScreen.classList.add("selected");
                                        _control.radioClass(startScreen, pub, "selected");
+                                       _control.init(startScreen);
                                        _stack.getStack().show(_user.get("settings").startupScreen);
                                        
                                 }

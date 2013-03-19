@@ -20,12 +20,21 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                         "muinitevent": new Event(widget)
                 });
                 
-                widget.template = '<div id="mub-init"><div id="muinitsliderlbl"><label>Start a new session</label><label>Join a session</label></div><input id="muinitslider" type="range" min="0" max="1" value ="1" data-muinitevent="listen: touchend, toggleMode"><div class="stack" data-muinitstack="destination"></div></div>';
+                widget.template = '<div id="mub-init"><div id="muinitsliderlbl"><label>Start a new session</label><label>Join a session</label></div><input id="muinitslider" type="range" min="0" max="1" value ="1" data-muinitevent="listen: touchend, toggleMode"><div class="exit-brainstorm" data-muinitevent="listen: touchstart, press; listen: touchend, exit"></div><div class="stack" data-muinitstack="destination"></div></div>';
                 
                 widget.place(document.getElementById("mub-init"));
                 
                 widget.toggleMode = function(event, node){
                         alert(node.value);        
+                };
+                
+                widget.press = function(event, node){
+                        node.classList.add("pressed");        
+                };
+                
+                widget.exit = function(event, node){
+                        node.classList.remove("pressed");
+                        $exit();      
                 };
                 
                 return widget;

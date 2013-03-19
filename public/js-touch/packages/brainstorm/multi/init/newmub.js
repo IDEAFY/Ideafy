@@ -18,7 +18,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         "labels": new Model(labels)
                 });
                 
-                widget.template = '<div id="newmub"><legend>New multi-user session</legend><form></form></div>';
+                widget.template = '<div id="newmub"><form><legend>New multi-user session</legend></form></div>';
                 
                 widget.place(document.getElementById("newmub"));
                 

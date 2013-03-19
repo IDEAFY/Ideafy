@@ -5,17 +5,20 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store"],
-        function(Widget, Map, Stack, Model, Event, CouchDBStore, Config, Promise, Store){
+define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mubinit"],
+        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, MUInit){
                 
            return function MultiBConstructor($sip, $exit){
            
                 var widget = new Widget(),
                     stack = new Stack();
-                    
+                
+                // Musession main stack has three widgets : the init (new or join), the waiting room and the session itself //
+                stack.getStack().add("muinit", new MUInit($exit))
+                  
                 widget.plugins.add("mustack", stack);
                 
-                widget.template = '<div id="ideafy-multi"><input id="muinitslider" type="range"><div class="stack" data-mustack="destination"></div></div>';
+                widget.template = '<div id="ideafy-multi"><div class="stack" data-mustack="destination"></div></div>';
                 
                 widget.place(document.getElementById("ideafy-multi"));
                 
@@ -24,6 +27,14 @@ define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "Olives/Model-plugi
                 
                 widget.init = function init(sip){        
                 };
+                
+                //init
+                if (!$sip){
+                        stack.getStack().show("muinit");
+                }
+                else {
+                        widget.init($sip);
+                }
                 
                 return widget;
                    

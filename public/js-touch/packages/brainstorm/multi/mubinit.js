@@ -37,6 +37,10 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                         $exit();      
                 };
                 
+                widget.reset = function(reset){
+                        
+                };
+                
                 return widget;
                    
            };

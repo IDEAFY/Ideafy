@@ -46,7 +46,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 
                 // init
                 stack.getStack().add("new", new NewMUB());
-                stack.getSack().add("list", new MUList());
+                stack.getStack().add("list", new MUList());
                 stack.getStack().show("new");
                 
                 

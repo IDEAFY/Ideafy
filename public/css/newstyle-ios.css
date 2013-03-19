@@ -5858,11 +5858,11 @@ li.my2q{
     height: 532px;
     margin-top: 40px;
     -webkit-box-shadow: 1px 1px 5px black;
+    padding: 20px;
 }
 
 #newmub form{
     padding: 20px;
-    margin: 20px;
     border: 1px solid #657b99;
     border-radius: 5px;
     width: 851px;

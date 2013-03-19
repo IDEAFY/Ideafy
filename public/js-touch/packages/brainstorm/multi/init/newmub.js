@@ -18,7 +18,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         "labels": new Model(labels)
                 });
                 
-                widget.template = '<div id="newmub"><form><legend>New multi-user session</legend></form></div>';
+                widget.template = '<div id="newmub"><form><legend>New multi-user session</legend><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="quickstart-title" autofocus="" name="title" data-model="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="quickstart-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form></div>';
                 
                 widget.place(document.getElementById("newmub"));
                 

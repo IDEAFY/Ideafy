@@ -5803,13 +5803,28 @@ li.my2q{
 
 
 /* MULTI USER SESSION */
+
+#muinitsliderlbl{
+    display: inline-block;
+    width: 240px;
+    height: 120px;
+    background: #657B99;
+    color: white;
+    font-family: Helvetica;
+    font-size: 16px;
+    text-align: center;
+    margin: 20px auto;    
+}
+
 #muinitslider{
     width: 240px;
     height: 120px;
     -webkit-appearance: none;
     display: block;
-    margin: 20px auto;
+    margin: 0px auto;
+    margin-top: -120px;
     border-radius: 60px;
+    z-index: 200;
 }
 
 #muinitslider::-webkit-slider-thumb{

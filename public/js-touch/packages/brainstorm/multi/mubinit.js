@@ -20,7 +20,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                         "muinitevent": new Event(widget)
                 });
                 
-                widget.template = '<div id="mub-init"><div id="muinitsliderlbl"></div><input id="muinitslider" type="range" min="0" max="1" value ="1" data-muinitevent="listen: touchend, toggleMode"><div class="stack" data-muinitstack="destination"></div></div>';
+                widget.template = '<div id="mub-init"><div id="muinitsliderlbl"><span>start a new session</span><span>join a session</span></div><input id="muinitslider" type="range" min="0" max="1" value ="1" data-muinitevent="listen: touchend, toggleMode"><div class="stack" data-muinitstack="destination"></div></div>';
                 
                 widget.place(document.getElementById("mub-init"));
                 

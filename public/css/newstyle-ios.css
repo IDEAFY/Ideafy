@@ -5813,7 +5813,14 @@ li.my2q{
     font-family: Helvetica;
     font-size: 16px;
     text-align: center;
-    margin: 20px auto;    
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 60px;   
+}
+
+#muinitsliderlbl span{
+    width: 120px;
+    
 }
 
 #muinitslider{
@@ -5825,6 +5832,7 @@ li.my2q{
     margin-top: -120px;
     border-radius: 60px;
     z-index: 200;
+    background: transparent;
 }
 
 #muinitslider::-webkit-slider-thumb{

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store"],
-        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store){
+define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store", "./init/newmub", "./init/mulist"],
+        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, NewMUB, MUList){
                 
            return function MultiBInitConstructor($exit){
            
@@ -20,7 +20,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                         "muinitevent": new Event(widget)
                 });
                 
-                widget.template = '<div id="mub-init"><div id="muinitsliderlbl"><label>Start a new session</label><label>Join a session</label></div><input id="muinitslider" type="range" min="0" max="1" value ="1" data-muinitevent="listen: touchend, toggleMode"><div class="exit-brainstorm" data-muinitevent="listen: touchstart, press; listen: touchend, exit"></div><div class="stack" data-muinitstack="destination"></div></div>';
+                widget.template = '<div id="mub-init"><div id="muinitsliderlbl"><label data-labels="bind:innerHTML, startnewmub"></label><label data-labels="bind:innerHTML, joinmub"></label></div><input id="muinitslider" type="range" min="0" max="1" value ="1" data-muinitevent="listen: touchend, toggleMode"><div class="exit-brainstorm" data-muinitevent="listen: touchstart, press; listen: touchend, exit"></div><div class="stack" data-muinitstack="destination"></div></div>';
                 
                 widget.place(document.getElementById("mub-init"));
                 
@@ -40,6 +40,11 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 widget.reset = function(reset){
                         
                 };
+                
+                // init
+                stack.getStack().add("new", new NewMUB());
+                stack.getStack().show("new");
+                
                 
                 return widget;
                    

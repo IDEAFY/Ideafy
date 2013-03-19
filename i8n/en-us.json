@@ -417,7 +417,9 @@
 	"everymin": "Every minute",
 	"everyfive": "Every 5 minutes",
 	"everyfifteen": "Every 15 minutes",
-	"never": "Disabled" 
+	"never": "Disabled",
+	"startnewmub": "Start a new session",
+	"joinmub": "Join a session"
 	
 	
 }

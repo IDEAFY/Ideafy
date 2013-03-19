@@ -417,5 +417,7 @@
 	"everymin": "Toutes les minutes",
 	"everyfive": "Toutes les 5 minutes",
 	"everyfifteen": "Toutes les 15 minutes",
-	"never": "Désactivé" 
+	"never": "Désactivé",
+	"startnewmub": "Démarrer une nouvelle session",
+	"joinmub": "Rejoindre une session"
 }

@@ -18,7 +18,9 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                 
                 widget.place(document.getElementById("mulist"));
                 
-                widget.reset = function reset(){};
+                widget.reset = function reset(){
+                        alert("mulist");
+                };
                 
                 return widget;
                    

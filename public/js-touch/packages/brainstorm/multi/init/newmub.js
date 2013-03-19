@@ -19,7 +19,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                 widget.place(document.getElementById("newmub"));
                 
                 widget.reset = function reset(){
-                        
+                        alert("newmub");        
                 };
                 
                 return widget;

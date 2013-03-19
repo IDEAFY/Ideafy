@@ -3346,7 +3346,7 @@ li.color-item{
     _webkit-margin-after: 0px;
 }
 
-#quickstart .quickstart-form textarea{
+#quickstart .quickstart-form textarea, #newmub textarea {
     font-size: 12px;
     background: #F2F2F2;
     border: none;

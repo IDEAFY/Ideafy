@@ -5846,6 +5846,12 @@ li.my2q{
     background-size: cover;
 }
 
+#mub-init .exit-brainstorm{
+    position: absolute;
+    top: 76px;
+    right: 40px;
+}
+
 
 
 /* EULA */

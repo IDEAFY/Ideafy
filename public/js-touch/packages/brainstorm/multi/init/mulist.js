@@ -12,9 +12,13 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
            
                 var widget = new Widget();
                 
-                widget.template = '';
-                
                 widget.plugins.addAll({});
+                
+                widget.template = '<div id="mulist">Multi-user session list</div>';
+                
+                widget.place(document.getElementById("mulist"));
+                
+                widget.reset = function reset(){};
                 
                 return widget;
                    

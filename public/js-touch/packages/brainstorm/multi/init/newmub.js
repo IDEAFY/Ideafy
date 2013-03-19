@@ -14,9 +14,13 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                 
                 widget.plugins.addAll({});
                 
-                widget.template = '<div id="newmub"></div>';
+                widget.template = '<div id="newmub">New multi-user session</div>';
                 
                 widget.place(document.getElementById("newmub"));
+                
+                widget.reset = function reset(){
+                        
+                };
                 
                 return widget;
                    

@@ -25,7 +25,10 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 widget.place(document.getElementById("mub-init"));
                 
                 widget.toggleMode = function(event, node){
-                        alert(node.value);        
+                        var ui;
+                        (node.value) ? ui="new" : ui="list";
+                        stack.getStack().get(ui).reset();
+                        stack.getStack().show(ui);       
                 };
                 
                 widget.press = function(event, node){
@@ -43,6 +46,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 
                 // init
                 stack.getStack().add("new", new NewMUB());
+                stack.getSack().add("list", new MUList());
                 stack.getStack().show("new");
                 
                 

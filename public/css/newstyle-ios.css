@@ -5852,6 +5852,14 @@ li.my2q{
     right: 40px;
 }
 
+#newmub, #mulist{
+    background: transparent;
+    width: 931px;
+    height: 532px;
+    margin-top: 40px;
+    -webkit-box-shadow: 1px 1px 5px black;
+}
+
 
 
 /* EULA */

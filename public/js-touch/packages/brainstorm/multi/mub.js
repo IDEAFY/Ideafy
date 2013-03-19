@@ -25,7 +25,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 widget.replayMUSession = function replayMUSession(){}; // may should be an observer instead
                 
                 
-                widget.init = function init(sip){        
+                widget.reset = function reset(sip){        
                 };
                 
                 //init
@@ -33,7 +33,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                         stack.getStack().show("muinit");
                 }
                 else {
-                        widget.init($sip);
+                        widget.reset($sip);
                 }
                 
                 return widget;

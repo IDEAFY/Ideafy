@@ -26,7 +26,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 
                 widget.toggleMode = function(event, node){
                         var ui;
-                        if (node.value === 1){
+                        if (node.value === "1"){
                                 ui="new";
                         }
                         else {ui="list";}

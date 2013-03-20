@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store", "service/autocontact"],
-        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store, Autocontact){
+define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store"],
+        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store){
                 
            return function NewMUBConstructor($exit){
            
@@ -63,7 +63,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         "newmubevent": new Event(widget)
                 });
                 
-                widget.template = '<div id="newmub"><div id="newmub-content"><form><label>Select mode</label><hr/><div class="select-mode"><select data-newmubevent="listen:change, setSessionMode"><option name="roulette" data-labels="bind:innerHTML, roulette"></option><option name="campfire" data-labels="bind:innerHTML, campfire"></option><option name="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label>Invite your contacts</label><hr/><div class="selectall" data-labels="bind:innerHTML, selectall" data-shareevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div><input class="search" data-newmubevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="sharelistauto" class="autocontact invisible"><div class="autoclose" data-newmubevent="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-newmubevent="listen:touchend, select"></li></ul></div><div class="sharecontactlist"><ul data-invited="foreach"><li class = "contact list-item" data-newmubevent="listen:touchstart, discardContact"><p class="contact-name" data-invited="bind:innerHTML, username"></p><div class="remove-contact"></div><p class="contact-intro" data-invited="bind:innerHTML, intro"></p></li></ul></div></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: touchstart, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: touchstart, press; listen:touchend, clear">Clear</label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:touchstart, press; listen:touchend, create">Create</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
+                widget.template = '<div id="newmub"><div id="newmub-content"><form><label>Select mode</label><hr/><div class="select-mode"><select data-newmubevent="listen:change, setSessionMode"><option name="roulette" data-labels="bind:innerHTML, roulette"></option><option name="campfire" data-labels="bind:innerHTML, campfire"></option><option name="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label>Invite your contacts</label><hr/><div class="selectall" data-labels="bind:innerHTML, selectall" data-newmubevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div><input class="search" data-newmubevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="invitelistauto" class="autocontact invisible"><div class="autoclose" data-newmubevent="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-newmubevent="listen:touchend, select"></li></ul></div><div class="invitecontactlist"><ul data-invited="foreach"><li class = "contact list-item" data-newmubevent="listen:touchstart, discardContact"><p class="contact-name" data-invited="bind:innerHTML, username"></p><div class="remove-contact"></div><p class="contact-intro" data-invited="bind:innerHTML, intro"></p></li></ul></div></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: touchstart, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: touchstart, press; listen:touchend, clear">Clear</label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:touchstart, press; listen:touchend, create">Create</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
                 
                 widget.place(document.getElementById("newmub"));
                 
@@ -111,7 +111,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                 };
                 
                 widget.displayAutoContact = function(event, node){
-                                document.getElementById("sharelistauto").classList.remove('invisible');
+                                document.getElementById("invitelistauto").classList.remove('invisible');
                                 // reset contactList with all user connections
                                 contactList.reset(user.get("connections"));       
                 };
@@ -158,7 +158,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 widget.removeContact(contactList.get(id));
                                 setTimeout(function(){
                                         contactList.update(id, "selected", false);
-                                        document.getElementById("sharelistauto").classList.add("invisible");
+                                        document.getElementById("invitelistauto").classList.add("invisible");
                                 }, 200);
                         }
                         else {
@@ -166,7 +166,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 widget.selectGroup();
                                 setTimeout(function(){
                                         contactList.update(id, "selected", true);
-                                        document.getElementById("sharelistauto").classList.add("invisible");
+                                        document.getElementById("invitelistauto").classList.add("invisible");
                                 }, 200);        
                         }
                 };

@@ -1623,7 +1623,7 @@ textarea.solution {
     position: relative;
 }
 
-.idea-share .selectall{
+.idea-share .selectall, #newmub .selectall{
     float: right;
     background: #657B99;
     color: white;

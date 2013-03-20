@@ -5873,9 +5873,15 @@ li.my2q{
 
 #newmub form{
     width: 851px;
-    height: 472px;
-    background: yellow;
+    height: 437px;
     overflow-y: scroll;
+    border-radius: 5px;
+    margin-top: 10px;
+    background: #FAFAFA;
+}
+
+#newmub-content hr{
+    -webkit-margin-before: 0.2em;
 }
 
 #newmub label{
@@ -5884,12 +5890,12 @@ li.my2q{
     font-size: 16px;
     letter-spacing: 1px;
     display: block;
-    margin-top: 10px;
 }
 
 #newmub .select-mode{
     display:inline-block;
     line-height: 30px;
+    margin-bottom: 10px;
 }
 
 #newmub .select-mode select{

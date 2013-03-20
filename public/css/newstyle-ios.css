@@ -3329,7 +3329,7 @@ li.color-item{
     padding:40px 20px 40px 20px;    
 }
 
-#quickstart .quickstart-form label, #newmub label{
+#quickstart .quickstart-form label{
     font-family: Pacifico;
     color: #657B99;
     font-size: 14px;
@@ -5872,9 +5872,13 @@ li.my2q{
     background: white;
 }
 
-#newmub legend{
-    margin: 0 auto;
-    font-weight: bold;
+#newmub label{
+    font-family: Pacifico;
+    color: #657B99;
+    font-size: 18px;
+    letter-spacing: 1px;
+    display: block;
+    margin-top: 10px;
 }
 
 #newmub .select-mode{

@@ -85,7 +85,8 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 "ideaWB" : [],
                                 "idea" : [], //{"title" : "", "description" : "", "solution" : "", "visibility" : "private", "id" : "" }
                                 "score" : "",
-                                "chat" : []};
+                                "chat" : [],
+                                "invited": []};
                         session.reset(sessionTemplate);       
                 };
                 

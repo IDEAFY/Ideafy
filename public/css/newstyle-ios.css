@@ -5883,7 +5883,8 @@ li.my2q{
 
 #newmub .session-info{
     width: 700px;
-    background: pink;
+    font-style: italic;
+    margin-left: 15px;
 }
 
 #newmub textarea{

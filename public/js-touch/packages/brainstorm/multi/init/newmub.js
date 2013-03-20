@@ -49,7 +49,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                 widget.plugins.addAll({
                         "labels": new Model(labels),
                         "model": new Model(session),
-                        "errormsg": new Model(errormsg),
+                        "errormsg": new Model(error),
                         "newmubevent": new Event(widget)
                 });
                 

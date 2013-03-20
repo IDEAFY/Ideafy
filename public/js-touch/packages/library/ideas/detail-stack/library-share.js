@@ -147,7 +147,7 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                                         if (v.type === "group" && !v.selected){
                                                 cts = v.contacts;
                                                 add = true;
-                                                for (j=cts.lenght-1;j>=0; j--){
+                                                for (j=cts.length-1;j>=0; j--){
                                                         if (shareContacts.toJSON().search(cts[j].userid)<0){
                                                                 add = false;
                                                                 break;

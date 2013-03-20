@@ -111,8 +111,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 "score" : "",
                                 "chat" : [],
                                 "invited": []};
-                        session.reset(sessionTemplate);
-                        console.log("reset called", session.toJSON());     
+                        session.reset(sessionTemplate);    
                 };
                 
                 widget.changeSessionMode = function(event, node){
@@ -294,8 +293,10 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         session.set("_id", "S:MU:"+now.getTime());
                         
                         cdb.reset(session.toJSON());
+                        console.log(cdb.toJSON());
                         cdb.setTransport(Config.get("transport"));
-                        cdb.sync(Config.get("db"), cdb.get("_id")).then(function(){
+                        cdb.sync(Config.get("db"), cdb.get("_id"));
+                        cdb.upload().then(function(){
                                 console.log(cdb.toJSON());
                                 console.log("should notify invitees and initiate waiting room");
                         });

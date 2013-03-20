@@ -39,6 +39,13 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                         else{
                                                 this.classList.add("invisible");
                                         }
+                                },
+                                setTitle : function(initiator){
+                                        var _now = new Date();
+                                        if (initiator && initiator.username) {
+                                                this.setAttribute("placeholder", _labels.get("quickstarttitleplaceholderpre")+initiator.username+_labels.get("quickstarttitleplaceholderpost"));
+                                        }
+                                        this.removeAttribute("readonly");
                                 }
                         }),
                         "errormsg": new Model(error),

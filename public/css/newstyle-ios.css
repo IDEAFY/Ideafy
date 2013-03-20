@@ -5970,13 +5970,17 @@ li.my2q{
     margin-top: 10px;    
 }
 
+.invitecontactlist ul{
+    display: table;
+}
+
 .invitecontactlist .contact:first-child{
     border-top: none;
 }
 
 .invitecontactlist li{
     float: left;
-    width: 284px;
+    width: 212px;
     height: 34px;
     border-top: none;
     padding: 3px 0px 3px 0px;

@@ -5886,9 +5886,8 @@ li.my2q{
     line-height: 30px;
 }
 
-#newmub .select-mode option{
+#newmub .select-mode select{
     font-weight: bold;
-    font-size: 16px;
 }
 
 #newmub .session-info{

@@ -419,7 +419,13 @@
 	"everyfifteen": "Every 15 minutes",
 	"never": "Disabled",
 	"startnewmub": "Start a new session",
-	"joinmub": "Join a session"
+	"joinmub": "Join a session",
+	"roulette": "Roulette",
+	"campfire": "Campfire",
+	"boardroom": "Boardroom",
+	"rouletteinfo": "Any other Ideafyer may join this session",
+	"campfireinfo": "Anyone from you contacts may join this session (no notification)",
+	"boardroom": "Invitation only: only invited contacts are notified and may join this session"
 	
 	
 }

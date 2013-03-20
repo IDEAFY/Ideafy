@@ -5863,11 +5863,11 @@ li.my2q{
 }
 
 #newmub form{
-    padding: 20px;
+    padding: 0px 20px 20px 20px;
     border: 1px solid #657b99;
     border-radius: 5px;
     width: 851px;
-    height: 452px;
+    height: 472px;
     overflow-y: scroll;
     background: white;
 }
@@ -5875,7 +5875,7 @@ li.my2q{
 #newmub label{
     font-family: Pacifico;
     color: #657B99;
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 1px;
     display: block;
     margin-top: 10px;
@@ -5886,14 +5886,19 @@ li.my2q{
     line-height: 30px;
 }
 
+#newmub .select-mode option{
+    font-weight: bold;
+    font-size: 16px;
+}
+
 #newmub .session-info{
     width: 700px;
     font-style: italic;
     background-image: url('../img/brainstorm/deedeetopright.png');
-    background-size: 30px 30px;
+    background-size: contain;
     background-position: left center;
     background-repeat: no-repeat;
-    padding-left: 40px;
+    padding-left: 20px;
     font-family: helvetica;
     font-size: 14px;
     color: #404040;

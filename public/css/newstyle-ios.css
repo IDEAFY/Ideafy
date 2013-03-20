@@ -5905,11 +5905,11 @@ li.my2q{
 }
 
 #newmub textarea.session-title{
-    
+    height: 24px;    
 }
 
 #newmub textarea.session-desc{
-    
+    height: 70px;
 }
 
 #newmub .newmub-footer{

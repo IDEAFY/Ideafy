@@ -5956,6 +5956,48 @@ li.my2q{
 }
 
 
+#invitelistauto{
+    width: 568px;
+    margin-top: 2px;
+    position: relative;
+}
+
+#newmub-content .search{
+    width: 300px;
+}
+
+.invitecontactlist{
+    margin-top: 10px;    
+}
+
+.invitecontactlist .contact:first-child{
+    border-top: none;
+}
+
+.invitecontactlist li{
+    float: left;
+    width: 284px;
+    height: 34px;
+    border-top: none;
+    padding: 3px 0px 3px 0px;
+    overflow-y: hidden;
+    min-height: 0;
+}
+
+.invitecontactlist p{
+    padding: 0;
+    margin: 0px 0px 0px 10px;
+}
+
+.invitecontactlist .remove-contact{
+    float:right;
+    margin-top: -10px;
+    width: 15px;
+    height: 15px;
+    background: url('../img/wall/35delete.png') no-repeat center center;
+    background-size: 15px 15px;
+}
+
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}
 p.p2 {margin: 0; font-size: 14px; min-height: 15px}

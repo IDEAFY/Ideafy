@@ -207,7 +207,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 if (v.type === "group" && !v.selected){
                                         cts = v.contacts;
                                         add = true;
-                                        for (j=cts.lenght-1;j>=0; j--){
+                                        for (j=cts.length-1;j>=0; j--){
                                                 if (invited.toJSON().search(cts[j].userid)<0){
                                                         add = false;
                                                         break;

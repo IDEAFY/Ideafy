@@ -295,8 +295,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         cdb.reset(JSON.parse(session.toJSON()));
                         console.log(cdb.toJSON());
                         cdb.setTransport(Config.get("transport"));
-                        cdb.sync(Config.get("db"), cdb.get("_id"));
-                        cdb.upload().then(function(){
+                        cdb.sync(Config.get("db"), cdb.get("_id")).then(function(){
                                 console.log(cdb.toJSON());
                                 console.log("should notify invitees and initiate waiting room");
                         });

@@ -87,6 +87,9 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         node.classList.remove("pressed");        
                 };
                 
+                // init
+                widget.reset();
+                
                 return widget;
                    
            };

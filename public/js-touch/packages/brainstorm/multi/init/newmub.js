@@ -43,16 +43,15 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 setTitle : function(initiator){
                                         var _now = new Date();
                                         if (initiator && initiator.username) {
-                                                this.setAttribute("placeholder", _labels.get("quickstarttitleplaceholderpre")+initiator.username+_labels.get("quickstarttitleplaceholderpost"));
+                                                this.setAttribute("placeholder", labels.get("quickstarttitleplaceholderpre")+initiator.username+labels.get("quickstarttitleplaceholderpost"));
                                         }
-                                        this.removeAttribute("readonly");
                                 }
                         }),
                         "errormsg": new Model(error),
                         "newmubevent": new Event(widget)
                 });
                 
-                widget.template = '<div id="newmub"><div id="newmub-content"><form><label>Select mode</label><hr/><div class="select-mode"><select data-newmubevent="listen:change, setSessionMode"><option name="roulette" data-labels="bind:innerHTML, roulette"></option><option name="campfire" data-labels="bind:innerHTML, campfire"></option><option name="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label>Invite your contacts</label><hr/></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: touchstart, press; listen:touchend, clear">Clear</label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:touchstart, press; listen:touchend, create">Create</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
+                widget.template = '<div id="newmub"><div id="newmub-content"><form><label>Select mode</label><hr/><div class="select-mode"><select data-newmubevent="listen:change, setSessionMode"><option name="roulette" data-labels="bind:innerHTML, roulette"></option><option name="campfire" data-labels="bind:innerHTML, campfire"></option><option name="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label>Invite your contacts</label><hr/></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: touchstart, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: touchstart, press; listen:touchend, clear">Clear</label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:touchstart, press; listen:touchend, create">Create</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
                 
                 widget.place(document.getElementById("newmub"));
                 
@@ -96,6 +95,10 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                             name = opt.getAttribute("name");
                         
                         session.set("mode", name);
+                };
+                
+                widget.removeReadonly = function(event, node){
+                        node.removeAttribute("readonly");        
                 };
                 
                 widget.press = function(event, node){

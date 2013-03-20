@@ -5862,14 +5862,20 @@ li.my2q{
     padding: 20px;
 }
 
-#newmub form{
+#newmub-content{
     padding: 0px 20px 20px 20px;
     border: 1px solid #657b99;
     border-radius: 5px;
     width: 851px;
     height: 472px;
-    overflow-y: scroll;
     background: white;
+}
+
+#newmub form{
+    width: 851px;
+    height: 472px;
+    background: yellow;
+    overflow-y: scroll;
 }
 
 #newmub label{

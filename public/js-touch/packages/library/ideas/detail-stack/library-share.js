@@ -47,6 +47,7 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                              _share.reset({"body": "", "docId":idea._id, "docType": idea.type, "docTitle": idea.title, "signature": _user.get("username")+" <"+_user.get("_id")+ ">"});
                              if (_user.get("signature")) _share.set("signature", _user.get("signature"));
                              shareContacts.reset([]);
+                             contactList.reset(_user.get("connections"));
                         };
                         
                         _widget.updateAutoContact = function(event, node){

@@ -36,8 +36,6 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 },
                                 displayInvitations : function(mode){
                                         if (mode === "boardroom"){
-                                                contactList.reset(user.get("connections"));
-                                                invited.reset([]);
                                                 this.classList.remove("invisible");
                                         }
                                         else{
@@ -109,6 +107,8 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                             opt = node.childNodes[id],
                             name = opt.getAttribute("name");
                         
+                        contactList.reset(user.get("connections"));
+                        invited.reset([]);
                         session.set("mode", name);
                 };
                 

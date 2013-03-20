@@ -5939,11 +5939,12 @@ li.my2q{
     border-radius: 5px;
     font-family: Helvetica;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 26px;
     text-align: center;
     color: white;
     float: right;
+    letter-spacing: 0px;
 }
 
 #newmub label.create{
@@ -5967,7 +5968,8 @@ li.my2q{
 }
 
 .invitecontactlist{
-    margin-top: 10px;    
+    margin-top: 10px;
+    margin-bottom: 5px;    
 }
 
 .invitecontactlist ul{

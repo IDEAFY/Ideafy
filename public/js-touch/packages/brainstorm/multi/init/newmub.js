@@ -295,10 +295,13 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         cdb.reset(JSON.parse(session.toJSON()));
                         console.log(cdb.toJSON());
                         cdb.setTransport(Config.get("transport"));
-                        cdb.sync(Config.get("db"), cdb.get("_id")).then(function(){
-                                console.log(cdb.toJSON());
-                                console.log("should notify invitees and initiate waiting room");
-                        });
+                        cdb.sync(Config.get("db"), cdb.get("_id"));
+                        setTimeout(function(){
+                                cdb.upload().then(function(){
+                                        console.log(cdb.toJSON());
+                                        console.log("should notify invitees and initiate waiting room");
+                                });
+                        }, 250);
                 };
                 
                 // init

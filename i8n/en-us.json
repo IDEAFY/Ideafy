@@ -425,7 +425,7 @@
 	"boardroom": "Boardroom",
 	"rouletteinfo": "Any other Ideafyer may join this session",
 	"campfireinfo": "Anyone from you contacts may join this session (no notification)",
-	"boardroom": "Invitation only: only invited contacts are notified and may join this session"
+	"boardroominfo": "Invitation only: only invited contacts are notified and may join this session"
 	
 	
 }

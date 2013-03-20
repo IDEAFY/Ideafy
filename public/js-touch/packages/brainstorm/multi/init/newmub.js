@@ -99,7 +99,8 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 "score" : "",
                                 "chat" : [],
                                 "invited": []};
-                        session.reset(sessionTemplate);       
+                        session.reset(sessionTemplate);
+                        console.log("reset called", session.toJSON());     
                 };
                 
                 widget.setSessionMode = function(event, node){

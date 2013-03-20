@@ -77,9 +77,10 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                 
                 widget.setSessionMode = function(event, node){
                         var id = node.selectedIndex,
-                            option = node.querySelector("option[index="+id+"]");
-                        session.set("mode", option.name);
-                        console.log(session.get("mode"));
+                            opt = node.childNodes[id],
+                            name = opt.getAttribute("name");
+                        
+                        session.set("mode", name);
                 };
                 
                 widget.press = function(event, node){

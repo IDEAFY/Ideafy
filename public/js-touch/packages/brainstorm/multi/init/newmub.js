@@ -22,10 +22,16 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         "labels": new Model(labels),
                         "newmub": new Model(session, {
                                 initSessionMode : function(mode){
-                                        var select = this;
-                                        select.childNodes.forEach(function(child){
-                                                if (child.getAttribute("name") === mode) select.selectedIndex = this.indexOf(child);      
-                                        });          
+                                        switch(mode){
+                                                case "campfire":
+                                                        this.selectedIndex = 1;
+                                                        break;
+                                                case "boardroom":
+                                                        this.selectedIndex = 2;
+                                                        break;
+                                                default:
+                                                        this.selectedIndex= 0;
+                                        }        
                                 },
                                 setSessionInfo : function(mode){
                                         switch(mode){

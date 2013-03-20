@@ -11,10 +11,14 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
            return function MultiBConstructor($sip, $exit){
            
                 var widget = new Widget(),
-                    stack = new Stack();
+                    stack = new Stack(),
+                    join = function(sid){
+                        stack.getStack().get("mubwait").reset(sid);
+                        stack.getStack().show("mubwait");        
+                    };
                 
                 // Musession main stack has three widgets : the init (new or join), the waiting room and the session itself //
-                stack.getStack().add("mubinit", new MUInit($exit, widget.join));
+                stack.getStack().add("mubinit", new MUInit($exit, join));
                 stack.getStack().add("mubwait", new MUWait($exit))
                   
                 widget.plugins.add("mustack", stack);
@@ -29,9 +33,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 widget.reset = function reset(sip){        
                 };
                 
-                widget.join = function join(sid){
-                        stack.getStack().get("mubwait").reset(sid);
-                        stack.getStack().show("mubwait");        
+                widget.join = function(sid){
+                        join(sid);      
                 };
                 
                 //init

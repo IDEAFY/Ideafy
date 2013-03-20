@@ -45,7 +45,6 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                         if (initiator && initiator.username) {
                                                 this.setAttribute("placeholder", labels.get("quickstarttitleplaceholderpre")+initiator.username+labels.get("quickstarttitleplaceholderpost"));
                                         }
-                                        this.removeAttribute("readonly");
                                 }
                         }),
                         "errormsg": new Model(error),
@@ -98,9 +97,9 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         session.set("mode", name);
                 };
                 
-                /*widget.removeReadonly = function(event, node){
+                widget.removeReadonly = function(event, node){
                         node.removeAttribute("readonly");        
-                };*/
+                };
                 
                 widget.press = function(event, node){
                         node.classList.add("pressed");        

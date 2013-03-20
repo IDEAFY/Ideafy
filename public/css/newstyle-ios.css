@@ -5888,7 +5888,16 @@ li.my2q{
 #newmub .session-info{
     width: 700px;
     font-style: italic;
-    margin-left: 15px;
+    height: 50px;
+    background-image: url('../img/brainstorm/deedeetopright.png');
+    background-size: 30px 30px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    float: left;
+    font-family: helvetica;
+    font-size: 14px;
+    color: #404040;
 }
 
 #newmub textarea{

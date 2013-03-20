@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mubinit"],
-        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, MUInit){
+define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mubinit", "./mubwait"],
+        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, MUInit, MUWait){
                 
            return function MultiBConstructor($sip, $exit){
            
@@ -14,7 +14,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                     stack = new Stack();
                 
                 // Musession main stack has three widgets : the init (new or join), the waiting room and the session itself //
-                stack.getStack().add("muinit", new MUInit($exit))
+                stack.getStack().add("mubinit", new MUInit($exit, widget.join));
+                stack.getStack().add("mubwait", new MUWait($exit))
                   
                 widget.plugins.add("mustack", stack);
                 
@@ -28,9 +29,14 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 widget.reset = function reset(sip){        
                 };
                 
+                widget.join = function join(sid){
+                        stack.getStack().get("mubwait").reset(sid);
+                        stack.getStack().show("mubwait");        
+                };
+                
                 //init
                 if (!$sip){
-                        stack.getStack().show("muinit");
+                        stack.getStack().show("mubinit");
                 }
                 else {
                         widget.reset($sip);

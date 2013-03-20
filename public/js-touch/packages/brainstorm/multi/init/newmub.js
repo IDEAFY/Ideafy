@@ -8,7 +8,7 @@
 define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store"],
         function(Widget, Model, Event, CouchDBStore, Config, Promise, Store){
                 
-           return function NewMUBConstructor($exit){
+           return function NewMUBConstructor($exit, $join){
            
                 var widget = new Widget(),
                     session = new Store({}),
@@ -297,10 +297,12 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), cdb.get("_id"));
                         setTimeout(function(){
-                                cdb.upload().then(function(){
-                                        console.log(cdb.toJSON());
-                                        console.log("should notify invitees and initiate waiting room");
-                                });
+                                cdb.upload();
+                                console.log(cdb.toJSON());
+                                console.log("should notify invitees and initiate waiting room");
+                                $join(cdb.get("_id"));
+                                cdb.unsync();
+                                widget.reset();
                         }, 250);
                 };
                 

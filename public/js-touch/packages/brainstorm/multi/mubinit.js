@@ -8,7 +8,7 @@
 define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store", "./init/newmub", "./init/mulist"],
         function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, NewMUB, MUList){
                 
-           return function MultiBInitConstructor($exit){
+           return function MultiBInitConstructor($exit, $join){
            
                 var widget = new Widget(),
                     stack = new Stack(),
@@ -46,8 +46,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 };
                 
                 // init
-                stack.getStack().add("new", new NewMUB());
-                stack.getStack().add("list", new MUList());
+                stack.getStack().add("new", new NewMUB($join));
+                stack.getStack().add("list", new MUList($join));
                 stack.getStack().show("new");
                 
                 

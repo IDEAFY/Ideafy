@@ -5883,18 +5883,17 @@ li.my2q{
 
 #newmub .select-mode{
     display:inline-block;
+    line-height: 30px;
 }
 
 #newmub .session-info{
     width: 700px;
     font-style: italic;
-    height: 50px;
     background-image: url('../img/brainstorm/deedeetopright.png');
     background-size: 30px 30px;
     background-position: left center;
     background-repeat: no-repeat;
     padding-left: 40px;
-    float: left;
     font-family: helvetica;
     font-size: 14px;
     color: #404040;

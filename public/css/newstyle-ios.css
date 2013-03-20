@@ -5899,6 +5899,33 @@ li.my2q{
     
 }
 
+#newmub .newmub-footer{
+    position: absolute;
+    bottom: 30px;
+    right: 40px;    
+}
+
+#newmub label.clear, #newmub label.create{
+    height: 26px;
+    width: 92px;
+    border-radius: 5px;
+    font-family: Helvetica;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 26px;
+    text-align: center;
+    color: white;
+    float: right;
+}
+
+#newmub label.create{
+    background: #8cab68;
+}
+
+#newmub label.clear{
+    margin-left: 15px;
+    background: #e69b73;    
+}
 
 
 /* EULA */

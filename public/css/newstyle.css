@@ -153,7 +153,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 }
 
-.ideas-list, .twoq-list, .twoq-searchlist{
+.idea-list, .twoq-list, .twoq-searchlist{
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; 
@@ -1091,7 +1091,7 @@ ul.notify-list{
     float: left;
 }
 
-#public-list .tools-button, #ideas-list .tools-button{
+#public-list .tools-button, #idea-list .tools-button{
     display: inline-block;
     float: left;
     width: 32px;
@@ -1103,25 +1103,25 @@ ul.notify-list{
     background-repeat: no-repeat;
 }
 
-#public-list .tools-button.bydate, #ideas-list .tools-button.bydate{
+#public-list .tools-button.bydate, #idea-list .tools-button.bydate{
     margin-left: 5px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     background-image: url('../img/public/byDateDisable.png');   
 }
 
-#public-list .tools-button.byrating, #ideas-list .tools-button.byrating{
+#public-list .tools-button.byrating, #idea-list .tools-button.byrating{
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-left: none;
     background-image: url('../img/public/byRatingDisable.png');    
 }
 
-#public-list .tools-button.bydate.pushed, #ideas-list .tools-button.bydate.pushed{
+#public-list .tools-button.bydate.pushed, #idea-list .tools-button.bydate.pushed{
     background-image: url('../img/public/byDateActive.png');   
 }
 
-#public-list .tools-button.byrating.pushed, #ideas-list .tools-button.byrating.pushed{
+#public-list .tools-button.byrating.pushed, #idea-list .tools-button.byrating.pushed{
     background-image: url('../img/public/byRatingActive.png');   
 }
 

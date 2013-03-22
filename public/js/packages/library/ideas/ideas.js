@@ -115,12 +115,14 @@ define(["Olives/OObject", "Amy/Control-plugin" ,
 			// additional options (rating/favorites etc. may be offered in the future)
 			
 			var listDate = new List(_db, "library", "_view/ideas", {key: Config.get("uid"), descending: true, include_docs:true}),
-			   listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
+			   listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true}),
+                           listRating = new List(_db, "ideas", "_view/privatebyvotes", {startkey: '["'+Config.get("user").get("_id")+'",{}]', endkey: '["'+Config.get("user").get("_id")+'"]', descending: true, include_docs:true});
 			
 			_stack.getStack().add("#list-date", listDate);
-			
+			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
 			
+			listRating.init();
 			listDate.init().then(function(){
 		              _stack.getStack().show("#list-date");
 		              _detail.reset(listDate.getModel(), 0);        

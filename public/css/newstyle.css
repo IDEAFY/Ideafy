@@ -2345,6 +2345,11 @@ textarea.solution {
     height: 100%;
 }
 
+#deckview .cardpage ul{
+    max-height: 568px;
+    overflow-y: hidden;
+}
+
 #deckview .cardlist .pagenb{
     position: absolute;
     margin-top: -10px;

@@ -103,9 +103,12 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                         
                         // replay session
                         _observer.watch("replay-session", function(sid, mode){
+                                var prev = document.querySelector(".dock-item.selected"),
+                                    bs = document.querySelector(".dock-item[href='#brainstorm']");
                                 _stack.getStack().show("#brainstorm");
-                                document.querySelector(".dock-item.selected").classList.remove("selected");
-                                document.querySelector(".dock-item[href='#brainstorm']").classList.add("selected");              
+                                _control.radioClass(bs, prev, "selected");
+                                // document.querySelector(".dock-item.selected").classList.remove("selected");
+                                // document.querySelector(".dock-item[href='#brainstorm']").classList.add("selected");              
                         });
                         
                         // display document

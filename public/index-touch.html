@@ -163,22 +163,6 @@
 </div>
 </div>
 
-<script type="text/javascript" charset="utf-8">
-        
-        // Wait for Cordova to load
-        //
-        document.addEventListener("deviceready", onDeviceReady, false);
-        
-        // Cordova is loaded and it is now safe to make calls Cordova methods
-        //
-        function onDeviceReady() {
-        	alert("device ready");
-            var app = document.createElement('script');
-            app.setAttribute("data-main", "js-touch/build");
-            app.setAttribute("src", "js-touch/libs/require.js");
-            document.head.appendChild(app);
-        }
-        
-</script>
+<script data-main="js-touch/build" src="js-touch/libs/require.js"></script>
 </body>
 </html>

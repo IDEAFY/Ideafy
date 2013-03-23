@@ -32,7 +32,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
         _login = new Login();
         
         // check connection
-        if (navigator.connection.type === "none"){
+        if (navigator.connection && navigator.connection.type === "none"){
                 (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
                 _login.setScreen("#nointernet");
                 _stack.getStack().setCurrentScreen(_login);

@@ -418,6 +418,7 @@
 	"everyfive": "Every 5 minutes",
 	"everyfifteen": "Every 15 minutes",
 	"never": "Disabled",
+	"nointernet": "Your device is not connected: please check your Internet access and try again.",
 	"startnewmub": "Start a new session",
 	"joinmub": "Join a session",
 	"roulette": "Roulette",

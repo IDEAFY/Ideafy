@@ -31,6 +31,14 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
         _body.alive(Map.get("body"));
         _login = new Login();
         
+        if (navigator.connection.type === "none"){
+                (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
+                _login.setScreen("#nointernet");
+                _stack.getStack().setCurrentScreen(_login);
+                document.getElementById("nointernet").classList.remove("invisible");
+                        
+        }
+        else{
         // display loading screen
         _login.setScreen("#loading-screen");
         _stack.getStack().setCurrentScreen(_login);
@@ -73,10 +81,11 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
                 
         }, function(error){
                 (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
-                document.getElementById("serverdown").classList.remove("invisible");
                 _login.setScreen("#maintenance-screen");
+                document.getElementById("serverdown").classList.remove("invisible");
                 _stack.getStack().setCurrentScreen(_login);
         });
+        }
 
         //logic
 

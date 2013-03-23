@@ -573,7 +573,8 @@ define(["Store", "Olives/Transport", "CouchDBStore", "Observable"], function(Sto
         "devhelp": "Ideafy exists thanks to three javascript libraries written by the company partners. They are released under MIT licenses and are available here : <a onclick='window.open(\"http://github.com/flams/emily\", \"_system\");'>emily</a>, <a onclick='window.open(\"http://github.com/flams/olives\", \"_system\");'>olives</a> and <a onclick='window.open(\"http://http://github.com/flams/CouchDB-emily-tools\", \"_system\");'>couchdb-emily-tools</a>. Check them out and if you are up for it help us make them even better.",
         "investhelp": "We have plenty of ideas to expand the Ideafy service and we are constantly looking for funding opportunities. If you are interested, want to find out about our future and be part of it please contact us.",
         "toc" : "Table of contents",
-        "backtotop": "Back to top"
+        "backtotop": "Back to top",
+        "nointernet": "Connection failed, please check your internet connection and try again"
         },
                         labels : new Store({})        
                         });

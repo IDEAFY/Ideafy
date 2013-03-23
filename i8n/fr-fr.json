@@ -418,6 +418,7 @@
 	"everyfive": "Toutes les 5 minutes",
 	"everyfifteen": "Toutes les 15 minutes",
 	"never": "Désactivé",
+	"nointernet": "Votre appareil n'est pas connecté: veuillez vérifier votre connexion à Internet et réessayer",
 	"startnewmub": "Démarrer une nouvelle session",
 	"joinmub": "Rejoindre une session"
 }

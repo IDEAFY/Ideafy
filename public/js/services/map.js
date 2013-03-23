@@ -13,6 +13,7 @@ define(["Store"], function(Store){
 			"signup-form" : document.getElementById("signup-form"),
 			"loading" : document.getElementById("loading"),
 			"serverdown" : document.getElementById("serverdown"),
+			"nointernet" : document.getElementById("nointernet"),
 	        "dock" : document.getElementById("wrapper"),
 		"notify" : document.getElementById("notify"),
 		"notify-popup" : document.getElementById("notify-popup"),

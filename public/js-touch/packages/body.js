@@ -31,57 +31,66 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
         _body.alive(Map.get("body"));
         _login = new Login();
         
-        // display loading screen
-        _login.setScreen("#loading-screen");
-        _stack.getStack().setCurrentScreen(_login);
-        document.getElementById("loading").classList.remove("invisible");
-                
-        // retrieve local data
-        _local.sync("ideafy-data");
-        
-        checkServerStatus().then(function(result){
-        
-                //reset labels (temporary to allow updates)
-                //_local.set("labels", "");
-        
-                // initialize labels to device language if available or US by default
-                if (_local.get("labels")) {
-                        _labels.reset(_local.get("labels"));
-                }
-                else{
-                        updateLabels(navigator.language);
-                }
-
-                // remove invisible class
-                _domSignup.classList.remove("invisible");
-                _domLogin.classList.remove("invisible");
-                _login.setScreen("#loading-screen");
-
-                var current = _local.get("currentLogin") || 0;
-                
-                // if the last user is in the local storage
-                if (!current) {
-                        //display login
-                        _login.setScreen("#signup-screen");
-                } else {
-                        _transport.request("CheckLogin", {
-                                "id" : current
-                        }, function(result) {
-                                if (result.authenticated) _body.init()
-                                else {
-                                        _login.setScreen("#login-screen");
-                                }
-                        });
-                }
-
-                _stack.getStack().add("#dock", _dock);
-                
-        }, function(error){
+        // check connection
+        if (navigator.connection.type === "none"){
                 (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
-                document.getElementById("serverdown").classList.remove("invisible");
-                _login.setScreen("#maintenance-screen");
+                _login.setScreen("#nointernet");
                 _stack.getStack().setCurrentScreen(_login);
-        });
+                document.getElementById("nointernet").classList.remove("invisible");
+        }
+        else {
+                // display loading screen
+                _login.setScreen("#loading-screen");
+                _stack.getStack().setCurrentScreen(_login);
+                document.getElementById("loading").classList.remove("invisible");
+                
+                // retrieve local data
+                _local.sync("ideafy-data");
+        
+                checkServerStatus().then(function(result){
+        
+                        //reset labels (temporary to allow updates)
+                        //_local.set("labels", "");
+        
+                        // initialize labels to device language if available or US by default
+                        if (_local.get("labels")) {
+                                _labels.reset(_local.get("labels"));
+                        }
+                        else{
+                                updateLabels(navigator.language);
+                        }
+
+                        // remove invisible class
+                        _domSignup.classList.remove("invisible");
+                        _domLogin.classList.remove("invisible");
+                        _login.setScreen("#loading-screen");
+
+                        var current = _local.get("currentLogin") || 0;
+                
+                        // if the last user is in the local storage
+                        if (!current) {
+                                //display login
+                                _login.setScreen("#signup-screen");
+                        } else {
+                                _transport.request("CheckLogin", {
+                                        "id" : current
+                                }, function(result) {
+                                        if (result.authenticated) _body.init()
+                                        else {
+                                                _login.setScreen("#login-screen");
+                                        }
+                                });
+                        }
+
+                        _stack.getStack().add("#dock", _dock);
+                
+                }, function(error){
+                        (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
+                        _login.setScreen("#maintenance-screen");
+                        document.getElementById("serverdown").classList.remove("invisible");
+                        //_stack.getStack().setCurrentScreen(_login);
+                });
+        }
 
         //logic
 

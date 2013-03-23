@@ -15,12 +15,14 @@ define(["Olives/OObject" ,"Amy/Stack-plugin",
 				_signupForm = new Widget(),
 				_loading = new Widget(),
 				_serverdown = new Widget(),
+				_internetdown = new Widget(),
 				_stack = new Stack();
 		//setup
 			_loginForm.alive(Map.get("login-form"));
 			_signupForm.alive(Map.get("signup-form"));
 			_loading.alive(Map.get("loading"));
 			_serverdown.alive(Map.get("serverdown"));
+			_internetdown.alive(Map.get("nointernet"));
 
 			_login.plugins.addAll({
 				"loginstack" : _stack,
@@ -33,6 +35,7 @@ define(["Olives/OObject" ,"Amy/Stack-plugin",
 			_stack.getStack().add("#signup-screen", _signupForm);
 			_stack.getStack().add("#loading-screen", _loading);
 			_stack.getStack().add("#maintenance-screen", _serverdown);
+			_stack.getStack().add("#nointernet", _internetdown);
 			
                         _stack.getStack().setCurrentScreen(_loginForm);
 

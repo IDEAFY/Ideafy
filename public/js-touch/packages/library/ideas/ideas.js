@@ -87,6 +87,7 @@ define(["Olives/OObject", "Amy/Control-plugin" ,
 			                     // default list viewed by date
 			                     _stack.getStack().show("#list-date");
 			                     byDate.classList.add("pushed");
+			                     byRating.classList.remove("pushed");
 			             }
 			             else{
 			                     _widget.searchIdea(node.value);

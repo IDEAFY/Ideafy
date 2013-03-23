@@ -114,23 +114,35 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                         
                         // display document
                         _observer.watch("display-doc", function(){
+                                var prev = document.querySelector(".dock-item.selected"),
+                                    lib = document.querySelector(".dock-item[href='#library']");
                                 _stack.getStack().show("#library");
-                                document.querySelector(".dock-item.selected").classList.remove("selected");
-                                document.querySelector(".dock-item[href='#library']").classList.add("selected");
+                                _control.radioClass(lib, prev, "selected");
+                                _control.init(lib);
+                                //document.querySelector(".dock-item.selected").classList.remove("selected");
+                                //document.querySelector(".dock-item[href='#library']").classList.add("selected");
                         });
                         
                         // display message center
                         _observer.watch("display-message", function(id){
+                                var prev = document.querySelector(".dock-item.selected"),
+                                    con = document.querySelector(".dock-item[href='#connect']");
                                 _stack.getStack().show("#connect");
-                                document.querySelector(".dock-item.selected").classList.remove("selected");
-                                document.querySelector(".dock-item[href='#connect']").classList.add("selected");
+                                _control.radioClass(con, prev, "selected");
+                                _control.init(con);
+                                //document.querySelector(".dock-item.selected").classList.remove("selected");
+                                //document.querySelector(".dock-item[href='#connect']").classList.add("selected");
                         });
                         
                         // display tutorials (dashboard)
                         _observer.watch("display-tutorials", function(id){
+                                var prev = document.querySelector(".dock-item.selected"),
+                                    dash = document.querySelector(".dock-item[href='#dashboard']");
                                 _stack.getStack().show("#dashboard");
-                                document.querySelector(".dock-item.selected").classList.remove("selected");
-                                document.querySelector(".dock-item[href='#dashboard']").classList.add("selected");
+                                _control.radioClass(dash, prev, "selected");
+                                _control.init(dash);
+                                //document.querySelector(".dock-item.selected").classList.remove("selected");
+                                //document.querySelector(".dock-item[href='#dashboard']").classList.add("selected");
                         });
                         
                         

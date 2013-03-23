@@ -107,6 +107,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                                     bs = document.querySelector(".dock-item[href='#brainstorm']");
                                 _stack.getStack().show("#brainstorm");
                                 _control.radioClass(bs, prev, "selected");
+                                _control.init(bs);
                                 // document.querySelector(".dock-item.selected").classList.remove("selected");
                                 // document.querySelector(".dock-item[href='#brainstorm']").classList.add("selected");              
                         });

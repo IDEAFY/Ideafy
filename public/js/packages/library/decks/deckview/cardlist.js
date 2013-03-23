@@ -153,59 +153,60 @@ define (["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Even
                                 var pos = {x:0, y:0}, // the position of the popup
                                     caret = ""; // the position of the caret
                                 
+                                id=id%12;
                                 // determine popup position and caret orientation based on id
                                 switch(id){
-                                        case "1":
+                                        case 1:
                                                 pos.x = 304;
                                                 pos.y = 157;
-                                                caret = "left"
+                                                caret = "left";
                                                 break;
-                                        case "2":
+                                        case 2:
                                                 pos.x = 23;
                                                 pos.y = 157;
                                                 caret = "right";
                                                 break;
-                                        case "3":
+                                        case 3:
                                                 pos.x = 170;
                                                 pos.y = 157;
                                                 caret = "right";
                                                 break;
-                                        case "4":
+                                        case 4:
                                                 pos.x = 157;
                                                 pos.y = 339;
                                                 caret = "left";
                                                 break;
-                                        case "5":
+                                        case 5:
                                                 pos.x = 304;
                                                 pos.y = 339;
                                                 caret = "left";
                                                 break;
-                                        case "6":
+                                        case 6:
                                                 pos.x = 23;
                                                 pos.y = 339;
                                                 caret = "right";
                                                 break;
-                                        case "7":
+                                        case 7:
                                                 pos.x = 170;
                                                 pos.y = 339;
                                                 caret = "right";
                                                 break;
-                                        case "8":
+                                        case 8:
                                                 pos.x = 157;
                                                 pos.y = 350;
                                                 caret = "left";
                                                 break;
-                                        case "9":
+                                        case 9:
                                                 pos.x = 304;
                                                 pos.y = 350;
                                                 caret = "left";
                                                 break;
-                                        case "10":
+                                        case 10:
                                                 pos.x = 23;
                                                 pos.y = 350;
                                                 caret = "right";
                                                 break;
-                                        case "11":
+                                        case 11:
                                                 pos.x = 170;
                                                 pos.y = 350;
                                                 caret = "right";

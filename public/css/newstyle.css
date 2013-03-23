@@ -2333,8 +2333,7 @@ textarea.solution {
 }
 
 #deckview .cardlist, #deckview .deckdetails{
-    width: 100%;
-    height: 608px;
+    height: 568px;
     background-image:url('../img/library/bgdeck.jpg');
     background-size: cover;
     padding: 20px;

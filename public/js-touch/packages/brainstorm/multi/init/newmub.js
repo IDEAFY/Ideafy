@@ -111,7 +111,9 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 "score" : "",
                                 "chat" : [],
                                 "invited": []};
-                        session.reset(sessionTemplate);    
+                        session.reset(sessionTemplate);
+                        invited.Reset([]);
+                        error.set("errormsg", "");    
                 };
                 
                 widget.changeSessionMode = function(event, node){
@@ -191,7 +193,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         contactList.reset(user.get("connections"));
                         contactList.loop(function(v, i){
                                 contactList.update(i, "selected", true);
-                                if (v.type === "user") invited.alter("push", v)        
+                                if (v.type === "user") {invited.alter("push", v);}        
                         });  
                 };
                         
@@ -274,14 +276,23 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                 
                 widget.create = function(event, node){
                         node.classList.remove("pressed");
-                        widget.uploadSession();       
+                        error.set("errormsg", "");
+                        if (session.get("mode") === "roulette"){
+                                widget.uploadSession(); 
+                        }
+                        else if (user.get("connections").length < 1){
+                                error.set("errormsg", labels.get("nofriendtoinvite"));
+                        }
+                        else if (session.get("mode") === "boardroom" && !invited.getNbItems()){
+                                error.set("errormsg", labels.get("inviteatleastone"));        
+                        }   
                 };
                 
                 widget.uploadSession = function uploadSession(){
                         // add invitees to session document
                         var cdb = new CouchDBStore(),
                             now = new Date();
-                                                
+                        
                         // complete session doc
                         session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                         invited.loop(function(v,i){
@@ -298,7 +309,6 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         cdb.sync(Config.get("db"), cdb.get("_id"));
                         setTimeout(function(){
                                 cdb.upload();
-                                console.log(cdb.toJSON());
                                 console.log("should notify invitees and initiate waiting room");
                                 Config.get("observer").notify("join-mu_session", cdb.get("_id"));
                                 cdb.unsync();

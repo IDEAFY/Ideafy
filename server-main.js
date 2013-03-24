@@ -215,7 +215,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         var json = JSON.parse(res);
                         if (json._id) {
                                 cdbStore.reset(json);
-                                promise.resolve();
+                                promise.fulfill();
                         } else {
                                 promise.reject();
                         }});

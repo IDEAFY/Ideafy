@@ -285,7 +285,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         // complete session doc
                         session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                         invited.loop(function(v,i){
-                                session.get("invited").push(v);        
+                                session.get("invited").push(v.userid);        
                         });
                         if (session.get("title") === ""){
                                 session.set("title", labels.get("quickstarttitleplaceholderpre")+session.get("initiator").username+labels.get("quickstarttitleplaceholderpost"));      

@@ -349,9 +349,9 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 "docId" : session.get("_id"),
                                 "dest" : idlist
                                 };
-                                
+                        
+                        console.log(json.docId);        
                         Config.get("transport").request("Notify", json, function(result){
-                                                console.log(result);
                                                 error.set("errormsg", labels.get("invitesent"));
                                                 promise.resolve();
                         });

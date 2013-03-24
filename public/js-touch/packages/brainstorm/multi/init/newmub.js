@@ -354,7 +354,9 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                                 console.log(result);
                                                 error.set("errormsg", labels.get("invitesent"));
                                                 promise.resolve();
-                        });    
+                        });
+                        
+                        return promise;    
                 };
                 
                 // init

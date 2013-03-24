@@ -430,5 +430,6 @@
 	"clear": "Clear",
 	"create": "Create",
 	"nofriendtoinvite": "No contact to invite: please add contacts to your list or select an other mode",
-	"inviteatleastone": "You must select at least one contact to invite"
+	"inviteatleastone": "You must select at least one contact to invite",
+	"providesessioninfo": "You must enter a meaningful title and description"
 }

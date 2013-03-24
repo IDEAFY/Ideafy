@@ -150,7 +150,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         olives.registerSocketIO(io);
         
         // couchdb config update (session authentication)
-        olives.config.update("CouchDB", "sessionStore", sessionStore);
+        //olives.config.update("CouchDB", "sessionStore", sessionStore);
+        CouchDBTools.configuration.sessionStore = sessionStore;
+        olives.handlers.set("CouchDB", CouchDBTools.handler);
         
         // Application utility functions
         var updateUserIP = function(userid, reason, increment, onEnd){

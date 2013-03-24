@@ -310,14 +310,13 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         session.set("_id", "S:MU:"+now.getTime());
                         
                         cdb.reset(JSON.parse(session.toJSON()));
-                        console.log(cdb.toJSON());
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), cdb.get("_id"));
                         setTimeout(function(){
                                 cdb.upload();
                                 error.set("errormsg", labels.get("sendinginvites"));
-                                if (session.get("mode") === "boardroom"){
-                                        widget.sendInvites(session.get("invited")).then(function(){
+                                if (cdb.get("mode") === "boardroom"){
+                                        widget.sendInvites(cdb.get("invited"), cdb.get("_id")).then(function(){
                                                 Config.get("observer").notify("join-mu_session", cdb.get("_id"));
                                                 cdb.unsync();
                                                 widget.reset();
@@ -331,7 +330,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         }, 250);
                 };
                 
-                widget.sendInvites = function sendInvites(idlist){
+                widget.sendInvites = function sendInvites(idlist, sid){
                         var promise = new Promise(),
                             now = new Date(),
                             json = {
@@ -346,7 +345,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 "object" : "",
                                 "body" : "",
                                 "signature" : "",
-                                "docId" : session.get("_id"),
+                                "docId" : sid,
                                 "dest" : idlist
                                 };
                         

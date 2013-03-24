@@ -323,7 +323,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         changePassword.setCouchDBStore(CouchDBStore);
         changePassword.setCookie(cookie);
         changePassword.setTransport(transport);
-        changePassword.setCredentials(cdbAdminCredentials);
+        changePassword.setAdminCredentials(cdbAdminCredentials);
         changePassword.setSessionStore(sessionStore);
         
         olives.handlers.set("ChangePWD", changePassword.handler);

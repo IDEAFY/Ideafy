@@ -5892,6 +5892,10 @@ li.my2q{
     display: block;
 }
 
+#newmub label.editerror{
+    font-family: Helvetica;
+}
+
 #newmub .select-mode{
     display:inline-block;
     line-height: 30px;
@@ -5931,7 +5935,8 @@ li.my2q{
 #newmub .newmub-footer{
     position: absolute;
     bottom: 30px;
-    right: 40px;    
+    right: 40px;
+    width: 831px;  
 }
 
 #newmub label.clear, #newmub label.create{

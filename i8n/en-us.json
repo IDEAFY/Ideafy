@@ -433,5 +433,6 @@
 	"inviteatleastone": "You must select at least one contact to invite",
 	"providesessioninfo": "You must enter a meaningful title and description",
 	"sendinginvites": "Sending invitations...",
-	"invitesent": "Invitations sent"
+	"invitesent": "Invitations sent",
+	"INVObject": " invited you to an Ideafy session"
 }

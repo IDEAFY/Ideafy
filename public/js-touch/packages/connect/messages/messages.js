@@ -94,6 +94,9 @@ define (["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-p
                                                         case "CXR":
                                                                 this.innerHTML = msgList.get(id).username + labels.get("CXRobject");
                                                                 break;
+                                                        case "CXR":
+                                                                this.innerHTML = msgList.get(id).username + labels.get("INVObject");
+                                                                break;
                                                         case "CXRaccept":
                                                                 this.innerHTML = msgList.get(id).username + labels.get("acceptedCXR");
                                                                 break;
@@ -200,7 +203,6 @@ define (["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-p
                                 detailStack.getStack().show("#msgdetail");
                                 messageDetail.reset(msgList.get(id));
                                 previousScreen = "#msgdetail";
-                                      
                         };
                         
                         messageUI.init = function init(){

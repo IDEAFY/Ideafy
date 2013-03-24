@@ -194,7 +194,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 }, function (res) {
                         var json = JSON.parse(res);
                         if (json.ok) {
-                                promise.resolve();
+                                promise.fulfill();
                         } else {
                                 promise.reject();
                         }});
@@ -236,7 +236,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 }, function (res) {
                         var json = JSON.parse(res);
                         if (json.ok) {
-                                promise.resolve();
+                                promise.fulfill();
                         }
                         else {
                                 promise.reject();
@@ -260,7 +260,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         var json = JSON.parse(res);
                         if (json.rows) {
                                 cdbStore.reset(json.rows);
-                                promise.resolve();
+                                promise.fulfill();
                         } else {
                                 promise.reject();
                         }});

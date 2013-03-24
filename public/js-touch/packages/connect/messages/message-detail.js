@@ -41,6 +41,9 @@ define(["Olives/OObject", "service/config", "Store", "Olives/Model-plugin", "Oli
                                                 case "CXR":
                                                         this.innerHTML = message.get("username") + labels.get("CXRobject");
                                                         break;
+                                                case "INV":
+                                                        this.innerHTML = message.get("username") + labels.get("INVObject");
+                                                        break;
                                                 case "CXRaccept":
                                                         this.innerHTML = message.get("username") + labels.get("acceptedCXR");
                                                         break;
@@ -70,6 +73,10 @@ define(["Olives/OObject", "service/config", "Store", "Olives/Model-plugin", "Oli
                                                         break;
                                                 case "DOC":
                                                         // TBD --> maybe include the doc title
+                                                        this.innerHTML = message.get("username") + labels.get("sentdocmsg") + " : <b>" + message.get("docTitle")+"</b>";
+                                                        break;
+                                                case "INV":
+                                                        // finish invite here...
                                                         this.innerHTML = message.get("username") + labels.get("sentdocmsg") + " : <b>" + message.get("docTitle")+"</b>";
                                                         break;
                                                 default :

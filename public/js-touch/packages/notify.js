@@ -76,6 +76,9 @@ define(["Olives/OObject", "service/config", "service/map", "Store", "Olives/Mode
                                                 case "CXR":
                                                         this.innerHTML = messages.get(id).username + labels.get("CXRobject");
                                                         break;
+                                                case "INV":
+                                                        this.innerHTML = messages.get(id).username + labels.get("INVObject");
+                                                        break;
                                                 case "CXRaccept":
                                                         this.innerHTML = messages.get(id).username + labels.get("acceptedCXR");
                                                         break;

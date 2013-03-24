@@ -5894,6 +5894,8 @@ li.my2q{
 
 #newmub label.editerror{
     font-family: Helvetica;
+    color: black;
+    letter-spacing: 0px;
 }
 
 #newmub .select-mode{

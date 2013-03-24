@@ -217,7 +217,6 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                                         });
                                   
                                         _transport.request("Notify", json, function(result){
-                                                console.log(result);
                                                 _error.set("errormsg", _labels.get("shareok"));
                                                 node.classList.remove("pressed");
                                                 // update sharedwith field of idea

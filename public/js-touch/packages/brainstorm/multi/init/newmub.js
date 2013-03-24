@@ -288,7 +288,10 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         }
                         else if (session.get("mode") === "boardroom" && !invited.getNbItems()){
                                 error.set("errormsg", labels.get("inviteatleastone"));        
-                        }   
+                        }
+                        else {
+                                widget.uploadSession();
+                        }
                 };
                 
                 widget.uploadSession = function uploadSession(){
@@ -312,11 +315,46 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         cdb.sync(Config.get("db"), cdb.get("_id"));
                         setTimeout(function(){
                                 cdb.upload();
-                                console.log("should notify invitees and initiate waiting room");
-                                Config.get("observer").notify("join-mu_session", cdb.get("_id"));
-                                cdb.unsync();
-                                widget.reset();
+                                error.set("errormsg", labels.get("sendinginvites"));
+                                if (session.get("mode") === "boardroom"){
+                                        widget.sendInvites(session.get("invited")).then(function(){
+                                                Config.get("observer").notify("join-mu_session", cdb.get("_id"));
+                                                cdb.unsync();
+                                                widget.reset();
+                                        });
+                                }
+                                else {
+                                        Config.get("observer").notify("join-mu_session", cdb.get("_id"));
+                                        cdb.unsync();
+                                        widget.reset();        
+                                }
                         }, 250);
+                };
+                
+                widget.sendInvites = function sendInvites(idlist){
+                        var promise = new Promise(),
+                            now = new Date(),
+                            json = {
+                                "type" : "INV",
+                                "status" : "unread",
+                                "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getMinutes()],
+                                "author" : user.get("_id"),
+                                "username" : user.get("username"),
+                                "firstname" : user.get("firstname"),
+                                "toList" : "",
+                                "ccList" : "",
+                                "object" : "",
+                                "body" : "",
+                                "signature" : "",
+                                "docId" : session.get("_id"),
+                                "dest" : idlist
+                                };
+                                
+                        Config.get("transport").request("Notify", json, function(result){
+                                                console.log(result);
+                                                error.set("errormsg", labels.get("invitesent"));
+                                                promise.resolve();
+                        });    
                 };
                 
                 // init

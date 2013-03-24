@@ -1258,6 +1258,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         message.docId = json.docId;
                         message.docType = json.type;
                 }
+                
+                if (json.type === "INV") {
+                        message.docId = json.docId;
+                }
 
                 // send message to all recipients
                 for ( i = 0, l = dest.length; i < l; i++) {

@@ -94,7 +94,7 @@ define (["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-p
                                                         case "CXR":
                                                                 this.innerHTML = msgList.get(id).username + labels.get("CXRobject");
                                                                 break;
-                                                        case "CXR":
+                                                        case "INV":
                                                                 this.innerHTML = msgList.get(id).username + labels.get("INVObject");
                                                                 break;
                                                         case "CXRaccept":

@@ -4783,7 +4783,7 @@ li.color-item{
     margin-top: 10px;
 }
 
-#addgroup .contactlistdetail legend, #addgroup .addgrpcontacts legend, #groupdetails .grpcontactlist legend, #groupdetails .addgrpcontacts legend{
+#addgroup .groupcontactlist legend, #addgroup .addgrpcontacts legend, #groupdetails .grpcontactlist legend, #groupdetails .addgrpcontacts legend{
     background: url('../img/public/hide.png') no-repeat right center;
     background-size: 15px 15px;
 }

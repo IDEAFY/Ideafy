@@ -174,7 +174,9 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
              
                         groupDetails.cancel = function(event, node){
                                 node.classList.remove("pressed");
-                                groupDetails.reset(currentGroupInfo);        
+                                groupDetails.reset(currentGroupInfo);
+                                // clear input field
+                                document.querySelector("#groupdetails input.search").value="";          
                         };
              
                         groupDetails.update = function(event, node){
@@ -215,7 +217,8 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                         groupDetails.reset = function reset(contactinfo){
                                 colors.reset(colorList);
                                 colors.loop(function(v,i){
-                                        if (v.icon === contactinfo.color) colors.update(i, "selected", true);        
+                                        if (v.icon === contactinfo.color) {colors.update(i, "selected", true);}
+                                        else {colors.update(i, "selected", false);}      
                                 });
                                 group.reset(contactinfo);
                                 currentGroupInfo = contactinfo;

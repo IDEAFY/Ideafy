@@ -152,7 +152,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 }
 
-.ideas-list, .twoq-list, .twoq-searchlist{
+.idea-list, .twoq-list, .twoq-searchlist{
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; 
@@ -325,46 +325,48 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   /*width:93px;
   height:94px;*/
   background-size:93px 93px;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .dock-item[href="#public"]{
-  background:url('../img/disablePublicWall.png');
+  background-image:url('../img/disablePublicWall.png');
 }
 
 .dock-item[href="#library"]{
-  background:url('../img/disableLibrary.png');
+  background-image:url('../img/disableLibrary.png');
 }
 
 .dock-item[href="#brainstorm"]{
-  background:url('../img/disableBrainstorm.png');
+  background-image:url('../img/disableBrainstorm.png');
 }
 
 .dock-item[href="#connect"]{
-  background:url('../img/disableConnect.png');
+  background-image:url('../img/disableConnect.png');
 }
 
 .dock-item[href="#dashboard"]{
-  background:url('../img/disableSettings.png');
+  background-image:url('../img/disableSettings.png');
 }
 
 .dock-item[href="#public"].selected{
-  background:url('../img/activePublicWall.png');
+  background-image:url('../img/activePublicWall.png');
 }
 
 .dock-item[href="#library"].selected{
-  background:url('../img/activeLibrary.png');
+  background-image:url('../img/activeLibrary.png');
 }
 
 .dock-item[href="#brainstorm"].selected{
-  background:url('../img/activeBrainstorm.png');
+  background-image:url('../img/activeBrainstorm.png');
 }
 
 .dock-item[href="#connect"].selected{
-  background:url('../img/activeConnect.png');
+  background-image:url('../img/activeConnect.png');
 }
 
 .dock-item[href="#dashboard"].selected{
-  background:url('../img/activeSettings.png');
+  background-image:url('../img/activeSettings.png');
 }
 
 
@@ -1089,7 +1091,7 @@ ul.notify-list{
     float: left;
 }
 
-#public-list .tools-button, #ideas-list .tools-button{
+#public-list .tools-button, #idea-list .tools-button{
     display: inline-block;
     float: left;
     width: 32px;
@@ -1101,25 +1103,25 @@ ul.notify-list{
     background-repeat: no-repeat;
 }
 
-#public-list .tools-button.bydate, #ideas-list .tools-button.bydate{
+#public-list .tools-button.bydate, #idea-list .tools-button.bydate{
     margin-left: 5px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     background-image: url('../img/public/byDateDisable.png');   
 }
 
-#public-list .tools-button.byrating, #ideas-list .tools-button.byrating{
+#public-list .tools-button.byrating, #idea-list .tools-button.byrating{
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-left: none;
     background-image: url('../img/public/byRatingDisable.png');    
 }
 
-#public-list .tools-button.bydate.pushed, #ideas-list .tools-button.bydate.pushed{
+#public-list .tools-button.bydate.pushed, #idea-list .tools-button.bydate.pushed{
     background-image: url('../img/public/byDateActive.png');   
 }
 
-#public-list .tools-button.byrating.pushed, #ideas-list .tools-button.byrating.pushed{
+#public-list .tools-button.byrating.pushed, #idea-list .tools-button.byrating.pushed{
     background-image: url('../img/public/byRatingActive.png');   
 }
 
@@ -1621,7 +1623,7 @@ textarea.solution {
     position: relative;
 }
 
-.idea-share .selectall{
+.idea-share .selectall, #newmub .selectall{
     float: right;
     background: #657B99;
     color: white;
@@ -1794,7 +1796,7 @@ textarea.solution {
     padding: 20px 40px 20px 30px;    
 }
 
-.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar, .msglist .avatar, .contactlist .avatar{
+.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar, .msglist .avatar, .contact .avatar{
   width:40px;
   height:40px;
   border-radius:20px;
@@ -3344,7 +3346,7 @@ li.color-item{
     _webkit-margin-after: 0px;
 }
 
-#quickstart .quickstart-form textarea{
+#quickstart .quickstart-form textarea, #newmub textarea {
     font-size: 12px;
     background: #F2F2F2;
     border: none;
@@ -3459,6 +3461,7 @@ li.color-item{
     line-height: 14px;
     font-family: Pacifico;
     color: #808080;
+    word-wrap: break-word;
 }
 
 .card.tech .cardpicture{
@@ -3677,9 +3680,9 @@ li.color-item{
 }
 
 .cd-contentarea{
-    width: 260px;
+    width: 280px;
     height: 193px;
-    padding: 0px 20px 20px 20px;
+    padding: 0px 10px 10px 10px;
 }
 
 .cd-contentarea.story p{
@@ -3698,6 +3701,15 @@ li.color-item{
     font-size: 10px;
     overflow-y: scroll;
     text-align: justify;
+}
+
+.cd-contentarea .dyknow{
+    font-size: 13px;
+    height: 160px;
+}
+
+.cd-contentarea .charinfo, .cd-contentarea .charinfo{
+    font-size: 10px;
 }
 
 .storytitlelbl{
@@ -4071,6 +4083,10 @@ li.color-item{
     margin-bottom: 5px;
 }
 
+.contact-intro{
+    min-height: 18px;
+}
+
 .msg .date{
     color: #808080;
     font-size: 12px;
@@ -4425,6 +4441,7 @@ li.color-item{
 
 #contactdetails .basicinfo{
     margin-left: 120px;
+    min-height: 60px;
 }
 
 #contactdetails .contactdashboard{
@@ -4766,7 +4783,7 @@ li.color-item{
     margin-top: 10px;
 }
 
-#addgroup .contactlist legend, #addgroup .addgrpcontacts legend, #groupdetails .contactlistdetail legend, #groupdetails .addgrpcontacts legend{
+#addgroup .groupcontactlist legend, #addgroup .addgrpcontacts legend, #groupdetails .grpcontactlist legend, #groupdetails .addgrpcontacts legend{
     background: url('../img/public/hide.png') no-repeat right center;
     background-size: 15px 15px;
 }
@@ -4776,7 +4793,7 @@ li.color-item{
     background-size: 15px 15px;    
 }
 
-#addgroup .contactlist li, #groupdetails .contactlistdetail li{
+#addgroup .contactlistdetail li, #groupdetails .contactlistdetail li{
     border-top: none;
     width: 45%;
     margin-right: 10px;
@@ -4785,7 +4802,7 @@ li.color-item{
     padding-bottom: 0px;
 }
 
-#groupdetails .contactlistdetail{
+#groupdetails .grpcontactlist{
     display: inline-block;
     width: 100%;
 }
@@ -4803,13 +4820,13 @@ li.color-item{
     font-weight: bold;
 }
 
-#addgroup .remove-contact, #group-details .remove-contact{
+#addgroup .remove-contact, #groupdetails .remove-contact{
     width: 20px;
     height: 20px;
     float: right;
     background: url('../img/connect/deleteBlue.png') no-repeat center center;
     background-size: contain;
-    margin-top: -20px;
+    margin-top: -25px;
 }
 
 #mtc-list{
@@ -5473,7 +5490,7 @@ li.my2q{
     margin-bottom: 5px;
 }
 
-.edituserdetails .dob input, .edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select{
+.edituserdetails .dob input, .edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select, #newmub select{
     height: 30px;
     border-radius: 5px;
     line-height: 28px;
@@ -5490,7 +5507,7 @@ li.my2q{
     margin-right: 10px;
 }
 
-.edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select{
+.edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select, #newmub select{
     -webkit-appearance: none;
     text-align: center;
     width: 120px;
@@ -5541,6 +5558,11 @@ li.my2q{
 
 .edituserdetails .importbutton{
     margin: 10px 0;
+    font-size: 10px;
+    width: 60px;
+    line-height: 16px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .edituserdetails .importbutton div{
@@ -5778,6 +5800,216 @@ li.my2q{
     color: #AEB9BF;
     font-size: 12px;
     text-decoration: underline;
+}
+
+
+/* MULTI USER SESSION */
+
+#muinitsliderlbl{
+    width: 240px;
+    height: 120px;
+    background: #657B99;
+    color: white;
+    font-family: Helvetica;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 60px;   
+}
+
+#muinitsliderlbl label{
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#muinitslider{
+    width: 240px;
+    height: 120px;
+    -webkit-appearance: none;
+    display: block;
+    margin: 0px auto;
+    margin-top: -120px;
+    border-radius: 60px;
+    z-index: 200;
+    background: transparent;
+}
+
+#muinitslider::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    height: 120px;
+    width:120px;
+    border-radius: 60px;
+    background-image: url('../img/brainstorm/multiuser.png');
+    background-size: cover;
+}
+
+#mub-init .exit-brainstorm{
+    position: absolute;
+    top: 76px;
+    right: 40px;
+}
+
+#newmub, #mulist{
+    background: transparent;
+    width: 931px;
+    height: 532px;
+    margin-top: 40px;
+    -webkit-box-shadow: 1px 1px 5px black;
+    padding: 20px;
+}
+
+#newmub-content{
+    padding: 0px 20px 20px 20px;
+    border: 1px solid #657b99;
+    border-radius: 5px;
+    width: 851px;
+    height: 472px;
+    background: white;
+}
+
+#newmub form{
+    width: 851px;
+    height: 437px;
+    overflow-y: scroll;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#newmub-content hr{
+    -webkit-margin-before: 0.2em;
+}
+
+#newmub label{
+    font-family: Pacifico;
+    color: #657B99;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: block;
+}
+
+#newmub label.editerror{
+    font-family: Helvetica;
+    color: black;
+    letter-spacing: 0px;
+}
+
+#newmub .select-mode{
+    display:inline-block;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+
+#newmub .select-mode select{
+    font-weight: bold;
+}
+
+#newmub .session-info{
+    width: 700px;
+    font-style: italic;
+    background-image: url('../img/brainstorm/deedeetopright.png');
+    background-size: contain;
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+    font-family: helvetica;
+    font-size: 14px;
+    color: #404040;
+}
+
+#newmub textarea{
+    width: 831px;
+    font-size: 16px;
+}
+
+#newmub textarea.session-title{
+    height: 24px;    
+}
+
+#newmub textarea.session-desc{
+    height: 70px;
+}
+
+#newmub .newmub-footer{
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    width: 831px;  
+}
+
+#newmub label.clear, #newmub label.create{
+    height: 26px;
+    width: 92px;
+    border-radius: 5px;
+    font-family: Helvetica;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 26px;
+    text-align: center;
+    color: white;
+    float: right;
+    letter-spacing: 0px;
+}
+
+#newmub label.create{
+    background: #8cab68;
+}
+
+#newmub label.clear{
+    margin-left: 15px;
+    background: #e69b73;    
+}
+
+
+#invitelistauto{
+    width: 568px;
+    margin-top: 2px;
+    position: relative;
+}
+
+#newmub-content .search{
+    width: 300px;
+}
+
+.invitecontactlist{
+    margin-top: 10px;
+    margin-bottom: 5px;    
+}
+
+.invitecontactlist ul{
+    display: table;
+}
+
+.invitecontactlist .contact:first-child{
+    border-top: none;
+}
+
+.invitecontactlist li{
+    float: left;
+    width: 212px;
+    height: 34px;
+    border-top: none;
+    padding: 3px 0px 3px 0px;
+    overflow-y: hidden;
+    min-height: 0;
+}
+
+.invitecontactlist p{
+    padding: 0;
+    margin: 0px 0px 0px 10px;
+}
+
+.invitecontactlist .remove-contact{
+    float:right;
+    margin-top: -10px;
+    width: 15px;
+    height: 15px;
+    background: url('../img/wall/35delete.png') no-repeat center center;
+    background-size: 15px 15px;
 }
 
 /* EULA */

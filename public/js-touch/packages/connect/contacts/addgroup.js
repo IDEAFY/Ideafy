@@ -200,7 +200,9 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
              
              addGroupUI.cancel = function(event, node){
                      node.classList.remove("pushed");
-                     addGroupUI.reset();        
+                     addGroupUI.reset();
+                     // clear input field
+                     document.querySelector("#addgroup input.search").value="";       
              };
              
              addGroupUI.add = function(event, node){

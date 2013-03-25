@@ -1796,7 +1796,7 @@ textarea.solution {
     padding: 20px 40px 20px 30px;    
 }
 
-.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar, .msglist .avatar, .contactlist .avatar{
+.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar, .msglist .avatar, .contact .avatar{
   width:40px;
   height:40px;
   border-radius:20px;

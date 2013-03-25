@@ -181,7 +181,7 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
              
                         groupDetails.updateGroup = function(event, node){
                                 console.log(event);
-                                var connections = user.get("connections"), grp = JSON.parse(group.toJSON());
+                                var connections = user.get("connections"), i,grp = JSON.parse(group.toJSON());
                                 
                                 console.log(grp, currentGroupInfo);
                                 node.classList.remove("pressed");

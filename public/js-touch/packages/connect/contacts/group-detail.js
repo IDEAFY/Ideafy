@@ -90,11 +90,11 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                 
                                 if (node.classList.contains("hide")) {
                                         node.classList.remove("hide");
-                                        (name === "add") ? document.querySelector(".addgrpcontactdetails").classList.remove("invisible"):document.querySelector(".grpcontactlist").classList.remove("invisible");
+                                        (name === "add") ? document.querySelector(".addgrpcontactdetails").classList.remove("invisible"):document.querySelector(".contactlistdetail").classList.remove("invisible");
                                 }
                                 else{
                                         node.classList.add("hide");
-                                        (name === "add") ? document.querySelector(".addgrpcontactdetails").classList.add("invisible"):document.querySelector(".grpcontactlist").classList.add("invisible");
+                                        (name === "add") ? document.querySelector(".addgrpcontactdetails").classList.add("invisible"):document.querySelector(".contactlistdetail").classList.add("invisible");
                                 }       
                         };
              

@@ -133,6 +133,7 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                                         if (contacts[i].userid === contactList.get(id).contact.userid) contacts.splice(i,1);
                                 }
                                 grpcontacts.reset(contacts);
+                                group.set("contacts", contacts);
                         };
              
                         groupDetails.updateAutoContact = function(event, node){
@@ -145,14 +146,26 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                                                         arr.push({"contact":connections[i], "selected": false});
                                                 }       
                                         }
-                                        contactList.reset(arr);
                                 }
-                                else{
+                                else if (event.keyCode === 8 || event.keyCode === 46){
+                                        // reinitialize arr with all connections
+                                        arr = [];
+                                        for(i=0, l =connections.length; i<l; i++){
+                                                if (connections[i].type === "user") {
+                                                        arr.push({"contact":connections[i], "selected": false});
+                                                }       
+                                        }
+                                        // search for the string & remove unwanted contacts
+                                        for (i=arr.length-1; i>=0; i--){
+                                                if (arr[i].contact.username.search(node.value) !== 0) {arr.splice(i, 1);}
+                                        }
+                                }
+                                else {
                                         for (i=arr.length-1; i>=0; i--){
                                                 if (arr[i].contact.username.search(node.value) !== 0) arr.splice(i, 1);
-                                        }
-                                        contactList.reset(arr);    
+                                        }    
                                 }
+                                contactList.reset(arr);
                                 // check if items are present in the group and set selected status accordingly
                                 contactList.loop(function(v,i){
                                         if(grpcontacts.toJSON().search(v.contact.userid) >-1) contactList.update(i, "selected", true);        
@@ -166,6 +179,7 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                                 contactList.loop(function(v,i){
                                         if (v.contact.userid === userid) setTimeout(function(){contactList.update(i, "selected", false);}, 200);
                                 });
+                                group.set("contacts", JSON.parse(grpcontacts.toJSON()));
                         };
                         
                         groupDetails.press = function(event, node){
@@ -176,14 +190,12 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                                 node.classList.remove("pressed");
                                 groupDetails.reset(currentGroupInfo);
                                 // clear input field
-                                document.querySelector("#groupdetails input.search").value="";          
+                                document.querySelector("#groupdetails input.search").value="";        
                         };
              
                         groupDetails.updateGroup = function(event, node){
-                                console.log(event);
-                                var connections = user.get("connections"), i,grp = JSON.parse(group.toJSON());
+                                var connections = user.get("connections"), i, grp = JSON.parse(group.toJSON());
                                 
-                                console.log(grp, currentGroupInfo);
                                 node.classList.remove("pressed");
                                 error.set("error", "");
                                 // add group to user contacts
@@ -203,7 +215,6 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                                                         if (!error.get("error")) {
                                                                 connections.splice(i, 1, grp);
                                                                 user.set("connections", connections);
-                                                                console.log("before upload");
                                                                 user.upload().then(function(){
                                                                         groupDetails.reset(grp);
                                                                         error.set("error", labels.get("groupupdated"));       
@@ -219,11 +230,22 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                                 colors.reset(colorList);
                                 colors.loop(function(v,i){
                                         if (v.icon === contactinfo.color) {colors.update(i, "selected", true);}
-                                        else {colors.update(i, "selected", false);}      
+                                        else {colors.update(i, "selected", false);}        
                                 });
                                 group.reset(contactinfo);
                                 currentGroupInfo = contactinfo;
                                 grpcontacts.reset(contactinfo.contacts);
+                                // reset add contacts
+                                contactList.reset([]);
+                                error.reset({"error":""});
+                                //initialize contact list with all user contacts in user's document
+                                user.get("connections").forEach(function(item){
+                                        if (item.type === "user") contactList.alter("push", {"contact":item, "selected": false});        
+                                });
+                                // highlight contacts already present in the group
+                                contactList.loop(function(v,i){
+                                        if(grpcontacts.toJSON().search(v.contact.userid) >-1) contactList.update(i, "selected", true);        
+                                });
                        };
                        
                        groupDetails.init = function init(){

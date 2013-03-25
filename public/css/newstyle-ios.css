@@ -92,7 +92,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   right:0;
 }
 
-#serverdown {
+#serverdown, #nointernet {
     padding: 20px 20px 20px 80px;
     background: 
     white;
@@ -1609,7 +1609,7 @@ textarea.solution {
     margin-top: 20px;
 }
 
-.send .editerror, .edituserdetails .update .editerror{
+.send .editerror, .edituserdetails .update .editerror, #groupdetails .editerror, #addgroup .editerror{
     float: left;
     font-weight: bold;
     color: black;
@@ -1796,7 +1796,7 @@ textarea.solution {
     padding: 20px 40px 20px 30px;    
 }
 
-.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar, .msglist .avatar, .contact .avatar{
+.twocentAvatar,  .twocentAvatar .avatar, .replyAvatar, .replyAvatar .avatar, .idea-sendmail .avatar, .msglist .avatar, .contactlist .avatar, .contact .avatar{
   width:40px;
   height:40px;
   border-radius:20px;

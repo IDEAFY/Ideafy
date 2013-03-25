@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "service/avatar", "service/utils", "./message-reply"],
-        function(Widget, Config, Store, Model, Event, Avatar, Utils, Reply){
+define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "service/avatar", "service/utils", "./message-reply"],
+        function(Widget, Config, Store, CouchDBStore, Model, Event, Avatar, Utils, Reply){
                 
            return function MessageDetailConstructor($close){
            
@@ -77,7 +77,7 @@ define(["Olives/OObject", "service/config", "Store", "Olives/Model-plugin", "Oli
                                                         break;
                                                 case "INV":
                                                         // finish invite here...
-                                                        this.innerHTML = message.get("username") + labels.get("sentdocmsg") + " : <b>" + message.get("docTitle")+"</b>";
+                                                        this.innerHTML = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("body");
@@ -279,6 +279,11 @@ define(["Olives/OObject", "service/config", "Store", "Olives/Model-plugin", "Oli
                                 }
                         });
                               
+                };
+                
+                // a function to check the status of a multi-user session user has been invited to
+                msgDetailUI.checkSessionStatus = function(sid){
+                        
                 };
                 
                 //init

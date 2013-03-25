@@ -160,7 +160,7 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                         };
              
                         groupDetails.discardContact = function(event, node){
-                                var id = node.getAttribute("data-contacts_id"),
+                                var id = node.getAttribute("data-grpcontacts_id"),
                                     userid = grpcontacts.get(id).userid;
                                 grpcontacts.alter("splice", id, 1);
                                 contactList.loop(function(v,i){

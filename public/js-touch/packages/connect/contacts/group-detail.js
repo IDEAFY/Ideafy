@@ -178,6 +178,7 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                         };
              
                         groupDetails.update = function(event, node){
+                                console.log(event);
                                 var connections = user.get("connections"), index=0, grp = JSON.parse(group.toJSON());
                                 
                                 console.log(grp, currentGroupInfo);

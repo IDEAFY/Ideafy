@@ -89,9 +89,11 @@ define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event
                                 var name = node.getAttribute("name");
                 
                                 if (node.classList.contains("hide")) {
+                                        node.classList.remove("hide");
                                         (name === "add") ? document.querySelector(".addgrpcontactdetails").classList.remove("invisible"):document.querySelector(".grpcontactlist").classList.remove("invisible");
                                 }
                                 else{
+                                        node.classList.add("hide");
                                         (name === "add") ? document.querySelector(".addgrpcontactdetails").classList.add("invisible"):document.querySelector(".contactlistdetail").classList.add("invisible");
                                 }       
                         };

@@ -30,7 +30,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 };
                 
                 widget.join = function(sid){
-                        join(sid);      
+                        stack.getStack().get("mubwait").reset(sid);
+                        stack.getStack().show("mubwait");      
                 };
                 
                 //init
@@ -38,13 +39,14 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                         stack.getStack().show("mubinit");
                 }
                 else {
-                        widget.reset($sip);
+                        if ($sip.mode === "join"){
+                                widget.join($sip.id);        
+                        }
                 }
                 
                 // watch mu session events
                 Config.get("observer").watch("join-mu_session", function(sid){
-                        stack.getStack().get("mubwait").reset(sid);
-                        stack.getStack().show("mubwait"); 
+                        widget.join(sid);
                 });
                 
                 return widget;

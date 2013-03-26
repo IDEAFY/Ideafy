@@ -91,7 +91,7 @@ define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", 
                        _stack.getStack().show("menu");
                        
 		/*
-		 * Watch for replay session events
+		 * Watch for replay single-user session events
 		 */
 		Config.get("observer").watch("replay-session", function(sid, mode){
 		      
@@ -108,6 +108,14 @@ define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", 
 		      }
 		      _widget.selectScreen(_sip.type, _sip);
 		});
+		
+		/*
+                 * Watch for joining mu-session events
+                 */
+                Config.get("observer").watch("join-musession", function(sid){
+                      var sip ={type: "musession", id: sid, mode:"join"};
+                      _widget.selectScreen(sip.type, sip);
+                });
 		
 		//return
 			return _widget;

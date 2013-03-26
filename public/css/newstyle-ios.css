@@ -4183,7 +4183,7 @@ li.color-item{
     -webkit-box-shadow: inset 0px 0px 3px black;  
 }
 
-#msgdetail.goto2q{
+#msgdetail .goto2q{
     background-image: url('../img/connect/twocent.png');
 }
 

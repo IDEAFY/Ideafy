@@ -297,13 +297,10 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                 };
                 
                 // a function to check the status of a multi-user session user has been invited to
-                msgDetailUI.checkSessionStatus = function(sid, res){
+                msgDetailUI.checkSessionStatus = function(sid){
                         var cdb = new CouchDBStore();
                         cdb.setTransport(transport);
-                        console.log("calling sync function");
-                        CDB = cdb;
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
-                                console.log(cdb.toJSON());
                                 if (cdb.getNbItems()){message.set("sessionStatus", "waiting");}
                                 else{message.set("sessionStatus", "unavailable");}
                          });       
@@ -319,15 +316,13 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                         cxrConfirm.reset({"response":""});
                         message.reset(msg);
                         msgReplyUI.reset(msg, "reply");
-                        
                         // check if message type is a session and if so check session status
                         if (message.get("type") === "INV"){
                                 message.set("sessionStatus", null);
-                                msgDetailUI.checkSessionStatus(message.get("docTitle"));
+                                msgDetailUI.checkSessionStatus(message.get("docId"));
                         }
                 };
                 
-                MSG = message;
                 return msgDetailUI;
             };      
         });

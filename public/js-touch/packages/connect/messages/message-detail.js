@@ -77,12 +77,12 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                                         node.innerHTML = message.get("username") + labels.get("sentdocmsg") + " : <b>" + message.get("docTitle")+"</b>";
                                                         break;
                                                 case "INV":
-                                                        var res = false, goto = document.querySelector(".gotosession");
+                                                        var res = {waiting : false}, goto = document.querySelector(".gotosession");
                                                         // finish invite here...
-                                                        msgDetailUI.checkSessionStatus(message.get("docId"), function(waiting){if (waiting) {res=true;}}).then(function(){
+                                                        msgDetailUI.checkSessionStatus(message.get("docId"), res).then(function(){
                                                                 console.log(res);
                                                                 var html = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
-                                                                if (res){
+                                                                if (res.waiting){
                                                                         goto.classList.remove("invisible");
                                                                 }
                                                                 else{
@@ -302,18 +302,17 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                 };
                 
                 // a function to check the status of a multi-user session user has been invited to
-                msgDetailUI.checkSessionStatus = function(sid, onEnd){
+                msgDetailUI.checkSessionStatus = function(sid, res){
                         var cdb = new CouchDBStore(),
                             promise = new Promise();
                         cdb.setTransport(transport);
-                        console.log("syncing", sid, transport);
+                        console.log("syncing", sid, transport, res.waiting);
                         CDB = cdb;
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
                                 console.log(cdb.toJSON());
-                                if (cdb.getNbItems()){waiting = true;}
-                                else {waiting=false;}
-                                console.log(waiting);
-                                onEnd(waiting);
+                                if (cdb.getNbItems()){res.waiting = true;}
+                                else {res.waiting=false;}
+                                console.log(res);
                                 promise.resolve();
                                 cdb.unsync();
                          });

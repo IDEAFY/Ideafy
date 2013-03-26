@@ -10,11 +10,14 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                 
            return function MuListConstructor($exit){
            
-                var widget = new Widget();
+                var widget = new Widget(),
+                    labels=Config.get("labels");
                 
-                widget.plugins.addAll({});
+                widget.plugins.addAll({
+                        "labels" : new Model(labels)
+                });
                 
-                widget.template = '<div id="mulist"><div id="mulist-content">Multi-user session list</div></div>';
+                widget.template = '<div id="mulist"><div id="mulist-content"><legend data-labels="bind:innerHTML, selectsession">Multi-user session list</legend></div></div>';
                 
                 widget.place(document.getElementById("mulist"));
                 

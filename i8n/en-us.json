@@ -421,6 +421,7 @@
 	"nointernet": "Your device is not connected: please check your Internet access and try again.",
 	"startnewmub": "Start a new session",
 	"joinmub": "Join a session",
+	"selectmode": "Select mode",
 	"roulette": "Roulette",
 	"campfire": "Campfire",
 	"boardroom": "Boardroom",
@@ -436,5 +437,6 @@
 	"invitesent": "Invitations sent",
 	"INVObject": " invited you to an Ideafy session",
 	"nolongerjoin": "You can no longer join this session : it is already underway or completed.",
-	"clicktojoin": "Push the button below to join session."
+	"clicktojoin": "Push the button below to join session.",
+	"selectsession": "Select a session"
 }

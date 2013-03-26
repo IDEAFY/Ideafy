@@ -317,13 +317,13 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 error.set("errormsg", labels.get("sendinginvites"));
                                 if (cdb.get("mode") === "boardroom"){
                                         widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
-                                                Config.get("observer").notify("join-mu_session", cdb.get("_id"));
+                                                Config.get("observer").notify("start-mu_session", cdb.get("_id"));
                                                 cdb.unsync();
                                                 widget.reset();
                                         });
                                 }
                                 else {
-                                        Config.get("observer").notify("join-mu_session", cdb.get("_id"));
+                                        Config.get("observer").notify("start-mu_session", cdb.get("_id"));
                                         cdb.unsync();
                                         widget.reset();        
                                 }

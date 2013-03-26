@@ -40,12 +40,13 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 }
                 else {
                         if ($sip.mode === "join"){
+                                console.log("joining session", $sip);
                                 widget.join($sip.id);        
                         }
                 }
                 
                 // watch mu session events
-                Config.get("observer").watch("join-mu_session", function(sid){
+                Config.get("observer").watch("start-mu_session", function(sid){
                         widget.join(sid);
                 });
                 

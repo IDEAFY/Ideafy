@@ -300,7 +300,9 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                 msgDetailUI.checkSessionStatus = function(sid){
                         var cdb = new CouchDBStore();
                         cdb.setTransport(transport);
+                        CDB=cdb;
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
+                                console.log(cdb.toJSON());
                                 if (cdb.getNbItems()){message.set("sessionStatus", "waiting");}
                                 else{message.set("sessionStatus", "unavailable");}
                          });       

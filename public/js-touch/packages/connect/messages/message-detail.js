@@ -316,6 +316,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                         cxrConfirm.reset({"response":""});
                         message.reset(msg);
                         msgReplyUI.reset(msg, "reply");
+                        
                         // check if message type is a session and if so check session status
                         if (message.get("type") === "INV"){
                                 message.set("sessionStatus", null);

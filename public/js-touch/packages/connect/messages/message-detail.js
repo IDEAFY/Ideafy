@@ -77,7 +77,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                                         node.innerHTML = message.get("username") + labels.get("sentdocmsg") + " : <b>" + message.get("docTitle")+"</b>";
                                                         break;
                                                 case "INV":
-                                                        var res = false, goto = document.querySelector("gotosession");
+                                                        var res = false, goto = document.querySelector(".gotosession");
                                                         // finish invite here...
                                                         msgDetailUI.checkSessionStatus(message.get("docId"), res).then(function(){
                                                                 var html = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
@@ -305,11 +305,13 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                         var cdb = new CouchDBStore(),
                             promise = new Promise();
                         cdb.setTransport(transport);
+                        console.log("syncing");
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: sid, descending: true, include_docs: false}).then(function(){
                                 console.log(cdb.toJSON());
                                 if (cdb.getNbItems()){res = true;}
                                 else {res=false;}
                                 promise.resolve();
+                                cdb.unsync();
                          });
                          return promise;        
                 };

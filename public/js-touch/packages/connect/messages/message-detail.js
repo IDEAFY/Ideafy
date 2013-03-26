@@ -317,7 +317,10 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                         msgReplyUI.reset(msg, "reply");
                         
                         // check if message type is a session and if so check session status
-                        if (message.get("type") === "INV"){msgDetailUI.checkSessionStatus(message.get("docTitle"));}
+                        if (message.get("type") === "INV"){
+                                message.set("sessionStatus", null);
+                                msgDetailUI.checkSessionStatus(message.get("docTitle"));
+                                }
                 };
                 
                 MSG = message;

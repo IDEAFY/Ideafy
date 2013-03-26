@@ -313,6 +313,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                 
                 //init
                 msgDetailUI.reset = function reset(msg){
+                        message.reset({});
                         cxrConfirm.reset({"response":""});
                         message.reset(msg);
                         msgReplyUI.reset(msg, "reply");

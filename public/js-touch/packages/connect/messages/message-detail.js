@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", "Olives/Model-plugin", "Olives/Event-plugin", "service/avatar", "service/utils", "./message-reply"],
-        function(Widget, Config, Store, CouchDBStore, Promise, Model, Event, Avatar, Utils, Reply){
+define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "service/avatar", "service/utils", "./message-reply"],
+        function(Widget, Config, Store, CouchDBStore, Model, Event, Avatar, Utils, Reply){
                 
            return function MessageDetailConstructor($close){
            
@@ -295,16 +295,14 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                 
                 // a function to check the status of a multi-user session user has been invited to
                 msgDetailUI.checkSessionStatus = function(sid, res){
-                        var cdb = new CouchDBStore(),
-                            promise = new Promise();
+                        var cdb = new CouchDBStore();
                         cdb.setTransport(transport);
+                        calling("sync function");
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
                                 if (cdb.getNbItems()){message.set("sessionStatus", "waiting");}
                                 else{message.set("sessionStatus", "unavailable");}
-                                promise.resolve();
                                 cdb.unsync();
-                         });
-                         return promise;        
+                         });       
                 };
                 
                 msgDetailUI.gotoSession = function(event, node){

@@ -67,16 +67,17 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                         }        
                                 },
                                 setBody : function(type){
+                                        var node = this;
                                         switch(type){
                                                 case "CXRaccept":
-                                                        this.innerHTML = labels.get("youlbl") + labels.get("nowconnected") + message.get("username");
+                                                        node.innerHTML = labels.get("youlbl") + labels.get("nowconnected") + message.get("username");
                                                         break;
                                                 case "DOC":
                                                         // TBD --> maybe include the doc title
-                                                        this.innerHTML = message.get("username") + labels.get("sentdocmsg") + " : <b>" + message.get("docTitle")+"</b>";
+                                                        node.innerHTML = message.get("username") + labels.get("sentdocmsg") + " : <b>" + message.get("docTitle")+"</b>";
                                                         break;
                                                 case "INV":
-                                                        var res = false, node = this, goto = document.querySelector("gotosession");
+                                                        var res = false, goto = document.querySelector("gotosession");
                                                         // finish invite here...
                                                         msgDetailUI.checkSessionStatus(message.get("docId"), res).then(function(){
                                                                 var html = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
@@ -88,10 +89,11 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                                                         html += "<br/><br/>"+labels.get("nolongerjoin");
                                                                 }
                                                                 node.innerHTML = html;
+                                                                console.log(res, html);
                                                         });
                                                         break;
                                                 default :
-                                                        this.innerHTML = message.get("body");
+                                                        node.innerHTML = message.get("body");
                                                         break;
                                         }           
                                 },

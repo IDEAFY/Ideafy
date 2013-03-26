@@ -297,7 +297,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                 };
                 
                 // a function to check the status of a multi-user session user has been invited to
-                msgDetailUI.checkSessionStatus = function(sid){
+                msgDetailUI.checkSessionStatus = function checkSessionStatus(sid){
                         var cdb = new CouchDBStore();
                         cdb.setTransport(transport);
                         CDB=cdb;

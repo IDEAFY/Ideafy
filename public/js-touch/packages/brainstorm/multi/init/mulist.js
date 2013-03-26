@@ -14,7 +14,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                 
                 widget.plugins.addAll({});
                 
-                widget.template = '<div id="mulist">Multi-user session list</div>';
+                widget.template = '<div id="mulist"><div id="mulist-content">Multi-user session list</div></div>';
                 
                 widget.place(document.getElementById("mulist"));
                 

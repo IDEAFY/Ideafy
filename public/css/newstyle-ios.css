@@ -5877,7 +5877,7 @@ li.my2q{
     padding: 20px;
 }
 
-#newmub-content{
+#newmub-content, #mulist-content{
     padding: 0px 20px 20px 20px;
     border: 1px solid #657b99;
     border-radius: 5px;

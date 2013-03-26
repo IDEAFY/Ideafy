@@ -305,7 +305,8 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                         var cdb = new CouchDBStore(),
                             promise = new Promise();
                         cdb.setTransport(transport);
-                        console.log("syncing", sid);
+                        console.log("syncing", sid, transport);
+                        CDB = cdb;
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
                                 console.log(cdb.toJSON());
                                 if (cdb.getNbItems()){res = true;}

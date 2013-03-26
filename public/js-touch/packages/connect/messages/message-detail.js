@@ -80,6 +80,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                                         var res = false, goto = document.querySelector(".gotosession");
                                                         // finish invite here...
                                                         msgDetailUI.checkSessionStatus(message.get("docId"), res).then(function(){
+                                                                console.log(res);
                                                                 var html = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
                                                                 if (res){
                                                                         goto.classList.remove("invisible");
@@ -301,7 +302,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                 };
                 
                 // a function to check the status of a multi-user session user has been invited to
-                msgDetailUI.checkSessionStatus = function(sid, res){
+                msgDetailUI.checkSessionStatus = function(sid, waiting){
                         var cdb = new CouchDBStore(),
                             promise = new Promise();
                         cdb.setTransport(transport);
@@ -309,8 +310,9 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                         CDB = cdb;
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
                                 console.log(cdb.toJSON());
-                                if (cdb.getNbItems()){res = true;}
-                                else {res=false;}
+                                if (cdb.getNbItems()){waiting = true;}
+                                else {waiting=false;}
+                                console.log(waiting);
                                 promise.resolve();
                                 cdb.unsync();
                          });

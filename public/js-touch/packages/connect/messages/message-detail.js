@@ -88,11 +88,11 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                                                         html += "<br/><br/>"+labels.get("nolongerjoin");
                                                                 }
                                                                 node.innerHTML = html;
-                                                        });  
-                                        }
+                                                        });
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("body");
+                                                        break;
                                         }           
                                 },
                                 showOptions : function(type){

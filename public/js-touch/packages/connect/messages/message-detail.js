@@ -314,7 +314,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                 };
                 
                 msgDetailUI.gotoSession = function(event, node){
-                        Config.get("observer").notify("join-mu_session", message.get("docId"));                
+                        Config.get("observer").notify("join-musession", message.get("docId"));                
                 };
                 
                 //init

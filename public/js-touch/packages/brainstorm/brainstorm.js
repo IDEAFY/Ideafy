@@ -67,6 +67,7 @@ define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", 
                                                         _stack.getStack().add("quick", new QuickB(sip, _widget.exitSession));
                                                         break;
                                                  case "musession":
+                                                        console.log("adding mustack");
                                                         _stack.getStack().add("musession", new MultiB(sip, _widget.exitSession));
                                                         break;
                                                 case "tutorial":
@@ -114,6 +115,7 @@ define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", 
                  */
                 Config.get("observer").watch("join-musession", function(sid){
                       var sip ={type: "musession", id: sid, mode:"join"};
+                      console.log("brainstorm : ", sip)
                       _widget.selectScreen(sip.type, sip);
                 });
 		

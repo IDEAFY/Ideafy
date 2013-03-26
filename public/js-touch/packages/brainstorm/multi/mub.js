@@ -26,10 +26,11 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 widget.replayMUSession = function replayMUSession(){}; // may should be an observer instead
                 
                 
-                widget.reset = function reset(sip){        
+                widget.reset = function reset(sip){       
                 };
                 
                 widget.join = function(sid){
+                        console.log("join function");
                         stack.getStack().get("mubwait").reset(sid);
                         stack.getStack().show("mubwait");      
                 };

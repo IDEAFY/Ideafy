@@ -146,7 +146,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                         });
                         
                         // display session waiting room (join)
-                        _observer.watch("join-mu_session", function(sid){
+                        _observer.watch("join-musession", function(sid){
                                 var prev = document.querySelector(".dock-item.selected"),
                                     bs = document.querySelector(".dock-item[href='#brainstorm']");
                                 

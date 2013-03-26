@@ -5,19 +5,39 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help"],
-        function(Widget, Map, Model, Event, Config, Help){
+define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils"],
+        function(Widget, Map, Model, Event, Config, Help, Utils){
                 
-                return function MultiBWaitConstructor($session, $prev, $next, $progress){
+                return function MultiBWaitConstructor($prev, $next, $progress){
                 
-                        var widget = new Widget();
+                        var widget = new Widget(),
+                            session = new CouchDBStore(),
+                            user = Config.get("user"),
+                            listener;
+                        
+                        session.setTransport(Config.get("transport"));
                         
                         widget.template = '<div id="mubwait"></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         
                         widget.reset = function reset(sid){
-                                console.log("mubwait : "+sid);
+                                session.reset();
+                                session.sync(Config.get("db"), sid).then(function(){
+                                        console.log("mubwait : "+sid);
+                                        listener = Utils.exitListener("mubwait", widget.leave);        
+                                });
+                        };
+                        
+                        // initiator or a participant decides to leave the waiting room
+                        widget.leave = function leave(){
+                                console.log("leave", user.get("_id"));
+                                document.removeEventListener(listener);        
+                        };
+                        
+                        // initiator decides to cancel the session
+                        widget.cancel = function cancel(){
+                                
                         };
                         
                         return widget;

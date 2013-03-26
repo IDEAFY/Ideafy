@@ -437,6 +437,24 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                             currentStyle = styleNode.getAttribute("href");
                         
                         if (currentStyle !== "css/"+newStyle) styleNode.setAttribute("href", "css/"+newStyle);
+                },
+                /* A function that listens to click/touches outside specified element
+                 * @Param id the element id
+                 * @Param callback a callback function
+                 * returns
+                 */
+                exitListener : function(id, callback){
+                        var listener = function(e){
+                                var element;
+                                for (element = e.target; element; element = element.parentNode) {
+                                        if (element.id === id) {
+                                                return;
+                                        }
+                                }
+                                callback();        
+                        };
+                        document.addEventListener("touchend", listener);
+                        return listener;      
                 }
 	}
 });

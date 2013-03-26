@@ -305,7 +305,6 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                                 console.log(cdb.toJSON());
                                 if (cdb.getNbItems()){message.set("sessionStatus", "waiting");}
                                 else{message.set("sessionStatus", "unavailable");}
-                                cdb.unsync();
                          });       
                 };
                 

@@ -327,6 +327,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                         }
                 };
                 
+                MSG = message;
                 return msgDetailUI;
             };      
         });

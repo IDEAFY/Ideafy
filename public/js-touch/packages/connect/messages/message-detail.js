@@ -19,7 +19,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                     observer = Config.get("observer"),
                     transport = Config.get("transport");
                 
-                msgDetailUI.template = '<div id="msgdetail"><div class="header blue-dark"><span class="subjectlbl" data-label="bind:innerHTML, subjectlbl"></span><span data-message="bind:setObject, type"></span></div><div class = "detail-contents"><div class="detail-header"><div class="msgoptions" data-message="bind: showOptions, type"><div class="defaultmsgoption"><div name="reply" class="msgreply" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="more" class="more" data-messageevent="listen:touchstart, press; listen:touchend, action"></div></div><div class="msgoptionlist invisible"><div name="replyall" class="replyall sort-button" data-label="bind:innerHTML, replyalllbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="forward" class="forward sort-button" data-label="bind:innerHTML, forwardlbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="deletemsg" class="deletemsg sort-button" data-label="bind:innerHTML, deletelbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div></div></div><div data-message="bind:setAvatar, author"></div><p data-message="bind:innerHTML, username"></p><p class="toList"><span data-label="bind: innerHTML, tolbl"></span><span data-message="bind: setToList, toList"></span></p><p class="toList invisible" data-message="bind:showCcList, ccList"><span data-label="bind: innerHTML, cclbl"></span><span data-message="bind: innerHTML, ccList"></span></p><p class="msgdate"><span class="date" data-message="bind: date, date"></span></p></div><div class="detail-body"><p data-message="bind:setBody, type"></p><div class="showdoc" data-message="bind: showDocBtn, type" data-messageevent="listen:touchstart, press; listen:touchend, showDoc"></div><div class="gotosession invisible" data-message="bind: showSessionBtn, type" data-messageevent="listen:touchstart, press; listen:touchend, gotoSession"></div><div class="goto2q invisible" data-message = "bind: showTwoQ, type" data-messageevent="listen: touchstart, press; listen: touchend, showTwoQ"></div><div class="acceptrejectCXR invisible" data-message="bind:showCXRbtn, type"><div class="acceptCXR" data-label="bind:innerHTML, accept" data-messageevent="listen:touchstart, press; listen:touchend, acceptCXR"></div><div class="rejectCXR" data-label="bind:innerHTML, reject" data-messageevent="listen:touchstart, press; listen:touchend, rejectCXR"></div></div></div></div><div id="msgreply" class="invisible"></div><div id="CXRconfirm" class="invisible" data-cxr="bind:setVisibility, response"><span class="CXRconfirmed" data-cxr="bind:setResponseMessage, response"></span></div></div>';
+                msgDetailUI.template = '<div id="msgdetail"><div class="header blue-dark"><span class="subjectlbl" data-label="bind:innerHTML, subjectlbl"></span><span data-message="bind:setObject, type"></span></div><div class = "detail-contents"><div class="detail-header"><div class="msgoptions" data-message="bind: showOptions, type"><div class="defaultmsgoption"><div name="reply" class="msgreply" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="more" class="more" data-messageevent="listen:touchstart, press; listen:touchend, action"></div></div><div class="msgoptionlist invisible"><div name="replyall" class="replyall sort-button" data-label="bind:innerHTML, replyalllbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="forward" class="forward sort-button" data-label="bind:innerHTML, forwardlbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="deletemsg" class="deletemsg sort-button" data-label="bind:innerHTML, deletelbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div></div></div><div data-message="bind:setAvatar, author"></div><p data-message="bind:innerHTML, username"></p><p class="toList"><span data-label="bind: innerHTML, tolbl"></span><span data-message="bind: setToList, toList"></span></p><p class="toList invisible" data-message="bind:showCcList, ccList"><span data-label="bind: innerHTML, cclbl"></span><span data-message="bind: innerHTML, ccList"></span></p><p class="msgdate"><span class="date" data-message="bind: date, date"></span></p></div><div class="detail-body"><p data-message="bind:setBody, type"></p><p class="invisible" data-message="bind:setJoinMsg, sessionStatus"></p><div class="showdoc" data-message="bind: showDocBtn, type" data-messageevent="listen:touchstart, press; listen:touchend, showDoc"></div><div class="gotosession invisible" data-message="bind: showSessionBtn, type" data-messageevent="listen:touchstart, press; listen:touchend, gotoSession"></div><div class="goto2q invisible" data-message = "bind: showTwoQ, type" data-messageevent="listen: touchstart, press; listen: touchend, showTwoQ"></div><div class="acceptrejectCXR invisible" data-message="bind:showCXRbtn, type"><div class="acceptCXR" data-label="bind:innerHTML, accept" data-messageevent="listen:touchstart, press; listen:touchend, acceptCXR"></div><div class="rejectCXR" data-label="bind:innerHTML, reject" data-messageevent="listen:touchstart, press; listen:touchend, rejectCXR"></div></div></div></div><div id="msgreply" class="invisible"></div><div id="CXRconfirm" class="invisible" data-cxr="bind:setVisibility, response"><span class="CXRconfirmed" data-cxr="bind:setResponseMessage, response"></span></div></div>';
                 
                 msgDetailUI.plugins.addAll({
                         "label": new Model(labels),
@@ -67,29 +67,16 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                         }        
                                 },
                                 setBody : function(type){
-                                        var node = this;
                                         switch(type){
                                                 case "CXRaccept":
-                                                        node.innerHTML = labels.get("youlbl") + labels.get("nowconnected") + message.get("username");
+                                                        this.innerHTML = labels.get("youlbl") + labels.get("nowconnected") + message.get("username");
                                                         break;
                                                 case "DOC":
                                                         // TBD --> maybe include the doc title
-                                                        node.innerHTML = message.get("username") + labels.get("sentdocmsg") + " : <b>" + message.get("docTitle")+"</b>";
+                                                        this.innerHTML = message.get("username") + labels.get("sentdocmsg") + " : <b>" + message.get("docTitle")+"</b>";
                                                         break;
                                                 case "INV":
-                                                        var res = {waiting : false}, goto = document.querySelector(".gotosession");
-                                                        // finish invite here...
-                                                        msgDetailUI.checkSessionStatus(message.get("docId"), res).then(function(){
-                                                                var html = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
-                                                                if (res.waiting){
-                                                                        goto.classList.remove("invisible");
-                                                                }
-                                                                else{
-                                                                        goto.classList.add("invisible");
-                                                                        html += "<br/><br/>"+labels.get("nolongerjoin");
-                                                                }
-                                                                node.innerHTML = html;
-                                                        });
+                                                        this.innerHTML = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
                                                         break;
                                                 default :
                                                         node.innerHTML = message.get("body");
@@ -111,10 +98,17 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                 showDocBtn : function(type){
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
-                                showSessionBtn : function(type){
-                                        if (type !== "INV"){
-                                                this.classList.add("invisible");
-                                        }      
+                                showSessionBtn : function(sessionStatus){
+                                        (sessionStatus === "waiting")?this.classList.remove("invisible"):this.classList.add("invisible");   
+                                },
+                                setJoinMsg : function(sessionStatus){
+                                        (sessionStatus) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                        if (sessionStatus === "unavailable"){
+                                                this.innerHTML = labels.get("nolongerjoin");
+                                        }
+                                        else if (sessionStatus === "waiting"){
+                                                this.innerHTML = labels.get("clicktojoin");
+                                        }
                                 },
                                 showTwoQ : function(type){
                                         (type === "2Q+" || type === "2C+") ? this.classList.remove("invisible"):this.classList.add("invisible");        
@@ -305,8 +299,8 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                             promise = new Promise();
                         cdb.setTransport(transport);
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
-                                if (cdb.getNbItems()){res.waiting = true;}
-                                else {res.waiting=false;}
+                                if (cdb.getNbItems()){message.set("sessionStatus", "waiting");}
+                                else{message.set("sessionStatus", "unavailable");}
                                 promise.resolve();
                                 cdb.unsync();
                          });
@@ -322,6 +316,9 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                         cxrConfirm.reset({"response":""});
                         message.reset(msg);
                         msgReplyUI.reset(msg, "reply");
+                        
+                        // check if message type is a session and if so check session status
+                        if (message.get("type") === "INV"){msgDetail.checkSessionStatus(message.get("docTitle"));}
                 };
                 
                 MSG = message;

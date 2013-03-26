@@ -435,5 +435,6 @@
 	"sendinginvites": "Sending invitations...",
 	"invitesent": "Invitations sent",
 	"INVObject": " invited you to an Ideafy session",
-	"nolongerjoin": "You can no longer join this session : it is already underway or completed"
+	"nolongerjoin": "You can no longer join this session : it is already underway or completed.",
+	"clicktojoin": "Push the button below to join session."
 }

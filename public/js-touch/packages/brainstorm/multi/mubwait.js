@@ -32,7 +32,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(){
                                 console.log("leave", user.get("_id"));
-                                document.removeEventListener(listener);        
+                                document.removeEventListener("touchend", listener);        
                         };
                         
                         // initiator decides to cancel the session

@@ -6026,6 +6026,15 @@ li.my2q{
     background-size: 15px 15px;
 }
 
+#mubwait{
+    background:white;
+    width: 931px;
+    height: 748px;
+    display: block;
+    position: absolute;
+    top: 0;
+}
+
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}
 p.p2 {margin: 0; font-size: 14px; min-height: 15px}

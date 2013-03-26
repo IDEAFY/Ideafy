@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils"],
-        function(Widget, Map, Model, Event, Config, Help, Utils){
+define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils"],
+        function(Widget, CouchDBStore, Map, Model, Event, Config, Help, Utils){
                 
                 return function MultiBWaitConstructor($prev, $next, $progress){
                 

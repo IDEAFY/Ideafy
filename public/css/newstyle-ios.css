@@ -4161,21 +4161,48 @@ li.color-item{
     padding-bottom: 10px;
 }
 
-#msgdetail .showdoc{
+#msgdetail .showdoc, #msgdetail .goto2q, #msgdetail .gotosession{
     margin: 10px auto;
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-    background: url('../img/disableLibrary.png') no-repeat center center;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-repeat: no-repeat;
+    background-position: center center;
     background-size: contain;
     -webkit-box-shadow: inset 0px 0px 3px gray;
 }
 
+#msgdetail .showdoc{
+    background-image: url('../img/disableLibrary.png');
+    -webkit-box-shadow: inset 0px 0px 3px gray;   
+}
+
 #msgdetail .showdoc.pushed{
-    background: gray url('../img/activeLibrary.png') no-repeat center center;
-    background-size: contain;
+    background-color: gray;
+    background-image: url('../img/activeLibrary.png');
     -webkit-box-shadow: inset 0px 0px 3px black;  
 }
+
+#msgdetail.goto2q{
+    background-image: url('../img/connect/twocent.png');
+}
+
+#msgdetail .goto2q.pushed{
+    background-image: url('../img/connect/twocentactive.png');
+}
+
+
+#msgdetail .gotosession{
+    background-image: url('../img/disableBrainstorm.png');
+    -webkit-box-shadow: inset 0px 0px 3px gray;     
+}
+
+#msgdetail .gotosession.pushed{
+    background-color: gray;
+    background-image: url('../img/activeBrainstorm.png');
+    -webkit-box-shadow: inset 0px 0px 3px gray;     
+}
+
 
 .msgoptions{
     float: right;
@@ -4259,19 +4286,6 @@ li.color-item{
 .msgoptionlist .deletemsg{    
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px; 
-}
-
-.goto2q{
-    width: 50px;
-    height: 50px;
-    background: url('../img/connect/twocent.png') no-repeat center center;
-    background-size: contain;
-    margin: 0 auto;
-}
-
-.goto2q.pushed{
-    background: url('../img/connect/twocentactive.png') no-repeat center center;
-    background-size: contain;
 }
 
 .acceptrejectCXR{

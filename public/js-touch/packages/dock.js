@@ -145,6 +145,18 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 //document.querySelector(".dock-item[href='#dashboard']").classList.add("selected");
                         });
                         
+                        // display session waiting room (join)
+                        _observer.watch("join-mu_session", function(sid){
+                                var prev = document.querySelector(".dock-item.selected"),
+                                    bs = document.querySelector(".dock-item[href='#brainstorm']");
+                                
+                                // this event can be called from and outside of the brainstorm UI -- we only need to change views if it's called from outside
+                                if (_stack.getStack().getCurrentName() !== "#brainstorm") {
+                                        _stack.getStack().show("#brainstorm");
+                                        _control.radioClass(bs, prev, "selected");
+                                        _control.init(bs);
+                                }        
+                        });
                         
 		//return
 			return _widget;

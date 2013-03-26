@@ -80,7 +80,6 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                                         var res = {waiting : false}, goto = document.querySelector(".gotosession");
                                                         // finish invite here...
                                                         msgDetailUI.checkSessionStatus(message.get("docId"), res).then(function(){
-                                                                console.log(res);
                                                                 var html = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
                                                                 if (res.waiting){
                                                                         goto.classList.remove("invisible");
@@ -90,7 +89,6 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                                                         html += "<br/><br/>"+labels.get("nolongerjoin");
                                                                 }
                                                                 node.innerHTML = html;
-                                                                console.log(res, html);
                                                         });
                                                         break;
                                                 default :
@@ -99,7 +97,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                         }           
                                 },
                                 showOptions : function(type){
-                                        ((type.search("CX")>-1) || (type === "2Q+")) ? this.classList.add("invisible") : this.classList.remove("invisible");        
+                                        ((type.search("CX")>-1) || (type === "2Q+") || (type === "INV")) ? this.classList.add("invisible") : this.classList.remove("invisible");        
                                 },
                                 setToList : function(toList){
                                         (toList) ? this.innerHTML = toList : this.innerHTML = labels.get("melbl");        
@@ -306,17 +304,17 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                         var cdb = new CouchDBStore(),
                             promise = new Promise();
                         cdb.setTransport(transport);
-                        console.log("syncing", sid, transport, res.waiting);
-                        CDB = cdb;
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
-                                console.log(cdb.toJSON());
                                 if (cdb.getNbItems()){res.waiting = true;}
                                 else {res.waiting=false;}
-                                console.log(res);
                                 promise.resolve();
                                 cdb.unsync();
                          });
                          return promise;        
+                };
+                
+                msgDetailUI.gotoSession = function(event, node){
+                        Config.get("observer").notify("join-mu_session", message.get("docId"));                
                 };
                 
                 //init

@@ -79,7 +79,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                                 case "INV":
                                                         var res = false, goto = document.querySelector(".gotosession");
                                                         // finish invite here...
-                                                        msgDetailUI.checkSessionStatus(message.get("docId"), res).then(function(){
+                                                        msgDetailUI.checkSessionStatus(message.get("docId"), function(waiting){if (waiting) {res=true;}}).then(function(){
                                                                 console.log(res);
                                                                 var html = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
                                                                 if (res){
@@ -302,7 +302,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                 };
                 
                 // a function to check the status of a multi-user session user has been invited to
-                msgDetailUI.checkSessionStatus = function(sid, waiting){
+                msgDetailUI.checkSessionStatus = function(sid, onEnd){
                         var cdb = new CouchDBStore(),
                             promise = new Promise();
                         cdb.setTransport(transport);
@@ -313,6 +313,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Promise", 
                                 if (cdb.getNbItems()){waiting = true;}
                                 else {waiting=false;}
                                 console.log(waiting);
+                                onEnd(waiting);
                                 promise.resolve();
                                 cdb.unsync();
                          });

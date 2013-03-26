@@ -301,6 +301,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                         var cdb = new CouchDBStore();
                         cdb.setTransport(transport);
                         console.log("calling sync function");
+                        CDB = cdb;
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
                                 console.log(cdb.toJSON());
                                 if (cdb.getNbItems()){message.set("sessionStatus", "waiting");}

@@ -297,7 +297,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                 msgDetailUI.checkSessionStatus = function(sid, res){
                         var cdb = new CouchDBStore();
                         cdb.setTransport(transport);
-                        calling("sync function");
+                        console.log("calling sync function");
                         cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
                                 if (cdb.getNbItems()){message.set("sessionStatus", "waiting");}
                                 else{message.set("sessionStatus", "unavailable");}
@@ -320,7 +320,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                         if (message.get("type") === "INV"){
                                 message.set("sessionStatus", null);
                                 msgDetailUI.checkSessionStatus(message.get("docTitle"));
-                                }
+                        }
                 };
                 
                 MSG = message;

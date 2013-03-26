@@ -434,5 +434,6 @@
 	"providesessioninfo": "You must enter a meaningful title and description",
 	"sendinginvites": "Sending invitations...",
 	"invitesent": "Invitations sent",
-	"INVObject": " invited you to an Ideafy session"
+	"INVObject": " invited you to an Ideafy session",
+	"nolongerjoin": "You can no longer join this session : it is already underway or completed"
 }

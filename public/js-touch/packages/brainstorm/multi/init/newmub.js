@@ -316,7 +316,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 cdb.upload();
                                 error.set("errormsg", labels.get("sendinginvites"));
                                 if (cdb.get("mode") === "boardroom"){
-                                        widget.sendInvites(cdb.get("invited"), cdb.get("_id")).then(function(){
+                                        widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
                                                 Config.get("observer").notify("join-mu_session", cdb.get("_id"));
                                                 cdb.unsync();
                                                 widget.reset();
@@ -330,7 +330,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         }, 250);
                 };
                 
-                widget.sendInvites = function sendInvites(idlist, sid){
+                widget.sendInvites = function sendInvites(idlist, sid, stitle){
                         var promise = new Promise(),
                             now = new Date(),
                             json = {
@@ -346,6 +346,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 "body" : "",
                                 "signature" : "",
                                 "docId" : sid,
+                                "docTitle": stitle,
                                 "dest" : idlist
                                 };
                         

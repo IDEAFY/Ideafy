@@ -1233,6 +1233,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 
                 if (json.type === "INV") {
                         message.docId = json.docId;
+                        message.docTitle = json.docTitle;
                 }
 
                 // send message to all recipients

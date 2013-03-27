@@ -13,7 +13,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         var widget = new Widget(),
                             session = new CouchDBStore(),
                             user = Config.get("user"),
-                            listener;
+                            exitListener;
                         
                         session.setTransport(Config.get("transport"));
                         
@@ -24,31 +24,31 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         widget.reset = function reset(sid){
                                 session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){
-                                        console.log("mubwait : "+sid);
-                                        listener = Utils.exitListener("mubwait", widget.leave);        
+                                        exitListener = Utils.exitListener("mubwait", widget.leave);
+                                        console.log("mubwait : "+sid, exitListener);       
                                 });
                         };
                         
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(target){
-                                console.log("leave", target, user.get("_id"));
                                 if (session.get("initiator").id === user.get("_id")){
                                         widget.cancelSession(target);
                                 }
                                 else {
                                         widget.leaveSession(target);
-                                }
-                                document.removeEventListener("touchstart", listener);        
+                                }       
                         };
                         
                         // participant decides to leave session
                         widget.leaveSession = function leaveSession(dest){
-                                console.log("participant leaving");        
+                                console.log("participant leaving", dest, exitListener);
+                                document.removeEventListener("touchstart", exitListener, true);         
                         };
                         
                         // initiator decides to cancel the session
                         widget.cancelSession = function cancelSession(dest){
-                                console.log("leader leaving");        
+                                console.log("leader leaving", dest);
+                                document.removeEventListener("touchstart", exitListener, true);       
                         };
                         
                         return widget;

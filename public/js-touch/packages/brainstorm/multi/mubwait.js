@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils"],
-        function(Widget, CouchDBStore, Map, Model, Event, Config, Help, Utils){
+define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils", "service/confirm"],
+        function(Widget, Map, Model, Event, Config, Help, Utils, Confirm){
                 
                 return function MultiBWaitConstructor($prev, $next, $progress){
                 
@@ -25,14 +25,14 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                                 session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){
                                         console.log("mubwait : "+sid);
-                                        listener = Utils.preventExit("mubwait");        
+                                        listener = Utils.exitListener("mubwait", widget.leave);        
                                 });
                         };
                         
                         // initiator or a participant decides to leave the waiting room
-                        widget.leave = function leave(){
-                                console.log("leave", user.get("_id"));
-                                document.removeEventListener(listener.event, listener.listener);        
+                        widget.leave = function leave(target){
+                                console.log("leave", target, user.get("_id"));
+                                document.removeEventListener(listener);        
                         };
                         
                         // initiator decides to cancel the session

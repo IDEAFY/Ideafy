@@ -314,7 +314,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                         
                         // can only join a session once
                         for (i=0, l=arr.length; i<l; i++){
-                                if (arr[i].type === "INV" && arr[i].docId === message.get(docId)){
+                                if (arr[i].type === "INV" && arr[i].docId === message.get("docId")){
                                         arr[i].joined = true;
                                         break;
                                 }

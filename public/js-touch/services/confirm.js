@@ -12,7 +12,8 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                 
                         var _labels = Config.get("labels"),
                                 _widget = this,
-                            _content = new Store({"question":""});
+                                _content = new Store({"question":$question}),
+                                _callback = $onDecision;
                         
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
@@ -29,16 +30,30 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                         
                         _widget.ok = function(event, node){
                                 node.classList.remove("pressed");
-                                $onDecision(true);    
+                                _callback && _callback(true);    
                         };
                         
                         _widget.cancel = function(event, node){
                                 node && node.classList.remove("pressed");
-                                $onDecision(false);
+                                _callback && _callback(false);
                         };
                         
                         _widget.close = function close(){
                                 $parent.removeChild($parent.lastChild);       
+                        };
+                        
+                        _widget.hide = function hide(){
+                                _widget.dom.classList.add("invisible");        
+                        };
+                        
+                        _widget.show = function show(){
+                                _widget.dom.classList.remove("invisible");        
+                        };
+                        
+                        _widget.reset = function reset(question, callback){
+                                _content.set("question", question);
+                                _callback = callback;
+                                _widget.show();        
                         };
                         
                         _content.set("question", $question);

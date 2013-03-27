@@ -69,7 +69,7 @@ define(["Olives/OObject", "service/map", "CouchDBStore", "Olives/Model-plugin", 
                                 _store.sync(Config.get("db"), id);        
                         };
                         
-                                                _widget.editVisibility = function(event, node){
+                        _widget.editVisibility = function(event, node){
                                 // confirmation
                                 var confirm = new Confirm(node, _labels.get("setpublicquestion"), function(decision){
                                         (decision) ? _store.set("visibility", "public") : _store.set("visibility", "private");

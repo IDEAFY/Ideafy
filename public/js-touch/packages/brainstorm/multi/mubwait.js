@@ -13,6 +13,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         var widget = new Widget(),
                             session = new CouchDBStore(),
                             user = Config.get("user"),
+                            confirmUI,
                             exitListener;
                         
                         session.setTransport(Config.get("transport"));
@@ -20,6 +21,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         widget.template = '<div id="mubwait"></div>';
                         
                         widget.place(document.getElementById("mubwait"));
+                        confirmUI = new Confirm(widget.dom);
                         
                         widget.reset = function reset(sid){
                                 session.reset();
@@ -42,13 +44,23 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         // participant decides to leave session
                         widget.leaveSession = function leaveSession(dest){
                                 console.log("participant leaving", dest, exitListener);
-                                document.removeEventListener("touchstart", exitListener, true);         
+                                confirmUI.reset(labels.get("participantleave", function(decision){
+                                        if (decision){
+                                                alert("bye bye");
+                                                document.removeEventListener("touchstart", exitListener, true);
+                                        }
+                                }));         
                         };
                         
                         // initiator decides to cancel the session
                         widget.cancelSession = function cancelSession(dest){
                                 console.log("leader leaving", dest);
-                                document.removeEventListener("touchstart", exitListener, true);       
+                                confirmUI.reset(labels.get("leaderleave", function(decision){
+                                        if (decision){
+                                                alert("what about the others?");
+                                                document.removeEventListener("touchstart", exitListener, true);
+                                        }
+                                }));        
                         };
                         
                         return widget;

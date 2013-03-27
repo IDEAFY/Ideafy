@@ -438,5 +438,7 @@
 	"INVObject": " invited you to an Ideafy session",
 	"nolongerjoin": "You can no longer join this session : it is already underway or completed.",
 	"clicktojoin": "Push the button below to join session.",
-	"selectsession": "Select a session"
+	"selectsession": "Select a session",
+	"participantleave": "Are you sure you want to leave? You will not be able to re-join nor will you get credited for any outcome  of the session",
+	"leaderleave": "Are you sure you want to cancel this session? This will end it for all participants."
 }

@@ -308,19 +308,17 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                 };
                 
                 msgDetailUI.gotoSession = function(event, node){
-                        var arr = user.get("notifications"),
-                            index;
+                        var arr = user.get("notifications");
                         node.classList.remove("pressed");
                         Config.get("observer").notify("join-musession", message.get("docId"));
                         
                         // can only join a session once
                         for (i=0, l=arr.length; i<l; i++){
-                                if (JSON.stringify(arr[i]) === msg){
-                                        index = i;
+                                if (arr[i].type === "INV" && arr[i].docId === message.get(docId)){
+                                        arr[i].joined = true;
                                         break;
                                 }
                         }
-                        arr[index].joined = true;
                         user.set("notifications", arr);
                         user.upload();               
                 };

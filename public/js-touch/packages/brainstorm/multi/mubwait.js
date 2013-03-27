@@ -32,12 +32,23 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(target){
                                 console.log("leave", target, user.get("_id"));
+                                if (session.get("initiator").id === user.get("_id")){
+                                        widget.cancelSession(dest);
+                                }
+                                else {
+                                        widget.leaveSession(dest);
+                                }
                                 document.removeEventListener("touchstart", listener);        
                         };
                         
+                        // participant decides to leave session
+                        widget.leaveSession = function leaveSession(dest){
+                                console.log("participant leaving");        
+                        };
+                        
                         // initiator decides to cancel the session
-                        widget.cancel = function cancel(){
-                                
+                        widget.cancelSession = function cancelSession(dest){
+                                console.log("leader leaving");        
                         };
                         
                         return widget;

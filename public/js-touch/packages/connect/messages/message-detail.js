@@ -102,7 +102,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                                         (sessionStatus && sessionStatus === "waiting")?this.classList.remove("invisible"):this.classList.add("invisible");   
                                 },
                                 setJoinMsg : function(sessionStatus){
-                                        if (!sessionStatus) {this.classList.add("invisible");}
+                                        if (!sessionStatus || message.get("joined")) {this.classList.add("invisible");}
                                         else {
                                                 this.classList.remove("invisible");
                                                 if (sessionStatus === "unavailable"){
@@ -308,7 +308,21 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                 };
                 
                 msgDetailUI.gotoSession = function(event, node){
-                        Config.get("observer").notify("join-musession", message.get("docId"));                
+                        var arr = user.get("notifications"),
+                            index;
+                        node.classList.remove("pressed");
+                        Config.get("observer").notify("join-musession", message.get("docId"));
+                        
+                        // can only join a session once
+                        for (i=0, l=arr.length; i<l; i++){
+                                if (JSON.stringify(arr[i]) === msg){
+                                        index = i;
+                                        break;
+                                }
+                        }
+                        arr[index].joined = true;
+                        user.set("notifications", arr);
+                        user.upload();               
                 };
                 
                 //init

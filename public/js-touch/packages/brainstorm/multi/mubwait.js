@@ -23,7 +23,6 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         widget.place(document.getElementById("mubwait"));
                         confirmUI = new Confirm(widget.dom);
-                        confirmUI.hide();
                         
                         widget.reset = function reset(sid){
                                 session.reset();

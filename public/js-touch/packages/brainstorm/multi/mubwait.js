@@ -13,6 +13,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         var widget = new Widget(),
                             session = new CouchDBStore(),
                             user = Config.get("user"),
+                            labels = Config.get("labels"),
                             confirmUI,
                             exitListener;
                         
@@ -22,6 +23,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         widget.place(document.getElementById("mubwait"));
                         confirmUI = new Confirm(widget.dom);
+                        confirmUI.hide();
                         
                         widget.reset = function reset(sid){
                                 session.reset();

@@ -56,7 +56,12 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                                 _widget.show();        
                         };
                         
-                        _content.set("question", $question);
+                        if ($question){
+                                _content.set("question", $question);
+                        }
+                        else{
+                                _widget.hide();
+                        }
                         _widget.render();
                         _widget.place($parent);
                         

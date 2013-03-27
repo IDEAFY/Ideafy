@@ -6035,6 +6035,14 @@ li.my2q{
     top: 0;
 }
 
+#mubwait .confirm{
+    width: 540px;
+    height: 150px;
+    left: 167px;
+    top: 240px;
+    padding: 40px 30px 10px 30px;
+}
+
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}
 p.p2 {margin: 0; font-size: 14px; min-height: 15px}

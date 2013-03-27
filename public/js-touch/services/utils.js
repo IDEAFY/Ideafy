@@ -451,10 +451,11 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                                 return;
                                         }
                                 }
+                                e.stopPropagation();
                                 e.preventDefault();
                                 callback(e.target);        
                         };
-                        document.addEventListener("touchend", listener);
+                        document.addEventListener("touchstart", listener);
                         return listener;      
                 }
 	}

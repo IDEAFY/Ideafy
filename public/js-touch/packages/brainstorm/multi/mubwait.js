@@ -33,10 +33,10 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         widget.leave = function leave(target){
                                 console.log("leave", target, user.get("_id"));
                                 if (session.get("initiator").id === user.get("_id")){
-                                        widget.cancelSession(dest);
+                                        widget.cancelSession(target);
                                 }
                                 else {
-                                        widget.leaveSession(dest);
+                                        widget.leaveSession(target);
                                 }
                                 document.removeEventListener("touchstart", listener);        
                         };

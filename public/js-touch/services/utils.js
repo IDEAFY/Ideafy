@@ -451,6 +451,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                                 return;
                                         }
                                 }
+                                e.stopPropagation();
                                 callback(e.target);        
                         };
                         document.addEventListener("touchend", listener);

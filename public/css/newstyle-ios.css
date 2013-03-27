@@ -115,6 +115,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 .list ul{
     height: 652px;
+    overflow-y: scroll;
 }
 
 #deck-list{

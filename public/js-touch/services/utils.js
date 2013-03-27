@@ -451,6 +451,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                                 return;
                                         }
                                 }
+                                console.log("click outside desired zone");
                                 e.stopPropagation();
                                 callback(e.target);        
                         };

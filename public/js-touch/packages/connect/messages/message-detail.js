@@ -99,7 +99,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 showSessionBtn : function(sessionStatus){
-                                        (sessionStatus && sessionStatus === "waiting")?this.classList.remove("invisible"):this.classList.add("invisible");   
+                                        (sessionStatus && sessionStatus === "waiting" && !message.get("joined"))?this.classList.remove("invisible"):this.classList.add("invisible");   
                                 },
                                 setJoinMsg : function(sessionStatus){
                                         if (!sessionStatus || message.get("joined")) {this.classList.add("invisible");}

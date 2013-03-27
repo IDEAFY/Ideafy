@@ -443,7 +443,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                  * @Param callback a callback function
                  * returns
                  */
-                exitListener : function(id, callback){
+                prevent : function(id){
                         var listener = function(e){
                                 var element;
                                 for (element = e.target; element; element = element.parentNode) {
@@ -451,10 +451,10 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                                 return;
                                         }
                                 }
-                                callback();        
+                                e.stopPropagation();        
                         };
                         document.addEventListener("touchend", listener);
-                        return listener;      
+                        return {event: "touchend", listener:listener};      
                 }
 	}
 });

@@ -25,14 +25,14 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                                 session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){
                                         console.log("mubwait : "+sid);
-                                        listener = Utils.exitListener("mubwait", widget.leave);        
+                                        listener = Utils.preventExit("mubwait");        
                                 });
                         };
                         
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(){
                                 console.log("leave", user.get("_id"));
-                                document.removeEventListener("touchend", listener);        
+                                document.removeEventListener(listener.event, listener.listener);        
                         };
                         
                         // initiator decides to cancel the session

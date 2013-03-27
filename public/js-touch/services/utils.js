@@ -451,7 +451,6 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                                 return;
                                         }
                                 }
-                                e.preventDefault();
                                 e.stopPropagation();
                                 callback(e.target);        
                         };

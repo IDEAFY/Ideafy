@@ -443,7 +443,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                  * @Param callback a callback function
                  * returns
                  */
-                prevent : function(id, callback){
+                exitListener : function(id, callback){
                         var listener = function(e){
                                 var element;
                                 for (element = e.target; element; element = element.parentNode) {
@@ -451,7 +451,6 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                                 return;
                                         }
                                 }
-                                console.log("click outside desired zone");
                                 e.stopPropagation();
                                 callback(e.target);        
                         };

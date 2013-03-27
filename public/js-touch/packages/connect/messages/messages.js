@@ -187,17 +187,19 @@ define (["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-p
                                     idx;
                                 
                                 // change message status to read
-                                // first need to retrieve message in user notifications
-                                for (i=0, l=arr.length; i<l;i++){
-                                        if (JSON.stringify(arr[i]) === JSON.stringify(msgList.get(id))) {
-                                                index = i;
-                                                break;
+                                if (msgList.get(id).status === "unread"){
+                                        // first need to retrieve message in user notifications
+                                        for (i=0, l=arr.length; i<l;i++){
+                                                if (JSON.stringify(arr[i]) === JSON.stringify(msgList.get(id))) {
+                                                        index = i;
+                                                        break;
+                                                }
                                         }
+                                        msgList.update(id, "status", "read");
+                                        arr[index]=msgList.get(id);
+                                        user.set("notifications", arr);
+                                        user.upload();
                                 }
-                                msgList.update(id, "status", "read");
-                                arr[index]=msgList.get(id);
-                                user.set("notifications", arr);
-                                user.upload();
                                 
                                 // display message detail
                                 detailStack.getStack().show("#msgdetail");

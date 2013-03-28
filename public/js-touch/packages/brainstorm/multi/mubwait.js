@@ -46,10 +46,12 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         widget.leaveSession = function leaveSession(dest){
                                 console.log("participant leaving", dest, exitListener);
                                 confirmUI.reset(labels.get("participantleave"), function(decision){
+                                        confirmUI.close();
                                         if (decision){
-                                                alert("bye bye");
-                                                document.removeEventListener("touchstart", exitListener, true);
+                                                console.log(dest);
+                                                document.removeEventListener("touchstart", exitListener, true);      
                                         }
+                                        
                                 });         
                         };
                         
@@ -57,10 +59,10 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         widget.cancelSession = function cancelSession(dest){
                                 console.log("leader leaving", dest);
                                 confirmUI.reset(labels.get("leaderleave"), function(decision){
-                                        console.log(decision);
+                                        confirmUI.close();
                                         if (decision){
-                                                alert("what about the others?");
-                                                document.removeEventListener("touchstart", exitListener, true);
+                                                console.log(dest);
+                                                document.removeEventListener("touchstart", exitListener, true);       
                                         }
                                 });        
                         };

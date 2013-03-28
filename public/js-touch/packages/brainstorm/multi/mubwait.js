@@ -14,8 +14,9 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                             session = new CouchDBStore(),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
-                            confirmUI,
-                            exitListener;
+                            confirmUI, confirmCallBack,
+                            exitListener,
+                            exitDest;
                         
                         session.setTransport(Config.get("transport"));
                         
@@ -23,48 +24,50 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         widget.place(document.getElementById("mubwait"));
                         confirmUI = new Confirm(widget.dom);
+                        confirmCallBack = function(decision){
+                                if (!decision){
+                                        confirmUI.hide();
+                                }
+                                else{
+                                        if (session.get("initiator").id === user.get("_id")){
+                                                widget.cancelSession();
+                                        }
+                                        else {
+                                                widget.leaveSession();
+                                        }
+                                }
+                        };
                         
                         widget.reset = function reset(sid){
                                 session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){
-                                        exitListener = Utils.exitListener("mubwait", widget.leave);
-                                        console.log("mubwait : "+sid, exitListener);       
+                                        // manage exit event
+                                        // step 1 create confirmation UI
+                                        if (session.get("initiator").id === user.get("_id")){
+                                                confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        
+                                        }
+                                        else {
+                                                confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
+                                        }
+                                        // create exit listener
+                                        exitListener = Utils.exitListener("mubwait", widget.leave);      
                                 });
                         };
                         
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(target){
-                                if (session.get("initiator").id === user.get("_id")){
-                                        widget.cancelSession(target);
-                                }
-                                else {
-                                        widget.leaveSession(target);
-                                }       
+                                exitDest = target;
+                                confirmUI.show();       
                         };
                         
                         // participant decides to leave session
                         widget.leaveSession = function leaveSession(dest){
-                                console.log("participant leaving", dest, exitListener);
-                                confirmUI.reset(labels.get("participantleave"), function(decision){
-                                        confirmUI.close();
-                                        if (decision){
-                                                console.log(dest);
-                                                document.removeEventListener("touchstart", exitListener, true);      
-                                        }
-                                        
-                                });         
+                                         
                         };
                         
                         // initiator decides to cancel the session
                         widget.cancelSession = function cancelSession(dest){
-                                console.log("leader leaving", dest);
-                                confirmUI.reset(labels.get("leaderleave"), function(decision){
-                                        confirmUI.close();
-                                        if (decision){
-                                                console.log(dest);
-                                                document.removeEventListener("touchstart", exitListener, true);       
-                                        }
-                                });        
+                                       
                         };
                         
                         return widget;

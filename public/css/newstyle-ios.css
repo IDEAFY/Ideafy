@@ -6052,11 +6052,16 @@ li.my2q{
 #mubwait .confirm p{
     color: #4D4D4D;
     margin: 50px;
+    font-family: Helvetica;
+    font-size: 18px;
 }
 
 #mubwait .confirm .option{
     border-color: #4D4D4D;
     float: right;
+    font-family: Helvetica;
+    font-size: 14px;
+    width: 70px;
     margin-top: -30px;
     margin-right: 20px;
 }

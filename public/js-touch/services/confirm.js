@@ -30,12 +30,13 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                         
                         _widget.ok = function(event, node){
                                 node.classList.remove("pressed");
-                                _callback && _callback(true);    
+                                _callback(true);    
                         };
                         
                         _widget.cancel = function(event, node){
                                 node && node.classList.remove("pressed");
-                                _callback && _callback(false);
+                                console.log("cancel pressed");
+                                _callback(false);
                         };
                         
                         _widget.close = function close(){
@@ -53,6 +54,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                         _widget.reset = function reset(question, callback){
                                 _content.set("question", question);
                                 _callback = callback;
+                                console.log(callback);
                                 _widget.show();        
                         };
                         

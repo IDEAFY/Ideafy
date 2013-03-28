@@ -729,7 +729,7 @@ ul.notify-list{
     top: 5px;
     left:5px;
     background: url('../img/brainstorm/doctordeedee.png') no-repeat top right;
-    background-size: 70px 69px;    
+    background-size: contain;    
 }
 
 .close-help, .close-tip{
@@ -6037,12 +6037,30 @@ li.my2q{
 }
 
 #mubwait .confirm{
-    width: 540px;
+    width: 600px;
     height: 150px;
     left: 167px;
     top: 240px;
-    padding: 40px 30px 10px 30px;
+    background: none;
 }
+
+#mubwait .confirm .help-doctor{
+    width: 40px;
+    height: 40px;
+}
+
+#mubwait .confirm p{
+    color: #4D4D4D;
+    margin: 50px;
+}
+
+#mubwait .confirm .option{
+    border-color: #4D4D4D;
+    float: right;
+    margin-top: -30px;
+    margin-right: 20px;
+}
+
 
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}

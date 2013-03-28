@@ -82,6 +82,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                         };
                         
                         _widget.close = function(event,node){
+                                event.stopPropagation();
                                 $dom.classList.add("invisible");        
                         };
                         

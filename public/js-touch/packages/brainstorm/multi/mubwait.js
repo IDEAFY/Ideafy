@@ -24,6 +24,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         widget.place(document.getElementById("mubwait"));
                         confirmUI = new Confirm(widget.dom);
+                        confirmUI.hide();
                         confirmCallBack = function(decision){
                                 if (!decision){
                                         confirmUI.hide();
@@ -49,7 +50,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                                         else {
                                                 confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
                                         }
-                                        // create exit listener
+                                        // step 2 create exit listener
                                         exitListener = Utils.exitListener("mubwait", widget.leave);      
                                 });
                         };

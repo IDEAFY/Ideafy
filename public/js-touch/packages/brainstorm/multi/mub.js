@@ -11,7 +11,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
            return function MultiBConstructor($sip, $exit){
            
                 var widget = new Widget(),
-                    stack = new Stack();
+                    stack = new Stack(),
+                    user = Config.get("user");
                 
                 // Musession main stack has three widgets : the init (new or join), the waiting room and the session itself //
                 stack.getStack().add("mubinit", new MUInit($exit));
@@ -29,10 +30,31 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 widget.reset = function reset(sip){       
                 };
                 
+                // used to replay session
+                widget.view = function view(sid){
+                        
+                };
+                
                 widget.join = function(sid){
                         console.log("join function");
-                        stack.getStack().get("mubwait").reset(sid);
-                        stack.getStack().show("mubwait");      
+                        var cdb = new CouchDBStore();
+                        cdb.setTransport(Config.get("transport"));
+                        
+                        cdb.sync(Config.get("db"), sid).then(function(){
+                                var p = cdb.get("participants");
+                                p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro")});
+                                cdb.set("participants", p);
+                                cdb.upload().then(function(){
+                                        stack.getStack().get("mubwait").reset(sid);
+                                        stack.getStack().show("mubwait");
+                                }, function(error){
+                                        console.log(error);
+                                        alert("failed to join session");
+                                });                
+                        }, function(error){
+                                console.log(error);
+                                alert("failed to join session");
+                        });                             
                 };
                 
                 //init
@@ -48,7 +70,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 
                 // watch mu session events
                 Config.get("observer").watch("start-mu_session", function(sid){
-                        widget.join(sid);
+                        stack.getStack().get("mubwait").reset(sid);
+                        stack.getStack().show("mubwait");
                 });
                 
                 return widget;

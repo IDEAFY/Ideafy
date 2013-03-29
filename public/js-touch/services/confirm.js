@@ -52,8 +52,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                         
                         _widget.reset = function reset(question, callback){
                                 _content.set("question", question);
-                                _callback = callback;
-                                _widget.show();        
+                                _callback = callback;       
                         };
                         
                         _widget.render();

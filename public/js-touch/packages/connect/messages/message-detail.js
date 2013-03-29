@@ -108,6 +108,9 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                                                 if (sessionStatus === "unavailable"){
                                                         this.innerHTML = labels.get("nolongerjoin");
                                                 }
+                                                else if (sessionStatus === "joined"){
+                                                        this.innerHTLM = labels.get("joinedsession");
+                                                }
                                                 else if (sessionStatus === "waiting"){
                                                         this.innerHTML = labels.get("clicktojoin");
                                                 }
@@ -310,6 +313,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                 msgDetailUI.gotoSession = function(event, node){
                         var arr = user.get("notifications");
                         node.classList.remove("pressed");
+                        message.set("sessionStatus", "joined");
                         Config.get("observer").notify("join-musession", message.get("docId"));
                         
                         // can only join a session once
@@ -332,8 +336,13 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                         
                         // check if message type is a session and if so check session status
                         if (message.get("type") === "INV"){
-                                message.set("sessionStatus", null);
-                                msgDetailUI.checkSessionStatus(message.get("docId"));
+                                if (message.get("joined")){
+                                        message.set("sessionStatus", "joined");
+                                }
+                                else{
+                                        message.set("sessionStatus", null);
+                                        msgDetailUI.checkSessionStatus(message.get("docId"));
+                                }
                         }
                 };
                 

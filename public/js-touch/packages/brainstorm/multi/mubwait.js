@@ -83,8 +83,10 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                                                 if (name === "#brainstorm"){
                                                         $exit();
                                                 }
+                                                document.removeEventListener("touchstart", exitListener, true);
                                         }
                                 });
+                                
                         };
                         
                         return widget;

@@ -58,7 +58,8 @@ define(["Olives/OObject", "service/config", "service/map", "Store", "Olives/Mode
                 };
                 
                 notify.press = function(event, node){
-                        node.classList.add("orange");        
+                        node.classList.add("orange");
+                        event.stopPropagation();        
                 };
                 
                 notify.showPopup = function(event, node){

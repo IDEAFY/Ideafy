@@ -452,6 +452,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                         }
                                 }
                                 e.stopPropagation();
+                                console.log(e.target);
                                 callback(e.target);        
                         };
                         document.addEventListener("touchstart", listener, true);

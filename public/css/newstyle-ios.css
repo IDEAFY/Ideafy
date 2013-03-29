@@ -2688,7 +2688,7 @@ textarea.solution {
     height: 748px;
 }
 
-#quickstart .quickstart-form, #quicksetup .drawarea, #quicktech .drawarea{
+#quickstart .quickstart-form, #quicksetup .drawarea, #quicktech .drawarea, #mubwait .mubwait-form{
     background: white;
     margin: auto;
     margin-top: 120px;

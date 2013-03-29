@@ -20,7 +20,11 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         session.setTransport(Config.get("transport"));
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickstart" data-quickstartevent="listen:touchstart, toggleProgress"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="quickstart-form"><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="quickstart-title" autofocus="" name="title" data-model="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="quickstart-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form></div>';
+                        widget.plugins.addAll({
+                                labels: new Model(labels)
+                        });
+                        
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl" data-quickstartevent="listen:touchstart, toggleProgress"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="mubwait-form"><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="quickstart-title" autofocus="" name="title" data-model="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="quickstart-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         confirmUI = new Confirm(widget.dom);
@@ -57,7 +61,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(target){
-                                exitDest = target;
+                                exitDest = target.getAttribute("href");
                                 confirmUI.show();       
                         };
                         

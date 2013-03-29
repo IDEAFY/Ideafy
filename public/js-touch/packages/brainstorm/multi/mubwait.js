@@ -63,7 +63,8 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         // participant decides to leave session
                         widget.leaveSession = function leaveSession(){
-                                console.log(exitDest);               
+                                console.log(exitDest);
+                                widget.goToScreen();               
                         };
                         
                         // initiator decides to cancel the session
@@ -81,7 +82,6 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                                                 }
                                         }
                                 });
-                                        
                         };
                         
                         return widget;

@@ -44,16 +44,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 };
                 
                 widget.reset = function reset(){
-                        var node = document.getElementById("muinitslider");
-                        console.log(node, node.value);
-                        if (node.value === "1"){
-                                newMub.reset();
-                                stack.getStack().show("new");        
-                        }
-                        else{
-                                muList.reset();
-                                stack.getStack().show("list");
-                        }
+                        newMub.reset();
+                        muList.reset();
                 };
                 
                 // init

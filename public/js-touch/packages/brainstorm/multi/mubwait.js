@@ -30,7 +30,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="mubwait-form"><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><div class="quickstart-title" autofocus="" name="title" data-model="bind:innerHTML, title"></div><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><div class="quickstart-desc" name="description" data-model="bind:innerHTML, description"></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
-                        confirmUI = new Confirm(widget.dom);
+                        
                         confirmCallBack = function(decision){
                                 if (!decision){
                                         confirmUI.hide();
@@ -48,10 +48,12 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         widget.reset = function reset(sid){
                                 session.reset();
                                 exitListener = null;
+                                console.log(sid);
                                 session.sync(Config.get("db"), sid).then(function(){
                                         
                                         // manage exit event
                                         // step 1 create confirmation UI
+                                        confirmUI = new Confirm(widget.dom);
                                         if (session.get("initiator").id === user.get("_id")){
                                                 confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        
                                         }
@@ -73,7 +75,6 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         
                         // participant decides to leave session
                         widget.leaveSession = function leaveSession(){
-                                console.log("calling leader leave");
                                 var p = session.get("participants"), i;
                                 for (i=p.length-1; i>=0; i--){
                                         if (p[i].id === user.get("_id")){

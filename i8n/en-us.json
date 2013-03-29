@@ -442,4 +442,5 @@
 	"participantleave": "Are you sure you want to leave? You will not be able to re-join nor will you get credited for any outcome  of the session",
 	"leaderleave": "Are you sure you want to cancel this session? This will end it for all participants.",
 	"waitingroomlbl": "Waiting room",
-	"joinedsession": "You joined this session"
+	"joinedsession": "You joined this session",
+	"deletingsession": "Deleting session : "

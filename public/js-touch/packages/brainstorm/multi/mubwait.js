@@ -5,13 +5,14 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils", "service/confirm"],
-        function(Widget, CouchDBStore, Map, Model, Event, Config, Help, Utils, Confirm){
+define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils", "service/confirm"],
+        function(Widget, Store, CouchDBStore, Map, Model, Event, Config, Help, Utils, Confirm){
                 
                 return function MultiBWaitConstructor($exit){
                 
                         var widget = new Widget(),
                             session = new CouchDBStore(),
+                            info = new Store({"msg":""}),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
                             confirmUI, confirmCallBack,
@@ -22,10 +23,11 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         widget.plugins.addAll({
                                 labels: new Model(labels),
-                                model: new Model(session)
+                                model: new Model(session),
+                                info: new Model(info)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="mubwait-form"><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><div class="quickstart-title" autofocus="" name="title" data-model="bind:innerHTML, title"></div><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><div class="quickstart-desc" name="description" data-model="bind:innerHTML, description"></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="mubwait-form"><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><div class="quickstart-title" autofocus="" name="title" data-model="bind:innerHTML, title"></div><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><div class="quickstart-desc" name="description" data-model="bind:innerHTML, description"></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         confirmUI = new Confirm(widget.dom);
@@ -85,7 +87,38 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         // initiator decides to cancel the session
                         widget.cancelSession = function cancelSession(){
-                                console.log(exitDest);               
+                                console.log(exitDest); 
+                                //set session status to "deleted" to notify participants
+                                session.set("status", "deleted");
+                                session.upload().then(function(){
+                                        widget.dispayInfo("deleting", 5000).then(function(){
+                                                session.remove();
+                                                widget.goToScreen();       
+                                        });
+                                });        
+                        };
+                        
+                        // display info popup
+                        widget.displayInfo = function displayInfo(message, timeout){
+                                var timer, infoUI = document.querySelector(".sessionmsg"),
+                                    promise = new Promise(),
+                                    clearInfo = function(){
+                                            infoUI.classList.add("invisible");
+                                            clearInterval(timer);
+                                            info.set("msg", "");
+                                            promise.resolve();
+                                    };
+                                
+                                infoUI.classList.remove("invisible");
+                                timer = setInterval(function(){
+                                                if (message !== "deleting") {info.set("msg", message);}
+                                                else {
+                                                        info.set("msg", labels.get("deletingsession")+timeout/1000+ " s");
+                                                }
+                                                if (timeout <= 0) clearInfo();
+                                                timeout -= 1000;
+                                }, 1000);
+                                return promise;
                         };
                         
                         // switch screen to destination if user confirms exit
@@ -105,7 +138,8 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         session.watchValue("status", function(value){
                                 if (value === "deleted"){
                                         alert("session canceled by the leader: it will end now");
-                                        $exit;
+                                        session.unsync();
+                                        $exit();
                                         document.removeEvenetListener("touchstart", exitListener, true);
                                 }        
                         });

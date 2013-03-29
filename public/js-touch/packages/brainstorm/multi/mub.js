@@ -27,7 +27,11 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 widget.replayMUSession = function replayMUSession(){}; // may should be an observer instead
                 
                 
-                widget.reset = function reset(sip){       
+                widget.reset = function reset(sip){ 
+                        if (!sip){
+                                stack.getStack().get("mubinit").reset();
+                                stack.getStack().show("mubinit");        
+                        }      
                 };
                 
                 // used to replay session

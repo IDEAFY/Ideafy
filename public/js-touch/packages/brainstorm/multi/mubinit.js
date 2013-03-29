@@ -11,6 +11,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
            return function MultiBInitConstructor($exit){
            
                 var widget = new Widget(),
+                    newMub = new NewMUB($exit),
+                    muList = new MUList($exit),
                     stack = new Stack(),
                     labels = Config.get("labels");
                     
@@ -42,12 +44,20 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 };
                 
                 widget.reset = function(reset){
-                        
+                        var node = document.getElementById("muinitslider");
+                        if (node.value === "1"){
+                                newMub.reset();
+                                stack.getStack().show("new");        
+                        }
+                        else{
+                                muList.reset();
+                                stack.getStack().show("list");
+                        }
                 };
                 
                 // init
-                stack.getStack().add("new", new NewMUB());
-                stack.getStack().add("list", new MUList());
+                stack.getStack().add("new", newMub);
+                stack.getStack().add("list", muList);
                 stack.getStack().show("new");
                 
                 

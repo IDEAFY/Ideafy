@@ -125,10 +125,9 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         widget.goToScreen = function goToScreen(){
                                 ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
                                         if (exitDest.search(name) > -1){
+                                                confirmUI.close();
+                                                $exit();
                                                 Config.get("observer").notify("goto-screen", name);
-                                                if (name === "#brainstorm"){
-                                                        $exit();
-                                                }
                                                 document.removeEventListener("touchstart", exitListener, true);
                                         }
                                 });

@@ -338,6 +338,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                         
                         // check if message type is a session and if so check session status
                         if (message.get("type") === "INV"){
+                                console.log(message.toJSON());
                                 if (message.get("joined")){
                                         message.set("sessionStatus", "joined");
                                 }

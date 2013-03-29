@@ -43,10 +43,12 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                         };
                         
                         _widget.hide = function hide(){
+                                Map.get("cache").classList.remove("appear");
                                 _widget.dom.classList.add("invisible");        
                         };
                         
                         _widget.show = function show(){
+                                Map.get("cache").classList.add("appear");
                                 _widget.dom.classList.remove("invisible");        
                         };
                         

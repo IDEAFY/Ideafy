@@ -63,6 +63,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(target){
                                 exitDest = target.getAttribute("href");
+                                Map.get("cache").classList.add("appear");
                                 confirmUI.show();       
                         };
                         

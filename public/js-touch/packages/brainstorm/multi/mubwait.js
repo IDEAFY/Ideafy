@@ -8,7 +8,7 @@
 define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils", "service/confirm"],
         function(Widget, CouchDBStore, Map, Model, Event, Config, Help, Utils, Confirm){
                 
-                return function MultiBWaitConstructor($prev, $next, $progress){
+                return function MultiBWaitConstructor($exit){
                 
                         var widget = new Widget(),
                             session = new CouchDBStore(),
@@ -62,13 +62,26 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         };
                         
                         // participant decides to leave session
-                        widget.leaveSession = function leaveSession(dest){
-                                         
+                        widget.leaveSession = function leaveSession(){
+                                console.log(exitDest);               
                         };
                         
                         // initiator decides to cancel the session
-                        widget.cancelSession = function cancelSession(dest){
-                                       
+                        widget.cancelSession = function cancelSession(){
+                                console.log(exitDest);               
+                        };
+                        
+                        // switch screen to destination if user confirms exit
+                        widget.goToScreen = function goToScreen(){
+                                ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
+                                        if (exitDest.search(name) > -1){
+                                                Config.get("observer").notify("goto-screen", name);
+                                                if (name === "#brainstorm"){
+                                                        $exit;
+                                                }
+                                        }
+                                });
+                                        
                         };
                         
                         return widget;

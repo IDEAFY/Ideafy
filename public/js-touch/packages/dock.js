@@ -158,6 +158,18 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 }        
                         });
                         
+                        // goToScreen event (used when exiting multi-user sessions)
+                        _observer.watch("goto-screen", function(name){
+                                var prev = document.querySelector(".dock-item.selected"),
+                                    dest = document.querySelector(".dock-item[href='"+name+"']");
+                                
+                                if (_stack.getStack().getCurrentName() !== name) {
+                                        _stack.getStack().show(name);
+                                        _control.radioClass(dest, prev, "selected");
+                                        _control.init(dest);
+                                }           
+                        });
+                        
 		//return
 			return _widget;
 

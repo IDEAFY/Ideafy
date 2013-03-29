@@ -6041,7 +6041,7 @@ li.my2q{
     height: 150px;
     left: 167px;
     top: 240px;
-    background: none;
+    background: white;
 }
 
 #mubwait .confirm .help-doctor{
@@ -6064,6 +6064,10 @@ li.my2q{
     width: 70px;
     margin-top: -30px;
     margin-right: 20px;
+}
+
+#mubwait .mubwait-form{
+    margin-top: 20px;
 }
 
 

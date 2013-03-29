@@ -69,7 +69,15 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         // participant decides to leave session
                         widget.leaveSession = function leaveSession(){
-                                console.log(exitDest);
+                                var p = session.get("participants"), i;
+                                for (i=p.length-1; i>=0; i--){
+                                        if (p[i].id === user.get("_id")){
+                                               p.splice(i, 1);
+                                               break; 
+                                        }
+                                }
+                                session.set("participants", p);
+                                session.upload();
                                 widget.goToScreen();               
                         };
                         

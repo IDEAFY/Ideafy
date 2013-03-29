@@ -30,11 +30,13 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                         
                         _widget.ok = function(event, node){
                                 node.classList.remove("pressed");
+                                Map.get("cache").classList.remove("appear");
                                 _callback && _callback(true);    
                         };
                         
                         _widget.cancel = function(event, node){
                                 node && node.classList.remove("pressed");
+                                Map.get("cache").classList.remove("appear");
                                 _callback && _callback(false);
                         };
                         

@@ -29,8 +29,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 
                 widget.reset = function reset(sip){ 
                         if (!sip){
-                                stack.getStack().get("mubinit").reset();
-                                stack.getStack().show("mubinit");        
+                                stack.getStack().show("mubinit");
+                                stack.getStack().get("mubinit").reset();        
                         }      
                 };
                 

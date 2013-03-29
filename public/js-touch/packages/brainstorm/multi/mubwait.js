@@ -28,7 +28,6 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                         
                         widget.place(document.getElementById("mubwait"));
                         confirmUI = new Confirm(widget.dom);
-                        confirmUI.hide();
                         confirmCallBack = function(decision){
                                 if (!decision){
                                         confirmUI.hide();
@@ -82,7 +81,7 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                                         if (exitDest.search(name) > -1){
                                                 Config.get("observer").notify("goto-screen", name);
                                                 if (name === "#brainstorm"){
-                                                        $exit;
+                                                        $exit();
                                                 }
                                         }
                                 });

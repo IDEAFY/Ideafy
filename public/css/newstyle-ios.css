@@ -3324,7 +3324,7 @@ li.color-item{
 
 /* quickstart */
 
-#quickstart .quickstart-form{
+#quickstart .quickstart-form, #mubwait .mubwait-form{
     width: 590px;
     height: 370px;    
     padding:40px 20px 40px 20px;    

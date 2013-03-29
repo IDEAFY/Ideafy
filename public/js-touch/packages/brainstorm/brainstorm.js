@@ -115,7 +115,6 @@ define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", 
                  */
                 Config.get("observer").watch("join-musession", function(sid){
                       var sip ={type: "musession", id: sid, mode:"join"};
-                      console.log("brainstorm : ", sip)
                       _widget.selectScreen(sip.type, sip);
                 });
 		

@@ -47,6 +47,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         
                         widget.reset = function reset(sid){
                                 session.reset();
+                                exitListener = null;
                                 session.sync(Config.get("db"), sid).then(function(){
                                         
                                         // manage exit event
@@ -58,6 +59,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                                 confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
                                         }
                                         // step 2 create exit listener
+                                        console.log("setting event listener");
                                         exitListener = Utils.exitListener("mubwait", widget.leave);      
                                 });
                         };
@@ -71,6 +73,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         
                         // participant decides to leave session
                         widget.leaveSession = function leaveSession(){
+                                console.log("calling leader leave");
                                 var p = session.get("participants"), i;
                                 for (i=p.length-1; i>=0; i--){
                                         if (p[i].id === user.get("_id")){

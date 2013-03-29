@@ -102,7 +102,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                                         (sessionStatus && sessionStatus === "waiting" && !message.get("joined"))?this.classList.remove("invisible"):this.classList.add("invisible");   
                                 },
                                 setJoinMsg : function(sessionStatus){
-                                        if (!sessionStatus || message.get("joined")) {this.classList.add("invisible");}
+                                        if (!sessionStatus) {this.classList.add("invisible");}
                                         else {
                                                 this.classList.remove("invisible");
                                                 if (sessionStatus === "unavailable"){

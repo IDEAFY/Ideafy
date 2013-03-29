@@ -44,6 +44,8 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                                 var p = cdb.get("participants");
                                 p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro")});
                                 cdb.set("participants", p);
+                                // set session to full if there are 3 participants + leader
+                                if (p.length === 3) cdb.set("status", "full");
                                 cdb.upload().then(function(){
                                         stack.getStack().get("mubwait").reset(sid);
                                         stack.getStack().show("mubwait");

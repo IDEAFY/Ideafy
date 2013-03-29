@@ -77,6 +77,8 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                                         }
                                 }
                                 session.set("participants", p);
+                                // set session status to waiting as it may have been "full" before participant left
+                                session.set("status", "waiting"); 
                                 session.upload();
                                 widget.goToScreen();               
                         };
@@ -97,8 +99,16 @@ define(["Olives/OObject", "CouchDBStore", "service/map", "Olives/Model-plugin", 
                                                 document.removeEventListener("touchstart", exitListener, true);
                                         }
                                 });
-                                
                         };
+                        
+                        // watch for session status change to deleted (in case initiator decides to cancel)
+                        session.watchValue("status", function(value){
+                                if (value === "deleted"){
+                                        alert("session canceled by the leader: it will end now");
+                                        $exit;
+                                        document.removeEvenetListener("touchstart", exitListener, true);
+                                }        
+                        });
                         
                         return widget;
                 

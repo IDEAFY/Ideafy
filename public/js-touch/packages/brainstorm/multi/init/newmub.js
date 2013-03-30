@@ -313,20 +313,21 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), cdb.get("_id"));
                         setTimeout(function(){
-                                cdb.upload();
-                                error.set("errormsg", labels.get("sendinginvites"));
-                                if (cdb.get("mode") === "boardroom"){
-                                        widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
+                                cdb.upload().then(function(){
+                                        if (cdb.get("mode") === "boardroom"){
+                                                error.set("errormsg", labels.get("sendinginvites"));
+                                                widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
+                                                        Config.get("observer").notify("start-mu_session", cdb.get("_id"));
+                                                        cdb.unsync();
+                                                        widget.reset();
+                                                });
+                                        }
+                                        else {
                                                 Config.get("observer").notify("start-mu_session", cdb.get("_id"));
                                                 cdb.unsync();
-                                                widget.reset();
-                                        });
-                                }
-                                else {
-                                        Config.get("observer").notify("start-mu_session", cdb.get("_id"));
-                                        cdb.unsync();
-                                        widget.reset();        
-                                }
+                                                widget.reset();        
+                                        }        
+                                });
                         }, 250);
                 };
                 

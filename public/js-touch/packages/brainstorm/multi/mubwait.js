@@ -48,10 +48,13 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         
                         widget.reset = function reset(sid){
                                 session.reset();
+                                consolelog(widget.dom);
+                                // create confirmation UI
+                                confirmUI = new Confirm(widget.dom);
+                                // get session info
                                 session.sync(Config.get("db"), sid).then(function(){
                                         // manage exit event
-                                        // step 1 create confirmation UI
-                                        confirmUI = new Confirm(widget.dom);
+                                        // step 1 init confirmation UI
                                         if (session.get("initiator").id === user.get("_id")){
                                                 confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        
                                         }
@@ -138,7 +141,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                         Config.get("observer").notify("goto-screen", "#connect");
                                         document.removeEventListener("touchstart", exitListener, true);   
                                         id = exitDest.getAttribute("data-notify_id");
-                                        observer.notify("display-message", id);     
+                                        observer.notify("display-message", parseInt(id, 10));     
                                 }
                                 // handle clicks on nav bar
                                 else {

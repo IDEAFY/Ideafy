@@ -129,17 +129,8 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         // switch screen to destination if user confirms exit
                         widget.goToScreen = function goToScreen(){
                                 var id;
-                                
-                                // handle clicks on nav bar
-                                ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
-                                        if (exitDest.search(name) > -1){
-                                                confirmUI.close();
-                                                $exit();
-                                                Config.get("observer").notify("goto-screen", name);
-                                                document.removeEventListener("touchstart", exitListener, true);
-                                        }
-                                });
                                 // if dest is specified (e.g. notify popup)
+                                console.log(exitDest);
                                 console.log(exitDest, exitDest.getAttribute("data-notify_id"));
                                 if (exitDest.getAttribute("data-notify_id")){
                                         confirmUI.close();
@@ -148,6 +139,17 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                         document.removeEventListener("touchstart", exitListener, true);   
                                         id = exitDest.getAttribute("data-notify_id");
                                         observer.notify("display-message", id);     
+                                }
+                                // handle clicks on nav bar
+                                else {
+                                        ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
+                                                if (exitDest.search(name) > -1){
+                                                        confirmUI.close();
+                                                        $exit();
+                                                        Config.get("observer").notify("goto-screen", name);
+                                                        document.removeEventListener("touchstart", exitListener, true);
+                                                }
+                                        });
                                 }
                         };
                         

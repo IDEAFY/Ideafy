@@ -76,6 +76,7 @@ define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Eve
                 
                 // watch mu session events
                 Config.get("observer").watch("start-mu_session", function(sid){
+                        // show needs to be called prior to reset to make sure widget.dom exists in mubwait
                         stack.getStack().show("mubwait");
                         stack.getStack().get("mubwait").reset(sid);
                 });

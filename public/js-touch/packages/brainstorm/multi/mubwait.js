@@ -36,7 +36,9 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                         confirmUI.hide();
                                 }
                                 else{
+                                        console.log(session.get("initiator").id, user.get("_id"));
                                         if (session.get("initiator").id === user.get("_id")){
+                                                console.log("calling initiator cancel");
                                                 widget.cancelSession();
                                         }
                                         else {
@@ -48,9 +50,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         widget.reset = function reset(sid){
                                 session.reset();
                                 exitListener = null;
-                                console.log(sid);
                                 session.sync(Config.get("db"), sid).then(function(){
-                                        console.log(widget.dom);
                                         // manage exit event
                                         // step 1 create confirmation UI
                                         confirmUI = new Confirm(widget.dom);
@@ -61,7 +61,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                                 confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
                                         }
                                         // step 2 create exit listener
-                                        console.log("setting event listener");
+                                        console.log(session.get("initiator").id, user.get("_id"));
                                         exitListener = Utils.exitListener("mubwait", widget.leave);      
                                 });
                         };

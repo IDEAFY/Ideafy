@@ -354,7 +354,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                         console.log(json.docId);        
                         Config.get("transport").request("Notify", json, function(result){
                                                 error.set("errormsg", labels.get("invitesent"));
-                                                promise.resolve();
+                                                promise.fulfill();
                         });
                         
                         return promise;    

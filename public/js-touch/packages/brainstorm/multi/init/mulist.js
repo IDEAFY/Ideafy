@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store"],
+define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store"],
         function(Widget, Model, Event, CouchDBStore, Config, Promise, Store){
                 
            return function MuListConstructor($exit){

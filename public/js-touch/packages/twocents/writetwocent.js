@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "service/utils"],
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/utils"],
         function(Widget, Config, ModelPlugin, EventPlugin, Store, Utils){
                 
                 return function WriteTwocentConstructor($view){

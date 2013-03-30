@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable"], 
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable"], 
         function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable){
                 return function IdeaDetailConstructor($action){
                 //declaration

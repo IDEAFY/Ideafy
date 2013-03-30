@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/cardpopup", "../whiteboard/whiteboard", "Store", "CouchDBStore", "Promise", "service/utils"],
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/cardpopup", "../whiteboard/whiteboard", "Store", "CouchDBStore", "Promise", "service/utils"],
         function(Widget, Map, Model, Event, Config, CardPopup, Whiteboard, Store, CouchDBStore, Promise, Utils){
                 
                 return function QuickIdeaConstructor($session, $data, $prev, $next, $progress){

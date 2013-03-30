@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define (["Olives/OObject", "service/map", "service/config", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Store", "service/avatar", "service/actionbar", "./addcontact", "./addgroup", "./contact-detail", "./group-detail"],
+define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "Amy/Control-plugin", "Store", "service/avatar", "service/actionbar", "./addcontact", "./addgroup", "./contact-detail", "./group-detail"],
         function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact, AddGroup, ContactDetails, GroupDetails){
                 
                 return function ContactsConstructor(){

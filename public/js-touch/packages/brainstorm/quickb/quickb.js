@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "./quickstart", "./quicksetup", "./quickscenario", "./quicktech", "./quickidea", "./quickwrapup", "CouchDBStore", "service/config", "Promise", "Store"],
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./quickstart", "./quicksetup", "./quickscenario", "./quicktech", "./quickidea", "./quickwrapup", "CouchDBStore", "service/config", "Promise", "Store"],
         function(Widget, Map, Stack, Model, Event, QuickStart, QuickSetup, QuickScenario, QuickTech, QuickIdea, QuickWrapup, CouchDBStore, Config, Promise, Store){
                 
            return function QuickBConstructor($sip, $exit){

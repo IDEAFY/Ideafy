@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "Olives/Model-plugin", "./mtc-details", "./mtq-details", "service/config", "Store"], 
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./mtc-details", "./mtq-details", "service/config", "Store"], 
         function(Widget, Map, Stack, Model, MTCDetail, MTQDetail, Config, Store){
                 
 

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Amy/Control-plugin" ,
-	"Olives/Model-plugin", "Amy/Delegate-plugin", "CouchDBStore", "service/map", "service/config",
+define(["OObject", "Amy/Control-plugin" ,
+	"Bind.plugin", "Amy/Delegate-plugin", "CouchDBStore", "service/map", "service/config",
 	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin"], 
 	function(Widget, Control, Model, Delegate, Store, Map, 
 		Config, Detail, List, Stack){

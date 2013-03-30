@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-idea", "./detail-stack/library-edit", "./detail-stack/library-sendmail", "./detail-stack/library-share", "service/config", "Store"], 
+define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-idea", "./detail-stack/library-edit", "./detail-stack/library-sendmail", "./detail-stack/library-share", "service/config", "Store"], 
 	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store){
 		return function IdeaStackConstructor(){
 		//declaration

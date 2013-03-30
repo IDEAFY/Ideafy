@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "service/avatar", "service/utils"], 
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils"], 
 	function(Widget, Map, Config, Model, Event, Store, Avatar, Utils){
 		return function PublicSendmailConstructor($action){
 		//declaration

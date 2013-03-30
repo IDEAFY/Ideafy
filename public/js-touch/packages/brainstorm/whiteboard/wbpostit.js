@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "service/config"],
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
         function(Widget, Store, Model, Event, Config){
                 
            return function PostitConstructor($store, $exit){

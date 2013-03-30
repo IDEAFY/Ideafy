@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise"],
+define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise"],
         function(Widget, Store, CouchDBStore, Map, Model, Event, Config, Help, Utils, Confirm, Promise){
                 
                 return function MultiBWaitConstructor($exit){

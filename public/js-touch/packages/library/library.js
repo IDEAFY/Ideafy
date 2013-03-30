@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./ideas/ideas", "./sessions/sessions", "./decks/decks", "service/config"], 
+define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./ideas/ideas", "./sessions/sessions", "./decks/decks", "service/config"], 
 	function(Widget, Stack, Map, Menu, Ideas, Sessions, Decks, Config){
 		return function LibraryConstructor(){
 		//declaration

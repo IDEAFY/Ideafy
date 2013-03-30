@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "service/avatar", "service/utils", "CouchDBStore"],
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "CouchDBStore"],
         function(Widget, Config, Model, Event, Store, Avatar, Utils, CouchDBStore){
                 
                 return function DeckDetailsConstructor(){

@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "Store"],
+define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugin", "Store"],
         function(Widget, Config, CouchDBStore, Model, Event, Store){
            
            return function UserGuideConstructor(){

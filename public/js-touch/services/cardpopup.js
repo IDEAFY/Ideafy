@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "Store"],
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store"],
         function(Widget, Model, Event, Config, Store){
                 
                 function CardPopupConstructor($close){

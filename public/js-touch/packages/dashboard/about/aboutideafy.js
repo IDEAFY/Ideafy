@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Store"],
+define(["OObject", "service/config", "Bind.plugin", "Store"],
         function(Widget, Config, Model, Store){
                 
                 return function AboutIdeafyConstructor(){

@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "Store", "service/avatar", "service/utils", "service/autocontact", "CouchDBStore"], 
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "service/autocontact", "CouchDBStore"], 
         function(Widget, Map, Config, Model, Event, Store, Avatar, Utils, AutoContact, CouchDBStore){
                 return function PublicShareConstructor($action){
                 //declaration

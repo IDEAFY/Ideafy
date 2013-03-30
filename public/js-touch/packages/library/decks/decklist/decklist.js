@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin", 'Olives/Event-plugin', 'Store', 'CouchDBStore', "Promise", "service/utils"],
+define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin', 'Store', 'CouchDBStore', "Promise", "service/utils"],
         function(Widget, Map, Config, Model, Event, Store, CouchDBStore, Promise, Utils){
                 
                 return function DeckListConstructor($type){

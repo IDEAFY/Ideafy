@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "service/map", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "service/avatar", "service/utils"],
+define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils"],
         function (Widget, Config, Map, Store, Model, Event, Avatar, Utils){
                 
                 return function ContactDetailsConstructor(){

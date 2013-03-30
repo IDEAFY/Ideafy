@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject" ,"Amy/Stack-plugin", 
-	"service/map", "Amy/Delegate-plugin", "service/config", "Olives/Model-plugin"],
+define(["OObject" ,"Amy/Stack-plugin", 
+	"service/map", "Amy/Delegate-plugin", "service/config", "Bind.plugin"],
 	function(Widget, Stack, Map, Event, Config, Model){
 		return function LoginConstructor(){
 		//declaration

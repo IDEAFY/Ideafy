@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "Store", "CouchDBStore", "Promise", "service/cardpopup", "service/utils"],
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBStore", "Promise", "service/cardpopup", "service/utils"],
         function(Widget, Map, Model, Event, Config, Help, Store, CouchDBStore, Promise, CardPopup, Utils){
                 
                 return function QuickTechConstructor($session, $data, $prev, $next, $progress){

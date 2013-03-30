@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "service/config"],
+define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "service/config"],
         function(Widget, Map, Store, Model, Event, Config){
                 
                 return function IdeafyMenuConstructor($selectScreen){

@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "CouchDBStore", "Store", "Promise", "service/cardpopup", "service/help", "service/utils"],
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "Promise", "service/cardpopup", "service/help", "service/utils"],
         function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Promise, CardPopup, Help, Utils){
                 
                 return function QuickSetupConstructor($session, $data, $prev, $next, $progress){

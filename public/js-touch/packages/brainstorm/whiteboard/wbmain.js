@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "service/config" ],
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
         function(Widget, Model, Event, Config){
                 
            return function WBMainConstructor($store, $tools, $select){

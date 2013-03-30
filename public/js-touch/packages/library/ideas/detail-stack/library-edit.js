@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/confirm"], 
+define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin", "service/config", "service/confirm"], 
 	function(Widget, Map, Store, Model, Event, Config, Confirm){
 		return function LibraryEditConstructor($action){
 		//declaration

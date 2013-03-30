@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define (["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Control-plugin", "Amy/Stack-plugin", "Store", "service/config", "service/avatar", "service/utils", "./message-detail", "./newmessage", "service/actionbar", "Promise"],
+define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-plugin", "Amy/Stack-plugin", "Store", "service/config", "service/avatar", "service/utils", "./message-detail", "./newmessage", "service/actionbar", "Promise"],
         function(Widget, Map, Model, Event, Control, Stack, Store, Config, Avatar, Utils, MessageDetail, NewMessage, ActionBar, Promise){
                 
                 return function MessagesConstructor(){

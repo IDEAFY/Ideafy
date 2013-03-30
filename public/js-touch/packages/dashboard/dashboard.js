@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./profile/profile", "./settings/settings", "./about/about", "service/config"], 
+define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./profile/profile", "./settings/settings", "./about/about", "service/config"], 
 	function(Widget, Map, Menu, Stack, Profile, Settings, About, Config){
 		return function DashboardConstructor(){
 		//declaration

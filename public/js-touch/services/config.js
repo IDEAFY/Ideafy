@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Store", "Olives/Transport", "CouchDBStore", "Observable"], function(Store, Transport, CouchDBStore, Observable) {
+define(["Store", "SocketIOTransport", "CouchDBStore", "Observable"], function(Store, Transport, CouchDBStore, Observable) {
         var _loation, _transport, _user, _observer, _config = new Store();
         
         this.reset = function(){

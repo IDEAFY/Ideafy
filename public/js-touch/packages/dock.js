@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
+define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"public/public", "library/library", "brainstorm/brainstorm", "connect/connect", "dashboard/dashboard",
 	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips"], 
 	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){

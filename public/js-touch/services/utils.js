@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */ 
 
-define(["service/config", "Observable", "Promise", "Olives/LocalStore"], function(Config, Observable, Promise, LocalStore){
+define(["service/config", "Observable", "Promise", "LocalStore"], function(Config, Observable, Promise, LocalStore){
 	return {
 		formatDate : function(array){
 			var month = array[1] + 1;

@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "service/utils", "Store", "Promise"],
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise"],
         function(Widget, Map, Config, Model, Event, Utils, Store, Promise){
                 
            return function ImportConstructor($store, $exit){

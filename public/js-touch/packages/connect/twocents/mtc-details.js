@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "twocents/writetwocent", "twocents/twocentlist", "service/avatar", "service/utils"],
+define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "service/avatar", "service/utils"],
         function(Widget, Config, Store, Model, Event, WriteTwocent, TwocentList, Avatar, Utils){
                 
                 return function MTCDetailsConstructor(){

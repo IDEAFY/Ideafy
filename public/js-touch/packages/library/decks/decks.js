@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Olives/Model-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy/Delegate-plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview"],
+define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy/Delegate-plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview"],
         function(Widget, Model, Stack, Control, Delegate, Config, Map, List, DeckView){
                 
            return function MyDecksContructor(){

@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Amy/Stack-plugin", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mubinit", "./mubwait"],
+define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mubinit", "./mubwait"],
         function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, MUInit, MUWait){
                 
            return function MultiBConstructor($sip, $exit){

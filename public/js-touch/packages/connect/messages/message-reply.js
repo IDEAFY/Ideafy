@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/utils", "Promise", "service/autocontact"],
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "service/utils", "Promise", "service/autocontact"],
         function(Widget, Store, Model, Event, Config, Utils, Promise, AutoContact){
                 
            return function MessageReplyConstructor(){

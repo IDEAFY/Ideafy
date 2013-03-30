@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "Amy/Stack-plugin", "service/config", "Store", "./aboutideafy", "./faq", "./userguide", "./tutorials", "./support", "./eula"],
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "./aboutideafy", "./faq", "./userguide", "./tutorials", "./support", "./eula"],
         function(Widget, Map, Model, Event, Stack, Config, Store, AboutIdeafy, FAQ, UserGuide, Tutorials, Support, EULA){
                 
            return function AboutConstructor(){

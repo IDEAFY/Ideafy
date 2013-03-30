@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "Olives/Model-plugin", "CouchDBStore", "Store"],
+define(["OObject", "service/config", "Bind.plugin", "CouchDBStore", "Store"],
         function(Widget, Config, Model, CouchDBStore, Store){
            
                 return function EULAConstructor(){

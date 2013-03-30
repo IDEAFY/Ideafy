@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "Store", "CouchDBStore", "service/cardpopup", "../whiteboard/whiteboard", "Promise", "service/utils"],
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore", "service/cardpopup", "../whiteboard/whiteboard", "Promise", "service/utils"],
         function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise, Utils){
                 
                 return function QuickScenarioConstructor($session, $data, $prev, $next, $progress){

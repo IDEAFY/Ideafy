@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBStore, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
+define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBStore, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function ListPollingConstructor($db, $design, $view, $query) {
                 var _store = new Store([]),
                 touchStart,

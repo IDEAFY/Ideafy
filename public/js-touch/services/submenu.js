@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Olives/Model-plugin", "Amy/Control-plugin", "service/config"],
+define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
         function(Widget, Model, Control, Config){
                 
                 function SubMenuConstructor($dom, $setWidget){

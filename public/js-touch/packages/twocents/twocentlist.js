@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "CouchDBStore", "Store", "service/utils", "Olives/Model-plugin", "Olives/Event-plugin", "twocents/twocentreplylist", "twocents/writetwocent", "twocents/writetwocentreply", "service/avatar"],
+define(["OObject", "service/config", "CouchDBStore", "Store", "service/utils", "Bind.plugin", "Event.plugin", "twocents/twocentreplylist", "twocents/writetwocent", "twocents/writetwocentreply", "service/avatar"],
         function(Widget, Config, CouchDBStore, Store, Utils, Model, Event, TwocentReplyList, WriteTwocent, WriteTwocentReply, Avatar){
                 
                 return function TwocentListConstructor(){

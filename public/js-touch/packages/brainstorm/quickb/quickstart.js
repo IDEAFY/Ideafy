@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help"],
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help"],
         function(Widget, Map, Model, Event, Config, Help){
                 
                 return function QuickStartConstructor($session, $prev, $next, $progress){

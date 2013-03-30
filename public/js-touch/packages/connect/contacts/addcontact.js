@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDBStore", "Store", "service/avatar"],
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStore", "Store", "service/avatar"],
         function(Widget, Config, Model, Event, CouchDBStore, Store, Avatar){
                 
            return function AddContactConstructor(){

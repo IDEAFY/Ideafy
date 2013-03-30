@@ -1,5 +1,5 @@
 
-define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/utils"],
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "service/utils"],
         function(Widget, Store, ModelPlugin, EventPlugin, Config, Utils){
                 
                 function WriteTwocentReplyConstructor($parent){

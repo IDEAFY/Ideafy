@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Olives/Model-plugin", "service/config", "Store", "service/utils", "./ideafy-menu", "./quickb/quickb", "./multi/mub"], 
+define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.plugin", "service/config", "Store", "service/utils", "./ideafy-menu", "./quickb/quickb", "./multi/mub"], 
 	function(Widget, Map, Menu, Stack, Model, Config, Store, Utils, IdeafyMenu, QuickB, MultiB){
 
 		return function BrainstormConstructor(){

@@ -1,5 +1,5 @@
 
-define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin", "service/utils", "service/config", "twocents/writetwocentreply", "service/avatar"],
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "service/config", "twocents/writetwocentreply", "service/avatar"],
         function(Widget, Store, ModelPlugin, EventPlugin, Utils, Config, WriteTwocentReply, Avatar){
                 
                 function TwocentReplyListConstructor($data, $id, $tc, $view){

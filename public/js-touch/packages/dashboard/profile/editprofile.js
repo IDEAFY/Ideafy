@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "Olives/Model-plugin", "Olives/Event-plugin", "service/avatar", "service/utils", "Store"],
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "Store"],
         function(Widget, Config, Model, Event, Avatar, Utils, Store){
                 
            return new function EditProfileConstructor(){

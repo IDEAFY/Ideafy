@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "Store"],
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
         function(Widget, Map, Model, Event, Config, Store){
                 
                 function ConfirmConstructor($parent, $question, $onDecision){

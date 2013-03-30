@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin", "Olives/UI-plugin", "Amy/Delegate-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "./mtc-stack", "./twoqlist", "Store"],
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "./mtc-stack", "./twoqlist", "Store"],
         function(Widget, Map, Config, Model, UIPlugin, Delegate, Stack, Control, MTCDetailStack, TwoQList, Store){
                 
                 return function MyTwocentsConstructor(){

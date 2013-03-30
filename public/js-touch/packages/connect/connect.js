@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./contacts/contacts", "./messages/messages", "./twocents/mytwocents", "service/config"], 
+define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./contacts/contacts", "./messages/messages", "./twocents/mytwocents", "service/config"], 
 	function(Widget, Map, Stack, Menu, Contacts, Messages, MyTwocents, Config){
 		return function ConnectConstructor(){
 		//declaration

@@ -59,7 +59,7 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                             _fd.append("dataString", _dataURL);
                             Utils.uploadFile(_url, _fd, _progress, function(result){
                                 _postit.set("content", _filename);
-                                _promise.resolve();
+                                _promise.fulfill();
                             });
                             return _promise;
                     },

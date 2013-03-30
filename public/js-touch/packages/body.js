@@ -209,7 +209,7 @@ require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Sta
                                                                 _local.set("userAvatar", user.get("picture_file"));
                                                                 _local.sync("ideafy-data");
                                                                 Config.set("uid", '"' + userid + '"');
-                                                                promise.resolve();
+                                                                promise.fulfill();
                                                                 }, 250);
                                                                 
                                                          promise.then(function(){

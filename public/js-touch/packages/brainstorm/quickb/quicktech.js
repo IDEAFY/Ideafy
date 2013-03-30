@@ -347,7 +347,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                                 
                                 _transport.request("UpdateSessionScore", json, function(result){
                                         if (result.res === "ok"){
-                                                promise.resolve();
+                                                promise.fulfill();
                                         }
                                         else {
                                                 promise.reject();

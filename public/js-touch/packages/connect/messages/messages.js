@@ -247,10 +247,10 @@ define (["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-p
                                         user.set("sentMessages", s);
                                 
                                         user.upload().then(function(){
-                                                promise.resolve();
+                                                promise.fulfill();
                                         });
                                 }
-                                else promise.resolve();
+                                else promise.fulfill();
                                 
                                 return promise;                
                         };

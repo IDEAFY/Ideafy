@@ -92,7 +92,7 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                         _store.unsync();
                         _store.reset([]);
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                promise.resolve();
+                                promise.fulfill();
                         });
                         return promise;
                 };
@@ -172,7 +172,7 @@ define(["Olives/OObject", "CouchDBStore", "service/config", "Olives/Model-plugin
                         var promise = new Promise();
                             
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                promise.resolve();   
+                                promise.fulfill();   
                         });
                         return promise;
                 };

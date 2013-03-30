@@ -361,7 +361,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                                         deck.problem = result.content.problems;
                                         deck.techno = result.content.techno; // even though it is not for this step so there is only one request to read the deck going out to the database
                                         $data.set("deck", deck);
-                                        promise.resolve();
+                                        promise.fulfill();
                                         setTimeout(function(){cdb.unsync();}, 2000);
                                 });
                                 return promise;                       
@@ -376,7 +376,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                                 cdb.sync(_db, id).then(function(){
                                         // update currentCards
                                         store.reset(JSON.parse(cdb.toJSON()));
-                                        promise.resolve();
+                                        promise.fulfill();
                                         setTimeout(function(){cdb.unsync();},250);
                                 });
                                 return promise;        
@@ -406,8 +406,8 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                                             // update selection
                                             sel.left = _deckStack[type].length;
                                             _selection.set(type, sel);
-                                            // resolve promise
-                                            promise.resolve();
+                                            // fulfill promise
+                                            promise.fulfill();
                                     });
                                     
                                     return promise;
@@ -425,7 +425,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                                 
                                 _transport.request("UpdateSessionScore", json, function(result){
                                         if (result.res === "ok"){
-                                                promise.resolve();
+                                                promise.fulfill();
                                         }
                                         else {
                                                 promise.reject();

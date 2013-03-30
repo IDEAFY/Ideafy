@@ -69,7 +69,7 @@ define(["Olives/OObject", "Store", "Olives/Model-plugin", "Olives/Event-plugin",
                                                         arr.push(result[i].value);
                                                 }
                                                 onEnd(arr);
-                                                promise.resolve();
+                                                promise.fulfill();
                                         }
                                         else {
                                                 error.set("errormsg", result.error);

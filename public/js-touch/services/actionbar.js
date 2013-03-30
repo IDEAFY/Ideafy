@@ -144,7 +144,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "service
                                                 if ($data.authors.length === 1 && $data.authors[0] === user.get("_id")){
                                                         cdb.sync(Config.get("db"), $data._id).then(function(){
                                                                 cdb.remove();
-                                                                promise.resolve();
+                                                                promise.fulfill();
                                                         });
                                                 }
                                                 else {

@@ -53,7 +53,7 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                             Utils.uploadFile(_url, _fd, _progress, function(result){
                                 _postit.set("content", _filename);
                                 _postit.set("background", _pencil.get("bg"));
-                                _promise.resolve();
+                                _promise.fulfill();
                             });
                             return _promise;
                     },

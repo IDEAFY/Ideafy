@@ -6,88 +6,80 @@
 /**
  * https://github.com/flams/CouchDB-emily-tools
  * The MIT License (MIT)
- * Copyright (c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
+ * Copyright (c) 2012 Olivier Scherrer <pode.fr@gmail.com>
  */
-
-define("CouchDBBase",
-
-["Store", "StateMachine", "Tools", "Promise"],
-
-function CouchDBBase() {
-
-});
-/**
- * https://github.com/flams/CouchDB-emily-tools
- * The MIT License (MIT)
- * Copyright (c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
- */
-define("CouchDBSecurity",
-
-["CouchDBStore"],
+define("CouchDBSecurity", 
+		
+["CouchDBStore"], 
 
 /**
  * @class
  * CouchDBSecurity synchronises a CouchDBStore with _security document
  */
 function CouchDBSecurity(CouchDBStore) {
+	
+	/**
+	 * Defines CouchDBSecurity
+	 * @returns {CouchDBSecurityConstructor}
+	 */
+	function CouchDBSecurityConstructor() {
+		
+		/**
+		 * the name of the _security document
+		 * @private
+		 */
+		var _name = "_security";
+		
+		/**
+		 * Set the name of the _security document
+		 * @param {String} name the name of the docuyment
+		 * @returns {Boolean} true if name is truthy
+		 */
+		this.setName = function setName(name) {
+			if (name){
+				_name = name;
+				return true;
+			} else {
+				return false;
+			}
+		};
+		
+		/**
+		 * Get the name of the _Security document
+		 * @returns {String}
+		 */
+		this.getName = function getName() {
+			return _name;
+		};
+		
+		/**
+		 * Load the security document
+		 * @param {String} db the name of the database
+		 */
+		this.load = function load(db) {
+			return this.sync(db, _name);
+		};
+		
+		
+	};
+	
+	return function CouchDBSecurityFactory() {
+		CouchDBSecurityConstructor.prototype = new CouchDBStore;
+		return new CouchDBSecurityConstructor;
+	};
+	
+	
+	
+});/**
+ * https://github.com/flams/CouchDB-emily-tools
+ * The MIT License (MIT)
+ * Copyright (c) 2012 Olivier Scherrer <pode.fr@gmail.com>
+ */
 
-        /**
-         * Defines CouchDBSecurity
-         * @returns {CouchDBSecurityConstructor}
-         */
-        function CouchDBSecurityConstructor() {
-
-                /**
-                 * the name of the _security document
-                 * @private
-                 */
-                var _name = "_security";
-
-                /**
-                 * Set the name of the _security document
-                 * @param {String} name the name of the docuyment
-                 * @returns {Boolean} true if name is truthy
-                 */
-                this.setName = function setName(name) {
-                        if (name){
-                                _name = name;
-                                return true;
-                        } else {
-                                return false;
-                        }
-                };
-
-                /**
-                 * Get the name of the _Security document
-                 * @returns {String}
-                 */
-                this.getName = function getName() {
-                        return _name;
-                };
-
-                /**
-                 * Load the security document
-                 * @param {String} db the name of the database
-                 */
-                this.load = function load(db) {
-                        return this.sync(db, _name);
-                };
-
-
-        };
-
-        return function CouchDBSecurityFactory() {
-                CouchDBSecurityConstructor.prototype = new CouchDBStore;
-                return new CouchDBSecurityConstructor;
-        };
-
-
-
-});
 /**
  * https://github.com/flams/CouchDB-emily-tools
  * The MIT License (MIT)
- * Copyright (c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
+ * Copyright (c) 2012 Olivier Scherrer <pode.fr@gmail.com>
  */
 
 define("CouchDBStore",
@@ -160,7 +152,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                                 throw new Error("CouchDBStore [" + _syncInfo.database + ", " + _syncInfo.design + ", " + _syncInfo.view + "].sync() failed: " + results);
                                         } else {
                                                 this.reset(json.rows);
-                                                _syncPromise.fulfill(this);
+
                                                 if (typeof json.total_rows == "undefined") {
                                                         this.setReducedViewInfo(true);
                                                 }
@@ -184,7 +176,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                         var json = JSON.parse(results);
                                         if (json._id) {
                                                 this.reset(json);
-                                                _syncPromise.fulfill(this);
+
                                                 _stateMachine.event("subscribeToDocumentChanges");
                                         } else {
                                                 _syncPromise.reject(results);
@@ -208,9 +200,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                 if (_syncInfo["keys"] instanceof Array) {
                                         reqData.method = "POST";
                                         reqData.data = JSON.stringify({keys:_syncInfo.keys});
-                                        reqData.headers = {
-                                                "Content-Type": "application/json"
-                                        };
+                                        reqData.headers = {"Content-Type": "application/json"};
                                         errorString = reqData.data;
 
                                 // Else, we just GET the documents using startkey/endkey
@@ -224,6 +214,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                 _transport.request(_channel,
                                         reqData,
                                         function (results) {
+                                                
 
                                         var json = JSON.parse(results);
 
@@ -231,7 +222,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                                 throw new Error("CouchDBStore.sync(\"" + _syncInfo.database + "\", " + errorString + ") failed: " + results);
                                         } else {
                                                 this.reset(json.rows);
-                                                _syncPromise.fulfill(this);
+
                                                 _stateMachine.event("subscribeToBulkChanges");
                                         }
                                 }, this);
@@ -253,7 +244,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                 }, function (result) {
                         var json = JSON.parse(result);
                         if (json.ok) {
-                                promise.fulfill(json);
+
                                 _stateMachine.event("subscribeToDocumentChanges");
                         } else {
                                 promise.reject(json);
@@ -269,7 +260,8 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
 
                 Tools.mixin({
                                         feed: "continuous",
-                                        heartbeat: 20000,
+                                        heartbeat: 10000,
+                                        // limit: 0,
                                         descending: true
                                 }, _syncInfo.query);
 
@@ -314,7 +306,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                         path: "/" + _syncInfo.database + "/_changes",
                                         query: {
                                                  feed: "continuous",
-                                                 heartbeat: 20000,
+                                                 heartbeat: 10000,
                                                  descending: true
                                                 }
                                         },
@@ -349,7 +341,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                         subscribeToBulkChanges: function () {
                                 Tools.mixin({
                                         feed: "continuous",
-                                        heartbeat: 20000,
+                                        heartbeat: 10000,
                                         descending: true,
                                         include_docs: true
                                 }, _syncInfo.query);
@@ -398,7 +390,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                         query: _syncInfo.query
                                 }, function (view) {
                                         var json = JSON.parse(view);
-
                                         if (json.rows.length == this.getNbItems()) {
                                                 json.rows.some(function (value, idx) {
                                                         if (value.id == id) {
@@ -577,8 +568,9 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                         var json = JSON.parse(response);
                         if (json.ok) {
                                 this.set("_rev", json.rev);
-                                promise.fulfill(json);
+                                promise.resolve(json);
                         } else {
+                                console.log("DOCUMENT UPLOAD FAILED", this.toJSON());
                                 promise.reject(json);
                         }
                 }, this);
@@ -603,7 +595,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                 },
                                 data: JSON.stringify({"docs": docs})
                         }, function (response) {
-                                promise.fulfill(JSON.parse(response));
+                                promise.resolve(JSON.parse(response));
                 });
                     },
 
@@ -652,6 +644,9 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                          ],
 
                         "Listening": [
+                                ["entry", function () {
+                                        _syncPromise.resolve(this);
+                                }],
                             ["change", actions.updateDocInStore, this],
                             ["bulkAdd", actions.addBulkDocInStore, this],
                             ["bulkChange", actions.updateBulkDocInStore, this],
@@ -844,14 +839,10 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
         };
 
 });
-/**
- * https://github.com/flams/CouchDB-emily-tools
- * The MIT License (MIT)
- * Copyright (c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
- */
-define("CouchDBUser",
 
-["CouchDBStore", "Promise"],
+define("CouchDBUser", 
+		
+["CouchDBStore", "Promise"], 
 
 /**
  * @class
@@ -859,179 +850,179 @@ define("CouchDBUser",
  * It also provides tools to ease the creation/modification of users.
  */
 function CouchDBUser(CouchDBStore, Promise) {
+	
+	/**
+	 * Defines CouchDBUser
+	 * @returns {CouchDBUserConstructor}
+	 */
+	function CouchDBUserConstructor() {
+		
+		/**
+		 * the name of the table in which users are saved
+		 * @private
+		 */
+		var _userDB = "_users",
+		
+		/**
+		 * the string which prefixes a user's id 
+		 * @private
+		 */
+		_idPrefix = "org.couchdb.user:";
+		
+		/**
+		 * Get the name of the users' db
+		 * @returns {String}
+		 */
+		this.getUserDB = function getUserDB() {
+			return _userDB;
+		};
+		
+		/**
+		 * Set the name of the users' db
+		 * @param {String} name of the db
+		 * @returns {Boolean} true if name truthy
+		 */
+		this.setUserDB = function setUserDB(name) {
+			if (name) {
+				_userDB = name;
+				return true;
+			} else {
+				return false;
+			}
+		};
+		
+		/**
+		 * Get the string that prefixes the users' id
+		 * @returns {String}
+		 */
+		this.getIdPrefix = function getIdPrefix() {
+			return _idPrefix;
+		};
+		
+		/**
+		 * Set the string that prefixes the users' id
+		 * @param {String} name string that prefixes the users' id
+		 * @returns {Boolean} true if name truthy
+		 */
+		this.setIdPrefix = function setIdPrefix(name) {
+			if (name) {
+				_idPrefix = name;
+				return true;
+			} else {
+				return false;
+			}
+		};
+		
+		/**
+		 * Set user's id
+		 * @param {String} id
+		 * @returns {Boolean} true if id truthy
+		 */
+		this.setId = function setId(id) {
+			if (id) {
+				this.set("_id", _idPrefix + id);
+				return true;
+			} else {
+				return false;
+			}
+		};
+		
+		/**
+		 * Get the user's id
+		 * @returns {String} the user's id
+		 */
+		this.getId = function getId() {
+			return this.get("_id");
+		};
+		
+		/**
+		 * Load a user given it's id
+		 * @param {String} id of the user (without prefix)
+		 * @returns {Boolean} true if sync succeeded
+		 */
+		this.load = function load(id) {
+			return this.sync(_userDB, _idPrefix + id);
+		};
+		
+		/**
+		 * Gets the user profile in couchDB by using its own credentials.
+		 * name and password must be set prior to calling login, or the promise will be rejected.
+		 * If the login is successful, the promise is fulfilled with the user information like:
+		 * { _id: 'org.couchdb.user:couchdb',
+		 *  _rev: '1-8995e8ff247dae75048ab2dc800136d7',
+		 * name: 'couchdb',
+		 * password: null,
+		 * roles: [],
+		 * type: 'user' }
+		 * 
+		 * @returns {Promise}
+		 */
+		this.login = function login() {
+			var promise = new Promise,
+				name = this.get("name"),
+				password = this.get("password");
+			
+			if (name && typeof name == "string" && typeof password == "string") {
+				this.getTransport().request("CouchDB", {
+					method: "GET",
+					path: "/_users/org.couchdb.user:"+name,
+					auth: name + ":" + password
+				}, 
+				promise.resolve,
+				promise);
+			} else {
+				promise.reject({
+					error: "name & password must be strings"
+				});
+			}
+			
+			return promise;
+		};
+		
+		/**
+		 * Adds a user to the database
+		 * The following fields must be set prior to calling create:
+		 * name: the name of the user
+		 * password: its desired password, NOT encrypted
+		 *
+ 		 * If not specified, the following fields have default values:
+		 * type: "user"
+		 * roles: []
+		 *
+		 * The function itself will not warn you for incorrect fields
+		 * but the promise that is returned will fulfilled with couchdb's reply.
+		 * @returns {Promise}
+		*/
+		this.create = function create() {
+			var promise = new Promise;
 
-        /**
-         * Defines CouchDBUser
-         * @returns {CouchDBUserConstructor}
-         */
-        function CouchDBUserConstructor() {
+			if (!this.get("type")) {
+				this.set("type", "user");
+			}
 
-                /**
-                 * the name of the table in which users are saved
-                 * @private
-                 */
-                var _userDB = "_users",
-
-                /**
-                 * the string which prefixes a user's id
-                 * @private
-                 */
-                _idPrefix = "org.couchdb.user:";
-
-                /**
-                 * Get the name of the users' db
-                 * @returns {String}
-                 */
-                this.getUserDB = function getUserDB() {
-                        return _userDB;
-                };
-
-                /**
-                 * Set the name of the users' db
-                 * @param {String} name of the db
-                 * @returns {Boolean} true if name truthy
-                 */
-                this.setUserDB = function setUserDB(name) {
-                        if (name) {
-                                _userDB = name;
-                                return true;
-                        } else {
-                                return false;
-                        }
-                };
-
-                /**
-                 * Get the string that prefixes the users' id
-                 * @returns {String}
-                 */
-                this.getIdPrefix = function getIdPrefix() {
-                        return _idPrefix;
-                };
-
-                /**
-                 * Set the string that prefixes the users' id
-                 * @param {String} name string that prefixes the users' id
-                 * @returns {Boolean} true if name truthy
-                 */
-                this.setIdPrefix = function setIdPrefix(name) {
-                        if (name) {
-                                _idPrefix = name;
-                                return true;
-                        } else {
-                                return false;
-                        }
-                };
-
-                /**
-                 * Set user's id
-                 * @param {String} id
-                 * @returns {Boolean} true if id truthy
-                 */
-                this.setId = function setId(id) {
-                        if (id) {
-                                this.set("_id", _idPrefix + id);
-                                return true;
-                        } else {
-                                return false;
-                        }
-                };
-
-                /**
-                 * Get the user's id
-                 * @returns {String} the user's id
-                 */
-                this.getId = function getId() {
-                        return this.get("_id");
-                };
-
-                /**
-                 * Load a user given it's id
-                 * @param {String} id of the user (without prefix)
-                 * @returns {Boolean} true if sync succeeded
-                 */
-                this.load = function load(id) {
-                        return this.sync(_userDB, _idPrefix + id);
-                };
-
-                /**
-                 * Gets the user profile in couchDB by using its own credentials.
-                 * name and password must be set prior to calling login, or the promise will be rejected.
-                 * If the login is successful, the promise is fulfilled with the user information like:
-                 * { _id: 'org.couchdb.user:couchdb',
-                 *  _rev: '1-8995e8ff247dae75048ab2dc800136d7',
-                 * name: 'couchdb',
-                 * password: null,
-                 * roles: [],
-                 * type: 'user' }
-                 *
-                 * @returns {Promise}
-                 */
-                this.login = function login() {
-                        var promise = new Promise,
-                                name = this.get("name"),
-                                password = this.get("password");
-
-                        if (name && typeof name == "string" && typeof password == "string") {
-                                this.getTransport().request("CouchDB", {
-                                        method: "GET",
-                                        path: "/_users/org.couchdb.user:"+name,
-                                        auth: name + ":" + password
-                                },
-                                promise.fulfill,
-                                promise);
-                        } else {
-                                promise.reject({
-                                        error: "name & password must be strings"
-                                });
-                        }
-
-                        return promise;
-                };
-
-                /**
-                 * Adds a user to the database
-                 * The following fields must be set prior to calling create:
-                 * name: the name of the user
-                 * password: its desired password, NOT encrypted
-                 *
-                 * If not specified, the following fields have default values:
-                 * type: "user"
-                 * roles: []
-                 *
-                 * The function itself will not warn you for incorrect fields
-                 * but the promise that is returned will fulfilled with couchdb's reply.
-                 * @returns {Promise}
-                */
-                this.create = function create() {
-                        var promise = new Promise;
-
-                        if (!this.get("type")) {
-                                this.set("type", "user");
-                        }
-
-                        if (!this.get("roles")) {
-                                this.set("roles", []);
-                        }
-
-                        this.load(this.get("name")).then(function () {
-                                promise.reject({error: "Failed to create user. The user already exists"});
-                        }, function () {
-                                this.upload().then(function (success) {
-                                        promise.fulfill(success);
-                                }, function (error) {
-                                        promise.reject(error);
-                                });
-                        }, this);
-
-                        return promise;
-                };
-        };
-
-        return function CouchDBUserFactory() {
-                CouchDBUserConstructor.prototype = new CouchDBStore;
-                return new CouchDBUserConstructor;
-        };
-
-
-
+			if (!this.get("roles")) {
+				this.set("roles", []);
+			}
+			
+			this.load(this.get("name")).then(function () {
+				promise.reject({error: "Failed to create user. The user already exists"});
+			}, function () {
+				this.upload().then(function (success) {
+					promise.resolve(success);
+				}, function (error) {
+					promise.reject(error);
+				});
+			}, this);
+			
+			return promise;
+		};
+	};
+	
+	return function CouchDBUserFactory() {
+		CouchDBUserConstructor.prototype = new CouchDBStore;
+		return new CouchDBUserConstructor;
+	};
+	
+	
+	
 });

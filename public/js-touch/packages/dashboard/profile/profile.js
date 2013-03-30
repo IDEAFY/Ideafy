@@ -333,7 +333,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                         if (result.percentage === 100 && user.get("profile_complete") !== true) {
                                 user.set("profile_complete", true);
                                 user.upload().then(function(){
-                                        promise.resolve();
+                                        promise.fulfill();
                                 });
                         }
                         else {
@@ -341,11 +341,11 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                                 // remove profile complete achievement from list if present and badge as well (but the program will store the info that the profile had been completed so that user won't get reward twice)
                                         user.set("profile_complete", false);
                                         user.upload().then(function(){
-                                                promise.resolve();
+                                                promise.fulfill();
                                         });
                                 }
                                 else {
-                                        promise.resolve();
+                                        promise.fulfill();
                                 }
                         }
                         return promise;

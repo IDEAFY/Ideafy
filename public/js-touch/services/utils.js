@@ -252,7 +252,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                         req.open('GET', Config.get("location"));
                         req.onreadystatechange = function(){
                                      if(req.readyState === 4){
-                                             (req.status === 200) ? promise.resolve() : promise.reject();
+                                             (req.status === 200) ? promise.fulfill() : promise.reject();
                                      }
                              };
                         req.send();
@@ -287,7 +287,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                 local.sync("ideafy-data");
                                 // apply language
                                 labels.reset(local.get("labels"));
-                                promise.resolve();
+                                promise.fulfill();
                         });
                         return promise;
                 },
@@ -299,7 +299,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
 		      if (id === Config.get("user").get("_id")) {
 		              Config.get("transport").request("GetFile", {sid: "avatars", "filename":id+"_@v@t@r"}, function(result){
 		                      Config.set("avatar", result);
-		                      promise.resolve()
+		                      promise.fulfill()
 		              });
 		      }
 		      else {
@@ -317,7 +317,7 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
 		                          avatars.del(arr[0]);
 		                          avatars.set(id, result);
 		                      }
-		                      promise.resolve();
+		                      promise.fulfill();
 		              }      
 		              });
 		              return promise;

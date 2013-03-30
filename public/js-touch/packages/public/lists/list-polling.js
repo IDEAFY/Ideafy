@@ -77,7 +77,7 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                                                 cdb.unsync();
                                         });
                                 },interval);
-                                promise.resolve();
+                                promise.fulfill();
                         });
                         return promise;
                 };
@@ -135,7 +135,7 @@ define(["Olives/OObject", "CouchDBStore", "Store", "service/config", "Olives/Mod
                                                 cdb.unsync();
                                         });
                                 },interval);
-                                promise.resolve();      
+                                promise.fulfill();      
                         });
                         return promise;
                 };

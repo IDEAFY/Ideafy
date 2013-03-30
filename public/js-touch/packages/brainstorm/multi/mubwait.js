@@ -117,6 +117,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                     };
                                 
                                 console.log(infoUI, timeout);
+                                confirmUI.hide();
                                 infoUI.classList.remove("invisible");
                                 timer = setInterval(function(){
                                                 if (message !== "deleting") {info.set("msg", message);}

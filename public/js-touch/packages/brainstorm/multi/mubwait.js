@@ -48,7 +48,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         
                         widget.reset = function reset(sid){
                                 session.reset();
-                                consolelog(widget.dom);
+                                console.log(widget.dom);
                                 // create confirmation UI
                                 confirmUI = new Confirm(widget.dom);
                                 // get session info

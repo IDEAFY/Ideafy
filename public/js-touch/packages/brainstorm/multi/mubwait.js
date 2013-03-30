@@ -66,7 +66,6 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                         else {
                                                 confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
                                         }
-                                        // step 2 create exit listener
                                         console.log(session.get("initiator").id, user.get("_id"));   
                                 });
                         };
@@ -170,6 +169,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 }        
                         });
                         
+                        EXIT = exitListener;
                         return widget;
                 
                 };

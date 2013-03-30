@@ -32,6 +32,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         widget.place(document.getElementById("mubwait"));
                         
                         confirmCallBack = function(decision){
+                                Map.get("cache").classList.remove("appear");
                                 if (!decision){
                                         confirmUI.hide();
                                 }
@@ -69,7 +70,6 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(target){
                                 exitDest = target.getAttribute("href");
-                                console.log(exitDest);
                                 Map.get("cache").classList.add("appear");
                                 confirmUI.show();       
                         };
@@ -128,6 +128,9 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         
                         // switch screen to destination if user confirms exit
                         widget.goToScreen = function goToScreen(){
+                                var id;
+                                
+                                // handle clicks on nav bar
                                 ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
                                         if (exitDest.search(name) > -1){
                                                 confirmUI.close();
@@ -136,6 +139,15 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                                 document.removeEventListener("touchstart", exitListener, true);
                                         }
                                 });
+                                // if dest is specified (e.g. notify popup)
+                                if (exitDest.querySelector("data-notify_id")){
+                                        confirmUI.close();
+                                        $exit();
+                                        Config.get("observer").notify("goto-screen", "#connect");
+                                        document.removeEventListener("touchstart", exitListener, true);   
+                                        id = exitDest.getAttribute("data-notify_id");
+                                        observer.notify("display-message", id);     
+                                }
                         };
                         
                         // watch for session status change to deleted (in case initiator decides to cancel)

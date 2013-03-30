@@ -123,9 +123,13 @@ define(["Olives/OObject", "service/config", "service/map", "Store", "Olives/Mode
                 
                 notifyPopup.displayComCenter = function displayComCenter(event, node){
                         var id = node.getAttribute("data-notify_id");
-                        observer.notify("display-message", id);
-                        notifyPopup.closePopup();       
+                        observer.notify("display-message", id);      
                 };
+                
+                // close popup after displaying comcenter
+                observer.watch("display-message", function(){
+                        notifyPopup.closePopup();
+                });
                 
                 // init notifications engine
                  notify.init = function init(){

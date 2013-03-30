@@ -16,7 +16,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                             user = Config.get("user"),
                             labels = Config.get("labels"),
                             confirmUI, confirmCallBack,
-                            exitListener,
+                            exitListener = {"listener": null},
                             exitDest;
                         
                         session.setTransport(Config.get("transport"));
@@ -51,8 +51,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 };
                                 
                                 // create listener
-                                exitListener = Utils.exitListener("mubwait", widget.leave);
-                                console.log(exitListener);
+                                exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
                                 // get session info
                                 session.reset();
@@ -141,7 +140,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                         confirmUI.close();
                                         $exit();
                                         Config.get("observer").notify("goto-screen", "#connect");
-                                        document.removeEventListener("touchstart", exitListener, true);   
+                                        document.removeEventListener("touchstart", exitListener.listener, true);   
                                         id = exitDest.getAttribute("data-notify_id");
                                         observer.notify("display-message", parseInt(id, 10));     
                                 }
@@ -153,7 +152,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                                         confirmUI.close();
                                                         $exit();
                                                         Config.get("observer").notify("goto-screen", name);
-                                                        document.removeEventListener("touchstart", exitListener, true);
+                                                        document.removeEventListener("touchstart", exitListener.listener, true);
                                                 }
                                         });
                                 }
@@ -165,7 +164,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                         alert("session canceled by the leader: it will end now");
                                         session.unsync();
                                         $exit();
-                                        document.removeEventListener("touchstart", exitListener, true);
+                                        document.removeEventListener("touchstart", exitListener.listener, true);
                                 }        
                         });
                         

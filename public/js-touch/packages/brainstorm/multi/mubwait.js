@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils", "service/confirm"],
-        function(Widget, Store, CouchDBStore, Map, Model, Event, Config, Help, Utils, Confirm){
+define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-plugin", "Olives/Event-plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise"],
+        function(Widget, Store, CouchDBStore, Map, Model, Event, Config, Help, Utils, Confirm, Promise){
                 
                 return function MultiBWaitConstructor($exit){
                 
@@ -94,11 +94,12 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 //set session status to "deleted" to notify participants
                                 session.set("status", "deleted");
                                 session.upload().then(function(){
+                                        console.log("cancel upload sucessful");
                                         widget.displayInfo("deleting", 5000).then(function(){
                                                 session.remove();
                                                 widget.goToScreen();       
-                                        }, function(err){console.log(err);});
-                                });        
+                                        });
+                                }, function(err){console.log(err);});        
                         };
                         
                         // display info popup

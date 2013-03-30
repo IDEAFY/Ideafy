@@ -48,7 +48,6 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         
                         widget.reset = function reset(sid){
                                 session.reset();
-                                exitListener = null;
                                 session.sync(Config.get("db"), sid).then(function(){
                                         // manage exit event
                                         // step 1 create confirmation UI
@@ -61,7 +60,8 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                         }
                                         // step 2 create exit listener
                                         console.log(session.get("initiator").id, user.get("_id"));
-                                        exitListener = Utils.exitListener("mubwait", widget.leave);      
+                                        exitListener = Utils.exitListener("mubwait", widget.leave);
+                                        console.log(existListener);   
                                 });
                         };
                         

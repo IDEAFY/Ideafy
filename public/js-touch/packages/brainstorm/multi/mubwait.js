@@ -50,7 +50,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 exitListener = null;
                                 console.log(sid);
                                 session.sync(Config.get("db"), sid).then(function(){
-                                        
+                                        console.log(widget.dom);
                                         // manage exit event
                                         // step 1 create confirmation UI
                                         confirmUI = new Confirm(widget.dom);
@@ -69,6 +69,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(target){
                                 exitDest = target.getAttribute("href");
+                                console.log(exitDest);
                                 Map.get("cache").classList.add("appear");
                                 confirmUI.show();       
                         };

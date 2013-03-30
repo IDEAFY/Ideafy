@@ -70,6 +70,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         widget.leave = function leave(target){
                                 exitDest = target.getAttribute("href") || target;
                                 // if href exists it is one of the nav options else probably a notify message (or future use)
+                                console.log(exitDest);
                                 confirmUI.show();       
                         };
                         

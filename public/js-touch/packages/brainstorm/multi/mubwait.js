@@ -38,7 +38,6 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 else{
                                         console.log(session.get("initiator").id, user.get("_id"));
                                         if (session.get("initiator").id === user.get("_id")){
-                                                console.log("calling initiator cancel");
                                                 widget.cancelSession();
                                         }
                                         else {
@@ -98,7 +97,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                         widget.displayInfo("deleting", 5000).then(function(){
                                                 session.remove();
                                                 widget.goToScreen();       
-                                        });
+                                        }, function(err){console.log(err);});
                                 });        
                         };
                         
@@ -140,7 +139,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                         }
                                 });
                                 // if dest is specified (e.g. notify popup)
-                                if (exitDest.querySelector("data-notify_id")){
+                                if (exitDest.getAttribute("data-notify_id").length){
                                         confirmUI.close();
                                         $exit();
                                         Config.get("observer").notify("goto-screen", "#connect");

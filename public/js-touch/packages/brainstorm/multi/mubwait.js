@@ -53,6 +53,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 // create listener
                                 exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
+                                console.log(sid);
                                 // get session info
                                 session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){

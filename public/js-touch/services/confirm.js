@@ -67,7 +67,6 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                                 _content.set("question", $question);
                         }
                         else{
-                                console.log("hide confirm ui");
                                 _widget.hide();
                         }
                         

@@ -42,6 +42,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
                         
                         _widget.close = function close(){
                                 Map.get("cache").classList.remove("appear");
+                                console.log($parent.lastChild);
                                 $parent.removeChild($parent.lastChild);       
                         };
                         

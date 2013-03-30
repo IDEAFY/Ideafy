@@ -135,7 +135,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 var id;
                                 // if dest is specified (e.g. notify popup)
                                 console.log(exitDest);
-                                if (exitDest.getAttribute("data-notify_id")){
+                                if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
                                         confirmUI.close();
                                         $exit();
                                         Config.get("observer").notify("goto-screen", "#connect");
@@ -145,8 +145,9 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 }
                                 // handle clicks on nav bar
                                 else {
+                                        console.log("here :", confirmUI.dom);
                                         ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
-                                                if (exitDest.search(name) > -1){
+                                                if (exitDest === name){
                                                         confirmUI.close();
                                                         $exit();
                                                         Config.get("observer").notify("goto-screen", name);

@@ -109,7 +109,7 @@ define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Mod
                                                         this.innerHTML = labels.get("nolongerjoin");
                                                 }
                                                 else if (sessionStatus === "joined"){
-                                                        this.innerHTLM = labels.get("joinedsession");
+                                                        this.innerHTML = labels.get("joinedsession");
                                                 }
                                                 else if (sessionStatus === "waiting"){
                                                         this.innerHTML = labels.get("clicktojoin");

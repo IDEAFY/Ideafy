@@ -91,7 +91,6 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         
                         // initiator decides to cancel the session
                         widget.cancelSession = function cancelSession(){
-                                console.log(exitDest); 
                                 //set session status to "deleted" to notify participants
                                 session.set("status", "deleted");
                                 session.upload().then(function(){

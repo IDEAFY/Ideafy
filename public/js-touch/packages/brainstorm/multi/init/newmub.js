@@ -85,7 +85,7 @@ define(["Olives/OObject", "Olives/Model-plugin", "Olives/Event-plugin", "CouchDB
                                 "initiator" : {
                                         "id" : user.get("_id"),
                                         "username" : user.get("username"),
-                                        "picture_file" : user.get("picture_file")
+                                        "intro" : user.get("intro")
                                 },
                                 "participants" : [],
                                 "date" : [],

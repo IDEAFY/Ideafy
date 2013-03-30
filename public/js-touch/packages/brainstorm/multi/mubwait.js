@@ -41,7 +41,6 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                                 confirmUI.hide();
                                         }
                                         else{
-                                                console.log(session.get("initiator").id, user.get("_id"));
                                                 if (session.get("initiator").id === user.get("_id")){
                                                         widget.cancelSession();
                                                 }
@@ -50,7 +49,10 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                                 }
                                         }
                                 };
-                                console.log(widget.dom, confirmCallBack);
+                                
+                                // create listener
+                                exitListener = Utils.exitListener("mubwait", widget.leave);
+                                console.log(exitListener);
                                 
                                 // get session info
                                 session.reset();
@@ -65,9 +67,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                                 confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
                                         }
                                         // step 2 create exit listener
-                                        console.log(session.get("initiator").id, user.get("_id"));
-                                        exitListener = Utils.exitListener("mubwait", widget.leave);
-                                        console.log(exitListener);   
+                                        console.log(session.get("initiator").id, user.get("_id"));   
                                 });
                         };
                         
@@ -137,8 +137,8 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         widget.goToScreen = function goToScreen(){
                                 var id;
                                 // if dest is specified (e.g. notify popup)
-                                console.log(exitDest);
                                 if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
+                                        session.unsync();
                                         confirmUI.close();
                                         $exit();
                                         Config.get("observer").notify("goto-screen", "#connect");
@@ -148,9 +148,9 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 }
                                 // handle clicks on nav bar
                                 else {
-                                        console.log("here :", confirmUI.dom);
                                         ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
                                                 if (exitDest === name){
+                                                        session.unsync();
                                                         confirmUI.close();
                                                         $exit();
                                                         Config.get("observer").notify("goto-screen", name);

@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-require(["Olives/OObject", "Olives/LocalStore", "Store", "service/map", "Amy/Stack-plugin", "Olives/Model-plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "CouchDBStore", "service/utils", "Promise"], 
+require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "CouchDBStore", "service/utils", "Promise"], 
     function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils, Promise) {
 
         //declaration

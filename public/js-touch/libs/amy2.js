@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define("Amy/DomUtils", ["Olives/DomUtils", "Tools"], 
+define("Amy/DomUtils", ["DomUtils", "Tools"], 
 	function(Utils, Tools) {
 		return {
 
@@ -252,7 +252,7 @@ define("Amy/Control-plugin", ["Amy/Event-controller","Amy/DomUtils"],
 		};
 	}
 );
-define("Amy/Stack-service", ["Store", "Olives/OObject", "Olives/DomUtils", "Tools"], 
+define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools"], 
 	function Screens(Store, OObject, DomUtils, Tools) {
 		return function ScreensConstructor($uis, $default) {
 

@@ -134,7 +134,6 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 var id;
                                 // if dest is specified (e.g. notify popup)
                                 console.log(exitDest);
-                                console.log(exitDest, exitDest.getAttribute("data-notify_id"));
                                 if (exitDest.getAttribute("data-notify_id")){
                                         confirmUI.close();
                                         $exit();

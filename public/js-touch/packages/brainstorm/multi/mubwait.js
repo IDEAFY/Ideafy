@@ -32,7 +32,6 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         widget.place(document.getElementById("mubwait"));
                         
                         confirmCallBack = function(decision){
-                                Map.get("cache").classList.remove("appear");
                                 if (!decision){
                                         confirmUI.hide();
                                 }
@@ -96,7 +95,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                 //set session status to "deleted" to notify participants
                                 session.set("status", "deleted");
                                 session.upload().then(function(){
-                                        widget.dispayInfo("deleting", 5000).then(function(){
+                                        widget.displayInfo("deleting", 5000).then(function(){
                                                 session.remove();
                                                 widget.goToScreen();       
                                         });
@@ -152,11 +151,11 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         
                         // watch for session status change to deleted (in case initiator decides to cancel)
                         session.watchValue("status", function(value){
-                                if (value === "deleted"){
+                                if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
                                         alert("session canceled by the leader: it will end now");
                                         session.unsync();
                                         $exit();
-                                        document.removeEvenetListener("touchstart", exitListener, true);
+                                        document.removeEventListener("touchstart", exitListener, true);
                                 }        
                         });
                         

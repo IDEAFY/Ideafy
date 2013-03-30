@@ -31,28 +31,31 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         
                         widget.place(document.getElementById("mubwait"));
                         
-                        confirmCallBack = function(decision){
-                                if (!decision){
-                                        confirmUI.hide();
-                                }
-                                else{
-                                        console.log(session.get("initiator").id, user.get("_id"));
-                                        if (session.get("initiator").id === user.get("_id")){
-                                                widget.cancelSession();
-                                        }
-                                        else {
-                                                widget.leaveSession();
-                                        }
-                                }
-                        };
+                     
                         
                         widget.reset = function reset(sid){
-                                session.reset();
-                                console.log(widget.dom);
                                 // create confirmation UI
                                 confirmUI = new Confirm(widget.dom);
+                                confirmCallBack = function(decision){
+                                        if (!decision){
+                                                confirmUI.hide();
+                                        }
+                                        else{
+                                                console.log(session.get("initiator").id, user.get("_id"));
+                                                if (session.get("initiator").id === user.get("_id")){
+                                                        widget.cancelSession();
+                                                }
+                                                else {
+                                                        widget.leaveSession();
+                                                }
+                                        }
+                                };
+                                console.log(widget.dom, confirmCallBack);
+                                
                                 // get session info
+                                session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){
+                                        console.log("document sync successful");
                                         // manage exit event
                                         // step 1 init confirmation UI
                                         if (session.get("initiator").id === user.get("_id")){

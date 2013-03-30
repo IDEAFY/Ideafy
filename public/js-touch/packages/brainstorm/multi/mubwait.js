@@ -140,7 +140,8 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                         }
                                 });
                                 // if dest is specified (e.g. notify popup)
-                                if (exitDest.getAttribute("data-notify_id").length){
+                                console.log(exitDest, exitDest.getAttribute("data-notify_id"));
+                                if (exitDest.getAttribute("data-notify_id")){
                                         confirmUI.close();
                                         $exit();
                                         Config.get("observer").notify("goto-screen", "#connect");

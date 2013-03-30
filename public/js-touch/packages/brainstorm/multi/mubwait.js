@@ -69,7 +69,7 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(target){
                                 exitDest = target.getAttribute("href") || target;
-                                // if href exists it is one of the nav options else probably a notify message (or future use)
+                                // href exists it is one of the nav options else probably a notify message (or future use)
                                 console.log(exitDest);
                                 confirmUI.show();       
                         };

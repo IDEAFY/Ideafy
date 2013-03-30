@@ -113,11 +113,12 @@ define(["Olives/OObject", "Store", "CouchDBStore", "service/map", "Olives/Model-
                                             promise.resolve();
                                     };
                                 
+                                console.log(infoUI, timeout);
                                 infoUI.classList.remove("invisible");
                                 timer = setInterval(function(){
                                                 if (message !== "deleting") {info.set("msg", message);}
                                                 else {
-                                                        info.set("msg", labels.get("deletingsession")+timeout/1000+ " s");
+                                                        info.set("msg", labels.get("deletingsession") + timeout/1000 + "s");
                                                 }
                                                 if (timeout <= 0) clearInfo();
                                                 timeout -= 1000;

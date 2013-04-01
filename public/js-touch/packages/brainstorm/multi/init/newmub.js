@@ -47,6 +47,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                                         break;
                                                 default:
                                                         this.selectedIndex= 0;
+                                                        break;
                                         }        
                                 },
                                 setSessionInfo : function(mode){

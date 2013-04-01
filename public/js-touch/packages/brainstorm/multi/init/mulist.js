@@ -22,7 +22,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "muall" : new Model(muCDB)
                 });
                 
-                widget.template = '<div id="mulist"><div id="mulist-content"><legend data-labels="bind:innerHTML, selectsession"></legend><hr/><div class="mulistheader"></div><ul id="mulistall" data-muall="foreach"><li><div data-muall="bind:innerHTML, mode">Type</div><div data-muall="bind:innerHTML, title">Title</div><div data-muall="bind:innerHTML, lang">Lang</div><div data-muall="bind:innerHTML, initiator.username">Leader</div></li></ul><ul id="mucamp invisible"></ul><ul id="musearch invisible"></ul></div></div>';
+                widget.template = '<div id="mulist"><div id="mulist-content"><legend data-labels="bind:innerHTML, selectsession"></legend><hr/><div class="mulistheader"></div><ul id="mulistall" data-muall="foreach"><li><div data-muall="bind:innerHTML, value.mode">Type</div><div data-muall="bind:innerHTML, value.title">Title</div><div data-muall="bind:innerHTML, value.lang">Lang</div><div data-muall="bind:innerHTML, value.initiator.username">Leader</div></li></ul><ul id="mucamp invisible"></ul><ul id="musearch invisible"></ul></div></div>';
                 
                 widget.place(document.getElementById("mulist"));
                 

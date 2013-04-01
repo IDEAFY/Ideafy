@@ -5899,7 +5899,7 @@ li.my2q{
     -webkit-margin-before: 0.2em;
 }
 
-#newmub label, #mulist legend, #mubwait .mubdesc label{
+#newmub label, #mulist legend{
     font-family: Pacifico;
     color: #657B99;
     font-size: 16px;
@@ -6096,6 +6096,13 @@ li.my2q{
     width: 285px;
     height: 270px;
     padding: 5px;
+}
+
+#mubwait .mubdesc label, #mubwait .mubroster label{
+    font-family: Pacifico;
+    color: #657B99;
+    font-size: 16px;
+    text-decoration: underline;
 }
 
 #mubwait .mubdesc p{

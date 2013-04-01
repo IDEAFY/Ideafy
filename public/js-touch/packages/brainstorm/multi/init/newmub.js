@@ -21,8 +21,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 widget.plugins.addAll({
                         "labels": new Model(labels, {
                                 setLabel : function(label){
-                                        var mode = this.getAttribute("name");
-                                        switch(mode){
+                                        switch(label){
                                                 case "campfire":
                                                         this.setAttribute("style", "color:#F27B3D;");
                                                         break;

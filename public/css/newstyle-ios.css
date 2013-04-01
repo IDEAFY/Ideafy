@@ -6083,7 +6083,7 @@ li.my2q{
 #mubwait .mubwait-form{
     width: 590px;
     height: 370px;    
-    padding:20px;
+    padding:0px 20px;
     margin-top: 20px;
 }
 
@@ -6091,7 +6091,8 @@ li.my2q{
     font-size: 20px;
     text-align: center;
     font-family: Pacifico;
-    color: #657b99;
+    color: #4D4D4D;
+    font-weight: bold;
     border-bottom: 1px solid #cccccc;
 }
 

@@ -12,6 +12,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                 
                         var widget = new Widget(),
                             session = new CouchDBStore(),
+                            participants = new Store(),
                             info = new Store({"msg":""}),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
@@ -52,13 +53,34 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         },
                                         setIntro : function(intro){
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
+                                        },
+                                        showStartButton : function(participants){
+                                                if (participants.length && user.get("_id") === session.get("initiator").id){
+                                                        this.classList.remove("invisible");
+                                                }
+                                                else{
+                                                        this.claddLit.add("invisible");
+                                                }
+                                        }
+                                }),
+                                participant : new Model(participants, {
+                                        setAvatar : function setAvatar(id){
+                                                var frag, ui;
+                                                this.setAttribute("style", "background:none;");
+                                                frag = document.createDocumentFragment();
+                                                ui = new Avatar([id]);
+                                                ui.place(frag);
+                                                (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
+                                        },
+                                        setIntro : function(intro){
+                                                (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         }
                                 }),
                                 info: new Model(info),
                                 mubwaitevent : new Event(widget)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label>Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><div class="participants"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         
@@ -84,7 +106,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 // create listener
                                 exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
-                                console.log(sid);
                                 // get session info
                                 session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){
@@ -97,7 +118,8 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         else {
                                                 confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
                                         }
-                                        console.log(session.get("initiator").id, user.get("_id"));   
+                                        // reset participants store
+                                        participants.reset(session.get("participants"));  
                                 });
                         };
                         
@@ -214,11 +236,17 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         // watch for session status change to deleted (in case initiator decides to cancel)
                         session.watchValue("status", function(value){
                                 if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
-                                        alert("session canceled by the leader: it will end now");
-                                        session.unsync();
-                                        $exit();
-                                        document.removeEventListener("touchstart", exitListener.listener, true);
+                                        widget.displayInfo("session canceled by the leader: it will end now", 2000).then(function(){
+                                                session.unsync();
+                                                $exit();
+                                                document.removeEventListener("touchstart", exitListener.listener, true);      
+                                        });
                                 }        
+                        });
+                        
+                        // watch participant changes (new participant, departure etc.)
+                        session.watchValue("participants", function(array){
+                                participants.reset(array);        
                         });
                         
                         EXIT = exitListener;

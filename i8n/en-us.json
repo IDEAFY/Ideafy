@@ -443,5 +443,6 @@
 	"leaderleave": "Are you sure you want to cancel this session? This will end it for all participants.",
 	"waitingroomlbl": "Waiting room",
 	"joinedsession": "<i>You joined this session.</i>",
-	"deletingsession": "Deleting session : "
+	"deletingsession": "Deleting session : ",
+	"participants": "Participants"
 }

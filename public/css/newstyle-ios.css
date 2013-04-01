@@ -6111,16 +6111,28 @@ li.my2q{
 }
 
 #mubwait .mubdesc p{
-    padding-top: 5px;
+    padding: 10px;
+    width: 265px;
     font-size: 14px;
     font-family: Helvetica;
     text-align: justify;
     color: #404040;
     overflow-y: scroll;
+    margin-top: 10px;
+    border-radius: 5px;
+    background: url('../img/connect/bg-note.png') no-repeat center center;
+    background-size: contain;
+}
+
+#mulistall{
+    height: 440px;
+    overflow-y: scroll;
+    -webkit-padding-start: 0px;
 }
 
 #mulistall li{
     display: inline-table;
+    height: 40px;
 }
 
 #mulistall li:nth-child(even){
@@ -6128,7 +6140,9 @@ li.my2q{
 }
 
 #mulistall div{
-    disaply: inline-block;
+    display: inline-block;
+    line-height: 30px;
+    padding:5px;
 }
 
 /* EULA */

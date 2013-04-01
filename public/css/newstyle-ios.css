@@ -6139,6 +6139,12 @@ li.my2q{
     width: 200px;
 }
 
+#mulist .mulistoptions div{
+    display: inline-block;
+    border: 1px solid #CCCCCC;
+    height: 18px;
+}
+
 #mulistall{
     height: 440px;
     overflow-y: scroll;

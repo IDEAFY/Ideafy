@@ -25,15 +25,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         switch(mode){
                                                 case "campfire":
                                                         this.selectedIndex = 1;
-                                                        this.classList.add("campfire");
+                                                        this.setAttribute("style", "color: #F27B3D;");
                                                         break;
                                                 case "boardroom":
                                                         this.selectedIndex = 2;
-                                                        this.classList.add("boardroom");
+                                                        this.setAttribute("style", "color: #4D4D4D;");
                                                         break;
                                                 default:
                                                         this.selectedIndex= 0;
-                                                        this.classList.add("roulette");
+                                                        this.setAttribute("style", "color: #5F8F28;");
                                                         break;
                                         }        
                                 },

@@ -5923,16 +5923,16 @@ li.my2q{
     font-weight: bold;
 }
 
-.roulette{
+#newmub select.roulette{
     color: #F27B3D;    
 }
 
 
-.campfire{
+#newmub select.campfire{
     color: #5F8F28;    
 }
 
-.boardroom{
+#newmub select.boardroom{
     color: #4D4D4D;
 }
 

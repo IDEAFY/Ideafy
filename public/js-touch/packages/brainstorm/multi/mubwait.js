@@ -32,13 +32,22 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                 else {
                                                         this.setAttribute("contenteditable", false);        
                                                 }
+                                        },
+                                        setDescription : function(desc){
+                                                this.innerHTML = desc;
+                                                if (user.get("_id") === session.get("initiator").id){
+                                                        this.setAttribute("contenteditable", true);
+                                                }
+                                                else {
+                                                        this.setAttribute("contenteditable", false);        
+                                                }
                                         }
                                 }),
                                 info: new Model(info),
                                 mubwaitevent : new Event(widget)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><div class="quickstart-desc" name="description" data-model="bind:innerHTML, description"></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><div class="desc" name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div></div><div class="mubroster"><label>Leader</label><div class="mubleader"></div><label>Participants</label><div class="participants"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         

@@ -5902,7 +5902,7 @@ li.my2q{
 #newmub label, #mulist legend{
     font-family: Pacifico;
     color: #657B99;
-    font-size: 16px;
+    font-size: 20px;
     letter-spacing: 1px;
     display: block;
 }
@@ -6119,6 +6119,17 @@ li.my2q{
     overflow-y: scroll;
 }
 
+#mulistall li{
+    display: inline-table;
+}
+
+#mulistall li:nth-child(even){
+    background: #E6E6E6;
+}
+
+#mulistall div{
+    disaply: inline-block;
+}
 
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}

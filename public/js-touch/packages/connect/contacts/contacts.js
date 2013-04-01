@@ -80,7 +80,7 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                 }),
                                 "contact": new Model(contactList,{
                                         setAvatar : function setAvatar(type){
-                                                var id = this.getAttribute("data-contact_id"), frag, ui;
+                                                var id = this.getAttribute("data-contact_id"), _frag, _ui;
                                                 if (type === "group"){
                                                         if (this.hasChildNodes()) this.removeChild(this.firstChild);
                                                         this.setAttribute("style", "background: url('img/connect/"+contactList.get(id).color+"') no-repeat center center; background-size: contain;display:block; width:40px; height:40px;float:left;");
@@ -94,7 +94,7 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                                 }
                                         },
                                         setIntro : function(intro){
-                                                (intro) ? this.innerHTML = intro : this.innerHTML=" ";
+                                                (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         }
                                 }),
                                 "contactdetailstack": detailStack,

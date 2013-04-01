@@ -6099,18 +6099,19 @@ li.my2q{
     display: inline-table;
     width: 285px;
     height: 270px;
-    padding: 5px;
+    padding-right: 5px 10px 5px 0px;
 }
 
 #mubwait .mubdesc label, #mubwait .mubroster label{
     font-family: Pacifico;
     color: #657B99;
-    font-size: 16px;
+    font-size: 18px;
     text-decoration: underline;
 }
 
 #mubwait .mubdesc p{
-    font-size: 16px;
+    padding-top: 5px;
+    font-size: 14px;
     font-family: Helvetica;
     text-align: justify;
     color: #404040;

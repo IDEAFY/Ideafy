@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise"],
-        function(Widget, Store, CouchDBStore, Map, Model, Event, Config, Help, Utils, Confirm, Promise){
+define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise", "service/avatar"],
+        function(Widget, Store, CouchDBStore, Map, Model, Event, Config, Help, Utils, Confirm, Promise, Avatar){
                 
                 return function MultiBWaitConstructor($exit){
                 
@@ -41,13 +41,24 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                 else {
                                                         this.setAttribute("contenteditable", false);        
                                                 }
+                                        },
+                                        setAvatar : function setAvatar(id){
+                                                var frag, ui;
+                                                this.setAttribute("style", "background:none;");
+                                                frag = document.createDocumentFragment();
+                                                ui = new Avatar([id]);
+                                                ui.place(frag);
+                                                (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
+                                        },
+                                        setIntro : function(intro){
+                                                (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         }
                                 }),
                                 info: new Model(info),
                                 mubwaitevent : new Event(widget)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p  name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label>Leader</label><div class="mubleader"></div><label>Participants</label><div class="participants"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label>Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><div class="participants"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         

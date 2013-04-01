@@ -6036,7 +6036,7 @@ li.my2q{
     top: 0;
 }
 
-#mubwait .confirm, #mubwait .sessionmsg{
+#mubwait .confirm{
     width: 600px;
     height: 150px;
     left: 167px;
@@ -6045,6 +6045,10 @@ li.my2q{
 }
 
 #mubwait .sessionmsg{
+    width: 400px;
+    height: 150px;
+    left: 267px;
+    top: 240px;
     background: #9ac9cd;
     text-align: center;
     font-family: Helvetica;

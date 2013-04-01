@@ -6048,8 +6048,9 @@ li.my2q{
     background: #9ac9cd;
     text-align: center;
     font-family: Helvetica;
-    font-size: 18px;
+    font-size: 20px;
     color: #4D4D4D;
+    font-weight: bold;
     line-height: 150px;
 }
 
@@ -6077,10 +6078,12 @@ li.my2q{
 
 #mubwait .mubwait-form{
     margin-top: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 #mubwait .mubwait-title{
-    font-size: 16px;
+    font-size: 20px;
     text-align: center;
     font-family: Pacifico;
     color: #657b99;

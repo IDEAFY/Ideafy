@@ -20,8 +20,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 
                 widget.plugins.addAll({
                         "labels": new Model(labels, {
-                                setLabel : function(label){
-                                        switch(label){
+                                setLabel : function(lbl){
+                                        console.log(lbl);
+                                        this.innerHTML = labels.get(lbl);
+                                        switch(lbl){
                                                 case "campfire":
                                                         this.setAttribute("style", "color:#F27B3D;");
                                                         break;
@@ -32,7 +34,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                                         this.setAttribute("style", "color:#5F8F28;");
                                                         break;
                                         }
-                                        this.innerHTML = labels.get(label);
                                 }
                         }),
                         "newmub": new Model(session, {

@@ -19,17 +19,21 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 
                 widget.plugins.addAll({
                         "labels" : new Model(labels),
-                        "muall" : new Model(muCDB)
+                        "muall" : new Model(muCDB, {
+                                setParticipants : function (array){
+                                        this.innerHTML = array.length + 1;
+                                }
+                        })
                 });
                 
-                widget.template = '<div id="mulist"><div id="mulist-content"><legend data-labels="bind:innerHTML, selectsession"></legend><hr/><div class="mulistheader"></div><ul id="mulistall" data-muall="foreach"><li><div data-muall="bind:innerHTML, value.mode">Type</div><div data-muall="bind:innerHTML, value.title">Title</div><div data-muall="bind:innerHTML, value.lang">Lang</div><div data-muall="bind:innerHTML, value.initiator.username">Leader</div></li></ul><ul id="mucamp invisible"></ul><ul id="musearch invisible"></ul></div></div>';
+                widget.template = '<div id="mulist"><div id="mulist-content"><legend data-labels="bind:innerHTML, selectsession"></legend><div clas=="mulistoptions"><input class="search" type="search"></div><hr/><div class="mulistheader"></div><ul id="mulistall" data-muall="foreach"><li><div data-muall="bind:innerHTML, value.mode">Type</div><div data-muall="bind:innerHTML, value.title">Title</div><div data-muall="bind:innerHTML, value.lang">Lang</div><div data-muall="bind:innerHTML, value.initiator.username">Leader</div><div data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="mucamp invisible"></ul><ul id="musearch invisible"></ul></div></div>';
                 
                 widget.place(document.getElementById("mulist"));
                 
                 widget.reset = function reset(){
                         
                         // synchronize muCDB with database
-                        muCDB.sync(Config.get("db"), "library", "_view/waitingsessions");
+                        muCDB.sync(Config.get("db"), "library", "_view/waitingsessions", {descending:true});
                         
                         
                 };

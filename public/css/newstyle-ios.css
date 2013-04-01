@@ -6130,6 +6130,13 @@ li.my2q{
     float: right;
     margin-top: -20px;
     height: 20px;
+    display: inline-table;
+}
+
+#mulist .mulistoptions .search{
+    height: 20px;
+    line-height: 20px;
+    width: 200px;
 }
 
 #mulistall{

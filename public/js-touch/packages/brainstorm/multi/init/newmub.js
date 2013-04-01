@@ -363,6 +363,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 // init
                 widget.reset();
                 
+                // manage language change
+                user.watchValue("lang", function(){
+                        // reset session and error stores to trigger label refresh
+                        session.reset(JSON.parse(session.toJSON()));
+                        error.reset(JSON.parse(error.toJSON()));        
+                });
+                
                 return widget;
                    
            };

@@ -180,6 +180,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         
                         widget.updateField = function(event, node){
                                 var field = node.getAttribute("name");
+                                console.log("blur event fired");
                                 widget.updateSession(field, node.innerHTML);        
                         };
                         

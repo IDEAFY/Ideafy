@@ -3324,7 +3324,7 @@ li.color-item{
 
 /* quickstart */
 
-#quickstart .quickstart-form, #mubwait .mubwait-form{
+#quickstart .quickstart-form{
     width: 590px;
     height: 370px;    
     padding:40px 20px 40px 20px;    
@@ -6077,9 +6077,9 @@ li.my2q{
 }
 
 #mubwait .mubwait-form{
-    margin-top: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    width: 590px;
+    height: 370px;    
+    padding:20px;
 }
 
 #mubwait .mubwait-title{

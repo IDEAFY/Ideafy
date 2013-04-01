@@ -19,34 +19,21 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                     user = Config.get("user");
                 
                 widget.plugins.addAll({
-                        "labels": new Model(labels, {
-                                setLabel : function(lbl){
-                                        console.log(lbl);
-                                        this.innerHTML = labels.get(lbl);
-                                        switch(lbl){
-                                                case "campfire":
-                                                        this.setAttribute("style", "color:#F27B3D;");
-                                                        break;
-                                                case "boardroom":
-                                                        this.setAttribute("style", "color:#4D4D4D;");
-                                                        break;
-                                                default:
-                                                        this.setAttribute("style", "color:#5F8F28;");
-                                                        break;
-                                        }
-                                }
-                        }),
+                        "labels": new Model(labels),
                         "newmub": new Model(session, {
                                 initSessionMode : function(mode){
                                         switch(mode){
                                                 case "campfire":
                                                         this.selectedIndex = 1;
+                                                        this.classList.add("campfire");
                                                         break;
                                                 case "boardroom":
                                                         this.selectedIndex = 2;
+                                                        this.classList.add("boardroom");
                                                         break;
                                                 default:
                                                         this.selectedIndex= 0;
+                                                        this.classList.add("roulette");
                                                         break;
                                         }        
                                 },
@@ -92,7 +79,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "newmubevent": new Event(widget)
                 });
                 
-                widget.template = '<div id="newmub"><div id="newmub-content"><form><label data-labels="bind:innerHTML, selectmode">Select mode</label><hr/><div class="select-mode"><select data-newmub="bind:initSessionMode, mode" data-newmubevent="listen:change, changeSessionMode"><option name="roulette" data-labels="bind:setLabel, roulette"></option><option name="campfire" data-labels="bind:setLabel, campfire"></option><option name="boardroom" data-labels="bind:setLabel, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label>Invite your contacts</label><hr/><div class="selectall" data-labels="bind:innerHTML, selectall" data-newmubevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div><input class="search" data-newmubevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="invitelistauto" class="autocontact invisible"><div class="autoclose" data-newmubevent="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-newmubevent="listen:touchend, select"></li></ul></div><div class="invitecontactlist"><ul data-invited="foreach"><li class = "contact list-item" data-newmubevent="listen:touchstart, discardContact"><p class="contact-name" data-invited="bind:innerHTML, username"></p><div class="remove-contact"></div></li></ul></div></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" maxlength=60 readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: touchstart, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-newmub="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: touchstart, press; listen:touchend, clear">Clear</label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:touchstart, press; listen:touchend, create">Create</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
+                widget.template = '<div id="newmub"><div id="newmub-content"><form><label data-labels="bind:innerHTML, selectmode">Select mode</label><hr/><div class="select-mode"><select data-newmub="bind:initSessionMode, mode" data-newmubevent="listen:change, changeSessionMode"><option class="roulette" data-labels="bind:innerHTML, roulette"></option><option class="campfire" data-labels="bind:innerHTML, campfire"></option><option class="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label>Invite your contacts</label><hr/><div class="selectall" data-labels="bind:innerHTML, selectall" data-newmubevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div><input class="search" data-newmubevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="invitelistauto" class="autocontact invisible"><div class="autoclose" data-newmubevent="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-newmubevent="listen:touchend, select"></li></ul></div><div class="invitecontactlist"><ul data-invited="foreach"><li class = "contact list-item" data-newmubevent="listen:touchstart, discardContact"><p class="contact-name" data-invited="bind:innerHTML, username"></p><div class="remove-contact"></div></li></ul></div></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" maxlength=60 readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: touchstart, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-newmub="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: touchstart, press; listen:touchend, clear">Clear</label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:touchstart, press; listen:touchend, create">Create</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
                 
                 widget.place(document.getElementById("newmub"));
                 

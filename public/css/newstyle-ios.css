@@ -5923,6 +5923,20 @@ li.my2q{
     font-weight: bold;
 }
 
+.roulette{
+    color: #F27B3D;    
+}
+
+
+.campfire{
+    color: #5F8F28;    
+}
+
+.boardroom{
+    color: #4D4D4D;
+}
+
+
 #newmub .session-info{
     width: 700px;
     font-style: italic;

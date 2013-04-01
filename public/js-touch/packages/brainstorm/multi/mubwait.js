@@ -34,10 +34,11 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                 }
                                         }
                                 }),
-                                info: new Model(info)
+                                info: new Model(info),
+                                mubwaitevent : new Event(widget)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><div class="quickstart-desc" name="description" data-model="bind:innerHTML, description"></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><div class="quickstart-desc" name="description" data-model="bind:innerHTML, description"></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         
@@ -166,6 +167,27 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                 }
                                         });
                                 }
+                        };
+                        
+                        // handle edit events
+                        widget.checkUpdate = function(event, node){
+                                var field = node.getAttribute("name");
+                                if (event.keyCode === 13){
+                                        widget.updateSession(field, node.innerHTML);
+                                        node.blur();
+                                }        
+                        };
+                        
+                        widget.updateField = function(event, node){
+                                var field = node.getAttribute("name");
+                                widget.updareSession(field, node.innerHTML);        
+                        };
+                        
+                        widget.updateSession = function updateSession(field, value){
+                                if (session.get(field) !== value){
+                                        session.set(field, value);
+                                        session.upload()
+                                }        
                         };
                         
                         // watch for session status change to deleted (in case initiator decides to cancel)

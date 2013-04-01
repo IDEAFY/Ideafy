@@ -6046,12 +6046,11 @@ li.my2q{
 
 #mubwait .sessionmsg{
     background: #9ac9cd;
-    display: table-cell;
     text-align: center;
-    vertical-align: middle;
     font-family: Helvetica;
     font-size: 18px;
     color: #4D4D4D;
+    line-height: 150px;
 }
 
 #mubwait .confirm .help-doctor{

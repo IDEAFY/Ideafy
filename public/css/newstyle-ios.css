@@ -6041,6 +6041,10 @@ li.my2q{
     height: 150px;
     left: 167px;
     top: 240px;
+    background: white;
+}
+
+#mubwait .sessionmsg{
     background: #9ac9cd;
 }
 
@@ -6049,7 +6053,7 @@ li.my2q{
     height: 40px;
 }
 
-#mubwait .confirm p, #.mubwait .sessionmsg{
+#mubwait .confirm p, #mubwait .sessionmsg{
     color: #4D4D4D;
     margin: 50px;
     font-family: Helvetica;
@@ -6068,6 +6072,14 @@ li.my2q{
 
 #mubwait .mubwait-form{
     margin-top: 20px;
+}
+
+#mubwait .mubwait-title{
+    font-size: 16px;
+    text-align: center;
+    font-family: Pacifico;
+    color: #657b99;
+    border-bottom: 1px solid #cccccc;
 }
 
 

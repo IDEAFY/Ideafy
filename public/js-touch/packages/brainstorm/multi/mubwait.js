@@ -23,11 +23,21 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         
                         widget.plugins.addAll({
                                 labels: new Model(labels),
-                                model: new Model(session),
+                                model: new Model(session, {
+                                        setTitle : function(title){
+                                                this.innerHTML = labels.get("cdtitlelbl")+title;
+                                                if (user.get("_id") === session.get("initiator").id){
+                                                        this.setAttribute("contenteditable", true);
+                                                }
+                                                else {
+                                                        this.setAttribute("contenteditable", false);        
+                                                }
+                                        }
+                                }),
                                 info: new Model(info)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="mubwait-form"><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><div class="quickstart-title" autofocus="" name="title" data-model="bind:innerHTML, title"></div><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><div class="quickstart-desc" name="description" data-model="bind:innerHTML, description"></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:innerHTML, setTitle"></div><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><div class="quickstart-desc" name="description" data-model="bind:innerHTML, description"></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         
@@ -74,7 +84,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         widget.leave = function leave(target){
                                 exitDest = target.getAttribute("href") || target;
                                 // href exists it is one of the nav options else probably a notify message (or future use)
-                                console.log(exitDest);
                                 confirmUI.show();       
                         };
                         
@@ -90,8 +99,10 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 session.set("participants", p);
                                 // set session status to waiting as it may have been "full" before participant left
                                 session.set("status", "waiting"); 
-                                session.upload();
-                                widget.goToScreen();               
+                                session.upload().then(function(){
+                                        widget.goToScreen();
+                                        session.unsync();
+                                });              
                         };
                         
                         // initiator decides to cancel the session
@@ -99,9 +110,9 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 //set session status to "deleted" to notify participants
                                 session.set("status", "deleted");
                                 session.upload().then(function(){
-                                        console.log("cancel upload sucessful");
                                         widget.displayInfo("deleting", 5000).then(function(){
                                                 session.remove();
+                                                session.unsync();
                                                 widget.goToScreen();       
                                         });
                                 }, function(err){console.log(err);});        
@@ -137,7 +148,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 var id;
                                 // if dest is specified (e.g. notify popup)
                                 if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
-                                        session.unsync();
                                         confirmUI.close();
                                         $exit();
                                         Config.get("observer").notify("goto-screen", "#connect");
@@ -149,7 +159,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 else {
                                         ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
                                                 if (exitDest === name){
-                                                        session.unsync();
                                                         confirmUI.close();
                                                         $exit();
                                                         Config.get("observer").notify("goto-screen", name);

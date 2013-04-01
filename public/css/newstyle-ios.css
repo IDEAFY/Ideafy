@@ -6111,8 +6111,8 @@ li.my2q{
 }
 
 #mubwait .mubdesc p{
-    padding: 10px;
-    width: 265px;
+    padding: 15px;
+    width: 255px;
     font-size: 14px;
     font-family: Helvetica;
     text-align: justify;
@@ -6122,6 +6122,14 @@ li.my2q{
     border-radius: 5px;
     background: url('../img/connect/bg-note.jpg') no-repeat center center;
     background-size: contain;
+    height: 190px;
+    border-radius: 5px;
+}
+
+#mulist .mulistoptions{
+    float: right;
+    margin-top: -20px;
+    height: 20px;
 }
 
 #mulistall{
@@ -6133,6 +6141,7 @@ li.my2q{
 #mulistall li{
     display: inline-table;
     height: 40px;
+    width: 100%
 }
 
 #mulistall li:nth-child(even){

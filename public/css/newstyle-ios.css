@@ -6046,6 +6046,12 @@ li.my2q{
 
 #mubwait .sessionmsg{
     background: #9ac9cd;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    font-family: Helvetica;
+    font-size: 18px;
+    color: #4D4D4D;
 }
 
 #mubwait .confirm .help-doctor{
@@ -6053,7 +6059,7 @@ li.my2q{
     height: 40px;
 }
 
-#mubwait .confirm p, #mubwait .sessionmsg{
+#mubwait .confirm p{
     color: #4D4D4D;
     margin: 50px;
     font-family: Helvetica;

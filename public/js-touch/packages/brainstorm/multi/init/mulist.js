@@ -39,6 +39,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                                         this.setAttribute("style", "background-image:url('img/flags/USA.png');");
                                                         break;
                                         }
+                                        this.innerHTML = " ";
                                 }
                         }),
                         "musearch" : new Model(muSearch, {
@@ -56,7 +57,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                                 default:
                                                         this.setAttribute("style", "background-image:url('img/flags/USA.png');");
                                                         break;
+                                                
                                         }
+                                        this.innerHTML = " ";
                                 }        
                         }),
                         "mulistevent" : new Event(widget)

@@ -6193,7 +6193,7 @@ li.my2q{
     width: 100%
 }
 
-#mulistall li.pressed, #musearch li.pressed{
+#mulistall li.pressed, #musearch li.pressed, #mulistall li:nth-child(even).pressed, #musearch li:nth-child(even).pressed{
     background: #9AC9CD;
     color: white;
 }

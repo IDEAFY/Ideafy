@@ -6158,21 +6158,25 @@ li.my2q{
 
 #mulist .mulistoptions{
     float: right;
-    margin-top: -20px;
-    height: 20px;
+    margin-top: -35px;
+    height: 37px;
     display: inline-table;
+    width: 400px;
 }
 
 #mulist .mulistoptions .search{
-    height: 20px;
-    line-height: 20px;
-    width: 200px;
+    float: right;
+    margin-top: 6px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 14px;
 }
 
 #mulist .mulistoptions div{
     display: inline-block;
     border: 1px solid #CCCCCC;
-    height: 18px;
+    height: 25px;
+    margin-top: 6px;
 }
 
 #mulistall, #musearch{

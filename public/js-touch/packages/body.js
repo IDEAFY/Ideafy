@@ -34,6 +34,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
         // check connection
         if (navigator.connection && navigator.connection.type === "none"){
                 (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
+                Config.set("language", _labels.set("language"));
                 _login.setScreen("#nointernet");
                 _stack.getStack().setCurrentScreen(_login);
                 document.getElementById("nointernet").classList.remove("invisible");

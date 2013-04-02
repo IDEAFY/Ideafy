@@ -61,7 +61,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         muSearch.unsync();
                         muSearch.reset([]);
                         muSearch.sync("_fti/local/"+Config.get("db"), "indexedsessions", "roulette", {q: query, descending:true}).then(function(){
-                                console.log(muSearch.toJSON());
+                                muSearch.loop(function(v,i){
+                                        console.log(v.value.initiator, v.value.participants, v.value.title);
+                                });
                                 promise.fulfill();
                         });
                         

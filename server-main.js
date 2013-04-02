@@ -337,79 +337,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         user.set("password", json.password);
                         user.set("name", json.name);
                         
-// manual user creation  request                        
-                        transport.request("CouchDB", {
-                        method : "PUT",
-                        path:"/_users/"+"org.couchdb.user:"+json.name.replace(/@/,"%40"),
-                        auth: cdbAdminCredentials,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
-                        },
-                        data: user.toJSON()
-                }, function (res) {
-                        var json = JSON.parse(res);
-                        if (json.ok) {
-                                // add credentials to the cookie
-                                var cookieJSON = cookie.parse(json.handshake.headers.cookie), 
-                                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0];
-                                    
-                                sessionStore.get(sessionID, function(err, session) {
-                                        if (err) {
-                                                throw new Error(err);
-                                        } else {
-                                                session.auth = json.name + ":" + json.password;
-                                                sessionStore.set(sessionID, session);
-                                                onEnd({
-                                                        signup : "ok",
-                                                        db : _db,
-                                                        message: json.name + " successfully signed up"
-                                                });
-                                                
-                                                // send confirmation Email
-                                                sendSignupEmail(json.name, json.password, json.lang);
-                                                
-                                                // create reward doc
-                                                 // create reward document
-                                                var rewards = new CouchDBStore({
-                                                        "profilecomplete": 0,
-                                                        "playthegame": 0,
-                                                        "tutorialcomplete": 0,
-                                                        "ideas5": 0,
-                                                        "ideas25": 0,
-                                                        "ideas100": 0,
-                                                        "ideas250": 0,
-                                                        "bronzeacorn": 0,
-                                                        "silveracorn": 0,
-                                                        "goldenacorn": 0,
-                                                        "platinumflame": 0,
-                                                        "platinumwildfire": 0,
-                                                        "easybrainstormer": 0,
-                                                        "mindstormer": 0,
-                                                        "mastermindstormer": 0,
-                                                        "guide": 0,
-                                                        "leader": 0,
-                                                        "mindweaver": 0,
-                                                        "opinionator": 0,
-                                                        "feedbackartist": 0,
-                                                        "chatterbox": 0,
-                                                        "allday": 0,
-                                                        "curious": 0,
-                                                        "puzzled": 0,
-                                                        "whyarewehere": 0,
-                                                        "scored":[],
-                                                        "type": 11
-                                                });
-                                                createDocAsAdmin(json.name+"_rewards", rewards);
-                                        }
-                                });
-                        }
-                        else {
-                                onEnd(json.error);
-                        }
-                        });
-                        
- /*                       user.create().then(function (si) {
+                        user.create().then(function (si) {
                                 
                                 // add credentials to the cookie
                                 var cookieJSON = cookie.parse(json.handshake.headers.cookie), 
@@ -471,9 +399,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                 message: "An account with this user name already exists."
                                         });
                                 }
-                         }); */
+                         });
                 });
-                
         
         olives.handlers.set('Welcome', function(json, onEnd){
                 var Id = "", cdb = new CouchDBStore(), lang  = json.language.toUpperCase();

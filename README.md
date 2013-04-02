@@ -27,6 +27,7 @@ npm install
   - create handler for server-main.js
   - create template for index.html (it prevents duplicate index.html for both desktop and touch devices).
   - maintainable css (with sass and audit)
+  - put descriptions in wiki
 
 
 Introduction

@@ -7,6 +7,13 @@ The repository has two main branches with an infinite lifetime:
  * master (production-ready state)
  * develop (latest delivered development changes)
 
+In parallel, we could support branches for team members, features or bugs. Unlike the main branches, these branches always have a limited life time, since they will be removed eventually.
+
+The different types of branches we may use are:
+ * Feature branches
+ * Release branches
+ * Hotfix branches
+
 
 ## Develop
 

@@ -6104,10 +6104,11 @@ li.my2q{
 }
 
 #mubwait .mubdesc label, #mubwait .mubroster label{
-    font-family: Pacifico;
+    font-family: Helvetica;
     color: #657B99;
-    font-size: 18px;
-    text-decoration: underline;
+    font-size: 14px;
+    padding-top: 5px;
+    pading-left: 5px;
 }
 
 #mubwait .mubdesc p{

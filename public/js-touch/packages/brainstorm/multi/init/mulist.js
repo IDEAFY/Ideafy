@@ -26,17 +26,43 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "muall" : new Model(muCDB, {
                                 setParticipants : function (array){
                                         this.innerHTML = array.length + 1;
+                                },
+                                setMode : function(mode){
+                                        
+                                },
+                                setLang : function(lang){
+                                        switch(lang){
+                                                case "fr-fr":
+                                                        this.setAttribute("style", "background-image:url('img/flags/france.png');");
+                                                        break;
+                                                default:
+                                                        this.setAttribute("style", "background-image:url('img/flags/USA.png');");
+                                                        break;
+                                        }
                                 }
                         }),
                         "musearch" : new Model(muSearch, {
                                 setParticipants : function (nb){
                                         this.innerHTML = parseInt(nb,10) + 1;
+                                },
+                                setMode : function(mode){
+                                        
+                                },
+                                setLang : function(lang){
+                                        switch(lang){
+                                                case "fr-fr":
+                                                        this.setAttribute("style", "background-image:url('img/flags/france.png');");
+                                                        break;
+                                                default:
+                                                        this.setAttribute("style", "background-image:url('img/flags/USA.png');");
+                                                        break;
+                                        }
                                 }        
                         }),
                         "mulistevent" : new Event(widget)
                 });
                 
-                widget.template = '<div id="mulist"><div id="mulist-content"><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><div class="mumode">Mode</div><div class="mulang">Lang</div></div><hr/><div class="mulistheader"><div class="mumode">Mode</div><div class="mutitle">Title</div><div class="mulang">Lang</div><div class="muleadername">Session leader</div><div class="muparts">Participants</div></div><ul id="mulistall" data-muall="foreach"><li><div class="mumode" data-muall="bind:innerHTML, value.mode">Type</div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mulang" data-muall="bind:innerHTML, value.lang">Lang</div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musort" class="invisible"></ul><ul id="musearch" class="invisible" data-musearch="foreach"><div class="noresult">no result found</div><li><div class="mumode" data-musearch="bind:innerHTML, fields.mode">Type</div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mulang" data-musearch="bind:innerHTML, fields.lang">Lang</div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
+                widget.template = '<div id="mulist"><div id="mulist-content"><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><div class="mumode">Mode</div><div class="mulang">Lang</div></div><hr/><div class="mulistheader"><div class="mumode">Mode</div><div class="mutitle">Title</div><div class="mulang">Lang</div><div class="muleadername">Session leader</div><div class="muparts">Participants</div></div><ul id="mulistall" data-muall="foreach"><li><div class="mumode" data-muall="bind:setMode, value.mode">Type</div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mulang" data-muall="bind:setLang, value.lang">Lang</div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musort" class="invisible"></ul><ul id="musearch" class="invisible" data-musearch="foreach"><div class="noresult">no result found</div><li><div class="mumode" data-musearch="bind:innerHTML, fields.mode">Type</div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mulang" data-musearch="bind:setLang, fields.lang">Lang</div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
                 
                 widget.place(document.getElementById("mulist"));
                 

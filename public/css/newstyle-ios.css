@@ -6189,7 +6189,7 @@ li.my2q{
 }
 
 #mulistall li, #musearch li{
-    display: inline-table;
+    display: inline-block;
     height: 40px;
     width: 100%
 }
@@ -6206,14 +6206,17 @@ li.my2q{
 
 .mulistheader{
     height: 30px;
+    width: 849px;
     border: 1px solid #CCCCCC;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    display: inline-table;
+    display: inline-block;
 }
 
 .mulistheader div{
     display:inline-block;
+    padding: 5px;
+    text-align: center;
 }
 
 .mumode{
@@ -6238,7 +6241,8 @@ li.my2q{
 
 .muparts{
     display: inline-block;
-    width: 90px;    
+    width: 90px;
+    text-align: center;  
 }
 
 /* EULA */

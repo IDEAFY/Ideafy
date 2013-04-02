@@ -6180,7 +6180,7 @@ li.my2q{
 }
 
 #mulistall, #musearch{
-    height: 428px;
+    height: 400px;
     overflow-y: scroll;
     -webkit-padding-start: 0px;
     border: 1px solid #cccccc;
@@ -6201,6 +6201,14 @@ li.my2q{
     display: inline-block;
     line-height: 30px;
     padding:5px;
+}
+
+.mulistheader{
+    height: 30px;
+    border: 1px solid #CCCCCC;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    display: inline-table;
 }
 
 .mumode{

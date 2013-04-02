@@ -12,7 +12,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
            
                 var widget = new Widget(),
                     muCDB = new CouchDBStore(),
-                    muSearch = new CouchDBstore(),
+                    muSearch = new CouchDBStore(),
                     musessions = new Store([]),
                     muListOptions = new Store(),
                     currentList = "mulistall",

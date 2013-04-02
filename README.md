@@ -19,9 +19,13 @@ This application requires nodejs `~0.8.0` and:
 
 
 If you haven't used [Nodejs](http://nodejs.org/) before, be sure to check out the [Getting Started](http://nodejs.org/) guide, as it explains how to install and use Nodejs as well as npm. Once you're familiar with that process, you may install all the plugin needed with the following shell command:
+
 ```shell
 npm install
 ```
+
+## Documentation
+
 
 Introduction
 ----------------

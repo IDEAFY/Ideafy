@@ -444,5 +444,6 @@
 	"waitingroomlbl": "Waiting room",
 	"joinedsession": "<i>You joined this session.</i>",
 	"deletingsession": "Deleting session : ",
-	"participants": "Participants"
+	"participants": "Participants",
+	"startbutton": "Start"
 }

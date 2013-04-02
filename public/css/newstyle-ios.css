@@ -6175,23 +6175,23 @@ li.my2q{
     height: 18px;
 }
 
-#mulistall{
+#mulistall, #musearch{
     height: 440px;
     overflow-y: scroll;
     -webkit-padding-start: 0px;
 }
 
-#mulistall li{
+#mulistall li, #musearch li{
     display: inline-table;
     height: 40px;
     width: 100%
 }
 
-#mulistall li:nth-child(even){
+#mulistall li:nth-child(even), #musearch li:nth-child(even){
     background: #E6E6E6;
 }
 
-#mulistall div{
+#mulistall div, #musearch div{
     display: inline-block;
     line-height: 30px;
     padding:5px;

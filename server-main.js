@@ -340,13 +340,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 // manual user creation  request                        
                         transport.request("CouchDB", {
                         method : "PUT",
-                        path:"/"+_db+"/"+docId,
+                        path:"/_users/"+"org.couchdb.user:"+json.name,
                         auth: cdbAdminCredentials,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
                         },
-                        data: cdbStore.toJSON()
+                        data: user.toJSON()
                 }, function (res) {
                         var json = JSON.parse(res);
                         if (json.ok) {

@@ -4081,11 +4081,13 @@ li.color-item{
 .msg-author, .msg-subject, .contact-name, .contact-intro{
     margin-left: 50px;
     font-weight: normal;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 }
 
 .contact-intro{
     min-height: 18px;
+    margin-left: 50px;
+    font-weight: normal;
 }
 
 .msg .date{
@@ -6099,7 +6101,7 @@ li.my2q{
 #mubwait .mubdesc, #mubwait .mubroster{
     display: inline-table;
     width: 285px;
-    height: 270px;
+    height: 260px;
     padding-right: 5px 10px 5px 0px;
 }
 
@@ -6108,7 +6110,10 @@ li.my2q{
     color: #657B99;
     font-size: 14px;
     padding-top: 5px;
-    pading-left: 5px;
+}
+
+#mubwait .mubroster label{
+    padding-left: 10px;
 }
 
 #mubwait .mubdesc p{
@@ -6125,6 +6130,10 @@ li.my2q{
     background-size: contain;
     height: 190px;
     border-radius: 5px;
+}
+
+#mubwait .mubleader{
+    padding: 10px 10px 5px 10px;
 }
 
 #mubwait .start-button{

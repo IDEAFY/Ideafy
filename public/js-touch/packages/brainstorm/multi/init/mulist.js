@@ -75,7 +75,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 }
                                 else {
                                         widget.toggleList("musearch");
-                                        widget.syncSearch();
+                                        widget.syncSearch(node.value);
                                 }
                         }        
                 };

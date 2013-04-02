@@ -43,7 +43,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 widget.reset = function reset(){
                        currentList = "mulistall"; 
                         // synchronize muCDB with database
-                        muCDB.syncAll();
+                        widget.syncAll();
                 };
                 
                 widget.syncAll = function syncAll(){

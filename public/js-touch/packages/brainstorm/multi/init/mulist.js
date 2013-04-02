@@ -60,7 +60,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         var promise = new Promise();
                         muSearch.unsync();
                         muSearch.reset([]);
-                        muSearch.sync(Config.get("db"), "_fti/local/indexedsessions", "_view/roulette", {descending:true}).then(function(){
+                        muSearch.sync("_fti/local/"+Config.get("db"), "indexedsessions", "_view/roulette", {q: query, descending:true}).then(function(){
                                 console.log(muSearch.toJSON());
                                 promise.fulfill();
                         });

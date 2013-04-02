@@ -6232,6 +6232,9 @@ li.my2q{
 .mulang{
     width: 49px;
     border-right: 1px solid #CCCCCC;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position: center center;
 }
 
 .muleadername{

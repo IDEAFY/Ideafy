@@ -23,6 +23,12 @@ If you haven't used [Nodejs](http://nodejs.org/) before, be sure to check out th
 npm install
 ```
 
+## Todo
+  - create handler for server-main.js
+  - create template for index.html (it prevents duplicate index.html for both desktop and touch devices).
+  - maintainable css (with sass and audit)
+
+
 Introduction
 ----------------
 

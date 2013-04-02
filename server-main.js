@@ -336,6 +336,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         user.setTransport(transport);
                         user.set("password", json.password);
                         user.set("name", json.name);
+                        user.set("type", "user")
                         
                         user.create().then(function (si) {
                                 
@@ -403,7 +404,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 });
         
         olives.handlers.set('Welcome', function(json, onEnd){
-                var Id = "", cdb = new CouchDBStore(), lang  = json.language.toUpperCase();
+                var Id = "", cdb = new CouchDBStore(), lang  = json.language.toUppercase() || "en-us";
                 
                 (["US", "FR"].indexOf(lang.substr(2))>-1) ? Id = "I:WELCOME:"+lang : Id = "I:WELCOME:US";
                 

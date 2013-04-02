@@ -6212,10 +6212,12 @@ li.my2q{
     display: inline-table;
 }
 
+.mulistheader div{
+    display:inline-block;
+}
+
 .mumode{
-    display: inline-block;
     width: 49px;
-    height: 40px;
     border-right: 1px solid #CCCCCC;
 }
 
@@ -6225,9 +6227,7 @@ li.my2q{
 }
 
 .mulang{
-    display: inline-block;
     width: 49px;
-    height: 40px;
     border-right: 1px solid #CCCCCC;
 }
 
@@ -6238,8 +6238,7 @@ li.my2q{
 
 .muparts{
     display: inline-block;
-    width: 90px;
-    height: 40px;    
+    width: 90px;    
 }
 
 /* EULA */

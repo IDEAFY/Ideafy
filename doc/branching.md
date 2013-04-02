@@ -26,6 +26,33 @@ Each time when changes are merged back into master, this is a new production rel
 
 ## Features
 
+The essence of a feature branch is that it exists as long as the feature is in development, but will eventually be merged back into develop (to definitely add the new feature to the upcoming release) or discarded (in case of a disappointing experiment).
+
+It herits from `develop` and must marge back into `develop`.
+Branch naming convention: feature-*
+
+Create a feature branch (called scroll):
+```shell
+git checkout -b feature-scroll develop
+```
+
+Merge into the develop branch: 
+```shell
+git checkout develop
+Switched to branch 'develop'
+
+git merge --no-ff feature-scroll
+Updating ea1b82a..05e9557
+
+git branch -d feature-scroll
+Deleted branch myfeature (was 05e9557).
+
+git push origin develop
+```
+
+
 ## Hotfixes
+
+hotfix-*
 
 ## Users

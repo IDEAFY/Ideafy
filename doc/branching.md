@@ -29,7 +29,7 @@ Each time when changes are merged back into master, this is a new production rel
 The essence of a feature branch is that it exists as long as the feature is in development, but will eventually be merged back into develop (to definitely add the new feature to the upcoming release) or discarded (in case of a disappointing experiment).
 
 It herits from `develop` and must marge back into `develop`.
-Branch naming convention: feature-*
+Branch naming convention: `feature-*`
 
 Create a feature branch (called scroll):
 ```shell

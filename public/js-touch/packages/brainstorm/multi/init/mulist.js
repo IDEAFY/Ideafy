@@ -28,7 +28,17 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         this.innerHTML = array.length + 1;
                                 },
                                 setMode : function(mode){
-                                        
+                                        switch(mode){
+                                                case "campfire":
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/campfire.png');");
+                                                        break;
+                                                case "boardroom":
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/boardroom.png');");
+                                                        break;
+                                                default:
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/roulette.png');");
+                                                        break;        
+                                        }
                                 },
                                 setLang : function(lang){
                                         switch(lang){
@@ -47,7 +57,17 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         this.innerHTML = parseInt(nb,10) + 1;
                                 },
                                 setMode : function(mode){
-                                        
+                                        switch(mode){
+                                                case "campfire":
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/campfire.png');");
+                                                        break;
+                                                case "boardroom":
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/boardroom.png');");
+                                                        break;
+                                                default:
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/roulette.png');");
+                                                        break;        
+                                        }        
                                 },
                                 setLang : function(lang){
                                         switch(lang){

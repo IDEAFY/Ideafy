@@ -6229,17 +6229,13 @@ li.my2q{
     text-align: center;
 }
 
-.mumode{
-    width: 49px;
-    border-right: 1px solid #CCCCCC;
-}
 
 .mutitle{
     width: 399px;
     border-right: 1px solid #CCCCCC;
 }
 
-.mulang{
+.mulang, .mumode{
     width: 49px;
     border-right: 1px solid #CCCCCC;
     background-repeat: no-repeat;

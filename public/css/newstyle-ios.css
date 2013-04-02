@@ -6180,9 +6180,11 @@ li.my2q{
 }
 
 #mulistall, #musearch{
-    height: 440px;
+    height: 428px;
     overflow-y: scroll;
     -webkit-padding-start: 0px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
 }
 
 #mulistall li, #musearch li{
@@ -6199,6 +6201,36 @@ li.my2q{
     display: inline-block;
     line-height: 30px;
     padding:5px;
+}
+
+.mumode{
+    display: inline-block;
+    width: 49px;
+    height: 40px;
+    border-right: 1px solid #CCCCCC;
+}
+
+.mutitle{
+    width: 399px;
+    border-right: 1px solid #CCCCCC;
+}
+
+.mulang{
+    display: inline-block;
+    width: 49px;
+    height: 40px;
+    border-right: 1px solid #CCCCCC;
+}
+
+.muleadername{
+    width: 199px;
+    border-right: 1px solid #CCCCCC;
+}
+
+.muparts{
+    display: inline-block;
+    width: 90px;
+    height: 40px;    
 }
 
 /* EULA */

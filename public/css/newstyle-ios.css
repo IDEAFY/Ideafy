@@ -6126,6 +6126,18 @@ li.my2q{
     border-radius: 5px;
 }
 
+#mubwait .start-button{
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    line-height: 50px;
+    font-size: 14px;
+    background: #5F8B28;
+    color: white;
+    text-align: center;
+    margin: 0 auto;
+}
+
 #mulist .mulistoptions{
     float: right;
     margin-top: -20px;

@@ -4,25 +4,30 @@ Ideafy
 > Ideafy is a web-based idea management and idea generation application.
 
 ## Getting Started
-This plugin requires Grunt `~0.4.0`
 
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install all the plugin needed by this grunt file:
+This application requires nodejs `~0.8.0` and:
+	* connect `~2.5.0`
+    * connect-redirection `~0.0.1`
+    * connect-redis `~1.4.1`
+    * cookie `~0.0.4`
+    * couchdb-emily-tools `~1.0.4`
+    * nodemailer `~0.3.21`
+    * olives `~1.3.2`
+    * socket.io `~0.9.10`
+    * requirejs `~2.1.1`
+    * ws `~0.4.21`
 
+
+
+You may install all the plugin needed with the following shell command:
 ```shell
 npm install
 ```
 
-Once the plugins has been installed, type the following command to start developing:
-
+If you haven't used [Nodejs](http://nodejs.org/) before, be sure to check out the [Getting Started](http://nodejs.org/) guide, as it explains how to install and use Nodejs as well as npm. Once you're familiar with that process, you may install all the plugin needed with the following shell command:
 ```shell
-grunt
+npm install
 ```
-and to build your project:
-
-```shell
-grunt build
-```
-
 
 Introduction
 ----------------

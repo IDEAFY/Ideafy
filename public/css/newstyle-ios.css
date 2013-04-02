@@ -6096,6 +6096,7 @@ li.my2q{
     color: #4D4D4D;
     font-weight: bold;
     border-bottom: 1px solid #cccccc;
+    margin-bottom: 5px;
 }
 
 #mubwait .mubdesc, #mubwait .mubroster{
@@ -6125,7 +6126,6 @@ li.my2q{
     color: #404040;
     overflow-y: scroll;
     margin-top: 10px;
-    border-radius: 5px;
     background: url('../img/connect/bg-note.jpg') no-repeat center center;
     background-size: contain;
     height: 190px;
@@ -6134,6 +6134,10 @@ li.my2q{
 
 #mubwait .mubleader{
     padding: 10px 10px 5px 10px;
+}
+
+#mubwait .participants .contact{
+    padding: 5px 10px 5px 10px;
 }
 
 #mubwait .start-button{
@@ -6146,6 +6150,10 @@ li.my2q{
     color: white;
     text-align: center;
     margin: 0 auto;
+}
+
+#mubwait .start-button.pressed{
+    color: #4D4D4D;
 }
 
 #mulist .mulistoptions{

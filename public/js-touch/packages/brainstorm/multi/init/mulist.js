@@ -65,7 +65,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "mulistevent" : new Event(widget)
                 });
                 
-                widget.template = '<div id="mulist"><div id="mulist-content"><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><div class="mumode">Mode</div><div class="mulang">Lang</div></div><hr/><div class="mulistheader"><div class="mumode">Mode</div><div class="mutitle">Title</div><div class="mulang">Lang</div><div class="muleadername">Session leader</div><div class="muparts">Participants</div></div><div id="noresult" class="invisible">no session found</div><ul id="mulistall" data-muall="foreach"><li><div class="mumode" data-muall="bind:setMode, value.mode">Type</div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mulang" data-muall="bind:setLang, value.lang"></div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musort" class="invisible"></ul><ul id="musearch" class="invisible" data-musearch="foreach"><li><div class="mumode" data-musearch="bind:innerHTML, fields.mode">Type</div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mulang" data-musearch="bind:setLang, fields.lang"></div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
+                widget.template = '<div id="mulist"><div id="mulist-content"><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><div class="mumode">Mode</div><div class="mulang">Lang</div></div><hr/><div class="mulistheader"><div class="mumode">Mode</div><div class="mutitle">Title</div><div class="mulang">Lang</div><div class="muleadername">Session leader</div><div class="muparts">Participants</div></div><div id="noresult" class="invisible">no session found</div><ul id="mulistall" data-muall="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-muall="bind:setMode, value.mode">Type</div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mulang" data-muall="bind:setLang, value.lang"></div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musort" class="invisible"></ul><ul id="musearch" class="invisible" data-musearch="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-musearch="bind:innerHTML, fields.mode">Type</div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mulang" data-musearch="bind:setLang, fields.lang"></div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
                 
                 widget.place(document.getElementById("mulist"));
                 
@@ -109,6 +109,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         widget.syncSearch(node.value);
                                 }
                         }        
+                };
+                
+                widget.zoom = function(event, node){
+                        node.classList.add("pressed");        
                 };
                 
                 widget.toggleList = function toggleList(list){

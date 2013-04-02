@@ -6193,12 +6193,17 @@ li.my2q{
     width: 100%
 }
 
+#mulistall li.pressed, #musearch li.pressed{
+    background: #9AC9CD;
+    color: white;
+}
+
 #mulistall li:nth-child(even), #musearch li:nth-child(even){
     background: #E6E6E6;
 }
 
 #mulistall li:last-child, #musearch li:last-child{
-    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 0 5px 1px rgba(0,0,0,0.3);
 }
 
 #mulistall div, #musearch div{

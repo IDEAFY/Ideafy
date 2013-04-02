@@ -6186,6 +6186,7 @@ li.my2q{
     border: 1px solid #cccccc;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    background: #E6E6E6;
 }
 
 #mulistall li, #musearch li{
@@ -6198,12 +6199,12 @@ li.my2q{
     color: white;
 }
 
-#mulistall li:nth-child(even), #musearch li:nth-child(even){
-    background: #E6E6E6;
+#mulistall li:nth-child(odd), #musearch li:nth-child(odd){
+    background: white;
 }
 
-#mulistall li:last-child, #musearch li:last-child{
-    -webkit-box-shadow: 0 0 5px 1px rgba(0,0,0,0.3);
+#mulistall li:nth-child(even), #musearch li:nth-child(even){
+    background: #E6E6E6;
 }
 
 #mulistall div, #musearch div{

@@ -6184,7 +6184,8 @@ li.my2q{
     overflow-y: scroll;
     -webkit-padding-start: 0px;
     border: 1px solid #cccccc;
-    border-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 #mulistall li, #musearch li{

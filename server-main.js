@@ -174,6 +174,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         break;        
                         }
                         currentIP = usercdb.get("ip");
+                        
                         usercdb.set("ip", currentIP+increment);
                         updateDocAsAdmin(userid, usercdb).then(function(){
                                 onEnd("score_updated");
@@ -1477,7 +1478,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         idList.push(part.id);
                                 });
                         }
-                        
+                        console.log(ip, " ", idList.join());
                         // for each user update IP with reason sessionComplete
                         idList.forEach(function(id){
                                 updateUserIP(id, "session_complete", ip, promise.fulfill);
@@ -1554,6 +1555,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 updateDocAsAdmin(json.sid, cdb).then(function(){
                                         onEnd({res: "ok", value: cdb.get("score")});
                                         updateUserWithSessionScore(cdb).then(function(){
+                                                console.log("score update ok");
                                                 cdb.unsync();
                                         });
                                 });

@@ -41,7 +41,7 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
         secureConnection : true,
         port : 465,
         auth : {
-                user : "ideafy-nodesmc",
+                user : "ideafy-taiaut",
                 pass : fs.readFileSync(".password", "utf8").trim()
         }
 });

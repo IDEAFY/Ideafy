@@ -129,26 +129,27 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         $data.set("idea", JSON.parse(_idea.toJSON()));
                                         
                                         // create separate idea document in couchdb
-                                        _widget.createIdeaDoc();
+                                        _widget.createIdeaDoc().then(function(){
                                         
-                                        // update session score
-                                        _widget.updateSessionScore(_timer.get("timer")).then(function(){
-                                                // resync with db
-                                                $session.unsync();
-                                                $session.sync(Config.get("db"), $session.get("_id")).then(function(){
-                                                        var timers = $session.get("elapsedTimers");
+                                                // update session score
+                                                _widget.updateSessionScore(_timer.get("timer")).then(function(){
+                                                        // resync with db
+                                                        $session.unsync();
+                                                        $session.sync(Config.get("db"), $session.get("_id")).then(function(){
+                                                                var timers = $session.get("elapsedTimers");
                                                         
-                                                        timers.quickidea = _timer.get("timer");
-                                                        // update session document
-                                                        $session.set("idea", [JSON.parse(_idea.toJSON())]);
-                                                        $session.set("elapsedTimers", timers);
-                                                        $session.set("duration", duration);
-                                                        $session.set("status", "completed");
-                                                        // set idea to readonly
-                                                        _tools.set("readonly", true);
-                                                        $next("quickidea");         
-                                                });      
-                                        });
+                                                                timers.quickidea = _timer.get("timer");
+                                                                // update session document
+                                                                $session.set("idea", [JSON.parse(_idea.toJSON())]);
+                                                                $session.set("elapsedTimers", timers);
+                                                                $session.set("duration", duration);
+                                                                $session.set("status", "completed");
+                                                                // set idea to readonly
+                                                                _tools.set("readonly", true);
+                                                                $next("quickidea");         
+                                                        });      
+                                                });
+                                });
                                 }
                                 else $next("quickidea");
                         };
@@ -326,7 +327,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.createIdeaDoc = function createIdeaDoc(){
                                 var cdb = new CouchDBStore(Config.get("ideaTemplate")),
                                     now = new Date(),
-                                    _id = "I:"+now.getTime();
+                                    _id = "I:"+now.getTime(),
+                                    promise = new Promise();
                                 cdb.setTransport(_transport);
                                 cdb.set("title", _idea.get("title"));
                                 cdb.set("sessionId", $session.get("_id"));
@@ -342,10 +344,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 //set the idea's language to the same language as the session
                                 cdb.set("lang", $session.get("lang"));
                                 cdb.set("_id", _id);
-                                cdb.sync(Config.get("db"), _id);
-                                setTimeout(function(){
-                                        cdb.upload();
-                                }, 300);      
+                                cdb.sync(Config.get("db"), _id).then(function(){
+                                        cdb.upload().then(function(){
+                                                promise.fulfill();
+                                        });
+                                });      
                         };
                         
                         // INIT QUICKIDEA STEP

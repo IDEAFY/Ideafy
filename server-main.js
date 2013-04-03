@@ -1461,11 +1461,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         olives.handlers.set("UpdateSessionScore", function(json, onEnd){
                 var cdb = new CouchDBStore(), increment, min_score, bonus, coeff, wbdata, t, input,
                     updateUserWithSessionScore = function(sessionCDB){
-                            console.log("SESSIONCDB.TOJSON -->", sessionCDB.toJSON());
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
                             idList = [],
-                            parts = session.get("participants");
+                            parts = sessionCDB.get("participants");
                         
                         // gather list of users who should be credited
                         idList.push(sessionCDB.get("initiator").id);
@@ -1474,7 +1473,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         idList.push(part.id);
                                 });
                         }
-                        console.log("IL FAUT SE FAIRE REMARQUER ICI !!!!!!!!!   ", ip, " ", idList.join(), sessionCDB.toJSON());
                         // for each user update IP with reason sessionComplete
                         idList.forEach(function(id){
                                 updateUserIP(id, "session_complete", ip, promise.fulfill);
@@ -1550,10 +1548,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         getDocAsAdmin(json.sid, cdb).then(function(){
                                 cdb.set("score", parseInt(cdb.get("score")+increment, 10));
                                 updateDocAsAdmin(json.sid, cdb).then(function(){
+                                        // if idea has been created then credit participants with session points
                                         if (json.step.search("idea")>-1){
-                                                console.log("UPDATING SCORE AFTER IDEA STEP", cdb.toJSON());
                                                 updateUserWithSessionScore(cdb).then(function(){
-                                                        console.log("score update ok");
                                                         onEnd({res: "ok", value: cdb.get("score")});
                                                 });
                                         }

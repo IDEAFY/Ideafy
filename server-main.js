@@ -1368,13 +1368,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         }
                                                         else{
                                                                 onEnd("ok");
-                                                        }
-                                                        cdb.unsync();       
+                                                        }       
                                                 });
                                         }
                                         else {
                                                 onEnd("ok");
-                                                cdb.unsync();
                                         }
                         });     
                 });
@@ -1463,6 +1461,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         olives.handlers.set("UpdateSessionScore", function(json, onEnd){
                 var cdb = new CouchDBStore(), increment, min_score, bonus, coeff, wbdata, t, input,
                     updateUserWithSessionScore = function(sessionCDB){
+                            console.log("SESSIONCDB.TOJSON -->", sessionCDB.toJSON());
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
                             idList = [],
@@ -1552,6 +1551,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 cdb.set("score", parseInt(cdb.get("score")+increment, 10));
                                 updateDocAsAdmin(json.sid, cdb).then(function(){
                                         if (json.step.search("idea")>-1){
+                                                console.log("UPDATING SCORE AFTER IDEA STEP", cdb.toJSON());
                                                 updateUserWithSessionScore(cdb).then(function(){
                                                         console.log("score update ok");
                                                         onEnd({res: "ok", value: cdb.get("score")});
@@ -1560,7 +1560,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         else {
                                                 onEnd({res: "ok", value: cdb.get("score")});        
                                         }
-                                        cdb.unsync();
                                 });
                         });
                 }

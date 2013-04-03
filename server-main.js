@@ -1480,6 +1480,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         idList.forEach(function(id){
                                 updateUserIP(id, "session_complete", ip, promise.fulfill);
                         });
+                        return promise;
                 };
                 
                 switch(json.step){
@@ -1550,11 +1551,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         getDocAsAdmin(json.sid, cdb).then(function(){
                                 cdb.set("score", parseInt(cdb.get("score")+increment, 10));
                                 updateDocAsAdmin(json.sid, cdb).then(function(){
-                                        onEnd({res: "ok", value: cdb.get("score")});
                                         if (json.step.search("idea")>-1){
                                                 updateUserWithSessionScore(cdb).then(function(){
                                                         console.log("score update ok");
+                                                        onEnd({res: "ok", value: cdb.get("score")});
                                                 });
+                                        }
+                                        else {
+                                                onEnd({res: "ok", value: cdb.get("score")});        
                                         }
                                         cdb.unsync();
                                 });

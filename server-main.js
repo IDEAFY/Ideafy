@@ -1465,7 +1465,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 
                 // a function to add session score to user score after the idea
                 updateUserWithSessionScore = function(sessionCDB){
-                        var ip = sessionCDB.get("score"), idList = [], parts = session.get("participants");
+                        var promise = new Promise(),
+                            ip = sessionCDB.get("score"),
+                            idList = [],
+                            parts = session.get("participants");
                         
                         // gather list of users who should be credited
                         idList.push(sessionCDB.get("initiator").id);
@@ -1477,7 +1480,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         
                         // for each user update IP with reason sessionComplete
                         idList.forEach(function(id){
-                                updateUserIP(id, "session_complete", ip);
+                                updateUserIP(id, "session_complete", ip, promise.fulfill);
                         });
                 };
                 
@@ -1545,12 +1548,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 break;
                 }
                 
-                if (increment !== 0){
+                if (increment !== 0 || json.step.search("idea")>-1){
                         getDocAsAdmin(json.sid, cdb).then(function(){
                                 cdb.set("score", parseInt(cdb.get("score")+increment, 10));
                                 updateDocAsAdmin(json.sid, cdb).then(function(){
-                                   onEnd({res: "ok", value: cdb.get("score")});
-                                   cdb.unsync();  
+                                        onEnd({res: "ok", value: cdb.get("score")});
+                                        updateUserWithSessionScore(cdb).then(function(){
+                                                cdb.unsync();
+                                        });
                                 });
                         });
                 }

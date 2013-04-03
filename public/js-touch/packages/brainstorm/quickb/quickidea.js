@@ -348,7 +348,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         cdb.upload().then(function(){
                                                 promise.fulfill();
                                         });
-                                });      
+                                });
                         };
                         
                         // INIT QUICKIDEA STEP

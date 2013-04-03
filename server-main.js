@@ -37,12 +37,13 @@ var http = require("http"),
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
-        host: "localhost",
+        host: "auth.smtp.1and1.fr",
         secureConnection : true,
-        port : 465,
+        port : 587,
         auth : {
-                user : "ideafy-taiaut",
-                pass : fs.readFileSync(".password", "utf8").trim()
+                user : "vincent.weyl@taiaut.com",
+                // pass : fs.readFileSync(".password", "utf8").trim()
+                pass : "10e6deth"
         }
 });
 

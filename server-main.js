@@ -1462,10 +1462,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         // updating a session's score
         olives.handlers.set("UpdateSessionScore", function(json, onEnd){
                 var cdb = new CouchDBStore(), increment, min_score, bonus, coeff, wbdata, t, input,
-                    updateUserWithSessionScore;
-                
-                // a function to add session score to user score after the idea
-                updateUserWithSessionScore = function(sessionCDB){
+                    updateUserWithSessionScore = function(sessionCDB){
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
                             idList = [],
@@ -1478,7 +1475,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         idList.push(part.id);
                                 });
                         }
-                        console.log(ip, " ", idList.join());
+                        console.log("IL FAUT SE FAIRE REMARQUER ICI !!!!!!!!!   ", ip, " ", idList.join(), sessionCDB.toJSON());
                         // for each user update IP with reason sessionComplete
                         idList.forEach(function(id){
                                 updateUserIP(id, "session_complete", ip, promise.fulfill);
@@ -1554,10 +1551,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 cdb.set("score", parseInt(cdb.get("score")+increment, 10));
                                 updateDocAsAdmin(json.sid, cdb).then(function(){
                                         onEnd({res: "ok", value: cdb.get("score")});
-                                        updateUserWithSessionScore(cdb).then(function(){
-                                                console.log("score update ok");
-                                                cdb.unsync();
-                                        });
+                                        if (json.step.search("idea")>-1){
+                                                updateUserWithSessionScore(cdb).then(function(){
+                                                        console.log("score update ok");
+                                                });
+                                        }
+                                        cdb.unsync();
                                 });
                         });
                 }

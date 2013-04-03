@@ -349,6 +349,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 promise.fulfill();
                                         });
                                 });
+                                return promise;
                         };
                         
                         // INIT QUICKIDEA STEP

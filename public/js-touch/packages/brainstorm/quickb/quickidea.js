@@ -344,10 +344,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 //set the idea's language to the same language as the session
                                 cdb.set("lang", $session.get("lang"));
                                 cdb.set("_id", _id);
-                                cdb.sync(Config.get("db"), _id).then(function(){
+                                cdb.sync(Config.get("db"), _id);
+                                setTimeout(function(){
                                         cdb.upload().then(function(){
                                                 promise.fulfill();
-                                        });
+                                        }, 250);
                                 });
                                 return promise;
                         };

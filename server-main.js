@@ -404,8 +404,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 });
         
         olives.handlers.set('Welcome', function(json, onEnd){
-                var Id = "", cdb = new CouchDBStore(), lang  = json.language.toUppercase() || "en-us";
-                
+                var Id = "", cdb = new CouchDBStore(), lang="EN-US";
+                // workaround to solve language issue 
+                if (json.language) {
+                      lang =  json.language.toUpperCase();
+                      }
                 (["US", "FR"].indexOf(lang.substr(2))>-1) ? Id = "I:WELCOME:"+lang : Id = "I:WELCOME:US";
                 
                 getDocAsAdmin(Id, cdb).then(function(){
@@ -1457,7 +1460,26 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
         // updating a session's score
         olives.handlers.set("UpdateSessionScore", function(json, onEnd){
-                var cdb = new CouchDBStore(), increment, min_score, bonus, coeff, wbdata, t, input;
+                var cdb = new CouchDBStore(), increment, min_score, bonus, coeff, wbdata, t, input,
+                    updateUserWithSessionScore;
+                
+                // a function to add session score to user score after the idea
+                updateUserWithSessionScore = function(sessionCDB){
+                        var ip = sessionCDB.get("score"), idList = [], parts = session.get("participants");
+                        
+                        // gather list of users who should be credited
+                        idList.push(sessionCDB.get("initiator").id);
+                        if (parts && parts.length){
+                                parts.forEach(function(part){
+                                        idList.push(part.id);
+                                });
+                        }
+                        
+                        // for each user update IP with reason sessionComplete
+                        idList.forEach(function(id){
+                                updateUserIP(id, "session_complete", ip);
+                        });
+                };
                 
                 switch(json.step){
                         case "quicksetup":
@@ -1535,6 +1557,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 else {
                         onEnd({res:"ok", value: 0})
                 }
+                
+                 
                         
         });
         

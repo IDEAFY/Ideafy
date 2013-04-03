@@ -3688,6 +3688,8 @@ li.color-item{
 
 .cd-contentarea.story p{
     font-size: 12px;
+    height: 120px;
+    overflow: scroll;
 }
 
 .cd-contentarea .contentTitle{
@@ -3724,7 +3726,8 @@ li.color-item{
 .storytitle span{
     width: auto;
     max-width: 200px;
-    overflow: hidden;
+    height: 30px;
+    overflow: scroll;
 }
 
 /* quickscenario */

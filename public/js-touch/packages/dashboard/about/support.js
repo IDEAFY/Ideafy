@@ -66,31 +66,34 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 });  
                         };
                         
-                        support.getMessages = function getMessages(lang){
+                        support.getMessage = function getMessages(lang, msgId){
                                 var cdb = new CouchDBStore();
                                 
                                 cdb.setTransport(Config.get("transport"));
                                 
-                                ["SUPPORTMSG", "MAINTENANCE"].forEach(function(msgId){
-                                        cdb.sync(Config.get("db"), msgId).then(function(){
-                                                if (cdb.get("lang") === lang || !cdb.get("translations")[lang]){
+                                cdb.sync(Config.get("db"), msgId).then(function(){
+                                        if (cdb.get("lang") === lang || !cdb.get("translations")[lang]){
                                                         (msgID === "SUPPORTMSG") ? supportMSG.reset(JSON.parse(cdb.toJSON())) : maintenanceMSG.reset(JSON.parse(cdb.toJSON()));        
-                                                }
-                                                else{
-                                                        (msgID === "SUPPORTMSG") ? supportMSG.reset(cdb.get("translations")[lang]) : maintenanceMSG.reset(cdb.get("translations")[lang]);        
-                                                }
-                                                cdb.unsync();
-                                        });
+                                        }
+                                        else{
+                                                (msgID === "SUPPORTMSG") ? supportMSG.reset(cdb.get("translations")[lang]) : maintenanceMSG.reset(cdb.get("translations")[lang]);        
+                                        }
+                                        cdb.unsync();
                                 });      
                         };
                         
                         // init --> get support  & maintenance messages from database
-                        support.getMessages(user.get("lang"));
+                        support.getMessage(user.get("lang"), "SUPPORTMSG");
+                        support.getMessage(user.get("lang"), "MAINTENANCE");
                         
                         // update support and maintenance messages in case of language change
                         user.watchValue("lang", function(){
-                                support.getMessages(user.get("lang"));
+                                support.getMessage(user.get("lang"), "SUPPORTMSG");
+                                support.getMessage(user.get("lang"), "MAINTENANCE");
                         });
+                        
+                        SUPP = supportMSG;
+                        MAINT = maintenanceMSG;
                         
                         return support;      
                         

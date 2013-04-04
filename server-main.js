@@ -1563,9 +1563,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 else {
                         onEnd({res:"ok", value: 0})
                 }
-                
-                 
-                        
         });
         
         // Clean up attachments from drive when user deletes a session

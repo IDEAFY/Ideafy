@@ -6,7 +6,7 @@
  */
 
 define(["OObject" ,"Amy/Stack-plugin", 
-	"service/map", "Amy/Delegate-plugin", "service/config", "Bind.plugin", "Spinner"],
+	"service/map", "Amy/Delegate-plugin", "service/config", "Bind.plugin", "lib/spin"],
 	function(Widget, Stack, Map, Event, Config, Model, Spinner){
 		return function LoginConstructor(){
 		//declaration

@@ -6,8 +6,8 @@
  */
 
 define(["OObject" ,"Amy/Stack-plugin", 
-	"service/map", "Amy/Delegate-plugin", "service/config", "Bind.plugin"],
-	function(Widget, Stack, Map, Event, Config, Model){
+	"service/map", "Amy/Delegate-plugin", "service/config", "Bind.plugin", "Spinner"],
+	function(Widget, Stack, Map, Event, Config, Model, Spinner){
 		return function LoginConstructor(){
 		//declaration
 			var _login = new Widget(),
@@ -16,7 +16,8 @@ define(["OObject" ,"Amy/Stack-plugin",
 				_loading = new Widget(),
 				_serverdown = new Widget(),
 				_internetdown = new Widget(),
-				_stack = new Stack();
+				_stack = new Stack(),
+				spinner;
 		//setup
 			_loginForm.alive(Map.get("login-form"));
 			_signupForm.alive(Map.get("signup-form"));
@@ -38,6 +39,9 @@ define(["OObject" ,"Amy/Stack-plugin",
 			_stack.getStack().add("#nointernet", _internetdown);
 			
                         _stack.getStack().setCurrentScreen(_loginForm);
+                        
+                        // add spinner to loading screen
+                        spinner = new Spinner().spin(Map.get("loading"));
 
 		//logic
 			_login.setScreen = function(name){

@@ -4179,13 +4179,18 @@ li.color-item{
 }
 
 #msgdetail .showdoc{
-    background-image: url('../img/disableLibrary.png');
-    -webkit-box-shadow: inset 0px 0px 3px gray;   
+    margin: 10px auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background: url('../img/disableLibrary.png') no-repeat center center;
+    background-size: contain;
+    -webkit-box-shadow: inset 0px 0px 3px gray  
 }
 
 #msgdetail .showdoc.pushed{
-    background-color: gray;
-    background-image: url('../img/activeLibrary.png');
+    background: gray url('../img/activeLibrary.png') no-repeat center center;
+    background-size: contain;
     -webkit-box-shadow: inset 0px 0px 3px black;  
 }
 

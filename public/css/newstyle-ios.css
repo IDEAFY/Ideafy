@@ -5732,6 +5732,13 @@ li.my2q{
     margin-top: 10px;
 }
 
+.aboutcontent .supportmsg{
+    color:#F27B3D;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
 .aboutcontent .contributor{
     width: 150px;
     display: inline-block;  

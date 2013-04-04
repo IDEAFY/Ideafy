@@ -76,7 +76,7 @@
 	"somethingwrong": "Une erreur s'est produite, veuillez réessayer plus tard",
 	"thankyou": "Merci",
 	"loadingmessage": "Application en cours de chargement, veuillez patienter...",
-	"maintenancemessage": "Nous sommes désolés mais le serveur est en ce moment en maintenance. Veuillez réessayer ultérieurement.",
+	"maintenancemessage": "Nous sommes désolés mais le serveur est momentanément indisponible. Veuillez réessayer ultérieurement.",
 	"library-ideas": "Mes Idées",
 	"library-sessions": "Mes Sessions Ideafy",
 	"sbytitle": "Titre",
@@ -402,7 +402,7 @@
 	"changelbl" : "Modifier",
 	"brainstormtutorial" : "Vidéoguide d'un brainstorming",
 	"twoway" : "Le support marche dans les deux sens",
-	"supportusintro" : "Ideafy est une application gratuite, et nous souhaitons bien qu'elle le reste. Nous nous engageons à vous offrir la meilleure expérience utilisateur possible. Vous pouvez considérablement nous faciliter la tâche. Voici de quelle(s) manière(s) :",
+	"supportusintro" : "Ideafy est une application gratuite, et nous entendons bien qu'elle le reste. Nous nous engageons à vous offrir la meilleure expérience utilisateur possible. Vous pouvez considérablement nous faciliter la tâche. Voici de quelle(s) manière(s) :",
 	"asanideafyer": "En tant qu'Ideafyer",
 	"asanexec":"Si vous êtes cadre ou dirigeant",
 	"asadev":"Si vous êtes un développeur",
@@ -419,6 +419,8 @@
 	"everyfifteen": "Toutes les 15 minutes",
 	"never": "Désactivé",
 	"nointernet": "Votre appareil n'est pas connecté: veuillez vérifier votre connexion à Internet et réessayer",
+	"schedmaintenance" : "Maintenance programmée",
+	"nextmaintenance" : "La prochaine maintenance aura lieu le : ",
 	"startnewmub": "Démarrer une session",
 	"joinmub": "Rejoindre une session"
 }

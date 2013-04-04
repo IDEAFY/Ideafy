@@ -210,6 +210,8 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                                                                         _local.set("userAvatar", user.get("picture_file"));
                                                                         _local.sync("ideafy-data");
                                                                         Config.set("uid", '"' + userid + '"');
+                                                                        user.unsync();
+                                                                        _body.init(true);
                                                                 });
                                                         }, 350);
 

@@ -41,7 +41,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _stack.getStack().setCurrentScreen(_loginForm);
                         
                         // add spinner to loading screen
-                        spinner = new Spinner().spin(Map.get("loading"));
+                        spinner = new Spinner({color:"#9AC9CD"}).spin(Map.get("loading"));
 
 		//logic
 			_login.setScreen = function(name){

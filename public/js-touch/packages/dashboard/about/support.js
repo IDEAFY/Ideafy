@@ -66,7 +66,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 });  
                         };
                         
-                        support.getMessage = function getMessages(lang, msgId){
+                        support.getMessage = function getMessage(lang, msgId){
                                 var cdb = new CouchDBStore();
                                 
                                 cdb.setTransport(Config.get("transport"));

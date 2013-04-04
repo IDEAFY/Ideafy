@@ -56,6 +56,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                         // initialize labels to device language if available or US by default
                         if (_local.get("labels")) {
                                 _labels.reset(_local.get("labels"));
+                                Config.set("language", _labels.get("language"));
                         }
                         else{
                                 updateLabels(navigator.language);

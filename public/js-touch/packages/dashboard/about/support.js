@@ -67,16 +67,17 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         };
                         
                         support.getMessage = function getMessage(lang, msgId){
+                                console.log("get message called", lang, msgId);
                                 var cdb = new CouchDBStore();
                                 
                                 cdb.setTransport(Config.get("transport"));
                                 
                                 cdb.sync(Config.get("db"), msgId).then(function(){
                                         if (cdb.get("lang") === lang || !cdb.get("translations")[lang]){
-                                                        (msgID === "SUPPORTMSG") ? supportMSG.reset(JSON.parse(cdb.toJSON())) : maintenanceMSG.reset(JSON.parse(cdb.toJSON()));        
+                                                        (msgId === "SUPPORTMSG") ? supportMSG.reset(JSON.parse(cdb.toJSON())) : maintenanceMSG.reset(JSON.parse(cdb.toJSON()));        
                                         }
                                         else{
-                                                (msgID === "SUPPORTMSG") ? supportMSG.reset(cdb.get("translations")[lang]) : maintenanceMSG.reset(cdb.get("translations")[lang]);        
+                                                (msgId === "SUPPORTMSG") ? supportMSG.reset(cdb.get("translations")[lang]) : maintenanceMSG.reset(cdb.get("translations")[lang]);        
                                         }
                                         cdb.unsync();
                                 });      

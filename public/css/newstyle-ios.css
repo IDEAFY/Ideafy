@@ -5739,6 +5739,10 @@ li.my2q{
     line-height: 20px;
 }
 
+.aboutcontent .maintenancemsg{
+    margin-bottom: 10px;
+}
+
 .aboutcontent .contributor{
     width: 150px;
     display: inline-block;  

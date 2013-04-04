@@ -74,7 +74,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 ["SUPPORTMSG", "MAINTENANCE"].forEach(function(msgId){
                                         cdb.sync(Config.get("db"), msgId).then(function(){
                                                 if (cdb.get("lang") === lang || !cdb.get("translations")[lang]){
-                                                        (msgID === "SUPPORTMSG") ? supportMSG.reset(JSON.parse(cdb.toJSON()) : maintenanceMSG.reset(JSON.parse(cdb.toJSON());        
+                                                        (msgID === "SUPPORTMSG") ? supportMSG.reset(JSON.parse(cdb.toJSON())) : maintenanceMSG.reset(JSON.parse(cdb.toJSON()));        
                                                 }
                                                 else{
                                                         (msgID === "SUPPORTMSG") ? supportMSG.reset(cdb.get("translations")[lang]) : maintenanceMSG.reset(cdb.get("translations")[lang]);        

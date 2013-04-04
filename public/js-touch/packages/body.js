@@ -205,18 +205,13 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
 
                                                         user.sync(result.db, userid);
                                                         setTimeout(function(){
-                                                                user.upload();
-                                                                _local.set("currentLogin", userid);
-                                                                _local.set("userAvatar", user.get("picture_file"));
-                                                                _local.sync("ideafy-data");
-                                                                Config.set("uid", '"' + userid + '"');
-                                                                promise.fulfill();
-                                                                }, 250);
-                                                                
-                                                         promise.then(function(){
-                                                                 user.unsync();
-                                                                 setTimeout(function(){_body.init(true);}, 250);
-                                                         });
+                                                                user.upload().then(function(){
+                                                                        _local.set("currentLogin", userid);
+                                                                        _local.set("userAvatar", user.get("picture_file"));
+                                                                        _local.sync("ideafy-data");
+                                                                        Config.set("uid", '"' + userid + '"');
+                                                                });
+                                                        }, 350);
 
                                                 } else {
                                                         _store.set("error", "error : " + result.message);

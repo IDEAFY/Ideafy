@@ -17,23 +17,24 @@ define(["OObject" ,"Amy/Stack-plugin",
 				_serverdown = new Widget(),
 				_internetdown = new Widget(),
 				_stack = new Stack(),
-				spinner = new Spinner({color:"#9AC9CD"}).spin();
+				spinner;
 		//setup
 		
+		         _login.plugins.addAll({
+                                "loginstack" : _stack,
+                                "label": new Model(Config.get("labels")),
+                                "loginevent" : new Event(this)
+                        });
+                        
+                        _loading.plugins.add("label", new Model(Config.get("labels")));
 		         
-		        _loading.template = '<div><p data-label="bind: innerHTML, loadingmessage"></p><div id="loadingspin"></div></div>';
+		        _loading.template = '<div id="loading"><p data-label="bind: innerHTML, loadingmessage"></p><div id="loadingspin"></div></div>';
 			_loginForm.alive(Map.get("login-form"));
 			_signupForm.alive(Map.get("signup-form"));
-			_loading.place(Map.get("loading"));
+			//_loading.place(Map.get("loading"));
 			_serverdown.alive(Map.get("serverdown"));
 			_internetdown.alive(Map.get("nointernet"));
 
-			_login.plugins.addAll({
-				"loginstack" : _stack,
-				"label": new Model(Config.get("labels")),
-				"loginevent" : new Event(this)
-			});
-			
 			_login.alive(Map.get("login"));
 			_stack.getStack().add("#login-screen", _loginForm);
 			_stack.getStack().add("#signup-screen", _signupForm);
@@ -45,9 +46,10 @@ define(["OObject" ,"Amy/Stack-plugin",
 
 		//logic
 			_login.setScreen = function(name){
+			        
 			        _stack.getStack().show(name);
 			        if (name === "#loading-screen"){
-			                document.getElementById("loadingspin").appendChild(spinner.el);
+			                spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin(document.getElementById("loadingspin"));
 			        }
 			        else{
 			                spinner.stop();

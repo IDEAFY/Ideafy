@@ -447,6 +447,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 
                 user.login(json.name, json.password).then(function(result) {
                         
+                        console.log(result);
                         var result = JSON.parse(result);
                         
                         if (!result.error) {

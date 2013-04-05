@@ -105,6 +105,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     background-position: 20px center;
 }
 
+#loadingspin{
+    margin-top: 80px;
+}
+
 #dock, .list, .details, .idea-edit, .idea-sendmail{
   background:white;
 }

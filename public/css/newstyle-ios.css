@@ -3496,7 +3496,7 @@ li.color-item{
     background-image: url('../img/brainstorm/scenario-01.png');
     background-size: 100px;
     background-position: center top;
-    margin-bottom: 15px;    
+    margin-bottom: 5px;    
 }
 
 .char.defaultcard.highlighted{
@@ -3728,6 +3728,7 @@ li.color-item{
     max-width: 200px;
     height: 30px;
     overflow: scroll;
+    font-size: 14px;
 }
 
 /* quickscenario */

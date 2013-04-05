@@ -6,20 +6,22 @@
  */
 
 define(["Store", "SocketIOTransport", "CouchDBStore", "Observable"], function(Store, Transport, CouchDBStore, Observable) {
-        var _loation, _transport, _user, _observer, _config = new Store();
+        var _loation, _transport, _user, _observer, _config = new Store(), _socket;
         
         this.reset = function(){
                  
                 //_transport = new Transport(io, "http://37.153.96.26:1664"); // uncomment for app deployment
                 _location = "http://8.19.34.68:1664";
                 //_location = location.origin;
-                _transport = new Transport(io, _location);
+                _socket = io.connect(_location);
+                _transport = new Transport(_socket);
                 _user =  new CouchDBStore();
                 _observer = new Observable();
                 _user.setTransport(_transport);
                 
                 _config.reset({
                         location : _location,
+                        socket : _socket,
                         transport : _transport,
                         db : "ideafy",
                         user : _user,

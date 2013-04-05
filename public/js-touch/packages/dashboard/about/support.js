@@ -13,8 +13,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                             labels = Config.get("labels"),
                             user = Config.get("user"),
                             model = new Store({"body": "", "result":""}),
-                            supportMSG = new Store({});
-                            maintenanceMSG = new Store({});
+                            supportMSG = new Store({}),
+                            maintenanceMSG = new Store({}),
                             supportCDB = new CouchDBStore(),
                             maintenanceCDB = new CouchDBStore();
                             
@@ -80,7 +80,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 }      
                         };
                         
-                        support.setMaintenanceMSG = function setSupportMSG(lang){
+                        support.setMaintenanceMSG = function setMaintenanceMSG(lang){
                                 if (maintenanceCDB.get("lang") === lang || !maintenanceCDB.get("translations")[lang]){
                                         maintenanceMSG.reset(JSON.parse(maintenanceCDB.toJSON()));        
                                 }
@@ -100,8 +100,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         
                         // update support and maintenance messages in case of language change
                         user.watchValue("lang", function(){
-                                support.getMessage(user.get("lang"), "SUPPORTMSG");
-                                support.getMessage(user.get("lang"), "MAINTENANCE");
+                                support.setSupportMSG(user.get("lang"), "SUPPORTMSG");
+                                support.setMaintenanceMSG(user.get("lang"), "MAINTENANCE");
                         });
                         
                         // watch for new support or maintenance messages
@@ -110,7 +110,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         });
                         
                         maintenanceCDB.watchValue("active", function(){
-                                support.setSupportMSG(user.get("lang"));  
+                                support.setMaintenanceMSG(user.get("lang"));  
                         });
                         
                         return support;      

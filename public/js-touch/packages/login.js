@@ -17,11 +17,14 @@ define(["OObject" ,"Amy/Stack-plugin",
 				_serverdown = new Widget(),
 				_internetdown = new Widget(),
 				_stack = new Stack(),
-				spinner;
+				spinner = new Spinner({color:"#9AC9CD"}).spin();
 		//setup
+		
+		         
+		        _loading.template = '<div><p data-label="bind: innerHTML, loadingmessage"></p><div id="loadingspin"></div></div>';
 			_loginForm.alive(Map.get("login-form"));
 			_signupForm.alive(Map.get("signup-form"));
-			_loading.alive(Map.get("loading"));
+			_loading.place(Map.get("loading"));
 			_serverdown.alive(Map.get("serverdown"));
 			_internetdown.alive(Map.get("nointernet"));
 
@@ -39,13 +42,16 @@ define(["OObject" ,"Amy/Stack-plugin",
 			_stack.getStack().add("#nointernet", _internetdown);
 			
                         _stack.getStack().setCurrentScreen(_loginForm);
-                        
-                        // add spinner to loading screen
-                        spinner = new Spinner({color:"#9AC9CD"}).spin(document.getElementById("laodingspin"));
 
 		//logic
 			_login.setScreen = function(name){
 			        _stack.getStack().show(name);
+			        if (name === "#loading-screen"){
+			                document.getElementById("loadingspin").appendChild(spinner.el);
+			        }
+			        else{
+			                spinner.stop();
+			        }
 			};
 		//return
 		return _login;

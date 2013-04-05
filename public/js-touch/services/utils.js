@@ -238,7 +238,27 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                                      }
                              };
                              req.send(body);
-                  },	
+                  },
+                  
+                  /**
+                 * A function to check the status of the server
+                 * @Param none
+                 * @Returns {Promise} promise 
+                 */
+                checkServerStatus : function(){
+                        var promise = new Promise(),
+                            req = new XMLHttpRequest();
+                        
+                        req.open('GET', Config.get("location"));
+                        req.onreadystatechange = function(){
+                                     if(req.readyState === 4){
+                                             (req.status === 200) ? promise.fulfill() : promise.reject();
+                                     }
+                             };
+                        req.send();
+                        
+                        return promise;
+                },	
 		
 		/*
                  * Check socket status and reconnect if needed

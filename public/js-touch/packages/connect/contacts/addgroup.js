@@ -157,16 +157,27 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         arr.push({"contact":connections[i], "selected": false});
                                 }       
                         }
-                        contactList.reset(arr);
+                }
+                else if (event.keyCode === 8 || event.keyCode === 46){
+                        // reinitialize arr with all connections
+                        arr = [];
+                        for(i=0, l =connections.length; i<l; i++){
+                                if (connections[i].type === "user") {
+                                        arr.push({"contact":connections[i], "selected": false});
+                                }       
+                        }
+                        // search for the string & remove unwanted contacts
+                        for (i=arr.length-1; i>=0; i--){
+                                if (arr[i].contact.username.toLowerCase().search(vlc) !== 0) {arr.splice(i, 1);}
+                        }
                 }
                 else{
                         for (i=arr.length-1; i>=0; i--){
                                 clc = arr[i].contact.username.toLowerCase();
                                 if (clc.search(vlc) !== 0) arr.splice(i, 1);
-                        }
-                        contactList.reset(arr);    
-                        
+                        }   
                 }
+                contactList.reset(arr);
                 // check if items are present in the group and set selected status accordingly
                 contactList.loop(function(v,i){
                         
@@ -201,7 +212,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
              addGroupUI.cancel = function(event, node){
                      node.classList.remove("pushed");
                      addGroupUI.reset();
-                     // clear input field
+                     //clear input field
                      document.querySelector("#addgroup input.search").value="";       
              };
              
@@ -244,7 +255,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                 
              };
              
-             addGroupUI.init();
+             // addGroupUI.init(); --init now called by contact.js
              
              return addGroupUI;
                    

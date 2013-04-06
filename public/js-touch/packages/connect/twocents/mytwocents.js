@@ -21,7 +21,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                 {name: "#mytwoc", active: false}
                             ],
                             twoQButtons = new Store(btns),
-                            mtcTools = new Store(),
+                            mtcTools = new Store({"view": "#mytwoq"}),
                             contactList = new Store([]),
                             user = Config.get("user"),
                             connections = user.get("connections"),
@@ -231,14 +231,18 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         mtcStack.getStack().add("#contacttwoq", contacttwoq);
                         mtcStack.getStack().add("#blank", blank);
                         
+                        contacttwoq.init();
+                        blank.init();
                         // display twoQ list (default and init details with first item)
                         mytwoq.init().then(function(){
                                 mtcStack.getStack().show("#mytwoq");
-                                mtcTools.set("view", "#mytwoq");
                                 // hightlight first item
-                                mtcControl.init(0);
+                                if (mytwoq.getModel().getNbItems()) {
+                                        mtcControl.init(0);
+                                        mtcDetails.init("2Q", mytwoq.getModel().get(0));
+                                }
                                 // mtcDetails.init("2Q", mytwoq.getModel().get(0));
-                                mtcDetails.init("default");
+                                else {mtcDetails.init("default");}
                         });
                         
                         return myTwocentUI;

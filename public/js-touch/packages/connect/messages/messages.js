@@ -91,11 +91,11 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                         setObject : function(type){
                                                 var id = this.getAttribute("data-msg_id");
                                                 switch(type){
-                                                        case "CXR":
-                                                                this.innerHTML = msgList.get(id).username + labels.get("CXRobject");
-                                                                break;
                                                         case "INV":
                                                                 this.innerHTML = msgList.get(id).username + labels.get("INVObject");
+                                                                break;
+                                                        case "CXR":
+                                                                this.innerHTML = msgList.get(id).username + labels.get("CXRobject");
                                                                 break;
                                                         case "CXRaccept":
                                                                 this.innerHTML = msgList.get(id).username + labels.get("acceptedCXR");
@@ -135,13 +135,16 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                                 }
                                         },
                                         highlight: function(status){
-                                                (status === "unread") ? this.classList.add("unread"):this.classList.remove("unread");
+                                                (status && status === "unread") ? this.classList.add("unread"):this.classList.remove("unread");
                                         },
                                         setAvatar : function setAvatar(author){
-                                                var _frag = document.createDocumentFragment(),
-                                                    _ui = new Avatar([author]);
-                                                _ui.place(_frag);
-                                                (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                                var _frag, _ui;
+                                                if (author){
+                                                        _frag = document.createDocumentFragment();
+                                                        _ui = new Avatar([author]);
+                                                        _ui.place(_frag);
+                                                        (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                                }
                                         }
                                 }),
                                 "msglistevent" : new Event(messageUI),
@@ -149,7 +152,7 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                 "msgdetailstack" : detailStack
                         });
                         
-                        messageUI.template = '<div id="connect-messages"><div class="messages list"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchend,selectMsg"><ul data-msg="foreach"><li class="msg list-item" data-msglistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date"></span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:setObject, type">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
+                        messageUI.template = '<div id="connect-messages"><div class="messages"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchend,selectMsg"><ul data-msg="foreach"><li class="msg list-item" data-msglistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date"></span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:setObject, type">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
                         
                         messageUI.place(Map.get("connect-messages"));
                         
@@ -187,7 +190,7 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                     idx;
                                 
                                 // change message status to read
-                                if (msgList.get(id).status === "unread"){
+                               if (msgList.get(id).status === "unread"){
                                         // first need to retrieve message in user notifications
                                         for (i=0, l=arr.length; i<l;i++){
                                                 if (JSON.stringify(arr[i]) === JSON.stringify(msgList.get(id))) {
@@ -205,12 +208,12 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                 detailStack.getStack().show("#msgdetail");
                                 messageDetail.reset(msgList.get(id));
                                 previousScreen = "#msgdetail";
+                                      
                         };
                         
                         messageUI.init = function init(){
-                                messageUI.cleanOld().then(function(){
-                                        msgList.reset(user.get("notifications"));
-                                });
+                                msgList.reset(user.get("notifications"));
+                                messageUI.cleanOld();
                         };
                         
                         messageUI.getSelectedmsg = function(){
@@ -324,10 +327,19 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                 }
                                 
                                 // change message status to read
-                                message.status = "read";
-                                arr[id] = message;
-                                user.set("notifications", arr);
-                                user.upload();
+                                if (msgList.get(id).status === "unread"){
+                                        // first need to retrieve message in user notifications
+                                        for (i=0, l=arr.length; i<l;i++){
+                                                if (JSON.stringify(arr[i]) === JSON.stringify(msgList.get(id))) {
+                                                        index = i;
+                                                        break;
+                                                }
+                                        }
+                                        msgList.update(id, "status", "read");
+                                        arr[index]=msgList.get(id);
+                                        user.set("notifications", arr);
+                                        user.upload();
+                                }
                                 
                                 // display message
                                 msgList.reset([message]);

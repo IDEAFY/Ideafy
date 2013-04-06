@@ -256,7 +256,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                      
                         };
                         
-                        groupDetails.init();
+                        // groupDetails.init(); -- init now called by contacts.js
                         
                         return groupDetails;        
                         

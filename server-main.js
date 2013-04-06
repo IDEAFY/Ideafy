@@ -476,7 +476,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 });
                         }
                 }, function(result) {
-                        console.log(result)
+                        console.log(result);
                 });
         });
         

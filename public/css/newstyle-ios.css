@@ -4013,8 +4013,13 @@ li.color-item{
 
 /*CONNECT*/
 
-.messages, .contacts{
+.messages, .contacts, #mtc-list{
     text-align: center;
+    position: relative;
+    width: 301px;
+    -webkit-box-shadow: 0 0 5px 1px rgba(0,0,0,0.3);
+    background: white;
+    float: left;
 }
 
 #connect-messages .selectors, #connect-contacts .selectors{
@@ -4056,6 +4061,7 @@ li.color-item{
 
 .msglist, .contactlist{
     margin-top: 20px;
+    height: 577px;
 }
 
 .msg, .contact{
@@ -4108,14 +4114,9 @@ li.color-item{
     font-weight: bold;
 }
 
-#msg-detail{
-    overflow-y: scroll;
-   -webkit-overflow-scrolling: touch;
-                                                                                     }
-
 .msgsplash{
     width: 630px;
-    height:712px;;
+    height:748px;;
 }
 
 .innersplash{
@@ -4130,6 +4131,11 @@ li.color-item{
     font-family: Pacifico;
     font-size: 24px;
     color: #404040;
+}
+
+#msgdetail .msgdetailarea{
+    height: 712px;
+    overflow-y: scroll;
 }
 
 #msgdetail .header, #addcontact .header, #addgroup .header{
@@ -4574,6 +4580,8 @@ li.color-item{
     padding: 20px;
     background: white;
     -webkit-box-shadow: none;
+    height: 672px;
+    overflow-y: scroll;
 }
 
 #addgroup .detail-contents, #groupdetails details-contents{
@@ -4857,14 +4865,6 @@ li.color-item{
     background: url('../img/connect/deleteBlue.png') no-repeat center center;
     background-size: contain;
     margin-top: -25px;
-}
-
-#mtc-list{
-    width: 301px;
-    float: left;
-    height: 748px;
-    background: white;
-    -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
 }
 
 #mtc-list legend{
@@ -5408,6 +5408,8 @@ li.my2q{
 #leaderboard ul{
     margin-top: 75px;
     width: 891px;
+    height: 600px;
+    overflow-y: scroll;
 }
 
 #leaderboard li:nth-child(odd){

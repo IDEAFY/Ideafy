@@ -38,10 +38,19 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                 },
                                 showReplies : function showReplies(twocents) {
-                                        var nb = twocents.length;
-                                        if (nb === 0) this.innerHTML = labels.get("noreplyyet")
-                                        else if (nb === 1) this.innerHTML = nb +" "+labels.get("showonetcreply")
-                                        else this.innerHTML = nb + " " + labels.get("showtcrepliesafter")
+                                        var nb;
+                                        if (twocents) {
+                                                nb = twocents.length;        
+                                        }
+                                        if (nb === 0) {
+                                                this.innerHTML = labels.get("noreplyyet");
+                                        }
+                                        else if (nb === 1) {
+                                                this.innerHTML = nb +" "+labels.get("showonetcreply");
+                                        }
+                                        else if (nb>1){
+                                                this.innerHTML = nb + " " + labels.get("showtcrepliesafter");
+                                        }
                                 },
                                 setAvatar : function setAvatar(author){
                                         var _ui, _frag;
@@ -53,7 +62,7 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                                         }
                                 },
                                 setVisibility : function(visibility){
-                                        (visibility === "public") ? this.classList.add("public") : this.classList.remove("public");
+                                        (visibility && visibility === "public") ? this.classList.add("public") : this.classList.remove("public");
                                 }
                         }),
                         "twoqsearch" : new Model(_searchList, {
@@ -61,10 +70,19 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                 },
                                 showReplies : function showReplies(twocents) {
-                                        var nb = twocents.length;
-                                        if (nb === 0) this.innerHTML = labels.get("noreplyyet")
-                                        else if (nb === 1) this.innerHTML = nb +" "+labels.get("showonetcreply")
-                                        else this.innerHTML = nb + " " + labels.get("showtcrepliesafter")
+                                        var nb;
+                                        if (twocents) {
+                                                nb = twocents.length;        
+                                        }
+                                        if (nb === 0) {
+                                                this.innerHTML = labels.get("noreplyyet");
+                                        }
+                                        else if (nb === 1) {
+                                                this.innerHTML = nb +" "+labels.get("showonetcreply");
+                                        }
+                                        else if (nb>1){
+                                                this.innerHTML = nb + " " + labels.get("showtcrepliesafter");
+                                        }
                                 },
                                 setAvatar : function setAvatar(author){
                                         var _ui, _frag;
@@ -76,7 +94,7 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                                         }
                                 },
                                 setVisibility : function(visibility){
-                                        (visibility === "public") ? this.classList.add("public") : this.classList.remove("public");
+                                        (visibility && visibility === "public") ? this.classList.add("public") : this.classList.remove("public");
                                 }
                         }),
                         "twoqlistevent" : new Event(this)

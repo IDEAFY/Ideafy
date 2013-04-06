@@ -15,7 +15,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
 			    setView = function setView(name){
                                  _stack.getStack().show(name);       
                             },
-			    _menu = new Menu(Map.get("connect-menu"), setView);
+			    _menu = new Menu(Map.get("connect-menu"), setView),
+			    msgUI = new Messages(),
+			    contactsUI = new Contacts(),
+			    twocentsUI = new MyTwocents();
 			    
 			_widget.plugins.add("connectstack", _stack);
 
@@ -30,9 +33,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
 			};
                 // init
                        _menu.toggleActive(false);
-                       _stack.getStack().add("#messages", new Messages());
-                       _stack.getStack().add("#contacts", new Contacts());
-                       _stack.getStack().add("#twocents", new MyTwocents());
+                       
+                       msgUI.init();
+                       contactsUI.init();
+                       _stack.getStack().add("#messages", msgUI);
+                       _stack.getStack().add("#contacts", contactsUI);
+                       _stack.getStack().add("#twocents", twocentsUI);
                        
                        // set current view
                        _stack.getStack().show("#messages");

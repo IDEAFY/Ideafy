@@ -85,7 +85,7 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                                         if (this.hasChildNodes()) this.removeChild(this.firstChild);
                                                         this.setAttribute("style", "background: url('img/connect/"+contactList.get(id).color+"') no-repeat center center; background-size: contain;display:block; width:40px; height:40px;float:left;");
                                                 }
-                                                else{
+                                                else if (type === "user"){
                                                     this.setAttribute("style", "background:none;");
                                                     _frag = document.createDocumentFragment();
                                                     _ui = new Avatar([contactList.get(id).userid]);
@@ -94,7 +94,7 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                                 }
                                         },
                                         setIntro : function(intro){
-                                                (intro) ? this.innerHTML = intro : this.innerHTML= " ";
+                                                (intro) ? this.innerHTML = intro : this.innerHTML = " ";
                                         }
                                 }),
                                 "contactdetailstack": detailStack,
@@ -102,7 +102,7 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                 "contactlistevent": new Event(contactsUI)
                         });
                         
-                        contactsUI.template = '<div id="connect-contacts"><div class="contacts list"><div class="header blue-light"><span data-label="bind: innerHTML, contactlistheadertitle">My Contacts</span><div class="option right" data-contactlistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-contactlistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-contactlistevent="listen: keypress, search"><div class="contactlist overflow" data-contactlistcontrol="radio:li,selected,touchstart,selectContact"><ul data-contact="foreach"><li class="contact list-item" data-contactlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-contact="bind:setAvatar, type"></div><p class="contact-name" data-contact="bind:innerHTML, username"></p><p class="contact-intro" data-contact="bind:setIntro, intro"></p><div class="select-contact"></div></li></ul></div></div><div id="toggleadd" class="group" data-contactlistevent="listen:touchstart, press; listen:touchend, toggleAddUI"></div><div id="contact-detail" class="details" data-contactdetailstack="destination"></div></div>';
+                        contactsUI.template = '<div id="connect-contacts"><div class="contacts"><div class="header blue-light"><span data-label="bind: innerHTML, contactlistheadertitle">My Contacts</span><div class="option right" data-contactlistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-contactlistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-contactlistevent="listen: keypress, search"><div class="contactlist overflow" data-contactlistcontrol="radio:li,selected,touchstart,selectContact"><ul data-contact="foreach"><li class="contact list-item" data-contactlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-contact="bind:setAvatar, type"></div><p class="contact-name" data-contact="bind:innerHTML, username"></p><p class="contact-intro" data-contact="bind:setIntro, intro"></p><div class="select-contact"></div></li></ul></div></div><div id="toggleadd" class="group" data-contactlistevent="listen:touchstart, press; listen:touchend, toggleAddUI"></div><div id="contact-detail" class="details" data-contactdetailstack="destination"></div></div>';
                         
                         contactsUI.place(Map.get("connect-contacts"));
                         
@@ -119,7 +119,11 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                         contactsUI.init = function init(){
                                 contactList.reset(user.get("connections"));
                                 // show add Contact page by default
-                                detailStack.getStack().show("#addcontact");      
+                                addContact.init().then(function(){
+                                        detailStack.getStack().show("#addcontact");        
+                                });
+                                addGroup.init();
+                                groupDetails.init();
                         };
                         
                         contactsUI.getSelectedContact = function(){
@@ -218,6 +222,9 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                         detailStack.getStack().add("#groupdetails", groupDetails);
                         detailStack.getStack().add("#addcontact", addContact);
                         detailStack.getStack().add("#addgroup", addGroup);
+                        
+                        addGroup.init();
+                        
                         // get message list from user document
                         contactsUI.init();
                         

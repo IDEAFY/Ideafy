@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStore", "Store", "service/avatar"],
-        function(Widget, Config, Model, Event, CouchDBStore, Store, Avatar){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStore", "Store", "service/avatar", "Promise"],
+        function(Widget, Config, Model, Event, CouchDBStore, Store, Avatar, Promise){
                 
            return function AddContactConstructor(){
                    
@@ -142,8 +142,12 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStor
              addContactUI.template = '<div id="addcontact"><div class="header blue-dark"><span class="newcontactlbl" data-label="bind:innerHTML, newcontactlbl"></span></div><div class = "detail-contents"><div class="doctor-deedee"></div><div class="addcontactform"><p class="half"><span data-label="bind:innerHTML, beforecount"></span><strong><span data-count="bind:innerHTML, 0.value"></span></strong><span data-label="bind:innerHTML, aftercount"></span></p><p class="half" data-label="bind: innerHTML, addcontactrightintro"></p><legend data-label="bind:innerHTML, addcontactnow"></legend><input class="search" type="text" name="email" data-label="bind:placeholder, searchcontactplaceholder" data-search="bind: value, email" data-searchdbevent="listen: keypress, searchDB"><legend data-label="bind:innerHTML, lookup"></legend><div class="searchcontact"><input type="text" class="search half" name="fn" data-label="bind:placeholder, firstnameplaceholder" data-search="bind: value, firstname" data-searchdbevent="listen: keypress, searchDB"><input class="search half right" type="text" name="ln" data-label="bind: placeholder, lastnameplaceholder" data-search="bind: value, lastname" data-searchdbevent="listen: keypress, searchDB"></div><p class="searchresult" data-search="bind: innerHTML, result; bind:setStyle, sentok"></p></div></div><div class = "contactlist invisible" data-search="bind: setVisible, display"><legend data-label="bind:innerHTML, selectcontact"></legend><ul data-contacts="foreach"><li class = "contact list-item"><div data-contacts="bind:setAvatar, value.userid"></div><p class="contact-name" data-contacts="bind:innerHTML, value.username"></p><p class="contact-intro" data-contacts="bind:innerHTML, value.intro"></p><div class="select-contact" data-searchdbevent="listen:touchstart, check"></div></li></ul><textarea class="input" data-label="bind:placeholder, addamessage" data-search="bind:value, message"></textarea><div class="addcontactbtns"><div class="addct" data-searchdbevent="listen:touchstart, press; listen:touchend, add"></div><div class="cancelct" data-searchdbevent="listen:touchstart, press; listen:touchend, cancel"></div></div></div></div>';
              
              addContactUI.init = function init(){
-                count.setTransport(transport);
-                count.sync(Config.get("db"), "users", "_view/count");        
+                     var promise = new Promise();
+                     count.setTransport(transport);
+                     count.sync(Config.get("db"), "users", "_view/count").then(function(){
+                             promise.fulfill();
+                     });
+                     return promise;        
              };
              
              addContactUI.searchDB = function (event, node){
@@ -193,7 +197,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStor
                 }
              };
              
-             addContactUI.init();
+             //addContactUI.init();
              
              return addContactUI;
                    

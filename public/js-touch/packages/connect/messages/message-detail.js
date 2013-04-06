@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Olives/OObject", "service/config", "Store", "CouchDBStore", "Olives/Model-plugin", "Olives/Event-plugin", "service/avatar", "service/utils", "./message-reply"],
+define(["OObject", "service/config", "Store", "CouchDBStore", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply"],
         function(Widget, Config, Store, CouchDBStore, Model, Event, Avatar, Utils, Reply){
                 
            return function MessageDetailConstructor($close){

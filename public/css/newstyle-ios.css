@@ -2119,7 +2119,7 @@ textarea.solution {
     padding: 0px;
 }
 
-.list .actionbar{
+.list .actionbar, .msglist .actionbar, .contact .actionbar{
     pointer-events: all;
     float:left;
     margin-left: -20px;
@@ -2131,7 +2131,7 @@ textarea.solution {
     position: relative;
 }
 
-.list .actionbar .buttonlist{
+.list .actionbar .buttonlist, .msglist .actionbar .buttonlist, .contact .actionbar .buttonlist{
     height:40px;
     padding:5px;
     display: inline-block;

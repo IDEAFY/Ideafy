@@ -236,13 +236,14 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         // display twoQ list (default and init details with first item)
                         mytwoq.init().then(function(){
                                 mtcStack.getStack().show("#mytwoq");
-                                // hightlight first item
+                                /* hightlight first item
                                 if (mytwoq.getModel().getNbItems()) {
                                         mtcControl.init(0);
                                         mtcDetails.init("2Q", mytwoq.getModel().get(0));
                                 }
                                 // mtcDetails.init("2Q", mytwoq.getModel().get(0));
-                                else {mtcDetails.init("default");}
+                                else {mtcDetails.init("default");}*/
+                               mtcDetails.init("default");
                         });
                         
                         return myTwocentUI;

@@ -131,7 +131,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .contacttwoqlist{
-    height: 500px;
+    height: 577px;
 }
 
 #dock, .list {
@@ -4090,18 +4090,13 @@ li.color-item{
     font-style: italic;
     font-size: 14px;
     color: #4D4D4D;
+    min-height: 30px;
 }
 
 .msg-author, .msg-subject, .contact-name, .contact-intro{
     margin-left: 50px;
     font-weight: normal;
     margin-bottom: 0px;
-}
-
-.contact-intro{
-    min-height: 18px;
-    margin-left: 50px;
-    font-weight: normal;
 }
 
 .msg .date{

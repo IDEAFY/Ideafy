@@ -149,7 +149,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 $next("quickidea");         
                                                         });      
                                                 });
-                                });
+                                        });
                                 }
                                 else $next("quickidea");
                         };
@@ -344,11 +344,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 //set the idea's language to the same language as the session
                                 cdb.set("lang", $session.get("lang"));
                                 cdb.set("_id", _id);
-                                cdb.sync(Config.get("db"), _id);
-                                setTimeout(function(){
-                                        cdb.upload().then(function(){
-                                                promise.fulfill();
-                                        }, 250);
+                                cdb.sync(Config.get("db"), _id).then(function(){
+                                        setTimeout(function(){
+                                                cdb.upload().then(function(){
+                                                        // updateUIP is visibility is public
+                                                        if (cdb.get("visibility") === "public"){
+                                                                _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": cdb.get("type"), "docId": cdb.get("_id"), "docTitle": cdb.get("title")}, function(result){
+                                                                        if (result !== "ok") {console.log(result);}
+                                                                });
+                                                        }
+                                                        cdb.unsync();
+                                                });
+                                        }, 200);
                                 });
                                 return promise;
                         };

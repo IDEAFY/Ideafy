@@ -143,7 +143,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                         case "idea":
                                                 if ($data.authors.length === 1 && $data.authors[0] === user.get("_id")){
                                                         cdb.sync(Config.get("db"), $data._id).then(function(){
-                                                                cdb.remove();
+                                                                setTimeout(function(){cdb.remove();}, 150);
                                                                 promise.fulfill();
                                                         });
                                                 }

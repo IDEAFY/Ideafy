@@ -398,8 +398,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 user.set("news", news);
                                 user.upload();
                         }
-                        
-                                
                    };
                    
                    //init

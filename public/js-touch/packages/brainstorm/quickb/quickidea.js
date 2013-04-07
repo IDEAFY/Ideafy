@@ -35,6 +35,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _wbContent = new Store([]),
                             _wb = new Whiteboard("idea", _wbContent, _tools),
                             _transport = Config.get("transport"),
+                            _user = Config.get("user"),
                             _labels = Config.get("labels");
                         
                         // Setup

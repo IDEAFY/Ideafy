@@ -386,6 +386,22 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         progressBar.set("twoQ", Math.floor(twoq/total*100));   
                    };
                    
+                   profileUI.cleanOldNews = function cleanOldNew(){
+                        var now = new Date(), news = user.get("news"), i, then;
+                        if (news.length){
+                                for (i = news.length-1; i>=0; i--){
+                                        then = new Date(news[i].date[0],news[i].date[1],news[i].date[2]);
+                                        if (now.getTime()-then.getTime() > 1296000000){
+                                                news.splice(i, 1);
+                                        }       
+                                }
+                                user.set("news", news);
+                                user.upload();
+                        }
+                        
+                                
+                   };
+                   
                    //init
                    
                    profileUI.checkProfileCompletion().then(function(){
@@ -394,6 +410,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    });
                    
                    profileUI.updateProgressBar();
+                   
+                   profileUI.cleanOldNews();
                    
                    USR = user;
                    

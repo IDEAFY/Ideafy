@@ -2098,6 +2098,7 @@ textarea.solution {
 .session-details ul{
     list-style: none;
     overflow-y: scroll;
+    height: 100%;
 }
 
 .session-item table{

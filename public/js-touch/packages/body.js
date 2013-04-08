@@ -270,7 +270,6 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
         };
         
         _body.init = function(firstStart) {
-                SOCK = Config.get("socket");
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         var lblUpdate = false;
                         // set uid for future queries

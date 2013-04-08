@@ -279,22 +279,23 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                                 lblUpdate = true;
                         }
                          // get user avatar and labels if necessary
-                         if (lblUpdate && _user.get("picture_file").search("img/avatars/deedee")>-1){
+                         if (_user.get("picture_file").search("img/avatars/deedee")>-1){
                                 Config.set("avatar", _user.get("picture_file"));
-                                updateLabels(_user.get("lang")).then(function(){
-                                        lblUpdate = false;
+                                if (lblUpdate){
+                                        updateLabels(_user.get("lang")).then(function(){
+                                                lblUpdate = false;
+                                                _dock.init();
+                                                //if everything is downloaded
+                                                _stack.getStack().show("#dock");
+                                                _dock.start(firstStart);      
+                                        }); 
+                                }
+                                else{
                                         _dock.init();
                                         //if everything is downloaded
                                         _stack.getStack().show("#dock");
-                                        _dock.start(firstStart);      
-                                }); 
-                         }
-                         else if (_user.get("picture_file").search("img/avatars/deedee")>-1){
-                                Config.set("avatar", _user.get("picture_file"));
-                                _dock.init();
-                                //if everything is downloaded
-                                _stack.getStack().show("#dock");
-                                _dock.start(firstStart);
+                                        _dock.start(firstStart);
+                                }
                         }
                         // if avatar is customized no need to wait for labels download (shorter than avatar file)
                         else{

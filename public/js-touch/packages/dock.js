@@ -41,7 +41,9 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 				_stack.getStack().add("#brainstorm", new Brainstorm());
 				console.log("brainstorm init");
 				_stack.getStack().add("#connect", new Connect());
+				console.log("connect init");
 				_stack.getStack().add("#dashboard", new Dashboard());
+				console.log("dashboard init");
 				// init notification engine
 				notify.init();
 				

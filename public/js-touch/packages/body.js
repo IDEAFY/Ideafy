@@ -271,7 +271,6 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
         
         _body.init = function(firstStart) {
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
-                        console.log(_user.toJSON());
                         var lblUpdate = false;
                         // set uid for future queries
                         Config.set("uid", '"' + _user.get("_id") + '"');
@@ -279,10 +278,12 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                         if (_user.get("lang") !== Config.get("lang")) {
                                 lblUpdate = true;
                         }
+                        
                          // get user avatar and labels if necessary
                          if (_user.get("picture_file").search("img/avatars/deedee")>-1){
                                 Config.set("avatar", _user.get("picture_file"));
                                 if (lblUpdate){
+                                        console.log("label update");
                                         updateLabels(_user.get("lang")).then(function(){
                                                 lblUpdate = false;
                                                 _dock.init();
@@ -292,6 +293,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                                         }); 
                                 }
                                 else{
+                                        console.log("no label update");
                                         _dock.init();
                                         //if everything is downloaded
                                         _stack.getStack().show("#dock");

@@ -224,7 +224,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _cdb = new CouchDBStore();
                         _cdb.setTransport(Config.get("transport"));
                         _cdb.sync(_db, _sid).then(function(){
-                                _cdb.remove();
+                                setTimeout(function(){_cdb.remove();}, 200);
                         });
                         
                         // last, remove attachments (whiteboards) if any from the server

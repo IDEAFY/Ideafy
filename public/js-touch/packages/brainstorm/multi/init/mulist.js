@@ -5,25 +5,25 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store"],
-        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store){
+define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "service/utils"],
+        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store, Utils){
                 
            return function MuListConstructor($exit){
            
                 var widget = new Widget(),
-                    muCDB = new CouchDBStore(),
-                    muSearch = new CouchDBStore(),
+                    muListAll = new Store([]),
+                    muSearch = new Store([]),
                     musessions = new Store([]),
                     muListOptions = new Store(),
                     currentList = "mulistall",
-                    labels=Config.get("labels");
-                
-                muSearch.setTransport(Config.get("transport"));
-                muCDB.setTransport(Config.get("transport"));
+                    labels=Config.get("labels"),
+                    user = Config.get("user"),
+                    db = Config.get("db"),
+                    transport = Config.get("transport");
                 
                 widget.plugins.addAll({
                         "labels" : new Model(labels),
-                        "muall" : new Model(muCDB, {
+                        "muall" : new Model(muListAll, {
                                 setParticipants : function (array){
                                         this.innerHTML = array.length + 1;
                                 },
@@ -92,17 +92,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 widget.reset = function reset(){
                        currentList = "mulistall"; 
                         // synchronize muCDB with database
-                        widget.syncAll();
+                        widget.buildList(currentList);
                 };
                 
-                widget.syncAll = function syncAll(){
-                        var promise = new Promise();
-                        muCDB.unsync();
-                        muCDB.reset([]);
-                        muCDB.sync(Config.get("db"), "library", "_view/waitingsessions", {descending:true}).then(function(){
-                                promise.fulfill();
-                        });
-                        return promise;
+                widget.buildList = function buildList(listId){
+                        var arr = [];
+                        if (listId === "mulistall"){
+                                muListAll.reset([]);
+                                widget.addRoulette(arr).then(function(){
+                                        widget.addCampfire(arr).then(function(){
+                                                console.log("resulting array : ", arr);        
+                                        });   
+                                });  
+                        }        
                 };
                 
                 widget.syncSearch = function syncSearch(query){
@@ -117,6 +119,43 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         });
                         
                         return promise;        
+                };
+                
+                widget.addRoulette = function addRoulette(arr){
+                        var promise = new Promise(),
+                            cdb = new CouchDBStore();
+                        
+                        cdb.setTransport(transport);
+                        cdb.sync(db, "library", "_view/waitingsessions", {descending:true, limit:50}).then(function(){
+                                arr = JSON.parse(cdb.toJSON());
+                                console.log("addRoulette : ",arr);
+                                promise.fulfill();
+                                cdb.unsync();
+                        }, function(err){console.log(err); promise.reject(err);});
+                        
+                        return promise;    
+                                
+                };
+                
+                widget.addCampfire = function addCampfire(arr){
+                        var promise = new Promise(),
+                            cdb = new CouchDBStore();
+                            
+                        cdb.setTransport(transport);
+                        cdb.sync(db, "library", "_view/campfire", {key: Config.get("uid"),descending:false}).then(function(){
+                                cdb.loop(function(v,i){
+                                        arr.unshift(v);        
+                                });
+                                console.log("addCampfire : ",arr);
+                                promise.fulfill();
+                                cdb.unsync();
+                        }, function(err){console.log(err); promise.reject(err);});
+                        
+                        return promise;        
+                };
+                
+                widget.addBoardRoom = function addBoardRoom(arr){
+                        
                 };
                 
                 widget.search = function(event, node){

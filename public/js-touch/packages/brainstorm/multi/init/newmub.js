@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store"],
-        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store){
+define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "service/utils"],
+        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store, Utils){
                 
            return function NewMUBConstructor($exit){
            
@@ -305,12 +305,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         
                         // complete session doc
                         session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
-                        invited.loop(function(v,i){
-                                session.get("invited").push(v.userid);        
-                        });
-                        if (session.get("title") === ""){
-                                session.set("title", labels.get("quickstarttitleplaceholderpre")+session.get("initiator").username+labels.get("quickstarttitleplaceholderpost"));      
+                        
+                        // add invited list if mode is boardroom or all user contacts if mode is campfire
+                        if (session.get("mode") === "boardroom"){
+                                invited.loop(function(v,i){
+                                        session.get("invited").push(v.userid);        
+                                });
                         }
+                        
+                        if (session.get("mode") === "campfire"){
+                                session.set("invited", Utils.getUserContactIds);
+                        }
+                        
+                        // create doc id
                         session.set("_id", "S:MU:"+now.getTime());
                         
                         cdb.reset(JSON.parse(session.toJSON()));

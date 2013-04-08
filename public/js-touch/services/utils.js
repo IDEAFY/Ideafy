@@ -397,6 +397,19 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                                onEnd(res);
                        });
                 },
+                
+                /* A function that extracts a list of all user contact ids from a user document
+                 * 
+                 */
+                getUserContactIds : function(){
+                        var res = [], contacts = Config.get("user").get("connections");
+                        contacts.forEach(function(contact){
+                                if (contact.type === "user") {res.push(contact.userid);}        
+                        });
+                        return res;
+                },
+                
+                
                 /*
                  * A function to check if user profile is completed
                  * @Param

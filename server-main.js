@@ -1576,12 +1576,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 fs.readdirSync(_path).forEach(function(file){
                                         fs.unlink(path.join(_path, file));
                                 });
-                                fs.rmdirSync(_path);
-                                onEnd("ok"); 
+                                fs.rmdirSync(_path); 
                         }
-                        else {
-                                onEnd({"err": "Directory not found"});
-                        } 
+                        onEnd("ok");
                 });        
         });
         

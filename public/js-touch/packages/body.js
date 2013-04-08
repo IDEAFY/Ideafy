@@ -308,6 +308,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                                                 _stack.getStack().show("#dock");
                                                 _dock.start(firstStart);
                                         }
+                                        else alert(result.error);
                                 });
                         }
                 });

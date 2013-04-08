@@ -55,7 +55,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         // set session in progress in user document
                                         _user.set("sessionInProgress", {id : $session.get("_id"), type: "quick"});
                                         _user.upload().then(function(){
-                                                console.log("move to next screen", $session.toJSON());
                                                 node.classList.remove("pressed");
                                                 // next step
                                                 $next("quickstart");        

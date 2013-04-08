@@ -31,7 +31,9 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                 // init
                        _menu.toggleActive(false);
                        _stack.getStack().add("#profile", new Profile());
+                       console.log("profile init");
                        _stack.getStack().add("#settings", new Settings());
+                       console.log("setting init");
                        _stack.getStack().add("#about", new About());
                        
                // set current view

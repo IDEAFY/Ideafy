@@ -314,7 +314,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         }
                         
                         if (session.get("mode") === "campfire"){
-                                session.set("invited", Utils.getUserContactIds);
+                                session.set("invited", Utils.getUserContactIds());
                         }
                         
                         // create doc id

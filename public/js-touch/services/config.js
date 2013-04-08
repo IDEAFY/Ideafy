@@ -576,8 +576,9 @@ define(["Store", "SocketIOTransport", "CouchDBStore", "Observable"], function(St
         "investhelp": "We have plenty of ideas to expand the Ideafy service and we are constantly looking for funding opportunities. If you are interested, want to find out about our future and be part of it please contact us.",
         "toc" : "Table of contents",
         "backtotop": "Back to top"
-        },
-                        labels : new Store({})        
+                },
+                lang: "en-us",
+                labels : new Store({})        
                         });
                 };
         

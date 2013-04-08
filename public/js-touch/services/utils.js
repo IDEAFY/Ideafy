@@ -296,11 +296,11 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                         Config.get("transport").request("Lang", json, function(result) {
                                 if (result === "nok") {
                                         local.set("labels", Config.get("defaultLabels"));
-                                        Config.set("language", "en-us");
+                                        Config.set("lang", "en-us");
                                 }
                                 else {
                                         local.set("labels", result);
-                                        Config.set("language", result.language);
+                                        Config.set("lang", result.language);
                                 }
                                 // save labels to local storage
                                 local.sync("ideafy-data");

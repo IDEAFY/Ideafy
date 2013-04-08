@@ -34,7 +34,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
         // check connection
         if (navigator.connection && navigator.connection.type === "none"){
                 (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
-                Config.set("language", _labels.set("language"));
+                Config.set("lang", _labels.set("language"));
                 _login.setScreen("#nointernet");
                 _stack.getStack().setCurrentScreen(_login);
                 document.getElementById("nointernet").classList.remove("invisible");
@@ -56,7 +56,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                         // initialize labels to device language if available or US by default
                         if (_local.get("labels")) {
                                 _labels.reset(_local.get("labels"));
-                                Config.set("language", _labels.get("language"));
+                                Config.set("lang", _labels.get("language"));
                         }
                         else{
                                 updateLabels(navigator.language);
@@ -175,7 +175,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                                                         user.set("username", fn + " " + ln);
                                                         
                                                         // add lang
-                                                        user.set("lang", Config.get("language"));
+                                                        user.set("lang", Config.get("lang"));
                                                         
                                                         // add welcome notification
                                                         var now = new Date();

@@ -35,19 +35,12 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			        var notify = new Notify();
 			        
 			        _stack.getStack().add("#public", new Public());
-			        console.log("public init");
 				_stack.getStack().add("#library", new Library());
-				console.log("library init");
 				_stack.getStack().add("#brainstorm", new Brainstorm());
-				console.log("brainstorm init");
 				_stack.getStack().add("#connect", new Connect());
-				console.log("connect init");
 				_stack.getStack().add("#dashboard", new Dashboard());
-				console.log("dashboard init");
 				// init notification engine
 				notify.init();
-				
-				console.log("all init");
 				
 				// initialize popups
 				_newIdea = new NewIdea();

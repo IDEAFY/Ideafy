@@ -231,6 +231,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                */
               _widget.deleteSession = function(event, node){
                         var _id = node.getAttribute("data-sessions_id"), _sid = _sessions.get(_id).id,
+                            // remove function
                             removeFromDB = function(docId){
                                 var cdb = new CouchDBStore(),
                                     promise = new Promise();
@@ -244,7 +245,21 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 promise.fulfill();       
                                         });       
                                 });
-                             };
+                                return promise;
+                             },
+                             // confirmation window invoked with question and callback
+                            confirmUI, question = _labels.get("deletereplay"), confirmCallback = function(decision){
+                                        if (decision){
+                                                spinner.spin(document.getElementById("sessionlistspinner"));
+                                                removeFromDB(_sid).then(function(){
+                                                        spinner.stop();
+                                                        confirmUI.close();
+                                                })     
+                                        }
+                                        else{
+                                                confirmUI.close();        
+                                        }
+                                };
                         
                         // hide action bar and remove hightlight
                         node.classList.remove("pressed");
@@ -252,7 +267,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // if sessionReplay is enabled display confirmation UI
                         if (_sessions.get(_id).replay){
-                                
+                                spinner.stop();
+                                confirmUI.show();        
                         }
                         else {
                                 removeFromDB(_sid).then(function(){

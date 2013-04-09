@@ -268,6 +268,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // if sessionReplay is enabled display confirmation UI
                         if (_sessions.get(_id).replay){
                                 spinner.stop();
+                                confirmUI = new Confirm(document.getElementById("session-list"), question, confirmCallback);
                                 confirmUI.show();        
                         }
                         else {

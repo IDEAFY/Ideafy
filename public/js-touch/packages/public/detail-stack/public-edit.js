@@ -109,7 +109,7 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                                                 $action("close");
                                         });
                                }
-                               nide.classList.remove("pressed");     
+                               node.classList.remove("pressed");     
                         };
                         
                         _widget.cancel = function(event, node){

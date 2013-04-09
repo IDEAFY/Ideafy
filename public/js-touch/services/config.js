@@ -157,7 +157,8 @@ define(["Store", "SocketIOTransport", "CouchDBStore", "Observable"], function(St
                                 "techno" : [[]],
                                 "ideaWB" : [],
                                 "idea" : [], //{"title" : "", "description" : "", "solution" : "", "visibility" : "private", "id" : "" }
-                                "score" : ""
+                                "score" : "",
+                                "sessionReplay" : false
                         },
                         avatars : new Store({}), // to keep frequently used avatars (.e.g connections)
                         avatar : null, // user's avatar

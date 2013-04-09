@@ -31,7 +31,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   _searchData = [],
                   _currentSearch = "", // the current search, if empty _sessionData is used
                   _sessionsCDB = new CouchDBStore(),
-                  spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10, top: 330}).spin();
+                  spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10, top: 330}).spin(),
+                  confirmUI, confirmCallback;
                   
               
               // setup
@@ -221,6 +222,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                       Config.get("observer").notify("replay-session", _sid, _mode); 
               };
               
+              /*
+               * A function to remove a session from the list
+               * Only single user sessions can be removed at the time -- the delete button does not appear otherwise
+               * Current session in progress can also not be removed
+               * If session contains at least one idea, check if session replay is enabled : if it is ask for confirmation
+               * prior to deleting session and remove ideafy replay option from idea doc
+               */
               _widget.deleteSession = function(event, node){
                         var _id = node.getAttribute("data-sessions_id"), _sid = _sessions.get(_id).id;
                         // hide action bar and remove hightlight
@@ -231,10 +239,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _cdb = new CouchDBStore();
                         _cdb.setTransport(Config.get("transport"));
                         _cdb.sync(_db, _sid).then(function(){
-                                setTimeout(function(){
-                                        _cdb.remove();
-                                        spinner.stop();
+                                // if session does not contain an idea delete right away
+                                if (!_cdb.get("idea").length || !_cdb.get("sessionReplay")){
+                                        setTimeout(function(){
+                                                _cdb.remove();
+                                                spinner.stop();
                                         }, 500);
+                                }
+                                
+                                
                         });
                         
                         // last, remove attachments (whiteboards) if any from the server

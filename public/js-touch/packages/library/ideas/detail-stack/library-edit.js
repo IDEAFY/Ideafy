@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin", "service/config", "service/confirm"], 
-	function(Widget, Map, Store, Model, Event, Config, Confirm){
+define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise"], 
+	function(Widget, Map, Store, Model, Event, Config, Confirm, Promise){
 		return function LibraryEditConstructor($action){
 		//declaration
 			var _widget = new Widget(),
@@ -85,8 +85,28 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                         _widget.enableReplay = function(event, node){
                                 setTimeout(function(){
                                         (_store.get("sessionReplay")) ? _store.set("sessionReplay", false) : _store.set("sessionReplay", true);
-                                        node.classList.remove("pressed");
+                                        _widget.updateSessionReplay(_store.get("sessionReplay")).then(function(){
+                                                node.classList.remove("pressed");
+                                        });
                                 }, 300);
+                        };
+                        
+                        /*
+                         * A function to update the session document with the new replay status
+                         * @Param boolean bool
+                         * @Returns promise
+                         */
+                        _widget.updateSessionReplay = function updateSessionReplay(bool){
+                                var promise = new Promise(), cdb = new Store();
+                                cdb.setTransport(Config.get("transport"));
+                                cdb.sync(Config.get("db"), _store.get("sessionId")).then(function(){
+                                        cdb.set("sessionReplay", bool);
+                                        cdb.upload().then(function(){
+                                                promise.fulfill();
+                                                cdb.unsync();
+                                        });
+                                });
+                                return promise;        
                         };
                         
                         _widget.upload = function(event, node){
@@ -110,7 +130,7 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                                                 
                                         });
                                }
-                               nide.classList.remove("pressed");     
+                               node.classList.remove("pressed");     
                         };
                         
                         _widget.cancel = function(event, node){

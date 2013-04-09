@@ -2195,7 +2195,9 @@ textarea.solution {
 
 .session-type{
     width: 70px;
-    background: url('../img/library/sessionQuick.png') no-repeat center center;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url('../img/library/sessionQuick.png');;
     background-size: 40px 40px;
 }
 

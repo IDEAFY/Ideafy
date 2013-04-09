@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "service/utils", "service/avatarlist"],
-        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Utils, AvatarList){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "service/utils", "service/avatarlist", "service/confirm"],
+        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Utils, AvatarList, Confirm){
                 
            return function MySessionsContructor(){
               

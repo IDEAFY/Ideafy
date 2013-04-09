@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */ 
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore", "Promise", "service/new2c"],
-        function(Widget, Model, Event, Config, Store, CouchDBStore, Promise, New2C){
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore", "Promise", "service/new2c", "lib/spin.min"],
+        function(Widget, Model, Event, Config, Store, CouchDBStore, Promise, New2C, Spinner){
                 function ActionBarConstructor($type, $parent, $data, $hide){
                 
                         var buttons = new Store([]),
@@ -18,7 +18,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                             observer = Config.get("observer"),
                             transport = Config.get("transport"),
                             buildButtons,
-                            ui = this;
+                            ui = this,
+                            spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10}).spin();
                         
                         this.plugins.addAll({
                                 "buttons" : new Model(buttons, {
@@ -38,7 +39,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 "action" : new Event(this)
                         });
                         
-                        this.template = '<div class="actionbar" data-style="bind:setPosition, height" data-action="listen:touchend, hide"><ul class="buttonlist" data-style="bind:setButtons, height" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:touchstart, press; listen:touchend, action"></li></ul></div>';
+                        this.template = '<div class="actionbar" data-style="bind:setPosition, height" data-action="listen:touchend, hide"><ul class="buttonlist" data-style="bind:setButtons, height" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:touchstart, press; listen:touchend, action"></li></ul><div id="abspinner"></div></div>';
                         
                         this.hide = function(event, node){
                                 $hide(this);        
@@ -46,6 +47,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         this.press = function(event, node){
                                 node.classList.add("pressed");
+                                spinner.el = document.getElementById("abspinner");
                         };
                         
                         this.action = function(event, node){
@@ -59,6 +61,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 switch(action){
                                         case "delete":
                                                 this.deleteItem().then(function(){
+                                                        spinner.stop();
                                                         $hide(ui);
                                                 });
                                                 break;
@@ -143,8 +146,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                         case "idea":
                                                 if ($data.authors.length === 1 && $data.authors[0] === user.get("_id")){
                                                         cdb.sync(Config.get("db"), $data._id).then(function(){
-                                                                setTimeout(function(){cdb.remove();}, 150);
-                                                                promise.fulfill();
+                                                                setTimeout(function(){
+                                                                        cdb.remove();
+                                                                        promise.fulfill();
+                                                                        }, 150);
                                                         });
                                                 }
                                                 else {
@@ -239,7 +244,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 break;
                                         default:
                                                 break;        
-                                } 
+                                }
+                                spinner.stop();
                         };
                         
                         this.mailItem = function mailItem(){

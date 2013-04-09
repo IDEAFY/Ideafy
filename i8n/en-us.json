@@ -448,5 +448,6 @@
 	"joinedsession": "<i>You joined this session.</i>",
 	"deletingsession": "Deleting session : ",
 	"participants": "Participants",
-	"startbutton": "Start"
+	"startbutton": "Start",
+	"nosessionfound" : "No session found"
 }

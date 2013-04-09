@@ -448,6 +448,7 @@
 	"joinedsession": "<i>Vous avez rejoint cette session.</i>",
 	"deletingsession": "Suppresion de la session : ",
 	"participants": "Participants",
-	"startbutton": "Démarrer"
+	"startbutton": "Démarrer",
+	"nosessionfound" : "Aucune session trouvée"
 
 }

@@ -6289,18 +6289,18 @@ li.my2q{
 }
 
 #mulist .muparts ul{
-    display: inline;
-    margin: 10px auto;
+    display: inline-block;
 }
 
 #mulist .muparts li{
     display: block;
     background-image: url('../img/connect/authoredBy14.png');
+    background-color: transparent;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
-    width: 15px;
-    height: 25px;
+    width: 20px;
+    height: 40px;
 }
 
 /* EULA */

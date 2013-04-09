@@ -1998,6 +1998,15 @@ textarea.solution {
     width: 931px;
 }
 
+#session-list .confirm{
+    width: 500px;
+    height: 250px;
+    background: white;
+    display: block;
+    top: 200px;
+    left: 215px;
+}
+
 .session-sorting{
     margin-left: 20px;
     height: 65px;

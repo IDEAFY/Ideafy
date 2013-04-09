@@ -93,7 +93,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 if (data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"edit", icon:"img/wall/35modify.png"});
                                                 
                                                 // if idea is coming from a session display replaysession
-                                                if (data.sessionId){
+                                                if (data.sessionId && data.sessionId.search("deleted") === -1){
                                                         if (data.sessionReplay || data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"});
                                                 }
                                                 

@@ -6103,7 +6103,7 @@ li.my2q{
     font-size: 18px;
 }
 
-#mubwait .confirm .option,  #session-list .confirm{
+#mubwait .confirm .option,  #session-list .confirm .option{
     border-color: #4D4D4D;
     float: right;
     font-family: Helvetica;

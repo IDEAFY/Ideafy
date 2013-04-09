@@ -26,7 +26,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "labels" : new Model(labels),
                         "muall" : new Model(muListAll, {
                                 setParticipants : function (array){
-                                        this.innerHTML = array.length + 1;
+                                        var length = parseInt(nb,10) + 1, i, res = '<ul>';
+                                        for (i=0; i<length; i++){
+                                                res+='<li></li>';
+                                        }
+                                        res+='</ul>';
+                                        this.innerHTML = res;
                                 },
                                 setMode : function(mode){
                                         switch(mode){

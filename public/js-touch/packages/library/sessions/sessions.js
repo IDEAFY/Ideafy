@@ -204,7 +204,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                        node.classList.add("pressed");
                        console.log(node, id);
                        if (id){
-                               spinner.el = document.getElementById("sessionlistpsinner");
+                               spinner.spin(document.getElementById("sessionlistspinner"));
                        }     
               };
               
@@ -300,7 +300,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                });
               });
               
-              
+              SPIN = spinner;
               // return
               return _widget;
                    

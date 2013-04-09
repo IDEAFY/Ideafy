@@ -93,16 +93,24 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                         };
                         
                         /*
-                         * A function to update the session document with the new replay status
+                         * A function to update the session document (add or remove idea from replayIdeas)
                          * @Param boolean bool
                          * @Returns promise
                          */
                         _widget.updateSessionReplay = function updateSessionReplay(bool){
-                                console.log(bool);
                                 var promise = new Promise(), cdb = new Store();
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), _store.get("sessionId")).then(function(){
-                                        cdb.set("sessionReplay", bool);
+                                        var arr = cdb.get("replayIdeas") || [], i;
+                                        if (bool){
+                                                arr.push(_store.get("_id"));
+                                        }
+                                        else{
+                                                for (i=arr.length-1; i>=0; i--){
+                                                        if (arr[i] === _store.get("_id")) {arr.splice(i,1);}
+                                                }
+                                        }
+                                        cdb.set("replayIdeas", arr);
                                         cdb.upload().then(function(){
                                                 promise.fulfill();
                                                 cdb.unsync();

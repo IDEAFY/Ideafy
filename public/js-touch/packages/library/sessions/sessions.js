@@ -232,12 +232,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               _widget.deleteSession = function(event, node){
                         var _id = node.getAttribute("data-sessions_id"), _sid = _sessions.get(_id).id,
                             removeFromDB = function(docId){
-                                var cdb = new CouchDBStore();
+                                var cdb = new CouchDBStore(),
+                                    promise = new Promise();
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(_db, docId).then(function(){
                                         // remove session attachments (if any) from the server 
                                         Config.get("transport").request("cleanUpSession", _sid, function(res){
-                                                if (res.err) console.log(res.err);
+                                                if (res.err) {console.log(res.err);}
                                                 cdb.remove();
                                                 cdb.unsync();
                                                 promise.fulfill();       

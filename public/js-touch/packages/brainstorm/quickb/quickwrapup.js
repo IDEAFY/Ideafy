@@ -84,7 +84,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.reset = function reset(sip){
-                                console.log(sip, $session.toJSON());
                                 _cards.reset([]);
                                 _wrapup.reset();
                                        

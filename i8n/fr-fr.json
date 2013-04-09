@@ -90,6 +90,7 @@
 	"completed": "achevée",
 	"inprogress": "en cours",
 	"noscore": "pas de score",
+	"deletereplay": "Cette session a l'option Ideafy replay activée. Êtes-vous sûr de vouloir la supprimer?",
 	"library-decks": "Mes Decks Ideafy",
 	"brainstormheadertitle": "Brainstorm",
 	"brainstormchoosemode": "Choisissez votre mode",

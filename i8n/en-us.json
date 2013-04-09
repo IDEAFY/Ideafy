@@ -90,6 +90,7 @@
 	"completed": "completed",
 	"inprogress": "in progress",
 	"noscore": "no score yet",
+	"deletereplay": "This session has the Ideafy replay feature enabled. Are you sure you want to delete it?",
 	"library-decks": "My Ideafy decks",
 	"brainstormheadertitle": "Brainstorm",
 	"brainstormchoosemode": "Choose your Ideafy mode",

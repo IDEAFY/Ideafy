@@ -97,6 +97,7 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                          * @Returns promise
                          */
                         _widget.updateSessionReplay = function updateSessionReplay(bool){
+                                console.log(bool);
                                 var promise = new Promise(), cdb = new Store();
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), _store.get("sessionId")).then(function(){

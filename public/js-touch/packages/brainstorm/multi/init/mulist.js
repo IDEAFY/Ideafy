@@ -100,18 +100,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 widget.buildList = function buildList(listId, text){
-                        var arr = [], promise = new Promise(), nores = document.getElementById("noresult");
+                        var arr = [], promise = new Promise();
                         if (listId === "mulistall"){
                                 muListAll.reset([]);
                                 widget.addSessions(arr, "roulette").then(function(){
                                         widget.addSessions(arr, "campfire").then(function(){
                                                 widget.addSessions(arr, "boardroom").then(function(){
-                                                        if (arr.length) {
-                                                                nores.classList.add("invisible");
-                                                        }
-                                                        else {
-                                                                nores.classList.remove("invisible");
-                                                        }
                                                         muListAll.reset(arr);
                                                         promise.fulfill();        
                                                 }); 
@@ -161,7 +155,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 }
                                 promise.fulfill();
                                 cdb.unsync();
-                        }, function(err){console.log(err, mode)});
+                        }, function(err){console.log(err, mode);});
                         return promise;
                 };
                 

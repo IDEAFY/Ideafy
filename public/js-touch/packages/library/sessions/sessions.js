@@ -31,7 +31,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   _searchData = [],
                   _currentSearch = "", // the current search, if empty _sessionData is used
                   _sessionsCDB = new CouchDBStore(),
-                  spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10}).spin();
+                  spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10, top: 330}).spin();
                   
               
               // setup

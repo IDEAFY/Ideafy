@@ -6195,6 +6195,7 @@ li.my2q{
     height: 37px;
     display: inline-table;
     width: 400px;
+    line-height:30px;
 }
 
 #mulist .mulistoptions .search{
@@ -6205,11 +6206,9 @@ li.my2q{
     font-size: 14px;
 }
 
-#mulist .mulistoptions div{
-    display: inline-block;
-    border: 1px solid #CCCCCC;
-    height: 25px;
-    margin-top: 6px;
+#mulist .mulistoptions select{
+    width: 50px
+    height: 30px;
 }
 
 #mulistall, #musearch{

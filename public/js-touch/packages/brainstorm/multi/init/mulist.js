@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "service/utils"],
-        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store, Utils){
+define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "service/utils", "lib/spin.min"],
+        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store, Utils, Spinner){
                 
            return function MuListConstructor($exit){
            
@@ -19,7 +19,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                     labels=Config.get("labels"),
                     user = Config.get("user"),
                     db = Config.get("db"),
-                    transport = Config.get("transport");
+                    transport = Config.get("transport"),
+                    spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10, top: 200}).spin();
                 
                 widget.plugins.addAll({
                         "labels" : new Model(labels),
@@ -85,28 +86,33 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "mulistevent" : new Event(widget)
                 });
                 
-                widget.template = '<div id="mulist"><div id="mulist-content"><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><div class="mumode">Mode</div><div class="mulang">Lang</div></div><hr/><div class="mulistheader"><div class="mumode">Mode</div><div class="mutitle">Title</div><div class="mulang">Lang</div><div class="muleadername">Session leader</div><div class="muparts">Participants</div></div><div id="noresult" class="invisible">no session found</div><ul id="mulistall" data-muall="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-muall="bind:setMode, value.mode"></div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mulang" data-muall="bind:setLang, value.lang"></div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musort" class="invisible"></ul><ul id="musearch" class="invisible" data-musearch="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-musearch="bind:setMode, fields.mode"></div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mulang" data-musearch="bind:setLang, fields.lang"></div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
+                widget.template = '<div id="mulist"><div id="mulist-content"><div id="mulistspinner"></div><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><div class="mumode">Mode</div><div class="mulang">Lang</div></div><hr/><div class="mulistheader"><div class="mumode">Mode</div><div class="mutitle">Title</div><div class="mulang">Lang</div><div class="muleadername">Session leader</div><div class="muparts">Participants</div></div><div id="noresult" class="invisible">no session found</div><ul id="mulistall" data-muall="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-muall="bind:setMode, value.mode"></div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mulang" data-muall="bind:setLang, value.lang"></div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musort" class="invisible"></ul><ul id="musearch" class="invisible" data-musearch="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-musearch="bind:setMode, fields.mode"></div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mulang" data-musearch="bind:setLang, fields.lang"></div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
                 
                 widget.place(document.getElementById("mulist"));
                 
                 widget.reset = function reset(){
                        currentList = "mulistall"; 
+                       spinner.spin(document.getElementById("mulistspinner"));
                         // synchronize muCDB with database
-                        widget.buildList(currentList);
+                        widget.buildList(currentList).then(function(){
+                                spinner.stop();
+                        });
                 };
                 
                 widget.buildList = function buildList(listId, text){
-                        var arr = [];
+                        var arr = [], promise;
                         if (listId === "mulistall"){
                                 muListAll.reset([]);
                                 widget.addSessions(arr, "roulette").then(function(){
                                         widget.addSessions(arr, "campfire").then(function(){
                                                 widget.addSessions(arr, "boardroom").then(function(){
-                                                        muListAll.reset(arr);        
+                                                        muListAll.reset(arr);
+                                                        promise.fulfill();        
                                                 }); 
                                         });   
                                 });  
-                        }        
+                        }
+                        return promise;        
                 };
                 
                 widget.syncSearch = function syncSearch(query){

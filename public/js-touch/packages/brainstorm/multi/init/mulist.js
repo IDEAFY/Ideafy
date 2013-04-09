@@ -100,12 +100,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 widget.buildList = function buildList(listId, text){
-                        var arr = [], promise;
+                        var arr = [], promise; nores = document.getElementById("noresult");
                         if (listId === "mulistall"){
                                 muListAll.reset([]);
                                 widget.addSessions(arr, "roulette").then(function(){
                                         widget.addSessions(arr, "campfire").then(function(){
                                                 widget.addSessions(arr, "boardroom").then(function(){
+                                                        if (arr.length) {nores.classList.add("invisible");}
+                                                        else {nores.classList.remove("invisible");}
                                                         muListAll.reset(arr);
                                                         promise.fulfill();        
                                                 }); 

@@ -30,8 +30,9 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                         var ui;
                         if (node.value === "1"){ui="new";}
                         else {ui="list";}
-                        stack.getStack().get(ui).reset();
-                        stack.getStack().show(ui);       
+                        // stack.getStack().get(ui).reset();
+                        stack.getStack().show(ui);
+                        stack.getStack().get(ui).reset();       
                 };
                 
                 widget.press = function(event, node){

@@ -106,8 +106,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 widget.addSessions(arr, "roulette").then(function(){
                                         widget.addSessions(arr, "campfire").then(function(){
                                                 widget.addSessions(arr, "boardroom").then(function(){
-                                                        muListAll.reset(arr);
-                                                        setTimeout(function(){promise.fulfill();},120000);        
+                                                        setTimeout(function(){muListAll.reset(arr);promise.fulfill();},120000);        
                                                 }); 
                                         });   
                                 });  

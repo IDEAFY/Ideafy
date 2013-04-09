@@ -6288,6 +6288,20 @@ li.my2q{
     text-align: center;  
 }
 
+.muparts ul{
+    display: inline;
+    margin: 10px auto;
+}
+
+.muparts li{
+    display: block;
+    background-image: url('img/connect/authoredBy14.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 15px;
+    height: 25px;
+}
+
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}
 p.p2 {margin: 0; font-size: 14px; min-height: 15px}

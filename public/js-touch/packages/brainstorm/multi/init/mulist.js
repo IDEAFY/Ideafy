@@ -20,7 +20,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                     user = Config.get("user"),
                     db = Config.get("db"),
                     transport = Config.get("transport"),
-                    spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10, top: 200}).spin();
+                    spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 6, radius:10, top: 200}).spin();
                 
                 widget.plugins.addAll({
                         "labels" : new Model(labels),
@@ -55,7 +55,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         }),
                         "musearch" : new Model(muSearch, {
                                 setParticipants : function (nb){
-                                        this.innerHTML = parseInt(nb,10) + 1;
+                                        var length = parseInt(nb,10) + 1, i, res = '<ul>';
+                                        for (i=0; i<length; i++){
+                                                res+='<li></li>';
+                                        }
+                                        res+='</ul>';
+                                        this.innerHTML = res;
                                 },
                                 setMode : function(mode){
                                         switch(mode){
@@ -105,7 +110,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 widget.addSessions(arr, "roulette").then(function(){
                                         widget.addSessions(arr, "campfire").then(function(){
                                                 widget.addSessions(arr, "boardroom").then(function(){
-                                                        setTimeout(function(){muListAll.reset(arr);promise.fulfill();},120000);        
+                                                        muListAll.reset(arr);
+                                                        promise.fulfill();      
                                                 }); 
                                         });   
                                 });  

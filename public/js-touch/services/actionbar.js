@@ -47,7 +47,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         this.press = function(event, node){
                                 node.classList.add("pressed");
-                                spinner.spin(document.getElementById("abspinner"));
+                                spinner.el = document.getElementById("abspinner");
                         };
                         
                         this.action = function(event, node){
@@ -61,7 +61,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 switch(action){
                                         case "delete":
                                                 this.deleteItem().then(function(){
-                                                        spinner.stop();
                                                         $hide(ui);
                                                 });
                                                 break;
@@ -146,14 +145,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                         case "idea":
                                                 if ($data.authors.length === 1 && $data.authors[0] === user.get("_id")){
                                                         cdb.sync(Config.get("db"), $data._id).then(function(){
-                                                                setTimeout(function(){
-                                                                        cdb.remove();
-                                                                        promise.fulfill();
-                                                                        }, 150);
+                                                                setTimeout(function(){cdb.remove();}, 150);
+                                                                promise.fulfill();
                                                         });
                                                 }
                                                 else {
                                                         transport.request("RemoveFromLibrary", {"id": $data._id, "userid": user.get("_id")}, function(result){
+                                                                promise.fulfill();
                                                         });       
                                                 }
                                                 break;

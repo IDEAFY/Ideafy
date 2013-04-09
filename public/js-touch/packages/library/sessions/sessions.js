@@ -234,7 +234,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 setTimeout(function(){
                                         _cdb.remove();
                                         spinner.stop();
-                                        }, 120000);
+                                        }, 500);
                         });
                         
                         // last, remove attachments (whiteboards) if any from the server

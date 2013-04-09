@@ -5,14 +5,15 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin", "service/config", "service/confirm"], 
-	function(Widget, Map, Store, Model, Event, Config, Confirm){
+define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise"], 
+	function(Widget, Map, Store, Model, Event, Config, Confirm, Promise){
 		return function PublicEditConstructor($action){
 		//declaration
 			var _widget = new Widget(),
 			    _store = new Store(),  // the idea
 			    _labels = Config.get("labels"),
-			    _error = new Store({"error": ""});
+			    _error = new Store({"error": ""}),
+			    updateReplay; // flag, set to true if sessionReplay option is modified
 		//setup
 	               
                         _store.setTransport(Config.get("transport"));
@@ -66,7 +67,8 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                         _widget.reset = function reset(id){
                                 _store.unsync();
                                 _store.reset();
-                                _store.sync(Config.get("db"), id);        
+                                _store.sync(Config.get("db"), id);
+                                updateReplay = false;      
                         };
                         
                         _widget.editVisibility = function(event, node){
@@ -84,8 +86,28 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                         _widget.enableReplay = function(event, node){
                                 setTimeout(function(){
                                         (_store.get("sessionReplay")) ? _store.set("sessionReplay", false) : _store.set("sessionReplay", true);
+                                        updateReplay = true;
                                         node.classList.remove("pressed");
                                 }, 300);
+                        };
+                        
+                        /*
+                         * A function to update the session document with the new replay status
+                         * @Param boolean bool
+                         * @Returns promise
+                         */
+                        _widget.updateSessionReplay = function updateSessionReplay(bool){
+                                console.log(bool);
+                                var promise = new Promise(), cdb = new Store();
+                                cdb.setTransport(Config.get("transport"));
+                                cdb.sync(Config.get("db"), _store.get("sessionId")).then(function(){
+                                        cdb.set("sessionReplay", bool);
+                                        cdb.upload().then(function(){
+                                                promise.fulfill();
+                                                cdb.unsync();
+                                        });
+                                });
+                                return promise;        
                         };
                         
                         _widget.upload = function(event, node){
@@ -104,8 +126,9 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                                 else{
                                         _store.set("modification_date", modDate);
                                         _store.upload().then(function(){
-                                                // close window
-                                                //_widget.place(document.createDocumentFragment());
+                                                if (updateReplay){
+                                                        _widget.updateSessionReplay(_store.get("sessionReplay")).then(null, function(err){console.log(err);});
+                                                }
                                                 $action("close");
                                         });
                                }

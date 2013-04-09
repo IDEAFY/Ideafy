@@ -12,7 +12,8 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
 			var _widget = new Widget(),
 			    _store = new Store(),  // the idea
 			    _labels = Config.get("labels"),
-			    _error = new Store({"error": ""});
+			    _error = new Store({"error": ""}),
+			    updateReplay; // flag, set to true if sessionReplay option is modified
 		//setup
 	               
                         _store.setTransport(Config.get("transport"));
@@ -67,7 +68,8 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                         _widget.reset = function reset(id){
                                 _store.unsync();
                                 _store.reset();
-                                _store.sync(Config.get("db"), id);        
+                                _store.sync(Config.get("db"), id);
+                                updateReplay = false;        
                         };
                         
                         _widget.editVisibility = function(event, node){
@@ -85,9 +87,8 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                         _widget.enableReplay = function(event, node){
                                 setTimeout(function(){
                                         (_store.get("sessionReplay")) ? _store.set("sessionReplay", false) : _store.set("sessionReplay", true);
-                                        _widget.updateSessionReplay(_store.get("sessionReplay")).then(function(){
-                                                node.classList.remove("pressed");
-                                        });
+                                        updateReplay = true;
+                                        node.classList.remove("pressed");
                                 }, 300);
                         };
                         
@@ -126,7 +127,9 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                                 else{
                                         _store.set("modification_date", modDate);
                                         _store.upload().then(function(){
-                                                // close window
+                                                if (updateReplay){
+                                                        _widget.updateSessionReplay(_store.get("sessionReplay")).then(null, function(err){console.log(err);});
+                                                }
                                                 $action("close");
                                                 
                                         });

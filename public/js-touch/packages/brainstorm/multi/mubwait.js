@@ -85,7 +85,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         widget.place(document.getElementById("mubwait"));
                         
                      
-                        
                         widget.reset = function reset(sid){
                                 // create confirmation UI
                                 confirmUI = new Confirm(widget.dom);

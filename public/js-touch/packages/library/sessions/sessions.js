@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "service/utils", "service/avatarlist", "service/confirm"],
-        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Utils, AvatarList, Confirm){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "service/utils", "service/avatarlist", "service/confirm", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Utils, AvatarList, Confirm, Spinner){
                 
            return function MySessionsContructor(){
               
@@ -30,7 +30,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   _sessionData = [],
                   _searchData = [],
                   _currentSearch = "", // the current search, if empty _sessionData is used
-                  _sessionsCDB = new CouchDBStore();
+                  _sessionsCDB = new CouchDBStore(),
+                  spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10}).spin();
                   
               
               // setup
@@ -103,7 +104,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   "sessionevent": new Event(_widget)      
               });
               
-              _widget.template = '<div id="sessions"><div id="session-list" class="list"><div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div><div class="session-tools"><div class="session-sorting"><div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbytitle"></span><div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div></div><div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbydate"></span><div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div></div><div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyidea"></span><div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div></div><div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyscore"></span><div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div></div></div><input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sortevent="listen: keypress, search"><div id="sessionsearchresult"></div></div><div class="session-details"><ul data-sessions="foreach"><li class="session-item" data-sessionevent="listen:touchstart, setStart; listen: touchmove, displayActionBar"><table class="session-boxscore"><tr><td class="session-type"></td><td class="session-info"><p class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</p><p class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</p></td><td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td><td class="avatarlist" data-sessions="bind: setAvatars, participants"></td><td class="session-status" data-sessions="bind:setStatus, status">completed</td><td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td></tr></table><div class="actionbar" data-sessionevent="listen: touchend, hideActionBar"><div class="replaysession" name="replay" data-sessionevent="listen: touchstart, press; listen:touchend, replay"></div><div class="deletesession" name="delete" data-sessionevent="listen: touchstart, press; listen:touchend, deleteSession"></div></div></li></ul></div></div></div>';
+              _widget.template = '<div id="sessions"><div id="session-list" class="list"><div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div><div class="session-tools"><div class="session-sorting"><div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbytitle"></span><div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div></div><div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbydate"></span><div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div></div><div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyidea"></span><div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div></div><div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyscore"></span><div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div></div></div><input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sortevent="listen: keypress, search"><div id="sessionsearchresult"></div></div><div class="session-details"><ul data-sessions="foreach"><li class="session-item" data-sessionevent="listen:touchstart, setStart; listen: touchmove, displayActionBar"><table class="session-boxscore"><tr><td class="session-type"></td><td class="session-info"><p class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</p><p class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</p></td><td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td><td class="avatarlist" data-sessions="bind: setAvatars, participants"></td><td class="session-status" data-sessions="bind:setStatus, status">completed</td><td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td></tr></table><div class="actionbar" data-sessionevent="listen: touchend, hideActionBar"><div class="replaysession" name="replay" data-sessionevent="listen: touchstart, press; listen:touchend, replay"></div><div class="deletesession" name="delete" data-sessionevent="listen: touchstart, press; listen:touchend, deleteSession"></div><div class="sessionlistspinner"></div></div></li></ul></div></div></div>';
               
               _widget.sort = function sort(event, node){
                         var mode = node.getAttribute("id");
@@ -199,7 +200,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               };
               
               _widget.press = function(event, node){
-                       node.classList.add("pressed");        
+                       var id = node.getAttribute("data-sessions_id"), spinTarget;
+                       node.classList.add("pressed");
+                       console.log(node, id);
+                       if (id){
+                               spinner.el = node.parentNode.querySelector(".sessionlistpsinner");
+                       }     
               };
               
               _widget.replay = function(event, node){
@@ -224,7 +230,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _cdb = new CouchDBStore();
                         _cdb.setTransport(Config.get("transport"));
                         _cdb.sync(_db, _sid).then(function(){
-                                setTimeout(function(){_cdb.remove();}, 200);
+                                setTimeout(function(){
+                                        _cdb.remove();
+                                        spinner.stop();
+                                        }, 200);
                         });
                         
                         // last, remove attachments (whiteboards) if any from the server

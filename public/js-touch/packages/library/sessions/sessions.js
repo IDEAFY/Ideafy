@@ -344,7 +344,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                         _sessionData.push(_item);
                                 });
-                                _sessions.reset(_sessionData);
+                                //_sessions.reset(_sessionData);
+                                _widget.sortSessions("sbydate");
               };
               
               _widget.getMode = function getMode(sid){

@@ -69,7 +69,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         this.setAttribute("style", "background-image:url('img/brainstorm/boardroom.png');");
                                                         break;
                                                 default:
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/sessionQuick.png');");
+                                                        this.setAttribute("style", "background-image:url('img/library/sessionQuick.png');");
                                                         break;
                                         }        
                                 },
@@ -371,8 +371,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         });   
                                });
               });
-              
-              SPIN = spinner;
               // return
               return _widget;
                    

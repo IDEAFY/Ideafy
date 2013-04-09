@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "service/utils", "service/avatarlist", "service/confirm", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Utils, AvatarList, Confirm, Spinner){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "service/utils", "service/avatarlist", "service/confirm", "lib/spin.min", "Promise"],
+        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Utils, AvatarList, Confirm, Spinner, Promise){
                 
            return function MySessionsContructor(){
               
@@ -230,30 +230,34 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                * prior to deleting session and remove ideafy replay option from idea doc
                */
               _widget.deleteSession = function(event, node){
-                        var _id = node.getAttribute("data-sessions_id"), _sid = _sessions.get(_id).id;
+                        var _id = node.getAttribute("data-sessions_id"), _sid = _sessions.get(_id).id,
+                            removeFromDB = function(docId){
+                                var cdb = new CouchDBStore();
+                                cdb.setTransport(Config.get("transport"));
+                                cdb.sync(_db, docId).then(function(){
+                                        // remove session attachments (if any) from the server 
+                                        Config.get("transport").request("cleanUpSession", _sid, function(res){
+                                                if (res.err) console.log(res.err);
+                                                cdb.remove();
+                                                cdb.unsync();
+                                                promise.fulfill();       
+                                        });       
+                                });
+                             };
+                        
                         // hide action bar and remove hightlight
                         node.classList.remove("pressed");
                         node.parentNode.setAttribute("style", "display: none;");
                         
-                        // remove session from CouchDB
-                        var _cdb = new CouchDBStore();
-                        _cdb.setTransport(Config.get("transport"));
-                        _cdb.sync(_db, _sid).then(function(){
-                                // if session does not contain an idea delete right away
-                                if (!_cdb.get("idea").length || !_cdb.get("sessionReplay")){
-                                        setTimeout(function(){
-                                                _cdb.remove();
-                                                spinner.stop();
-                                        }, 500);
-                                }
+                        // if sessionReplay is enabled display confirmation UI
+                        if (_sessions.get(_id).replay){
                                 
-                                
-                        });
-                        
-                        // last, remove attachments (whiteboards) if any from the server
-                        Config.get("transport").request("cleanUpSession", _sid, function(res){
-                                if (res.err) console.log(res.err);        
-                        });
+                        }
+                        else {
+                                removeFromDB(_sid).then(function(){
+                                        spinner.stop();
+                                });
+                        }
               };
               
               _widget.resetSessionData = function resetSessionData(){
@@ -269,7 +273,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 usernames:[],
                                                 status:v.value.status,
                                                 score:v.value.score,
-                                                mode: v.value.mode
+                                                mode: v.value.mode,
+                                                replay: v.value.sessionReplay
                                          };
                                          // merge initiator and participants
                                         _item.participants.push(v.value.initiator.id);

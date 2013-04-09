@@ -5546,7 +5546,7 @@ li.my2q{
     margin-right: 10px;
 }
 
-.edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select, #newmub select{
+.edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select, #newmub select, #mulist select{
     -webkit-appearance: none;
     text-align: center;
     width: 120px;

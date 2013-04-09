@@ -2000,7 +2000,7 @@ textarea.solution {
 
 #session-list .confirm{
     width: 500px;
-    height: 250px;
+    height: 200px;
     background: white;
     display: block;
     top: 200px;
@@ -6096,14 +6096,14 @@ li.my2q{
     height: 40px;
 }
 
-#mubwait .confirm p{
+#mubwait .confirm p, #session-list .confirm p{
     color: #4D4D4D;
     margin: 50px;
     font-family: Helvetica;
     font-size: 18px;
 }
 
-#mubwait .confirm .option{
+#mubwait .confirm .option,  #session-list .confirm{
     border-color: #4D4D4D;
     float: right;
     font-family: Helvetica;

@@ -92,7 +92,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 
                 widget.reset = function reset(){
                        currentList = "mulistall"; 
-                       spinner.spin(document.getElementById("mulistspinner"));
+                       spinner.spin(widget.dom);
                         // synchronize muCDB with database
                         widget.buildList(currentList).then(function(){
                                 spinner.stop();

@@ -31,7 +31,7 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                                              (visibility === "public") ? this.setAttribute("style", "background:url('img/public/publicForList.png') no-repeat left center; background-size: 14px 12px;") : this.setAttribute("style", "background-image:url('img/public/privateForList.png');");         
                                         },
                                         setReplay : function(session){
-                                             (!session) ? this.setAttribute("style", "display:none"):this.setAttribute("style", "display:inline-block");      
+                                             (!session || session.search("deleted") !== -1) ? this.setAttribute("style", "display:none"):this.setAttribute("style", "display:inline-block");      
                                         },
                                         setIdeafyStatus : function(replay){
                                              (replay) ? this.innerHTML = _labels.get("enabledreplaylbl") : this.innerHTML = _labels.get("disabledreplaylbl");         

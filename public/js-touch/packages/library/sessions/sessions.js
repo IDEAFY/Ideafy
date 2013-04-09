@@ -17,6 +17,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   _dom = Map.get("sessions"),
                   _sessions = new Store(),
                   _db = Config.get("db"),
+                  _transport = Config.get("transport"),
                   _user = Config.get("user"),
                   _avatars = Config.get("avatars"),
                   _labels = Config.get("labels"),
@@ -36,7 +37,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   
               
               // setup
-              _sessionsCDB.setTransport(Config.get("transport"));
+              _sessionsCDB.setTransport(_transport);
               
               _widget.plugins.addAll({
                         "label": new Model(_labels),
@@ -235,10 +236,25 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             removeFromDB = function(docId){
                                 var cdb = new CouchDBStore(),
                                     promise = new Promise();
-                                cdb.setTransport(Config.get("transport"));
+                                cdb.setTransport(_transport);
                                 cdb.sync(_db, docId).then(function(){
+                                        var arr = cdb.get("replayIdeas") || [];
+                                        // update related idea docs if any
+                                        arr.forEach(function(idea){
+                                                var ideaDB = new CouchDBStore();
+                                                ideaDB.setTransport(_transport);
+                                                ideaDB.sync(_db, idea).then(function(){
+                                                        ideaDB.set("sessionId", ideaDB.get("sessionId")+"_deleted");
+                                                        ideaDB.set("sessionReplay", false);
+                                                        ideaDB.upload().then(function(){
+                                                                ideaDB.unsync();        
+                                                        }, function(err){
+                                                                console.log(err);
+                                                        });  
+                                                });  
+                                        });
                                         // remove session attachments (if any) from the server 
-                                        Config.get("transport").request("cleanUpSession", _sid, function(res){
+                                        _transport.request("cleanUpSession", _sid, function(res){
                                                 if (res.err) {console.log(res.err);}
                                                 cdb.remove();
                                                 cdb.unsync();
@@ -247,14 +263,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 });
                                 return promise;
                              },
+                             updateSessionIdeas = function(arr){
+                                     
+                             },
                              // confirmation window invoked with question and callback
                             confirmUI, question = _labels.get("deletereplay"), confirmCallback = function(decision){
                                         if (decision){
                                                 spinner.spin(document.getElementById("sessionlistspinner"));
+                                                // remove session from database
                                                 removeFromDB(_sid).then(function(){
                                                         spinner.stop();
                                                         confirmUI.close();
-                                                })     
+                                                });   
                                         }
                                         else{
                                                 confirmUI.close();        
@@ -292,7 +312,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 status:v.value.status,
                                                 score:v.value.score,
                                                 mode: v.value.mode,
-                                                replay: v.value.sessionReplay
+                                                replayIdeas: v.value.replayIdeas
                                          };
                                          // merge initiator and participants
                                         _item.participants.push(v.value.initiator.id);

@@ -139,6 +139,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         cdb.sync(db, "library", view, query).then(function(){
                                 if (mode === "roulette"){
                                         arr = JSON.parse(cdb.toJSON());
+                                        console.log(cdb.toJSON(),arr);
                                 }
                                 else {
                                         cdb.loop(function(v,i){

@@ -6295,7 +6295,7 @@ li.my2q{
 
 #mulist .muparts li{
     display: block;
-    background-image: url('img/connect/authoredBy14.png');
+    background-image: url('../img/connect/authoredBy14.png');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;

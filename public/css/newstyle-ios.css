@@ -6297,6 +6297,7 @@ li.my2q{
     display: block;
     background-image: url('img/connect/authoredBy14.png');
     background-repeat: no-repeat;
+    background-position: center center;
     background-size: contain;
     width: 15px;
     height: 25px;

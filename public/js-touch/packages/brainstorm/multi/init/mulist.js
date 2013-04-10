@@ -117,7 +117,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         });
                 };
                 
-                widget.buildList = function buildList(listId, text){
+                widget.buildList = function buildList(listId, query){
                         var arr = [], promise = new Promise();
                         if (listId === "mulistall"){
                                 muListAll.reset([]);
@@ -132,7 +132,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         }
                         if (listId === "musearch"){
                                 muSearch.reset([]);
-                                widget.syncSearch(arr, text).then(function(){
+                                widget.syncSearch(arr, query).then(function(){
                                         muSearch.reset(arr);
                                         promise.fulfill();
                                 });  
@@ -190,7 +190,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         widget.toggleList("mulistall");
                                 }
                                 else {
-                                        widget.toggleList("musearch");
+                                        widget.toggleList("musearch", node.value);
                                 }
                         }        
                 };
@@ -199,13 +199,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         node.classList.add("pressed");        
                 };
                 
-                widget.toggleList = function toggleList(list){
+                widget.toggleList = function toggleList(list, query){
                         if (list !== currentList){
                                 document.getElementById(currentList).classList.add("invisible");
                                 document.getElementById(list).classList.remove("invisible");
                                 currentList = list;
                                 spinner.spin(document.getElementById("mulistspinner"));
-                                widget.buildList(list).then(function(){
+                                widget.buildList(list, query).then(function(){
                                         spinner.stop();
                                 });
                         }

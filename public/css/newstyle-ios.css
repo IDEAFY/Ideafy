@@ -6115,7 +6115,7 @@ li.my2q{
     margin-right: 20px;
 }
 
-#mubwait .mubwait-form{
+#mubwait .mubwait-form, #mulist-content .preview{
     width: 590px;
     height: 370px;    
     padding:0px 20px;

@@ -295,6 +295,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                    });
                 MUALL = muListAll;
                 MUSEARCH = muSearch;
+                MUOPTIONS = muListOptions;
                 return widget;
                    
            };

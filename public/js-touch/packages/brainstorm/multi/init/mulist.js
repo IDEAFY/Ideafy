@@ -276,7 +276,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         var arr, query, promise = new Promise(), mode = "", lang = "";
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
-                        if (muListOptions.get("selectedLang") !== "all"){mode = muListOptions.get("selectedLang");}
+                        if (muListOptions.get("selectedLang") !== "all"){lang = muListOptions.get("selectedLang");}
                         
                         // if both filters have the default (all) value set simply refresh current list
                         if (mode === "" && lang === ""){

@@ -143,7 +143,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 widget.syncSearch = function syncSearch(arr, query){
                         var promise = new Promise(), cdb = new CouchDBStore();
                         cdb.setTransport(transport);
-                        cdb.sync("_fti/local/"+Config.get("db"), "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
+                        cdb.sync("_fti/local/"+db, "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
                                 cdb.loop(function(v,i){
                                         console.log(v);
                                 });

@@ -452,7 +452,7 @@
 	"nosessionfound" : "Aucune session trouvée",
 	"allmodes" : "Tout afficher",
 	"all" : "Tout",
-	"Mode": "Mode",
+	"mode": "Mode",
 	"lang": "Lang",
 	"title": "Titre",
 	"leader": "Leader de session"

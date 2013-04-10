@@ -241,11 +241,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 widget.filterLang = function(event, node){
-                        
+                        muListOptions.set("selectedLang", node.value);        
                 };
                 
-                widget.fileterMode = function(event, node){
-                        
+                widget.filterMode = function(event, node){
+                        muListOptions.set("selectedMode", node.value);        
                 };
                 
                 widget.zoom = function(event, node){

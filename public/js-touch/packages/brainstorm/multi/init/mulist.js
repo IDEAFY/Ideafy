@@ -277,6 +277,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 alert("filter selected for : "+currentList);
                                 promise.fulfill();
                         }
+                        return promise;
                 };
                 
                 widget.zoom = function(event, node){

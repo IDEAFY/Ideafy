@@ -451,6 +451,10 @@
 	"startbutton": "Go!",
 	"nosessionfound" : "Aucune session trouvée",
 	"allmodes" : "Tout afficher",
-	"all" : "Tout"
+	"all" : "Tout",
+	"Mode": "Mode",
+	"lang": "Lang",
+	"title": "Titre",
+	"leader": "Leader de session"
 
 }

@@ -451,5 +451,9 @@
 	"startbutton": "Start",
 	"nosessionfound" : "No session found",
 	"allmodes" : "All modes",
-	"all" : "All"
+	"all" : "All",
+	"Mode": "Mode",
+	"lang": "Lang",
+	"title": "Title",
+	"leader": "Session leader"
 }

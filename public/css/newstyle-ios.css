@@ -6209,6 +6209,13 @@ li.my2q{
 #mulist .mulistoptions select{
     width: 60px;
     height: 30px;
+    border-color: #CCCCCC;
+    background-size: 25px;
+    padding-right: 25px;
+}
+
+#mulist .mulistoptions select.modes{
+    width: 100px;
 }
 
 #mulistall, #musearch{

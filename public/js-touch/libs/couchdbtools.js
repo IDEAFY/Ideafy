@@ -156,6 +156,8 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                         query: _syncInfo.query
                                 }, function (results) {
                                         var json = JSON.parse(results);
+                                        //test
+                                        console.log(json);
                                         if (!json.rows) {
                                                 throw new Error("CouchDBStore [" + _syncInfo.database + ", " + _syncInfo.design + ", " + _syncInfo.view + "].sync() failed: " + results);
                                         } else {

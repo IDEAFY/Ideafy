@@ -125,6 +125,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 widget.addSessions(arr, "roulette").then(function(){
                                         widget.addSessions(arr, "campfire").then(function(){
                                                 widget.addSessions(arr, "boardroom").then(function(){
+                                                        if (arr.length){
+                                                                document.getElementById("noresult").classList.add("invisible");
+                                                        }
+                                                        else {
+                                                                document.getElementById("noresult").classList.remove("invisible");
+                                                        }
                                                         muListAll.reset(arr);
                                                         promise.fulfill();      
                                                 }); 
@@ -134,6 +140,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         if (listId === "musearch"){
                                 muSearch.reset([]);
                                 widget.syncSearch(arr, query).then(function(){
+                                        if (arr.length){
+                                                document.getElementById("noresult").classList.add("invisible");
+                                        }
+                                        else {
+                                                document.getElementById("noresult").classList.remove("invisible");
+                                        }
                                         muSearch.reset(arr);
                                         promise.fulfill();
                                 });  

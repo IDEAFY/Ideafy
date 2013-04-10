@@ -18,6 +18,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                     currentList = "mulistall",
                     labels=Config.get("labels"),
                     user = Config.get("user"),
+                    contacts = Utils.getUserContactIds(), // array of user ids
                     db = Config.get("db"),
                     transport = Config.get("transport"),
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 6, radius:10, top: 200}).spin();
@@ -146,7 +147,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         cdb.sync("_fti/local/"+db, "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
                                 cdb.loop(function(v,i){
                                         console.log(v);
-                                        arr.push(v);
+                                        if (v.fields.mode === "roulette"){
+                                                arr.push(v);
+                                        }
+                                        else if (v.fields.mode === "campfire" && contacts.indexOf(v.fields.initiator.id) > -1){
+                                                arr.push(v);
+                                        }
+                                        else if (v.fields.mode === "boardroom" && v.fields.invited.search(user.get("_id"))>-1){
+                                                arr.push(v);
+                                        }
                                 });
                                 promise.fulfill();
                         });

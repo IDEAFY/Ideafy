@@ -212,17 +212,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         cdb.loop(function(v,i){
                                                 if (v.value.lang.search(lang) > -1) arr.push(v);        
                                         });
-                                        console.log(arr);
-                                        promise.fulfill();
-                                        cdb.unsync();
                                 }
                                 else {
                                         cdb.loop(function(v,i){
                                                 if (v.value.lang.search(lang) > -1) arr.unshift(v);        
-                                        });
-                                        promise.fulfill();
-                                        cdb.unsync();        
+                                        });        
                                 }
+                                console.log(arr.join());
+                                promise.fulfill();
+                                cdb.unsync();
                         }, function(err){console.log(err, mode);});
                         return promise;
                 };

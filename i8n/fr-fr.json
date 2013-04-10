@@ -422,7 +422,7 @@
 	"nointernet": "Votre appareil n'est pas connecté: veuillez vérifier votre connexion à Internet et réessayer",
 	"schedmaintenance" : "Maintenance programmée",
 	"nextmaintenance" : "La prochaine maintenance aura lieu le : ",
-	"startnewmub": "Démarrer une session",
+	"startnewmub": "Créer une session",
 	"joinmub": "Rejoindre une session",
 	"selectmode": "Sélectionnez un mode",
 	"roulette": "Roulette",

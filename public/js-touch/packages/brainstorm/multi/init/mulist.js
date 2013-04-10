@@ -14,7 +14,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                     muListAll = new Store([]),
                     muSearch = new Store([]),
                     musessions = new Store([]),
-                    muListOptions = new Store({"lang":[], "modes":["allmodes", "roulette", "campfire", "boardroom"], "selectedlang":0, "selectedmode": 0}),
+                    muListOptions = new Store({"lang":[], "modes":["allmodes", "roulette", "campfire", "boardroom"], "selectedLang": "", "selectedMode": ""}),
                     currentList = "mulistall",
                     labels=Config.get("labels"),
                     user = Config.get("user"),
@@ -29,17 +29,17 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 setLang : function(lang){
                                         var i,l, res="";
                                         for (i=0, l=lang.length;i<l;i++){
-                                                res+='<option "class = '+lang[i]+'"</option>';
+                                                res+='<option>'+lang[i]+'</option>';
                                         }
                                         this.innerHTML=res;        
-                                   },
-                                 setMode : function(modes){
+                                },
+                                setMode : function(modes){
                                         var i,l, res="";
                                         for (i=0, l=modes.length;i<l;i++){
-                                                res+='<option>'+labels.get(modes[i])+'"</option>';
+                                                res+='<option>'+labels.get(modes[i])+'</option>';
                                         }
                                         this.innerHTML=res;        
-                                   },         
+                                }
                         }),
                         "muall" : new Model(muListAll, {
                                 setParticipants : function (array){

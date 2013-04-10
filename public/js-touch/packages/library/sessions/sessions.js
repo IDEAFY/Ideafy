@@ -60,10 +60,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 setMode : function(mode){
                                         switch(mode){
                                                 case "roulette":
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/roulette.png');");
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/roulette-green.png');");
                                                         break;
                                                 case "campfire":
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/campfire.png');");
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/campfire-orange.png');");
                                                         break;
                                                 case "boardroom":
                                                         this.setAttribute("style", "background-image:url('img/brainstorm/boardroom.png');");

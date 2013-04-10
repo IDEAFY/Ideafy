@@ -228,7 +228,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 widget.filterLang = function(event, node){
-                        muListOptions.set("selectedLang", node.value);
+                        muListOptions.set("selectedLang", muListOptions.get("lang")[node.selectedIndex]);
                         // start spinner
                         spinner.spin(document.getElementById("mulistspinner"));
                         widget.filterList().then(function(){
@@ -237,8 +237,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 widget.filterMode = function(event, node){
-                        muListOptions.set("selectedMode", node.value);
-                        switch(node.selectedIndex){
+                        var i = node.selectedIndex;
+                        muListOptions.set("selectedMode", muListOptions.get("modes")[i]);
+                        switch(i){
                                 case 1:
                                         node.setAttribute("style", "color: #5F8F28;");
                                         break;

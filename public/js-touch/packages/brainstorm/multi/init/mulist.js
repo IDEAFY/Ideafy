@@ -273,7 +273,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 widget.filterList = function filterList(){
-                        var arr=[], query, promise = new Promise(), mode = "", lang = "";
+                        var arr=[], query = document.getElementById("mulist-content").querySelector("input").value,
+                            promise = new Promise(), mode = "", lang = "";
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
                         if (muListOptions.get("selectedLang") !== "all"){lang = muListOptions.get("selectedLang");}
@@ -282,10 +283,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         
                         // if both filters have the default (all) value set simply refresh current list
                         if (mode === "" && lang === ""){
-                                // retrieve query if needed
-                                if (currentList === "musearch"){
-                                        query = document.getElementById("mulist-content").querySelector("input").value;        
-                                }
                                 widget.buildList(currentList, query).then(function(){
                                         promise.fulfill();
                                 });       

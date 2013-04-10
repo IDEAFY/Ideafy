@@ -284,7 +284,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         if (mode === "" && lang === ""){
                                 // retrieve query if needed
                                 if (currentList === "musearch"){
-                                        query = document.getElementbyId("mulist-content").querySelector("input").value;        
+                                        query = document.getElementById("mulist-content").querySelector("input").value;        
                                 }
                                 widget.buildList(currentList, query).then(function(){
                                         promise.fulfill();

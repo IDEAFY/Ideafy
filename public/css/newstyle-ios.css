@@ -6221,6 +6221,11 @@ li.my2q{
     background: #657B99;
 }
 
+#noresult{
+    position: absolute;
+    margin: 10px;
+}
+
 #mulistall li, #musearch li{
     height: 40px;
     width: 100%

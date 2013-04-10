@@ -163,20 +163,26 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         return promise;        
                 };
                 
-                widget.syncSearch = function syncSearch(arr, query){
+                widget.syncSearch = function syncSearch(arr, query, filter){
                         var promise = new Promise(), cdb = new CouchDBStore();
                         cdb.setTransport(transport);
                         cdb.sync("_fti/local/"+db, "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
                                 cdb.loop(function(v,i){
-                                        console.log(v);
+                                        var add = false;
                                         if (v.fields.mode === "roulette"){
-                                                arr.push(v);
+                                                add = true;
                                         }
                                         else if (v.fields.mode === "campfire" && contacts.indexOf(v.fields.initiator.id) > -1){
-                                                arr.push(v);
+                                                add =true;
                                         }
                                         else if (v.fields.mode === "boardroom" && v.fields.invited.search(user.get("_id"))>-1){
-                                                arr.push(v);
+                                                add = true;
+                                        }
+                                        if (add){
+                                                if (!filter) {arr.push(v);}
+                                                else{
+                                                        if (v.fields.mode.search(filter.mode)>-1 && v.fields.lang.search(filter.lang)>-1) {arr.push(v);}
+                                                }
                                         }
                                 });
                                 promise.fulfill();
@@ -186,7 +192,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 // a function to add qualifying sessions (e.g. waiting, less than 4 participants and relevant to user)
-                widget.addSessions = function addSessions(arr, mode){
+                widget.addSessions = function addSessions(arr, mode, filter){
                         var promise = new Promise(),
                             cdb = new CouchDBStore(),
                             view = "_view/"+mode, query = {};
@@ -201,12 +207,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         cdb.sync(db, "library", view, query).then(function(){
                                 if (mode === "roulette"){
                                         cdb.loop(function(v,i){
-                                                arr.push(v);        
+                                                if (!filter || v.value.lang.search(filter.lang) > -1) arr.push(v);        
                                         });
                                 }
                                 else {
                                         cdb.loop(function(v,i){
-                                                arr.unshift(v);        
+                                                if (!filter || v.value.lang.search(filter.lang) > -1) arr.unshift(v);        
                                         });        
                                 }
                                 promise.fulfill();
@@ -222,13 +228,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         widget.toggleList("mulistall");
                                 }
                                 else {
-                                        widget.toggleList("musearch", node.value);
+                                        widget.toggleList("musearch");
                                 }
                         }        
                 };
                 
                 widget.filterLang = function(event, node){
-                        muListOptions.set("selectedLang", muListOptions.get("lang")[node.selectedIndex]);
+                        var i = node.selectedIndex;
+                        if (i === 0){
+                                muListOptions.set("selectedLang", "all");        
+                        }
+                        else{
+                                muListOptions.set("selectedLang", muListOptions.get("lang")[i]);
+                        }
                         // start spinner
                         spinner.spin(document.getElementById("mulistspinner"));
                         widget.filterList().then(function(){
@@ -261,14 +273,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 widget.filterList = function filterList(){
-                        var store, query, promise = new Promise();
-                        // get current list and reset the store
-                        if (currentList === "mulistall"){store = muListAll;}
-                        else {store = muSearch;}
-                        store.reset([]);
+                        var arr, query, promise = new Promise(), mode = "", lang = "";
+                        
+                        if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
+                        if (muListOptions.get("selectedLang") !== "all"){mode = muListOptions.get("selectedLang");}
                         
                         // if both filters have the default (all) value set simply refresh current list
-                        if (muListOptions.get("selectedMode") === "allmodes" && muListOptions.get("selectedLang") === "all"){
+                        if (mode === "" && lang === ""){
                                 // retrieve query if needed
                                 if (currentList === "musearch"){
                                         query = document.getElementbyId("mulist-content").querySelector("input").value;        
@@ -278,8 +289,51 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 });       
                         }
                         else{
-                                alert("filter selected for : "+currentList);
-                                promise.fulfill();
+                                // get current list and reset the store
+                                if (currentList === "mulistall"){
+                                        muListAll.reset([]);
+                                        if (mode){
+                                                widget.addSessions(arr, mode, {lang: lang}).then(function(){
+                                                        muListAll.reset(arr);
+                                                        if (arr.length){
+                                                                document.getElementById("noresult").classList.add("invisible");
+                                                        }
+                                                        else {
+                                                                document.getElementById("noresult").classList.remove("invisible");
+                                                        } 
+                                                        promise.fulfill();      
+                                                });
+                                        }
+                                        else{
+                                                widget.addSessions(arr, "roulette", {lang: lang}).then(function(){
+                                                        widget.addSessions(arr, "campfire", {lang: lang}).then(function(){
+                                                                widget.addSessions(arr, "boardroom", {lang: lang}).then(function(){
+                                                                        muListAll.reset(arr);
+                                                                        if (arr.length){
+                                                                                document.getElementById("noresult").classList.add("invisible");
+                                                                        }
+                                                                        else {
+                                                                                document.getElementById("noresult").classList.remove("invisible");
+                                                                        }
+                                                                        promise.fulfill();      
+                                                                }); 
+                                                        });   
+                                                });
+                                        }
+                                }
+                                else{
+                                        muSearch.reset([]);
+                                        widget.syncSearch(arr, query, {mode:mode, lang:lang}).then(function(){
+                                                muSearch.reset(arr);
+                                                if (arr.length){
+                                                        document.getElementById("noresult").classList.add("invisible");
+                                                }
+                                                else {
+                                                        document.getElementById("noresult").classList.remove("invisible");
+                                                }
+                                                promise.fulfill();        
+                                        });
+                                }
                         }
                         return promise;
                 };
@@ -288,14 +342,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         node.classList.add("pressed");        
                 };
                 
-                widget.toggleList = function toggleList(list, query){
+                widget.toggleList = function toggleList(list){
                         if (list !== currentList){
                                 document.getElementById(currentList).classList.add("invisible");
                                 document.getElementById(list).classList.remove("invisible");
                                 currentList = list;
                         }
                         spinner.spin(document.getElementById("mulistspinner"));
-                        widget.buildList(list, query).then(function(){
+                        widget.filterList().then(function(){
                                 spinner.stop();
                         });
                 };
@@ -304,7 +358,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 // init
                 // get available languages
                    transport.request("GetLanguages", {}, function(result){
-                        muListOptions.set("lang", ["all"].concat(result));      
+                        muListOptions.set("lang", [labels.get("all")].concat(result));      
                    });
                 MUALL = muListAll;
                 MUSEARCH = muSearch;

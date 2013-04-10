@@ -446,10 +446,11 @@
 	"leaderleave": "Êtes-vous sûr de vouloir annuler cette session? Elle va prendre fin pour tous les participants.",
 	"waitingroomlbl": "Salle d'attente",
 	"joinedsession": "<i>Vous avez rejoint cette session.</i>",
-	"deletingsession": "Suppresion de la session : ",
+	"deletingsession": "Suppression de la session : ",
 	"participants": "Participants",
-	"startbutton": "Démarrer",
+	"startbutton": "Go!",
 	"nosessionfound" : "Aucune session trouvée",
-	"allmodes" : "Tout afficher"
+	"allmodes" : "Tout afficher",
+	"all" : "Tout"
 
 }

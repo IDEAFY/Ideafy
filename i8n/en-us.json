@@ -450,5 +450,6 @@
 	"participants": "Participants",
 	"startbutton": "Start",
 	"nosessionfound" : "No session found",
-	"allmodes" : "All modes"
+	"allmodes" : "All modes",
+	"all" : "all"
 }

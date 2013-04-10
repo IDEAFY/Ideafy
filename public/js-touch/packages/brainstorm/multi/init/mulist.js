@@ -130,15 +130,21 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         });   
                                 });  
                         }
+                        if (listId === "musearch"){
+                                muSearch.reset([]);
+                                widget.syncSearch(arr, text).then(function(){
+                                        muSearch.reset(arr);
+                                        promise.fulfill();
+                                });  
+                        }
                         return promise;        
                 };
                 
-                widget.syncSearch = function syncSearch(query){
-                        var promise = new Promise();
-                        muSearch.unsync();
-                        muSearch.reset([]);
-                        muSearch.sync("_fti/local/"+Config.get("db"), "indexedsessions", "roulette", {q: query, descending:true}).then(function(){
-                                muSearch.loop(function(v,i){
+                widget.syncSearch = function syncSearch(arr, query){
+                        var promise = new Promise(), cdb = new CouchDBStore();
+                        cdb.setTransport(transport);
+                        cdb.sync("_fti/local/"+Config.get("db"), "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
+                                cdb.loop(function(v,i){
                                         console.log(v);
                                 });
                                 promise.fulfill();
@@ -178,13 +184,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 widget.search = function(event, node){
+                        // reset previous search if any
                         if (event.keyCode === 13){
                                 if (node.value === ""){
                                         widget.toggleList("mulistall");
                                 }
                                 else {
                                         widget.toggleList("musearch");
-                                        widget.syncSearch(node.value);
                                 }
                         }        
                 };
@@ -195,10 +201,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 
                 widget.toggleList = function toggleList(list){
                         if (list !== currentList){
-                                widget.buildList(list);
                                 document.getElementById(currentList).classList.add("invisible");
                                 document.getElementById(list).classList.remove("invisible");
                                 currentList = list;
+                                spinner.spin(document.getElementById("mulistspinner"));
+                                widget.buildList(list).then(function(){
+                                        spinner.stop();
+                                });
                         }
                 };
                 
@@ -209,6 +218,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         muListOptions.set("lang", ["all"].concat(result));      
                    });
                 MUALL = muListAll;
+                MUSEARCH = muSearch;
                 return widget;
                    
            };

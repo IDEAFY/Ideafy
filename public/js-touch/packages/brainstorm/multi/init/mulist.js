@@ -146,6 +146,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         cdb.sync("_fti/local/"+db, "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
                                 cdb.loop(function(v,i){
                                         console.log(v);
+                                        arr.push(v);
                                 });
                                 promise.fulfill();
                         });

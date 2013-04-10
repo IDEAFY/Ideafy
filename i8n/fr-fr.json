@@ -449,6 +449,7 @@
 	"deletingsession": "Suppresion de la session : ",
 	"participants": "Participants",
 	"startbutton": "Démarrer",
-	"nosessionfound" : "Aucune session trouvée"
+	"nosessionfound" : "Aucune session trouvée",
+	"allmodes" : "Tout afficher"
 
 }

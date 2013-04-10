@@ -449,5 +449,6 @@
 	"deletingsession": "Deleting session : ",
 	"participants": "Participants",
 	"startbutton": "Start",
-	"nosessionfound" : "No session found"
+	"nosessionfound" : "No session found",
+	"allmodes" : "All modes"
 }

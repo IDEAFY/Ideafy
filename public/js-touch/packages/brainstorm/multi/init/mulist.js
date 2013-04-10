@@ -226,7 +226,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 
                 widget.filterLang = function(event, node){
                         muListOptions.set("selectedLang", node.value);
-                        widget.filterList();        
+                        // start spinner
+                        spinner.spin(document.getElementById("mulistspinner"));
+                        widget.filterList().then(function(){
+                                spinner.stop();
+                        });        
                 };
                 
                 widget.filterMode = function(event, node){
@@ -245,18 +249,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         node.setAttribute("style", "color: black;");
                                         break;        
                         }
-                        widget.filterList(); 
+                        // start spinner
+                        spinner.spin(document.getElementById("mulistspinner"));
+                        widget.filterList().then(function(){
+                                spinner.stop();
+                        });
                 };
                 
                 widget.filterList = function filterList(){
-                        var store, query;
+                        var store, query, promise = new Promise();
                         // get current list and reset the store
                         if (currentList === "mulistall"){store = muListAll;}
                         else {store = muSearch;}
                         store.reset([]);
-                        
-                        // start spinner
-                        spinner.spin(document.getElementById("mulistspinner"));
                         
                         // if both filters have the default (all) value set simply refresh current list
                         if (muListOptions.get("selectedMode") === "allmodes" && muListOptions.get("selectedLang") === "all"){
@@ -265,10 +270,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         query = document.getElementbyId("mulist-content").querySelector("input").value;        
                                 }
                                 widget.buildList(currentList, query).then(function(){
-                                        spinner.stop();
+                                        promise.fulfill();
                                 });       
                         }
-                                
+                        else{
+                                alert("filter selected for : "+currentList);
+                                promise.fulfill();
+                        }
                 };
                 
                 widget.zoom = function(event, node){

@@ -210,13 +210,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         cdb.sync(db, "library", view, query).then(function(){
                                 if (mode === "roulette"){
                                         cdb.loop(function(v,i){
-                                                console.log(v.value, "lang : ", lang);
-                                                if (v.value.lang.search(lang) > -1) arr.push(v);        
+                                                if (lang === "" || v.value.lang.search(lang) > -1) arr.push(v);        
                                         });
                                 }
                                 else {
                                         cdb.loop(function(v,i){
-                                                if (v.value.lang.search(lang) > -1) arr.unshift(v);        
+                                                if (lang === "" || v.value.lang.search(lang) > -1) arr.unshift(v);        
                                         });        
                                 }
                                 console.log(arr.join());

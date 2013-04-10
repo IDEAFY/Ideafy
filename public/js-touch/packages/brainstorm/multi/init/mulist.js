@@ -195,8 +195,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 widget.addSessions = function addSessions(arr, mode, filter){
                         var promise = new Promise(),
                             cdb = new CouchDBStore(),
-                            view = "_view/"+mode, query = {};
+                            view = "_view/"+mode, query = {},
+                            lang = "";
                         
+                        if (filter && filter.lang) {lang = filter.lang;}
+                        console.log("addsession", mode, lang);
                         cdb.setTransport(transport);
                         if (mode === "roulette"){
                                 query = {descending:true, limit:50};
@@ -207,12 +210,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         cdb.sync(db, "library", view, query).then(function(){
                                 if (mode === "roulette"){
                                         cdb.loop(function(v,i){
-                                                if (!filter || v.value.lang.search(filter.lang) > -1) arr.push(v);        
+                                                if (v.value.lang.search(lang) > -1) arr.push(v);        
                                         });
                                 }
                                 else {
                                         cdb.loop(function(v,i){
-                                                if (!filter || v.value.lang.search(filter.lang) > -1) arr.unshift(v);        
+                                                if (v.value.lang.search(lang) > -1) arr.unshift(v);        
                                         });        
                                 }
                                 promise.fulfill();
@@ -277,6 +280,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
                         if (muListOptions.get("selectedLang") !== "all"){lang = muListOptions.get("selectedLang");}
+                        
+                        console.log(mode, lang);
                         
                         // if both filters have the default (all) value set simply refresh current list
                         if (mode === "" && lang === ""){

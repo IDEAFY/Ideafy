@@ -14,7 +14,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                     muListAll = new Store([]),
                     muSearch = new Store([]),
                     musessions = new Store([]),
-                    muListOptions = new Store({"lang":[], "modes":["allmodes", "roulette", "campfire", "boardroom"], "selectedLang": "", "selectedMode": ""}),
+                    muListOptions = new Store({"lang":[], "modes":["allmodes", "roulette", "campfire", "boardroom"], "selectedLang": "all", "selectedMode": "allmodes"}),
                     currentList = "mulistall",
                     labels=Config.get("labels"),
                     user = Config.get("user"),
@@ -118,7 +118,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 widget.reset = function reset(){
                        currentList = "mulistall";
                        // init spinner
-                       spinner.spin(document.getElementById("mulistspinner")); 
+                       spinner.spin(document.getElementById("mulistspinner"));
+                       // reset options
+                       muListOptions.set("selectedLang", "all");
+                       muListOptions.set("selectedMode", "allmodes");
                        // synchronize muCDB with database
                         widget.buildList(currentList).then(function(){
                                 spinner.stop();

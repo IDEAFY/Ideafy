@@ -205,11 +205,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 document.getElementById(currentList).classList.add("invisible");
                                 document.getElementById(list).classList.remove("invisible");
                                 currentList = list;
-                                spinner.spin(document.getElementById("mulistspinner"));
-                                widget.buildList(list, query).then(function(){
-                                        spinner.stop();
-                                });
                         }
+                        spinner.spin(document.getElementById("mulistspinner"));
+                        widget.buildList(list, query).then(function(){
+                                spinner.stop();
+                        });
                 };
                 
                 

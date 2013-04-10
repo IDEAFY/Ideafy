@@ -6259,11 +6259,6 @@ li.my2q{
     padding-right: 5px;
 }
 
-#mulist option.all{
-    background: url('../img/flags/unflag.png') no-repeat center center;
-    background-size: contain;
-}
-
 .mulistheader{
     height: 30px;
     width: 849px;

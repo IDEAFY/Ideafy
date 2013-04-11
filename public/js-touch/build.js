@@ -21,3 +21,5 @@ require.config({
         deps: ["lib/socket.io.min", "lib/couchdbtools","lib/emily",  "lib/olives", "lib/amy2", "lib/spin.min"]
         
 });
+
+require(["body"]);

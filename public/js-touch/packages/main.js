@@ -9,7 +9,6 @@ require(["lib/socket.io", "lib/couchdbtools","lib/emily",  "lib/olives", "lib/am
 
 require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "CouchDBStore", "service/utils", "Promise"], 
     function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils, Promise) {
-        return function Body(){
         //declaration
         var _body = new Widget(), _login = null, _stack = new Stack({
                 "#login" : _login
@@ -32,7 +31,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
 
         _body.alive(Map.get("body"));
         _login = new Login();
-        
+        console.log("body starting");
         // check connection
         if (navigator.connection && navigator.connection.type === "none"){
                 (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
@@ -42,6 +41,8 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                 document.getElementById("nointernet").classList.remove("invisible");
         }
         else {
+                console.log("should display login screen");
+                
                 // display loading screen
                 _login.setScreen("#loading-screen");
                 _stack.getStack().setCurrentScreen(_login);
@@ -324,6 +325,5 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                         }   
                 });
         };
-    };
 }); 
 });

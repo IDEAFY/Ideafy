@@ -22,4 +22,4 @@ require.config({
         
 });
 
-require(["body"]);
+require(["main"]);

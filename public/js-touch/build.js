@@ -18,6 +18,11 @@ require.config({
                 brainstorm : "brainstorm",
                 twocents : "twocents"
         },
-        deps: ["lib/socket.io.min", "lib/couchdbtools","lib/emily",  "lib/olives", "lib/amy2", "lib/spin.min"]
-        
+        deps: ["lib/socket.io.min", "lib/couchdbtools","lib/emily",  "lib/olives", "lib/amy2", "lib/spin.min"],
+        modules : [
+            //setup a layer for each package
+            {
+              name:"main"
+            }
+          ]
 });

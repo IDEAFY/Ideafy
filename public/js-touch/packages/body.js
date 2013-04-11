@@ -7,7 +7,7 @@
 
 require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "CouchDBStore", "service/utils", "Promise"], 
     function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils, Promise) {
-        return new function Body(){
+        return function Body(){
         //declaration
         var _body = new Widget(), _login = null, _stack = new Stack({
                 "#login" : _login

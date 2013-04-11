@@ -7,16 +7,17 @@
 
 /* deps load before main script??*/
 require.config({
-	baseUrl : "js-touch/packages",
-    deps : ["main"],
-    paths: {
-        lib : "../libs",
-        service : "../services",
-        public : "public",
-        connect : "connect",
-        dashboard : "dashboard",
-        library : "library",
-        brainstorm : "brainstorm",
-        twocents : "twocents"
-    }
+	baseUrl : "js/packages",
+        paths: {
+                lib : "../libs",
+                service : "../services",
+                public : "public",
+                connect : "connect",
+                dashboard : "dashboard",
+                library : "library",
+                brainstorm : "brainstorm",
+                twocents : "twocents"
+        },
+        deps: ["lib/socket.io.min", "lib/couchdbtools","lib/emily",  "lib/olives", "lib/amy2", "lib/spin.min"]
+        
 });

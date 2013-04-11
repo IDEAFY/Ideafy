@@ -66,7 +66,7 @@
 	background:#666666;
 }
 
-.login-button.pressed {
+.login-button.pressed{
     color: white;
     border: 1px inset #CCCCCC;
     height: 38px;
@@ -100,4 +100,10 @@
     color: #E6E6E6;
     -webkit-box-shadow: 0 0 1px 1px rgba(37,64,102, 0.6);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #8c9aa8), color-stop(100%, #707e8e));
+}
+
+#signup-button.pressed{    
+    color: black;
+    border: 1px inset #CCCCCC;
+    text-shadow: 2px 2px 2px white;    
 }

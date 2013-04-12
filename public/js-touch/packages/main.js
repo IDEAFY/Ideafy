@@ -125,6 +125,8 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                 });
         }
                
-        Config.watchValue("uid", function(uid){  
+        Config.get("observer").watch("signout", function(){
+                _login.setScreen("#login-screen");
+                _stack.getStack().show("#login-screen");
         });
 }); 

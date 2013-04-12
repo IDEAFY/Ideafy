@@ -263,9 +263,19 @@ define(["OObject" ,"Amy/Stack-plugin",
                         
                         _login.setScreen = function setScreen(target){
                                 _stack.getStack().show(target);
-                        }
+                        };
                         
-                        LOGINSTACK = _stack;
+                        _login.reset = function reset(){
+                                _store.reset({
+                                        "email" : "",
+                                        "firstname" : "",
+                                        "lastname" : "",
+                                        "confirm-password" : "",
+                                        "password" : "",
+                                        "error" : ""
+                                });        
+                        };
+                        
 		//return
 		return _login;
 		};

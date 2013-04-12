@@ -343,11 +343,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         node.classList.add("pressed");
                         if (currentList === "mulistall"){
                                 id = node.getAttribute("data-muall_id");
-                                MUPreview.reset(muListAll.get(id)._id);
+                                MUPreview.reset(muListAll.get(id).id);
                         }
                         else if (currentList === "musearch"){
                                 id = node.getAttribute("data-musearch_id");
-                                MUPreview.reset(muSearch.get(id)._id);
+                                MUPreview.reset(muSearch.get(id).id);
                         }
                 };
                 

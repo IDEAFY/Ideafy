@@ -36,7 +36,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			        _library = new Library();
 			        _brainstorm = new Brainstorm();
 			        _connect = new Connect();
-			        _dashboard = new new Dashboard();
+			        _dashboard = new Dashboard();
 			        
 			        _stack.getStack().add("#public", _public);
 				_stack.getStack().add("#library", _library);

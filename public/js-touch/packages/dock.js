@@ -58,8 +58,6 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			         //set current stack view
                                 if (!_user.get("settings").startupScreen) _stack.getStack().show("#public")
                                 else {
-                                       //pub.classList.remove("selected");
-                                       //startScreen.classList.add("selected");
                                        _control.radioClass(startScreen, pub, "selected");
                                        _control.init(startScreen);
                                        _stack.getStack().show(_user.get("settings").startupScreen);
@@ -75,7 +73,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			
 			_widget.reset = function reset(){
 			     _stack.getStack().reset({"#public":new Public(),"#library":new Library(),"#brainstorm":new Brainstorm(),"#connect":new Connect(),"#dashboard": new Dashboard()});
-                             // init notification engine
+			     // init notification engine
                               notify.init();      
 			};
 

@@ -456,6 +456,9 @@
 	"mode": "Mode",
 	"lang": "Lang",
 	"title": "Titre",
-	"leader": "Leader"
+	"leader": "Leader",
+	"sessionfull" : "La session est complète",
+	"sessionstarted" : "Cette session a démarré",
+	"sessiondeleted" : "Cette session a été annulée"
 
 }

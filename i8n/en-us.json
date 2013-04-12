@@ -456,5 +456,8 @@
 	"mode": "Mode",
 	"lang": "Lang",
 	"title": "Title",
-	"leader": "Session leader"
+	"leader": "Session leader",
+	"sessionfull" : "The session is full",
+	"sessionstarted" : "This session is already started",
+	"sessiondeleted" : "This session has been canceled"
 }

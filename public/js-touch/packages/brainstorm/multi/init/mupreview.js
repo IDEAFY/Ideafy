@@ -13,6 +13,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         var muPreviewUI = new Widget(),
                             labels = Config.get("labels"),
                             muCDB =  new CouchDBStore(),
+                            info = new Store({"msg":""}),
                             participants = new Store([]),
                             refreshList; // callback function when closing th epreview window
                         
@@ -64,10 +65,11 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         }
                                 }),
+                                "info" : new Model(info),
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
-                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:touchstart, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button" data-labels="bind:innerHTML, joinbutton" data-previewevent="listen: touchstart, press; listen:touchend, start"></div></div></div>';
+                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:touchstart, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button" data-labels="bind:innerHTML, joinbutton" data-previewevent="listen: touchstart, press; listen:touchend, start"></div><div class="infopreview invisible" data-info="bind:innerHTML, msg"></div></div></div>';
                        
                         muPreviewUI.reset = function reset(sid){
                                 console.log(sid);
@@ -91,13 +93,48 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         
                         
                         // watch for new participants
-                        muCDB.watchValue("participants", function(){
-                                participants.reset(muCDB.get("participants"));        
+                        muCDB.watchValue("participants", function(arr){
+                                var mup = document.getElementById("mupreview"),
+                                    join = mup.querySelector(".start-button"),
+                                    inf = mup.querySelector(".infopreview");
+                                participants.reset(arr);
+                                if (arr.length < 3 && muCDB.get("status") === "waiting"){
+                                        join.classList.remove("invisible");
+                                        inf.classList.add("invisible");
+                                }
+                                else {
+                                        if (arr.length === 3 && muCDB.get("status") === "waiting"){
+                                                info.set("msg", labels.get("sessionfull"));
+                                        }
+                                        join.classList.add("invisible");
+                                        inf.classList.remove("invisible");
+                                }
                         });
                         
                         // watch for status changes
                         muCDB.watchValue("status", function(value){
-                                console.log(value);
+                                var mup = document.getElementById("mupreview"),
+                                    join = mup.querySelector(".start-button"),
+                                    inf = mup.querySelector(".infopreview");
+                                if (value === "waiting" && muCDB.get("participants").length < 3){
+                                        join.classList.remove("invisible");
+                                        inf.classList.add("invisible");        
+                                }
+                                else{
+                                        if (muCDB.get("participants").length === 3 && value === "waiting"){
+                                                info.set("msg", labels.get("sessionfull"));
+                                        }
+                                        if (value === "inprogress"){
+                                                info.set("msg", labels.get("sessionstarted"));
+                                                muCDB.unsync();
+                                        }
+                                        if (value === "deleted"){
+                                                info.set("msg", labels.get("sessiondeleted"));
+                                                muCDB.unsync();        
+                                        }
+                                        join.classList.add("invisible");
+                                        inf.classList.remove("invisible");        
+                                }
                         });
                         
                         MUPUI = muPreviewUI;

@@ -6,7 +6,7 @@
  */
 
 define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils"],
-        function(Widget, Config, Store, Model, Event, Avatar, Utils){
+        function(Widget, Config, CouchDBStore, Model, Event, Avatar, Utils){
                 
                 return function MUPreviewConstructor(){
                         

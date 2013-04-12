@@ -317,7 +317,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    // monitor user document
                    user.watchValue("news", function(){
                            news.reset(user.get("news"));
-                   })
+                   });
+                   
+                   // language change
+                   user.watchValue("lang", function(){
+                        // check score and achievements
+                        profileUI.updateGrade();
+                        profileUI.updateAchievements();
+                        // update news
+                        news.reset(user.get("news"));      
+                   });
                    
                    profileUI.checkProfileCompletion = function(){
                         var result = Utils.checkProfileCompletion(),

@@ -44,7 +44,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         "notifevent" : new Event(notify)
                 });
                 
-                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, press; listen:touchend, showPopup"></div></div>';
+                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, press; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div>';
                 
                 notify.place(dom);
                 
@@ -65,6 +65,13 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 notify.showPopup = function(event, node){
                         node.classList.remove("orange");
                         popup.classList.add("show-notify");
+                };
+                
+                                
+                // signout function
+                notify.signout = function signout(event, node){
+                        document.getElementById("cache").classList.add("appear");
+                        Config.get("observer").notify("signout");        
                 };
                 
                 // popup user interface

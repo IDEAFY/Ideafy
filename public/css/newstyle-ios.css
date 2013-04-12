@@ -409,6 +409,16 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     color: white;
 }
 
+.notif-signout{
+    background: url('../img/brainstorm/exitdisable150.png') no-repeat center center;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-size: contain;
+    left: 57px;
+    top: 90px;
+}
+
 #notify-popup{
     position:absolute;
     bottom:0;

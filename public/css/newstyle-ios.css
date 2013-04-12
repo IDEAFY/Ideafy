@@ -410,13 +410,14 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .signout-bubble{
-    background: url('../img/brainstorm/exitdisable150.png') no-repeat center center;
+    background: url('../img/brainstorm/exitActive150.png') no-repeat center center;
     position: absolute;
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     background-size: contain;
-    left: 16px;
+    left: 6px;
     top: -165px;
+    opacity: 0.5;
 }
 
 #notify-popup{

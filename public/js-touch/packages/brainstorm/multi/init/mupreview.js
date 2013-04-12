@@ -69,7 +69,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
-                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:touchstart, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button" data-labels="bind:innerHTML, joinbutton" data-previewevent="listen: touchstart, press; listen:touchend, start"></div><div class="infopreview invisible" data-info="bind:innerHTML, msg"></div></div></div>';
+                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:touchstart, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button" data-labels="bind:innerHTML, joinbutton" data-previewevent="listen: touchstart, press; listen:touchend, join"></div><div class="infopreview invisible" data-info="bind:innerHTML, msg"></div></div></div>';
                        
                         muPreviewUI.reset = function reset(sid){
                                 console.log(sid);
@@ -85,6 +85,18 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 muCDB.unsync();
                                 muCDB.reset();
                                 refreshList();               
+                        };
+                        
+                        muPreviewUI.press = function press(event, node){
+                                node.classList.add("pressed");        
+                        };
+                        
+                        muPreviewUI.join = function join(event, node){
+                                node.classList.remove("pressed");
+                                document.getElementById("mupreview").classList.add("invisible");
+                                Config.get("observer").notify("join-musession", muCDB.get("_id"));
+                                muCDB.unsync();
+                                muCDB.reset();
                         };
                         
                         muPreviewUI.init = function init(callback){
@@ -124,7 +136,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         if (muCDB.get("participants").length === 3 && value === "waiting"){
                                                 info.set("msg", labels.get("sessionfull"));
                                         }
-                                        if (value === "inprogress"){
+                                        if (value === "in progress"){
                                                 info.set("msg", labels.get("sessionstarted"));
                                                 muCDB.unsync();
                                         }

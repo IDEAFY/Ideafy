@@ -11,6 +11,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
 		//declaration
 			var _widget = new Widget(),
                             _stack = new Stack(),
+                            _profile, _settings, _about,
                             _observer = Config.get("observer"),
                             setView = function setView(name){
                                   _stack.getStack().show(name);       
@@ -27,12 +28,19 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                         _widget.hideMenu = function hideMenu(){
                              _menu.toggleActive(false);
                         };
+                        
+                        _widget.reset = function reset(){
+                                
+                        };
                 
                 // init
                        _menu.toggleActive(false);
-                       _stack.getStack().add("#profile", new Profile());
-                       _stack.getStack().add("#settings", new Settings());
-                       _stack.getStack().add("#about", new About());
+                       _profile = new Profile();
+                       _settings = new Settings();
+                       _about = new About();
+                       _stack.getStack().add("#profile", _profile);
+                       _stack.getStack().add("#settings", _settings);
+                       _stack.getStack().add("#about", _about);
                        
                // set current view
                        _stack.getStack().show("#profile");

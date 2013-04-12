@@ -6348,6 +6348,13 @@ li.my2q{
     border-radius: 5px;
 }
 
+#mupreview .infopreview{
+    margin: 20px auto;
+    text-align: center;
+    color: #292929;
+    font-weight: bold;
+}
+
 #mupreview .close{
     float: right;
     width: 60px;

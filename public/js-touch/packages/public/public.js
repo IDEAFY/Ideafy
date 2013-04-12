@@ -107,6 +107,15 @@ define(["OObject", "Amy/Control-plugin" ,
 			//may be set the list dom (not the public dom)
                         _widget.alive(_dom);
 
+                        // reset function
+                        _widget.reset = function reset(){
+                                listRating.init(_detail.reset);
+                                listDate.init(_detail.reset).then(function(){
+                                        _stack.getStack().show("#list-date");
+                                        _detail.reset(listDate.getModel(), 0);        
+                                });        
+                        };
+                        
 			// not sure we need a submenu for public but it may be useful
 			_widget.showMenu = function showMenu(){
 			        _menu.toggleActive(true);

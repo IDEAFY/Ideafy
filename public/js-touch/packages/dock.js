@@ -13,10 +13,8 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 
 		//declaration
 			var _widget = new Widget(),
-			    _newIdea,
-			    _new2q,
-			    _tips,
-			    notify,
+			    _newIdea, _new2q, _tips, _notify,
+			    _public, _library, _brainstorm, _connect, _dashboard,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),
 			    _user = Config.get("user"),
@@ -33,15 +31,20 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 
 		//logic
 			_widget.init = function init(){
-			        notify = new Notify();
+			        _notify = new Notify();
+			        _public = new Public();
+			        _library = new Library();
+			        _brainstorm = new Brainstorm();
+			        _connect = new Connect();
+			        _dashboard = new new Dashboard();
 			        
-			        _stack.getStack().add("#public", new Public());
-				_stack.getStack().add("#library", new Library());
-				_stack.getStack().add("#brainstorm", new Brainstorm());
-				_stack.getStack().add("#connect", new Connect());
-				_stack.getStack().add("#dashboard", new Dashboard());
+			        _stack.getStack().add("#public", _public);
+				_stack.getStack().add("#library", _library);
+				_stack.getStack().add("#brainstorm", _brainstorm);
+				_stack.getStack().add("#connect", _connect);
+				_stack.getStack().add("#dashboard", _dashboard);
 				// init notification engine
-				notify.init();
+				_notify.init();
 				
 				// initialize popups
 				_newIdea = new NewIdea();
@@ -72,9 +75,13 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			};
 			
 			_widget.reset = function reset(){
-			     _stack.getStack().reset({"#public":new Public(),"#library":new Library(),"#brainstorm":new Brainstorm(),"#connect":new Connect(),"#dashboard": new Dashboard()});
+			     _public.reset();
+			     _library.reset();
+			     _brainstorm.reset();
+			     _connect.reset();
+			     _dashboard.reset();
 			     // init notification engine
-                              notify.init();      
+                              _notify.init();      
 			};
 
 			this.setCurrentWidget = function(event){

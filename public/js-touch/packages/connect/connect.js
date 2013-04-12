@@ -31,6 +31,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
 			_widget.hideMenu = function hideMenu(){
 			     _menu.toggleActive(false);
 			};
+			
+			_widget.reset = function reset(){
+			     _stack.getStack().show("#messages");
+			     // probably need to reset all UIs        
+			};
+			
                 // init
                        _menu.toggleActive(false);
                        

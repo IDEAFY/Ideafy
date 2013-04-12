@@ -47,6 +47,11 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                                 _stack.getStack().show("menu");        
                         };
                         
+                        _widget.reset = function reset(){
+                                _stack.getStack().get("menu").reset();
+                                _stack.getStack().show("menu");        
+                        };
+                        
                         // start || continue the desired brainstorming type based on session in progress ({id:"", type:""}) parameter
                         _widget.selectScreen = function selectScreen(name, sip){
                                 

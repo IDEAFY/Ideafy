@@ -11,6 +11,7 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 		//declaration
 			var _widget = new Widget(),
 			    _stack = new Stack(),
+			    _ideas, _sessions, _decks,
 			    _observer = Config.get("observer"),
 			    setView = function setView(name){
 			         _stack.getStack().show(name);       
@@ -29,11 +30,19 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 			        _menu.toggleActive(false);        
 			};
 			
+			// reset function
+			_widget.reset = function reset(){
+			     _stack.getStack().show("#ideas");        
+			};
+			
 	        // init
 	               _menu.toggleActive(false);
-	               _stack.getStack().add("#ideas", new Ideas());
-	               _stack.getStack().add("#sessions", new Sessions());
-	               _stack.getStack().add("#decks", new Decks());
+	               _ideas = new Ideas();
+	               _sessions = new Sessions();
+	               _decks = new Decks();
+	               _stack.getStack().add("#ideas", _ideas);
+	               _stack.getStack().add("#sessions", _sessions);
+	               _stack.getStack().add("#decks", _decks);
 	               
 	               // set current view
 	               _stack.getStack().show("#ideas");

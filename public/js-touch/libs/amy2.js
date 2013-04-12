@@ -297,6 +297,10 @@ define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools"],
 				return _store.get(name);
 			};
 			
+			this.del = function del(name) {
+			        return _store.del(name);      
+			};
+			
 			this.getCurrentName = function getCurrentName(){
 			        return _currentName;        
 			};

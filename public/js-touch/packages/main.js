@@ -130,6 +130,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                 _login.reset();
                 _stack.getStack().show("#login");
                 _login.setScreen("#login-screen");
-                document.getElementById("cache").classList.remove("cache");
+                _stack.getStack().del("#dock");
+                document.getElementById("cache").classList.remove("appear");
         });
 }); 

@@ -449,6 +449,7 @@
 	"deletingsession": "Suppression de la session : ",
 	"participants": "Participants",
 	"startbutton": "Go!",
+	"joinbutton": "Entrer",
 	"nosessionfound" : "Aucune session trouvée",
 	"allmodes" : "Tout afficher",
 	"all" : "Tout",

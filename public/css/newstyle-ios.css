@@ -6122,7 +6122,7 @@ li.my2q{
     margin-top: 20px;
 }
 
-#mubwait .mubwait-title{
+#mubwait .mubwait-title, #mupreview .mubwait-title{
     font-size: 20px;
     text-align: center;
     font-family: Pacifico;
@@ -6132,25 +6132,25 @@ li.my2q{
     margin-bottom: 5px;
 }
 
-#mubwait .mubdesc, #mubwait .mubroster{
+#mubwait .mubdesc, #mubwait .mubroster, #mupreview .mubdesc, #mupreview .mubroster{
     display: inline-table;
     width: 285px;
     height: 260px;
     padding-right: 5px 10px 5px 0px;
 }
 
-#mubwait .mubdesc label, #mubwait .mubroster label{
+#mubwait .mubdesc label, #mubwait .mubroster label, #mupreview .mubdesc label, #mupreview .mubroster label{
     font-family: Helvetica;
     color: #657B99;
     font-size: 14px;
     padding-top: 5px;
 }
 
-#mubwait .mubroster label{
+#mubwait .mubroster label, #mupreview .mubroster label{
     padding-left: 10px;
 }
 
-#mubwait .mubdesc p{
+#mubwait .mubdesc p, #mupreview .mubdesc p{
     padding: 15px;
     width: 255px;
     font-size: 14px;
@@ -6165,15 +6165,15 @@ li.my2q{
     border-radius: 5px;
 }
 
-#mubwait .mubleader{
+#mubwait .mubleader, #mupreview .mubleader{
     padding: 10px 10px 5px 10px;
 }
 
-#mubwait .participants .contact{
+#mubwait .participants .contact, #mupreview .participants .contact{
     padding: 5px 10px 5px 10px;
 }
 
-#mubwait .start-button{
+#mubwait .start-button, #mupreview .start-button{
     width: 50px;
     height: 50px;
     border-radius: 25px;
@@ -6185,7 +6185,7 @@ li.my2q{
     margin: 0 auto;
 }
 
-#mubwait .start-button.pressed{
+#mubwait .start-button.pressed, #mupreview .start-button.pressed{
     color: #4D4D4D;
 }
 
@@ -6344,12 +6344,12 @@ li.my2q{
     height: 60px;
     display: block;
     background-image: url('../img/brainstorm/delete28.png');
-    background-size: 30px 30px;
+    background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;
     border-radius: 30px;
     margin-top: -30px;
-    background: white;    
+    margin-right: -20px;  
 }
 
 /* EULA */

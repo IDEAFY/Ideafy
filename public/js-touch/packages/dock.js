@@ -74,7 +74,13 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			
 			_widget.reset = function(){
 			     _stack = new Stack();
-			     _widget.init();      
+			     _stack.getStack().add("#public", new Public());
+                                _stack.getStack().add("#library", new Library());
+                                _stack.getStack().add("#brainstorm", new Brainstorm());
+                                _stack.getStack().add("#connect", new Connect());
+                                _stack.getStack().add("#dashboard", new Dashboard());
+                                // init notification engine
+                                notify.init();      
 			};
 
 			this.setCurrentWidget = function(event){

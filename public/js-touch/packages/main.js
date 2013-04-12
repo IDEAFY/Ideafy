@@ -126,11 +126,10 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
         }
                
         Config.get("observer").watch("signout", function(){
-                alert("signout received");
-                var dock = _stack.getCurrentScreen();
-                _stack.getStack().hide(dock);
-                _login.setScreen("#login-screen");
+                _stack.getStack().add("#login", _login);
+                _login.reset();
                 _stack.getStack().show("#login");
-                document.getElementById("cache").classList.remove("appear");
+                _login.setScreen("#login-screen");
+                document.getElementById("cache").classList.remove("cache");
         });
 }); 

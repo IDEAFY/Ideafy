@@ -6115,7 +6115,7 @@ li.my2q{
     margin-right: 20px;
 }
 
-#mubwait .mubwait-form, #mulist-content .preview{
+#mubwait .mubwait-form, #mupreview{
     width: 590px;
     height: 370px;    
     padding:0px 20px;
@@ -6312,6 +6312,10 @@ li.my2q{
     background-size: contain;
     width: 20px;
     height: 40px;
+}
+
+#mupreview{
+    
 }
 
 /* EULA */

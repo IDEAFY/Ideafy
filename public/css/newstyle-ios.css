@@ -6318,13 +6318,22 @@ li.my2q{
     position: absolute;
     width: 931px;
     height: 748px;
-    z-index: 500;
-    background: background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
-    opacity: 0.3    
+    top: 0;
+    left: 93;
+    z-index: 500; 
+}
+
+#mupreview .cache{
+    width: 100%;
+    height: 100%
+    background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
+    opacity: 0.5;    
 }
 
 #mupreview .contentarea{
-    margin: 189px auto;
+    position: absolute;
+    top: 189;
+    left: 223;
     background: white;
     border-radius: 5px;
 }

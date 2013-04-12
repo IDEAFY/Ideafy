@@ -409,7 +409,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     color: white;
 }
 
-.notif-signout{
+.signout-bubble{
     background: url('../img/brainstorm/exitdisable150.png') no-repeat center center;
     position: absolute;
     width: 25px;

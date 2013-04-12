@@ -25,20 +25,22 @@ define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugi
                         
                         muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea">Description de la session ici<div class="close" data-previewevent="listen:touchstart, closePreview"></div></div></div>';
                        
-                        muPreviewUI.reset = function reset(sid, callback){
+                        muPreviewUI.reset = function reset(sid){
                                 console.log(sid);
-                                document.getElementById("mupreview").classList.remove("invisible");
-                                refreshList = callback;  
+                                document.getElementById("mupreview").classList.remove("invisible"); 
                         };
                         
                         muPreviewUI.closePreview = function closePreview(event, node){
                                 // hide window
-                                document.getElementById("mupreview").classList.remove("invisible");
+                                document.getElementById("mupreview").classList.add("invisible");
                                 muCDB.unsync();
                                 muCDB.reset();
                                 refreshList();               
                         };
                         
+                        muPreviewUI.init = function init(callback){
+                                refreshList = callback;        
+                        };
                         MUPUI = muPreviewUI;
                                               
                         return muPreviewUI;       

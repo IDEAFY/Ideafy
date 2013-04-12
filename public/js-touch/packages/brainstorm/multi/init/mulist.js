@@ -13,7 +13,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 var widget = new Widget(),
                     muListAll = new Store([]),
                     muSearch = new Store([]),
-                    muPreviewUI = new MUPreview(widget.toggleList),
+                    muPreviewUI = new MUPreview(),
                     musessions = new Store([]),
                     muListOptions = new Store({"lang":[], "modes":["allmodes", "roulette", "campfire", "boardroom"], "selectedLang": "all", "selectedMode": "allmodes"}),
                     currentList = "mulistall",
@@ -344,11 +344,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         node.classList.add("pressed");
                         if (currentList === "mulistall"){
                                 id = parseInt(node.getAttribute("data-muall_id"), 10);
-                                muPreviewUI.reset(muListAll.get(id).id, widget.toggleList);
+                                muPreviewUI.reset(muListAll.get(id).id);
                         }
                         else if (currentList === "musearch"){
                                 id = node.getAttribute("data-musearch_id");
-                                muPreviewUI.reset(muSearch.get(id).id, widget.toggleList);
+                                muPreviewUI.reset(muSearch.get(id).id);
                         }
                 };
                 
@@ -364,12 +364,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         });
                 };
                 
+                widget.refreshList = function refreshList(){
+                        widget.toggleList(currentList);
+                };
+                
                 
                 // init
                 // get available languages
                 transport.request("GetLanguages", {}, function(result){
                         muListOptions.set("lang", [labels.get("all")].concat(result));      
                 });
+                
+                // pass the refresh callback to the preview UI to automatically refresh the current list once a preview window is closed
+                muPreviewUI.init(widget.refreshList);
                    
                 // watch for language change
                 user.watchValue("lang", function(){

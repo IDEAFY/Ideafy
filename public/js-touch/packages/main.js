@@ -128,7 +128,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                
         Config.get("observer").watch("signout", function(){
                 _stack.getStack().add("#login", _login);
-                _user.unsyc();
+                _user.unsync();
                 _user.reset();
                 _login.reset();
                 _stack.getStack().show("#login");

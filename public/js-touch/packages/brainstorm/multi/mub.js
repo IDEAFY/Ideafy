@@ -31,6 +31,9 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                         if (!sip){
                                 stack.getStack().get("mubinit").reset();
                                 stack.getStack().show("mubinit");        
+                        }
+                        else if (sip.mode === "join"){
+                                widget.join(sip.id);        
                         }      
                 };
                 
@@ -39,7 +42,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                         
                 };
                 
-                widget.join = function(sid){
+                widget.join = function join(sid){
                         console.log("join function");
                         var cdb = new CouchDBStore();
                         cdb.setTransport(Config.get("transport"));

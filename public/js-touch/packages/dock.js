@@ -74,17 +74,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			};
 			
 			_widget.reset = function reset(){
-			     _stack = new Stack();
-			     _stack.getStack().add("#public", new Public());
-			     console.log("reset public");
-                             _stack.getStack().add("#library", new Library());
-                             console.log("reset library");
-                             _stack.getStack().add("#brainstorm", new Brainstorm());
-                             console.log("reset brainstorm");
-                             _stack.getStack().add("#connect", new Connect());
-                             console.log("reset connect");
-                             _stack.getStack().add("#dashboard", new Dashboard());
-                             console.log("reset dashboard");
+			     _stack.reset({"#public":new Public(),"#library":new Library(),"#brainstorm":new Brainstorm(),"#connect":new Connect(),"#dashboard": new Dashboard()});
                              // init notification engine
                               notify.init();      
 			};

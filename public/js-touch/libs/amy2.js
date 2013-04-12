@@ -301,6 +301,10 @@ define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools"],
 			        return _store.del(name);      
 			};
 			
+			this.reset = function reset(uis){
+			        return _store.reset(uis);      
+			};
+			
 			this.getCurrentName = function getCurrentName(){
 			        return _currentName;        
 			};

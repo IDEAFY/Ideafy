@@ -111,7 +111,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         this.innerHTML = " ";
                                 }        
                         }),
-                        "mupreview" : new UIPlugin({"preview": muPreviewUI),
+                        "mupreview" : new UIPlugin({"preview": muPreviewUI}),
                         "mulistevent" : new Event(widget)
                 });
                 

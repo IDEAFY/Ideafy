@@ -16,6 +16,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			    _newIdea,
 			    _new2q,
 			    _tips,
+			    notify,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),
 			    _user = Config.get("user"),
@@ -32,7 +33,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 
 		//logic
 			_widget.init = function init(){
-			        var notify = new Notify();
+			        notify = new Notify();
 			        
 			        _stack.getStack().add("#public", new Public());
 				_stack.getStack().add("#library", new Library());

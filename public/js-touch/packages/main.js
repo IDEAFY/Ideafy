@@ -179,6 +179,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                 _stack.getStack().add("#login", _login);
                 _login.reset(true);
                 _stack.getStack().show("#login");
+                _stack.getStack().setCurrentScreen(_login);
                 _login.setScreen("#login-screen");
                 document.getElementById("cache").classList.remove("appear");
         });

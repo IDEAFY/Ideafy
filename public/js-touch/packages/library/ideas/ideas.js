@@ -90,7 +90,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			                     byRating.classList.remove("pushed");
 			             }
 			             else{
-			                     _widget.searchIdea(node.value);
+			                     _widget.searchIdea(Config.get("user").get("_id")+ " "+node.value);
 			             }
 			        }
 			};

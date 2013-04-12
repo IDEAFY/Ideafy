@@ -21,7 +21,7 @@ define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugi
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
-                        muPreviewUI.template = '<div id="mupreview" class="invisible"><idv class="cache"></div><div class="contentarea">Description de la session ici</div></div>';
+                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea">Description de la session ici</div></div>';
                        
                         muPreviewUI.reset = function reset(sid){
                                 console.log(sid);

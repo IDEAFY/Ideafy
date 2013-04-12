@@ -27,6 +27,8 @@ define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugi
                                 console.log(sid);
                                 document.getElementById("mupreview").classList.remove("invisible");  
                         };
+                        
+                        MUPUI = muPreviewUI;
                                               
                         return muPreviewUI;       
                 };

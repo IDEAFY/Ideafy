@@ -96,7 +96,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         });
                         
                         // watch for status changes
-                        muCDB.watchValut("status", function(value){
+                        muCDB.watchValue("status", function(value){
                                 alert(value);
                         });
                         

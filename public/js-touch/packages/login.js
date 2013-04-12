@@ -8,7 +8,7 @@
 define(["OObject" ,"Amy/Stack-plugin", 
 	"service/map", "Event.plugin", "service/config", "Bind.plugin", "Store", "lib/spin.min", "Promise", "CouchDBStore"],
 	function(Widget, Stack, Map, Event, Config, Model, Store, Spinner, Promise, CouchDBStore){
-		return function LoginConstructor($init, $local){
+		return function LoginConstructor($init, $reload, $local){
 		//declaration
 			var _login = new Widget(),
 			    _loginForm = new Widget(),
@@ -28,7 +28,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                              _labels = Config.get("labels"),
                              _transport = Config.get("transport"),
                              _db = Config.get("db"),
-			     spinner;
+			     spinner,
+			     reload = false;  // boolean to differentiate between initial start and usbsequent logout/login
 		
 		//setup && UI DEFINITIONS		
 		         _login.plugins.addAll({
@@ -168,7 +169,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                                         $local.sync("ideafy-data");
                                                                                         Config.set("uid", '"' + userid + '"');
                                                                                         user.unsync();
-                                                                                        $init(true);
+                                                                                        (reload)? $reload(true) : $init(true);
                                                                                 });
                                                                         }, 350);
                                                                 }
@@ -233,7 +234,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         // add to Config
                                                                         Config.set("avatar", result);
                                                                 }
-                                                                $init();
+                                                                (reload)? $reload() : $init();
                                                         });
                                                 }
                                                 else {
@@ -265,7 +266,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 _stack.getStack().show(target);
                         };
                         
-                        _login.reset = function reset(){
+                        _login.reset = function reset(signout){
                                 _store.reset({
                                         "email" : "",
                                         "firstname" : "",
@@ -273,7 +274,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         "confirm-password" : "",
                                         "password" : "",
                                         "error" : ""
-                                });        
+                                });
+                                if (signout){ reload = true;}
                         };
                         
 		//return

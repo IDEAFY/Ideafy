@@ -31,7 +31,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			_widget.alive(Map.get("dock"));
 
 		//logic
-			_widget.init = function init(firstStart){
+			_widget.init = function init(){
 			        var notify = new Notify();
 			        
 			        _stack.getStack().add("#public", new Public());

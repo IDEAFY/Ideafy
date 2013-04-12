@@ -22,9 +22,8 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
         
         //logic
         _body.init = function init(firstStart) {
-                console.log("init", _local.get("currentLogin"));
                 // add dock UI to the stack
-                if (!_stack.getStack().get("#dock")) {_stack.getStack().add("#dock", _dock);}
+                _stack.getStack().add("#dock", _dock);
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin")).then(function() {
                         var lblUpdate = false;
@@ -71,13 +70,63 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                 });       
         };
         
+        _body.reload = function reload(firstStart) {
+                _user.unsync();
+                _user.reset();
+                
+                // synchronize user document
+                _user.sync(_db, _local.get("currentLogin")).then(function() {
+                        var lblUpdate = false;
+                        // set uid for future queries
+                        Config.set("uid", '"' + _user.get("_id") + '"');
+                        // check user defined language
+                        if (_user.get("lang") !== Config.get("lang")) {
+                                lblUpdate = true;
+                        }
+                        
+                         // get user avatar and labels if necessary
+                         if (_user.get("picture_file").search("img/avatars/deedee")>-1){
+                                Config.set("avatar", _user.get("picture_file"));
+                                if (lblUpdate){
+                                        updateLabels(_user.get("lang")).then(function(){
+                                                lblUpdate = false;
+                                                _dock.reset();
+                                                //if everything is downloaded
+                                                _stack.getStack().show("#dock");
+                                                _dock.start(firstStart);      
+                                        }); 
+                                }
+                                else{
+                                        _dock.reset();
+                                        //if everything is downloaded
+                                        _stack.getStack().show("#dock");
+                                        _dock.start(firstStart);
+                                }
+                        }
+                        // if avatar is customized no need to wait for labels download (shorter than avatar file)
+                        else{
+                                if (lblUpdate) updateLabels(_user.get("lang")).then(function(){lblUpdate = false;});
+                                _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
+                                        if (!result.error) {
+                                                Config.set("avatar", result);
+                                                _dock.reset();
+                                                //if everything is downloaded
+                                                _stack.getStack().show("#dock");
+                                                _dock.start(firstStart);
+                                        }
+                                        else alert(result.error);
+                                });
+                        }
+                });       
+        };
+        
         _body.alive(Map.get("body"));
         
         // INITIALIZATION
         
         // retrieve local data
         _local.sync("ideafy-data");
-        _login = new Login(_body.init, _local);
+        _login = new Login(_body.init, _body.reload, _local);
         _stack.getStack().show("#login");
         _stack.getStack().setCurrentScreen(_login);
         _login.init();
@@ -128,13 +177,9 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                
         Config.get("observer").watch("signout", function(){
                 _stack.getStack().add("#login", _login);
-                _user.unsync();
-                _user.reset();
-                _login.reset();
+                _login.reset(true);
                 _stack.getStack().show("#login");
                 _login.setScreen("#login-screen");
                 document.getElementById("cache").classList.remove("appear");
-                // reset dockUI
-                _dock.reset();
         });
 }); 

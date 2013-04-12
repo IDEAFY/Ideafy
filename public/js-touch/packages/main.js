@@ -22,6 +22,7 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
         
         //logic
         _body.init = function init(firstStart) {
+                console.log("init", _local.get("currentLogin"));
                 // add dock UI to the stack
                 _stack.getStack().add("#dock", _dock);
                 // synchronize user document
@@ -127,10 +128,14 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                
         Config.get("observer").watch("signout", function(){
                 _stack.getStack().add("#login", _login);
+                _user.unsyc();
+                _user.reset();
                 _login.reset();
                 _stack.getStack().show("#login");
                 _login.setScreen("#login-screen");
+                // delete former dock UI
                 _stack.getStack().del("#dock");
+                // create a new one
                 _dock = new Dock();
                 document.getElementById("cache").classList.remove("appear");
         });

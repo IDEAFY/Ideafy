@@ -49,14 +49,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         },
                                         setIntro : function(intro){
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
-                                        },
-                                        showStartButton : function(participants){
-                                                if (participants.length && user.get("_id") === session.get("initiator").id){
-                                                        this.classList.remove("invisible");
-                                                }
-                                                else{
-                                                        this.claddLit.add("invisible");
-                                                }
                                         }
                                 }),
                                 "participant" : new Model(participants, {
@@ -72,7 +64,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         }
                                 }),
-                                "info": new Model(info),
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
@@ -97,6 +88,18 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         muPreviewUI.init = function init(callback){
                                 refreshList = callback;        
                         };
+                        
+                        
+                        // watch for new participants
+                        muCDB.watchValue("participants", function(){
+                                participants.reset(muCDB.get("participants"));        
+                        });
+                        
+                        // watch for status changes
+                        muCDB.watchValut("status", function(value){
+                                alert(value);
+                        });
+                        
                         MUPUI = muPreviewUI;
                                               
                         return muPreviewUI;       

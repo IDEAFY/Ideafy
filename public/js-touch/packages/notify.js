@@ -71,6 +71,9 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 // signout function
                 notify.signout = function signout(event, node){
                         document.getElementById("cache").classList.add("appear");
+                        // remove highlight from dock item and set it back to public
+                        document.getElementById("dock").querySelector(".selected").classList.remove("selected");
+                        document.querySelector('a[href="#public"]').classList.add("selected");
                         Config.get("observer").notify("signout");        
                 };
                 

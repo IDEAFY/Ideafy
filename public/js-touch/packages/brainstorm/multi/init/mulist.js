@@ -13,7 +13,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 var widget = new Widget(),
                     muListAll = new Store([]),
                     muSearch = new Store([]),
-                    muPreviewUI,
+                    muPreviewUI = new MUPreview(widget.toggleList),
                     musessions = new Store([]),
                     muListOptions = new Store({"lang":[], "modes":["allmodes", "roulette", "campfire", "boardroom"], "selectedLang": "all", "selectedMode": "allmodes"}),
                     currentList = "mulistall",
@@ -370,9 +370,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 transport.request("GetLanguages", {}, function(result){
                         muListOptions.set("lang", [labels.get("all")].concat(result));      
                 });
-                
-                // init preview UI
-                muPreviewUI = new MUPreview(widget.toggleList);
                    
                 // watch for language change
                 user.watchValue("lang", function(){

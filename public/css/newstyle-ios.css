@@ -6343,8 +6343,10 @@ li.my2q{
     width: 60px;
     height: 60px;
     display: block;
-    background: url('../img/brainstorm/closeFrame.png') no-repeat center center;
+    background-image: url('../img/brainstorm/delete28.png');
     background-size: 30px 30px;
+    background-position: center center;
+    background-repeat: no-repeat;
     border-radius: 30px;
     margin-top: -30px;
     background: white;    

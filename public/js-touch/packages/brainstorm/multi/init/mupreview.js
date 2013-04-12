@@ -8,11 +8,12 @@
 define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils"],
         function(Widget, Config, CouchDBStore, Model, Event, Avatar, Utils){
                 
-                return function MUPreviewConstructor($refresh){
+                return function MUPreviewConstructor(){
                         
                         var muPreviewUI = new Widget(),
                             labels = Config.get("labels"),
-                            muCDB =  new CouchDBStore();
+                            muCDB =  new CouchDBStore(),
+                            refreshList; // callback function when closing th epreview window
                         
                         muCDB.setTransport(Config.get("transport"));
                         
@@ -24,9 +25,10 @@ define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugi
                         
                         muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea">Description de la session ici<div class="close" data-previewevent="listen:touchstart, closePreview"></div></div></div>';
                        
-                        muPreviewUI.reset = function reset(sid){
+                        muPreviewUI.reset = function reset(sid, callback){
                                 console.log(sid);
-                                document.getElementById("mupreview").classList.remove("invisible");  
+                                document.getElementById("mupreview").classList.remove("invisible");
+                                refreshList = callback;  
                         };
                         
                         muPreviewUI.closePreview = function closePreview(event, node){
@@ -34,7 +36,7 @@ define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugi
                                 document.getElementById("mupreview").classList.remove("invisible");
                                 muCDB.unsync();
                                 muCDB.reset();
-                                $refresh();               
+                                refreshList();               
                         };
                         
                         MUPUI = muPreviewUI;

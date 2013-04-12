@@ -344,11 +344,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         node.classList.add("pressed");
                         if (currentList === "mulistall"){
                                 id = parseInt(node.getAttribute("data-muall_id"), 10);
-                                muPreviewUI.reset(muListAll.get(id).id);
+                                muPreviewUI.reset(muListAll.get(id).id, widget.toggleList);
                         }
                         else if (currentList === "musearch"){
                                 id = node.getAttribute("data-musearch_id");
-                                muPreviewUI.reset(muSearch.get(id).id);
+                                muPreviewUI.reset(muSearch.get(id).id, widget.toggleList);
                         }
                 };
                 

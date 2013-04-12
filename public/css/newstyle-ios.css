@@ -6319,23 +6319,35 @@ li.my2q{
     width: 931px;
     height: 748px;
     top: 0;
-    left: 93;
+    left: 93px;
     z-index: 500; 
 }
 
 #mupreview .cache{
     width: 100%;
-    height: 100%
+    height: 100%;
     background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
     opacity: 0.5;    
 }
 
 #mupreview .contentarea{
     position: absolute;
-    top: 189;
-    left: 223;
+    top: 189px;
+    left: 139px;
     background: white;
     border-radius: 5px;
+}
+
+#mupreview .close{
+    float: right;
+    width: 60px;
+    height: 60px;
+    display: block;
+    background: url('../img/brainstorm/closeFrame.png') no-repeat center center;
+    background-size: 30px 30px;
+    border-radius: 30px;
+    margin-top: -30px;
+    background: white;    
 }
 
 /* EULA */

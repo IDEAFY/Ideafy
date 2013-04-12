@@ -8,12 +8,13 @@
 define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils"],
         function(Widget, Config, CouchDBStore, Model, Event, Avatar, Utils){
                 
-                return function MUPreviewConstructor(){
+                return function MUPreviewConstructor($refresh){
                         
                         var muPreviewUI = new Widget(),
                             labels = Config.get("labels"),
-                            user = Config.get("user"),
                             muCDB =  new CouchDBStore();
+                        
+                        muCDB.setTransport(Config.get("transport"));
                         
                         muPreviewUI.plugins.addAll({
                                 "labels" : new Model(labels),
@@ -21,11 +22,19 @@ define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugi
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
-                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea">Description de la session ici</div></div>';
+                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea">Description de la session ici<div class="close" data-previewevent="listen:touchstart, closePreview"></div></div></div>';
                        
                         muPreviewUI.reset = function reset(sid){
                                 console.log(sid);
                                 document.getElementById("mupreview").classList.remove("invisible");  
+                        };
+                        
+                        muPreviewUI.closePreview = function closePreview(event, node){
+                                // hide window
+                                document.getElementById("mupreview").classList.remove("invisible");
+                                muCDB.unsync();
+                                muCDB.reset();
+                                $refresh();               
                         };
                         
                         MUPUI = muPreviewUI;

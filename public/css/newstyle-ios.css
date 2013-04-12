@@ -6115,7 +6115,7 @@ li.my2q{
     margin-right: 20px;
 }
 
-#mubwait .mubwait-form, #mupreview{
+#mubwait .mubwait-form, #mupreview .contentarea{
     width: 590px;
     height: 370px;    
     padding:0px 20px;
@@ -6315,7 +6315,18 @@ li.my2q{
 }
 
 #mupreview{
-    
+    position: absolute;
+    width: 931px;
+    height: 748px;
+    z-index: 500;
+    background: background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
+    opacity: 0.3    
+}
+
+#mupreview .contentarea{
+    margin: 189px auto;
+    background: white;
+    border-radius: 5px;
 }
 
 /* EULA */

@@ -80,6 +80,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			this.search = function (event, node){
+			        var usr;
 			        if (event.keyCode === 13){
 			             if (node.value === ""){
 			                     byDate.setAttribute("style", "display: inline-block;");
@@ -90,7 +91,8 @@ define(["OObject", "Amy/Control-plugin" ,
 			                     byRating.classList.remove("pushed");
 			             }
 			             else{
-			                     _widget.searchIdea("users:"+Config.get("user").get("_id")+ " AND "+node.value);
+			                     usr = Config.get("user").get("_id").split("@")[0];
+			                     _widget.searchIdea("users:"+usr+ " AND "+node.value);
 			             }
 			        }
 			};

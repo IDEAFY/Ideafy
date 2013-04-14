@@ -298,10 +298,29 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         }
                 };
                 
+                widget.createChat = function createChat(id){
+                        var cdb = new CouchDBStore(),
+                            now = new Date().getTime();
+                        cdb.setTransport(Config.get("transport"));
+                        
+                        cdb.set("users", [user.get("username")]);
+                        cdb.set("msg", [{user: "SYS", "type": 0, "value": now}]);
+                        cdb.set("sid", session.get("_id"));
+                        cdb.set("type", 17);
+                        cdb.sync(Config.get("db"), id);
+                        setTimeout(function(){
+                                cdb.upload();
+                        }, 250);
+                };
+                
                 widget.uploadSession = function uploadSession(){
                         // add invitees to session document
                         var cdb = new CouchDBStore(),
-                            now = new Date();
+                            now = new Date(),
+                            chatId;
+                        
+                        // create doc id
+                        session.set("_id", "S:MU:"+now.getTime());
                         
                         // complete session doc
                         session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
@@ -317,9 +336,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 session.set("invited", Utils.getUserContactIds());
                         }
                         
-                        // create doc id
-                        session.set("_id", "S:MU:"+now.getTime());
+                        // init chat document and add id to session doc
+                        chatId = session.get("_id")+"_0";
+                        session.set("chat", session.get("chat").push(chatId));
                         
+                        // create chat document
+                       _widget.createChat(chatId);
+                        
+                        // upload session documnt
                         cdb.reset(JSON.parse(session.toJSON()));
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), cdb.get("_id"));

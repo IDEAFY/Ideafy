@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise", "service/avatar"],
-        function(Widget, Store, CouchDBStore, Map, Model, Event, Config, Help, Utils, Confirm, Promise, Avatar){
+define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise", "service/avatar", "./session/mubchat"],
+        function(Widget, Store, CouchDBStore, Map, Model, Event, Place, Config, Help, Utils, Confirm, Promise, Avatar, Chat){
                 
                 return function MultiBWaitConstructor($exit){
                 
@@ -16,6 +16,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                             info = new Store({"msg":""}),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
+                            chatUI = new Chat(),
                             confirmUI, confirmCallBack,
                             exitListener = {"listener": null},
                             exitDest;
@@ -77,10 +78,11 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         }
                                 }),
                                 info: new Model(info),
+                                place : new Place({"chat": chatUI}),
                                 mubwaitevent : new Event(widget)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button" data-labels="bind:innerHTML, startbutton" data-mode="bind: showStartButton, participants" data-mubwaitevent="listen: touchstart, press; listen:touchend, start"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button" data-labels="bind:innerHTML, startbutton" data-mode="bind: showStartButton, participants" data-mubwaitevent="listen: touchstart, press; listen:touchend, start"></div></form><div class="sessionmsg invisible" data-info="bind:innerHTML, msg"></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         
@@ -118,7 +120,10 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                 confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
                                         }
                                         // reset participants store
-                                        participants.reset(session.get("participants"));  
+                                        participants.reset(session.get("participants")); 
+                                        
+                                        // reset chatUI
+                                        chatUI.reset(session.get("chat")[0]); 
                                 });
                         };
                         

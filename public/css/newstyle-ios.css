@@ -6370,6 +6370,12 @@ li.my2q{
     margin-right: -20px;  
 }
 
+#ideafy-multi .sessionchat{
+    width: 100%;
+    height: 200px;
+    background: orange;
+}
+
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}
 p.p2 {margin: 0; font-size: 14px; min-height: 15px}

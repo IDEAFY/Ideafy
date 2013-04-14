@@ -33,5 +33,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 mubChat.reset = function reset(chatId, bool){
                         chat.set("readonly", bool);       
                 };
+                
+                return mubChat;
         };
 });

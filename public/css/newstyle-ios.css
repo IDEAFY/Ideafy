@@ -6371,9 +6371,27 @@ li.my2q{
 }
 
 #ideafy-multi .sessionchat{
-    width: 100%;
-    height: 200px;
+    width: 891px;
+    height: 282px;
     background: orange;
+    padding: 20px;
+}
+
+.sessionchat .chatread{
+    background: white;
+    border: 1px solid #4D4D4D;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.sessionwrite .{
+    background: #E6E6E6;
+    border-top: 1px solid #4D4D4D;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
 }
 
 /* EULA */

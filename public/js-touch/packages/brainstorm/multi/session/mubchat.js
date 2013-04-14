@@ -19,7 +19,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "model" : new Model(chat)
                 });
                 
-                mubChat.template = '<div class="mubchat">Chat window</div>';
+                mubChat.template = '<div class="mubchat"><div class="chatread">Read messages</div><div class="chatwrite" contenteditable=true>Write message</div></div>';
                 
                 mubChat.setReadonly = function setReadonly(){
                         chat.set("readonly", true);

@@ -6373,26 +6373,27 @@ li.my2q{
 #ideafy-multi .sessionchat{
     width: 891px;
     height: 282px;
-    background: orange;
     padding: 20px;
 }
 
 .sessionchat .chatread{
     background: white;
-    border: 2px outset #CCCCCC;
+    border: 1px dashed #CCCCCC;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     padding: 10px;
-    height: 200px;
+    height: 220px;
     overflow-y: scroll;
 }
 
-.session .chatwrite .{
+.sessionchat .chatwrite .{
     background: #E6E6E6;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     height: 40px;
     line-height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
     font-size: 14px;
 }
 

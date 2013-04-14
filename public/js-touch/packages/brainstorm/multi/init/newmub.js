@@ -317,7 +317,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         // add invitees to session document
                         var cdb = new CouchDBStore(),
                             now = new Date(),
-                            chatId;
+                            chatId, chat = session.get("chat") || [];
                         
                         // create doc id
                         session.set("_id", "S:MU:"+now.getTime());
@@ -338,10 +338,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         
                         // init chat document and add id to session doc
                         chatId = session.get("_id")+"_0";
-                        session.set("chat", session.get("chat").push(chatId));
+                        chat.push(chatId);
+                        session.set("chat", chat);
                         
                         // create chat document
-                       _widget.createChat(chatId);
+                       widget.createChat(chatId);
                         
                         // upload session documnt
                         cdb.reset(JSON.parse(session.toJSON()));

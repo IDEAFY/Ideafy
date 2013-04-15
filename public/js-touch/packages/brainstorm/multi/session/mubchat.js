@@ -71,7 +71,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="avatar"></div><span class="time" data-chat="bind: setTime, time"></span><span> class="chatmsg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></span></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="avatar"></div><span class="time" data-chat="bind: setTime, time"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></span></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
                 
                 mubChat.removePlaceholder = function(event, node){
                         node.innerHTML = "";

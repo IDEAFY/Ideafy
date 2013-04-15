@@ -281,8 +281,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
                         if (muListOptions.get("selectedLang") !== "all"){lang = muListOptions.get("selectedLang");}
                         
-                        console.log(mode, lang);
-                        
                         // if both filters have the default (all) value set simply refresh current list
                         if (mode === "" && lang === ""){
                                 widget.buildList(currentList, query).then(function(){

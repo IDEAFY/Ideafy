@@ -100,11 +100,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         node.blur();
                                 });       
                         }
-                        else if (node.innerHTML === ""){
-                                node.innerHTML = labels.get("typemsg");
-                                node.classList.add("placeholder");
-                                 node.blur();        
-                        }
                 };
                 
                 mubChat.setReadonly = function setReadonly(){
@@ -132,7 +127,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
                                 if (isNaN(position) && !chatCDB.get("readonly")){
                                         console.log("before calling function muchat.join");
-                                        mubChat.join().then(function(){
+                                        mubChat.joinChat().then(function(){
                                                 chat.reset(chatCDB.get("msg"));
                                                 spinner.stop();       
                                         });        
@@ -146,7 +141,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                               
                 };
                 
-                mubChat.join = function join(){
+                mubChat.joinChat = function joinChat(){
                         var promise = new Promise(),
                             arr = chatCDB.get("users"),
                             pos= arr.length,

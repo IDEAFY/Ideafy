@@ -59,7 +59,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                // display system message
                                                id = this.getAttribute("data-chat_id");
                                                type = chat.get(id).type;
-                                               console.log(id, type, chat.get(id).arg, labels.get("chatmsg0"));
                                                if (type <= 3){
                                                        this.innerHTML = chatCDB.get("users")[chat.get(id).arg].username + labels.get("chatmsg"+type);
                                                }
@@ -72,7 +71,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></p></li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post">Write message</div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></p></li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post"></div></div>';
                 
                 mubChat.post = function(event,node){
                         var now, msg, id;
@@ -178,12 +177,13 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 
                 chatCDB.watchValue("msg", function(arrCDB){
                         var l = chat.getNbItems(), arr;
-                        
+                        console.log(arrCDB, arrCDB.slice(-1));
                         // check if chat window should be updated (ie if last message has not been enter by this user)
                         if (l !== arrCDB.length || arrCDB.slice(-1) !== chat.get(l-1)){
                                 arr = JSON.parse(chat.toJSON());
                                 Utils.sortByProperty(arr, time);
-                                chat.reset(arr);        
+                                chat.reset(arr); 
+                                console.log(chat.toJSON());      
                         }      
                 });
                 

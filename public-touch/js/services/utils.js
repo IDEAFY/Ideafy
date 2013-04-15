@@ -35,6 +35,20 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                                                 
                             return res;
                 },
+                
+                formatTime : function(time){
+                        var date = new Date(time),
+                            hrs = date.getHours(),
+                            min = date.getMinutes(),
+                            sec =  date.getSeconds(),
+                            res;
+                            
+                            hrs>0 ? res += hrs+":";
+                            min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : res+="0:";
+                            sec<10 ? res += "0"+sec : res+= sec;
+                                                
+                            return res;
+                },
 		
 		/* 
                 * A function to display an abtract in a list, stopping at the end of the first sentence or truncating it if it

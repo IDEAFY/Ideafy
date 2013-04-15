@@ -187,7 +187,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 };
                 
                 chatCDB.watchValue("msg", function(arrCDB){
-                        
+                       console.log(arrCDB); 
                         chat.reset(arrCDB);
                         /*var l = chat.getNbItems(), arr;
                         console.log(arrCDB, arrCDB.slice(-1)[0], chat.get(l-1));

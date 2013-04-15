@@ -93,6 +93,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 msg.push({"user": position, "time": now, "msg": node.innerHTML});
                                 // upload to couchDB
                                 chatCDB.set("msg", msg);
+                                console.log("before post upload : ", chatCDB.toJSON());
                                 chatCDB.upload().then(function(){
                                         // clear write interface
                                         node.innerHTML = labels.get("typemsg");
@@ -187,7 +188,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 };
                 
                 chatCDB.watchValue("msg", function(arrCDB){
-                       console.log(arrCDB); 
+                       console.log(arrCDB, chatCDB.toJSON()); 
                         chat.reset(arrCDB);
                         /*var l = chat.getNbItems(), arr;
                         console.log(arrCDB, arrCDB.slice(-1)[0], chat.get(l-1));

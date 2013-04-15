@@ -33,7 +33,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 this.setAttribute("style", "background: none; border: none; text-align: left;");
                                         }
                                         else if (user === position){
-                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #404040; border-radius: 5px;text-align: right;");
+                                                this.setAttribute("style", "background: #9AC9CD; border: 1px solid #404040; border-radius: 5px;text-align: right;");
                                         }
                                         else{
                                                 this.setAttribute("style", "background: #E6E6E6; border: 1px solid #404040; border-radius: 5px;text-align: left;");        
@@ -44,10 +44,10 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 },
                                 setMsgStyle : function(user){
                                         if (user === "SYS"){
-                                                this.setAttribute("style", "color: #CCCCCC; font-style: italic;");
+                                                this.setAttribute("style", "color: #CCCCCC;");
                                         }
                                         else {
-                                                this.setAttribute("style", "color: #292929; font-style: normal;");
+                                                this.setAttribute("style", "color: #292929;");
                                         }
                                 },
                                 setMsg : function(msg){
@@ -71,7 +71,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></p></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="chatmsg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></p></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
                 
                 mubChat.removePlaceholder = function(event, node){
                         node.innerHTML = "";
@@ -186,9 +186,9 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 
                 chatCDB.watchValue("msg", function(arrCDB){
                         var l = chat.getNbItems(), arr;
-                        console.log(arrCDB, arrCDB.slice(-1));
+                        console.log(arrCDB, arrCDB.slice(-1)[0]);
                         // check if chat window should be updated (ie if last message has not been enter by this user)
-                        if (l !== arrCDB.length || arrCDB.slice(-1) !== chat.get(l-1)){
+                        if (l !== arrCDB.length || arrCDB.slice(-1)[0] !== chat.get(l-1)){
                                 arr = JSON.parse(chat.toJSON());
                                 Utils.sortByProperty(arr, time);
                                 chat.reset(arr); 

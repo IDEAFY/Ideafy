@@ -6404,12 +6404,12 @@ li.my2q{
 }
 
 #chatmessages li{
-    
+    margin-bottom: 5px;    
 }
 
 #chatmessages .time{
     font-size: 10px;
-    color: #CCCCCC;
+    color: #808080;
 }
 
 /* EULA */

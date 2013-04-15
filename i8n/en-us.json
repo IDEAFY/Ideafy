@@ -463,5 +463,6 @@
 	"chatmsg0" : " has initiated the session",
 	"chatmsg1" : " has joined the session",
 	"chatmsg2" : " has left the session",
-	"chatmsg3" : " has canceled the session"
+	"chatmsg3" : " has canceled the session",
+	"typemsg" : "Enter your text"
 }

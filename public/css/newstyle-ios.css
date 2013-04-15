@@ -6399,6 +6399,10 @@ li.my2q{
     font-size: 14px;
 }
 
+.sessionchat .chatwrite.placeholder{
+    color: #808080;
+}
+
 #chatmessages li{
     
 }

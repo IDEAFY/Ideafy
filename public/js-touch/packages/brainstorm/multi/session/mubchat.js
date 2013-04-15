@@ -71,7 +71,12 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></p></li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post"></div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></p></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
+                
+                mubChat.removePlaceholder = function(event, node){
+                        node.innerHTML = "";
+                        node.classList.remove("placeholder");        
+                };
                 
                 mubChat.post = function(event,node){
                         var now, msg, id;
@@ -90,8 +95,15 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 chatCDB.set("msg", msg);
                                 chatCDB.upload().then(function(){
                                         // clear write interface
-                                        node.innerHTML = "";
+                                        node.innerHTML = labels.get("typemsg");
+                                        node.classList.add("placeholder");
+                                        node.blur();
                                 });       
+                        }
+                        else if (node.innerHTML === ""){
+                                node.innerHTML = labels.get("typemsg");
+                                node.classList.add("placeholder");
+                                 node.blur();        
                         }
                 };
                 

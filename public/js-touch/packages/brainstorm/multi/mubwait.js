@@ -108,7 +108,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
                                 // get session info
-                                session.reset();
+                                session.reset({});
                                 session.sync(Config.get("db"), sid).then(function(){
                                         // manage exit event
                                         // step 1 init confirmation UI

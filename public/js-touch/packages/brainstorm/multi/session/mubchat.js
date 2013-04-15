@@ -185,15 +185,18 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 };
                 
                 chatCDB.watchValue("msg", function(arrCDB){
-                        var l = chat.getNbItems(), arr;
-                        console.log(arrCDB, arrCDB.slice(-1)[0]);
-                        // check if chat window should be updated (ie if last message has not been enter by this user)
+                        
+                        chat.reset(arrCDB);
+                        /*var l = chat.getNbItems(), arr;
+                        console.log(arrCDB, arrCDB.slice(-1)[0], chat.get(l-1));
+                        // check if chat window should be updated (ie if last message has not been entered by this user)
                         if (l !== arrCDB.length || arrCDB.slice(-1)[0] !== chat.get(l-1)){
                                 arr = JSON.parse(chat.toJSON());
+                                console.log("before calling utils function");
                                 Utils.sortByProperty(arr, time);
                                 chat.reset(arr); 
                                 console.log(chat.toJSON());      
-                        }      
+                        } */     
                 });
                 
                 return mubChat;

@@ -161,6 +161,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 };
                 
                 mubChat.leave = function leave(){
+                        console.log("leave chat function");
                         var users = chatCDB.get("users"),
                             msg = chatCDB.get("msg");
                         users.splice(position, 1);
@@ -173,6 +174,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 };
                 
                 mubChat.cancel = function cancel(){
+                        console.log("cancel chat function");
                         var msg = chatCDB.get("msg");
                         msg.push({user: "SYS", type: 3, time: now, arg: 0});
                         chatCDB.set("msg", msg);

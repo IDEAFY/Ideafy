@@ -108,7 +108,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
                                 // get session info
-                                session.reset({});
+                                session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){
                                         // manage exit event
                                         // step 1 init confirmation UI
@@ -147,13 +147,10 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 // set session status to waiting as it may have been "full" before participant left
                                 session.set("status", "waiting"); 
                                 session.upload().then(function(){
+                                        chatUI.leave();
                                         widget.goToScreen();
                                         session.unsync();
                                 });              
-                        };
-                        
-                        widget.leaveChat = function leaveChat(){
-                                chatUI.leave();        
                         };
                         
                         // initiator decides to cancel the session

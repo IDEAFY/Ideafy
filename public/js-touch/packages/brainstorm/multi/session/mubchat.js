@@ -72,7 +72,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle"><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></p></li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post">Write message</div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></p></li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post">Write message</div></div>';
                 
                 mubChat.post = function(event,node){
                         var now, msg, id;
@@ -102,6 +102,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 };
                 
                 mubChat.reset = function reset(chatId){
+                        chatCDB.reset();
+                        chat.reset([]); 
                         spinner.spin(document.getElementById("chatspinner"));
                         chatCDB.sync(Config.get("db"), chatId).then(function(){
                                 var i, arr = chatCDB.get("users");
@@ -127,7 +129,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 else{
                                         chat.reset(chatCDB.get("msg"));
                                         spinner.stop();
-                                }       
+                                }      
                         });
                               
                 };
@@ -166,6 +168,17 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         
                         chatCDB.remove();        
                 };
+                
+                chatCDB.watchValue("msg", function(arrCDB){
+                        var l = chat.getNbItems(), arr;
+                        
+                        // check if chat window should be updated (ie if last message has not been enter by this user)
+                        if (l !== arrCDB.length || arrCDB.slice(-1) !== chat.get(l-1)){
+                                arr = JSON.parse(chat.toJSON());
+                                Utils.sortByProperty(arr, time);
+                                chat.reset(arr);        
+                        }      
+                });
                 
                 return mubChat;
         };

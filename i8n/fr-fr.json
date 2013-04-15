@@ -459,6 +459,10 @@
 	"leader": "Leader",
 	"sessionfull" : "La session est complète",
 	"sessionstarted" : "Cette session a démarré",
-	"sessiondeleted" : "Cette session a été annulée"
+	"sessiondeleted" : "Cette session a été annulée",
+	"chatmsg0" : " a initié la session",
+	"chatmsg1" : " a démarré la session"
+	"chatmsg2" : " a quitté la session",
+	"chatmsg3" : " a annulé la session"
 
 }

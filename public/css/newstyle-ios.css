@@ -6397,6 +6397,10 @@ li.my2q{
     font-size: 14px;
 }
 
+#chatmessages li{
+    
+}
+
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}
 p.p2 {margin: 0; font-size: 14px; min-height: 15px}

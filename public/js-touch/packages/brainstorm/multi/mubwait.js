@@ -110,7 +110,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 // get session info
                                 session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){
-                                        console.log("document sync successful");
                                         // manage exit event
                                         // step 1 init confirmation UI
                                         if (session.get("initiator").id === user.get("_id")){
@@ -152,11 +151,16 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 });              
                         };
                         
+                        widget.leaveChat = function leaveChat(){
+                                chatUI.leave();        
+                        };
+                        
                         // initiator decides to cancel the session
                         widget.cancelSession = function cancelSession(){
                                 //set session status to "deleted" to notify participants
                                 session.set("status", "deleted");
                                 session.upload().then(function(){
+                                        chatUI.cancel();
                                         widget.displayInfo("deleting", 5000).then(function(){
                                                 session.remove();
                                                 session.unsync();
@@ -176,7 +180,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                             promise.fulfill();
                                     };
                                 
-                                console.log(infoUI, timeout);
                                 confirmUI.hide();
                                 infoUI.classList.remove("invisible");
                                 timer = setInterval(function(){

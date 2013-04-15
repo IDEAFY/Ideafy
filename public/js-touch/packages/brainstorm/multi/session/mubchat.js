@@ -27,11 +27,23 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         (readonly)?this.setAttribute("contenteditable", false) : this.setAttribute("contenteditable", true);
                                 }
                         }),
-                        "chat" : new Model(chat),
+                        "chat" : new Model(chat, {
+                                setTime : function(time){
+                                        this.innerHTML = new Date(time).toTimeString();
+                                },
+                                setStyle : function(user){
+                                        if (user === "SYS"){
+                                                this.setAttribute("style", "color: #CCCCCC; font-style: italic;");
+                                        }
+                                        else {
+                                                this.setAttribute("style", "color: #292929; font-style: normal;");
+                                        }
+                                }
+                        }),
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread">Read messages<ul id="chatmessages" data-chat="foreach"><li>Chat message</li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post">Write message</div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread">Read messages<ul id="chatmessages" data-chat="foreach"><li><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: innerHTML, msg; bindsetStyle, user"></p></li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post">Write message</div></div>';
                 
                 mubChat.post = function(event,node){
                         var now, msg, id;
@@ -39,7 +51,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 now = new Date().getTime();
                                 msg = chatCDB.get("msg");
                                 
-                                // display message
+                                // display message immediately
                                 chat.alter("push", {"user": position, "time": now, "msg": node.innerHTML});
                                 id = chat.getNbItems()-1;
                                 document.getElementById("chatmessages").querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
@@ -75,11 +87,55 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         }
                                 }
                                 
-                                console.log(position);
+                                // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
+                                if (isNaN(position) && !chatCDB.get("readonly")){
+                                        mubChat.join().then(function(){
+                                                chat.reset(chatCDB.get("msg"));
+                                                spinner.stop();       
+                                        });        
+                                }
                                 
-                                spinner.stop();       
+                                else{
+                                        chat.reset(chatCDB.get("msg"));
+                                        spinner.stop();
+                                }       
                         });
                               
+                };
+                
+                mubChat.join = function join(){
+                        var promise = new Promise(),
+                            arr = chatCDB.get("users"),
+                            pos= arr.length,
+                            now = new Date().getTime(),
+                            msg = chatCDB.get("msg");
+                                
+                        arr.push({"username": user.get("username"), "userid": user.get("_id")});
+                        msg.push({user: "SYS", time: now, type: 1, arg: pos});
+                        chatCDB.set("users", arr);
+                        chatCDB.set("msg", msg);
+                        chatCDB.upload().then(function(){
+                                position = pos;
+                                promise.fulfill();
+                        });
+                        return promise;
+                };
+                
+                mubChat.leave = function leave(){
+                        var users = chatCDB.get("users"),
+                            msg = chatCDB.get("msg");
+                        users.splice(position, 1);
+                        msg.push({user: "SYS", type: 2, time: now, arg: position})
+                        chatCDB.set("users", users);
+                        chatCDB.set("msg", msg);
+                        chatCDB.upload().then(function(){
+                                chatCDB.unsync();        
+                        });  
+                };
+                
+                mubChat.cancel = function cancel(){
+                        
+                        chatCDB.remove();        
                 };
                 
                 return mubChat;

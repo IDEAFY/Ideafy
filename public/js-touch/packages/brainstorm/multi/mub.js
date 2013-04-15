@@ -42,11 +42,13 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                         
                 };
                 
+                // joining an existing session
+                
                 widget.join = function join(sid){
-                        console.log("join function");
-                        var cdb = new CouchDBStore();
-                        cdb.setTransport(Config.get("transport"));
+                        var mubWait = stack.getStack().get("mubwait"),
+                            cdb = new CouchDBStore();
                         
+                        cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), sid).then(function(){
                                 var p = cdb.get("participants");
                                 p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro")});
@@ -54,7 +56,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                                 // set session to full if there are 3 participants + leader
                                 if (p.length === 3) cdb.set("status", "full");
                                 cdb.upload().then(function(){
-                                        stack.getStack().get("mubwait").reset(sid);
+                                        mubWait.reset(sid);
                                         stack.getStack().show("mubwait");
                                 }, function(error){
                                         console.log(error);

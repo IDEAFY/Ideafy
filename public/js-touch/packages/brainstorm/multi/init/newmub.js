@@ -303,9 +303,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                             now = new Date().getTime();
                         cdb.setTransport(Config.get("transport"));
                         
-                        cdb.set("users", [user.get("username")]);
-                        cdb.set("msg", [{user: "SYS", "type": 0, "value": now}]);
+                        cdb.set("users", [{"username":user.get("username"), "userid": user.get("_id")}]);
+                        cdb.set("msg", [{user: "SYS", "type": 0, "time": now}]);
                         cdb.set("sid", session.get("_id"));
+                        cdb.set("lang", session.get("lang"));
+                        cdb.set("readonly", false); // once the step is cleared readonly is set to true
+                        cdb.set("step", 0); // mubwait or mubstart will display the same chat
                         cdb.set("type", 17);
                         cdb.sync(Config.get("db"), id);
                         setTimeout(function(){

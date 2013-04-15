@@ -131,6 +131,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 
                                 // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
                                 if (isNaN(position) && !chatCDB.get("readonly")){
+                                        console.log("before calling function muchat.join");
                                         mubChat.join().then(function(){
                                                 chat.reset(chatCDB.get("msg"));
                                                 spinner.stop();       
@@ -156,6 +157,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         msg.push({user: "SYS", time: now, type: 1, arg: pos});
                         chatCDB.set("users", arr);
                         chatCDB.set("msg", msg);
+                        console.log("before joining upload", chatCDB.toJSON());
                         chatCDB.upload().then(function(){
                                 position = pos;
                                 promise.fulfill();

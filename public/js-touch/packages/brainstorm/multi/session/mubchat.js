@@ -53,18 +53,20 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 setAvatar : function(user){
                                         var frag, ui, userid;
                                         if (user === "SYS"){
+                                                this.classList.remove("invisible");
                                                 this.innerHTML = "doctor dee-dee";       
                                         }
-                                        else if (user !== position){
+                                        if (user === position){
+                                                this.classList.add("invisible");
+                                        }
+                                        else{
                                                 this.classList.remove("invisible");
                                                 frag = document.createDocumentFragment();
                                                 userid = chatCDB.get("users")[user].userid;
+                                                console.log(userid);
                                                 ui = new Avatar([userid]);
                                                 ui.place(frag);
                                                 (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
-                                        }
-                                        else{
-                                                this.classList.add("invisible");
                                         }       
                                 },
                                 setMsgStyle : function(user){

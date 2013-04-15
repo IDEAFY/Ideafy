@@ -59,6 +59,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                // display system message
                                                id = this.getAttribute("data-chat_id");
                                                type = chat.get(id).type;
+                                               console.log(id, type, chat.get(id).arg, labels.get("chatmsg0"));
                                                if (type <= 3){
                                                        this.innerHTML = chatCDB.get("users")[chat.get(id).arg].username + labels.get("chatmsg"+type);
                                                }

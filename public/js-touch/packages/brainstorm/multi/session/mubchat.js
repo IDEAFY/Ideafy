@@ -29,15 +29,23 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         }),
                         "chat" : new Model(chat, {
                                 setLiStyle : function(user){
-                                        if (user === "SYS"){
-                                                this.setAttribute("style", "background: none; border: none; text-align: left;");
-                                        }
-                                        else if (user === position){
-                                                this.setAttribute("style", "background: #9AC9CD; border: 1px solid #404040; border-radius: 5px;text-align: right;");
+                                        if (user === position){
+                                                this.setAttribute("style", "text-align: right;");
                                         }
                                         else{
-                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #404040; border-radius: 5px;text-align: left;");        
+                                                this.setAttribute("style", "text-align: left;");        
                                         }
+                                },
+                                setInnerMsgStyle : function(user){
+                                        if (user === "SYS"){
+                                                this.setAttribute("style", "background: none; border: none");
+                                        }
+                                        else if (user === position){
+                                                this.setAttribute("style", "background: #9AC9CD; border: 1px solid #404040; border-radius: 5px;");
+                                        }
+                                        else{
+                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #404040; border-radius: 5px;");        
+                                        }        
                                 },
                                 setTime : function(time){
                                         this.innerHTML = new Date(time).toLocaleTimeString();
@@ -71,7 +79,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="avatar"></div><span class="time" data-chat="bind: setTime, time"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></span></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="innerchatmsg"><div class="avatar"></div><span class="time" data-chat="bind: setTime, time"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></span></div></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
                 
                 mubChat.removePlaceholder = function(event, node){
                         node.innerHTML = "";

@@ -6378,7 +6378,7 @@ li.my2q{
 
 .sessionchat .chatread{
     background: white;
-    border: 1px dashed #CCCCCC;
+    border: 1px dashed #657B99;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     padding: 10px;
@@ -6407,6 +6407,10 @@ li.my2q{
     margin-bottom: 5px;
     padding-top: 3px;
     padding-bottom: 3px;   
+}
+
+#chatmessages .innerchatmsg{
+    
 }
 
 #chatmessages .time{

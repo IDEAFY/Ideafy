@@ -60,7 +60,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                         this.classList.remove("invisible");
                                                 }
                                                 else{
-                                                        this.claddLit.add("invisible");
+                                                        this.classList.add("invisible");
                                                 }
                                         }
                                 }),

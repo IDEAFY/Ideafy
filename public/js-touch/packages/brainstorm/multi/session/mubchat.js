@@ -156,7 +156,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         var users = chatCDB.get("users"),
                             msg = chatCDB.get("msg");
                         users.splice(position, 1);
-                        msg.push({user: "SYS", type: 2, time: now, arg: position})
+                        msg.push({user: "SYS", type: 2, time: now, arg: position});
                         chatCDB.set("users", users);
                         chatCDB.set("msg", msg);
                         chatCDB.upload().then(function(){
@@ -165,8 +165,15 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 };
                 
                 mubChat.cancel = function cancel(){
-                        
-                        chatCDB.remove();        
+                        var msg = chatCDB.get("msg");
+                        msg.push({user: "SYS", type: 3, time: now, arg: 0});
+                        chatCDB.set("msg", msg);
+                        chatCDB.upload().then(function(){
+                                setTimeout(function(){
+                                        chatCDB.remove();
+                                        chatCDB.unsync();
+                                        }, 500);        
+                        });
                 };
                 
                 chatCDB.watchValue("msg", function(arrCDB){

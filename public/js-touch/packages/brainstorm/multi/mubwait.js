@@ -138,6 +138,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 var p = session.get("participants"), i;
                                 for (i=p.length-1; i>=0; i--){
                                         if (p[i].id === user.get("_id")){
+                                                console.log("participant leaving : ", p[i].username);
                                                p.splice(i, 1);
                                                break; 
                                         }

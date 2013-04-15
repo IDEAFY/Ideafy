@@ -16,7 +16,38 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                     invited = new Store([]),
                     error = new Store({"errormsg":""}),
                     labels= Config.get("labels"),
-                    user = Config.get("user");
+                    user = Config.get("user"),
+                    sessionTemplate = {"title" : "",
+                         "description" : "",
+                         "initiator" : {
+                                "id" : user.get("_id"),
+                                "username" : user.get("username"),
+                                "intro" : user.get("intro")
+                        },
+                        "participants" : [],
+                        "date" : [],
+                        "startTime" : null,
+                        "resumeTime" : null,
+                        "duration" : null,
+                        "elapsedTime" : 0,
+                        "elapsedTimers" : {},
+                        "mode" : "roulette",
+                        "type" : 8,
+                        "deck" : user.get("active_deck"),
+                        "status" : "waiting",
+                        "step" : "",
+                        "lang" : user.get("lang"),
+                        "characters" : [],
+                        "contexts" : [],
+                        "problems" : [],
+                        "scenarioWB" : [],
+                        "scenario" : [], //{"title" : "", "story" : "", "solution" : ""}
+                        "techno" : [[]],
+                        "ideaWB" : [],
+                        "idea" : [], //{"title" : "", "description" : "", "solution" : "", "visibility" : "private", "id" : "" }
+                        "score" : "",
+                        "chat" : [],
+                        "invited": []};
                 
                 widget.plugins.addAll({
                         "labels": new Model(labels),
@@ -79,7 +110,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "newmubevent": new Event(widget)
                 });
                 
-                widget.template = '<div id="newmub"><div id="newmub-content"><form><label data-labels="bind:innerHTML, selectmode"></label><hr/><div class="select-mode"><select data-newmub="bind:initSessionMode, mode" data-newmubevent="listen:change, changeSessionMode"><option name="roulette" data-labels="bind:innerHTML, roulette"></option><option name="campfire" data-labels="bind:innerHTML, campfire"></option><option name="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label>Invite your contacts</label><hr/><div class="selectall" data-labels="bind:innerHTML, selectall" data-newmubevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div><input class="search" data-newmubevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="invitelistauto" class="autocontact invisible"><div class="autoclose" data-newmubevent="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-newmubevent="listen:touchend, select"></li></ul></div><div class="invitecontactlist"><ul data-invited="foreach"><li class = "contact list-item" data-newmubevent="listen:touchstart, discardContact"><p class="contact-name" data-invited="bind:innerHTML, username"></p><div class="remove-contact"></div></li></ul></div></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" maxlength=60 readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: touchstart, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-newmub="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: touchstart, press; listen:touchend, clear">Clear</label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:touchstart, press; listen:touchend, create">Create</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
+                widget.template = '<div id="newmub"><div id="newmub-content"><form><label data-labels="bind:innerHTML, selectmode"></label><hr/><div class="select-mode"><select data-newmub="bind:initSessionMode, mode" data-newmubevent="listen:change, changeSessionMode"><option name="roulette" data-labels="bind:innerHTML, roulette"></option><option name="campfire" data-labels="bind:innerHTML, campfire"></option><option name="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label></label><hr/><div class="selectall" data-labels="bind:innerHTML, selectall" data-newmubevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div><input class="search" data-newmubevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="invitelistauto" class="autocontact invisible"><div class="autoclose" data-newmubevent="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-newmubevent="listen:touchend, select"></li></ul></div><div class="invitecontactlist"><ul data-invited="foreach"><li class = "contact list-item" data-newmubevent="listen:touchstart, discardContact"><p class="contact-name" data-invited="bind:innerHTML, username"></p><div class="remove-contact"></div></li></ul></div></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" maxlength=60 readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: touchstart, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-newmub="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: touchstart, press; listen:touchend, clear">Clear</label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:touchstart, press; listen:touchend, create">Create</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
                 
                 widget.place(document.getElementById("newmub"));
                 
@@ -116,6 +147,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 "chat" : [],
                                 "invited": []};
                         session.reset(sessionTemplate);
+                        // update user data
+                        session.set("lang", user.get("lang"));
+                        session.set("deck", user.get("active_deck"))
+                        session.set("initiator", {"id" : user.get("_id"), "username" : user.get("username"), "intro" : user.get("intro")});
                         invited.reset([]);
                         error.set("errormsg", "");    
                 };
@@ -405,10 +440,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 // manage language change
                 user.watchValue("lang", function(){
                         // reset session and error stores to trigger label refresh
+                        var tempSession = JSON.parse(session.toJSON()),
+                            tempError = JSON.parse(error.toJSON());
                         session.reset({});
-                        session.reset(JSON.parse(session.toJSON()));
+                        session.reset(tempSession);
                         error.reset({});
-                        error.reset(JSON.parse(error.toJSON()));        
+                        error.reset(tempError);        
                 });
                 
                 return widget;

@@ -6401,6 +6401,11 @@ li.my2q{
     
 }
 
+#chatmessages .time{
+    font-size: 10px;
+    color: #CCCCCC;
+}
+
 /* EULA */
 p.p1 {margin: 0; font-size: 14px}
 p.p2 {margin: 0; font-size: 14px; min-height: 15px}

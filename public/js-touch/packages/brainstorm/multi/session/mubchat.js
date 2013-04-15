@@ -29,7 +29,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         }),
                         "chat" : new Model(chat, {
                                 setTime : function(time){
-                                        this.innerHTML = new Date(time).toTimeString();
+                                        this.innerHTML = new Date(time).toLocaleTimeString();
                                 },
                                 setStyle : function(user){
                                         if (user === "SYS"){
@@ -38,12 +38,29 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         else {
                                                 this.setAttribute("style", "color: #292929; font-style: normal;");
                                         }
+                                },
+                                setMSG : function(msg){
+                                        var id, type;
+                                        if (msg) {
+                                                this.innerHTML = msg;
+                                        }
+                                        else{
+                                               // display system message
+                                               id = this.getAttribute("data-chat_id");
+                                               type = chat.get(id).type;
+                                               if (type <= 3){
+                                                       this.innerHTML = chatCDB.get("users")[chat.get(id).arg].username + labels.get("chatmsg"+type);
+                                               }
+                                               else {
+                                                       this.innerHTML = labels.get("chatmsg"+type);
+                                               }
+                                        }
                                 }
                         }),
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread">Read messages<ul id="chatmessages" data-chat="foreach"><li><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: innerHTML, msg; bindsetStyle, user"></p></li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post">Write message</div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread">Read messages<ul id="chatmessages" data-chat="foreach"><li><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: setMsg, msg; bindsetStyle, user"></p></li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post">Write message</div></div>';
                 
                 mubChat.post = function(event,node){
                         var now, msg, id;

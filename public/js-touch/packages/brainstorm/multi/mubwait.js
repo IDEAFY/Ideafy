@@ -147,9 +147,10 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 // set session status to waiting as it may have been "full" before participant left
                                 session.set("status", "waiting"); 
                                 session.upload().then(function(){
-                                        chatUI.leave();
-                                        widget.goToScreen();
-                                        session.unsync();
+                                        chatUI.leave().then(function(){
+                                                widget.goToScreen();
+                                                session.unsync();        
+                                        });
                                 });              
                         };
                         

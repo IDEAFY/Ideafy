@@ -6404,7 +6404,9 @@ li.my2q{
 }
 
 #chatmessages li{
-    margin-bottom: 5px;    
+    margin-bottom: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;   
 }
 
 #chatmessages .time{

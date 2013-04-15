@@ -28,10 +28,21 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 }
                         }),
                         "chat" : new Model(chat, {
+                                setLiStyle : function(user){
+                                        if (user === "SYS"){
+                                                this.setAttribute("style", "background: none; border: none; text-align: left;");
+                                        }
+                                        else if (user === position){
+                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #404040; border-radius: 5px;text-align: right;");
+                                        }
+                                        else{
+                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #404040; border-radius: 5px;text-align: left;");        
+                                        }
+                                },
                                 setTime : function(time){
                                         this.innerHTML = new Date(time).toLocaleTimeString();
                                 },
-                                setStyle : function(user){
+                                setMsgStyle : function(user){
                                         if (user === "SYS"){
                                                 this.setAttribute("style", "color: #CCCCCC; font-style: italic;");
                                         }
@@ -39,7 +50,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 this.setAttribute("style", "color: #292929; font-style: normal;");
                                         }
                                 },
-                                setMSG : function(msg){
+                                setMsg : function(msg){
                                         var id, type;
                                         if (msg) {
                                                 this.innerHTML = msg;
@@ -60,7 +71,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread">Read messages<ul id="chatmessages" data-chat="foreach"><li><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: setMsg, msg; bindsetStyle, user"></p></li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post">Write message</div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle"><div class="avatar"></div><p class="time" data-chat="bind: setTime, time"></p><p class="msg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></p></li></ul></div><div class="chatwrite" data-model="bind: setReadonly, readonly" data-chatevent = "listen: keypress, post">Write message</div></div>';
                 
                 mubChat.post = function(event,node){
                         var now, msg, id;

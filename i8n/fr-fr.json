@@ -465,6 +465,7 @@
 	"chatmsg1" : " a démarré la session",
 	"chatmsg2" : " a quitté la session",
 	"chatmsg3" : " a annulé la session",
-	"typemsg" : "Tapez votre message"
+	"typemsg" : "Tapez votre message",
+	"said": "a dit :"
 
 }

@@ -6397,6 +6397,7 @@ li.my2q{
     padding-left: 10px;
     padding-right: 10px;
     font-size: 14px;
+    overflow-y: scroll;
 }
 
 .sessionchat .chatwrite.placeholder{
@@ -6405,6 +6406,24 @@ li.my2q{
 
 #chatmessages li{
     margin-bottom: 5px;  
+}
+
+#chatmessages .container{
+    float: left;
+    padding-right: 10px;
+}
+
+#chatmessages .doctor-deedee{
+    width: 30px;
+    height: 30px;
+    background-image: url('../img/brainstorm/doctordeedee87x85.png');
+    background-size: contain;  
+}
+
+#chatmessages .avatar{
+    width: 30px;
+    height: 30px;
+    background-size: contain;
 }
 
 #chatmessages .innerchatmsg{

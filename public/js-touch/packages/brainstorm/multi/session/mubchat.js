@@ -44,7 +44,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 this.setAttribute("style", "background: #9AC9CD; border: 1px solid #808080; border-radius: 5px;");
                                         }
                                         else{
-                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #808080; border-radius: 5px;float: left;max-width: 817px;");        
+                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #808080; border-radius: 5px;float: left;max-width: 556px;");        
                                         }        
                                 },
                                 setTime : function(time){

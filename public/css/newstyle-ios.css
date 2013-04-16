@@ -6402,7 +6402,6 @@ li.my2q{
     border: 1px solid #4D4D4D;
     border-top: none;
     height: 40px;
-    line-height: 40px;
     padding-left: 10px;
     padding-right: 10px;
     font-size: 14px;
@@ -6416,7 +6415,7 @@ li.my2q{
 #chatmessages li{
     margin-bottom: 5px;
     width: 100%;
-    display: inline-block;  
+    display: inline-block;
 }
 
 #chatmessages .container{

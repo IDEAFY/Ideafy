@@ -115,14 +115,15 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 
                                 // push message to couchdb
                                 msg.push({"user": position, "time": now, "msg": node.innerHTML});
-                                // upload to couchDB
                                 chatCDB.set("msg", msg);
-                                chatCDB.upload().then(function(){
-                                        // clear write interface
-                                        node.innerHTML = labels.get("typemsg");
-                                        node.classList.add("placeholder");
-                                        node.blur();
-                                });       
+                                
+                                // clear write interface
+                                node.innerHTML = labels.get("typemsg");
+                                node.classList.add("placeholder");
+                                node.blur();
+                                
+                                // upload to couchDB
+                                chatCDB.upload();       
                         }
                 };
                 

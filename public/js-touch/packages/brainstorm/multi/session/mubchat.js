@@ -140,6 +140,18 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 
                 mubChat.setReadonly = function setReadonly(){
                         chatCDB.set("readonly", true);
+                };
+                
+                mubChat.startingSession = function startingSession(){
+                        var now = new Date().getTime(), msg = chatCDB.get("msg"), id;
+                        mubChat.setReadonly();
+                        chat.alter("push", {"user": "SYS", "time": now, "type": 4});
+                        id = chat.getNbItems()-1;
+                        document.getElementById("chatmessages").querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
+                        
+                        msg.push({"user": "SYS", "time": now, "type": 4});
+                        chatCDB.set("msg", msg);
+                        
                         chatCDB.upload();
                 };
                 

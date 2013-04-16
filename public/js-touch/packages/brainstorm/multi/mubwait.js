@@ -246,6 +246,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         
                         widget.start = function(event, node){
                                 var now = new Date();
+                                chatUI.startingSession();
                                 node.classList.remove("pressed");
                                 console.log("starting session");
                                 session.set("status", "in progess");
@@ -253,7 +254,8 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 session.set("startTime", now.getTime());
                                 session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                 session.upload().then(function(){
-                                        chatUI.setReadonly();
+                                        console.log("session start upload successful");
+                                        $start(session.get("_id"));
                                 });
                         };
                         
@@ -267,7 +269,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                 document.removeEventListener("touchstart", exitListener.listener, true);      
                                         });
                                 }
-                                if (value === "in progress"){
+                                if (value === "in progress" && session.get("initiator").id !== user.get("_id")){
                                         console.log("session in progress -- starting any moment now");
                                         $start(session.get("_id"));
                                 }     

@@ -52,23 +52,36 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 setTime : function(time){
                                         this.innerHTML = Utils.formatTime(time);
                                 },
-                                setAvatar : function(user){      
-                                },
-                                setMsgStyle : function(user){
+                                setAvatar : function(user){
+                                        console.log("avatar", user);
+                                        var frag, ui, uid;
                                         if (user === "SYS"){
-                                                this.setAttribute("style", "color: #CCCCCC;");
+                                                this.classList.remove("invisible");
+                                                this.innerHTML = "doctor dee-dee";       
                                         }
-                                        else {
-                                                this.setAttribute("style", "color: #292929;");
+                                        else if (user === position){
+                                                this.classList.add("invisible");
                                         }
+                                        else if (typeof user === "number"){
+                                                this.classList.remove("invisible");
+                                                frag = document.createDocumentFragment();
+                                                console.log("before getting userid", user, chatCDB.toJSON());
+                                                uid = chatCDB.get("users")[user].userid;
+                                                console.log(uid);
+                                                ui = new Avatar([userid]);
+                                                ui.place(frag);
+                                                (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
+                                        }       
                                 },
                                 setMsg : function(msg){
                                         var id, type;
                                         if (msg) {
                                                 this.innerHTML = msg;
+                                                this.setAttribute("style", "color: #292929;");
                                         }
                                         else{
                                                // display system message
+                                               this.setAttribute("style", "color: #CCCCCC;");
                                                id = this.getAttribute("data-chat_id");
                                                type = chat.get(id).type;
                                                if (type <= 3){
@@ -83,7 +96,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind: setLiStyle, user"><div class="innerchatmsg" data-chat="bind:setInnerMsgStyle, user"><div class="avatar" data-chat="bind:setAvatar, user"></div><span class="time" data-chat="bind: setTime, time"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg; bind:setMsgStyle, user"></span></div></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind:setLiStyle, user"><div class="avatar" data-chat="bind:setAvatar, user"></div><div class="innerchatmsg" data-chat="bind:setInnerMsgStyle, user"><span class="time" data-chat="bind: setTime, time"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg"></span></div></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
                 
                 mubChat.removePlaceholder = function(event, node){
                         node.innerHTML = "";

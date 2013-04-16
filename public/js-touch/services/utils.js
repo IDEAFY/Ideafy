@@ -37,19 +37,16 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                 },
                 
                 formatTime : function(time){
-                        console.log(time);
                         var date = new Date(time),
                             hrs = date.getHours(),
                             min = date.getMinutes(),
                             sec =  date.getSeconds(),
                             res;
                            
-                            console.log(date, hrs, min, sec);
-                            hrs>0 ? res += hrs+":";
+                            res += hrs+":";
                             min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : res+="0:";
                             sec<10 ? res += "0"+sec : res+= sec;
-                            
-                            console.log(res);                    
+                                                
                             return res;
                 },
 		

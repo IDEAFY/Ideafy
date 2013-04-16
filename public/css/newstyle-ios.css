@@ -6404,13 +6404,12 @@ li.my2q{
 }
 
 #chatmessages li{
-    margin-bottom: 5px;
-    padding-top: 3px;
-    padding-bottom: 3px;   
+    margin-bottom: 5px;  
 }
 
 #chatmessages .innerchatmsg{
-    
+    display: inline-block;
+    padding: 5px;
 }
 
 #chatmessages .time{

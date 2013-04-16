@@ -41,7 +41,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                             hrs = date.getHours(),
                             min = date.getMinutes(),
                             sec =  date.getSeconds(),
-                            res;
+                            res = "";
                            
                             res += hrs+":";
                             min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : res+="0:";

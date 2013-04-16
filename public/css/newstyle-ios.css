@@ -6443,7 +6443,7 @@ li.my2q{
     padding: 0px 5px 3px 5px;
 }
 
-#chatmessages .time{
+#chatmessages .time, #chatmessages .username{
     font-size: 10px;
     color: #808080;
 }

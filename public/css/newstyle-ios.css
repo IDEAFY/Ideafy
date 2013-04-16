@@ -6096,14 +6096,15 @@ li.my2q{
     left: 267px;
     top: 240px;
     background: #9ac9cd;
-    text-align: center;
+}
+
+#mubwait .sessionmsg span{
     font-family: Helvetica;
     font-size: 20px;
     line-height: 40px;
     color: #4D4D4D;
     font-weight: bold;
-    display: table-cell;
-    vertical-align: middle;
+    margin: auto;
 }
 
 #mubwait .confirm .help-doctor{

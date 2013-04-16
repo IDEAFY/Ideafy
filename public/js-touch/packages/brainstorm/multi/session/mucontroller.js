@@ -201,7 +201,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            _stack.getStack().add("muidea", new MUIdea(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
                            _stack.getStack().add("muwrapup", new MUWrapup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
                            
-                           _widget.reset(sid);
                    };
                    
                    _widget.toggleProgress = function toggleProgress(node){

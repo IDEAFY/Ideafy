@@ -8,9 +8,9 @@
 define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils","lib/spin.min", "Promise"],
         function(Widget, Config, CouchDBStore, Store, Model, Event, Avatar, Utils, Spinner, Promise){
                 
-                return function MUBChatConstructor(){
+                function MUBChatConstructor(){
                 
-                var mubChat = new Widget(),
+                var mubChat = this,
                     chat = new Store([]),
                     chatCDB = new CouchDBStore(),
                     labels = Config.get("labels"),
@@ -128,7 +128,9 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 
                 mubChat.setReadonly = function setReadonly(){
                         chatCDB.set("readonly", true);
-                        chatCDB.upload();
+                        chatCDB.upload().then(function(){
+                                chatCDB.unsync();
+                        });
                 };
                 
                 mubChat.reset = function reset(chatId){
@@ -206,6 +208,15 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         document.getElementById("chatmessages").querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
                 });
                 
-                return mubChat;
+                chatCDB.watchValue("readonly", function(readonly){
+                        if (readonly) {chatCDB.unsync();}
+                });
         };
+        
+        return function MUBChatFactory(){
+                MUBChatConstructor.prototype = new Widget();
+                return new MUBChatConstructor();        
+        };
+        
+        
 });

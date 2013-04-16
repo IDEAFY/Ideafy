@@ -246,6 +246,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         
                         widget.start = function(event, node){
                                 node.classList.remove("pressed");
+                                chatUI.setReadonly();
                         };
                         
                         // watch for session status change

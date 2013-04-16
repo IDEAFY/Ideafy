@@ -62,7 +62,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         else if (user === position){
                                                 this.classList.add("invisible");
                                         }
-                                        else{
+                                        else if (typeof user === "number"){
                                                 this.classList.remove("invisible");
                                                 frag = document.createDocumentFragment();
                                                 console.log("before getting userid", user, chatCDB.toJSON());

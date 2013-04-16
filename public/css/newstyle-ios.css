@@ -6413,7 +6413,9 @@ li.my2q{
 }
 
 #chatmessages li{
-    margin-bottom: 5px;  
+    margin-bottom: 5px;
+    width: 100%;
+    display: inline-block;  
 }
 
 #chatmessages .container{

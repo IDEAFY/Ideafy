@@ -216,6 +216,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 });
                 
                 CHAT = chat;
+                UTILS = Utils;
                 
                 return mubChat;
         };

@@ -78,11 +78,11 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         var id, type;
                                         if (msg) {
                                                 this.innerHTML = msg;
-                                                this.setAttribute("style", "color: #292929;");
+                                                this.setAttribute("style", "color: #292929; font-size: 16px;");
                                         }
                                         else{
                                                // display system message
-                                               this.setAttribute("style", "color: #CCCCCC;");
+                                               this.setAttribute("style", "color: #CCCCCC; font-size: 14px;");
                                                id = this.getAttribute("data-chat_id");
                                                type = chat.get(id).type;
                                                if (type <= 3){

@@ -6096,6 +6096,7 @@ li.my2q{
     left: 267px;
     top: 240px;
     background: #9ac9cd;
+    text-align: center;
 }
 
 #mubwait .sessionmsg span{
@@ -6104,7 +6105,9 @@ li.my2q{
     line-height: 40px;
     color: #4D4D4D;
     font-weight: bold;
-    margin: auto;
+    display: table-cell;
+    height: 150px;
+    vertical-align: middle;
 }
 
 #mubwait .confirm .help-doctor{
@@ -6427,7 +6430,7 @@ li.my2q{
 #chatmessages .avatar{
     width: 30px;
     height: 30px;
-    border-radius: 15px
+    border-radius: 15px;
     background-size: contain;
 }
 

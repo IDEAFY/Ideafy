@@ -56,7 +56,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 this.classList.remove("invisible");
                                                 this.innerHTML = "doctor dee-dee";       
                                         }
-                                        if (user === position){
+                                        else if (user === position){
                                                 this.classList.add("invisible");
                                         }
                                         else{

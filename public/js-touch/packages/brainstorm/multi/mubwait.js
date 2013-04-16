@@ -251,7 +251,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         // watch for session status change to deleted (in case initiator decides to cancel)
                         session.watchValue("status", function(value){
                                 if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
-                                        widget.displayInfo("session canceled by the leader: it will end now", 2000).then(function(){
+                                        widget.displayInfo(labels.get("canceledbyleader"), 2000).then(function(){
                                                 session.unsync();
                                                 $exit();
                                                 document.removeEventListener("touchstart", exitListener.listener, true);      

@@ -62,6 +62,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         else{
                                                 this.classList.remove("invisible");
                                                 frag = document.createDocumentFragment();
+                                                console.log("before getting userid", user, chatCDB.toJSON());
                                                 userid = chatCDB.get("users")[user].userid;
                                                 console.log(userid);
                                                 ui = new Avatar([userid]);

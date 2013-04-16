@@ -210,9 +210,13 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 });
                 
                 chatCDB.watchValue("readonly", function(readonly){
-                        if (readonly) {chatCDB.unsync();}
+                        console.log("readonly change", chatCDB.toJSON());
+                        if (readonly) {
+                                chatCDB.set("readonly", true); // make sure plugin is called before unsync?
+                                chatCDB.unsync();
+                        }
                 });
-        };
+        }
         
         return function MUBChatFactory(){
                 MUBChatConstructor.prototype = new Widget();

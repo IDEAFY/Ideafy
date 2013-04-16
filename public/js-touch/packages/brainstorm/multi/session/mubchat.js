@@ -50,6 +50,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         }        
                                 },
                                 setTime : function(time){
+                                        console.log(time);
                                         if (time) {
                                                 this.innerHTML = Utils.formatTime(time);
                                         }

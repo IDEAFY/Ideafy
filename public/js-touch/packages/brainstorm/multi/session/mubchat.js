@@ -52,26 +52,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 setTime : function(time){
                                         this.innerHTML = Utils.formatTime(time);
                                 },
-                                setAvatar : function(user){
-                                        console.log("avatar", user);
-                                        var frag, ui, uid;
-                                        if (user === "SYS"){
-                                                this.classList.remove("invisible");
-                                                this.innerHTML = "doctor dee-dee";       
-                                        }
-                                        else if (user === position){
-                                                this.classList.add("invisible");
-                                        }
-                                        else if (typeof user === "number"){
-                                                this.classList.remove("invisible");
-                                                frag = document.createDocumentFragment();
-                                                console.log("before getting userid", user, chatCDB.toJSON());
-                                                uid = chatCDB.get("users")[user].userid;
-                                                console.log(uid);
-                                                ui = new Avatar([userid]);
-                                                ui.place(frag);
-                                                (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
-                                        }       
+                                setAvatar : function(user){      
                                 },
                                 setMsgStyle : function(user){
                                         if (user === "SYS"){

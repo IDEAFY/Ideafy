@@ -46,7 +46,8 @@ define(["service/config", "Observable", "Promise", "Olives/LocalStore"], functio
                             hrs>0 ? res += hrs+":";
                             min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : res+="0:";
                             sec<10 ? res += "0"+sec : res+= sec;
-                                                
+                            
+                            console.log(res);                    
                             return res;
                 },
 		

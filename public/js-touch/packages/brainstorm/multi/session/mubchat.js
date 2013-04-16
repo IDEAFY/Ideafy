@@ -50,7 +50,9 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         }        
                                 },
                                 setTime : function(time){
-                                        this.innerHTML = Utils.formatTime(time);
+                                        if (time) {
+                                                this.innerHTML = Utils.formatTime(time);
+                                        }
                                 },
                                 setAvatar : function(user){
                                         console.log("avatar", user);

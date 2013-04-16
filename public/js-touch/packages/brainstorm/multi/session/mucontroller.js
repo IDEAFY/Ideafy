@@ -130,6 +130,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    };
                    
                    _widget.reset = function reset(sid, replay){
+                           
+                        console.log("mucontroller reset function called");
                         // unsync session
                         _session.unsync(); 
                         

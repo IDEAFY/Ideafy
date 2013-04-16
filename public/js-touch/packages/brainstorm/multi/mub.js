@@ -71,8 +71,10 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 
                 // starting a session
                 widget.startSession = function startSession(sid){
+                        console.log("startsession called");
+                        stack.getStack().show("musession");
                         MUController.reset(sid);
-                        stack.getStack().show("musession");                
+                                        
                 };
                 
                 //init

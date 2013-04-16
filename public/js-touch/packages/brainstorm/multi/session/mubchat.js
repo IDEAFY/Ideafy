@@ -24,7 +24,13 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "labels" : new Model(labels),
                         "model" : new Model(chatCDB,{
                                 setReadonly : function(readonly){
-                                        (readonly)?this.setAttribute("contenteditable", false) : this.setAttribute("contenteditable", true);
+                                        if (readonly){
+                                                this.setAttribute("contenteditable", false);
+                                                this.classList.add("invisible");
+                                        }
+                                        else{
+                                                this.setAttribute("contenteditable", true);
+                                        }
                                 }
                         }),
                         "chat" : new Model(chat, {
@@ -134,9 +140,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 
                 mubChat.setReadonly = function setReadonly(){
                         chatCDB.set("readonly", true);
-                        chatCDB.upload().then(function(){
-                                chatCDB.unsync();
-                        });
+                        chatCDB.upload();
                 };
                 
                 mubChat.reset = function reset(chatId){

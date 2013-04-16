@@ -6,18 +6,18 @@
  */
 
 define(["OObject" ,"Amy/Stack-plugin", 
-	"service/map", "Event.plugin", "service/config", "Bind.plugin", "Store", "lib/spin.min", "Promise", "CouchDBStore"],
-	function(Widget, Stack, Map, Event, Config, Model, Store, Spinner, Promise, CouchDBStore){
-		return function LoginConstructor($init, $local){
-		//declaration
-			var _login = new Widget(),
-			    _loginForm = new Widget(),
-		            _signupForm = new Widget(),
-		            _loading = new Widget(),
-			    _serverdown = new Widget(),
-		            _internetdown = new Widget(),
-			    _stack = new Stack(),
-			    _store = new Store({
+        "service/map", "Event.plugin", "service/config", "Bind.plugin", "Store", "lib/spin.min", "Promise", "CouchDBStore"],
+        function(Widget, Stack, Map, Event, Config, Model, Store, Spinner, Promise, CouchDBStore){
+                return function LoginConstructor($init, $reload, $local){
+                //declaration
+                        var _login = new Widget(),
+                            _loginForm = new Widget(),
+                            _signupForm = new Widget(),
+                            _loading = new Widget(),
+                            _serverdown = new Widget(),
+                            _internetdown = new Widget(),
+                            _stack = new Stack(),
+                            _store = new Store({
                                         "email" : "",
                                         "firstname" : "",
                                         "lastname" : "",
@@ -28,21 +28,22 @@ define(["OObject" ,"Amy/Stack-plugin",
                              _labels = Config.get("labels"),
                              _transport = Config.get("transport"),
                              _db = Config.get("db"),
-			     spinner;
-		
-		//setup && UI DEFINITIONS		
-		         _login.plugins.addAll({
+                             spinner,
+                             reload = false;  // boolean to differentiate between initial start and usbsequent logout/login
+                
+                //setup && UI DEFINITIONS               
+                         _login.plugins.addAll({
                                 "loginstack" : _stack
                         });
                         
                         
                         // loading UI
                         _loading.plugins.add("label", new Model(_labels));
-		        _loading.template = '<div id="loading"><p data-label="bind: innerHTML, loadingmessage"></p><div id="loadingspin"></div></div>';
-		        _loading.place(document.getElementById("loading"));
-		        
-		        // maintenance UI
-		        _serverdown.plugins.add("label", new Model(_labels));
+                        _loading.template = '<div id="loading"><p data-label="bind: innerHTML, loadingmessage"></p><div id="loadingspin"></div></div>';
+                        _loading.place(document.getElementById("loading"));
+                        
+                        // maintenance UI
+                        _serverdown.plugins.add("label", new Model(_labels));
                         _serverdown.template = '<div id="serverdown"><p data-label="bind: innerHTML, maintenancemessage"></p><div id="loadingspin"></div></div>';
                         
                         // no connection UI
@@ -168,7 +169,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                                         $local.sync("ideafy-data");
                                                                                         Config.set("uid", '"' + userid + '"');
                                                                                         user.unsync();
-                                                                                        $init(true);
+                                                                                        (reload)? $reload(true) : $init(true);
                                                                                 });
                                                                         }, 350);
                                                                 }
@@ -233,7 +234,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         // add to Config
                                                                         Config.set("avatar", result);
                                                                 }
-                                                                $init();
+                                                                (reload)? $reload() : $init();
                                                         });
                                                 }
                                                 else {
@@ -242,31 +243,43 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         });
                                 }
                                 else {_store.set("error", _labels.get("invalidlogin"));}        
-			};
+                        };
 
                         // ADDING ALL UIS TO STACK
-			_stack.getStack().add("#login-screen", _loginForm);
-			_stack.getStack().add("#signup-screen", _signupForm);
-			_stack.getStack().add("#loading-screen", _loading);
-			_stack.getStack().add("#maintenance-screen", _serverdown);
-			_stack.getStack().add("#nointernet", _internetdown);
+                        _stack.getStack().add("#login-screen", _loginForm);
+                        _stack.getStack().add("#signup-screen", _signupForm);
+                        _stack.getStack().add("#loading-screen", _loading);
+                        _stack.getStack().add("#maintenance-screen", _serverdown);
+                        _stack.getStack().add("#nointernet", _internetdown);
                         
                         _login.alive(Map.get("login"));
                         LOGINSTACK = _stack;
                         
-		        // Initialization
-			_login.init = function init(){
-			        // display loading screen and initialize spinner
-			       _stack.getStack().show("#loading-screen");
-			       spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin(document.getElementById("loadingspin"));
+                        // Initialization
+                        _login.init = function init(){
+                                // display loading screen and initialize spinner
+                               _stack.getStack().show("#loading-screen");
+                               spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin(document.getElementById("loadingspin"));
                         };
                         
                         _login.setScreen = function setScreen(target){
                                 _stack.getStack().show(target);
                         };
                         
-		//return
-		return _login;
-		};
-	}
+                        _login.reset = function reset(signout){
+                                _store.reset({
+                                        "email" : "",
+                                        "firstname" : "",
+                                        "lastname" : "",
+                                        "confirm-password" : "",
+                                        "password" : "",
+                                        "error" : ""
+                                });
+                                if (signout){ reload = true;}
+                        };
+                        
+                //return
+                return _login;
+                };
+        }
 );

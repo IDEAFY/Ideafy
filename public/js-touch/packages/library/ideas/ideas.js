@@ -91,7 +91,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			                     byRating.classList.remove("pushed");
 			             }
 			             else{
-			                     usr = Config.get("user").get("_id").split("@")[0];
+			                     usr = Config.get("user").get("_id").replace(/@/, "at");
 			                     _widget.searchIdea("users:"+usr+ " AND "+node.value);
 			             }
 			        }

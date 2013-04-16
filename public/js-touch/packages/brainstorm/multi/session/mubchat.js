@@ -72,7 +72,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 },
                                 setUserName : function(user){
                                         if (typeof user === "number" && user !== position){
-                                                this.innerHTML = chatCDB.get("users")[user].username + labels.get("said");
+                                                this.innerHTML = " "+ chatCDB.get("users")[user].username + labels.get("said");
                                         }        
                                 },
                                 setMsg : function(msg){
@@ -212,14 +212,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         var l = arrCDB.length - 1; 
                         chat.reset(arrCDB);
                         document.getElementById("chatmessages").querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
-                });
-                
-                chatCDB.watchValue("readonly", function(readonly){
-                        console.log("readonly change", chatCDB.toJSON());
-                        if (readonly) {
-                                chatCDB.set("readonly", true); // make sure plugin is called before unsync?
-                                chatCDB.unsync();
-                        }
                 });
         }
         

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mubinit", "./mubwait"],
-        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, MUInit, MUWait){
+define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mubinit", "./mubwait", "./session/mucontroller"],
+        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, MUInit, MUWait, MUController){
                 
            return function MultiBConstructor($sip, $exit){
            
@@ -16,7 +16,8 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 
                 // Musession main stack has three widgets : the init (new or join), the waiting room and the session itself //
                 stack.getStack().add("mubinit", new MUInit($exit));
-                stack.getStack().add("mubwait", new MUWait($exit))
+                stack.getStack().add("mubwait", new MUWait($exit, widget.startSession));
+                stack.getStack().add("musession", new MUController($exit));
                   
                 widget.plugins.add("mustack", stack);
                 
@@ -66,6 +67,12 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                                 console.log(error);
                                 alert("failed to join session");
                         });                             
+                };
+                
+                // starting a session
+                widget.startSession = function startSession(sid){
+                        MUController.reset(sid);
+                        stack.getStack().show("musession");                
                 };
                 
                 //init

@@ -8,7 +8,7 @@
 define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise", "service/avatar", "./session/mubchat"],
         function(Widget, Store, CouchDBStore, Map, Model, Event, Place, Config, Help, Utils, Confirm, Promise, Avatar, Chat){
                 
-                return function MultiBWaitConstructor($exit){
+                return function MultiBWaitConstructor($exit, $start){
                 
                         var widget = new Widget(),
                             session = new CouchDBStore(),
@@ -245,8 +245,16 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         };
                         
                         widget.start = function(event, node){
+                                var now = new Date();
                                 node.classList.remove("pressed");
                                 chatUI.setReadonly();
+                                session.set("status", "in progess");
+                                session.set("step", "musetup");
+                                $session.set("startTime", now.getTime());
+                                $session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                session.upload().then(function(){
+                                        $start(session.get("_id"));        
+                                });
                         };
                         
                         // watch for session status change
@@ -258,7 +266,10 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                 $exit();
                                                 document.removeEventListener("touchstart", exitListener.listener, true);      
                                         });
-                                }        
+                                }
+                                if (value === "in progress"){
+                                        $start(session.get("_id"));
+                                }     
                         });
                         
                         // watch participant changes (new participant, departure etc.)

@@ -20,8 +20,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // setup
                         _widget.plugins.addAll({
                                 "labels" : new Model(_labels),
-                                "model" : new Model($session)
-                                }),
+                                "model" : new Model($session),
                                 "mustartevent" : new Event(_widget)
                         });
                         

@@ -6099,9 +6099,11 @@ li.my2q{
     text-align: center;
     font-family: Helvetica;
     font-size: 20px;
+    line-height: 40px;
     color: #4D4D4D;
     font-weight: bold;
-    line-height: 150px;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 #mubwait .confirm .help-doctor{

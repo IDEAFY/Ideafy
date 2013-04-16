@@ -6106,7 +6106,8 @@ li.my2q{
     color: #4D4D4D;
     font-weight: bold;
     display: table-cell;
-    height: 150px;
+    padding: 10px;
+    height: 130px;
     vertical-align: middle;
 }
 

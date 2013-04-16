@@ -37,7 +37,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         }
                                 },
                                 setInnerMsgStyle : function(user){
-                                        console.log("msgstyle", user);
                                         if (user === "SYS"){
                                                 this.setAttribute("style", "background: none; border: none");
                                         }
@@ -45,7 +44,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 this.setAttribute("style", "background: #9AC9CD; border: 1px solid #808080; border-radius: 5px;");
                                         }
                                         else{
-                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #808080; border-radius: 5px;");        
+                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #808080; border-radius: 5px;float: left;max-width: 817px;");        
                                         }        
                                 },
                                 setTime : function(time){
@@ -54,7 +53,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         }
                                 },
                                 setAvatar : function(user){
-                                        console.log("avatar", user);
                                         var frag, ui, uid;
                                         if (user === "SYS"){
                                                 this.classList.remove("invisible");
@@ -66,9 +64,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         else if (typeof user === "number"){
                                                 this.classList.remove("invisible");
                                                 frag = document.createDocumentFragment();
-                                                console.log("before getting userid", user, chatCDB.toJSON());
                                                 uid = chatCDB.get("users")[user].userid;
-                                                console.log(uid);
                                                 ui = new Avatar([uid]);
                                                 ui.place(frag);
                                                 (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
@@ -100,8 +96,10 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind:setLiStyle, user"><div class="container" data-chat="bind:setAvatar, user"></div><div class="innerchatmsg" data-chat="bind:setInnerMsgStyle, user"><span class="time" data-chat="bind: setTime, time"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg"></span></div></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
                 
                 mubChat.removePlaceholder = function(event, node){
-                        node.innerHTML = "";
-                        node.classList.remove("placeholder");        
+                        if (node.innerHTML === labels.get("typemsg")){
+                                node.innerHTML = "";
+                                node.classList.remove("placeholder");
+                        }       
                 };
                 
                 mubChat.post = function(event,node){
@@ -119,7 +117,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 msg.push({"user": position, "time": now, "msg": node.innerHTML});
                                 // upload to couchDB
                                 chatCDB.set("msg", msg);
-                                console.log("before post upload : ", chatCDB.toJSON());
                                 chatCDB.upload().then(function(){
                                         // clear write interface
                                         node.innerHTML = labels.get("typemsg");
@@ -141,8 +138,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         chatCDB.sync(Config.get("db"), chatId).then(function(){
                                 var i, arr = chatCDB.get("users");
                                 
-                                console.log(chatCDB.toJSON());
-                                
                                 // get user position
                                 for (i=0; i<arr.length; i++){
                                         if (arr[i].userid === user.get("_id")){
@@ -150,8 +145,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 break;        
                                         }
                                 }
-                                
-                                console.log(user.get("_id"),"'s position : ", position, chatCDB.get("msg"));
                                 
                                 // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
                                 if (isNaN(position) && !chatCDB.get("readonly")){
@@ -212,9 +205,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         chat.reset(arrCDB);
                         document.getElementById("chatmessages").querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
                 });
-                
-                CHAT = chat;
-                UTILS = Utils;
                 
                 return mubChat;
         };

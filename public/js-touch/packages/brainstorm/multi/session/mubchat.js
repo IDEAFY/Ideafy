@@ -29,6 +29,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         }),
                         "chat" : new Model(chat, {
                                 setLiStyle : function(user){
+                                        console.log("listyle", user);
                                         if (user === position){
                                                 this.setAttribute("style", "text-align: right;");
                                         }
@@ -37,6 +38,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         }
                                 },
                                 setInnerMsgStyle : function(user){
+                                        console.log("msgstyle", user);
                                         if (user === "SYS"){
                                                 this.setAttribute("style", "background: none; border: none");
                                         }
@@ -51,7 +53,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         this.innerHTML = Utils.formatTime(time);
                                 },
                                 setAvatar : function(user){
-                                        var frag, ui, userid;
+                                        console.log("avatar", user);
+                                        var frag, ui, uid;
                                         if (user === "SYS"){
                                                 this.classList.remove("invisible");
                                                 this.innerHTML = "doctor dee-dee";       
@@ -63,8 +66,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 this.classList.remove("invisible");
                                                 frag = document.createDocumentFragment();
                                                 console.log("before getting userid", user, chatCDB.toJSON());
-                                                userid = chatCDB.get("users")[user].userid;
-                                                console.log(userid);
+                                                uid = chatCDB.get("users")[user].userid;
+                                                console.log(uid);
                                                 ui = new Avatar([userid]);
                                                 ui.place(frag);
                                                 (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
@@ -143,7 +146,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         chatCDB.sync(Config.get("db"), chatId).then(function(){
                                 var i, arr = chatCDB.get("users");
                                 
-                                chat.reset(chatCDB.get("msg"));
+                                console.log(chatCDB.toJSON());
                                 
                                 // get user position
                                 for (i=0; i<arr.length; i++){
@@ -152,6 +155,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 break;        
                                         }
                                 }
+                                
+                                console.log(user.get("_id"),"'s position : ", position, chatCDB.get("msg"));
                                 
                                 // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
                                 if (isNaN(position) && !chatCDB.get("readonly")){

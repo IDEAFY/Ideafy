@@ -29,7 +29,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         }),
                         "chat" : new Model(chat, {
                                 setLiStyle : function(user){
-                                        console.log("listyle", user);
                                         if (user === position){
                                                 this.setAttribute("style", "text-align: right;");
                                         }
@@ -43,14 +42,13 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 this.setAttribute("style", "background: none; border: none");
                                         }
                                         else if (user === position){
-                                                this.setAttribute("style", "background: #9AC9CD; border: 1px solid #404040; border-radius: 5px;");
+                                                this.setAttribute("style", "background: #9AC9CD; border: 1px solid #808080; border-radius: 5px;");
                                         }
                                         else{
-                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #404040; border-radius: 5px;");        
+                                                this.setAttribute("style", "background: #E6E6E6; border: 1px solid #808080; border-radius: 5px;");        
                                         }        
                                 },
                                 setTime : function(time){
-                                        console.log(time);
                                         if (time) {
                                                 this.innerHTML = Utils.formatTime(time);
                                         }
@@ -71,7 +69,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 console.log("before getting userid", user, chatCDB.toJSON());
                                                 uid = chatCDB.get("users")[user].userid;
                                                 console.log(uid);
-                                                ui = new Avatar([userid]);
+                                                ui = new Avatar([uid]);
                                                 ui.place(frag);
                                                 (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
                                         }       

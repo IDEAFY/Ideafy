@@ -250,8 +250,8 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 chatUI.setReadonly();
                                 session.set("status", "in progess");
                                 session.set("step", "musetup");
-                                $session.set("startTime", now.getTime());
-                                $session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                session.set("startTime", now.getTime());
+                                session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                 session.upload().then(function(){
                                         $start(session.get("_id"));        
                                 });

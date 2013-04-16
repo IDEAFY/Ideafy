@@ -198,7 +198,9 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         chatCDB.set("msg", msg);
                         chatCDB.upload().then(function(){
                                 promise.fulfill();
-                                chatCDB.unsync();        
+                                chatCDB.unsync();
+                                chatCDB.reset();
+                                chat.reset([]);       
                         });
                         return promise;
                 };
@@ -206,6 +208,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 mubChat.cancel = function cancel(){
                         chatCDB.remove();
                         chatCDB.unsync();
+                        chatCDB.reset();
+                        chat.reset([]);
                 };
                 
                 chatCDB.watchValue("msg", function(arrCDB){

@@ -218,6 +218,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         document.getElementById("chatmessages").querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
                 });
                 
+                CHAT = chat;
+                
                 return mubChat;
         };
 });

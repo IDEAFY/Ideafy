@@ -258,6 +258,8 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                 session.upload().then(function(){
                                         console.log("session start upload successful", $start);
+                                        // unsync session & remove exit listener
+                                        document.removeEventListener("touchstart", exitListener.listener, true);
                                         session.unsync();
                                         $start(session.get("_id"));
                                 });
@@ -276,6 +278,8 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 }
                                 if (value === "in progress" && session.get("initiator").id !== user.get("_id")){
                                         console.log("session in progress -- starting any moment now");
+                                        // unsync session & remove exit listener
+                                        document.removeEventListener("touchstart", exitListener.listener, true);
                                         session.unsync();
                                         $start(session.get("_id"));
                                 }     

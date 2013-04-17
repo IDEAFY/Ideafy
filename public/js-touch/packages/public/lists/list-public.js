@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise", "lib/spin.lin"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise, Spinner) {
+define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise", "lib/spin.min"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise, Spinner) {
         function ListPublicConstructor($db, $design, $view, $query) {
                 var _store = new Store([]),
                 touchStart,

@@ -108,6 +108,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
                                 // get session info
+                                session.unsync();
                                 session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){
                                         // manage exit event
@@ -257,12 +258,14 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                 session.upload().then(function(){
                                         console.log("session start upload successful", $start);
+                                        session.unsync();
                                         $start(session.get("_id"));
                                 });
                         };
                         
                         // watch for session status change
                         session.watchValue("status", function(value){
+                                console.log(value);
                                // if session is deleted (in case initiator decides to cancel)
                                 if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
                                         widget.displayInfo(labels.get("canceledbyleader"), 2000).then(function(){
@@ -273,6 +276,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 }
                                 if (value === "in progress" && session.get("initiator").id !== user.get("_id")){
                                         console.log("session in progress -- starting any moment now");
+                                        session.unsync();
                                         $start(session.get("_id"));
                                 }     
                         });

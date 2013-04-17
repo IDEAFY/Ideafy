@@ -256,7 +256,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 session.set("startTime", now.getTime());
                                 session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                 session.upload().then(function(){
-                                        console.log("session start upload successful");
+                                        console.log("session start upload successful", $start);
                                         $start(session.get("_id"));
                                 });
                         };

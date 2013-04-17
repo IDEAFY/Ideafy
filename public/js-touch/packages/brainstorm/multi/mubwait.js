@@ -148,10 +148,12 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 session.set("status", "waiting"); 
                                 session.upload().then(function(){
                                         chatUI.leave().then(function(){
-                                                widget.goToScreen();
+                                                //widget.goToScreen();
                                                 session.unsync();        
                                         });
-                                });              
+                                }); 
+                                // no need to wait for upload result to leave session
+                                widget.goToScreen()             
                         };
                         
                         // initiator decides to cancel the session

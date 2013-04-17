@@ -42,7 +42,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            }),
                            "progressevent" : new Event(_progress)
                    });
-                   _progress.template = '<div class = "progressbar"><ul id = "quicksteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
+                   _progress.template = '<div class = "progressbar"><ul id = "musteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
                    _progress.place(_frag);
                    
                    
@@ -193,15 +193,22 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    _widget.init = function init(){
                            
+                           console.log("mucontroller init entered");
                            // setup -- initialize UIs (progress bar and stack) and _session couchdbstore
                            _session.setTransport(Config.get("transport"));
                            
                            _stack.getStack().add("mustart", new MUStart(_session, _widget.prev, _widget.next, _widget.toggleProgress));
+                           console.log("after mustart");
                            _stack.getStack().add("musetup", new MUSetup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
+                           console.log("after musetup");
                            _stack.getStack().add("muscenario", new MUScenario(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
+                           console.log("after muscenario");
                            _stack.getStack().add("mutech", new MUTech(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
+                           console.log("after mutech");
                            _stack.getStack().add("muidea", new MUIdea(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
+                           console.log("after muidea");
                            _stack.getStack().add("muwrapup", new MUWrapup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
+                           console.log("after muwrapup");
                            
                    };
                    

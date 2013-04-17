@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
+define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise", "lib/spin.lin"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise, Spinner) {
         function ListPublicConstructor($db, $design, $view, $query) {
                 var _store = new Store([]),
                 touchStart,
@@ -21,7 +21,8 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                                 include_docs : true,
                                 limit : 30
                         }
-                };
+                },
+                spinner = new Spinner({color:"#CCCCCC", lines:10, length: 8, width: 5, radius:8, top: 50}).spin();
 
                 //setup
                 _store.setTransport(Config.get("transport"));
@@ -60,12 +61,14 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                 };
                 
                 this.resetQuery = function(query) {
-                        var promise=new Promise();
+                        var promise=new Promise(), spinDom = document.getElementById("pubic-list");
+                        
+                        spinner.spin(spinDom);
                         _options.query = query;
-
                         _store.unsync();
                         _store.reset([]);
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                spinner.stop();
                                 promise.fulfill();
                         });
                         return promise;
@@ -109,8 +112,9 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                 }
                 
                 this.init = function init(initCallback){
-                        var promise = new Promise();
+                        var promise = new Promise(), spinDom = document.getElementById("pubic-list");
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                spinner.stop();
                                 initCallback(_store, 0);
                                 promise.fulfill();      
                         });

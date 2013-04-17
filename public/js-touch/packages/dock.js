@@ -49,6 +49,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 				// initialize popups
 				_newIdea = new NewIdea();
                                 _new2q = new New2Q();
+                                _tips = new Tips();
 			};
 			
 			/*
@@ -69,7 +70,6 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 
                                 // show tips if applicable
                                 if (firstStart || _user.get("settings").showTips !== false){
-                                        _tips = new Tips();
                                         _tips.init(firstStart);
                                 }        
 			};

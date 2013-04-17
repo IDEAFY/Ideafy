@@ -14,11 +14,6 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                     stack = new Stack(),
                     user = Config.get("user");
                 
-                // Musession main stack has three widgets : the init (new or join), the waiting room and the session itself //
-                stack.getStack().add("mubinit", new MUInit($exit));
-                stack.getStack().add("mubwait", new MUWait($exit, widget.startSession));
-                stack.getStack().add("musession", new MUController($exit));
-                  
                 widget.plugins.add("mustack", stack);
                 
                 widget.template = '<div id="ideafy-multi"><div class="stack" data-mustack="destination"></div></div>';
@@ -77,7 +72,13 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                                         
                 };
                 
-                //init
+                // --- INIT ---
+                
+                // Musession main stack has three widgets : the init (new or join), the waiting room and the session itself //
+                stack.getStack().add("mubinit", new MUInit($exit));
+                stack.getStack().add("mubwait", new MUWait($exit, widget.startSession));
+                stack.getStack().add("musession", new MUController($exit));
+                
                 if (!$sip){
                         stack.getStack().show("mubinit");
                 }

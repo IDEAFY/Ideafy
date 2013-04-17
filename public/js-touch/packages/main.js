@@ -174,7 +174,10 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                         _login.setScreen("#maintenance-screen");
                 });
         }
-               
+         
+        /*
+         * Watch for signout events
+         */       
         Config.get("observer").watch("signout", function(){
                 _stack.getStack().add("#login", _login);
                 _login.reset(true);
@@ -183,4 +186,13 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                 _login.setScreen("#login-screen");
                 document.getElementById("cache").classList.remove("appear");
         });
+        
+        /*
+         * Manage socket connectivity
+         */
+        document.addEventListener("pause", Utils.disconnectSocket);
+        document.addEventListener("resume", Utils.checkSocketStatus);
+                
+        // attempt to reconnect socket if required in case of user actions
+        Map.get("body").addEventListener("touchstart", Utils.checkSocketStatus);
 }); 

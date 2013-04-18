@@ -168,6 +168,8 @@ define(["OObject", "Amy/Control-plugin" ,
 		              initLI.classList.add("selected");
 		              _radio.init(initLI);       
 		        });
+		        
+		        LD = listDate;
 
 			//return
 			return _widget;

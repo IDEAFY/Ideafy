@@ -71,7 +71,7 @@ define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Ev
                                 _store.reset(JSON.parse(cdb.toJSON()));
                                 cdb.unsync();
                                 polling = setInterval(function(){
-                                        cdb.reset();
+                                        cdb.reset([]);
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 _store.reset(JSON.parse(cdb.toJSON()));
                                                 cdb.unsync();
@@ -129,7 +129,7 @@ define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Ev
                                 initCallback(_store, 0);
                                 cdb.unsync();
                                 polling = setInterval(function(){
-                                        cdb.reset();
+                                        cdb.reset([]);
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 _store.reset(JSON.parse(cdb.toJSON()));
                                                 cdb.unsync();

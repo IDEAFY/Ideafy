@@ -131,16 +131,18 @@ define(["OObject", "Amy/Control-plugin" ,
 			     // list date needs to be in polling mode with a polling_interval defined in Config to avoid traffic overload
 			    listRating = new List(_db, "ideas", "_view/ideasbyvotes"),
 			    listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:60, include_docs: true});
+			    
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
 			_stack.getStack().add("#list-date", listDate);
+			
 			// show public ideas sorted by most recent
 		        listRating.init(_detail.reset);
+		        
 		        listDate.init(_detail.reset).then(function(){
 		              _stack.getStack().show("#list-date");
 		              _detail.reset(listDate.getModel(), 0);        
 		        });
-			// _stack.getStack().show("#list-date");
 
 			//return
 			return _widget;

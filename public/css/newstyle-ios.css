@@ -157,7 +157,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 }
 
-.idea-list, .twoq-list, .twoq-searchlist{
+.ideas-list, .twoq-list, .twoq-searchlist{
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; 

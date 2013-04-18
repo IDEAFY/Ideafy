@@ -39,8 +39,8 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			// function used to retrieve the currently highlighted idea in a list and display its details
-			this.displayHighlightedIdea = function displayHighlightedIdea(list){
-			     var ideaList = _stack.getStack().get(list),
+			this.displayHighlightedIdea = function displayHighlightedIdea(){
+			     var ideaList = _stack.getStack().getCurrentScreen(),
 			         ideaNode = ideaList.dom.querySelector(".list-item.selected"); 
 			         id = ideaNode.getAttribute("data-listideas_id") || 0,
 			         initLI;
@@ -51,7 +51,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                       initLI.classList.add("selected");
                                       _radio.init(initLI);        
 			     }    
-			     _detail.reset(ideaList, id);            
+			     _detail.reset(ideaList.getModel(), id);            
 			};
 			
 			// this piece can be considerably simplified --> using stack & control plugins
@@ -158,9 +158,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		        listDate.init(_detail.reset).then(function(){
 		              var initLI; // used to initialize list selection
 		              _stack.getStack().show("#list-date");
-		              _detail.reset(listDate.getModel(), 0);
-		              
-		              _widget.displayHighlightedIdea("#list-date");      
+		              _widget.displayHighlightedIdea();      
 		        });
 		        
 		        LD = listDate;

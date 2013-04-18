@@ -141,14 +141,12 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 _twocentWriteUI.place(_domWrite);
                                 
                                 // watch viewStore for changes regarding this idea and update model accordingly
-                                /*viewStore.watch("updated", function(idx, value){
+                                viewStore.watch("updated", function(idx, value){
+                                        console.log("idea change", idx, value);
                                         if (idx === parseInt(index)){
                                             _store.reset(value);        
                                         }
-                                });*/
-                               viewStore.watchValue(parseInt(index), function(idea){
-                                        console.log("idea change", idea);
-                               });
+                                });
                         };
                         
                         _widget.action = function(event, node){

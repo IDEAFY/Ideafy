@@ -39,7 +39,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			// function used to retrieve the currently highlighted idea in a list and display its details
-			this.displayHighlightedIdea = function displayHighlightedIdea(){
+	               _widget.displayHighlightedIdea = function displayHighlightedIdea(){
 			     var ideaList = _stack.getStack().getCurrentScreen(),
 			         ideaNode = ideaList.dom.querySelector(".list-item.selected"); 
 			         id = ideaNode.getAttribute("data-listideas_id") || 0,

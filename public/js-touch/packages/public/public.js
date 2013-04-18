@@ -45,7 +45,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			         id = ideaNode.getAttribute("data-listideas_id");
 			     
 			     console.log(_stack.getStack().getCurrentName(), ideaNode, id, ideaList.dom);
-			     if (!id){
+			     if (!parseInt(id, 10)){
 			             // highlighting first item in the list
                                       ideaNode.classList.add("selected");
                                       _radio.init(ideaNode);        

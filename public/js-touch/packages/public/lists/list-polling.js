@@ -119,14 +119,13 @@ define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Ev
                         _options.query = $query;
                 }
                 
-                this.init = function init(initCallback){
+                this.init = function init(){
                         var promise = new Promise(),
                             interval = user.get("settings").polling_interval || Config.get("polling_interval"),
                             cdb = new CouchDBStore();
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                initCallback(_store, 0);
                                 cdb.unsync();
                                 polling = setInterval(function(){
                                         cdb.reset([]);

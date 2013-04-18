@@ -134,7 +134,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                 //Public
                         _widget.reset = function reset(viewStore, index){
                                 
-                                var id = parseInt(index);
+                                var id = viewStore.get(index).id;
+                                console.log(id);
                                 
                                 // reinitialize couchdbstore
                                 ideaCDB.unsync();
@@ -162,7 +163,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.getIdea = function getIdea(id){
                                 console.log("calling getIdea", id);
                                 var promise = new Promise();
-                                ideaCDB.sync(Config.get("db"), "ideas", "_view/all", {key:"id", include_doc:true}).then(function(){
+                                ideaCDB.sync(Config.get("db"), "library", "_view/publicideas", {key:'"'+id+'"', include_docs:true}).then(function(){
                                         console.log(ideaCDB.toJSON());
                                         _store.reset(ideaCDB.get(0).doc);
                                         promise.fulfill();      

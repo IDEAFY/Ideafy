@@ -76,20 +76,12 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         },
                                         setRating : function setRating(rating) {
                                                 // this is necessary because the rating data is not supplied by the lucene design do --> to be investigated
-                                                if (rating === undefined) {
-                                                        var _id = this.getAttribute("data-listideas_id"),
-                                                            _arr = _store.get(_id).doc.votes;
-                                                        if (_arr.length === 0) this.innerHTML = ""
-                                                        else {
-                                                                this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
-                                                        }
-                                                }
-                                                else this.innerHTML = Math.round(rating*100)/100;
+                                                this.innerHTML = Math.round(rating*100)/100;
                                         },
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){
                                                 var idea = _store.get("_id"),
-                                                    authors = _store.get("doc").authors;
+                                                    authors = _store.get("authors");
                                                 
                                                 console.log("togglevotebutton", idea, authors, user.get("rated_ideas"));
                                                 // hide rating popup if present

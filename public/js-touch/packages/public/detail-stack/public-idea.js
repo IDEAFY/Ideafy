@@ -162,6 +162,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.getIdea = function getIdea(id){
+                                console.log("calling getIdea", id);
                                 var promise = new Promise();
                                 ideaCDB.sync(Config.get("db"), "ideas", "_view/all", {key:"id", include_doc:true}).then(function(){
                                         console.log(ideaCDB.toJSON());

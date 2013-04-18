@@ -467,6 +467,7 @@
 	"chatmsg3" : " a annulé la session",
 	"chatmsg4" : "Votre session démarre maintenant",
 	"typemsg" : "Tapez votre message",
-	"said": " a dit :"
+	"said": " a dit :",
+	"noresult": "Aucun résultat"
 
 }

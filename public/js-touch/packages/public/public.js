@@ -142,10 +142,12 @@ define(["OObject", "Amy/Control-plugin" ,
 		        listRating.init(_detail.reset);
 		        
 		        listDate.init(_detail.reset).then(function(){
-		                var initLI = document.querySelector("li[data-listideas_id='"+0+"']");
+		              var initLI; // used to initialize list selection
 		              _stack.getStack().show("#list-date");
-		              console.log("calling init detail");
 		              _detail.reset(listDate.getModel(), 0);
+		              
+		              // highlighting first item in the list
+		              initLI = document.querySelector("li[data-listideas_id='"+0+"']");
 		              initLI.classList.add("selected");
 		              _radio.init(initLI);       
 		        });

@@ -17,7 +17,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                              _voted = false,
                              user = Config.get("user"),
                              ideaCDB = new CouchDBStore(), // used to get idea details and synchronize with idea
-                             _ideaCDBUpdate, // store observer handle
+                             ideaCDBUpdate, // store observer handle
                              transport = Config.get("transport"),
                              observer = Config.get("observer"),
                              _store = new Store(),
@@ -131,7 +131,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.reset = function reset(viewStore, index){
                                 
                                 var id = viewStore.get(index).id;
-                                console.log(id);
                                 
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){

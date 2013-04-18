@@ -155,7 +155,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 ideaCDB.unsync();
                                 ideaCDB.reset();
                                 
-                                ideaCDB.sync(Config.get("db"), "library", "_view/publicideas", {key:'"'+id+'"', include_docs:true}).then(function(){
+                                ideaCDB.sync(Config.get("db"), "ideas", "_view/all", {key:'"'+id+'"', include_docs:true}).then(function(){
                                         _store.reset(ideaCDB.get(0).doc);
                                         ideaCDBUpdate = ideaCDB.watch("updated", function(){
                                                 _store.reset(ideaCDB.get(0).doc);        

@@ -141,6 +141,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		        
 		        listDate.init(_detail.reset).then(function(){
 		              _stack.getStack().show("#list-date");
+		              console.log("calling init detail", listDate.getModel().get(0));
 		              _detail.reset(listDate.getModel(), 0);        
 		        });
 

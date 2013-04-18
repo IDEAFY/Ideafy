@@ -90,6 +90,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 var idea = _store.get("id"),
                                                     authors = _store.get("doc").authors;
                                                 
+                                                console.log("togglevotebutton", idea, authors, user.get("rated_ideas"));
                                                 // hide rating popup if present
                                                 document.getElementById("ratingPopup").classList.remove("appear"); 
                                                 // check if user has already voted on this idea or if user is author

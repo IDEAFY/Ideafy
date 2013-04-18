@@ -76,7 +76,14 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         },
                                         setRating : function setRating(rating) {
                                                 // this is necessary because the rating data is not supplied by the lucene design do --> to be investigated
-                                                this.innerHTML = Math.round(rating*100)/100;
+                                                if (!rating) {
+                                                        var _arr = _store.get("votes");
+                                                        if (_arr.length === 0) this.innerHTML = ""
+                                                        else {
+                                                                this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
+                                                        }
+                                                }
+                                                else this.innerHTML = Math.round(rating*100)/100;
                                         },
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){

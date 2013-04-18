@@ -88,7 +88,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         },
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){
-                                                var idea = _store.get("id"),
+                                                var idea = _store.get("_id"),
                                                     authors = _store.get("doc").authors;
                                                 
                                                 console.log("togglevotebutton", idea, authors, user.get("rated_ideas"));
@@ -175,7 +175,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 var name = node.getAttribute("href");
                                 if (name === "#public-2cents"){
                                         console.log("twocents action");
-                                         _twocentWriteUI.reset(_store.get("id"));
+                                         _twocentWriteUI.reset(_store.get("_id"));
                                          console.log(_domWrite);
                                          _domWrite.classList.remove("invisible");
                                 }
@@ -207,7 +207,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         
                         _widget.castVote = function(event, node){
                                 var grade = parseInt(node.getAttribute("data-vote_id"))+1,
-                                    id = _store.get("id"),
+                                    id = _store.get("_id"),
                                     json = {id : id, vote: grade, voter: user.get("_id")};
                                 
                                 // prevent multiple votes on the same idea -- if request fails or before database is updated 

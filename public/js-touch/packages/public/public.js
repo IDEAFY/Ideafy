@@ -32,15 +32,14 @@ define(["OObject", "Amy/Control-plugin" ,
 			});
 
 			this.selectStart = function(event){
-				//_detail.reset(_ideas.get(event.target.getAttribute("data-publicideas_id")));
-				//please don't do that
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
 				    _id = event.target.getAttribute("data-listideas_id");
 				_detail.reset(_ideaList, _id);
 				
 			};
 			
-			// this piece can be considerable simplified --> using stack & control plugins (when I am not brain dead)
+			// this piece can be considerably simplified --> using stack & control plugins
+			
 			this.show = function(event, node){
 			     var byDate = _dom.querySelector(".bydate"),
 			         byRating =  _dom.querySelector(".byrating"),
@@ -48,15 +47,15 @@ define(["OObject", "Amy/Control-plugin" ,
 			     if (name !== _stack.getStack().getCurrentName){
 			             _stack.getStack().show(name);
 			             if (name === "#list-date"){
-			                     _detail.reset(listDate.getModel(), 0);
 			                     byRating.classList.remove("pushed");
 			                     byDate.classList.add("pushed");
 			             }
 			             else{
-			                     _detail.reset(listRating.getModel(), 0);
 			                     byRating.classList.add("pushed");
                                              byDate.classList.remove("pushed"); 
 			             }
+			             // scrool to currently selected idea
+			             document.querySelector(".list-item.selected").scrollIntoView();
 			     }    
 			};
 
@@ -86,6 +85,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			                     // default list viewed by date
 			                     _stack.getStack().show("#list-date");
 			                     byDate.classList.add("pushed");
+			                     byRating.classList.remove("pushed");
 			             }
 			             else{
 			                     _widget.searchIdea(node.value);
@@ -127,7 +127,6 @@ define(["OObject", "Amy/Control-plugin" ,
 			// init
                        _menu.toggleActive(false);
 			
-			console.log("public init");
 			var listDate = new Polling(_db, "library", "_view/publicideas"),
 			     // list date needs to be in polling mode with a polling_interval defined in Config to avoid traffic overload
 			    listRating = new List(_db, "ideas", "_view/ideasbyvotes"),

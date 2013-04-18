@@ -74,16 +74,12 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 _ui.place(_frag);
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                         },
-                                        setRating : function setRating(rating) {
-                                                // this is necessary because the rating data is not supplied by the lucene design do --> to be investigated
-                                                if (!rating) {
-                                                        var _arr = _store.get("votes");
-                                                        if (_arr.length === 0) this.innerHTML = ""
-                                                        else {
-                                                                this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
-                                                        }
+                                        setRating : function setRating(votes) {
+                                                
+                                                if (votes.length === 0) {this.innerHTML = "";}
+                                                else {
+                                                        this.innerHTML = Math.round(votes.reduce(function(x,y){return x+y;})/votes.length*100)/100;
                                                 }
-                                                else this.innerHTML = Math.round(rating*100)/100;
                                         },
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){
@@ -128,7 +124,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "publicdetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, authors" data-publicdetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleRateEdit, authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, authors"></div><h2 data-publicdetail="bind:innerHTML,title"></h2><span class="date" data-publicdetail="bind:date, creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-publicdetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><p data-publicdetail="bind:innerHTML,description"></p><p data-publicdetail="bind:innerHTML,solution"></p></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,value.rating"></div><div class="publicButton" data-publicdetail="bind:toggleVoteButton, votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, twocents"></div></div>';
+                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, authors" data-publicdetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleRateEdit, authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, authors"></div><h2 data-publicdetail="bind:innerHTML,title"></h2><span class="date" data-publicdetail="bind:date, creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-publicdetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><p data-publicdetail="bind:innerHTML,description"></p><p data-publicdetail="bind:innerHTML,solution"></p></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,votes"></div><div class="publicButton" data-publicdetail="bind:toggleVoteButton, votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, twocents"></div></div>';
                 
                 //Public
                         _widget.reset = function reset(viewStore, index){

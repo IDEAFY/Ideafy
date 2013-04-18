@@ -54,7 +54,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 if (date) this.innerHTML = Utils.formatDate(date);
                                         },
                                         setAuthor : function(authornames){
-                                                if (authornames === user.get("username") && _store.get("doc").authors.indexOf(user.get("_id"))>-1){
+                                                if (authornames === user.get("username") && _store.get("authors").indexOf(user.get("_id"))>-1){
                                                         this.innerHTML = _labels.get("youlbl");
                                                 }
                                                 else {
@@ -88,8 +88,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         },
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){
-                                                var idea = _store.get("id"),
-                                                    authors = _store.get("doc").authors; 
+                                                var idea = _store.get("_id"),
+                                                    authors = _store.get("authors"); 
                                                 // hide rating popup if present
                                                 document.getElementById("ratingPopup").classList.remove("appear");  
                                                 // check if user has already voted on this idea or if user is author
@@ -118,7 +118,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         },
                                         setSharedWith : function(sharedwith){
                                                 // do not display sharedwith field for welcome idea
-                                                if ((_store.get("id").search("I:WELCOME")) < 0 && sharedwith && sharedwith.length){
+                                                if ((_store.get("_id").search("I:WELCOME")) < 0 && sharedwith && sharedwith.length){
                                                         this.classList.remove("invisible");
                                                         (sharedwith.length === 1)?this.innerHTML = _labels.get("sharedwith")+"<b><u>"+1+_labels.get("ideafyer")+"</u></b>":this.innerHTML = _labels.get("sharedwith")+"<b><u>"+sharedwith.length+_labels.get("ideafyer")+"</u></b>";
                                                 }
@@ -146,9 +146,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 _widget.getIdea(id).then(function(){
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                         _voted = false;
-                                        _twocentWriteUI.reset(_store.get("id"));
-                                        _twocentList.reset(_store.get("id"), "public");
-                                        _domWrite = document.getElementById("public-writetwocents");
+                                        _twocentWriteUI.reset(_store.get("_id"));
+                                        _twocentList.reset(_store.get("_id"), "library");
+                                        _domWrite = document.getElementById("library-writetwocents");
                                         _twocentWriteUI.place(_domWrite);        
                                 });
                         };
@@ -209,14 +209,14 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         
                         _widget.castVote = function(event, node){
                                 var grade = parseInt(node.getAttribute("data-vote_id"))+1,
-                                    id = _store.get("id"),
+                                    id = _store.get("_id"),
                                     json = {id : id, vote: grade, voter: user.get("_id")};
                                 
                                 // prevent multiple votes on the same idea -- if request fails or before database is updated 
                                 if (!_voted){
                                         _voted = true;
                                         transport.request("Vote", json, function(result){
-                                                if (result != "ok"){
+                                                if (result !== "ok"){
                                                         console.log(result, "something went wrong, please try again later");
                                                         _voted = false;
                                                 }
@@ -236,8 +236,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.displayList = function(event, node){
-                                transport.request("GetUserNames", {list: _store.get("doc").sharedwith}, function(result){
-                                        console.log(result);
+                                transport.request("GetUserNames", {list: _store.get("sharedwith")}, function(result){
                                         _shareList.reset(result);
                                         document.getElementById("sharelist").classList.remove("invisible");      
                                 });  

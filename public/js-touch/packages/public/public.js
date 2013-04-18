@@ -45,6 +45,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			         id = ideaNode.getAttribute("data-listideas_id") || 0,
 			         initLI;
 			     
+			     console.log(_stack.getStack().getCurrentName(), ideaNode, id, ideaList.dom);
 			     if (!id){
 			             // highlighting first item in the list
                                       initLI = ideaList.dom.querySelector("li[data-listideas_id='"+0+"']");

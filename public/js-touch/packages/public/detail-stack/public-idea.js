@@ -87,7 +87,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 var idea = _store.get("_id"),
                                                     authors = _store.get("authors");
                                                 
-                                                console.log("togglevotebutton", idea, authors, user.get("rated_ideas"));
                                                 // hide rating popup if present
                                                 document.getElementById("ratingPopup").classList.remove("appear"); 
                                                 // check if user has already voted on this idea or if user is author
@@ -148,7 +147,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 var promise = new Promise();
                                 // reset store observer if needed
                                 if (ideaCDBUpdate){
-                                        ideaCDB.unwatch(ideaCDBUpdate)
+                                        ideaCDB.unwatch(ideaCDBUpdate);
                                 }
                                 
                                 // reinitialize couchdbstore
@@ -168,10 +167,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.action = function(event, node){
                                 var name = node.getAttribute("href");
                                 if (name === "#public-2cents"){
-                                        console.log("twocents action");
-                                         _twocentWriteUI.reset(_store.get("_id"));
-                                         console.log(_domWrite);
-                                         _domWrite.classList.remove("invisible");
+                                        _twocentWriteUI.reset(_store.get("_id"));
+                                        _domWrite.classList.remove("invisible");
                                 }
                                 else $action(name);       
                         };

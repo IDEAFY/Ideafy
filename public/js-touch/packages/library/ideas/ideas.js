@@ -148,7 +148,6 @@ define(["OObject", "Amy/Control-plugin" ,
 			listDate.init().then(function(){
 		              var initLI; // used to initialize list selection
                               _stack.getStack().show("#list-date");
-                              console.log("calling display HI");
                               _widget.displayHighlightedIdea();         
 		        });
                         

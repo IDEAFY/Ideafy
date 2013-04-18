@@ -160,7 +160,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 var promise = new Promise();
                                 // reset store observer if needed
                                 if (ideaCDBUpdate){
-                                        ideaCDB.unwatch(ideaCDBUpdate)
+                                        ideaCDB.unwatch(ideaCDBUpdate);
                                 }
                                 
                                 // reinitialize couchdbstore

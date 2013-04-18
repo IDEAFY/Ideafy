@@ -161,10 +161,8 @@ define(["OObject", "Amy/Control-plugin" ,
 		              _stack.getStack().show("#list-date");
 		              _detail.reset(listDate.getModel(), 0);
 		              
-		              
-		              console.log("before highlight");
 		              // highlighting first item in the list
-		              initLI = document.querySelector("li[data-listideas_id='"+0+"']");
+		              initLI = listDate.dom.querySelector("li[data-listideas_id='"+0+"']");
 		              initLI.classList.add("selected");
 		              _radio.init(initLI);       
 		        });

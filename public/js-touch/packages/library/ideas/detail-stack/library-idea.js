@@ -47,7 +47,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         displayTwocentList : function(twocents){
                                                  if (twocents && twocents.length){
                                                     // hide twocent write interface    
-                                                    document.getElementById("public-writetwocents").classList.add("invisible");
+                                                    document.getElementById("library-writetwocents").classList.add("invisible");
                                                  }        
                                         },
                                         date : function date(date){
@@ -142,6 +142,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.reset = function reset(viewStore, index){
                                 var id = viewStore.get(index).id;
                                 
+                                console.log("idea reset", viewStore.toJSON());
+                                
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
@@ -166,6 +168,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 ideaCDB.reset();
                                 
                                 ideaCDB.sync(Config.get("db"), "ideas", "_view/all", {key:'"'+id+'"', include_docs:true}).then(function(){
+                                        console.log(ideaCDB.toJSON());
                                         _store.reset(ideaCDB.get(0).doc);
                                         ideaCDBUpdate = ideaCDB.watch("updated", function(){
                                                 _store.reset(ideaCDB.get(0).doc);        

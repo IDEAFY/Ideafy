@@ -44,12 +44,8 @@ define(["OObject", "Amy/Control-plugin" ,
 			         ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"); 
 			         id = ideaNode.getAttribute("data-listideas_id");
 			     
-			     console.log(_stack.getStack().getCurrentName(), ideaNode, id, ideaList.dom);
-			     if (!parseInt(id, 10)){
-			             // highlighting first item in the list
-                                      ideaNode.classList.add("selected");
-                                      _radio.init(ideaNode);        
-			     }    
+			     ideaNode.classList.add("selected");
+                             _radio.init(ideaNode);        
 			     _detail.reset(ideaList.getModel(), id);            
 			};
 			

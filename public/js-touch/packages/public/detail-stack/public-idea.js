@@ -134,11 +134,12 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                 //Public
                         _widget.reset = function reset(viewStore, index){
                                 
-                                console.log("calling reset", viewStore.toJSON(), index);
                                 var id = parseInt(index);
                                 
                                 // reinitialize couchdbstore
                                 ideaCDB.unwatch();
+                                console.log("after unwatch", id);
+
                                 ideaCDB.unsync();
                                 ideaCDB.reset();
                                 

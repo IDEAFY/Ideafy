@@ -41,16 +41,14 @@ define(["OObject", "Amy/Control-plugin" ,
 			// function used to retrieve the currently highlighted idea in a list and display its details
 	               _widget.displayHighlightedIdea = function displayHighlightedIdea(){
 			     var ideaList = _stack.getStack().getCurrentScreen(),
-			         ideaNode = ideaList.dom.querySelector(".list-item.selected"); 
-			         id = ideaNode.getAttribute("data-listideas_id") || 0,
-			         initLI;
+			         ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"); 
+			         id = ideaNode.getAttribute("data-listideas_id");
 			     
 			     console.log(_stack.getStack().getCurrentName(), ideaNode, id, ideaList.dom);
 			     if (!id){
 			             // highlighting first item in the list
-                                      initLI = ideaList.dom.querySelector("li[data-listideas_id='"+0+"']");
-                                      initLI.classList.add("selected");
-                                      _radio.init(initLI);        
+                                      ideaNode.classList.add("selected");
+                                      _radio.init(ideaNode);        
 			     }    
 			     _detail.reset(ideaList.getModel(), id);            
 			};
@@ -159,6 +157,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		        listDate.init(_detail.reset).then(function(){
 		              var initLI; // used to initialize list selection
 		              _stack.getStack().show("#list-date");
+		              console.log("calling display HI");
 		              _widget.displayHighlightedIdea();      
 		        });
 		        

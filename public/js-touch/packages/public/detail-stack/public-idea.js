@@ -141,11 +141,14 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 _twocentWriteUI.place(_domWrite);
                                 
                                 // watch viewStore for changes regarding this idea and update model accordingly
-                                viewStore.watch("updated", function(idx, value){
+                                /*viewStore.watch("updated", function(idx, value){
                                         if (idx === parseInt(index)){
                                             _store.reset(value);        
                                         }
-                                });
+                                });*/
+                               viewStore.watchValue(parseInt(index), function(idea){
+                                        console.log("idea change", idea);
+                               });
                         };
                         
                         _widget.action = function(event, node){
@@ -191,7 +194,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 if (!_voted){
                                         _voted = true;
                                         transport.request("Vote", json, function(result){
-                                                if (result != "ok"){
+                                                if (result !== "ok"){
                                                         console.log(result, "something went wrong, please try again later");
                                                         _voted = false;
                                                 }
@@ -200,7 +203,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
                                                         document.getElementById("ratingPopup").classList.remove("appear");
-                                                        _node = _dom.querySelector("publicButton");;
+                                                        _node = _dom.querySelector("publicButton");
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                                                 }
                                         });

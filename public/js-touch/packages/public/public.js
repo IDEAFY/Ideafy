@@ -91,13 +91,15 @@ define(["OObject", "Amy/Control-plugin" ,
 			this.search = function(event, node){
 			        if (event.keyCode === 13){
 			             if (node.value === ""){
-			                     byDate.setAttribute("style", "display: inline-block;");
-                                             byRating.setAttribute("style", "display: inline-block;");
-			                     // default list viewed by date
-			                     _stack.getStack().show("#list-date");
-			                     byDate.classList.add("pushed");
-			                     byRating.classList.remove("pushed");
-			                     _widget.displayHighlightedIdea();
+			                     listDate.resetQuery().then(function(){
+			                             byDate.setAttribute("style", "display: inline-block;");
+                                                     byRating.setAttribute("style", "display: inline-block;");
+                                                     // default list viewed by date
+                                                     _stack.getStack().show("#list-date");
+                                                      byDate.classList.add("pushed");
+                                                      byRating.classList.remove("pushed");
+                                                      _widget.displayHighlightedIdea();        
+			                     });
 			             }
 			             else{
 			                     _widget.searchIdea(node.value);

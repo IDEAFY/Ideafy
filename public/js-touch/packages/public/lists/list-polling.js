@@ -63,7 +63,7 @@ define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Ev
                         var promise=new Promise(),
                             interval = user.get("settings").polling_interval || Config.get("polling_interval"),
                             cdb = new CouchDBStore();
-                        _options.query = query;
+                        if (query) {_options.query = query;}
                         
                         clearInterval(polling);
                         cdb.setTransport(Config.get("transport"));

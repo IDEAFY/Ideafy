@@ -137,9 +137,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 var id = parseInt(index);
                                 
                                 // reinitialize couchdbstore
-                                ideaCDB.unwatch();
-                                console.log("after unwatch", id);
-
                                 ideaCDB.unsync();
                                 ideaCDB.reset();
                                 

@@ -23,7 +23,8 @@ define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Ev
                                 include_docs : true,
                                 limit : 30
                         }
-                };
+                },
+                widget = this;
 
                 this.template = "<ul class='ideas-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:innerHTML,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul>";
 
@@ -59,7 +60,7 @@ define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Ev
                         return _store;
                 };
                 
-                this.resetQuery = function(query) {
+                widget.resetQuery = function(query) {
                         var promise=new Promise(),
                             interval = user.get("settings").polling_interval || Config.get("polling_interval"),
                             cdb = new CouchDBStore();
@@ -155,6 +156,11 @@ define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Ev
                                         });
                                 },interval);        
                         }        
+                });
+                
+                // watch for "user-triggered" update events
+                Config.get("observer").watch("update-polling", function(){
+                        widget.resetQuery();                
                 });
 
         }

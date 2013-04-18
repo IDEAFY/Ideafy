@@ -211,7 +211,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 }
                                                 else {
                                                         alert(Config.get("labels").get("thankyou"));
-                                                        
+                                                        // update polling list
+                                                        Config.get("observer").notify("update-polling");
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
                                                         document.getElementById("ratingPopup").classList.remove("appear");
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);

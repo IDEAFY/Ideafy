@@ -7,7 +7,7 @@
 
 define(["OObject", "Amy/Control-plugin" ,
 	"Bind.plugin", "Amy/Delegate-plugin", "CouchDBStore", "service/map", "service/config",
-	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu"], 
+	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Promise"], 
 	function(Widget, Control, Model, Delegate, Store, Map, 
 		Config, Detail, Utils, List, Polling, Stack, Menu){
 		return function PublicConstructor(){
@@ -123,8 +123,8 @@ define(["OObject", "Amy/Control-plugin" ,
                                         }      
                                 });
                         };
-			
-			//may be set the list dom (not the public dom)
+                        
+                        //may be set the list dom (not the public dom)
                         _widget.alive(_dom);
 
                         // reset function
@@ -166,7 +166,6 @@ define(["OObject", "Amy/Control-plugin" ,
 		              _widget.displayHighlightedIdea();      
 		        });
 		        
-		        LD = listDate;
 
 			//return
 			return _widget;

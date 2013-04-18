@@ -17,6 +17,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                              _voted = false,
                              user = Config.get("user"),
                              ideaCDB = new CouchDBStore(), // used to get idea details and synchronize with idea
+                             _ideaCDBUpdate, // store observer handle
                              transport = Config.get("transport"),
                              observer = Config.get("observer"),
                              _store = new Store(),
@@ -132,10 +133,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 var id = viewStore.get(index).id;
                                 console.log(id);
                                 
-                                // reinitialize couchdbstore
-                                ideaCDB.unsync();
-                                ideaCDB.reset();
-                                
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
@@ -145,22 +142,25 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         _domWrite = document.getElementById("public-writetwocents");
                                         _twocentWriteUI.place(_domWrite);        
                                 });
-                                
-                                
-                                // watch viewStore for changes regarding this idea and update model accordingly
-                                viewStore.watch("updated", function(idx, value){
-                                        if (idx === parseInt(index)){
-                                            _store.reset(value);        
-                                        }
-                                });
                         };
                         
                         _widget.getIdea = function getIdea(id){
-                                console.log("calling getIdea", id);
+                                
                                 var promise = new Promise();
+                                // reset store observer if needed
+                                if (ideaCDBUpdate){
+                                        ideaCDB.unwatch(ideaCDBUpdate)
+                                }
+                                
+                                // reinitialize couchdbstore
+                                ideaCDB.unsync();
+                                ideaCDB.reset();
+                                
                                 ideaCDB.sync(Config.get("db"), "library", "_view/publicideas", {key:'"'+id+'"', include_docs:true}).then(function(){
                                         _store.reset(ideaCDB.get(0).doc);
-                                        console.log(_store.toJSON());
+                                        ideaCDBUpdate = ideaCDB.watch("updated", function(){
+                                                _store.reset(ideaCDB.get(0).doc);        
+                                        });
                                         promise.fulfill();      
                                 });
                                 return promise;       

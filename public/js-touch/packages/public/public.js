@@ -138,14 +138,16 @@ define(["OObject", "Amy/Control-plugin" ,
 			_stack.getStack().add("#list-search", listSearch);
 			_stack.getStack().add("#list-date", listDate);
 			
-			console.log("after stack additions");
 			// show public ideas sorted by most recent
 		        listRating.init(_detail.reset);
 		        
 		        listDate.init(_detail.reset).then(function(){
+		                var initLI = document.querySelector("li[data-listideas_id='"+0+"']");
 		              _stack.getStack().show("#list-date");
 		              console.log("calling init detail");
-		              _detail.reset(listDate.getModel(), 0);        
+		              _detail.reset(listDate.getModel(), 0);
+		              initLI.classList.add("selected");
+		              _radio.init(initLI);       
 		        });
 
 			//return

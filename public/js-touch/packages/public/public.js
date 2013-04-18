@@ -102,6 +102,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			             else{
 			                     _widget.searchIdea(node.value);
 			             }
+			             node.blur();
 			        }
 			};
 			

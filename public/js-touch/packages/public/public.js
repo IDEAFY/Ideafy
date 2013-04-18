@@ -45,6 +45,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			         id = ideaNode.getAttribute("data-listideas_id");
 			     
 			     ideaNode.classList.add("selected");
+			     ideaNode.scrollIntoView();
                              _radio.init(ideaNode);        
 			     _detail.reset(ideaList.getModel(), id);            
 			};
@@ -96,6 +97,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			                     _stack.getStack().show("#list-date");
 			                     byDate.classList.add("pushed");
 			                     byRating.classList.remove("pushed");
+			                     _widget.displayHighlightedIdea();
 			             }
 			             else{
 			                     _widget.searchIdea(node.value);
@@ -109,7 +111,13 @@ define(["OObject", "Amy/Control-plugin" ,
                                 byRating.setAttribute("style", "display: none;");
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
                                         _stack.getStack().show("#list-search");
-                                        _detail.reset(listSearch.getModel(), 0);        
+                                        if (listSearch.getModel().getNbItems() >0){
+                                                document.getElementById("noresult").classList.add("invisible");
+                                                _widget.displayHighlightedIdea();
+                                        }
+                                        else {
+                                                document.getElementById("noresult").classList.remove("invisible");
+                                        }      
                                 });
                         };
 			

@@ -27,7 +27,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                              _obs = new Observable();
 
                 //setup
-                        
+                        ideaCDB.setTransport(transport);
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
                                 "ideadetail" : new Model(_store, {

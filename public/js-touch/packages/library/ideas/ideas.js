@@ -44,6 +44,18 @@ define(["OObject", "Amy/Control-plugin" ,
 				
 			};
 			
+			// function used to retrieve the currently highlighted idea in a list and display its details
+                       _widget.displayHighlightedIdea = function displayHighlightedIdea(){
+                             var ideaList = _stack.getStack().getCurrentScreen(),
+                                 ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"); 
+                                 id = ideaNode.getAttribute("data-listideas_id");
+                             
+                             ideaNode.classList.add("selected");
+                             ideaNode.scrollIntoView();
+                             _radio.init(ideaNode);        
+                             _detail.reset(ideaList.getModel(), id);            
+                        };
+
 			// this piece can be considerably simplified --> using stack & control plugins
 			this.show = function(event, node){
 			     var byDate = _dom.querySelector(".bydate"),
@@ -52,15 +64,14 @@ define(["OObject", "Amy/Control-plugin" ,
 			     if (name !== _stack.getStack().getCurrentName){
 			             _stack.getStack().show(name);
 			             if (name === "#list-date"){
-			                     _detail.reset(listDate.getModel(), 0);
 			                     byRating.classList.remove("pushed");
 			                     byDate.classList.add("pushed");
 			             }
 			             else{
-			                     _detail.reset(listRating.getModel(), 0);
 			                     byRating.classList.add("pushed");
                                              byDate.classList.remove("pushed"); 
 			             }
+			             _widget.displayHighlightedIdea();
 			     }    
 			};
 
@@ -89,11 +100,13 @@ define(["OObject", "Amy/Control-plugin" ,
 			                     _stack.getStack().show("#list-date");
 			                     byDate.classList.add("pushed");
 			                     byRating.classList.remove("pushed");
+                                             _widget.displayHighlightedIdea();
 			             }
 			             else{
 			                     usr = Config.get("user").get("_id").replace(/@/, "at");
 			                     _widget.searchIdea("users:"+usr+ " AND "+node.value);
 			             }
+			             node.blur();
 			        }
 			};
 			
@@ -102,10 +115,16 @@ define(["OObject", "Amy/Control-plugin" ,
                                 byDate.setAttribute("style", "display: none;");
                                 byRating.setAttribute("style", "display: none;");
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
-                                        // display search list and fill search field with idea title
+                                        // display search list and fill search field with idea title if applicable
                                         _stack.getStack().show("#list-search");
-                                        _searchInput.set("search", listSearch.getModel().get(0).doc.title);
-                                        _detail.reset(listSearch.getModel(), 0);        
+                                        if (listSearch.getModel().getNbItems() >0){
+                                                _searchInput.set("search", listSearch.getModel().get(0).doc.title);
+                                                document.getElementById("noresult").classList.add("invisible");
+                                                _widget.displayHighlightedIdea();
+                                        }
+                                        else {
+                                                document.getElementById("noresult").classList.remove("invisible");
+                                        }        
                                 });
                         };
 			
@@ -127,8 +146,10 @@ define(["OObject", "Amy/Control-plugin" ,
 			
 			listRating.init();
 			listDate.init().then(function(){
-		              _stack.getStack().show("#list-date");
-		              _detail.reset(listDate.getModel(), 0);        
+		              var initLI; // used to initialize list selection
+                              _stack.getStack().show("#list-date");
+                              console.log("calling display HI");
+                              _widget.displayHighlightedIdea();         
 		        });
                         
                         //return

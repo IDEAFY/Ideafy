@@ -217,7 +217,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
                                                         document.getElementById("ratingPopup").classList.remove("appear");
-                                                        _node = _dom.querySelector("publicButton");
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                                                 }
                                         });

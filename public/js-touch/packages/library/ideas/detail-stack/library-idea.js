@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable"], 
-        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable){
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBStore"], 
+        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBStore){
                 return function IdeaDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
@@ -16,6 +16,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,
                              user = Config.get("user"),
+                             ideaCDB = new CouchDBStore(), // used to get idea details and synchronize with idea
+                             ideaCDBUpdate, // store observer handle
                              transport = Config.get("transport"),
                              observer = Config.get("observer"),
                              _store = new Store(),
@@ -78,16 +80,11 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 if (id.search("I:WELCOME") > -1) this.classList.add("invisible")
                                                 else this.classList.remove("invisible")        
                                         },
-                                        setRating : function setRating(rating) {
-                                                // this is necessary because the rating data is not supplied by the lucene design doc --> to be investigated
-                                                if (rating === undefined) {
-                                                        var _arr = _store.get("doc").votes;
-                                                        if (_arr.length === 0) this.innerHTML = ""
-                                                        else {
-                                                                this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
-                                                        }
+                                        setRating : function setRating(votes) {
+                                                if (votes.length === 0) {this.innerHTML = "";}
+                                                else {
+                                                        this.innerHTML = Math.round(votes.reduce(function(x,y){return x+y;})/votes.length*100)/100;
                                                 }
-                                                else this.innerHTML = Math.round(rating*100)/100;
                                         },
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){
@@ -139,25 +136,43 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "ideadetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="library-idea"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, doc.authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, doc.authors"></div><h2 data-ideadetail="bind:innerHTML,doc.title"></h2><span class="date" data-ideadetail="bind:date, doc.creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,doc.authornames"></span><span class="commentlbl" data-ideadetail="bind: setWrotelbl, doc.authors"></span></div><div class="detail-body"><p data-ideadetail="bind:innerHTML,doc.description"></p><p data-ideadetail="bind:innerHTML,doc.solution"></p></div><div class="detail-footer"><div class="sharedwith invisible" data-ideadetail="bind: setSharedWith, doc.sharedwith" data-ideadetailevent="listen:touchstart, displayList"></div><div id="sharelist" class="autocontact invisible"><div class="autoclose" data-ideadetailevent="listen:touchstart,close"></div><ul data-share="foreach"><li data-share="bind:innerHTML, value.username"></li></ul></div><div class ="rateIdea" data-ideadetail="bind:hideRating, id"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,value.rating"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, doc.votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, doc.authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, doc.twocents"></div></div>';
+                        _widget.template='<div class="library-idea"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, authors"></div><h2 data-ideadetail="bind:innerHTML,title"></h2><span class="date" data-ideadetail="bind:date, creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-ideadetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><p data-ideadetail="bind:innerHTML,description"></p><p data-ideadetail="bind:innerHTML,solution"></p></div><div class="detail-footer"><div class="sharedwith invisible" data-ideadetail="bind: setSharedWith, sharedwith" data-ideadetailevent="listen:touchstart, displayList"></div><div id="sharelist" class="autocontact invisible"><div class="autoclose" data-ideadetailevent="listen:touchstart,close"></div><ul data-share="foreach"><li data-share="bind:innerHTML, value.username"></li></ul></div><div class ="rateIdea" data-ideadetail="bind:hideRating, id"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,votes"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, twocents"></div></div>';
                 
                 //library
                         _widget.reset = function reset(viewStore, index){
-                                // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
-                                _voted = false;
-                                _store.reset(viewStore.get(index));
-                                _twocentWriteUI.reset(_store.get("id"));
-                                _twocentList.reset(_store.get("id"), "library");
+                                var id = viewStore.get(index).id;
                                 
-                                _domWrite = document.getElementById("library-writetwocents");
-                                _twocentWriteUI.place(_domWrite);
-                                
-                                // watch viewStore for changes regarding this idea and update model accordingly
-                                viewStore.watch("updated", function(idx, value){
-                                        if (idx === parseInt(index)){
-                                            _store.reset(value);        
-                                        }
+                                // synchronize with idea
+                                _widget.getIdea(id).then(function(){
+                                        // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
+                                        _voted = false;
+                                        _twocentWriteUI.reset(_store.get("id"));
+                                        _twocentList.reset(_store.get("id"), "public");
+                                        _domWrite = document.getElementById("public-writetwocents");
+                                        _twocentWriteUI.place(_domWrite);        
                                 });
+                        };
+                        
+                        _widget.getIdea = function getIdea(id){
+                                
+                                var promise = new Promise();
+                                // reset store observer if needed
+                                if (ideaCDBUpdate){
+                                        ideaCDB.unwatch(ideaCDBUpdate)
+                                }
+                                
+                                // reinitialize couchdbstore
+                                ideaCDB.unsync();
+                                ideaCDB.reset();
+                                
+                                ideaCDB.sync(Config.get("db"), "library", "_view/publicideas", {key:'"'+id+'"', include_docs:true}).then(function(){
+                                        _store.reset(ideaCDB.get(0).doc);
+                                        ideaCDBUpdate = ideaCDB.watch("updated", function(){
+                                                _store.reset(ideaCDB.get(0).doc);        
+                                        });
+                                        promise.fulfill();      
+                                });
+                                return promise;       
                         };
                         
                         _widget.action = function(event, node){
@@ -210,7 +225,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
                                                         document.getElementById("ratingPopup").classList.remove("appear");
-                                                        _node = _dom.querySelector("publicButton");;
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                                                 }
                                         });

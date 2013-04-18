@@ -109,10 +109,9 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                         _options.query = $query;
                 }
                 
-                this.init = function init(initCallback){
+                this.init = function init(){
                         var promise = new Promise();
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                initCallback(_store, 0);
                                 promise.fulfill();      
                         });
                         return promise;

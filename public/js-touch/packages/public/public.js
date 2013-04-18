@@ -156,9 +156,9 @@ define(["OObject", "Amy/Control-plugin" ,
 			_stack.getStack().add("#list-date", listDate);
 			
 			// show public ideas sorted by most recent
-		        listRating.init(_detail.reset);
+		        listRating.init();
 		        
-		        listDate.init(_detail.reset).then(function(){
+		        listDate.init().then(function(){
 		              var initLI; // used to initialize list selection
 		              _stack.getStack().show("#list-date");
 		              console.log("calling display HI");

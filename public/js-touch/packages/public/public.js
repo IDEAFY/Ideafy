@@ -38,6 +38,22 @@ define(["OObject", "Amy/Control-plugin" ,
 				
 			};
 			
+			// function used to retrieve the currently highlighted idea in a list and display its details
+			this.displayHighlightedIdea = function displayHighlightedIdea(){
+			     var ideaList = _stack.getStack().getCurrentScreen().getModel(),
+			         ideaNode = document.querySelector(".list-item.selected"); 
+			         id = ideaNode.getAttribute("data-listideas_id") || 0,
+			         initLI;
+			     
+			     if (!id){
+			             // highlighting first item in the list
+                                      initLI = document.querySelector("li[data-listideas_id='"+0+"']");
+                                      initLI.classList.add("selected");
+                                      _radio.init(initLI);        
+			     }    
+			     _detail.reset(ideaList, id);            
+			};
+			
 			// this piece can be considerably simplified --> using stack & control plugins
 			
 			this.show = function(event, node){
@@ -47,15 +63,16 @@ define(["OObject", "Amy/Control-plugin" ,
 			     if (name !== _stack.getStack().getCurrentName){
 			             _stack.getStack().show(name);
 			             if (name === "#list-date"){
+			                     //_detail.reset(listDate.getModel(), 0);
 			                     byRating.classList.remove("pushed");
 			                     byDate.classList.add("pushed");
 			             }
 			             else{
+			                     //_detail.reset(listRating.getModel(), 0);
 			                     byRating.classList.add("pushed");
                                              byDate.classList.remove("pushed"); 
 			             }
-			             // scrool to currently selected idea
-			             document.querySelector(".list-item.selected").scrollIntoView();
+			             widget.displayHighlightedIdea();
 			     }    
 			};
 

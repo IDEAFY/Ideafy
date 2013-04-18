@@ -39,15 +39,15 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			// function used to retrieve the currently highlighted idea in a list and display its details
-			this.displayHighlightedIdea = function displayHighlightedIdea(){
-			     var ideaList = _stack.getStack().getCurrentScreen().getModel(),
-			         ideaNode = document.querySelector(".list-item.selected"); 
+			this.displayHighlightedIdea = function displayHighlightedIdea(list){
+			     var ideaList = _stack.getStack().get(list),
+			         ideaNode = ideaList.dom.querySelector(".list-item.selected"); 
 			         id = ideaNode.getAttribute("data-listideas_id") || 0,
 			         initLI;
 			     
 			     if (!id){
 			             // highlighting first item in the list
-                                      initLI = document.querySelector("li[data-listideas_id='"+0+"']");
+                                      initLI = ideaList.dom.querySelector("li[data-listideas_id='"+0+"']");
                                       initLI.classList.add("selected");
                                       _radio.init(initLI);        
 			     }    
@@ -115,7 +115,6 @@ define(["OObject", "Amy/Control-plugin" ,
                                 byRating.setAttribute("style", "display: none;");
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
                                         _stack.getStack().show("#list-search");
-                                        LS=listSearch.getModel();
                                         _detail.reset(listSearch.getModel(), 0);        
                                 });
                         };
@@ -161,10 +160,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		              _stack.getStack().show("#list-date");
 		              _detail.reset(listDate.getModel(), 0);
 		              
-		              // highlighting first item in the list
-		              initLI = listDate.dom.querySelector("li[data-listideas_id='"+0+"']");
-		              initLI.classList.add("selected");
-		              _radio.init(initLI);       
+		              _widget.displayHighlightedIdea("#list-date");      
 		        });
 		        
 		        LD = listDate;

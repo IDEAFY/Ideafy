@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "Promise", "service/cardpopup", "service/help", "service/utils"],
-        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Promise, CardPopup, Help, Utils){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "Promise", "service/cardpopup", "service/help", "service/utils", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Promise, CardPopup, Help, Utils, Spinner){
                 
                 return function QuickSetupConstructor($session, $data, $prev, $next, $progress){
                         
@@ -34,7 +34,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()}, // used for zoom
                             _currentPopup = "", // which card if any is magnified
                             _start =  null, _elapsed = 0,
-                            _next = "step"; // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
+                            _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 685, left:685}).spin();
                         
                         // Setup
                         _widget.plugins.addAll({
@@ -94,6 +95,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Method called when clicking next button -- updates session store, computes score and moves to next step
                         _widget.next = function(event, node){
+                                spinner.spin(node.parentNode);
+                                node.classList.add("invisible");
+                                node.classList.remove("pressed");
                                 
                                 if (_next === "step"){
                                         _next = "screen"; //only one upload
@@ -118,15 +122,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         $session.set("contexts", [_cards.get("context").id]);
                                                         $session.set("problems", [_cards.get("problem").id]);
                                                         //upload and move to next step
-                                                        node.classList.remove("pressed");
                                                         $next("quicksetup");         
                                                 });      
                                         });
                                 }
                                 else {
-                                        node.classList.remove("pressed");
                                         $next("quicksetup");
                                 }
+                        };
+                        
+                        _widget.stopSpinner = function stopSpinner(){
+                                spinner.stop();
+                                _widget.dom.querySelector(".next-button").classList.remove("invisible");   
                         };
                         
                         // Help popup

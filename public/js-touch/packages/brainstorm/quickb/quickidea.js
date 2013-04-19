@@ -36,7 +36,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _wb = new Whiteboard("idea", _wbContent, _tools),
                             _transport = Config.get("transport"),
                             _labels = Config.get("labels"),
-                            _user = Config.get("user");
+                            _user = Config.get("user"),
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 685, left:685}).spin();
                         
                         // Setup
                         _widget.plugins.addAll({
@@ -112,14 +113,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // move to next screen
                         _widget.next = function(event, node){
-                                var now = new Date(), _timers, duration, spinner;
-                                spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 685, left:685}).spin(node.parentNode);
+                                var now = new Date(), _timers, duration;
+                                
+                                spinner.spin(node.parentNode);
                                 node.classList.add("invisible");
                                 node.classList.remove("pressed");
+                                
                                 // if first time: upload scenario and set readonly
                                 if (_next === "step"){
                                         _next = "screen";
-                                        //spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 200}).spin(node.parentNode);
                                         
                                         // stop timer and update display
                                         clearInterval(_qiTimer);
@@ -150,25 +152,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 // set idea to readonly
                                                                 _tools.set("readonly", true);
                                                                 // remove invisible
-                                                                node.classList.remove("invisible");
-                                                                $next("quickidea").then(function(){
-                                                                        // remove invisible
-                                                                        node.classList.remove("invisible");
-                                                                        
-                                                                        // stop spinner
-                                                                        spinner.stop()       
-                                                                });        
+                                                                $next("quickidea");       
                                                         });      
                                                 });
                                         });
                                 }
-                                else $next("quickidea").then(function(){
-                                        // remove invisible
-                                        node.classList.remove("invisible");
-                                                                        
-                                        // stop spinner
-                                        spinner.stop()       
-                               });
+                                else $next("quickidea");
+                        };
+                        
+                        _widget.stopSpinner = function stopSpinner(){
+                                spinner.stop();
+                                _widget.dom.querySelector(".next-button").classList.remove("invisible");   
                         };
                         
                         // move to previous screen

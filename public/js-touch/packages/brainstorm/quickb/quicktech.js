@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBStore", "Promise", "service/cardpopup", "service/utils"],
-        function(Widget, Map, Model, Event, Config, Help, Store, CouchDBStore, Promise, CardPopup, Utils){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBStore", "Promise", "service/cardpopup", "service/utils", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, Help, Store, CouchDBStore, Promise, CardPopup, Utils, Spinner){
                 
                 return function QuickTechConstructor($session, $data, $prev, $next, $progress){
                         
@@ -39,8 +39,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     {"id":"", "title":"", "pic":""},
                                     {"id":"", "title":"", "pic":""}
                             ]), // {id, title, pic}) -- there are always 3 tech cards in quick mode
-                            _next = "step"; // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            
+                            _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
+                            spinner  = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 685, left:685}).spin();
                         
                         // Setup
                         _widget.plugins.addAll({
@@ -99,6 +99,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.next = function(event, node){
                                 var _now = new Date(), _elapsedTime = _now.getTime() - _start;
                                 
+                                spinner.spin(node.parentNode);
+                                node.classList.add("invisible");
+                                node.classList.remove("pressed");
+                                
                                 if (_next === "step"){
                                         _next = "screen"; //only one upload
                                         
@@ -122,15 +126,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         $session.set("elapsedTimers", timers);
                                                         $session.set("techno", [[_techCards.get(0).id, _techCards.get(1).id, _techCards.get(2).id]]);
                                                         //upload and move to next step
-                                                        node.classList.remove("pressed");
                                                         $next("quicktech");         
-                                                });;     
+                                                });     
                                         });
                                 }
                                 else {
-                                        node.classList.remove("pressed");
                                         $next("quicktech");
                                 }
+                        };
+                        
+                        _widget.stopSpinner = function stopSpinner(){
+                                spinner.stop();
+                                _widget.dom.querySelector(".next-button").classList.remove("invisible");   
                         };
                         
                         // Help popup

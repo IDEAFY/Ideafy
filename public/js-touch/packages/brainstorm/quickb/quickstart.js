@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help"],
-        function(Widget, Map, Model, Event, Config, Help){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, Help, Spinner){
                 
                 return function QuickStartConstructor($session, $prev, $next, $progress){
                         
@@ -15,7 +15,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _user = Config.get("user"),
                             _db = Config.get("db"),
                              _labels = Config.get("labels"),
-                             _next = "step";
+                             _next = "step",
+                             spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 685, left:685}).spin();
                         
                         // setup
                         _widget.plugins.addAll({
@@ -38,6 +39,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.next = function(event, node){
+                                
+                                spinner.spin(node.parentNode);
+                                node.classList.add("invisible");
+                                node.classList.remove("pressed");
+                               
                                if (_next === "step"){
                                         _next = "screen";
                                         // if title field is empty, set placeholder value as the default title
@@ -55,16 +61,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         // set session in progress in user document
                                         _user.set("sessionInProgress", {id : $session.get("_id"), type: "quick"});
                                         _user.upload().then(function(){
-                                                node.classList.remove("pressed");
                                                 // next step
                                                 $next("quickstart");        
                                         });
                                         
                                 }
                                 else{
-                                        node.classList.remove("pressed");
                                         $next("quickstart");        
                                 }
+                        };
+                        
+                        _widget.stopSpinner = function stopSpinner(){
+                                spinner.stop();
+                                _widget.dom.querySelector(".next-button").classList.remove("invisible");   
                         };
                         
                         _widget.prev = function(event, node){

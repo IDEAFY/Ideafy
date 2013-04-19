@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore", "service/cardpopup", "../whiteboard/whiteboard", "Promise", "service/utils"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise, Utils){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore", "service/cardpopup", "../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise, Utils, Spinner){
                 
                 return function QuickScenarioConstructor($session, $data, $prev, $next, $progress){
                         
@@ -37,7 +37,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _wb = new Whiteboard("scenario", _wbContent, _tools),
                             _start, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            _transport = Config.get("transport");
+                            _transport = Config.get("transport"),
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 685, left:685}).spin();
                              
                         
                         
@@ -102,7 +103,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // move to next screen
                         _widget.next = function(event, node){
                                 
+                                spinner.spin(node.parentNode);
+                                node.classList.add("invisible");
                                 node.classList.remove("pressed");
+                                
                                 // if first time: upload scenario and set readonly
                                 if (_next === "step"){
                                         _next = "screen";
@@ -132,6 +136,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         });
                                 }
                                 else $next("quickscenario");
+                        };
+                        
+                        _widget.stopSpinner = function stopSpinner(){
+                                spinner.stop();
+                                _widget.dom.querySelector(".next-button").classList.remove("invisible");   
                         };
                         
                         // move to previous screen

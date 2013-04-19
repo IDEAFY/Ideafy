@@ -183,6 +183,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                 }    
                         };
                         
+                        MSG = message;
+                        
                         return newMessageUI;
                 };
         });

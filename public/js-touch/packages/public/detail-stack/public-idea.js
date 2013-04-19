@@ -53,7 +53,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 if (date) this.innerHTML = Utils.formatDate(date);
                                         },
                                         setAuthor : function(authornames){
-                                                if (authornames === user.get("username") && _store.get("doc").authors.indexOf(user.get("_id"))>-1){
+                                                if (authornames === user.get("username") && _store.get("authors").indexOf(user.get("_id"))>-1){
                                                         this.innerHTML = _labels.get("youlbl");
                                                 }
                                                 else {
@@ -61,7 +61,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 }
                                         },
                                         setWrotelbl : function(authors){
-                                                if (authors.length === 1 && authors[0]===user.get("_id")){
+                                                if (authors.length === 1 && authors[0]=== user.get("_id")){
                                                         this.innerHTML = _labels.get("youwrotelbl");
                                                 }
                                                 else if (authors.length >1) this.innerHTML = _labels.get("theywrotelbl")

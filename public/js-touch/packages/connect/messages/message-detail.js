@@ -73,7 +73,7 @@ define(["OObject", "service/config", "Store", "CouchDBStore", "Bind.plugin", "Ev
                                                         break;
                                                 case "DOC":
                                                         // TBD --> maybe include the doc title
-                                                        this.innerHTML = message.get("username") + labels.get("sentdocmsg") + " : <b>" + message.get("docTitle")+"</b>";
+                                                        this.innerHTML = "<p>" + message.get("body") + "</p><p>"+ message.get("username") + "</p><p>" + message.get("signature") + "</p><br><br><p>" + labels.get("clicktoview") + " : <b>" + message.get("docTitle")+"</b></p>";
                                                         break;
                                                 case "INV":
                                                         this.innerHTML = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";

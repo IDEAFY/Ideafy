@@ -468,5 +468,6 @@
 	"chatmsg4" : "Your session is starting now",
 	"typemsg" : "Enter your text",
 	"said" : " said :",
-	"noresult": "No result found"
+	"noresult": "No result found",
+	"clicktoview": "Press the button below or visit your library to view"
 }

@@ -122,7 +122,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                            var s = user.get("settings");
                         
                         // update user doc
-                        s.showNotif = node.checked;
+                        s.notifyPopup = node.checked;
                         user.set("settings", s);
                         user.upload();
                    };
@@ -160,18 +160,24 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                    
                    // init
                    
-                   // get user settings and watch for changes
-                   settings.reset(user.get("settings"));
-                   user.watchValue("settings", function(change){
-                           settings.reset(user.get("settings"));
-                   });
+                   // init
+                   settingsUI.reset = function reset(){
+                           // get user settings and watch for changes
+                        settings.reset(user.get("settings"));
+                        user.watchValue("settings", function(change){
+                                settings.reset(user.get("settings"));
+                        });
                    
-                   // get available languages
-                   transport.request("GetLanguages", {}, function(result){
-                        options.set("lang", result);      
-                   });
+                        // update labels
+                        Utils.updateLabels(user.get("lang"));
                    
+                        // get available languages
+                        transport.request("GetLanguages", {}, function(result){
+                                options.set("lang", result);      
+                        });
+                   };
                    
+                   settingsUI.reset();
                    
                    return settingsUI;
            };    

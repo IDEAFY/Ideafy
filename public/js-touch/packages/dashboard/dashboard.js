@@ -30,7 +30,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                         };
                         
                         _widget.reset = function reset(){
-                                
+                                _settings.reset();        
                         };
                 
                 // init

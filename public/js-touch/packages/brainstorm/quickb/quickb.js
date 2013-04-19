@@ -188,7 +188,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    _widget.next = function next(currentName){
                         var _id,
-                            _nextui;
+                            _nextui,
+                            promise = new Promise();
                         _steps.loop(function(value, idx){
                                 if (value.name === currentName){
                                         _id = idx;
@@ -204,15 +205,20 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         _steps.update(_id+1, "currentStep", true);
                                         
                                         _session.set("step", _steps.get(_id+1).name);
-                                        _session.upload();
-                                        _nextui = _stack.getStack().get(_steps.get(_id+1).name);
-                                        if (_nextui.initTimer) _nextui.initTimer();
-                                        _stack.getStack().show(_steps.get(_id+1).name);
+                                        _session.upload().then(function(){
+                                                _nextui = _stack.getStack().get(_steps.get(_id+1).name);
+                                                if (_nextui.initTimer) _nextui.initTimer();
+                                                _stack.getStack().show(_steps.get(_id+1).name);
+                                                promise.fulfill();        
+                                        });
                                 }
                                 else {
                                         _stack.getStack().show(_steps.get(_id+1).name);
+                                        promise.fulfill();
                                 }
-                        }        
+                        }
+                        
+                        return promise;       
                    };
                    
                    _widget.init = function init(sip){
@@ -244,6 +250,14 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    // init
                    _widget.init($sip);
+                   
+                   // watch for reconnect events and resync session if it already has an id
+                   Config.get("observer").watch("reconnect", function(){
+                        if (_session.get("_id")){
+                                _session.unsync();
+                                _session.sync(Config.get("db"), _session.get("_id"));
+                        }        
+                   });
                    
                    // return
                    return _widget;

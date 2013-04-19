@@ -122,9 +122,11 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin",  "Olives/Event-p
                            var s = user.get("settings");
                         
                         // update user doc
-                        s.showNotif = node.checked;
+                        s.notifyPopup = node.checked;
                         user.set("settings", s);
-                        user.upload();
+                        user.upload().then(function(){
+                                console.log("uploaded notif change");
+                        });
                    };
                    
                    settingsUI.useAsChar = function(event, node){

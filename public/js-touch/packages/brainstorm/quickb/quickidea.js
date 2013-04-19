@@ -113,13 +113,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // move to next screen
                         _widget.next = function(event, node){
                                 var now = new Date(), _timers, duration, spinner;
-                                
+                                spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 200}).spin(node.parentNode);
                                 node.classList.add("invisible");
                                 node.classList.remove("pressed");
                                 // if first time: upload scenario and set readonly
                                 if (_next === "step"){
                                         _next = "screen";
-                                        spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 200}).spin(node.parent);
+                                        //spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 200}).spin(node.parentNode);
                                         
                                         // stop timer and update display
                                         clearInterval(_qiTimer);

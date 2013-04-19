@@ -159,19 +159,23 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin",  "Olives/Event-p
                    };
                    
                    // init
+                   settingsUI.reset = function reset(){
+                           // get user settings and watch for changes
+                        settings.reset(user.get("settings"));
+                        user.watchValue("settings", function(change){
+                                settings.reset(user.get("settings"));
+                        });
                    
-                   // get user settings and watch for changes
-                   settings.reset(user.get("settings"));
-                   user.watchValue("settings", function(change){
-                           settings.reset(user.get("settings"));
-                   });
+                        // update labels
+                        Utils.updateLabels(user.get("lang"));
                    
-                   // get available languages
-                   transport.request("GetLanguages", {}, function(result){
-                        options.set("lang", result);      
-                   });
+                        // get available languages
+                        transport.request("GetLanguages", {}, function(result){
+                                options.set("lang", result);      
+                        });
+                   };
                    
-                   
+                   settingsUI.reset();
                    
                    return settingsUI;
            };    

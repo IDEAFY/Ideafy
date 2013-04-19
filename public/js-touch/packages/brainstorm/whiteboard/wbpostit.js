@@ -13,12 +13,13 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                 var _widget = new Widget(),
                     _labels = Config.get("labels"),
                     _marker = "#4D4D4D",
-                    _colors = new Store([
+                    _initColors = [
                             {name: "blue", color: "#657B99",img: "postItBlue.png", selected: false},
                             {name: "azur", color: "#9AC9CD",img: "postItAzur.png", selected: false},
                             {name: "yellow", color: "#F2E520",img: "postItYellow.png", selected: true},
                             {name: "orange", color: "#F27B3D",img: "postItOrange.png", selected: false}
-                            ]),
+                            ],
+                    _colors = new Store(_initColors),
                    _pos = null, // the position of the postit
                    _postit = new Store({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png","marker": "#4D4D4D"}});
                    
@@ -77,16 +78,16 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                         node.classList.remove("pressed");
                         $exit("postit");  
                         // reset postit
-                        _widget.reset();   
+                        _widget.reset(null);   
                 };
                 
-                _widget.reset = function reset($pos){
-                        _pos = $pos;
-                        if (!_pos && _pos !== 0){
+                _widget.reset = function reset(pos){
+                        if (!pos && pos !== 0){
                                 _postit.reset({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png", "marker": "#4D4D4D"}});
+                                _colors.reset(_initColors);
                         }
                         else{
-                               _postit.reset($store.get($pos)); 
+                               _postit.reset($store.get(pos)); 
                         }
                 };
                 

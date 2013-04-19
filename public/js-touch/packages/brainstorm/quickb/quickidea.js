@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/cardpopup", "../whiteboard/whiteboard", "Store", "CouchDBStore", "Promise", "service/utils"],
-        function(Widget, Map, Model, Event, Config, CardPopup, Whiteboard, Store, CouchDBStore, Promise, Utils){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/cardpopup", "../whiteboard/whiteboard", "Store", "CouchDBStore", "Promise", "service/utils", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, CardPopup, Whiteboard, Store, CouchDBStore, Promise, Utils, Spinner){
                 
                 return function QuickIdeaConstructor($session, $data, $prev, $next, $progress){
                         
@@ -35,8 +35,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _wbContent = new Store([]),
                             _wb = new Whiteboard("idea", _wbContent, _tools),
                             _transport = Config.get("transport"),
-                            _user = Config.get("user"),
-                            _labels = Config.get("labels");
+                            _labels = Config.get("labels"),
+                            _user = Config.get("user");
                         
                         // Setup
                         _widget.plugins.addAll({
@@ -112,12 +112,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // move to next screen
                         _widget.next = function(event, node){
-                                var now = new Date(), _timers, duration;
+                                var now = new Date(), _timers, duration, spinner;
                                 
+                                node.classList.add("invisible");
                                 node.classList.remove("pressed");
                                 // if first time: upload scenario and set readonly
                                 if (_next === "step"){
                                         _next = "screen";
+                                        spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 200}).spin(node.parent);
                                         
                                         // stop timer and update display
                                         clearInterval(_qiTimer);
@@ -147,6 +149,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 $session.set("status", "completed");
                                                                 // set idea to readonly
                                                                 _tools.set("readonly", true);
+                                                                // remove invisible
+                                                                node.classList.remove("invisible");
                                                                 $next("quickidea");         
                                                         });      
                                                 });
@@ -349,8 +353,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 setTimeout(function(){
                                         cdb.upload().then(function(){
                                                 // updateUIP is visibility is public
-                                                 if (cdb.get("visibility") === "public"){
-                                                         _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": cdb.get("type"), "docId": cdb.get("_id"), "docTitle": cdb.get("title")}, function(result){
+                                                if (cdb.get("visibility") === "public"){
+                                                        _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": cdb.get("type"), "docId": cdb.get("_id"), "docTitle": cdb.get("title")}, function(result){
                                                                 if (result !== "ok") {console.log(result);}
                                                         });
                                                 }
@@ -358,7 +362,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 cdb.unsync();
                                         });
                                 }, 200);
-                                return promise;
+                                return promise;      
                         };
                         
                         // INIT QUICKIDEA STEP
@@ -465,6 +469,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _idea.watch("updated", function(){
                                         (_idea.get("title") && _idea.get("description") && _idea.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
+                        
+                        _widget.setNext = function setNext(value){
+                                _next = value;        
+                        };
+                        
+                        QI = _widget;
                         
                         // Return
                         return _widget;

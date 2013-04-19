@@ -50,7 +50,11 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStor
                                 })
                         };
                         
-                        
+                         Config.get("observer").watch("reconnect", function(){
+                                leaders.unsync();
+                                leaders.reset([]);
+                                leaders.sync(Config.get("db"), "users", "_view/leaderboard", {limit:100, descending: true});
+                        });
                         
                         return leaderboard;
                         

@@ -4156,6 +4156,11 @@ li.color-item{
     overflow-y: scroll;
 }
 
+#msgdetail .msgdetailarea .detail-contents{
+    display: inline-block;
+    width: 100%;
+}
+
 #msgdetail .header, #addcontact .header, #addgroup .header{
     text-align: left;
 }
@@ -4198,9 +4203,9 @@ li.color-item{
 
 #msgdetail .showdoc, #msgdetail .goto2q, #msgdetail .gotosession{
     margin: 20px auto;
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;

@@ -195,4 +195,13 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                 
         // attempt to reconnect socket if required in case of user actions
         Map.get("body").addEventListener("touchstart", Utils.checkSocketStatus);
+        
+        // resync user document upon socket reconnection
+        Config.get("observer").watch("reconnect", function(){
+                _local.sync("ideafy-data");
+                _user.unsync();
+                _user.sync(_db, _local.get("currentLogin")).then(function(){
+                        console.log("user resynchronized");
+                });       
+        });
 }); 

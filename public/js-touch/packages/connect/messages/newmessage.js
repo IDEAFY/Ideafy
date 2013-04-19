@@ -152,7 +152,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                         error.set("errormsg", "");
                                         
                                         // build json object
-                                        json = JSON.parse(message.toJSON());
+                                        json.author = message.get("author");
+                                        json.username = message.get("username");
+                                        json.firstname = message.get("firstname");
+                                        json.signature = message.get("signature");
+                                        json.toList = message.get("toList");
+                                        json.ccList = message.get("ccList");
+                                        json.object = message.get("object");
+                                        json.body = message.get("body");
+                                        json.type = "MSG";
                                         
                                         //validate message
                                         if (!message.get("object")){

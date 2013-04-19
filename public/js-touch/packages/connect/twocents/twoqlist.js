@@ -22,7 +22,8 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                                 descending : true
                         }
                      },
-                     labels = Config.get("labels");
+                     labels = Config.get("labels"),
+                     widget = this;
 
                 //setup
                 _store.setTransport(Config.get("transport"));
@@ -109,6 +110,7 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                         _options.query = query;
                         _store.unsync();
                         _store.reset([]);
+                        widget.hideSearch();
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 promise.fulfill();
                         });
@@ -159,8 +161,8 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                 };
                 
                 this.hideSearch = function hideSearch(){
-                       var search = document.querySelector(".twoq-searchlist"),
-                           list = document.querySelector(".twoq-list");
+                       var search = this.dom.querySelector(".twoq-searchlist"),
+                           list = this.dom.querySelector(".twoq-list");
                         
                         if (!search.classList.contains("invisible")){
                                 list.classList.remove("invisible");
@@ -171,7 +173,7 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                 // search twoquestions
                 this.search = function search(text){
                         _searchList.reset([]);
-                        if (text){
+                        if (text.toLowerCase()){
                                 this.showSearch();
                                 _store.loop(function(v,i){
                                         if (JSON.stringify(v).search(text) > -1) _searchList.alter("push", v)        

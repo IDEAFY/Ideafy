@@ -79,7 +79,7 @@ define(["OObject", "service/config", "Store", "CouchDBStore", "Bind.plugin", "Ev
                                                         this.innerHTML = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
                                                         break;
                                                 default :
-                                                        this.innerHTML = message.get("body");
+                                                        this.innerHTML = message.get("body").replace(/\n/g, "<br>");
                                                         break;
                                         }           
                                 },
@@ -343,7 +343,7 @@ define(["OObject", "service/config", "Store", "CouchDBStore", "Bind.plugin", "Ev
                         message.reset(msg);
                         msgReplyUI.reset(msg, "reply");
                         
-                        // check if message type is a session and if so check session status
+                        // check if message type is a session invite and if so check session status
                         if (message.get("type") === "INV"){
                                 console.log(message.toJSON());
                                 if (message.get("joined")){

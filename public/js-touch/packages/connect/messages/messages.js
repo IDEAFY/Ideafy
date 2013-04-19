@@ -301,23 +301,24 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                         // watch for changes in notifications
                         user.watchValue("notifications", function(){
                                 var id, newList = [];
-                                // if no search is active
-                                if (currentSort>-1) {
-                                        newList = sortMessages(currentSort);
-                                        msgList.reset(newList);
-                                }
-                                if (detailStack.getStack().getCurrentName === "#msgdetail"){
+                                
+                                msgList.reset([]);
+                                
+                                newList = sortMessages(currentSort);
+                                msgList.reset(newList);
+                                
+                                if (detailStack.getStack().getCurrentName() === "#msgdetail"){
                                         id = messageUI.getSelectedmsg();
-                                        (id>-1)? messageDetail.reset(msgList.get(id)): detailStack.getStack().show("#defaultPage");
+                                        (id>-1) ? messageDetail.reset(msgList.get(id)): detailStack.getStack().show("#defaultPage");
                                 } 
                         });
                         
                         observer.watch("display-message", function(id){
-                                var arr = user.get("notifications"), message = arr[id];
+                                var arr = user.get("notifications");
                                 
                                 // check if message is of type message or notification
                                 sortButtons.update(currentSort, "selected", false);
-                                if (message.type === "MSG"){
+                                if (arr[id].type === "MSG"){
                                         sortButtons.update(1, "selected", true);
                                         currentSort = 1;        
                                 }
@@ -327,30 +328,20 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                 }
                                 
                                 // change message status to read
-                                if (msgList.get(id).status === "unread"){
-                                        // first need to retrieve message in user notifications
-                                        for (i=0, l=arr.length; i<l;i++){
-                                                if (JSON.stringify(arr[i]) === JSON.stringify(msgList.get(id))) {
-                                                        index = i;
-                                                        break;
-                                                }
-                                        }
-                                        msgList.update(id, "status", "read");
-                                        arr[index]=msgList.get(id);
-                                        user.set("notifications", arr);
-                                        user.upload();
-                                }
+                                arr[id].status = "read";
+                                user.set("notifications", arr);
+                                user.upload();
                                 
                                 // display message
-                                msgList.reset([message]);
+                                msgList.reset([arr[id]]);
                                 // add "selected" class
                                 document.querySelector('li[data-msg_id="0"]').classList.add("selected");
+                                msgControl.init(document.querySelector('li[data-msg_id="0"]'));
                                 
                                 // display message detail
                                 detailStack.getStack().show("#msgdetail");
-                                messageDetail.reset(message);
-                                previousScreen = "#msgdetail";        
-                                        
+                                messageDetail.reset(arr[id]);
+                                previousScreen = "#msgdetail";                 
                         });
                         
                         observer.watch("message-contact", function(data){
@@ -365,7 +356,7 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                         if (v.selected) current = i;        
                                 });
                                 sortButtons.reset([
-                                    {"name": "all", "label": "allbtn", "selected": false},
+                                    {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "messages", "label": "msgbtn", "selected": false},
                                     {"name": "notifications", "label": "notifbtn", "selected": false},
                                     {"name": "unread", "label": "unreadbtn", "selected": false}

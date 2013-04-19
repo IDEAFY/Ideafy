@@ -156,6 +156,9 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 
                 user.watchValue("notifications", function(){
                         var unread = notify.getUnread();
+                        
+                        messages.reset([]);
+                        
                         if (unread > currentUnread){
                                 notif.set("newmsg", true);
                                 notif.set("unread", unread);

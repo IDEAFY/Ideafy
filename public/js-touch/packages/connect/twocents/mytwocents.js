@@ -133,6 +133,9 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                 // display div if not present
                                 if (auto.classList.contains("invisible")) auto.classList.remove("invisible")   
                                 
+                                // clear the search field if backspace is hit
+                                if (event.keyCode === 8){node.value = "";}
+                                
                                 if (!node.value || node.value === ""){
                                         arr = [];
                                         //initialize contact list with all user contacts in user's document
@@ -150,6 +153,39 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                                 if (clc.search(vlc) !== 0) arr.splice(i, 1);
                                         }
                                         contactList.reset(arr);    
+                                }
+                                
+                                // launch the query if user hits return
+                                if (event.keyCode === 13){
+                                        if (node.value === ""){
+                                                mtcStack.getStack().show("#blank");
+                                                mtcDetails.getStack().show("defaultPage");               
+                                        }
+                                        else{
+                                                if (contactList.getNbItems()){
+                                                        mtcTools.set("contact", contactList.get(0).contact.username);
+                                                        contacttwoq.resetQuery({key: '"'+contactList.get(0).contact.userid+'"', descending: true}).then(function(){
+                                                                var store = contacttwoq.getModel(),
+                                                                    node;
+                                                                if (store.getNbItems()){
+                                                                        mtcStack.getStack().show("#contacttwoq");
+                                                                        mtcDetails.reset("2Q", store.get(0));
+                                                                        node = contacttwoq.dom.querySelector("li[data-twoqlist_id='0']");
+                                                                        mtcControl.init(node);
+                                                                        node.classList.add("selected");
+                                                                        mtcDetails.reset("2Q", store.get(0));
+                                                                }
+                                                                else{
+                                                                        mtcStack.getStack().show("#blank");
+                                                                        mtcDetails.reset("default");      
+                                                                }
+                                                        });        
+                                                } 
+                                                else{
+                                                        mtcStack.getStack().show("#blank");
+                                                        mtcDetails.reset("default");         
+                                                } 
+                                        }
                                 }
                         };
                         
@@ -170,7 +206,22 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                 // hide contact selection popup
                                 auto.classList.add("invisible");
                                 // fetch and display contact twoquestions
-                                contacttwoq.resetQuery({key: '"'+contactList.get(idx).contact.userid+'"', descending: true});
+                                contacttwoq.resetQuery({key: '"'+contactList.get(idx).contact.userid+'"', descending: true}).then(function(){
+                                        var store = contacttwoq.getModel(),
+                                            node;
+                                        if (store.getNbItems()){
+                                                mtcStack.getStack().show("#contacttwoq");
+                                                mtcDetails.reset("2Q", store.get(0));
+                                                node = contacttwoq.dom.querySelector("li[data-twoqlist_id='0']");
+                                                mtcControl.init(node);
+                                                node.classList.add("selected");
+                                                mtcDetails.reset("2Q", store.get(0));
+                                        }
+                                        else{
+                                                mtcStack.getStack().show("#blank");
+                                                mtcDetails.reset("default");         
+                                        }
+                                });
                         };
                         
                         myTwocentUI.selectStart = function(event, node){
@@ -189,19 +240,33 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         // Manage events
                         Config.get("observer").watch("display-twoq", function(id, userid){
                                 contacttwoq.resetQuery({key: '"'+userid+'"', descending: true}).then(function(){
+                                        var store = contacttwoq.getModel(), index, node;
+                                        
                                         mtcStack.getStack().show("#contacttwoq");
                                         mtcTools.set("view", "#contacttwoq");
+                                        
                                         // set active button
                                         twoQButtons.loop(function(v,i){
                                                 (v.name === "#contacttwoq") ? twoQButtons.update(i, "active", true) : twoQButtons.update(i, "active", false);      
                                         });
                                         
-                                        // search twoquestion by id
-                                        contacttwoq.search(id);
+                                        // search twoquestion index
+                                        store.loop(function(v, i){
+                                                if (v.id === id){
+                                                        index = i;
+                                                        mtcTools.set("contact", v.value.username);
+                                                 }        
+                                        });
+                                        
+                                        // get li element
+                                        node = contacttwoq.dom.querySelector("li[data-twoqlist_id='"+index+"']")
                                         
                                         // hightlight item in the list
-                                        mtcControl.init(0);
-                                        mtcDetails.reset("2Q", contacttwoq.getModel().get(0));        
+                                        mtcControl.init(node);
+                                        node.classList.add("selected");
+                                        
+                                        // display twoquestion details
+                                        mtcDetails.reset("2Q", store.get(index));        
                                 });
                         });
                         
@@ -225,7 +290,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         // add twocent and twoquestion lists to the stack
                         mytwoq = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: Config.get("uid"), descending: true});
                         contacttwoq = new TwoQList("contact", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
-                        blank = new TwoQList("contact", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
+                        blank = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
                         
                         mtcStack.getStack().add("#mytwoq", mytwoq);
                         mtcStack.getStack().add("#contacttwoq", contacttwoq);
@@ -236,14 +301,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         // display twoQ list (default and init details with first item)
                         mytwoq.init().then(function(){
                                 mtcStack.getStack().show("#mytwoq");
-                                /* hightlight first item
-                                if (mytwoq.getModel().getNbItems()) {
-                                        mtcControl.init(0);
-                                        mtcDetails.init("2Q", mytwoq.getModel().get(0));
-                                }
-                                // mtcDetails.init("2Q", mytwoq.getModel().get(0));
-                                else {mtcDetails.init("default");}*/
-                               mtcDetails.init("default");
+                                mtcDetails.init("default");
                         });
                         
                         return myTwocentUI;

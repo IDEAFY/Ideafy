@@ -236,7 +236,7 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                 if (currentSort>-1) {
                                         contactList.reset(sortContacts(currentSort));
                                 }
-                                if (detailStack.getStack().getCurrentName === "#contactdetails"){
+                                if (detailStack.getStack().getCurrentName() === "#contactdetails"){
                                         id = contactsUI.getSelectedContact();
                                         if (id>-1){
                                                 contactDetail.reset(contactList.get(id));

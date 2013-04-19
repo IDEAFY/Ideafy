@@ -131,7 +131,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .contacttwoqlist{
-    height: 577px;
+    height: 500px;
 }
 
 #dock, .list {
@@ -4040,6 +4040,7 @@ li.color-item{
     text-align: center;
     position: relative;
     width: 301px;
+    height:748px;
     -webkit-box-shadow: 0 0 5px 1px rgba(0,0,0,0.3);
     background: white;
     float: left;

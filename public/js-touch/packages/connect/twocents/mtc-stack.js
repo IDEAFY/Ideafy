@@ -33,10 +33,13 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./mtc-deta
                         };
                         
                         widget.reset = function reset(type, data){
-                                if (type === "2Q") {
+                                if (type === "2Q" && data) {
                                         mtcDetailStack.getStack().get("twoqdetail").reset(data);
-                                        if (mtcDetailStack.getStack().getCurrentName !== "twoqdetail") mtcDetailStack.getStack().show("twoqdetail");
+                                        mtcDetailStack.getStack().show("twoqdetail");
                                         
+                                }
+                                if (type === "default" || !data){
+                                        mtcDetailStack.getStack().show("defaultPage");        
                                 }
                         };
                         

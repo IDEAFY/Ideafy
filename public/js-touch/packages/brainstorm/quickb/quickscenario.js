@@ -38,8 +38,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _start, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
                             _transport = Config.get("transport"),
-                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 685, left:685}).spin();
-                             
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 665, left: 690}).spin();
+                            // deduct 20px from position shown in navigator 
                         
                         
                         // Setup

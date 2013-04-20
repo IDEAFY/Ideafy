@@ -37,7 +37,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _transport = Config.get("transport"),
                             _labels = Config.get("labels"),
                             _user = Config.get("user"),
-                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 685, left:685}).spin();
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 665, left: 690}).spin();
                         
                         // Setup
                         _widget.plugins.addAll({

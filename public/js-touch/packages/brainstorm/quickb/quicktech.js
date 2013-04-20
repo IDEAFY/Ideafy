@@ -40,7 +40,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     {"id":"", "title":"", "pic":""}
                             ]), // {id, title, pic}) -- there are always 3 tech cards in quick mode
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            spinner  = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 685, left:685}).spin();
+                            spinner  = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 373, left:373}).spin();
                         
                         // Setup
                         _widget.plugins.addAll({

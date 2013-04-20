@@ -62,7 +62,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                 
                 
                 _widget.edit = function(event, node){
-                        var id = node.getAttribute("data-wbmain_id"),
+                        var id = parseInt(node.getAttribute("data-wbmain_id"),10),
                             type = $store.get(id).type;
                         
                         if (_edit){    

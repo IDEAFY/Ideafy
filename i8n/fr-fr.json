@@ -469,8 +469,6 @@
 	"typemsg" : "Tapez votre message",
 	"said": " a dit :",
 	"noresult": "Aucun résultat",
-	"clicktoview": "Appuyez sur le bouton ou rendez-vous dans votre bibliothèque pour visualiser",
-	"postittoolong" : "Taille maximale atteinte: essayez d'être concis",
-	"postittoomanylines" : "Nombre de ligne maximal atteint: essayez d'être concis"
+	"clicktoview": "Appuyez sur le bouton ou rendez-vous dans votre bibliothèque pour visualiser"
 
 }

@@ -84,12 +84,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                 
                 _widget.checkLimit = function(event, node){
                         var length = node.value.length;
-                        if (event.keyCode === 8) {node.setAttribute("maxlegnth", 140);}
                         if (node.value.length === node.getAttribute("maxlength")) {alert("maximum size reached: keep your sticker notes short");}
                         if (node.value.split("\n").length === 5 && event.keyCode === 13){
                                 event.preventDefault();
-                                alert("maximum number of lines reached: keep your sticker notes short");
-                                node.setAttribute("maxlength", node.value.length);        
+                                alert("maximum number of lines reached: keep your sticker notes short");        
                         }
                 };
                 

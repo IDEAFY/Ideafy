@@ -469,5 +469,7 @@
 	"typemsg" : "Enter your text",
 	"said" : " said :",
 	"noresult": "No result found",
-	"clicktoview": "Press the button below or visit your library to view"
+	"clicktoview": "Press the button below or visit your library to view",
+	"postittoolong" : "Maximum size reached: keep your sticker notes short",
+	"postittoomanylines" : "Maximum number of lines reached: keep your sticker notes short"
 }

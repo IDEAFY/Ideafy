@@ -42,7 +42,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                            "postitevent": new Event(_widget)
                    });
                 
-                _widget.template = '<div class="wbpostit"><div class="postit-cancel postit-close" data-postitevent="listen:touchstart,cancel"></div><div class="postit" data-postit="bind:setStyle, style"><textarea data-postit="bind: value, content" maxlength=140"></textarea></div><span class="choosecolorlbl" data-labels="bind:innerHTML, choosecolorlbl"></span><ul class="postitcolors" data-colors="foreach"><li class="postitcolor" data-postitevent="listen:touchstart,choose" data-colors="bind:setBg, color;bind:setSelected, selected"></li></ul><div name="post" class = "postpostit" data-postitevent="listen: touchstart, press; listen:touchend, post"></div><div class = "delpostit" name="del" data-postitevent="listen:touchstart, press;listen:touchend, del"></div></div>';
+                _widget.template = '<div class="wbpostit"><div class="postit-cancel postit-close" data-postitevent="listen:touchstart,cancel"></div><div class="postit" data-postit="bind:setStyle, style"><textarea data-postit="bind: value, content"></textarea></div><span class="choosecolorlbl" data-labels="bind:innerHTML, choosecolorlbl"></span><ul class="postitcolors" data-colors="foreach"><li class="postitcolor" data-postitevent="listen:touchstart,choose" data-colors="bind:setBg, color;bind:setSelected, selected"></li></ul><div name="post" class = "postpostit" data-postitevent="listen: touchstart, press; listen:touchend, post"></div><div class = "delpostit" name="del" data-postitevent="listen:touchstart, press;listen:touchend, del"></div></div>';
                 
                 
                 _widget.cancel = function(event,node){
@@ -78,17 +78,17 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                         node.classList.remove("pressed");
                         $exit("postit");  
                         // reset postit
-                        _widget.reset(null);   
+                        _widget.reset();   
                 };
                 
-                _widget.reset = function reset(pos){
-                        _pos = pos;
+                _widget.reset = function reset($pos){
+                        _pos = $pos;
                         if (!_pos && _pos !== 0){
                                 _postit.reset({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png", "marker": "#4D4D4D"}});
                                 _colors.reset(_initColors);
                         }
                         else{
-                               _postit.reset($store.get(_pos));
+                               _postit.reset($store.get(_pos)); 
                         }
                 };
                 

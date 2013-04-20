@@ -87,8 +87,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                         if (event.keyCode === 8) {node.setAttribute("maxlegnth", 140);}
                         if (node.value.length === node.getAttribute("maxlength")) {alert("maximum size reached: keep your sticker notes short");}
                         if (node.value.split("\n").length === 5 && event.keyCode === 13){
+                                event.preventDefault();
                                 alert("maximum number of lines reached: keep your sticker notes short");
-                                node.value.slice(0, -1);
                                 node.setAttribute("maxlength", node.value.length);        
                         }
                 };

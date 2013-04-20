@@ -173,7 +173,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // toggle progress bar
                         _widget.toggleProgress = function(event, node){
-                                $progress(node);               
+                                $progress();               
                         };
                         
                         // toggle timer
@@ -476,7 +476,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         (_idea.get("title") && _idea.get("description") && _idea.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
                         
-                       
+                        SPIDEA = spinner;
                         // Return
                         return _widget;
                 };    

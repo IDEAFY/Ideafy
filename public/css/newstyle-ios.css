@@ -2640,6 +2640,7 @@ textarea.solution {
 /* quick brainstorming */
 
 .progressbar{
+    top: 36px;
     height: 36px;
     width: 871px;
     z-index: 200;

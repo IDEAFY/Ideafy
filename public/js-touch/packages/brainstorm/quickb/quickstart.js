@@ -83,13 +83,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.toggleProgress = function(event, node){
-                                $progress(node);               
+                                $progress();               
                         };
                         
                         _widget.reset = function reset(sip){
                                 var now = new Date(), step = $session.get("step");
                                 if (sip){
-                                        (step === "quickstart") ? _next = "step" : next = "screen";
+                                        (step === "quickstart") ? _next = "step" : _next = "screen";
                                         // set resume time (to be added to elapsed time) if session is still in progress
                                         if (step !== "quickwrapup") $session.set("resumeTime", now.getTime());       
                                 }
@@ -107,7 +107,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                          };
                         
                         // init
-                        
+                        SPSTART = spinner;
                         // return
                         return _widget;
                 };     

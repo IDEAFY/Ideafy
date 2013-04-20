@@ -152,7 +152,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Method called to display the progress bar
                         _widget.toggleProgress = function(event, node){
-                                $progress(node);               
+                                $progress();               
                         };
                         
                         // Method called to display step timer instead of current time
@@ -472,6 +472,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 });
                                 _next = "step";        
                         };
+                        
+                        SPSETUP = spinner;
                         
                         // Return
                         return _widget;

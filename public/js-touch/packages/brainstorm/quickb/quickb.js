@@ -30,10 +30,14 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                        _sessionData = new Store()
                        spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
+                   _widget.plugins.add("quickstack", _stack);
+                   _widget.alive(_dom);
+                   
                    _progress.plugins.addAll({
                            "labels" : new Model(_labels),
                            "step" : new Model(_steps, {
                                    setCurrent : function(currentStep){
+                                           console.log(this, currentStep);
                                            (currentStep) ? this.classList.add("pressed") : this.classList.remove("pressed");
                                    },
                                    setActive : function(status){
@@ -42,13 +46,15 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            }),
                            "progressevent" : new Event(_progress)
                    });
-                   _progress.template = '<div class = "progressbar"><ul id = "quicksteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
-                   _progress.place(_frag);
+                   _progress.template = '<div class = "progressbar invisible"><ul id = "quicksteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, highlightStep; listen:touchend, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
                    
-                   _widget.plugins.add("quickstack", _stack);
-                   _widget.alive(_dom);
+                   _progress.place(_widget.dom);
                    
                    // UI methods
+                   
+                   _progress.highlightStep = function(event, node){
+                        node.classList.toggle("inactive");        
+                   };
                    
                    _progress.changeStep = function(event, node){
                         var _id = node.getAttribute("data-step_id");
@@ -62,7 +68,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }
                         else {
                                 event.stopImmediatePropagation();
-                        }              
+                        }
+                        _progress.dom.classList.add("invisible");             
                    };
                    
                    _progress.press = function(event, node){
@@ -71,6 +78,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    _progress.exit = function(event, node){
                            node.classList.remove("pressed");
+                           _progress.dom.classList.add("invisible");
                            $exit();
                    };
                    
@@ -206,13 +214,18 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 }
                         });
                         
+                        console.log(_id);
+                        
                         if (_id < _steps.getNbItems()-1) {
+                                
+                                // update progress bar
+                                _steps.update(_id, "currentStep", false);
+                                _steps.update(_id+1, "currentStep", true);
+                                
                                 // if previous step was already done do not modify status
                                 if (_steps.get(_id).status !== "done"){
                                         _steps.update(_id, "status", "done");
-                                        _steps.update(_id, "currentStep", false);
                                         _steps.update(_id+1, "status", "ongoing");
-                                        _steps.update(_id+1, "currentStep", true);
                                         
                                         _session.set("step", _steps.get(_id+1).name);
                                         _session.upload().then(function(){
@@ -233,6 +246,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         return promise;       
                    };
                    
+                   _widget.toggleProgress = function toggleProgress(){
+                           _progress.dom.classList.toggle("invisible");      
+                   };
+                   
                    _widget.init = function init(sip){
                            
                            // setup -- initialize UIs (progress bar and stack) and _session couchdbstore
@@ -248,18 +265,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            _widget.reset(sip);
                    };
                    
-                   _widget.toggleProgress = function toggleProgress(node){
-                           var _progressBar = node.querySelector(".progressbar");
-                           
-                           if (_progressBar) {
-                                   setTimeout(function(){
-                                           node.removeChild(_progressBar);
-                                        _progress.place(_frag);
-                                        }, 600);
-                           }
-                           else node.appendChild(_frag);        
-                   };
-                   
                    // init
                    _widget.init($sip);
                    
@@ -271,6 +276,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }        
                    });
                    
+                   STEPS = _steps;
+                   PROG = _progress;
                    // return
                    return _widget;
            };    

@@ -35,7 +35,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _currentPopup = "", // which card if any is magnified
                             _start =  null, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 685, left:685}).spin();
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 380, left:565}).spin();
                         
                         // Setup
                         _widget.plugins.addAll({
@@ -472,6 +472,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _next = "step";        
                         };
                         
+                        SP = spinner;
                         // Return
                         return _widget;
                 };     

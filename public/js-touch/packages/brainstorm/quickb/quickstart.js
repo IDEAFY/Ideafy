@@ -16,7 +16,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _db = Config.get("db"),
                              _labels = Config.get("labels"),
                              _next = "step",
-                             spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 560, left:375}).spin();
+                             spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 380, left:565}).spin();
                         
                         // setup
                         _widget.plugins.addAll({
@@ -106,7 +106,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                          };
                         
                         // init
-                        SP = spinner;
+                        
                         // return
                         return _widget;
                 };     

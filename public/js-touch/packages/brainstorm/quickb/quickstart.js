@@ -17,6 +17,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                              _labels = Config.get("labels"),
                              _next = "step",
                              spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 360, left:545}).spin();
+                             // deduct 20px from position shown in navigator
                         
                         // setup
                         _widget.plugins.addAll({

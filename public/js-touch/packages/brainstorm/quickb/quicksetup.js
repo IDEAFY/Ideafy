@@ -297,6 +297,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Initializing the QuickSetup UI
                         _widget.reset = function reset(sip){
+                                _next = "step";
                                 if (sip){
                                         // check if time has been spent on this step already
                                         _elapsed = $session.get("elapsedTimers").quicksetup || 0;
@@ -469,8 +470,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                           "context" : {selected: false, left: null, popup: false},
                                                           "problem" : {selected: false, left: null, popup: false}
                                         });
-                                });
-                                _next = "step";        
+                                });        
                         };
                         
                         SPSETUP = spinner;

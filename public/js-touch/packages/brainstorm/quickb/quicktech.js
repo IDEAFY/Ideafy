@@ -310,6 +310,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "tech2":{"popup": false, "selected":false},
                                         "tech3":{"popup": false, "selected": false}
                                 });
+                                _next = "step";
                                 if (sip && sessionTech.length){
                                         _next = "screen"; // read-only
                                         // retrieve card information from _sessionData
@@ -327,7 +328,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         // reset techstack
                                         _techs = [];
                                         _drawnCards =0;
-                                        _next = "step";
                                         _tech1.reset(); _tech2.reset(); _tech3.reset();
                                         _techCards.reset([
                                                 {"id":"", "title":"", "pic":""},

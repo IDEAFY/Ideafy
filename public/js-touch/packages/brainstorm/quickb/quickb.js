@@ -37,7 +37,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            "labels" : new Model(_labels),
                            "step" : new Model(_steps, {
                                    setCurrent : function(currentStep){
-                                           console.log(this, currentStep);
                                            (currentStep) ? this.classList.add("pressed") : this.classList.remove("pressed");
                                    },
                                    setActive : function(status){
@@ -213,8 +212,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         _id = idx;
                                 }
                         });
-                        
-                        console.log(_id);
                         
                         if (_id < _steps.getNbItems()-1) {
                                 

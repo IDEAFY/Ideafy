@@ -127,6 +127,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         }
                                 }
                            }, function(err){
+                                   spinner.stop();
                                    alert("session could not be retrieved");
                            });
                    };

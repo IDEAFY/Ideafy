@@ -189,7 +189,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    _widget.next = function next(currentName){
                         var _id,
                             _nextui,
+                            _currentui = _stack.getStack().get(currentName);
                             promise = new Promise();
+                            
                         _steps.loop(function(value, idx){
                                 if (value.name === currentName){
                                         _id = idx;
@@ -208,11 +210,13 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         _session.upload().then(function(){
                                                 _nextui = _stack.getStack().get(_steps.get(_id+1).name);
                                                 if (_nextui.initTimer) _nextui.initTimer();
+                                                _currentui.stopSpinner();
                                                 _stack.getStack().show(_steps.get(_id+1).name);
                                                 promise.fulfill();        
                                         });
                                 }
                                 else {
+                                        _currentui.stopSpinner();
                                         _stack.getStack().show(_steps.get(_id+1).name);
                                         promise.fulfill();
                                 }

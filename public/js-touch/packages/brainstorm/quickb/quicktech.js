@@ -388,6 +388,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _techDisplay.set("left", _techs.length);        
                         });
                         
+                        
+                        SPTECH = spinner;
                         // Return
                         return _widget;
                 };     

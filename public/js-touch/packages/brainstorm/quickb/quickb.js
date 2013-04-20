@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./quickstart", "./quicksetup", "./quickscenario", "./quicktech", "./quickidea", "./quickwrapup", "CouchDBStore", "service/config", "Promise", "Store"],
-        function(Widget, Map, Stack, Model, Event, QuickStart, QuickSetup, QuickScenario, QuickTech, QuickIdea, QuickWrapup, CouchDBStore, Config, Promise, Store){
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./quickstart", "./quicksetup", "./quickscenario", "./quicktech", "./quickidea", "./quickwrapup", "CouchDBStore", "service/config", "Promise", "Store", "lib/spin.min"],
+        function(Widget, Map, Stack, Model, Event, QuickStart, QuickSetup, QuickScenario, QuickTech, QuickIdea, QuickWrapup, CouchDBStore, Config, Promise, Store, Spinner){
                 
            return function QuickBConstructor($sip, $exit){
                    
@@ -26,8 +26,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                {name: "quickwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
                                ]),
                        _user = Config.get("user"),
-                       _session = new CouchDBStore()
-                       _sessionData = new Store();
+                       _session = new CouchDBStore(),
+                       _sessionData = new Store()
+                       spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
                    _progress.plugins.addAll({
                            "labels" : new Model(_labels),
@@ -75,6 +76,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    _widget.retrieveSession = function retrieveSession(sip){
                            
+                           spinner.spin(document.getElementById("brainstorm"));
+                           
                            // reset local session data
                            _sessionData.reset();
                            
@@ -106,7 +109,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 });
                                 
                                 // if session is complete display wrapup screen else display start screen
-                                if (step === "quickwrapup"){ 
+                                if (step === "quickwrapup"){
+                                        spinner.stop();
                                         _stack.getStack().show("quickwrapup");
                                         _steps.update(0, "currentStep", false);
                                 }
@@ -114,6 +118,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         // set quick start as current step
                                         _steps.update(0, "currentStep", true);
                                         _steps.update(current, "currentStep", false);
+                                        spinner.stop();
                                         _stack.getStack().show("quickstart");
                                         //update user session in progress if and only if session is not complete
                                         if (_session.get("status") !== "completed"){

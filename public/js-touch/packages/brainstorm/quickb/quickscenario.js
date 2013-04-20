@@ -389,7 +389,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         });
                         
                         
-                        SPSCENAR = spinner;
                         // Return
                         return _widget;
                 };     

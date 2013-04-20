@@ -107,7 +107,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                          };
                         
                         // init
-                        SPSTART = spinner;
+                        
                         // return
                         return _widget;
                 };     

@@ -477,8 +477,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         });
                         
                        
-                       SPIDEA = spinner;
-                        
                         // Return
                         return _widget;
                 };    

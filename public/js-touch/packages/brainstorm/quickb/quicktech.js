@@ -389,7 +389,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         });
                         
                         
-                        SPTECH = spinner;
                         // Return
                         return _widget;
                 };     

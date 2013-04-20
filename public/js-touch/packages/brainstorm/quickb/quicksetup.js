@@ -473,7 +473,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _next = "step";        
                         };
                         
-                        SPSETUP = spinner;
                         // Return
                         return _widget;
                 };     

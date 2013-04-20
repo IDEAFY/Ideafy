@@ -24,7 +24,6 @@ html, body {
   width:1024px;
   height:748px;
   position:fixed;
-  -webkit-transform: translate3d(0,0,0);
 }
 
 ul{
@@ -2945,6 +2944,7 @@ textarea.solution {
     width:100%;
     height:100%;
     overflow-y: scroll;
+    -webkit-transform: translate3d(0,0,0);
 }
 
 .picframe{

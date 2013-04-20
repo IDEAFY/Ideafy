@@ -20,6 +20,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                             {name: "orange", color: "#F27B3D",img: "postItOrange.png", selected: false}
                             ],
                     _colors = new Store(_initColors),
+                    _lines = 0,
                    _pos = null, // the position of the postit
                    _postit = new Store({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png","marker": "#4D4D4D"}});
                    
@@ -42,7 +43,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                            "postitevent": new Event(_widget)
                    });
                 
-                _widget.template = '<div class="wbpostit"><div class="postit-cancel postit-close" data-postitevent="listen:touchstart,cancel"></div><div class="postit" data-postit="bind:setStyle, style"><textarea data-postit="bind: value, content"></textarea></div><span class="choosecolorlbl" data-labels="bind:innerHTML, choosecolorlbl"></span><ul class="postitcolors" data-colors="foreach"><li class="postitcolor" data-postitevent="listen:touchstart,choose" data-colors="bind:setBg, color;bind:setSelected, selected"></li></ul><div name="post" class = "postpostit" data-postitevent="listen: touchstart, press; listen:touchend, post"></div><div class = "delpostit" name="del" data-postitevent="listen:touchstart, press;listen:touchend, del"></div></div>';
+                _widget.template = '<div class="wbpostit"><div class="postit-cancel postit-close" data-postitevent="listen:touchstart,cancel"></div><div class="postit" data-postit="bind:setStyle, style"><textarea data-postit="bind: value, content" maxlength=140 data-postitevent="listen:keypress, checkLimit"></textarea></div><span class="choosecolorlbl" data-labels="bind:innerHTML, choosecolorlbl"></span><ul class="postitcolors" data-colors="foreach"><li class="postitcolor" data-postitevent="listen:touchstart,choose" data-colors="bind:setBg, color;bind:setSelected, selected"></li></ul><div name="post" class = "postpostit" data-postitevent="listen: touchstart, press; listen:touchend, post"></div><div class = "delpostit" name="del" data-postitevent="listen:touchstart, press;listen:touchend, del"></div></div>';
                 
                 
                 _widget.cancel = function(event,node){
@@ -81,13 +82,22 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                         _widget.reset(null);   
                 };
                 
+                _widget.checkLimit = function(event, node){
+                        var length = node.value.length;
+                        if (node.value.length === 140) alert("maximum size reached");
+                        if (node.value.split("\n").length === 5 && event.keyCode = 13){
+                                alert("maximum size reached");
+                                node.value.trim("\n");        
+                        }
+                };
+                
                 _widget.reset = function reset(pos){
                         if (!pos && pos !== 0){
                                 _postit.reset({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png", "marker": "#4D4D4D"}});
                                 _colors.reset(_initColors);
                         }
                         else{
-                               _postit.reset($store.get(pos)); 
+                               _postit.reset($store.get(pos));
                         }
                 };
                 

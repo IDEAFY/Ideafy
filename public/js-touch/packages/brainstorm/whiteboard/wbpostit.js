@@ -85,7 +85,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                 _widget.checkLimit = function(event, node){
                         var length = node.value.length;
                         if (node.value.length === 140) alert("maximum size reached");
-                        if (node.value.split("\n").length === 5 && event.keyCode = 13){
+                        if (node.value.split("\n").length === 5 && event.keyCode === 13){
                                 alert("maximum size reached");
                                 node.value.trim("\n");        
                         }

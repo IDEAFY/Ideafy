@@ -126,6 +126,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 _user.upload();
                                         }
                                 }
+                           }, function(err){
+                                   alert("session could not be retrieved");
                            });
                    };
                    

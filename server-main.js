@@ -170,6 +170,16 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         tc_count--;
                                         usercdb.set("twocent_count", tc_count);
                                         break;
+                                case "su_session_complete":
+                                        var sus = usercdb.get("su_sessions_count") || 0;
+                                        sus++;
+                                        usercdb.set("su_sessions_count", sus);
+                                        break;
+                                case "mu_session_complete":
+                                        var mus = usercdb.get("su_sessions_count") || 0;
+                                        mus++;
+                                        usercdb.set("su_sessions_count", mus);
+                                        break;
                                 default:
                                         break;        
                         }
@@ -1465,7 +1475,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
                             idList = [],
-                            parts = sessionCDB.get("participants");
+                            parts = sessionCDB.get("participants"),
+                            reason;
                         
                         // gather list of users who should be credited
                         idList.push(sessionCDB.get("initiator").id);
@@ -1474,9 +1485,21 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         idList.push(part.id);
                                 });
                         }
+                        
+                        // indicate session mode
+                        switch (sessionCDB.get("mode")){
+                                case "quick":
+                                        reason = "su_session_complete";
+                                        break;
+                                        
+                                default:
+                                        reason = "mu_session_complete";
+                                        break;        
+                        }
+                        
                         // for each user update IP with reason sessionComplete
                         idList.forEach(function(id){
-                                updateUserIP(id, "session_complete", ip, promise.fulfill);
+                                updateUserIP(id, "su_session_complete", ip, promise.fulfill);
                         });
                         return promise;
                 };

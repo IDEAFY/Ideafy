@@ -66,7 +66,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         formatTitle : function(title){
                                                 if (title) {
                                                         this.innerHTML = title.toUpperCase(); 
-                                                        }       
+                                                }
+                                                else this.innerHTML = _labels.get(this.parentNode.getAttribute("name")+"lbl");      
                                         },
                                         setPic : function(pic){
                                                 if (pic){
@@ -230,11 +231,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.draw = function(event, node){
+                                var toDraw = [];
+                                
                                 if (_next === "step" && _ready){
                                         _ready = false; // to prevent fast clicks
-                                        if (!_techDisplay.get("tech1").selected) _widget.drawTech("tech1");
-                                        if (!_techDisplay.get("tech2").selected) _widget.drawTech("tech2");
-                                        if (!_techDisplay.get("tech3").selected) _widget.drawTech("tech3");
+                                        
+                                        // check which cards are needed
+                                        
+                                        
+                                        if (!_techDisplay.get("tech1").selected) toDraw.push("tech1");
+                                        if (!_techDisplay.get("tech2").selected) toDraw.push("tech2");
+                                        if (!_techDisplay.get("tech3").selected) toDraw.push("tech3");
+                                        
+                                        _widget.drawTech(toDraw);
                                         
                                         setTimeout(function(){
                                                 node.classList.remove("pushed");
@@ -243,26 +252,37 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                  }
                         };
                         
-                        _widget.drawTech = function drawTech(name){
-                                var idx;
-                                // if no cards left in stack reset it
-                                if (_techs.length === 0){
-                                        _techs = $data.get("deck").techno.concat();
-                                        // remove cards already selected 
-                                        _techDisplay.loop(function(v,k){
-                                                if (v.selected) _techs.splice(_techs.indexOf(_techCards.get(k).id), 1);
-                                        });
-                                }
+                        _widget.drawTech = function drawTech(arr){
+                                var idx, accepted = [];
                                 
-                                idx = Math.floor(Math.random()*_techs.length);
-                                _widget.getCardDetails(_techs[idx], name);
-                                _techs.splice(idx, 1);
-                                _techDisplay.set("left", _techs.length);
-                                _drawnCards++;
+                                arr.forEach(function(name){
+                                        if (_techs.length){
+                                                idx = Math.floor(Math.random()*_techs.length);
+                                                _widget.getCardDetails(_techs[idx], name);
+                                                _techs.splice(idx, 1);
+                                                _techDisplay.set("left", _techs.length);
+                                                _drawnCards++;        
+                                        }
+                                        else{
+                                                _techs = $data.get("deck").techno.concat();
+                                                // remove selected cards from deck
+                                                if (_techDisplay.get("tech1").selected) {accepted.push(_techCards.get(0).id);}
+                                                if (_techDisplay.get("tech2").selected) {accepted.push(_techCards.get(1).id);}
+                                                if (_techDisplay.get("tech3").selected) {accepted.push(_techCards.get(2).id);}
+                                                _techs.filter(function(value){
+                                                        return !(accepted.indexOf(value)>-1);
+                                                });
+                                                idx = Math.floor(Math.random()*_techs.length);
+                                                _widget.getCardDetails(_techs[idx], name);
+                                                _techs.splice(idx, 1);
+                                                _techDisplay.set("left", _techs.length);
+                                                _drawnCards++; 
+                                        }
+                                });
                         };
                         
                         _widget.getCardDetails = function getCardDetails(id, name){
-                                var cdb = new CouchDBStore(), arr = ["tech1", "tech2", "tech3"], idx = arr.indexOf(name);
+                                var cdb = new CouchDBStore(), idx = ["tech1", "tech2", "tech3"].indexOf(name), promise = new Promise();
                                 
                                 cdb.setTransport(_transport);
                                 cdb.sync(Config.get("db"), id).then(function(){
@@ -270,13 +290,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _techCards.update(idx,"id",id);
                                         _techCards.update(idx,"title",cdb.get("title"));
                                         _techCards.update(idx,"pic", cdb.get("picture_file"));
-                                        setTimeout(function(){cdb.unsync();}, 500);       
-                                });  
+                                        promise.fulfill();
+                                        cdb.unsync();      
+                                });
+                                
+                                return promise; 
                         };
                         
                         _widget.accept = function(event, node){
                                 var name = node.getAttribute('name'),
-                                    arr = ["tech1", "tech2", "tech3"], idx = arr.indexOf(name),
+                                    idx = ["tech1", "tech2", "tech3"].indexOf(name),
                                     display = _techDisplay.get(name);
                                 
                                 if (_next === "step"){
@@ -310,18 +333,26 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "tech2":{"popup": false, "selected":false},
                                         "tech3":{"popup": false, "selected": false}
                                 });
+                                _techCards.reset([
+                                                {"id":"", "title":"", "pic":""},
+                                                {"id":"", "title":"", "pic":""},
+                                                {"id":"", "title":"", "pic":""}
+                                        ]);
                                 _next = "step";
-                                if (sip && sessionTech.length){
+                                
+                                // check if session is in progress and if techs have been defined already
+                                if (sip && sessionTech && sessionTech.length){
                                         _next = "screen"; // read-only
-                                        // retrieve card information from _sessionData
-                                        _widget.getCardDetails(sessionTech[0], "tech1");
-                                        _widget.getCardDetails(sessionTech[1], "tech2");
-                                        _widget.getCardDetails(sessionTech[2], "tech3");
-                                        ["tech1", "tech2", "tech3"].forEach(function(value){
-                                                _techDisplay.set(value, {"popup": false, "selected": true});
-                                        });
-                                        _techCards.watch("updated", function(){
-                                                if (_techCards.getNbItems() === 3) $data.set("techno", _techCards);
+                                        // retrieve card information from session data
+                                        _widget.getCardDetails(sessionTech[0], "tech1").then(function(){
+                                                _widget.getCardDetails(sessionTech[1], "tech2").then(function(){
+                                                        _widget.getCardDetails(sessionTech[2], "tech3").then(function(){
+                                                                ["tech1", "tech2", "tech3"].forEach(function(value){
+                                                                        _techDisplay.set(value, {"popup": false, "selected": true});
+                                                                });
+                                                                $data.set("techno", _techCards);        
+                                                        });          
+                                                });  
                                         });
                                 }
                                 else{
@@ -387,8 +418,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _techs = value.techno.concat();
                                 _techDisplay.set("left", _techs.length);        
                         });
-                        
-                        SPTECH = spinner;
                         
                         // Return
                         return _widget;

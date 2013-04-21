@@ -25,6 +25,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		//setup
 			_widget.plugins.addAll({
 				"liststack" : _stack,
+				"label" : new Model(Config.get("labels")),
 
 				/* mays be have event plugin in control*/
 				"publicevent" : new Delegate(this),

@@ -279,9 +279,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 });
                                 return promise;
                              },
-                             updateSessionIdeas = function(arr){
-                                     
-                             },
                              // confirmation window invoked with question and callback
                             confirmUI, question = _labels.get("deletereplay"), confirmCallback = function(decision){
                                         if (decision){

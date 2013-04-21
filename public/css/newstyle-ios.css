@@ -5723,9 +5723,8 @@ li.my2q{
     border-radius: 5px;
 }
 
-#dashboard-about .progressbar{
-    position: relative;
-    margin-bottom: 30px;
+#aboutstack{
+    margin-top: 121px;
 }
 
 #dashboard-about .aboutcontent{

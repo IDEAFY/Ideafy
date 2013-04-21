@@ -94,7 +94,18 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 
                                                 // if idea is coming from a session display replaysession
                                                 if (data.sessionId && data.sessionId.search("deleted") === -1){
-                                                        if (data.sessionReplay || data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"});
+                                                        if (data.sessionReplay || data.authors.indexOf(user.get("_id"))>-1){
+                                                                // double check if session is still around (legacy sessions)
+                                                                var cdb = new CouchDBStore();
+                                                                cdb.setTransport(Config.get("transport"));
+                                                                cdb.sync(Config.get("db"), "ideas", "_view/ideasbysession", {key: '"'+data.sessionId+'"'}).then(function(){
+                                                                        cdb.loop(function(v,i){
+                                                                                if (v.id === data._id){
+                                                                                        buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"});
+                                                                                }
+                                                                        });       
+                                                                });
+                                                        }
                                                 }
                                                 
                                                 // email -- if you can see it you can email it

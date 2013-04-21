@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Promise", "service/autocontact"],
-        function(Widget, Model, Event, Config, Store, Promise, AutoContact){
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Promise", "service/autocontact", "lib/spin.min"],
+        function(Widget, Model, Event, Config, Store, Promise, AutoContact, Spinner){
                 
                 return function NewMessageConstructor($close){
                         
@@ -17,6 +17,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                             user = Config.get("user"),
                             transport = Config.get("transport"),
                             sendInProgress = false,
+                            spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin(),
                             autoCompleteUIs = {},
                             validateRecipients = function(onEnd){
                                     var to = message.get("toList").toLowerCase().split(/,|;/),
@@ -144,8 +145,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                         
                         newMessageUI.send = function(event, node){
                                 var now = new Date(), json={};
+                                node.classList.add("invisible");
                                 node.classList.remove('pressed');
-                                
+                                spinner.spin(node.parentNode);
                                 if (!sendInProgress){
                                         sendInProgress = true;
                                         // reset error
@@ -175,11 +177,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                                         
                                                         transport.request("Notify", json, function(result){
                                                                 sendInProgress = false;
+                                                                spinner.stop();
+                                                                node.classList.remove("invisible");
                                                                 newMessageUI.reset();
                                                                 error.set("errormsg", labels.get("messagesentok"));
                                                                 setTimeout(function(){
                                                                         error.set("errormsg", "");
-                                                                        sendInProgress=false;
+                                                                        node.classList.remove("invisible");
                                                                         $close("#defaultPage");}, 2000);
                                                         });
                                                 }
@@ -190,8 +194,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                         });
                                 }    
                         };
-                        
-                        MSG = message;
                         
                         return newMessageUI;
                 };

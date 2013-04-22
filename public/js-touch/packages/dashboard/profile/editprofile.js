@@ -373,22 +373,20 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                                 changes++;
                         }
                         if (changes) {
-                                user.sync(Config.get("db"), user.get("_id")).then(function(){
-                                        user.upload().then(function(){
-                                                // also update avatar in Config store
-                                                if (updates.picture_file) {
-                                                        Config.set("avatar", profile.get("avatar"));
-                                                }
-                                                if (updates.picture_file && updates.picture_file.search("img/avatars/deedee") <0){
-                                                        uploadAvatar();
-                                                        document.getElementById("rotate").classList.add("invisible");
-                                                }
-                                                spinner.stop();
-                                                node.classList.remove("invisible");
-                                                Config.get("observer").notify("profile-updated");
-                                                document.querySelector(".edituserdetails").classList.add("invisible");
-                                                document.querySelector(".userdetails").classList.remove("invisible");
-                                        });
+                                user.upload().then(function(){
+                                        // also update avatar in Config store
+                                        if (updates.picture_file) {
+                                                Config.set("avatar", profile.get("avatar"));
+                                        }
+                                        if (updates.picture_file && updates.picture_file.search("img/avatars/deedee") <0){
+                                                uploadAvatar();
+                                                document.getElementById("rotate").classList.add("invisible");
+                                        }
+                                        spinner.stop();
+                                        node.classList.remove("invisible");
+                                        Config.get("observer").notify("profile-updated");
+                                        document.querySelector(".edituserdetails").classList.add("invisible");
+                                        document.querySelector(".userdetails").classList.remove("invisible");
                                 });
                         }
                         else{

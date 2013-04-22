@@ -27,7 +27,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                ]),
                        _user = Config.get("user"),
                        _session = new CouchDBStore(),
-                       _sessionData = new Store()
+                       _sessionData = new Store(),
                        spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
                    _widget.plugins.add("quickstack", _stack);
@@ -273,8 +273,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }        
                    });
                    
-                   STEPS = _steps;
-                   PROG = _progress;
                    // return
                    return _widget;
            };    

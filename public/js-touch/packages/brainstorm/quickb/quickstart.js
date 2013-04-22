@@ -106,8 +106,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 document.getElementById("help-popup").classList.add("appear");
                          };
                         
-                        // init
-                        SPSTART = spinner;
                         // return
                         return _widget;
                 };     

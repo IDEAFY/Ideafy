@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBStore", "service/config", "Promise", "Store"],
-        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBStore, Config, Promise, Store){
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBStore", "service/config", "Promise", "Store", "lib/spin.min"],
+        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBStore, Config, Promise, Store, Spinner){
                 
            return function MUControllerConstructor($exit){
                    
@@ -26,8 +26,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                ],
                        _steps = new Store(steps),
                        _user = Config.get("user"),
-                       _session = new CouchDBStore()
-                       _sessionData = new Store();
+                       _session = new CouchDBStore(),
+                       _sessionData = new Store(),
+                       spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
                    // progress bar setup
                    _progress.plugins.addAll({
@@ -80,6 +81,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    _widget.retrieveSession = function retrieveSession(sid){
                            
                            var replay = true;
+                           
+                           spinner.spin(document.getElementById("brainstorm"));
                            // reset local session data
                            _sessionData.reset();
                            
@@ -110,6 +113,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         }      
                                 });
                                 
+                                spinner.stop();
                                 // display wrapup screen else display start screen
                                 _stack.getStack().show("muwrapup");
                            });
@@ -164,7 +168,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    _widget.next = function next(currentName){
                         var _id,
-                            _nextui;
+                            _nextui,
+                            _currentui = _stack.getStack().get(currentName);
+                            promise = new Promise();
+                            
                         _steps.loop(function(value, idx){
                                 if (value.name === currentName){
                                         _id = idx;
@@ -172,23 +179,33 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         });
                         
                         if (_id < _steps.getNbItems()-1) {
+                                
+                                // update progress bar
+                                _steps.update(_id, "currentStep", false);
+                                _steps.update(_id+1, "currentStep", true);
+                                
                                 // if previous step was already done do not modify status
                                 if (_steps.get(_id).status !== "done"){
                                         _steps.update(_id, "status", "done");
-                                        _steps.update(_id, "currentStep", false);
                                         _steps.update(_id+1, "status", "ongoing");
-                                        _steps.update(_id+1, "currentStep", true);
                                         
                                         _session.set("step", _steps.get(_id+1).name);
-                                        _session.upload();
-                                        _nextui = _stack.getStack().get(_steps.get(_id+1).name);
-                                        if (_nextui.initTimer) _nextui.initTimer();
-                                        _stack.getStack().show(_steps.get(_id+1).name);
+                                        _session.upload().then(function(){
+                                                _nextui = _stack.getStack().get(_steps.get(_id+1).name);
+                                                if (_nextui.initTimer) _nextui.initTimer();
+                                                _currentui.stopSpinner();
+                                                _stack.getStack().show(_steps.get(_id+1).name);
+                                                promise.fulfill();        
+                                        });
                                 }
                                 else {
+                                        _currentui.stopSpinner();
                                         _stack.getStack().show(_steps.get(_id+1).name);
+                                        promise.fulfill();
                                 }
-                        }        
+                        }
+                        
+                        return promise;       
                    };
                    
                    _widget.init = function init(){
@@ -212,16 +229,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            
                    };
                    
-                   _widget.toggleProgress = function toggleProgress(node){
-                           var _progressBar = node.querySelector(".progressbar");
-                           
-                           if (_progressBar) {
-                                   setTimeout(function(){
-                                           node.removeChild(_progressBar);
-                                        _progress.place(_frag);
-                                        }, 600);
-                           }
-                           else node.appendChild(_frag);        
+                   _widget.toggleProgress = function toggleProgress(){
+                           _progress.dom.classList.toggle("invisible");      
                    };
                    
                    // init

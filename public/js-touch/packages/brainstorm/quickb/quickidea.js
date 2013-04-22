@@ -476,7 +476,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         (_idea.get("title") && _idea.get("description") && _idea.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
                         
-                        SPIDEA = spinner;
                         // Return
                         return _widget;
                 };    

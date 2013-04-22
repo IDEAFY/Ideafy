@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore", "service/cardpopup", "../../whiteboard/whiteboard", "Promise", "service/utils"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise, Utils){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore", "service/cardpopup", "../../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise, Utils, Spinner){
                 
                 return function MUScenarioConstructor($session, $data, $prev, $next, $progress){
                         
@@ -37,7 +37,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _wb = new Whiteboard("scenario", _wbContent, _tools),
                             _start, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            _transport = Config.get("transport");
+                            _transport = Config.get("transport"),
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 665, left: 690}).spin();
+                            // deduct 20px from position shown in navigator 
                              
                         
                         
@@ -102,7 +104,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // move to next screen
                         _widget.next = function(event, node){
                                 
+                                spinner.spin(node.parentNode);
+                                node.classList.add("invisible");
                                 node.classList.remove("pressed");
+                                
                                 // if first time: upload scenario and set readonly
                                 if (_next === "step"){
                                         _next = "screen";
@@ -121,7 +126,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 $session.sync(Config.get("db"), $session.get("_id")).then(function(){
                                                         var timers = $session.get("elapsedTimers");
                                                         
-                                                        timers.muscenario = _timer.get("timer");
+                                                        timers.quickscenario = _timer.get("timer");
                                                         // update session document
                                                         $session.set("scenario", [JSON.parse(_scenario.toJSON())]);
                                                         $session.set("elapsedTimers", timers);
@@ -142,7 +147,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // toggle progress bar
                         _widget.toggleProgress = function(event, node){
-                                $progress(node);               
+                                $progress();               
                         };
                         
                         // toggle timer

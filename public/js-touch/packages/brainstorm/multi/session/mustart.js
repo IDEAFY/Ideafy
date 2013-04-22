@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help"],
-        function(Widget, Map, Model, Event, Config, Help){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, Help, Spinner){
                 
                 return function MUStartConstructor($session, $prev, $next, $progress){
                         
@@ -15,7 +15,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _user = Config.get("user"),
                             _db = Config.get("db"),
                              _labels = Config.get("labels"),
-                             _next = "step";
+                             _next = "step",
+                             spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 360, left:545}).spin();
+                             // deduct 20px from position shown in navigator
                         
                         // setup
                         _widget.plugins.addAll({
@@ -33,33 +35,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.next = function(event, node){
-                               if (_next === "step"){
-                                        _next = "screen";
-                                        // if title field is empty, set placeholder value as the default title
-                                        if ($session.get("title") === ""){
-                                                $session.set("title", _labels.get("quickstarttitleplaceholderpre")+$session.get("initiator").username+_labels.get("quickstarttitleplaceholderpost"));      
-                                        }
-                                        
-                                        // set session language to the user's language
-                                        $session.set("lang", _user.get("lang"));
                                 
-                                        // IMPORTANT: the new session doc is created in CDB and the session document is synched for the entire session
-                                        $session.set("_id", "S:QUICK:"+$session.get("startTime"));
-                                        $session.sync(_db, $session.get("_id"));
-                                        
-                                        // set session in progress in user document
-                                        _user.set("sessionInProgress", {id : $session.get("_id"), type: "quick"});
-                                        _user.upload().then(function(){
-                                                node.classList.remove("pressed");
-                                                // next step
-                                                $next("quickstart");        
-                                        });
-                                        
-                                }
-                                else{
-                                        node.classList.remove("pressed");
-                                        $next("quickstart");        
-                                }
+                                spinner.spin(node.parentNode);
+                                node.classList.add("invisible");
+                                node.classList.remove("pressed");
+                                $next("mustart");
+
                         };
                         
                         _widget.prev = function(event, node){
@@ -68,11 +49,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.toggleProgress = function(event, node){
-                                $progress(node);               
+                                $progress();               
                         };
                         
                         _widget.reset = function reset(replay){
                                 _next = "step";
+                                // reset chat window
                         };
                         
                         _widget.help = function(event, node){

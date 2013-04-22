@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "Promise", "service/cardpopup", "service/help", "service/utils"],
-        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Promise, CardPopup, Help, Utils){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "Promise", "service/cardpopup", "service/help", "service/utils", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Promise, CardPopup, Help, Utils, Spinner){
                 
                 return function MUSetupConstructor($session, $data, $prev, $next, $progress){
                         
@@ -33,8 +33,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()}, // used for zoom
                             _currentPopup = "", // which card if any is magnified
                             _start =  null, _elapsed = 0,
-                            _next = "step"; // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                        
+                            _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 373, left:373}).spin();
+                            // deduct 20px from position shown in navigator
+                            
                         // Setup
                         _widget.plugins.addAll({
                                 "labels" : new Model(_labels),
@@ -91,6 +93,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Method called when clicking next button -- updates session store, computes score and moves to next step
                         _widget.next = function(event, node){
+                                spinner.spin(node.parentNode);
+                                node.classList.add("invisible");
+                                node.classList.remove("pressed");
                                 
                                 if (_next === "step"){
                                         _next = "screen"; //only one upload
@@ -110,18 +115,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 $session.unsync();
                                                 $session.sync(Config.get("db"), $session.get("_id")).then(function(){
                                                         // update session document
-                                                        $session.set("elapsedTimers", {"musetup": _timer.get("timer")});
+                                                        $session.set("elapsedTimers", {"quicksetup": _timer.get("timer")});
                                                         $session.set("characters", [_cards.get("char").id]);
                                                         $session.set("contexts", [_cards.get("context").id]);
                                                         $session.set("problems", [_cards.get("problem").id]);
                                                         //upload and move to next step
-                                                        node.classList.remove("pressed");
                                                         $next("musetup");         
                                                 });      
                                         });
                                 }
                                 else {
-                                        node.classList.remove("pressed");
                                         $next("musetup");
                                 }
                         };
@@ -141,7 +144,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Method called to display the progress bar
                         _widget.toggleProgress = function(event, node){
-                                $progress(node);               
+                                $progress();               
                         };
                         
                         // Method called to display step timer instead of current time

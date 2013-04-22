@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/cardpopup", "../../whiteboard/whiteboard", "Store", "CouchDBStore", "Promise", "service/utils"],
-        function(Widget, Map, Model, Event, Config, CardPopup, Whiteboard, Store, CouchDBStore, Promise, Utils){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/cardpopup", "../../whiteboard/whiteboard", "Store", "CouchDBStore", "Promise", "service/utils", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, CardPopup, Whiteboard, Store, CouchDBStore, Promise, Utils, Spinner){
                 
                 return function MUIdeaConstructor($session, $data, $prev, $next, $progress){
                         
@@ -36,7 +36,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _wb = new Whiteboard("idea", _wbContent, _tools),
                             _transport = Config.get("transport"),
                             _user = Config.get("user"),
-                            _labels = Config.get("labels");
+                            _labels = Config.get("labels"),
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 665, left: 690}).spin();
                         
                         // Setup
                         _widget.plugins.addAll({
@@ -114,7 +115,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.next = function(event, node){
                                 var now = new Date(), _timers, duration;
                                 
+                                spinner.spin(node.parentNode);
+                                node.classList.add("invisible");
                                 node.classList.remove("pressed");
+                                
                                 // if first time: upload scenario and set readonly
                                 if (_next === "step"){
                                         _next = "screen";
@@ -139,7 +143,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         $session.sync(Config.get("db"), $session.get("_id")).then(function(){
                                                                 var timers = $session.get("elapsedTimers");
                                                         
-                                                                timers.muidea = _timer.get("timer");
+                                                                timers.quickidea = _timer.get("timer");
                                                                 // update session document
                                                                 $session.set("idea", [JSON.parse(_idea.toJSON())]);
                                                                 $session.set("elapsedTimers", timers);
@@ -147,7 +151,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 $session.set("status", "completed");
                                                                 // set idea to readonly
                                                                 _tools.set("readonly", true);
-                                                                $next("muidea");         
+                                                                // remove invisible
+                                                                $next("muidea");       
                                                         });      
                                                 });
                                         });
@@ -163,7 +168,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // toggle progress bar
                         _widget.toggleProgress = function(event, node){
-                                $progress(node);               
+                                $progress();               
                         };
                         
                         // toggle timer

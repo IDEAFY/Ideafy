@@ -130,7 +130,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         });
                         
                         
-                        CARDS = _cards;
                         // Return
                         return _widget;
                 };     

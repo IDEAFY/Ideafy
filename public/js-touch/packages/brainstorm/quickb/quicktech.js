@@ -237,8 +237,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _ready = false; // to prevent fast clicks
                                         
                                         // check which cards are needed
-                                        
-                                        
                                         if (!_techDisplay.get("tech1").selected) toDraw.push("tech1");
                                         if (!_techDisplay.get("tech2").selected) toDraw.push("tech2");
                                         if (!_techDisplay.get("tech3").selected) toDraw.push("tech3");

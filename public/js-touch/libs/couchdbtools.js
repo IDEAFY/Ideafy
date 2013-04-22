@@ -322,6 +322,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                         },
                                 function (changes) {
                                         var json;
+                                        console.log(changes);
                                         // Should I test for this very special case (heartbeat?)
                                         // Or do I have to try catch for any invalid json?
                                         if (changes == "\n") {
@@ -362,6 +363,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                         },
                                         function (changes) {
                                                 var json;
+                                                console.log(changes);
                                                 // Should I test for this very special case (heartbeat?)
                                                 // Or do I have to try catch for any invalid json?
                                                 if (changes == "\n") {

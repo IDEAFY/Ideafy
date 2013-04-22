@@ -128,11 +128,9 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBSto
                                 touchPoint = [event.pageX, event.pageY];
                                 
                                 if ((touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        console.log("displaynext");
                                         cardList.displayNext();
                                 }
                                 else if ((touchStart[0]-touchPoint[0]) < 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        console.log("displayprev");
                                         cardList.displayPrevious();
                                 }
                         };
@@ -159,7 +157,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBSto
                                         case 1:
                                                 pos.x = 304;
                                                 pos.y = 157;
-                                                caret = "left";
+                                                caret = "left"
                                                 break;
                                         case 2:
                                                 pos.x = 23;

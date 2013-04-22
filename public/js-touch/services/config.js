@@ -36,7 +36,6 @@ define(["Store", "SocketIOTransport", "CouchDBStore", "Observable"], function(St
                                         "zip" : null,
                                         "state": "",
                                         "city" : "",
-                                        "state" :"",
                                         "country" : ""
                                 },
                                 "gender" : 1,

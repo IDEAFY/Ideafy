@@ -161,14 +161,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 getDocAsAdmin(userid, usercdb).then(function(){
                         switch(reason){
                                 case "newtc":
-                                        var tc_count = usercdb.get("twocent_count") || 0;
+                                        var tc_count = usercdb.get("twocents_count") || 0;
                                         tc_count++;
-                                        usercdb.set("twocent_count", tc_count);
+                                        usercdb.set("twocents_count", tc_count);
                                         break;
                                 case "deltc":
-                                        var tc_count = usercdb.get("twocent_count");
+                                        var tc_count = usercdb.get("twocents_count");
                                         tc_count--;
-                                        usercdb.set("twocent_count", tc_count);
+                                        usercdb.set("twocents_count", tc_count);
                                         break;
                                 case "su_session_complete":
                                         var sus = usercdb.get("su_sessions_count") || 0;

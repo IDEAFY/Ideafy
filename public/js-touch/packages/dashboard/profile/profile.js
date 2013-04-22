@@ -325,6 +325,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         profileUI.updateGrade();
                         profileUI.updateAchievements();
                         // update news
+                        news.reset([]);
                         news.reset(user.get("news"));      
                    });
                    

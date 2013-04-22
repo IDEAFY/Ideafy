@@ -122,12 +122,19 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    _widget.startNewSession = function startNewSession(sid){
                         
                         // reset all step UIS
+                        console.log("resetting all stack UIs");
                         _stack.getStack().get("mustart").reset();
+                        console.log("mustart reset sucessful");
                         _stack.getStack().get("musetup").reset();
+                        console.log("musetup reset sucessful");
                         _stack.getStack().get("muscenario").reset();
+                        console.log("muscenario reset sucessful");
                         _stack.getStack().get("mutech").reset();
+                        console.log("mutech reset sucessful");
                         _stack.getStack().get("muidea").reset();
+                        console.log("muidea reset sucessful");
                         _stack.getStack().get("muwrapup").reset();
+                        console.log("muwrapup reset sucessful");
                         
                         // display first step
                         _stack.getStack().show("musetup");

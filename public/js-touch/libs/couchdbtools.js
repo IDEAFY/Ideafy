@@ -156,8 +156,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                                         query: _syncInfo.query
                                 }, function (results) {
                                         var json = JSON.parse(results);
-                                        //test
-                                        console.log(json);
                                         if (!json.rows) {
                                                 throw new Error("CouchDBStore [" + _syncInfo.database + ", " + _syncInfo.design + ", " + _syncInfo.view + "].sync() failed: " + results);
                                         } else {
@@ -745,6 +743,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                 this.setReducedViewInfo = function setReducedViewInfo(reduced) {
                         if (typeof reduced == "boolean") {
                                 _syncInfo.reducedView = reduced;
+                                _syncInfo.query = {};
                                 return true;
                         } else {
                                 return false;

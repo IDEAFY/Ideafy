@@ -259,7 +259,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                         } else {
                                 promise.reject(json);
                         }
-                });
+                }, this);
             },
 
             /**

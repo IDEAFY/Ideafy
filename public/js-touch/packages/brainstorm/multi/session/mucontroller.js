@@ -78,27 +78,29 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            $exit();
                    };
                    
-                   _widget.retrieveSession = function retrieveSession(sid){
-                           
-                           var replay = true;
+                   _widget.retrieveSession = function retrieveSession(sid, replay){
                            
                            spinner.spin(document.getElementById("brainstorm"));
-                           // reset local session data
-                           _sessionData.reset();
                            
                            // connect to couchdbstore and retrieve session
-                           _session.unsync();
                            _session.reset();
                            _session.sync(Config.get("db"), sid).then(function(){
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
                                 // reset step UIs
+                                console.log("resetting all stack UIs");
                                 _stack.getStack().get("mustart").reset(replay);
+                                console.log("mustart reset ok");
                                 _stack.getStack().get("musetup").reset(replay);
+                                console.log("musetup reset ok");
                                 _stack.getStack().get("muscenario").reset(replay);
+                                console.log("muscenario reset ok");
                                 _stack.getStack().get("mutech").reset(replay);
+                                console.log("mutech reset ok");
                                 _stack.getStack().get("muidea").reset(replay);
+                                console.log("muidea reset ok");
                                 _stack.getStack().get("muwrapup").reset(replay);
+                                console.log("muwrapup reset ok");
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
@@ -114,30 +116,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 });
                                 
                                 spinner.stop();
-                                // display wrapup screen else display start screen
-                                _stack.getStack().show("muwrapup");
+                                // display wrapup screen else display current screen
+                                (replay) ? _stack.getStack().show("muwrapup") : _stack.getStack().show(step); 
                            });
-                   };
-                   
-                   _widget.startNewSession = function startNewSession(sid){
-                        
-                        // reset all step UIS
-                        console.log("resetting all stack UIs");
-                        _stack.getStack().get("mustart").reset();
-                        console.log("mustart reset sucessful");
-                        _stack.getStack().get("musetup").reset();
-                        console.log("musetup reset sucessful");
-                        _stack.getStack().get("muscenario").reset();
-                        console.log("muscenario reset sucessful");
-                        _stack.getStack().get("mutech").reset();
-                        console.log("mutech reset sucessful");
-                        _stack.getStack().get("muidea").reset();
-                        console.log("muidea reset sucessful");
-                        _stack.getStack().get("muwrapup").reset();
-                        console.log("muwrapup reset sucessful");
-                        
-                        // display first step
-                        _stack.getStack().show("musetup");
                    };
                    
                    _widget.reset = function reset(sid, replay){
@@ -151,8 +132,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            
                         // reset progress bar
                         _steps.reset(steps);
-                           
-                        (replay) ?  _widget.retrieveSession(sid) : _widget.startNewSession(sid);  
+                        
+                        // retrieve session document and launch   
+                        _widget.retrieveSession(sid, replay);  
                    };
                    
                    _widget.prev = function prev(currentName){

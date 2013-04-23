@@ -43,7 +43,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            }),
                            "progressevent" : new Event(_progress)
                    });
-                   _progress.template = '<div class = "progressbar"><ul id = "musteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
+                   _progress.template = '<div class = "progressbar invisible"><ul id = "musteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
                    
                    // Main UI setup
                    _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="stack" data-musessionstack="destination"></div></div>';
@@ -74,6 +74,11 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    _progress.exit = function(event, node){
                            node.classList.remove("pressed");
                            $exit();
+                   };
+                   
+                   _widget.toggleProgress = function toggleProgress(){
+                           console.log(_progress.dom);
+                           _progress.dom.classList.toggle("invisible");      
                    };
                    
                    _widget.retrieveSession = function retrieveSession(sid, replay){
@@ -207,10 +212,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            _stack.getStack().add("muwrapup", new MUWrapup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
                            console.log("after muwrapup");
                            
-                   };
-                   
-                   _widget.toggleProgress = function toggleProgress(){
-                           _progress.dom.classList.toggle("invisible");      
                    };
                    
                    // init

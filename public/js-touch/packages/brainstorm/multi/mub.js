@@ -57,17 +57,26 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                                 if (!join){
                                         p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro")});
                                         cdb.set("participants", p);
+                                        // set session to full if there are 3 participants + leader
+                                        if (p.length === 3) cdb.set("status", "full");
+                                        cdb.upload().then(function(){
+                                                mubWait.reset(sid);
+                                                stack.getStack().show("mubwait");
+                                        }, function(error){
+                                                console.log(error);
+                                                alert("failed to join session");
+                                        }); 
                                 }
-                                
-                                // set session to full if there are 3 participants + leader
-                                if (p.length === 3) cdb.set("status", "full");
-                                cdb.upload().then(function(){
-                                        mubWait.reset(sid);
-                                        stack.getStack().show("mubwait");
-                                }, function(error){
-                                        console.log(error);
-                                        alert("failed to join session");
-                                });                
+                                else{
+                                        if (cdb.get("step") === "mustart"){
+                                                mubWait.reset(sid);
+                                                stack.getStack().show("mubwait");        
+                                        }
+                                        else{
+                                                widget.startSession(sid);        
+                                        }
+                                        
+                                }               
                         }, function(error){
                                 console.log(error);
                                 alert("failed to join session");

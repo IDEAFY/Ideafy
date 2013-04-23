@@ -123,7 +123,11 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         participants.reset(session.get("participants")); 
                                         
                                         // reset chatUI
-                                        chatUI.reset(session.get("chat")[0]); 
+                                        chatUI.reset(session.get("chat")[0]);
+                                        
+                                        // set as session in progress
+                                        user.set("sessionInProgress", {id: sid, type: "musession", mode:"rejoin"});
+                                        user.upload();
                                 });
                         };
                         

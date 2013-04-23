@@ -64,7 +64,7 @@ define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "servi
                         
                         _widget.removeContinue = function removeContinue(){
                                 var arr = JSON.parse(_menu.toJSON());
-                                if (arr[0]. name === "continnue") arr.splice(0,1);
+                                if (arr[0]. name === "continue") arr.splice(0,1);
                                 _menu.reset(arr);
                                 _sip = "";        
                         };

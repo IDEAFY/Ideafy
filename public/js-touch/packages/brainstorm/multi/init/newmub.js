@@ -35,7 +35,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "type" : 8,
                         "deck" : user.get("active_deck"),
                         "status" : "waiting",
-                        "step" : "",
+                        "step" : "mustart",
                         "lang" : user.get("lang"),
                         "characters" : [],
                         "contexts" : [],

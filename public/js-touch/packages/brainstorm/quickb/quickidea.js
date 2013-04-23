@@ -151,8 +151,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 $session.set("status", "completed");
                                                                 // set idea to readonly
                                                                 _tools.set("readonly", true);
-                                                                // remove invisible
-                                                                $next("quickidea");       
+                                                                
+                                                                $next("quickidea").then(function(){
+                                                                        // remove session in progress
+                                                                        _user.set("sessionInProgress", {});
+                                                                        _user.upload();
+                                                                });       
                                                         });      
                                                 });
                                         });

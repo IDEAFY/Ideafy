@@ -253,6 +253,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                 }, function (result) {
                         var json = JSON.parse(result);
                         if (json.ok) {
+                                this.set("_rev", json.rev);
                                 promise.fulfill(json);
                                 _stateMachine.event("subscribeToDocumentChanges");
                         } else {

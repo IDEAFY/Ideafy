@@ -290,7 +290,8 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                  * Disconnect the socket
                  */
                 disconnectSocket : function(){
-                        Config.get("socket").socket.disconnect();        
+                        Config.get("socket").socket.disconnect();
+                        Config.get("observer").notify("disconnect");      
                 },
                 
 			

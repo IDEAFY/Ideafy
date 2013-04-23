@@ -46,9 +46,19 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                         
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), sid).then(function(){
-                                var p = cdb.get("participants");
-                                p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro")});
-                                cdb.set("participants", p);
+                                var p = cdb.get("participants"), join = false;
+                                // if not already joined (rejoin possible)
+                                p.foreach(function(participant){
+                                        if (participant.id === user.get("_id")){
+                                                join = true;
+                                        }        
+                                });
+                                
+                                if (!join){
+                                        p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro")});
+                                        cdb.set("participants", p);
+                                }
+                                
                                 // set session to full if there are 3 participants + leader
                                 if (p.length === 3) cdb.set("status", "full");
                                 cdb.upload().then(function(){

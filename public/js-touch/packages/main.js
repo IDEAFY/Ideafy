@@ -199,9 +199,16 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
         // resync user document upon socket reconnection
         Config.get("observer").watch("reconnect", function(){
                 _local.sync("ideafy-data");
-                _user.unsync();
-                _user.sync(_db, _local.get("currentLogin")).then(function(){
-                        console.log("user resynchronized");
-                });       
+                if (navigator.connection && navigator.connection.type === "none"){
+                        _login.setScreen("#nointernet");
+                }
+                else checkServerStatus.then(function(){
+                        _user.unsync();
+                        _user.sync(_db, _local.get("currentLogin")).then(function(){
+                                console.log("user resynchronized");
+                        });          
+                }, function(){
+                        _login.setScreen("#maintenance-screen");        
+                });     
         });
 }); 

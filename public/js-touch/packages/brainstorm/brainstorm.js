@@ -120,7 +120,12 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                  */
                 Config.get("observer").watch("join-musession", function(sid){
                       var sip ={type: "musession", id: sid, mode:"join"};
-                      _widget.selectScreen(sip.type, sip);
+                      Config.get("user").set("sessionInProgress", sip);
+                      console.log("before user upload");
+                      Config.get("user").upload().then(function(){
+                              console.log("after user upload");
+                                _widget.selectScreen(sip.type, sip);        
+                      });
                 });
 		
 		//return

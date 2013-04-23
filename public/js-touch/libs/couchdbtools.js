@@ -251,6 +251,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                         },
                         data: this.toJSON()
                 }, function (result) {
+                        console.log(result);
                         var json = JSON.parse(result);
                         if (json.ok) {
                                 this.set("_rev", json.rev);

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBStore", "service/config", "Promise", "Store", "lib/spin.min"],
-        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBStore, Config, Promise, Store, Spinner){
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBStore", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin"],
+        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBStore, Config, Promise, Store, Spinner, Place){
                 
            return function MUControllerConstructor($exit){
                    
@@ -44,12 +44,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            "progressevent" : new Event(_progress)
                    });
                    _progress.template = '<div class = "progressbar"><ul id = "musteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
-                   _progress.place(_frag);
-                   
                    
                    // Main UI setup
-                   _widget.template = '<div id="musession"><div class="stack" data-musessionstack="destination"></div></div>';
-                   _widget.plugins.add("musessionstack", _stack);
+                   _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="stack" data-musessionstack="destination"></div></div>';
+                   _widget.plugins.addAll({"musessionstack": _stack, "place": new Place({"progress": _progress})});
                    
                    
                    // UI methods
@@ -88,19 +86,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
                                 // reset step UIs
-                                console.log("resetting all stack UIs");
                                 _stack.getStack().get("mustart").reset(replay);
-                                console.log("mustart reset ok");
                                 _stack.getStack().get("musetup").reset(replay);
-                                console.log("musetup reset ok");
                                 _stack.getStack().get("muscenario").reset(replay);
-                                console.log("muscenario reset ok");
                                 _stack.getStack().get("mutech").reset(replay);
-                                console.log("mutech reset ok");
                                 _stack.getStack().get("muidea").reset(replay);
-                                console.log("muidea reset ok");
                                 _stack.getStack().get("muwrapup").reset(replay);
-                                console.log("muwrapup reset ok");
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){

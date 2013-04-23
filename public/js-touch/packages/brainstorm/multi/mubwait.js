@@ -290,6 +290,8 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 participants.reset(array);        
                         });
                         
+                        CHAT = chatUI.getModel();
+                        
                         return widget;
                 
                 };

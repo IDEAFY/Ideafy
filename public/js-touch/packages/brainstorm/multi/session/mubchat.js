@@ -228,6 +228,10 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         chat.reset([]);
                 };
                 
+                mubChat.getModel = function getModel(){
+                        return chatCDB;
+                };
+                
                 chatCDB.watchValue("msg", function(arrCDB){
                         var l = arrCDB.length - 1; 
                         chat.reset(arrCDB);

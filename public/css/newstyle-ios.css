@@ -6411,6 +6411,9 @@ li.my2q{
     padding-right: 10px;
     font-size: 14px;
     overflow-y: scroll;
+    vertical-align: middle;
+    display: table-cell;
+    width: 608px;
 }
 
 .sessionchat .chatwrite.placeholder{

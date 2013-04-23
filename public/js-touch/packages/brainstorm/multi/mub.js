@@ -12,7 +12,8 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
            
                 var widget = new Widget(),
                     stack = new Stack(),
-                    user = Config.get("user");
+                    user = Config.get("user"),
+                    muWait, muInit, muController;
                 
                 widget.plugins.add("mustack", stack);
                 
@@ -25,7 +26,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 
                 widget.reset = function reset(sip){ 
                         if (!sip){
-                                stack.getStack().get("mubinit").reset();
+                                muInit.reset();
                                 stack.getStack().show("mubinit");        
                         }
                         else if (sip.mode === "join"){
@@ -41,8 +42,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 // joining an existing session
                 
                 widget.join = function join(sid){
-                        var mubWait = stack.getStack().get("mubwait"),
-                            cdb = new CouchDBStore();
+                        var cdb = new CouchDBStore();
                         
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), sid).then(function(){
@@ -60,7 +60,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                                         // set session to full if there are 3 participants + leader
                                         if (p.length === 3) cdb.set("status", "full");
                                         cdb.upload().then(function(){
-                                                mubWait.reset(sid);
+                                                muWait.reset(sid);
                                                 stack.getStack().show("mubwait");
                                         }, function(error){
                                                 console.log(error);
@@ -69,7 +69,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                                 }
                                 else{
                                         if (cdb.get("step") === "mustart"){
-                                                mubWait.reset(sid);
+                                                muWait.reset(sid);
                                                 stack.getStack().show("mubwait");        
                                         }
                                         else{
@@ -85,18 +85,21 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 
                 // starting a session
                 widget.startSession = function startSession(sid){
-                        console.log("startsession called");
                         stack.getStack().show("musession");
-                        MUController.reset(sid);
+                        muController.reset(sid);
                                         
                 };
                 
                 // --- INIT ---
-                
                 // Musession main stack has three widgets : the init (new or join), the waiting room and the session itself //
-                stack.getStack().add("mubinit", new MUInit($exit));
-                stack.getStack().add("mubwait", new MUWait($exit, widget.startSession));
-                stack.getStack().add("musession", new MUController($exit));
+                muInit = new MUInit($exit);
+                muWait = new MUWait($exit, widget.startSession);
+                muController = new MUController($exit);
+                
+                // Add widgets to the stack
+                stack.getStack().add("mubinit", muInit);
+                stack.getStack().add("mubwait", muWait);
+                stack.getStack().add("musession", muController);
                 
                 if (!$sip){
                         stack.getStack().show("mubinit");
@@ -112,7 +115,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 Config.get("observer").watch("start-mu_session", function(sid){
                         // show needs to be called prior to reset to make sure widget.dom exists in mubwait
                         stack.getStack().show("mubwait");
-                        stack.getStack().get("mubwait").reset(sid);
+                        muWait.reset(sid);
                 });
                 
                 return widget;

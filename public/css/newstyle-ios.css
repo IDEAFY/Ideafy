@@ -2705,7 +2705,8 @@ textarea.solution {
     background: #E5E5E5;
 }
 
-.brainstorm-header{
+#quickstart .brainstorm-header, #quicksetup .brainstorm-header, #quickscenario .brainstorm-header, #quicktech .brainstorm-header, #quickidea .brainstorm-header, #quickwrapup .brainstorm-header, #mustart .brainstorm-header, #musetup .brainstorm-header, #muscenario .brainstorm-header, #mutech .brainstorm-header, #muidea .brainstorm-header, #muwrapup .brainstorm-header{
+{
     margin-top: -36px;
     line-height: 36px;
 }

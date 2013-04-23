@@ -48,7 +48,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                         cdb.sync(Config.get("db"), sid).then(function(){
                                 var p = cdb.get("participants"), join = false;
                                 // if not already joined (rejoin possible)
-                                p.foreach(function(participant){
+                                p.forEach(function(participant){
                                         if (participant.id === user.get("_id")){
                                                 join = true;
                                         }        

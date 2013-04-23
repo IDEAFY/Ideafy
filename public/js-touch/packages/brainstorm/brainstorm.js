@@ -55,6 +55,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                         // start || continue the desired brainstorming type based on session in progress ({id:"", type:""}) parameter
                         _widget.selectScreen = function selectScreen(name, sip){
                                 
+                                console.log(name, sip);
                                 if (name === "continue"){
                                         name = sip.type;
                                 }
@@ -121,10 +122,8 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                 Config.get("observer").watch("join-musession", function(sid){
                       var sip ={type: "musession", id: sid, mode:"join"};
                       Config.get("user").set("sessionInProgress", sip);
-                      console.log("before user upload");
                       Config.get("user").upload().then(function(){
-                              console.log("after user upload");
-                                _widget.selectScreen(sip.type, sip);        
+                             _widget.selectScreen(sip.type, sip);        
                       });
                 });
 		

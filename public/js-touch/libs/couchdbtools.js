@@ -777,6 +777,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                  */
                 this.upload = function upload() {
                         var promise = new Promise;
+                        console.log("uploading document : ", this.toJSON());
                         if (_syncInfo.document) {
                                 _stateMachine.event("updateDatabase", promise);
                                 return promise;

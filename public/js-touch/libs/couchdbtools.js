@@ -577,6 +577,7 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                         data: this.toJSON()
                 }, function (response) {
                         var json = JSON.parse(response);
+                        if (response.search("S:MU")>-1) console.log(json);
                         if (json.ok) {
                                 this.set("_rev", json.rev);
                                 promise.fulfill(json);

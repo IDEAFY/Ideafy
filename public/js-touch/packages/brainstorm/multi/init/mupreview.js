@@ -147,8 +147,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 }
                         });
                         
-                        MUPUI = muPreviewUI;
-                                              
                         return muPreviewUI;       
                 };
         });

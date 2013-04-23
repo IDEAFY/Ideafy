@@ -347,7 +347,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         cdb.set("type", 17);
                         cdb.sync(Config.get("db"), id);
                         setTimeout(function(){
-                                cdb.upload();
+                                cdb.upload().then(function(){
+                                        cdb.unsync();
+                                });
                         }, 250);
                 };
                 

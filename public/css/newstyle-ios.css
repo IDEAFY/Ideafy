@@ -2716,7 +2716,7 @@ textarea.solution {
     height: 748px;
 }
 
-#quickstart .quickstart-form, .drawarea, #mubwait .mubwait-form{
+#quickstart .quickstart-form, .drawarea, #mubwait .mubwait-form, #mustart .quickstart-form{
     background: white;
     margin: auto;
     margin-top: 120px;
@@ -3353,20 +3353,20 @@ li.color-item{
 
 /* quickstart */
 
-#quickstart .quickstart-form{
+#quickstart .quickstart-form, #mustart .quickstart-form{
     width: 590px;
     height: 370px;    
     padding:40px 20px 40px 20px;    
 }
 
-#quickstart .quickstart-form label{
+#quickstart .quickstart-form label, #mustart .quickstart-form label{
     font-family: Pacifico;
     color: #657B99;
     font-size: 14px;
     letter-spacing: 1px;
 }
 
-#quickstart hr{
+#quickstart hr, #mustart hr{
     border: none;
     background:#AEB9BF;
     height: 1px;
@@ -3376,7 +3376,7 @@ li.color-item{
     _webkit-margin-after: 0px;
 }
 
-#quickstart .quickstart-form textarea, #newmub textarea {
+#quickstart .quickstart-form textarea, #mustart .quickstart-form textarea, #newmub textarea {
     font-size: 12px;
     background: #F2F2F2;
     border: none;
@@ -3386,23 +3386,23 @@ li.color-item{
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);    
 }
 
-#quickstart .quickstart-title{
+#quickstart .quickstart-title, #mustart .quickstart-title{
     height: 70px;
     margin-bottom: 40px;
 }
 
-#quickstart .quickstart-desc{
+#quickstart .quickstart-desc, #mustart .quickstart-desc{
     height: 115px;
     margin-bottom: 20px;
 }
 
-#quickstart .next-button{
+#quickstart .next-button, #mustart .next-button{
     margin-left: 534px;
 }
 
 /* quicksetup */
 
-#quicksetup .drawbutton, #quicktech .drawbutton{
+#quicksetup .drawbutton, #quicktech .drawbutton, #musetup .drawbutton, #mutech .drawbutton{
     display: inline-block;
     height: 107px;
     width: 107px;
@@ -3449,7 +3449,7 @@ li.color-item{
 
 
 
-#quicksetup .next-button{
+#quicksetup .next-button, #musetup .next-button{
     margin-top: 20px;
     margin-left: 364px;
 }
@@ -3826,7 +3826,7 @@ li.color-item{
     margin: 240px 30px 30px 30px;
 }
 
-#quicktech .drawarea{
+#quicktech .drawarea, #mutech .drawarea{
     float: left;
     margin-left: 142px;
 }

@@ -93,7 +93,9 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         muPreviewUI.join = function join(event, node){
                                 node.classList.remove("pressed");
                                 Config.get("observer").notify("join-musession", muCDB.get("_id"));
-                                muPreviewUI.closePreview();
+                                setTimeout(function(){
+                                        muPreviewUI.closePreview();
+                                }, 5000);
                         };
                         
                         muPreviewUI.init = function init(callback){

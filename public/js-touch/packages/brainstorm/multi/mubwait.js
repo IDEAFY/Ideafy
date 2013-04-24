@@ -86,10 +86,11 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         
                         widget.place(document.getElementById("mubwait"));
                         
+                        // create confirmation UI
+                        confirmUI = new Confirm(widget.dom);
                      
                         widget.reset = function reset(sid){
                                 // create confirmation UI
-                                confirmUI = new Confirm(widget.dom);
                                 confirmCallBack = function(decision){
                                         if (!decision){
                                                 confirmUI.hide();

@@ -83,6 +83,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            "info": new Model(info)
                    });
                    
+                   // create confirmation UI
+                   confirmUI = new Confirm(_widget.dom);
+                   
                    
                    // Main UI methods
                    
@@ -171,9 +174,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _stack.getStack().get("muidea").reset(replay);
                                 _stack.getStack().get("muwrapup").reset(replay);
                                 
-                                // create exit confirmation UI
-                                // create confirmation UI
-                                confirmUI = new Confirm(_widget.dom);
+                                // init exit confirmation UI
                                 confirmCallBack = function(decision){
                                         console.log("callback called, decision : ", decision);
                                         if (!decision){

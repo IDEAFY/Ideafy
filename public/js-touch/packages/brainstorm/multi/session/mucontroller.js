@@ -177,7 +177,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 confirmUI.hide();
                                         }
                                         else{
-                                                if (session.get("initiator").id === user.get("_id")){
+                                                if (_session.get("initiator").id === user.get("_id")){
                                                         _widget.cancelSession();
                                                 }
                                                 else {

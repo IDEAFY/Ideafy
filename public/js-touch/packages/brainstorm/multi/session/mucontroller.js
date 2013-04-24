@@ -107,9 +107,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 /*
                                  * need to get chatUI for the current step (getChatUI method)
                                  */
-                                /* chatUI.leave().then(function(){
+                                // chatUI.leave().then(function(){
                                     _session.unsync();        
-                                });*/
+                                //});
                         }); 
                        // no need to wait for upload result to leave session
                         $exit();           

@@ -83,8 +83,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            "info": new Model(info)
                    });
                    
-                   // create confirmation UI
-                   confirmUI = new Confirm(_widget.dom);
                    
                    
                    // Main UI methods
@@ -111,7 +109,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                  * need to get chatUI for the current step (getChatUI method)
                                  */
                                 // chatUI.leave().then(function(){
-                                    _session.unsync();        
+                                    _session.unsync();
+                                    confirmUI.close();        
                                 //});
                         }); 
                        // no need to wait for upload result to leave session
@@ -128,6 +127,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _widget.displayInfo("deleting", 5000).then(function(){
                                         _session.remove();
                                         _session.unsync();
+                                        confirmUI.close();
                                         $exit();       
                                 });
                         }, function(err){console.log(err);});        
@@ -175,6 +175,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _stack.getStack().get("muwrapup").reset(replay);
                                 
                                 // init exit confirmation UI
+                                confirmUI = new Confirm(_widget.dom);
                                 confirmCallBack = function(decision){
                                         console.log("callback called, decision : ", decision);
                                         if (!decision){

@@ -2724,6 +2724,11 @@ textarea.solution {
     -webkit-box-shadow: 0px 10px 10px 1px rgba(23,41,48,0.4);
 }
 
+#musetup .drawarea{
+    margin-top: 10px;
+    padding: 10px 20px;
+}
+
 .next-button{
     color: white;
     width: 56px;

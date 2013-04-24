@@ -90,6 +90,9 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         confirmUI = new Confirm(widget.dom);
                      
                         widget.reset = function reset(sid){
+                                // clear chatUI
+                                chatUI.clear();
+                                
                                 // create confirmation UI
                                 confirmCallBack = function(decision){
                                         if (!decision){

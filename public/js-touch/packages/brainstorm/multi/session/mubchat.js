@@ -155,6 +155,10 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         chatCDB.upload();
                 };
                 
+                mubChat.clear = function clear(){
+                        chat.reset([]);
+                };
+                
                 mubChat.reset = function reset(chatId){
                         chatCDB.unsync();
                         chatCDB.reset({});

@@ -152,6 +152,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 }
                         });
                         
+                        SPIP = spinner;
                         return muPreviewUI;       
                 };
         });

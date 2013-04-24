@@ -813,7 +813,7 @@ ul.notify-list{
     line-height: 20px;
 }
 
-.confirm, #mubwait .sessionmsg{
+.confirm, #mubwait .sessionmsg, #musession .sessionmsg{
     -webkit-box-shadow: 0px 0px 5px 2px #657B99;
     z-index: 2000;
     background: black;
@@ -6088,7 +6088,7 @@ li.my2q{
     top: 0;
 }
 
-#mubwait .confirm{
+#mubwait .confirm, #musession .confirm{
     width: 600px;
     height: 150px;
     left: 167px;
@@ -6096,7 +6096,7 @@ li.my2q{
     background: white;
 }
 
-#mubwait .sessionmsg{
+#mubwait .sessionmsg, #musession .sessionmsg{
     width: 400px;
     height: 150px;
     left: 267px;
@@ -6105,7 +6105,7 @@ li.my2q{
     text-align: center;
 }
 
-#mubwait .sessionmsg span{
+#mubwait .sessionmsg span, #musession .sessionmsg span{
     font-family: Helvetica;
     font-size: 20px;
     line-height: 40px;
@@ -6117,19 +6117,19 @@ li.my2q{
     vertical-align: middle;
 }
 
-#mubwait .confirm .help-doctor{
+#mubwait .confirm .help-doctor, #musession .confirm .help-doctor{
     width: 40px;
     height: 40px;
 }
 
-#mubwait .confirm p, #session-list .confirm p{
+#mubwait .confirm p, #session-list .confirm p, #musession .confirm p{
     color: #4D4D4D;
     margin: 50px;
     font-family: Helvetica;
     font-size: 18px;
 }
 
-#mubwait .confirm .option,  #session-list .confirm .option{
+#mubwait .confirm .option,  #session-list .confirm .option, #musession .confirm .option{
     border-color: #4D4D4D;
     float: right;
     font-family: Helvetica;

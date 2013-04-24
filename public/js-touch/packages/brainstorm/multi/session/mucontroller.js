@@ -69,6 +69,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    };
                    
                    _progress.exit = function(event, node){
+                           console.log("exit called");
                            node.classList.remove("pressed");
                            confirmUI.show(); 
                    };
@@ -116,6 +117,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         
                 // initiator decides to cancel the session
                 _widget.cancelSession = function cancelSession(){
+                        console.log("initiator canceling session");
                         //set session status to "deleted" to notify participants
                         _session.set("status", "deleted");
                         _session.upload().then(function(){
@@ -144,7 +146,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         timer = setInterval(function(){
                                 if (message !== "deleting") {info.set("msg", message);}
                                 else {
-                                        info.set("msg", labels.get("deletingsession") + timeout/1000 + "s");
+                                        info.set("msg", _labels.get("deletingsession") + timeout/1000 + "s");
                                 }
                                 if (timeout <= 0) clearInfo();
                                 timeout -= 1000;
@@ -173,6 +175,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 // create confirmation UI
                                 confirmUI = new Confirm(_widget.dom);
                                 confirmCallBack = function(decision){
+                                        console.log("callback called, decision : ", decision);
                                         if (!decision){
                                                 confirmUI.hide();
                                         }
@@ -305,6 +308,19 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    // init
                    _widget.init();
+                   
+                   // watch for session events
+                   // watch for session status change
+                   _session.watchValue("status", function(value){
+                        console.log(value);
+                        // if session is deleted (in case initiator decides to cancel)
+                        if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
+                                _widget.displayInfo(_labels.get("canceledbyleader"), 2000).then(function(){
+                                        _session.unsync();
+                                        $exit();     
+                                });
+                        }    
+                   });
                    
                    // return
                    return _widget;

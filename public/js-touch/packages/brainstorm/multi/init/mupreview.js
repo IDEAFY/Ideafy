@@ -80,7 +80,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         
                         muPreviewUI.closePreview = function closePreview(event, node){
                                 // hide window
-                                document.getElementById("mupreview").classList.add("invisible");
+                                muPreviewUI.dom.classList.add("invisible");
                                 muCDB.unsync();
                                 muCDB.reset();
                                 refreshList();               
@@ -92,8 +92,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         
                         muPreviewUI.join = function join(event, node){
                                 node.classList.remove("pressed");
-                                muPreviewUI.closePreview();
                                 Config.get("observer").notify("join-musession", muCDB.get("_id"));
+                                muPreviewUI.closePreview();
                         };
                         
                         muPreviewUI.init = function init(callback){

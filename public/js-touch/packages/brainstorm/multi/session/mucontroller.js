@@ -190,10 +190,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 };
                                 // init confirmation UI
                                 if (_session.get("initiator").id === _user.get("_id")){
-                                        confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        
+                                        confirmUI.reset(_labels.get("leaderleave"), confirmCallBack);        
                                 }
                                 else {
-                                        confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
+                                        confirmUI.reset(_labels.get("participantleave"), confirmCallBack);        
                                 }
                                 
                                 // check session's current step and set as active
@@ -321,7 +321,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    _session.watchValue("status", function(value){
                         console.log(value);
                         // if session is deleted (in case initiator decides to cancel)
-                        if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
+                        if (value === "deleted" && _session.get("initiator").id !== _user.get("_id")){
                                 _widget.displayInfo(_labels.get("canceledbyleader"), 2000).then(function(){
                                         _session.unsync();
                                         $exit();     

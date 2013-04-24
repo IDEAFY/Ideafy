@@ -74,7 +74,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    };
                    
                    // Main UI setup
-                   _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"><div class="stack" data-musessionstack="destination"></div></div>';
+                   _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></div><div class="stack" data-musessionstack="destination"></div></div>';
                    
                    _widget.plugins.addAll({
                            "musessionstack": _stack,

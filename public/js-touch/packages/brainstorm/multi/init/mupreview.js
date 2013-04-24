@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils"],
-        function(Widget, Config, CouchDBStore, Store, Model, Event, Avatar, Utils){
+define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "lib/spin.min"],
+        function(Widget, Config, CouchDBStore, Store, Model, Event, Avatar, Utils, Spinner){
                 
                 return function MUPreviewConstructor(){
                         
@@ -15,7 +15,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                             muCDB =  new CouchDBStore(),
                             info = new Store({"msg":""}),
                             participants = new Store([]),
-                            refreshList; // callback function when closing th epreview window
+                            spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, top: 20}).spin();
+                            refreshList; // callback function when closing the preview window
                         
                         muCDB.setTransport(Config.get("transport"));
                         
@@ -91,9 +92,12 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         };
                         
                         muPreviewUI.join = function join(event, node){
+                                node.classList.add("invisible");
                                 node.classList.remove("pressed");
+                                spinner.spin(node.parentNode);
                                 Config.get("observer").notify("join-musession", muCDB.get("_id"));
                                 setTimeout(function(){
+                                        spinner.stop();
                                         muPreviewUI.closePreview();
                                 }, 5000);
                         };

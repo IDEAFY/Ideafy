@@ -384,7 +384,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         // create chat document
                        widget.createChat(chatId);
                         
-                        // upload session documnt
+                        // upload session document
                         cdb.reset(JSON.parse(session.toJSON()));
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), cdb.get("_id"));

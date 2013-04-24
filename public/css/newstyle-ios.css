@@ -2727,6 +2727,7 @@ textarea.solution {
 #musetup .drawarea{
     margin-top: 10px;
     padding: 10px 20px;
+    height: 365px;
 }
 
 .next-button{
@@ -3416,6 +3417,10 @@ li.color-item{
     margin: 20px 20px 30px 20px;
 }
 
+#musetup .drawbutton{
+    margin: 20px;
+}
+
 .drawchar{
     background: url('../img/decks/charactersactive.png') no-repeat center center;
 }
@@ -3452,11 +3457,15 @@ li.color-item{
     background: url('../img/brainstorm/reload.png') no-repeat center center;
 }
 
-
-
-#quicksetup .next-button, #musetup .next-button{
+#quicksetup .next-button{
     margin-top: 20px;
     margin-left: 364px;
+}
+
+#musetup .next-button{
+    position: absolute;
+    left: 740px;
+    top: 400px;
 }
 
 /* cards, reusable */

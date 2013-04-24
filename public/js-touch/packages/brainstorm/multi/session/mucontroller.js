@@ -97,7 +97,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    _widget.leaveSession = function leaveSession(){
                         var p = _session.get("participants"), i;
                         for (i=p.length-1; i>=0; i--){
-                                if (p[i].id === user.get("_id")){
+                                if (p[i].id === _user.get("_id")){
                                         console.log("participant leaving : ", p[i].username);
                                         p.splice(i, 1);
                                         break; 

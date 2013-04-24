@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBStore", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin"],
-        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBStore, Config, Promise, Store, Spinner, Place){
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBStore", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin", "service/confirm"],
+        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBStore, Config, Promise, Store, Spinner, Place, Confirm){
                 
            return function MUControllerConstructor($exit){
                    
@@ -28,6 +28,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                        _user = Config.get("user"),
                        _session = new CouchDBStore(),
                        _sessionData = new Store(),
+                       info = new Store({"msg":""}),
+                       confirmUI, confirmCallBack,
                        spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
                    // progress bar setup
@@ -45,12 +47,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    });
                    _progress.template = '<div class = "progressbar invisible"><ul id = "musteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
                    
-                   // Main UI setup
-                   _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="stack" data-musessionstack="destination"></div></div>';
-                   _widget.plugins.addAll({"musessionstack": _stack, "place": new Place({"progress": _progress})});
-                   
-                   
-                   // UI methods
+                   // progress bar UI methods
                    
                    _progress.changeStep = function(event, node){
                         var _id = node.getAttribute("data-step_id");
@@ -73,13 +70,87 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    _progress.exit = function(event, node){
                            node.classList.remove("pressed");
-                           $exit();
+                           confirmUI.show(); 
                    };
                    
+                   // Main UI setup
+                   _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"><div class="stack" data-musessionstack="destination"></div></div>';
+                   
+                   _widget.plugins.addAll({
+                           "musessionstack": _stack,
+                           "place": new Place({"progress": _progress}),
+                           "info": new Model(info)
+                   });
+                   
+                   
+                   // Main UI methods
+                   
+                   // show progress bar
                    _widget.toggleProgress = function toggleProgress(){
-                           console.log(_progress.dom);
                            _progress.dom.classList.toggle("invisible");      
                    };
+                   
+                   // initiator or a participant decides to leave the waiting room
+                   // participant decides to leave session
+                   _widget.leaveSession = function leaveSession(){
+                        var p = _session.get("participants"), i;
+                        for (i=p.length-1; i>=0; i--){
+                                if (p[i].id === user.get("_id")){
+                                        console.log("participant leaving : ", p[i].username);
+                                        p.splice(i, 1);
+                                        break; 
+                                }
+                        }
+                        _session.set("participants", p);
+                        _session.upload().then(function(){
+                                /*
+                                 * need to get chatUI for the current step (getChatUI method)
+                                 */
+                                /* chatUI.leave().then(function(){
+                                    _session.unsync();        
+                                });*/
+                        }); 
+                       // no need to wait for upload result to leave session
+                        $exit();           
+                   };
+                        
+                // initiator decides to cancel the session
+                _widget.cancelSession = function cancelSession(){
+                        //set session status to "deleted" to notify participants
+                        _session.set("status", "deleted");
+                        _session.upload().then(function(){
+                                // chatUI.cancel();
+                                _widget.displayInfo("deleting", 5000).then(function(){
+                                        _session.remove();
+                                        _session.unsync();
+                                        $exit();       
+                                });
+                        }, function(err){console.log(err);});        
+                };
+                        
+                // display info popup
+                _widget.displayInfo = function displayInfo(message, timeout){
+                        var timer, infoUI = document.querySelector(".sessionmsg"),
+                            promise = new Promise(),
+                            clearInfo = function(){
+                                infoUI.classList.add("invisible");
+                                clearInterval(timer);
+                                info.set("msg", "");
+                                promise.fulfill();
+                            };
+                                
+                        confirmUI.hide();
+                        infoUI.classList.remove("invisible");
+                        timer = setInterval(function(){
+                                if (message !== "deleting") {info.set("msg", message);}
+                                else {
+                                        info.set("msg", labels.get("deletingsession") + timeout/1000 + "s");
+                                }
+                                if (timeout <= 0) clearInfo();
+                                timeout -= 1000;
+                        }, 1000);
+                        return promise;
+                };
                    
                    _widget.retrieveSession = function retrieveSession(sid, replay){
                            
@@ -97,6 +168,23 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _stack.getStack().get("mutech").reset(replay);
                                 _stack.getStack().get("muidea").reset(replay);
                                 _stack.getStack().get("muwrapup").reset(replay);
+                                
+                                // create exit confirmation UI
+                                // create confirmation UI
+                                confirmUI = new Confirm(_widget.dom);
+                                confirmCallBack = function(decision){
+                                        if (!decision){
+                                                confirmUI.hide();
+                                        }
+                                        else{
+                                                if (session.get("initiator").id === user.get("_id")){
+                                                        _widget.cancelSession();
+                                                }
+                                                else {
+                                                        _widget.leaveSession();
+                                                }
+                                        }
+                                };
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
@@ -120,6 +208,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    _widget.reset = function reset(sid, replay){
                            
                         console.log("mucontroller reset function called");
+                        
                         // unsync session
                         _session.unsync(); 
                         

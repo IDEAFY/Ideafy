@@ -188,6 +188,13 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 }
                                         }
                                 };
+                                // init confirmation UI
+                                if (_session.get("initiator").id === _user.get("_id")){
+                                        confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        
+                                }
+                                else {
+                                        confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
+                                }
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){

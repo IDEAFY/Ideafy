@@ -161,7 +161,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 
                 mubChat.reset = function reset(chatId){
                         chatCDB.unsync();
-                        chatCDB.reset({});
+                        chatCDB.reset();
                         chat.reset([]); 
                         spinner.spin(document.getElementById("chatspinner"));
                         console.log(chatId);

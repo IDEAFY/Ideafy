@@ -15,7 +15,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                             muCDB =  new CouchDBStore(),
                             info = new Store({"msg":""}),
                             participants = new Store([]),
-                            spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, top: 20}).spin();
+                            spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, top: 20}).spin(),
                             refreshList; // callback function when closing the preview window
                         
                         muCDB.setTransport(Config.get("transport"));

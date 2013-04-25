@@ -180,12 +180,14 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 if (isNaN(position) && !chatCDB.get("readonly")){
                                         mubChat.joinChat().then(function(){
                                                 chat.reset(chatCDB.get("msg"));
+                                                console.log("after reset observer ? : ", chatCDB.getStoreObservable().hasObserver());
                                                 spinner.stop();       
                                         });        
                                 }
                                 
                                 else{
                                         chat.reset(chatCDB.get("msg"));
+                                        console.log("after reset observer ? : ", chatCDB.getStoreObservable().hasObserver());
                                         spinner.stop();
                                 }      
                         });
@@ -234,6 +236,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         chatCDB.unsync();
                         chatCDB.reset();
                         chat.reset([]);
+                        console.log("after cancel observer ? : ", chatCDB.getStoreObservable().hasObserver());
                 };
                 
                 mubChat.getModel = function getModel(){

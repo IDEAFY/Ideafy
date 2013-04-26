@@ -4209,9 +4209,13 @@ li.color-item{
     color: #808080;
 }
 
-#msgdetail .detail-header .date{
+#msgdetail .detail-header .date, #noresult .date{
     font-size: 14px;
     float: none;
+}
+
+#noresult .date{
+    padding-left: 20px;
 }
 
 #msgdetail .detail-body{

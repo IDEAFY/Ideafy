@@ -330,6 +330,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         console.log(value);
                         // if session is deleted (in case initiator decides to cancel)
                         if (value === "deleted" && _session.get("initiator").id !== _user.get("_id")){
+                             // reset sessionInProgress in user doc
+                                _user.set("sessionInProgress", "");
+                                _user.upload();
                                 _widget.displayInfo(_labels.get("canceledbyleader"), 2000).then(function(){
                                         _session.unsync();
                                         $exit();     

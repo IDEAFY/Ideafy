@@ -180,14 +180,14 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 if (isNaN(position) && !chatCDB.get("readonly")){
                                         mubChat.joinChat().then(function(){
                                                 chat.reset(chatCDB.get("msg"));
-                                                console.log("after reset observer ? : ", chatCDB.getStoreObservable().hasObserver());
+                                                console.log("after reset observer ? : ", chatCDB.getValueObservable().hasTopic("msg"));
                                                 spinner.stop();       
                                         });        
                                 }
                                 
                                 else{
                                         chat.reset(chatCDB.get("msg"));
-                                        console.log("after reset observer ? : ", chatCDB.getStoreObservable().hasObserver());
+                                        console.log("after reset observer ? : ", chatCDB.getValueObservable().hasTopic("msg"));
                                         spinner.stop();
                                 }      
                         });
@@ -232,12 +232,12 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 };
                 
                 mubChat.cancel = function cancel(){
-                        console.log("before cancel observer ? : ", chatCDB.getStoreObservable().hasObserver());
+                        console.log("before cancel observer ? : ", chatCDB.getValueObservable().hasTopic("msg"));
                         chatCDB.remove();
                         chatCDB.unsync();
                         chatCDB.reset();
                         chat.reset([]);
-                        console.log("after cancel observer ? : ", chatCDB.getStoreObservable().hasObserver());
+                        console.log("after cancel observer ? : ", chatCDB.getValueObservable().hasTopic("msg"));
                 };
                 
                 mubChat.getModel = function getModel(){

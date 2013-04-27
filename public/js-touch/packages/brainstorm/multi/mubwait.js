@@ -27,7 +27,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 labels: new Model(labels),
                                 model: new Model(session, {
                                         setTitle : function(title){
-                                                this.innerHTML = title;
+                                                if (title) this.innerHTML = title;
                                                 if (user.get("_id") === session.get("initiator").id){
                                                         this.setAttribute("contenteditable", true);
                                                 }
@@ -36,7 +36,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                 }
                                         },
                                         setDescription : function(desc){
-                                                this.innerHTML = desc;
+                                                if (desc) this.innerHTML = desc;
                                                 if (user.get("_id") === session.get("initiator").id){
                                                         this.setAttribute("contenteditable", true);
                                                 }
@@ -46,17 +46,19 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         },
                                         setAvatar : function setAvatar(id){
                                                 var frag, ui;
-                                                this.setAttribute("style", "background:none;");
-                                                frag = document.createDocumentFragment();
-                                                ui = new Avatar([id]);
-                                                ui.place(frag);
-                                                (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
+                                                if (id){
+                                                        this.setAttribute("style", "background:none;");
+                                                        frag = document.createDocumentFragment();
+                                                        ui = new Avatar([id]);
+                                                        ui.place(frag);
+                                                        (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
+                                                }
                                         },
                                         setIntro : function(intro){
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         },
                                         showStartButton : function(participants){
-                                                if (participants.length && user.get("_id") === session.get("initiator").id){
+                                                if (participants && participants.length && user.get("_id") === session.get("initiator").id){
                                                         this.classList.remove("invisible");
                                                 }
                                                 else{
@@ -67,11 +69,13 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 participant : new Model(participants, {
                                         setAvatar : function setAvatar(id){
                                                 var frag, ui;
-                                                this.setAttribute("style", "background:none;");
-                                                frag = document.createDocumentFragment();
-                                                ui = new Avatar([id]);
-                                                ui.place(frag);
-                                                (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
+                                                if (id){
+                                                        this.setAttribute("style", "background:none;");
+                                                        frag = document.createDocumentFragment();
+                                                        ui = new Avatar([id]);
+                                                        ui.place(frag);
+                                                        (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
+                                                }
                                         },
                                         setIntro : function(intro){
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
@@ -163,7 +167,8 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 session.upload().then(function(){
                                         chatUI.leave().then(function(){
                                                 //widget.goToScreen();
-                                                session.unsync();        
+                                                session.unsync();
+                                                session.reset({});        
                                         });
                                 }); 
                                 // no need to wait for upload result to leave session
@@ -179,6 +184,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         widget.displayInfo("deleting", 5000).then(function(){
                                                 session.remove();
                                                 session.unsync();
+                                                session.reset({});
                                                 widget.goToScreen();       
                                         });
                                 }, function(err){console.log(err);});        
@@ -213,7 +219,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 var id;
                                 // if dest is specified (e.g. notify popup)
                                 if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
-                                        confirmUI.close();
+                                        confirmUI.hide();
                                         $exit();
                                         Config.get("observer").notify("goto-screen", "#connect");
                                         document.removeEventListener("touchstart", exitListener.listener, true);   
@@ -224,7 +230,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 else {
                                         ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
                                                 if (exitDest === name){
-                                                        confirmUI.close();
+                                                        confirmUI.hide();
                                                         $exit();
                                                         Config.get("observer").notify("goto-screen", name);
                                                         document.removeEventListener("touchstart", exitListener.listener, true);
@@ -275,6 +281,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         document.removeEventListener("touchstart", exitListener.listener, true);
                                         session.unsync();
                                         $start(session.get("_id"));
+                                        session.reset({});
                                 });
                         };
                         

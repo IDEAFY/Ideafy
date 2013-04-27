@@ -2716,7 +2716,7 @@ textarea.solution {
     height: 748px;
 }
 
-#quickstart .quickstart-form, .drawarea, #mubwait .mubwait-form, #mustart .quickstart-form{
+#quickstart .quickstart-form, .drawarea, #mubwait .mubwait-form, #mustart .mubwait-form{
     background: white;
     margin: auto;
     margin-top: 120px;
@@ -3359,20 +3359,20 @@ li.color-item{
 
 /* quickstart */
 
-#quickstart .quickstart-form, #mustart .quickstart-form{
+#quickstart .quickstart-form{
     width: 590px;
     height: 370px;    
     padding:40px 20px 40px 20px;    
 }
 
-#quickstart .quickstart-form label, #mustart .quickstart-form label{
+#quickstart .quickstart-form label{
     font-family: Pacifico;
     color: #657B99;
     font-size: 14px;
     letter-spacing: 1px;
 }
 
-#quickstart hr, #mustart hr{
+#quickstart hr{
     border: none;
     background:#AEB9BF;
     height: 1px;
@@ -3392,17 +3392,17 @@ li.color-item{
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);    
 }
 
-#quickstart .quickstart-title, #mustart .quickstart-title{
+#quickstart .quickstart-title{
     height: 70px;
     margin-bottom: 40px;
 }
 
-#quickstart .quickstart-desc, #mustart .quickstart-desc{
+#quickstart .quickstart-desc{
     height: 115px;
     margin-bottom: 20px;
 }
 
-#quickstart .next-button, #mustart .next-button{
+#quickstart .next-button{
     margin-left: 534px;
 }
 
@@ -6165,14 +6165,14 @@ li.my2q{
     margin-right: 20px;
 }
 
-#mubwait .mubwait-form, #mupreview .contentarea{
+#mubwait .mubwait-form, #mupreview .contentarea, #mustart .mubwait-form{
     width: 590px;
     height: 370px;    
     padding:0px 20px;
     margin-top: 20px;
 }
 
-#mubwait .mubwait-title, #mupreview .mubwait-title{
+#mubwait .mubwait-title, #mupreview .mubwait-title, #mustart .mubwait-title{
     font-size: 20px;
     text-align: center;
     font-family: Pacifico;
@@ -6182,25 +6182,25 @@ li.my2q{
     margin-bottom: 5px;
 }
 
-#mubwait .mubdesc, #mubwait .mubroster, #mupreview .mubdesc, #mupreview .mubroster{
+#mubwait .mubdesc, #mubwait .mubroster, #mupreview .mubdesc, #mupreview .mubroster, #mustart .mubdesc, #mustart .mubroster{
     display: inline-table;
     width: 285px;
     height: 260px;
     padding-right: 5px 10px 5px 0px;
 }
 
-#mubwait .mubdesc label, #mubwait .mubroster label, #mupreview .mubdesc label, #mupreview .mubroster label{
+#mubwait .mubdesc label, #mubwait .mubroster label, #mupreview .mubdesc label, #mupreview .mubroster label, #mustart .mubdesc label, #mustart .mubroster label{
     font-family: Helvetica;
     color: #657B99;
     font-size: 14px;
     padding-top: 5px;
 }
 
-#mubwait .mubroster label, #mupreview .mubroster label{
+#mubwait .mubroster label, #mupreview .mubroster label, #mustart .mubroster label{
     padding-left: 10px;
 }
 
-#mubwait .mubdesc p, #mupreview .mubdesc p{
+#mubwait .mubdesc p, #mupreview .mubdesc p, #mustart .mubdesc p{
     padding: 15px;
     width: 255px;
     font-size: 14px;
@@ -6215,11 +6215,11 @@ li.my2q{
     border-radius: 5px;
 }
 
-#mubwait .mubleader, #mupreview .mubleader{
+#mubwait .mubleader, #mupreview .mubleader, #mustart .mubleader{
     padding: 10px 10px 5px 10px;
 }
 
-#mubwait .participants .contact, #mupreview .participants .contact{
+#mubwait .participants .contact, #mupreview .participants .contact, #mustart .participants .contact,{
     padding: 5px 10px 5px 10px;
 }
 

@@ -44,7 +44,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                             res = "";
                            
                             res += hrs+":";
-                            min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : res+="0:";
+                            min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : res+="00:";
                             sec<10 ? res += "0"+sec : res+= sec;
                                                 
                             return res;

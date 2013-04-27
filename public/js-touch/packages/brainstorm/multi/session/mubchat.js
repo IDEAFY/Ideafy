@@ -177,6 +177,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         }
                                 }
                                 
+                                console.log(position, isNaN(position),  isNaN(position) && !chatCDB.get("readonly"));
                                 // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
                                 if (isNaN(position) && !chatCDB.get("readonly")){
                                         mubChat.joinChat().then(function(){
@@ -250,8 +251,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         chat.reset(arrCDB);
                         document.getElementById("chatmessages").querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
                 });
-                
-                POS = position;
         }
         
         return function MUBChatFactory(){

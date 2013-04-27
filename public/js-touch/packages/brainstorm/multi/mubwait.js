@@ -131,7 +131,12 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         
                                         // set as session in progress
                                         user.set("sessionInProgress", {id: sid, type: "musession", mode:"rejoin"});
-                                        user.upload();
+                                        console.log(user.get("_rev"));
+                                        user.upload().then(function(){
+                                                console.log("session in progress upload successful for ", user.get("_id"), user.get("_rev"));
+                                        }, function(){
+                                                console.log("session in progress upload failed for ", user.get("_id"), user.get("_rev"));        
+                                        });
                                 });
                         };
                         

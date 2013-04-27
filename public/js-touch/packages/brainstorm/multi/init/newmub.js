@@ -427,7 +427,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 "dest" : idlist
                                 };
                         
-                        console.log(json.docId);        
                         Config.get("transport").request("Notify", json, function(result){
                                                 error.set("errormsg", labels.get("invitesent"));
                                                 promise.fulfill();

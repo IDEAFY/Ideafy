@@ -232,6 +232,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 };
                 
                 mubChat.cancel = function cancel(){
+                        console.log("before cancel observer ? : ", chatCDB.getStoreObservable().hasObserver());
                         chatCDB.remove();
                         chatCDB.unsync();
                         chatCDB.reset();

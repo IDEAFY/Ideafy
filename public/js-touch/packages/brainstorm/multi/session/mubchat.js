@@ -26,9 +26,10 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 setReadonly : function(readonly){
                                         if (readonly){
                                                 this.setAttribute("contenteditable", false);
-                                                this.classList.add("invisible");
+                                                this.setAttribute("display", "none");
                                         }
                                         else{
+                                                this.setAttribute("display", "table-cell");
                                                 this.setAttribute("contenteditable", true);
                                         }
                                 }
@@ -85,11 +86,11 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         var id, type;
                                         if (msg) {
                                                 this.innerHTML = msg;
-                                                this.setAttribute("style", "color: #292929; font-size: 16px;");
+                                                this.setAttribute("style", "color: #292929; font-size: 14px;");
                                         }
                                         else{
                                                // display system message
-                                               this.setAttribute("style", "color: #CCCCCC; font-size: 14px;");
+                                               this.setAttribute("style", "color: #CCCCCC; font-size: 12px;");
                                                id = this.getAttribute("data-chat_id");
                                                type = chat.get(id).type;
                                                if (type <= 3){
@@ -104,7 +105,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind:setLiStyle, user"><div class="container" data-chat="bind:setAvatar, user"></div><div class="innerchatmsg" data-chat="bind:setInnerMsgStyle, user"><span class="time" data-chat="bind: setTime, time"></span><span class="username" data-chat="bind:setUserName, user"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg"></span></div></li></ul></div><div class="chatwrite placeholder" data-model="bind: setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind:setLiStyle, user"><div class="container" data-chat="bind:setAvatar, user"></div><div class="innerchatmsg" data-chat="bind:setInnerMsgStyle, user"><span class="time" data-chat="bind: setTime, time"></span><span class="username" data-chat="bind:setUserName, user"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg"></span></div></li></ul></div><div class="chatwrite placeholder" data-model="bind:setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
                 
                 mubChat.removePlaceholder = function(event, node){
                         if (node.innerHTML === labels.get("typemsg")){

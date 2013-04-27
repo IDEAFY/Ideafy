@@ -108,9 +108,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 /*
                                  * need to get chatUI for the current step (getChatUI method)
                                  */
+                                // reset sessionInProgress in user doc
+                                _user.set("sessionInProgress", "");
+                                _user.upload();
                                 // chatUI.leave().then(function(){
                                     _session.unsync();
-                                    confirmUI.close();        
+                                    confirmUI.hide();        
                                 //});
                         }); 
                        // no need to wait for upload result to leave session
@@ -123,11 +126,14 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         //set session status to "deleted" to notify participants
                         _session.set("status", "deleted");
                         _session.upload().then(function(){
+                                // reset sessionInProgress in user doc
+                                _user.set("sessionInProgress", "");
+                                _user.upload();
                                 // chatUI.cancel();
                                 _widget.displayInfo("deleting", 5000).then(function(){
                                         _session.remove();
                                         _session.unsync();
-                                        confirmUI.close();
+                                        confirmUI.hide();
                                         $exit();       
                                 });
                         }, function(err){console.log(err);});        

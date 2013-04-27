@@ -94,6 +94,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         confirmUI = new Confirm(widget.dom);
                      
                         widget.reset = function reset(sid){
+                                var promise = new Promise();
                                 // clear previous UI (chat and main window)
                                 chatUI.clear();
                                 session.unsync();
@@ -135,13 +136,12 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         
                                         // set as session in progress
                                         user.set("sessionInProgress", {id: sid, type: "musession", mode:"rejoin"});
-                                        console.log(user.get("_rev"));
-                                        user.upload().then(function(){
-                                                console.log("session in progress upload successful for ", user.get("_id"), user.get("_rev"));
-                                        }, function(){
-                                                console.log("session in progress upload failed for ", user.get("_id"), user.get("_rev"));        
-                                        });
+                                        user.upload();
+                                        
+                                        promise.fulfill();
                                 });
+                                
+                                return promise;
                         };
                         
                         // initiator or a participant decides to leave the waiting room

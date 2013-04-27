@@ -6123,9 +6123,17 @@ li.my2q{
     text-align: center;
 }
 
+#musession .sessionmsg{
+    left: 359px;
+}
+
+#musession.confirm{
+    left: 260px;
+}
+
 #mubwait .sessionmsg span, #musession .sessionmsg span{
     font-family: Helvetica;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 40px;
     color: #4D4D4D;
     display: table-cell;

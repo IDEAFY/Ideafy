@@ -250,6 +250,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         chat.reset(arrCDB);
                         document.getElementById("chatmessages").querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
                 });
+                
+                POS = position;
         }
         
         return function MUBChatFactory(){

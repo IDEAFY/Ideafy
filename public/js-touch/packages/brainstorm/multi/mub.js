@@ -5,15 +5,16 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mubinit", "./mubwait", "./session/mucontroller"],
-        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, MUInit, MUWait, MUController){
+define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mubinit", "./mubwait", "./session/mucontroller", "lib/spin.min"],
+        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, MUInit, MUWait, MUController, Spinner){
                 
            return function MultiBConstructor($sip, $exit){
            
                 var widget = new Widget(),
                     stack = new Stack(),
                     user = Config.get("user"),
-                    muWait, muInit, muController;
+                    muWait, muInit, muController,
+                    spinner = new Spinner({color:"#9AC9CD", lines:10, length: 12, width: 6, radius:10, top: 20}).spin();
                 
                 widget.plugins.add("mustack", stack);
                 
@@ -113,12 +114,15 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 
                 // watch mu session events
                 Config.get("observer").watch("start-mu_session", function(sid){
+                        spinner.spin(widget.dom);
                         // show needs to be called prior to reset to make sure widget.dom exists in mubwait
                         muWait.reset(sid).then(function(){
+                                spinner.stop();
                                 stack.getStack().show("mubwait");   
                         });
                 });
                 
+                MUBSPIN = spinner;
                 return widget;
                    
            };

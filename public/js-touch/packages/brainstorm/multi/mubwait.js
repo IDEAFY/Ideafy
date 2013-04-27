@@ -90,8 +90,10 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         confirmUI = new Confirm(widget.dom);
                      
                         widget.reset = function reset(sid){
-                                // clear chatUI
+                                // clear previous UI (chat and main window)
                                 chatUI.clear();
+                                session.unsync();
+                                session.reset({});
                                 
                                 // create confirmation UI
                                 confirmCallBack = function(decision){
@@ -112,8 +114,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
                                 // get session info
-                                session.unsync();
-                                session.reset();
                                 session.sync(Config.get("db"), sid).then(function(){
                                         // manage exit event
                                         // step 1 init confirmation UI

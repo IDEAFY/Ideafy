@@ -15,7 +15,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                     chatCDB = new CouchDBStore(),
                     labels = Config.get("labels"),
                     user = Config.get("user"),
-                    position, // used to determine the position of the user in the chat participants group
+                    position = null, // used to determine the position of the user in the chat participants group
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 6, radius:10, top: 20}).spin();
                 
                 chatCDB.setTransport(Config.get("transport"));
@@ -160,8 +160,9 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                 };
                 
                 mubChat.reset = function reset(chatId){
+                        position = null;
                         chatCDB.unsync();
-                        chatCDB.reset();
+                        chatCDB.reset({});
                         chat.reset([]); 
                         spinner.spin(document.getElementById("chatspinner"));
                         console.log(chatId);
@@ -235,7 +236,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         console.log("before cancel observer ? : ", chatCDB.getValueObservable().hasTopic("msg"));
                         chatCDB.remove();
                         chatCDB.unsync();
-                        chatCDB.reset();
+                        chatCDB.reset({});
                         chat.reset([]);
                         console.log("after cancel observer ? : ", chatCDB.getValueObservable().hasTopic("msg"));
                 };

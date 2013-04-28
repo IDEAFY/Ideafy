@@ -14,6 +14,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         var _widget = new Widget(),
                             _popupUI, chatUI = new Chat(),
                             _labels = Config.get("labels"),
+                            _user = Config.get("user"),
                             _transport = Config.get("transport"), _db = Config.get("db"), _user = Config.get("user"),
                             _deckStack = {}, // the cards remaining in the stack after each draw
                             _timer = new Store({"timer":null, "display":false}),
@@ -164,7 +165,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                     _sel = _selection.get(_type);
                                     _now = new Date();
                                
-                                if (_next === "step" && _ready){
+                                if (_user.get("_id") === $session.get("initiator").id && _next === "step" && _ready){
                                         // if reload button -- could've used classList.contains("reload") but browser compat issue
                                         if (_sel.left === 0){
                                                 // reinitialize deckStack
@@ -237,7 +238,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         // Method called to initialize a card popup
                         _widget.setPopup = function setPopup(type){
-                                var pos = {x:0, y:337}, // the position of the popup
+                                var pos = {x:0, y:257}, // the position of the popup
                                     caret = "left", // the position of the caret
                                     old = _selection.get(_currentPopup) || "",
                                     sel = _selection.get(type);
@@ -289,8 +290,8 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         };
                         
                         // Initializing the musetup UI
-                        _widget.reset = function reset(sip){
-                                if (sip){
+                        _widget.reset = function reset(replay){
+                                if (replay){
                                         // check if time has been spent on this step already
                                         _elapsed = $session.get("elapsedTimers").musetup || 0;
                                         
@@ -343,12 +344,12 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         };
                         
                         // Method  called to retrieve the active deck from the database in the appropriate language
-                        _widget.getDeck = function getDeck($deck){
+                        _widget.getDeck = function getDeck(deckId){
                                 var promise = new Promise(),
                                     cdb = new CouchDBStore();
                                 
                                 cdb.setTransport(_transport);
-                                cdb.sync(_db, $deck).then(function(){
+                                cdb.sync(_db, deckId).then(function(){
                                         var result, deck = {}, lang=Config.get("user").get("lang");
                                         // check deck default language -- if it does not match user language look for a translation
                                         if (!cdb.get("default_lang") || (cdb.get("default_lang") === lang)) {
@@ -363,7 +364,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         deck.techno = result.content.techno; // even though it is not for this step so there is only one request to read the deck going out to the database
                                         $data.set("deck", deck);
                                         promise.fulfill();
-                                        setTimeout(function(){cdb.unsync();}, 2000);
+                                        cdb.unsync();
                                 });
                                 return promise;                       
                         };
@@ -378,7 +379,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         // update currentCards
                                         store.reset(JSON.parse(cdb.toJSON()));
                                         promise.fulfill();
-                                        setTimeout(function(){cdb.unsync();},250);
+                                        cdb.unsync();
                                 });
                                 return promise;        
                         };
@@ -387,31 +388,43 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         // Method called to draw a random card from a deckstack
                         _widget.drawCard = function drawCard(type){
                                 var promise = new Promise(),
-                                    sel = _selection.get(type),
-                                    card = _cards.get(type),
                                     idx = Math.floor(Math.random()*_deckStack[type].length),
                                     id = _deckStack[type][idx];
-                                    
-                                    // get selected card
-                                    _widget.getCard(id, _currentCards[type]).then(function(){
-                                            var store = _currentCards[type];
-                                            // increment number of cards drawn
-                                            _drawnCards[type]++;
-                                            // remove card from stack
-                                            _deckStack[type].splice(idx, 1);
-                                            // update card
-                                            card.id = id;
-                                            card.title = store.get("title");
-                                            card.pic = store.get("picture_file");
-                                            _cards.set(type, card);
-                                            // update selection
-                                            sel.left = _deckStack[type].length;
-                                            _selection.set(type, sel);
-                                            // fulfill promise
-                                            promise.fulfill();
-                                    });
-                                    
-                                    return promise;
+                                
+                                $session.set("drawn_"+type, id);
+                                $session.upload().then(function(){
+                                        // increment number of cards drawn
+                                        _drawnCards[type]++;
+                                        // remove card from stack
+                                        _deckStack[type].splice(idx, 1);
+                                        promise.fulfill();       
+                                });
+                                return promise;
+                        };
+                        
+                        _widget.updateDrawnCard = function updateDrawnCard(id, type){
+                                var sel, card,
+                                    promise = new Promise();
+                                
+                                // get selected card
+                                if (type && id){
+                                        sel = _selection.get(type);
+                                        card = _cards.get(type);
+                                        _widget.getCard(id, _currentCards[type]).then(function(){
+                                                var store = _currentCards[type];
+                                                // update card
+                                                card.id = id;
+                                                card.title = store.get("title");
+                                                card.pic = store.get("picture_file");
+                                                _cards.set(type, card);
+                                                // update selection
+                                                sel.left = _deckStack[type].length;
+                                                _selection.set(type, sel);
+                                                // fulfill promise
+                                                promise.fulfill();
+                                        });
+                                }
+                                return promise;
                         };
                         
                         // Method called to update the session score at the end of the current step
@@ -435,36 +448,53 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 return promise;
                         };
                         
+                        
                         // initialize musetup step
                         _widget.init = function init(){
                                 
-                                // retrieve active deck
-                                _widget.getDeck(Config.get("user").get("active_deck")).then(function(){
-                                        var _deck = $data.get("deck");
-                                        // reset draw status
-                                        _deckStack.char = _deck.char.concat();
-                                        _deckStack.context = _deck.context.concat();
-                                        _deckStack.problem = _deck.problem.concat();
-                                        _drawnCards.char = 0; _drawnCards.context = 0; _drawnCards.problem = 0;
-                                        _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()};
-                                        _currentPopup = "";
-                                        _ready = true;
-                                        // reset timer
-                                        _start = null;
-                                        // reset cards
-                                        _cards.reset({
-                                                 char : {id:"",title:_labels.get("char"), pic: ""},
-                                                context : {id:"",title:_labels.get("context"), pic: ""},
-                                                problem : {id:"",title:_labels.get("problem"), pic: ""}
-                                        });
-                                        // reset selection
-                                        _selection.reset({"char" : {selected: false, left: null, popup: false},
-                                                          "context" : {selected: false, left: null, popup: false},
-                                                          "problem" : {selected: false, left: null, popup: false}
-                                        });
+                                // reset timer
+                                _start = null;
+                                // reset cards
+                                _cards.reset({
+                                        char : {id:"",title:_labels.get("char"), pic: ""},
+                                        context : {id:"",title:_labels.get("context"), pic: ""},
+                                        problem : {id:"",title:_labels.get("problem"), pic: ""}
                                 });
+                                // reset selection
+                                _selection.reset({"char" : {selected: false, left: null, popup: false},
+                                                "context" : {selected: false, left: null, popup: false},
+                                                "problem" : {selected: false, left: null, popup: false}
+                                });
+                                
+                                _drawnCards.char = 0; _drawnCards.context = 0; _drawnCards.problem = 0;
+                                _currentCards = {"char": new Store(), "context": new Store(), "problem": new Store()};
+                                _currentPopup = "";
+                                
+                                // if user is session leader
+                                if (_user.get("_id") === $session.get("initiator").id){
+                                        _widget.getDeck($session.get("deck")).then(function(){
+                                                var _deck = $data.get("deck");
+                                                // reset draw status
+                                                _deckStack.char = _deck.char.concat();
+                                                _deckStack.context = _deck.context.concat();
+                                                _deckStack.problem = _deck.problem.concat();
+                                                _ready = true;
+                                        });        
+                                }
                                 _next = "step";        
                         };
+                        
+                        $session.watchValue("drawn_char", function(val){
+                                _widget.updateDrawnCard("char", val);       
+                        });
+                        
+                        $session.watchValue("drawn_context", function(val){
+                                _widget.updateDrawnCard("context", val);       
+                        });
+                        
+                        $session.watchValue("drawn_problem", function(val){
+                                _widget.updateDrawnCard("problem", val);       
+                        });
                         
                         // Return
                         return _widget;

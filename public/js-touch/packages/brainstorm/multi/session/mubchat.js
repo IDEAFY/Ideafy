@@ -26,12 +26,15 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 setReadonly : function(readonly){
                                         if (readonly){
                                                 this.setAttribute("contenteditable", false);
-                                                this.setAttribute("display", "none");
+                                                this.setAttribute("style", "display:none;");
                                         }
                                         else{
-                                                this.setAttribute("display", "table-cell");
+                                                this.setAttribute("style", "disaply:table-cell;");
                                                 this.setAttribute("contenteditable", true);
                                         }
+                                },
+                                setHeight : function(readonly){
+                                        (readonly)?this.classList.add("extended"):this.classList.remove("extended");
                                 }
                         }),
                         "chat" : new Model(chat, {
@@ -105,7 +108,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach"><li data-chat="bind:setLiStyle, user"><div class="container" data-chat="bind:setAvatar, user"></div><div class="innerchatmsg" data-chat="bind:setInnerMsgStyle, user"><span class="time" data-chat="bind: setTime, time"></span><span class="username" data-chat="bind:setUserName, user"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg"></span></div></li></ul></div><div class="chatwrite placeholder" data-model="bind:setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach" data-model="bind: setHeight, readonly"><li data-chat="bind:setLiStyle, user"><div class="container" data-chat="bind:setAvatar, user"></div><div class="innerchatmsg" data-chat="bind:setInnerMsgStyle, user"><span class="time" data-chat="bind: setTime, time"></span><span class="username" data-chat="bind:setUserName, user"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg"></span></div></li></ul></div><div class="chatwrite placeholder" data-model="bind:setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
                 
                 mubChat.removePlaceholder = function(event, node){
                         if (node.innerHTML === labels.get("typemsg")){

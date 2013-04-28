@@ -6426,6 +6426,10 @@ li.my2q{
     overflow-y: scroll;
 }
 
+.sessionchat .chatread.extented{
+    height: 260px;
+}
+
 .sessionchat .chatwrite {
     background: #E6E6E6;
     border-bottom-left-radius: 5px;

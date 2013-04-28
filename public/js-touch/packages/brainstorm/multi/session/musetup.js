@@ -402,7 +402,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 return promise;
                         };
                         
-                        _widget.updateDrawnCard = function updateDrawnCard(id, type){
+                        _widget.updateDrawnCard = function updateDrawnCard(type, id){
                                 var sel, card,
                                     promise = new Promise();
                                 

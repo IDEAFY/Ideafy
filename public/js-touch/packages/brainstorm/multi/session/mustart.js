@@ -39,7 +39,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         },
                                         setDescription : function(desc){
-                                                this.innerHTML = desc.replace("\n", "<br>");
+                                                this.innerHTML = desc.replace(/\n/g, "<br>");
                                         }
                                 }),
                                 participant : new Model(participants, {

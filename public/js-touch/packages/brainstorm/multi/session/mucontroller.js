@@ -222,7 +222,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         var chat = _session.get("chat");
                                         chat.push(id);
                                         _session.set("chat", chat);
-                                        return _session.upload;    
+                                        return _session.upload();    
                                 })
                                 .then(function(){
                                         console.log(cdb.toJSON(), _session.get("chat"));

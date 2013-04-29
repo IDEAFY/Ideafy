@@ -58,7 +58,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 }
                                                 else{
                                                         this.classList.remove("pushed");
-                                                        if (_user.get("_id") !== $session.get("initiator").id) this.classList.add("invisible");        
+                                                        if ($session.get("initiator") && _user.get("_id") !== $session.get("initiator").id) this.classList.add("invisible");        
                                                 }
                                         }
                                 }),

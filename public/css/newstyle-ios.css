@@ -6425,6 +6425,7 @@ li.my2q{
     padding: 10px;
     height: 220px;
     overflow-y: scroll;
+    -webkit-transform: translate3d(0,0,0);
 }
 
 .sessionchat .chatread.extended{

@@ -219,7 +219,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         return cdb.unsync();
                                 })
                                 .then(function(){
-                                        var chat = _session.get("chat");
+                                        var chat = _session.get("chat").concat();
                                         chat.push(id);
                                         _session.set("chat", chat);
                                         return _session.upload();    

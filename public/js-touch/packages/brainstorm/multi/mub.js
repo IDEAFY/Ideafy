@@ -123,6 +123,38 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 });
                 
                 MUBSPIN = spinner;
+                DELCHAT = function(){
+                        var cdb = new CouchDBStore();
+                        cdb.setTransport(Config.get("transport"));
+                        cdb.sync(Config.get("db"), "_design/chat", "_view/all")
+                        .then(function(){
+                                cdb.loop(function(v,i){
+                                        var doc = new CouchDBStore();
+                                        doc.setTransport(Config.get("transport"));
+                                        doc.sync(Config.get("db"), v.id).then(function(){
+                                                setTimeout(function(){doc.remove();}, 150);
+                                        });
+                                }); 
+                                console.log("chat documents removed"); 
+                        });       
+                };
+                DELMUSESSIONS = function(){
+                      var cdb = new CouchDBStore();
+                        cdb.setTransport(Config.get("transport"));
+                        cdb.sync(Config.get("db"), "_design/library", "_view/sessions")
+                        .then(function(){
+                                cdb.loop(function(v,i){
+                                        var doc = new CouchDBStore();
+                                        doc.setTransport(Config.get("transport"));
+                                        if (v.id.search("S:MU") >-1){
+                                                doc.sync(Config.get("db"), v.id).then(function(){
+                                                        setTimeout(function(){doc.remove();}, 150);
+                                                });
+                                        }
+                                }); 
+                                console.log("multi user session documents removed"); 
+                        });  
+                };
                 return widget;
                    
            };

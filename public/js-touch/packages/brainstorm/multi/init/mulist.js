@@ -120,7 +120,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 widget.reset = function reset(){
                        currentList = "mulistall";
                        // init spinner
-                       spinner.spin(widget.dom.getElementById("mulistspinner"));
+                       spinner.spin(document.getElementById("mulistspinner"));
                        // reset options
                        muListOptions.set("selectedLang", "all");
                        muListOptions.set("selectedMode", "allmodes");
@@ -244,7 +244,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 muListOptions.set("selectedLang", muListOptions.get("lang")[i]);
                         }
                         // start spinner
-                        spinner.spin(widget.dom.getElementById("mulistspinner"));
+                        spinner.spin(document.getElementById("mulistspinner"));
                         widget.filterList().then(function(){
                                 spinner.stop();
                         });        
@@ -268,14 +268,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         break;        
                         }
                         // start spinner
-                        spinner.spin(widget.dom.getElementById("mulistspinner"));
+                        spinner.spin(document.getElementById("mulistspinner"));
                         widget.filterList().then(function(){
                                 spinner.stop();
                         });
                 };
                 
                 widget.filterList = function filterList(){
-                        var arr=[], query = widget.dom.getElementById("mulist-content").querySelector("input").value,
+                        var arr=[], query = document.getElementById("mulist-content").querySelector("input").value,
                             promise = new Promise(), mode = "", lang = "";
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
@@ -295,10 +295,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                                 widget.addSessions(arr, mode, {lang: lang}).then(function(){
                                                         muListAll.reset(arr);
                                                         if (arr.length){
-                                                                widget.dom.getElementById("noresult").classList.add("invisible");
+                                                                document.getElementById("noresult").classList.add("invisible");
                                                         }
                                                         else {
-                                                                widget.dom.getElementById("noresult").classList.remove("invisible");
+                                                                document.getElementById("noresult").classList.remove("invisible");
                                                         } 
                                                         promise.fulfill();      
                                                 });
@@ -309,10 +309,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                                                 widget.addSessions(arr, "boardroom", {lang: lang}).then(function(){
                                                                         muListAll.reset(arr);
                                                                         if (arr.length){
-                                                                                widget.dom.getElementById("noresult").classList.add("invisible");
+                                                                                document.getElementById("noresult").classList.add("invisible");
                                                                         }
                                                                         else {
-                                                                                widget.dom.getElementById("noresult").classList.remove("invisible");
+                                                                                document.getElementById("noresult").classList.remove("invisible");
                                                                         }
                                                                         promise.fulfill();      
                                                                 }); 
@@ -325,10 +325,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         widget.syncSearch(arr, query, {mode:mode, lang:lang}).then(function(){
                                                 muSearch.reset(arr);
                                                 if (arr.length){
-                                                        widget.dom.getElementById("noresult").classList.add("invisible");
+                                                        document.getElementById("noresult").classList.add("invisible");
                                                 }
                                                 else {
-                                                        widget.dom.getElementById("noresult").classList.remove("invisible");
+                                                        document.getElementById("noresult").classList.remove("invisible");
                                                 }
                                                 promise.fulfill();        
                                         });
@@ -352,11 +352,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 
                 widget.toggleList = function toggleList(list){
                         if (list !== currentList){
-                                widget.dom.getElementById(currentList).classList.add("invisible");
-                                widget.dom.getElementById(list).classList.remove("invisible");
+                                document.getElementById(currentList).classList.add("invisible");
+                                document.getElementById(list).classList.remove("invisible");
                                 currentList = list;
                         }
-                        spinner.spin(widget.dom.getElementById("mulistspinner"));
+                        spinner.spin(document.getElementById("mulistspinner"));
                         widget.filterList().then(function(){
                                 spinner.stop();
                         });

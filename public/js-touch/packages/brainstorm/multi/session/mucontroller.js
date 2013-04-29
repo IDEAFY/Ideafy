@@ -194,7 +194,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 case 5:
                                         arg = "quickwrapup";
                                         break;
-                                default
+                                default:
                                         arg  ="quickstart";
                                         break;
                         }

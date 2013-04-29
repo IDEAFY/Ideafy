@@ -5991,6 +5991,7 @@ li.my2q{
 
 #newmub .select-mode select{
     font-weight: bold;
+    width: 130px;
 }
 
 #newmub .session-info{

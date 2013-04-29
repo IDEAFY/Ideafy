@@ -167,7 +167,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 _widget.createChat = function createChat(step){
                         var cdb = new CouchDBStore(),
                             now = new Date().getTime(),
-                            usr = [], arg,
+                            usr = [], arg, id,
                             promise = new Promise();
                         
                         // build users array
@@ -199,19 +199,34 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         break;
                         }
                         cdb.set("msg", [{user: "SYS", "type": 5, "arg": arg, "time": now}]);
+                        
+                        // complete chat template
                         cdb.set("sid", _session.get("_id"));
                         cdb.set("lang", _session.get("lang"));
                         cdb.set("readonly", false); // once the step is cleared readonly is set to true
                         cdb.set("step", step); // mubwait or mubstart will display the same chat
                         cdb.set("type", 17);
-                        
+                         
+                         // set id
+                        id = cdb.get("sid")+"_"+step;
+                        console.log(id);
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), id);
                         setTimeout(function(){
-                                cdb.upload().then(function(){
+                                cdb.upload()
+                                .then(function(){
+                                        return cdb.unsync();
+                                })
+                                .then(function(){
+                                        var chat = _session.get("chat");
+                                        chat.push(id);
+                                        _session.set("chat", chat);
+                                        return _session.upload;    
+                                })
+                                .then(function(){
+                                        console.log(cdb.toJSON(), _session.get("chat"));
                                         promise.fulfill();
-                                        cdb.unsync();
-                                });
+                                })
                         }, 200);
                         
                         return promise;

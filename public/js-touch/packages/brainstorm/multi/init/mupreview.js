@@ -33,7 +33,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                 }
                                         },
                                         setDescription : function(desc){
-                                                this.innerHTML = desc;
+                                                this.innerHTML = desc.replace("\n", "<br>");
                                                 if (user.get("_id") === session.get("initiator").id){
                                                         this.setAttribute("contenteditable", true);
                                                 }

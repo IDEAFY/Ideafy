@@ -144,6 +144,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), "library", "_view/sessions")
                         .then(function(){
+                                cdb.unsync();
                                 cdb.loop(function(v,i){
                                         var doc = new CouchDBStore();
                                         doc.setTransport(Config.get("transport"));
@@ -153,7 +154,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                                                 });
                                         }
                                 }); 
-                                console.log("multi user session documents removed"); 
+                                console.log("multi user session documents removed");
                         });  
                 };
                 return widget;

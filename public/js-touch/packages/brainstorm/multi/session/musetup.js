@@ -234,6 +234,8 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 _sel.selected = false;
                                                 _selection.set(_type, _sel);        
                                         }
+                                        $session.set("selected_"+_type, _sel.selected);
+                                        $session.upload();
                                 }      
                         };
                        
@@ -298,9 +300,10 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         // Initializing the musetup UI
                         _widget.reset = function reset(replay){
+                                
+                               // retrieve chat document
+                                if ($session.get("chat")[1]) chatUI.reset($session.get("chat")[1]);
                                 if (replay){
-                                        // retrieve chat document
-                                        chatUI.reset($session.get("chat")[1]);
                                         
                                         // check if time has been spent on this step already
                                         _elapsed = $session.get("elapsedTimers").musetup || 0;
@@ -491,9 +494,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 _ready = true;
                                         });        
                                 }
-                                
-                                // retrieve chat document if it exists
-                                if ($session.get("chat")[1]) chatUI.reset($session.get("chat")[1]);
                                 _next = "step";        
                         };
                         
@@ -509,9 +509,21 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 _widget.updateDrawnCard("problem", val);       
                         });
                         
+                        $session.watchValue("selected_char", function(val){
+                                _selection.get("char").selected = val;       
+                        });
+                        
+                        $session.watchValue("selected_context", function(val){
+                                _selection.get("context").selected = val;       
+                        });
+                        
+                        $session.watchValue("selected_problem", function(val){
+                                _selection.get("problem").selected = val;       
+                        });
+                        
                         // init chat
                         $session.watchValue("chat", function(chat){
-                                console.log(chat, chatUI.getModel());
+                                console.log(chat, chatUI.getModel().toJSON());
                                 if (chat[1] && chat[1] !== chatUI.getModel().get("_id")){
                                         chatUI.reset(chat[1]);
                                 }       

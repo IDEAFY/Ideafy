@@ -172,9 +172,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         mubChat.dom.querySelector(".chatwrite").innerHTML = labels.get("typemsg");
                         chatCDB.unsync();
                         chatCDB.reset({});
-                        chat.reset([]); 
+                        chat.reset([]);
                         spinner.spin(document.getElementById("chatspinner"));
-                        console.log(chatId);
                         chatCDB.sync(Config.get("db"), chatId).then(function(){
                                 var i, arr = chatCDB.get("users");
                                 
@@ -186,18 +185,17 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         }
                                 }
                                 
+                                console.log("position in chatCDB reset before chat is set : ", position);
                                 // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
                                 if (isNaN(position) && !chatCDB.get("readonly")){
                                         mubChat.joinChat().then(function(){
                                                 chat.reset(chatCDB.get("msg"));
-                                                console.log("after reset observer ? : ", chatCDB.getValueObservable().hasTopic("msg"));
                                                 spinner.stop();       
                                         });        
                                 }
                                 
                                 else{
                                         chat.reset(chatCDB.get("msg"));
-                                        console.log("after reset observer ? : ", chatCDB.getValueObservable().hasTopic("msg"));
                                         spinner.stop();
                                 }      
                         });

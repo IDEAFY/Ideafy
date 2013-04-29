@@ -515,10 +515,11 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         });
                         
                         // init chat
-                        $session.watch("updated", function(chat){
-                                console.log(chat, chatUI.getModel().toJSON());
-                                if (chat[1] && chat[1] !== chatUI.getModel().get("_id")){
-                                        chatUI.reset(chat[1]);
+                        $session.watch("updated", function(field){
+                                console.log(field, chatUI.getModel().toJSON());
+                                var chatId = $session.get("chat")[1];
+                                if (field === "chat" && chat !== chatUI.getModel().get("_id")){
+                                        chatUI.reset(chatId);
                                 }       
                         });
                         

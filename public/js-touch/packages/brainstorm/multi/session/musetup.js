@@ -52,14 +52,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 (pop) ? this.classList.add("highlighted") : this.classList.remove("highlighted");
                                         },
                                         setSelected : function(selected){
-                                                if (selected){
-                                                        this.classList.add("pushed");
-                                                        this.classList.remove("invisible");
-                                                }
-                                                else{
-                                                        this.classList.remove("pushed");
-                                                        if ($session.get("initiator") && _user.get("_id") !== $session.get("initiator").id) this.classList.add("invisible");        
-                                                }
+                                                (selected)?this.classList.add("pushed"):this.classList.remove("pushed");
                                         }
                                 }),
                                 "musetuptimer" : new Model(_timer, {

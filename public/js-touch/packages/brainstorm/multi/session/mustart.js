@@ -102,6 +102,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // init
                         
+                        // if participants have left remove them from the displayed rosted
+                        $session.watchValue("participants", function(parts){
+                                participants.reset(parts);        
+                        });
+                        
                         // return
                         return _widget;
                 };     

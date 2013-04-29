@@ -36,7 +36,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                 }
                                         },
                                         setDescription : function(desc){
-                                                if (desc) this.innerHTML = desc;
+                                                if (desc) this.innerHTML = desc.replace(/\n/g, "<br>");
                                                 if (user.get("_id") === session.get("initiator").id){
                                                         this.setAttribute("contenteditable", true);
                                                 }

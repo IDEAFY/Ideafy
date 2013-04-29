@@ -24,6 +24,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                {name: "muidea", label: _labels.get("quickstepidea"), currentStep: false, status:null},
                                {name: "muwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
                                ],
+                       muStart, muSetup, muScenario, muTech, muIdea, muWrapup,
                        _steps = new Store(steps),
                        _user = Config.get("user"),
                        _session = new CouchDBStore(),
@@ -243,12 +244,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
                                 // reset step UIs
-                                _stack.getStack().get("mustart").reset(replay);
-                                _stack.getStack().get("musetup").reset(replay);
-                                _stack.getStack().get("muscenario").reset(replay);
-                                _stack.getStack().get("mutech").reset(replay);
-                                _stack.getStack().get("muidea").reset(replay);
-                                _stack.getStack().get("muwrapup").reset(replay);
+                                muStart.reset(replay);
+                                muSetup.reset(replay);
+                                muScenario.reset(replay);
+                                muTech.reset(replay);
+                                muIdea.reset(replay);
+                                muWrapup.reset(replay);
                                 
                                 // init exit confirmation UI
                                 confirmUI = new Confirm(_widget.dom);
@@ -292,8 +293,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         _stack.getStack().show("muwrapup");
                                 }
                                 else{
-                                        // check if current step already has a chat document (create one if necessary)
-                                        if (!_session.get("chat")[current]){
+                                        // check if current step already has a chat document (leader must create one if necessary)
+                                        if (!_session.get("chat")[current] && _user.get("_id") === _session.get("initiator").id){
                                                 _widget.createChat(current).then(function(){
                                                         spinner.stop();
                                                         _stack.getStack().show(step);        
@@ -387,21 +388,23 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    _widget.init = function init(){
                            
                            console.log("mucontroller init entered");
+                           // initialize step UIs
+                           muStart = new MUStart(_session, _widget.prev, _widget.next, _widget.toggleProgress);
+                           muSetup = new MUSetup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress);
+                           muScenario = new MUScenario(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress);
+                           muTech = new MUTech(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress);
+                           muIdea = new MUIdea(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress);
+                           muWrapup = new MUWrapup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress);
                            // setup -- initialize UIs (progress bar and stack) and _session couchdbstore
+                           
                            _session.setTransport(Config.get("transport"));
                            
-                           _stack.getStack().add("mustart", new MUStart(_session, _widget.prev, _widget.next, _widget.toggleProgress));
-                           console.log("after mustart");
-                           _stack.getStack().add("musetup", new MUSetup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
-                           console.log("after musetup");
-                           _stack.getStack().add("muscenario", new MUScenario(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
-                           console.log("after muscenario");
-                           _stack.getStack().add("mutech", new MUTech(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
-                           console.log("after mutech");
-                           _stack.getStack().add("muidea", new MUIdea(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
-                           console.log("after muidea");
-                           _stack.getStack().add("muwrapup", new MUWrapup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress));
-                           console.log("after muwrapup");
+                           _stack.getStack().add("mustart", muStart);
+                           _stack.getStack().add("musetup", muSetup);
+                           _stack.getStack().add("muscenario", muScenario);
+                           _stack.getStack().add("mutech", muTech);
+                           _stack.getStack().add("muidea", muIdea);
+                           _stack.getStack().add("muwrapup", muWrapup);
                            
                    };
                    

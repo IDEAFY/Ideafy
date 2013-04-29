@@ -496,6 +496,11 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 _widget.updateDrawnCard("problem", val);       
                         });
                         
+                        // init chat
+                        $session.watchValue("chat", function(chat){
+                                chatUI.reset(chat[1]);        
+                        });
+                        
                         // Return
                         return _widget;
                 };     

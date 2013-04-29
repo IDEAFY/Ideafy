@@ -35,7 +35,8 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                             _currentPopup = "", // which card if any is magnified
                             _start =  null, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 335, left: 410}).spin();
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 335, left: 410}).spin(),
+                            spinnerOk;
                             // deduct 20px from position shown in navigator
                             
                         // Setup
@@ -86,7 +87,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 "musetupevent": new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "musetup"><div class="previousbutton" data-musetupevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="musetup-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, musetup" data-musetupevent="listen:touchstart, toggleProgress"></div><div class="timer" data-musetuptimer="bind:setTime, timer; bind: displayTimer, display" data-musetupevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-musetupevent="listen:touchstart, help"></div><div class="drawarea"><div class="decks"><div class="drawbutton drawchar" name="char" data-musetupevent="listen: touchstart, push; listen:touchend, draw" data-musetup="bind: setReload, char.left"></div><div class="drawbutton drawcontext" name="context" data-musetupevent="listen: touchstart, push; listen:touchend, draw" data-musetup="bind:setReload, context.left"></div><div class="drawbutton drawproblem" name="problem" data-musetupevent="listen: touchstart, push; listen:touchend, draw" data-musetup="bind:setReload, problem.left"></div></div><div class="cards"><div class="card char defaultcard" name="char" data-musetupevent="listen:touchstart, zoom" data-musetupcards="bind:removeDefault, char.pic" data-musetup="bind: popup, char.popup"><div class="cardpicture" data-musetupcards="bind: setPic, char.pic"></div><div class="cardtitle" data-musetupcards="bind:formatTitle, char.title">Character</div></div><div class="card context defaultcard" name="context" data-musetupevent="listen:touchstart, zoom" data-musetupcards="bind:removeDefault, context.pic" data-musetup="bind: popup, context.popup"><div class="cardpicture" data-musetupcards="bind: setPic, context.pic"></div><div class="cardtitle" data-musetupcards="bind:formatTitle, context.title">Context</div></div><div class="card problem defaultcard" name="problem" data-musetupevent="listen:touchstart, zoom" data-musetupcards="bind:removeDefault, problem.pic" data-musetup="bind: popup, problem.popup"><div class="cardpicture" data-musetupcards="bind: setPic, problem.pic"></div><div class="cardtitle" data-musetupcards="bind:formatTitle, problem.title">Problem</div></div></div><div class="confirmdraw"><div class="drawok" name="char" data-musetup="bind:setSelected, char.selected" data-musetupevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="context" data-musetup="bind:setSelected, context.selected" data-musetupevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="problem" data-musetup="bind:setSelected, problem.selected" data-musetupevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button invisible" data-labels="bind:innerHTML, nextbutton" data-musetupevent="listen: touchstart, press; listen:touchend, next" data-musetup="bind:updateNext, char.selected;bind:updateNext, context.selected;bind:updateNext, problem.selected"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        _widget.template = '<div id = "musetup"><div class="previousbutton" data-musetupevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="musetup-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, musetup" data-musetupevent="listen:touchstart, toggleProgress"></div><div class="timer" data-musetuptimer="bind:setTime, timer; bind: displayTimer, display" data-musetupevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-musetupevent="listen:touchstart, help"></div><div class="drawarea"><div class="decks"><div class="drawbutton drawchar" name="char" data-musetupevent="listen: touchstart, push; listen:touchend, draw" data-musetup="bind: setReload, char.left"></div><div class="drawbutton drawcontext" name="context" data-musetupevent="listen: touchstart, push; listen:touchend, draw" data-musetup="bind:setReload, context.left"></div><div class="drawbutton drawproblem" name="problem" data-musetupevent="listen: touchstart, push; listen:touchend, draw" data-musetup="bind:setReload, problem.left"></div></div><div class="cards"><div class="card char defaultcard" name="char" data-musetupevent="listen:touchstart, zoom" data-musetupcards="bind:removeDefault, char.pic" data-musetup="bind: popup, char.popup"><div class="cardpicture" data-musetupcards="bind: setPic, char.pic"></div><div class="cardtitle" data-musetupcards="bind:formatTitle, char.title">Character</div></div><div class="card context defaultcard" name="context" data-musetupevent="listen:touchstart, zoom" data-musetupcards="bind:removeDefault, context.pic" data-musetup="bind: popup, context.popup"><div class="cardpicture" data-musetupcards="bind: setPic, context.pic"></div><div class="cardtitle" data-musetupcards="bind:formatTitle, context.title">Context</div></div><div class="card problem defaultcard" name="problem" data-musetupevent="listen:touchstart, zoom" data-musetupcards="bind:removeDefault, problem.pic" data-musetup="bind: popup, problem.popup"><div class="cardpicture" data-musetupcards="bind: setPic, problem.pic"></div><div class="cardtitle" data-musetupcards="bind:formatTitle, problem.title">Problem</div></div></div><div class="confirmdraw"><div class="drawok" name="char" data-musetup="bind:setSelected, char.selected" data-musetupevent="listen: touchstart, pushOk; listen:touchend, accept"></div><div class="drawok" name="context" data-musetup="bind:setSelected, context.selected" data-musetupevent="listen: touchstart, pushpushOk; listen:touchend, accept"></div><div class="drawok" name="problem" data-musetup="bind:setSelected, problem.selected" data-musetupevent="listen: touchstart, pushpushOk; listen:touchend, accept"></div></div><div class="next-button invisible" data-labels="bind:innerHTML, nextbutton" data-musetupevent="listen: touchstart, press; listen:touchend, next" data-musetup="bind:updateNext, char.selected;bind:updateNext, context.selected;bind:updateNext, problem.selected"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         // Method called when clicking on the accept button (changes class to "pressed")
                         _widget.press = function(event, node){
@@ -156,7 +157,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         // Method called when clicking on the draw buttons (toggles the "pushed" class)
                         _widget.push = function(event, node){
-                                if (_next !== "screen") node.classList.add("pushed");
+                                if (_next !== "screen" && _user.get("_id") === $session.get("initiator").id) node.classList.add("pushed");
                         };
                         
                         // Method called when releasing a draw button -- draws a card of the selected type
@@ -205,6 +206,14 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 }      
                         };
                         
+                        // Method called when clicking on the accept buttton
+                        _widget.pushOk = function(event, node){
+                                if (_user.get("_id") === $session.get("initiator").id){
+                                        node.classList.add("invisible");
+                                        spinnerOk = new Spinner().spin(node);
+                                }        
+                        };
+                        
                         // Method called when clicking on the accept button - toggles lock/unlock of the specific card
                         _widget.accept = function(event, node){
                                 var _type = node.getAttribute("name"),
@@ -212,24 +221,17 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 
                                 if (_next === "step" && $session.get("initiator").id === _user.get("_id")){
                                         if (_cards.get(_type).id){
-                                                if (_sel.selected){
-                                                        // update store
-                                                        _sel.selected = false;
-                                                        _selection.set(_type, _sel);
-                                                }
-                                                else{
-                                                        // update store
-                                                        _sel.selected = true;
-                                                        _selection.set(_type, _sel);
-                                                } 
+                                                _sel.selected = !sel.selected; 
                                         }
                                         else {
-                                                _sel.selected = false;
-                                                _selection.set(_type, _sel);        
+                                                _sel.selected = false;        
                                         }
-                                        console.log("setting selected card : ", _type);
                                         $session.set("selected_"+_type, _sel.selected);
-                                        $session.upload().then(function(){console.log("update successful")});
+                                        $session.upload().then(function(){
+                                                node.classList.remove("invisible");
+                                                spinnerOk.stop();
+                                                _selection.set(_type, _sel);
+                                        });
                                 }      
                         };
                        
@@ -534,7 +536,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         // init chat
                         $session.watchValue("chat", function(chat){
-                                console.log("change triggered in chat field", chat, chatUI.getModel().toJSON());
                                 if (chat[1] && chat[1] !== chatUI.getModel().get("_id")){
                                         chatUI.reset(chat[1]);
                                 }       

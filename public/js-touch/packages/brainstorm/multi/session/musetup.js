@@ -492,6 +492,12 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 _ready = true;
                                         });        
                                 }
+                                
+                                // reset chat interface if not done so yet
+                                if (chat[1] && chat[1] !== chatUI.getModel().get("_id")){
+                                        chatUI.reset(chat[1]);
+                                }
+                                
                                 _next = "step";        
                         };
                         
@@ -521,6 +527,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         // init chat
                         $session.watchValue("chat", function(chat){
+                                console.log("change triggered in chat field");
                                 if (chat[1] && chat[1] !== chatUI.getModel().get("_id")){
                                         chatUI.reset(chat[1]);
                                 }       

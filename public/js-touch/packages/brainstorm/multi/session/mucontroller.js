@@ -313,12 +313,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 });
                                         }
                                         else {
-                                                _session.watchValue("chat", function(chat){
-                                                        if (chat([current])){
-                                                                spinner.stop();
-                                                                _stack.getStack().show(step);
-                                                        }        
-                                                });
+                                                spinner.stop();
+                                                _stack.getStack().show(step);
                                         }
                                 }
                            });

@@ -247,6 +247,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 // retrieve session and start brainstorming   
                 _widget.retrieveSession = function retrieveSession(sid, replay){
+                        
+                        console.log("retrieving session");
                            
                         spinner.spin(document.getElementById("brainstorm"));
                            
@@ -258,6 +260,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 // reset step UIs
                                 muStart.reset(replay);
                                 muSetup.reset(replay);
+                                console.log("initial reset muSetup");
                                 muScenario.reset(replay);
                                 muTech.reset(replay);
                                 muIdea.reset(replay);
@@ -307,12 +310,15 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 else{
                                         // check if current step already has a chat document (leader must create one if necessary)
                                         if (!_session.get("chat")[current] && _user.get("_id") === _session.get("initiator").id){
+                                                console.log("leader before createChat");
                                                 _widget.createChat(current).then(function(){
                                                         spinner.stop();
+                                                        console.log("leader after createchat");
                                                         _stack.getStack().show(step);        
                                                 });
                                         }
                                         else {
+                                                console.log("participant");
                                                 spinner.stop();
                                                 _stack.getStack().show(step);
                                         }

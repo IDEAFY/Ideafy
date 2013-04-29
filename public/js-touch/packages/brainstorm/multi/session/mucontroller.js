@@ -223,7 +223,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                          
                          // set id
                         id = cdb.get("sid")+"_"+step;
-                        console.log(id);
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), id);
                         setTimeout(function(){
@@ -314,8 +313,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 });
                                         }
                                         else {
-                                                spinner.stop();
-                                                _stack.getStack().show(step);
+                                                _session.watchValue("chat", function(chat){
+                                                        if (chat([current])){
+                                                                spinner.stop();
+                                                                _stack.getStack().show(step);
+                                                        }        
+                                                });
                                         }
                                 }
                            });

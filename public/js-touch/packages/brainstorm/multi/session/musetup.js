@@ -498,6 +498,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         // init chat
                         $session.watchValue("chat", function(chat){
+                                console.log(chat, chatUI.getModel());
                                 if (chat[1] && chat[1] !== chatUI.getModel().get("_id")){
                                         chatUI.reset(chat[1]);
                                 }       

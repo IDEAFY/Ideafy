@@ -126,16 +126,30 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         console.log("initiator canceling session");
                         //set session status to "deleted" to notify participants
                         _session.set("status", "deleted");
-                        _session.upload().then(function(){
+                        _session.upload()
+                        .then(function(){
                                 // reset sessionInProgress in user doc
                                 _user.set("sessionInProgress", "");
                                 _user.upload();
                                 // chatUI.cancel();
-                                _widget.displayInfo("deleting", 5000).then(function(){
-                                        _session.remove();
-                                        _session.unsync();
+                                return _widget.displayInfo("deleting", 5000);
+                        })
+                        .then(function(){
+                                        var chat = _session.get("chat");
                                         confirmUI.hide();
-                                        $exit();       
+                                        $exit();
+                                        chat.forEach(function(id){
+                                                var cdb = new CouchDBStore();
+                                                cdb.setTransport(Config.get("transport");
+                                                cdb.sync(Config.get("db"), id).then(function(){
+                                                        setTimeout(function(){
+                                                                cdb.remove();
+                                                                cdb.unsync();
+                                                        }, 150)
+                                                });
+                                        });
+                                        _session.remove();
+                                        _session.unsync();      
                                 });
                         }, function(err){console.log(err);});        
                 };

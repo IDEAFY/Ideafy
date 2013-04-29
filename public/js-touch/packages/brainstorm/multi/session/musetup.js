@@ -35,7 +35,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                             _currentPopup = "", // which card if any is magnified
                             _start =  null, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 373, left:373}).spin();
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 335, left: 410}).spin();
                             // deduct 20px from position shown in navigator
                             
                         // Setup
@@ -46,13 +46,20 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 (left === 0) ? this.classList.add("reload") : this.classList.remove("reload");
                                         },
                                         updateNext : function(selected){
-                                                (_selection.get("char").selected && _selection.get("context").selected && _selection.get("problem").selected) ? this.classList.remove("invisible"):this.classList.add("invisible");
+                                                (_selection.get("char").selected && _selection.get("context").selected && _selection.get("problem").selected && _user.get("_id") === $session.get("initiator").id) ? this.classList.remove("invisible"):this.classList.add("invisible");
                                         },
                                         popup : function(pop){
                                                 (pop) ? this.classList.add("highlighted") : this.classList.remove("highlighted");
                                         },
                                         setSelected : function(selected){
-                                                (selected)?this.classList.add("pushed"):this.classList.remove("pushed");
+                                                if (selected){
+                                                        this.classList.add("pushed");
+                                                        this.classList.remove("invisible");
+                                                }
+                                                else{
+                                                        this.classList.remove("pushed");
+                                                        if (_user.get("_id") !== $session.get("initiator").id) this.classList.add("invisible");        
+                                                }
                                         }
                                 }),
                                 "musetuptimer" : new Model(_timer, {
@@ -210,7 +217,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 var _type = node.getAttribute("name"),
                                     _sel = _selection.get(_type); 
                                 
-                                if (_next === "step"){
+                                if (_next === "step" && $session.get("initiator").id === _user.get("_id")){
                                         if (_cards.get(_type).id){
                                                 if (_sel.selected){
                                                         // update store

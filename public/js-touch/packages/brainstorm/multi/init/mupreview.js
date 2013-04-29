@@ -98,14 +98,15 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                 Config.get("observer").notify("join-musession", muCDB.get("_id"));
                                 setTimeout(function(){
                                         spinner.stop();
-                                        muPreviewUI.closePreview();
+                                        muPreviewUI.dom.classList.add("invisible");
+                                        muCDB.unsync();
+                                        muCDB.reset();
                                 }, 5000);
                         };
                         
                         muPreviewUI.init = function init(callback){
                                 refreshList = callback;        
                         };
-                        
                         
                         // watch for new participants
                         muCDB.watchValue("participants", function(arr){

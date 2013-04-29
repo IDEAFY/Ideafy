@@ -120,7 +120,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 widget.reset = function reset(){
                        currentList = "mulistall";
                        // init spinner
-                       spinner.spin(document.getElementById("mulistspinner"));
+                       spinner.spin(widget.dom.getElementById("mulistspinner"));
                        // reset options
                        muListOptions.set("selectedLang", "all");
                        muListOptions.set("selectedMode", "allmodes");
@@ -244,7 +244,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 muListOptions.set("selectedLang", muListOptions.get("lang")[i]);
                         }
                         // start spinner
-                        spinner.spin(document.getElementById("mulistspinner"));
+                        spinner.spin(widget.dom.getElementById("mulistspinner"));
                         widget.filterList().then(function(){
                                 spinner.stop();
                         });        
@@ -268,7 +268,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         break;        
                         }
                         // start spinner
-                        spinner.spin(document.getElementById("mulistspinner"));
+                        spinner.spin(widget.dom.getElementById("mulistspinner"));
                         widget.filterList().then(function(){
                                 spinner.stop();
                         });
@@ -295,10 +295,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                                 widget.addSessions(arr, mode, {lang: lang}).then(function(){
                                                         muListAll.reset(arr);
                                                         if (arr.length){
-                                                                document.getElementById("noresult").classList.add("invisible");
+                                                                widget.dom.getElementById("noresult").classList.add("invisible");
                                                         }
                                                         else {
-                                                                document.getElementById("noresult").classList.remove("invisible");
+                                                                widget.dom.getElementById("noresult").classList.remove("invisible");
                                                         } 
                                                         promise.fulfill();      
                                                 });
@@ -309,10 +309,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                                                 widget.addSessions(arr, "boardroom", {lang: lang}).then(function(){
                                                                         muListAll.reset(arr);
                                                                         if (arr.length){
-                                                                                document.getElementById("noresult").classList.add("invisible");
+                                                                                widget.dom.getElementById("noresult").classList.add("invisible");
                                                                         }
                                                                         else {
-                                                                                document.getElementById("noresult").classList.remove("invisible");
+                                                                                widget.dom.getElementById("noresult").classList.remove("invisible");
                                                                         }
                                                                         promise.fulfill();      
                                                                 }); 
@@ -325,10 +325,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         widget.syncSearch(arr, query, {mode:mode, lang:lang}).then(function(){
                                                 muSearch.reset(arr);
                                                 if (arr.length){
-                                                        document.getElementById("noresult").classList.add("invisible");
+                                                        widget.dom.getElementById("noresult").classList.add("invisible");
                                                 }
                                                 else {
-                                                        document.getElementById("noresult").classList.remove("invisible");
+                                                        widget.dom.getElementById("noresult").classList.remove("invisible");
                                                 }
                                                 promise.fulfill();        
                                         });

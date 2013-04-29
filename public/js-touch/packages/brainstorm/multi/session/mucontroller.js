@@ -172,7 +172,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                             promise = new Promise();
                         
                         // build users array
-                        usr.push([{"username": _session.get("initiator").username, "userid": _session.get("initiator").id}]);
+                        usr.push({"username": _session.get("initiator").username, "userid": _session.get("initiator").id});
                         _session.get("participants").forEach(function(part){
                                 usr.push({"username": part.username, "userid": part.id});        
                         });

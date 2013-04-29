@@ -281,7 +281,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         document.removeEventListener("touchstart", exitListener.listener, true);
                                         session.unsync();
                                         $start(session.get("_id"));
-                                        session.reset({});
                                 });
                         };
                         

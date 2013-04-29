@@ -251,7 +251,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                         },
                         data: this.toJSON()
                 }, function (result) {
-                        console.log(result);
                         var json = JSON.parse(result);
                         if (json.ok) {
                                 this.set("_rev", json.rev);
@@ -577,7 +576,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                         data: this.toJSON()
                 }, function (response) {
                         var json = JSON.parse(response);
-                        console.log(response);
                         if (json.ok) {
                                 this.set("_rev", json.rev);
                                 promise.fulfill(json);
@@ -779,7 +777,6 @@ function CouchDBStore(Store, StateMachine, Tools, Promise) {
                  */
                 this.upload = function upload() {
                         var promise = new Promise;
-                        console.log("uploading document : ", this.toJSON(), _stateMachine.getCurrent());
                         if (_syncInfo.document) {
                                 _stateMachine.event("updateDatabase", promise);
                                 return promise;

@@ -515,15 +515,21 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         });
                         
                         $session.watchValue("selected_char", function(val){
-                                _selection.get("char").selected = val;       
+                                var selChar = _selection.get("char");
+                                selChar.selected = val;
+                                _selection.set("char", selChar);       
                         });
                         
                         $session.watchValue("selected_context", function(val){
-                                _selection.get("context").selected = val;       
+                                var selCtx = _selection.get("context");
+                                selCtx.selected = val;
+                                _selection.set("context", selCtx);       
                         });
                         
                         $session.watchValue("selected_problem", function(val){
-                                _selection.get("problem").selected = val;       
+                                var selPb = _selection.get("problem");
+                                selPb.selected = val;
+                                _selection.set("problem", selPb);      
                         });
                         
                         // init chat

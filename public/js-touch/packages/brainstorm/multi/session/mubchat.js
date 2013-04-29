@@ -39,7 +39,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         }),
                         "chat" : new Model(chat, {
                                 setLiStyle : function(user){
-                                        console.log(position);
                                         if (user === position){
                                                 this.setAttribute("style", "text-align: right;");
                                         }
@@ -48,7 +47,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         }
                                 },
                                 setInnerMsgStyle : function(user){
-                                        console.log(position);
                                         if (user === "SYS"){
                                                 this.setAttribute("style", "background: none; border: none");
                                         }

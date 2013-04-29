@@ -227,8 +227,9 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 _sel.selected = false;
                                                 _selection.set(_type, _sel);        
                                         }
+                                        console.log("setting selected card : ", _type);
                                         $session.set("selected_"+_type, _sel.selected);
-                                        $session.upload();
+                                        $session.upload().then(function(){console.log("update successful")});
                                 }      
                         };
                        

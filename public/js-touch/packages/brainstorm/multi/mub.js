@@ -123,7 +123,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 });
                 
                 MUBSPIN = spinner;
-                DELCHAT = function(){
+                DELCHAT = function delChat(){
                         var cdb = new CouchDBStore();
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), "_design/chat", "_view/all")
@@ -138,7 +138,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                                 console.log("chat documents removed"); 
                         });       
                 };
-                DELMUSESSIONS = function(){
+                DELMUSESSIONS = function delMusessions(){
                       var cdb = new CouchDBStore();
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), "_design/library", "_view/sessions")

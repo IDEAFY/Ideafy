@@ -292,6 +292,9 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         // Initializing the musetup UI
                         _widget.reset = function reset(replay){
                                 if (replay){
+                                        // retrieve chat document
+                                        chatUI.reset($session.get("chat")[1]);
+                                        
                                         // check if time has been spent on this step already
                                         _elapsed = $session.get("elapsedTimers").musetup || 0;
                                         
@@ -481,6 +484,9 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 _ready = true;
                                         });        
                                 }
+                                
+                                // retrieve chat document if it exists
+                                if ($session.get("chat")[1]) chatUI.reset($session.get("chat")[1]);
                                 _next = "step";        
                         };
                         

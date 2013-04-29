@@ -133,25 +133,24 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _user.upload();
                                 // chatUI.cancel();
                                 return _widget.displayInfo("deleting", 5000);
-                        })
+                        }, function(err){console.log(err);})
                         .then(function(){
-                                        var chat = _session.get("chat");
-                                        confirmUI.hide();
-                                        $exit();
-                                        chat.forEach(function(id){
-                                                var cdb = new CouchDBStore();
-                                                cdb.setTransport(Config.get("transport");
-                                                cdb.sync(Config.get("db"), id).then(function(){
-                                                        setTimeout(function(){
-                                                                cdb.remove();
-                                                                cdb.unsync();
-                                                        }, 150)
-                                                });
+                                var chat = _session.get("chat");
+                                confirmUI.hide();
+                                $exit();
+                                chat.forEach(function(id){
+                                        var cdb = new CouchDBStore();
+                                        cdb.setTransport(Config.get("transport"));
+                                        cdb.sync(Config.get("db"), id).then(function(){
+                                                setTimeout(function(){
+                                                        cdb.remove();
+                                                        cdb.unsync();
+                                                }, 150);
                                         });
-                                        _session.remove();
-                                        _session.unsync();      
                                 });
-                        }, function(err){console.log(err);});        
+                                _session.remove();
+                                _session.unsync();      
+                         });       
                 };
                         
                 // display info popup

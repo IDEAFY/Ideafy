@@ -467,6 +467,7 @@
 	"chatmsg2" : " has left the session",
 	"chatmsg3" : " has canceled the session",
 	"chatmsg4" : "Your session is starting now",
+	"chatmsg5" : "Beginning new step : ",
 	"typemsg" : "Enter your text",
 	"said" : " said :",
 	"noresult": "No result found",

@@ -162,14 +162,69 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }, 1000);
                         return promise;
                 };
-                   
-                   _widget.retrieveSession = function retrieveSession(sid, replay){
+                
+                // create Chat document
+                _widget.createChat = function createChat(step){
+                        var cdb = new CouchDBStore(),
+                            now = new Date().getTime(),
+                            usr = [], arg,
+                            promise = new Promise();
+                        
+                        // build users array
+                        usr.push([{"username": _session.get("initiator").username, "userid": _session.get("initiator").id}]);
+                        _session.get("participants").forEach(function(part){
+                                usr.push({"username": part.username, "userid": part.id});        
+                        });
+                        cdb.set("users", usr);
+                        
+                        // build intro message
+                        switch(step){
+                                case 1:
+                                        arg = "quicksetup";
+                                        break;
+                                case 2:
+                                        arg = "quickscenario";
+                                        break;
+                                case 3:
+                                        arg = "quicktech";
+                                        break;
+                                case 4:
+                                        arg = "quickidea";
+                                        break;
+                                case 5:
+                                        arg = "quickwrapup";
+                                        break;
+                                default
+                                        arg  ="quickstart";
+                                        break;
+                        }
+                        cdb.set("msg", [{user: "SYS", "type": 5, "arg": arg, "time": now}]);
+                        cdb.set("sid", _session.get("_id"));
+                        cdb.set("lang", _session.get("lang"));
+                        cdb.set("readonly", false); // once the step is cleared readonly is set to true
+                        cdb.set("step", step); // mubwait or mubstart will display the same chat
+                        cdb.set("type", 17);
+                        
+                        cdb.setTransport(Config.get("transport"));
+                        cdb.sync(Config.get("db"), id);
+                        setTimeout(function(){
+                                cdb.upload().then(function(){
+                                        promise.fulfill();
+                                        cdb.unsync();
+                                });
+                        }, 200);
+                        
+                        return promise;
+                };
+                
+                // retrieve session and start brainstorming   
+                _widget.retrieveSession = function retrieveSession(sid, replay){
                            
-                           spinner.spin(document.getElementById("brainstorm"));
+                        spinner.spin(document.getElementById("brainstorm"));
                            
-                           // connect to couchdbstore and retrieve session
-                           _session.reset();
-                           _session.sync(Config.get("db"), sid).then(function(){
+                        // connect to couchdbstore and retrieve session
+                        _session.reset();
+                        _session.sync(Config.get("db"), sid).then(function(){
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
                                 // reset step UIs
@@ -217,9 +272,23 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         }      
                                 });
                                 
-                                spinner.stop();
-                                // display wrapup screen else display current screen
-                                (replay) ? _stack.getStack().show("muwrapup") : _stack.getStack().show(step); 
+                                if (replay){
+                                        spinner.stop();
+                                        _stack.getStack().show("muwrapup");
+                                }
+                                else{
+                                        // check if current step already has a chat document (create one if necessary)
+                                        if (!_session.get("chat")[current]){
+                                                _widget.createChat(current).then(function(){
+                                                        spinner.stop();
+                                                        _stack.getStack().show(step);        
+                                                });
+                                        }
+                                        else {
+                                                spinner.stop();
+                                                _stack.getStack().show(step);
+                                        }
+                                }
                            });
                    };
                    

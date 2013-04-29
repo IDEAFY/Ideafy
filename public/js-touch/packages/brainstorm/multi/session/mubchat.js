@@ -99,6 +99,9 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                                if (type <= 3){
                                                        this.innerHTML = chatCDB.get("users")[chat.get(id).arg].username + labels.get("chatmsg"+type);
                                                }
+                                               else if (type === 5){
+                                                       this.innerHTML = labels.get("chatmsg"+type)+labels.get(chat.get(id).arg);
+                                               }
                                                else {
                                                        this.innerHTML = labels.get("chatmsg"+type);
                                                }

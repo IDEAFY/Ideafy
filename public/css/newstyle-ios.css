@@ -5969,7 +5969,7 @@ li.my2q{
     -webkit-margin-before: 0.2em;
 }
 
-#newmub label, #mulist legend{
+#newmub form > label, #mulist legend{
     font-family: Pacifico;
     color: #657B99;
     font-size: 20px;

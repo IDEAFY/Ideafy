@@ -48,7 +48,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "score" : "",
                         "chat" : [],
                         "invited": []},
-                        spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
+                        spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 660}).spin();
                 
                 widget.plugins.addAll({
                         "labels": new Model(labels),

@@ -415,38 +415,39 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });
         
         olives.handlers.set('Welcome', function(json, onEnd){
-                var Id = "", cdb = new CouchDBStore(), lang="EN-US";
+                var Id = "", cdb = new CouchDBDocument(), lang="EN-US";
                 // workaround to solve language issue 
                 if (json.language) {
                       lang =  json.language.toUpperCase();
                       }
                 (["US", "FR"].indexOf(lang.substr(2))>-1) ? Id = "I:WELCOME:"+lang : Id = "I:WELCOME:US";
                 
-                getDocAsAdmin(Id, cdb).then(function(){
-                                        var shared = cdb.get("sharewith");
-                                        shared.alter("push", json.userid);
-                                        updateDocAsAdmin(Id, cdb).then(function(){
-                                                onEnd({"res": "ok"});
-                                        })
-                                })
-                      
+                getDocAsAdmin(Id, cdb)
+                .then(function(){
+                        var shared = cdb.get("sharewith");
+                        shared.alter("push", json.userid);
+                        return updateDocAsAdmin(Id, cdb);
+                })
+                .then(function(){
+                        onEnd({"res": "ok"});
+                });
         });
 
         olives.handlers.set("CheckLogin", function(json, onEnd){
                 var cookieJSON = cookie.parse(json.handshake.headers.cookie),
                     sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
-                    cdb = new CouchDBStore();
+                    cdb = new CouchDBDocument();
                     
                 // return false if document does not exist in database
                 getDocAsAdmin(json.id, cdb).then(function(){
-                                sessionStore.get(sessionID, function(err, session){
-                                        if(err){throw new Error(err);}
-                                        else{
-                                                (session.auth && session.auth.search(json.id) >-1) ? onEnd({authenticated: true}) : onEnd({authenticated : false});
-                                        } 
-                                });
-                        }, function(){onEnd({authenticated: false});});
-                });
+                        sessionStore.get(sessionID, function(err, session){
+                                if(err){throw new Error(err);}
+                                else{
+                                        (session.auth && session.auth.search(json.id) >-1) ? onEnd({authenticated: true}) : onEnd({authenticated : false});
+                                } 
+                        });
+                }, function(){onEnd({authenticated: false});});
+        });
         
         olives.handlers.set("Login", function(json, onEnd) {
                 var user = new CouchDBUser();

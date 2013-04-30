@@ -94,7 +94,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         confirmUI = new Confirm(widget.dom);
                      
                         widget.reset = function reset(sid){
-                                var promise = new Promise();
                                 // clear previous UI (chat and main window)
                                 chatUI.clear();
                                 session.unsync();
@@ -137,8 +136,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         // set as session in progress
                                         user.set("sessionInProgress", {id: sid, type: "musession", mode:"rejoin"});
                                         user.upload();
-                                        
-                                        promise.fulfill();
                                 });
                                 
                                 return promise;

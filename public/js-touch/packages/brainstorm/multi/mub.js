@@ -14,7 +14,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                     stack = new Stack(),
                     user = Config.get("user"),
                     muWait, muInit, muController,
-                    spinner = new Spinner({color:"#9AC9CD", lines:10, length: 12, width: 6, radius:10, top: 20}).spin();
+                    spinner = new Spinner({color:"#9AC9CD", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
                 
                 widget.plugins.add("mustack", stack);
                 
@@ -116,12 +116,10 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 Config.get("observer").watch("start-mu_session", function(sid){
                         spinner.spin(widget.dom);
                         // show needs to be called prior to reset to make sure widget.dom exists in mubwait
-                        setTimeout(function(){
-                                muWait.reset(sid).then(function(){
-                                        spinner.stop();
-                                        stack.getStack().show("mubwait");   
-                                });
-                        }, 120000);
+                        muWait.reset(sid).then(function(){
+                                spinner.stop();
+                                stack.getStack().show("mubwait");   
+                        });
                 });
                 
                 MUBSPIN = spinner;

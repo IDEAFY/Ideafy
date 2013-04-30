@@ -176,7 +176,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 if (!session.get("participants").length) countdown = 2000;
                                 widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
-                                        session.unsync();
                                         widget.goToScreen();
                                         session.reset({});      
                                 });        

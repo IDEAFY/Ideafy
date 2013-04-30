@@ -123,34 +123,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         
                 // initiator decides to cancel the session
                 _widget.cancelSession = function cancelSession(){
-                        console.log("initiator canceling session");
-                        //set session status to "deleted" to notify participants
-                        _session.set("status", "deleted");
-                        _session.upload()
-                        .then(function(){
-                                // reset sessionInProgress in user doc
-                                _user.set("sessionInProgress", "");
-                                _user.upload();
-                                // chatUI.cancel();
-                                return _widget.displayInfo("deleting", 5000);
-                        }, function(err){console.log(err);})
-                        .then(function(){
-                                var chat = _session.get("chat");
-                                confirmUI.hide();
+                        var countdown = 10000; // better to pick a high number and cancel earlier if all actions are finished
+                        _widget.displayInfo("deleting", countdown).then(function(){
                                 $exit();
-                                chat.forEach(function(id){
-                                        var cdb = new CouchDBStore();
-                                        cdb.setTransport(Config.get("transport"));
-                                        cdb.sync(Config.get("db"), id).then(function(){
-                                                setTimeout(function(){
-                                                        cdb.remove();
-                                                        cdb.unsync();
-                                                }, 150);
-                                        });
-                                });
-                                _session.remove();
-                                _session.unsync();      
-                         });       
+                        });      
                 };
                         
                 // display info popup
@@ -174,6 +150,42 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 if (timeout <= 0) clearInfo();
                                 timeout -= 1000;
                         }, 1000);
+                        
+                        if (message === "deleting"){
+                                //set session status to "deleted" to notify participants
+                                _session.set("status", "deleted");
+                                _session.upload()
+                                .then(function(){
+                                        // reset sessionInProgress in user doc
+                                        _user.set("sessionInProgress", "");
+                                        return _user.upload();
+                                })
+                                .then(function(){
+                                        // remove chat documents
+                                        var chat = _session.get("chat"), nb = chat.length, p = new Promise();
+                                        chat.forEach(function(id){
+                                                var cdb = new CouchDBStore();
+                                                cdb.setTransport(Config.get("transport"));
+                                                cdb.sync(Config.get("db"), id).then(function(){
+                                                        setTimeout(function(){
+                                                                cdb.remove();
+                                                                nb --;
+                                                                if (nb <= 0) p.fulfill;
+                                                                
+                                                        }, 100);
+                                                });
+                                        });
+                                        return p;
+                                })
+                                .then(function(){
+                                        // and finally
+                                        _session.remove();
+                                        // if there is still time remaining clear timeout
+                                        if (timeout > 0) timeout = 0;     
+                                }); 
+                                       
+                        }
+                        
                         return promise;
                 };
                 

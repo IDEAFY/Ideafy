@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "service/utils"],
-        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store, Utils){
+define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "service/utils", "lib/spin.min"],
+        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store, Utils, Spinner){
                 
            return function NewMUBConstructor($exit){
            
@@ -47,7 +47,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "idea" : [], //{"title" : "", "description" : "", "solution" : "", "visibility" : "private", "id" : "" }
                         "score" : "",
                         "chat" : [],
-                        "invited": []};
+                        "invited": []},
+                        spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
                 
                 widget.plugins.addAll({
                         "labels": new Model(labels),
@@ -110,7 +111,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         "newmubevent": new Event(widget)
                 });
                 
-                widget.template = '<div id="newmub"><div id="newmub-content"><form><label data-labels="bind:innerHTML, selectmode"></label><hr/><div class="select-mode"><select data-newmub="bind:initSessionMode, mode" data-newmubevent="listen:change, changeSessionMode"><option name="roulette" data-labels="bind:innerHTML, roulette"></option><option name="campfire" data-labels="bind:innerHTML, campfire"></option><option name="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label></label><hr/><div class="selectall" data-labels="bind:innerHTML, selectall" data-newmubevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div><input class="search" data-newmubevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="invitelistauto" class="autocontact invisible"><div class="autoclose" data-newmubevent="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-newmubevent="listen:touchend, select"></li></ul></div><div class="invitecontactlist"><ul data-invited="foreach"><li class = "contact list-item" data-newmubevent="listen:touchstart, discardContact"><p class="contact-name" data-invited="bind:innerHTML, username"></p><div class="remove-contact"></div></li></ul></div></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" maxlength=60 readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: touchstart, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-newmub="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: touchstart, press; listen:touchend, clear">Clear</label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:touchstart, press; listen:touchend, create">Create</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
+                widget.template = '<div id="newmub"><div id="newmub-content"><form><label data-labels="bind:innerHTML, selectmode"></label><hr/><div class="select-mode"><select data-newmub="bind:initSessionMode, mode" data-newmubevent="listen:change, changeSessionMode"><option name="roulette" data-labels="bind:innerHTML, roulette"></option><option name="campfire" data-labels="bind:innerHTML, campfire"></option><option name="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label></label><hr/><div class="selectall" data-labels="bind:innerHTML, selectall" data-newmubevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div><input class="search" data-newmubevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="invitelistauto" class="autocontact invisible"><div class="autoclose" data-newmubevent="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-newmubevent="listen:touchend, select"></li></ul></div><div class="invitecontactlist"><ul data-invited="foreach"><li class = "contact list-item" data-newmubevent="listen:touchstart, discardContact"><p class="contact-name" data-invited="bind:innerHTML, username"></p><div class="remove-contact"></div></li></ul></div></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" maxlength=60 readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: touchstart, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-newmub="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: touchstart, press; listen:touchend, clear"></label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:touchstart, press; listen:touchend, create"></label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
                 
                 widget.place(document.getElementById("newmub"));
                 
@@ -315,6 +316,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 
                 widget.create = function(event, node){
                         node.classList.remove("pressed");
+                        node.classList.add("invisible");
+                        spinner.spin(node.parentNode);
                         error.set("errormsg", "");
                         if (session.get("title").length<3 || session.get("description").length<3){
                                 error.set("errormsg", labels.get("providesessioninfo"));
@@ -329,13 +332,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 error.set("errormsg", labels.get("inviteatleastone"));        
                         }
                         else {
-                                widget.uploadSession();
+                                setTimeout(function(){
+                                        widget.uploadSession().then(function(){
+                                        spinner.stop();
+                                        node.classList.remove("invisible");
+                                        });
+                                }, 120000);
                         }
                 };
                 
                 widget.createChat = function createChat(id){
                         var cdb = new CouchDBStore(),
-                            now = new Date().getTime();
+                            now = new Date().getTime(),
+                            promise = new Promise();
                         cdb.setTransport(Config.get("transport"));
                         
                         cdb.set("users", [{"username":user.get("username"), "userid": user.get("_id")}]);
@@ -348,16 +357,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         cdb.sync(Config.get("db"), id);
                         setTimeout(function(){
                                 cdb.upload().then(function(){
+                                        promise.fulfill();
                                         cdb.unsync();
                                 });
-                        }, 250);
+                        }, 150);
+                        return promise;
                 };
                 
                 widget.uploadSession = function uploadSession(){
                         // add invitees to session document
                         var cdb = new CouchDBStore(),
                             now = new Date(),
-                            chatId, chat = session.get("chat") || [];
+                            chatId, chat = session.get("chat") || [],
+                            promise = new Promise();
                         
                         // create doc id
                         session.set("_id", "S:MU:"+now.getTime());
@@ -381,30 +393,37 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         chat.push(chatId);
                         session.set("chat", chat);
                         
-                        // create chat document
-                       widget.createChat(chatId);
-                        
-                        // upload session document
+                        // init session couchdbstore
                         cdb.reset(JSON.parse(session.toJSON()));
                         cdb.setTransport(Config.get("transport"));
+                        
+                        // create session document in database --> THENABLE
                         cdb.sync(Config.get("db"), cdb.get("_id"));
-                        setTimeout(function(){
-                                cdb.upload().then(function(){
-                                        if (cdb.get("mode") === "boardroom"){
-                                                error.set("errormsg", labels.get("sendinginvites"));
-                                                widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
-                                                        Config.get("observer").notify("start-mu_session", cdb.get("_id"));
-                                                        cdb.unsync();
-                                                        widget.reset();
-                                                });
-                                        }
-                                        else {
+                        
+                        // create chat document
+                       widget.createChat(chatId)
+                       .then(function(){
+                        // upload session document
+                                return cdb.upload();      
+                       })
+                       .then(function(){
+                                if (cdb.get("mode") === "boardroom"){
+                                        error.set("errormsg", labels.get("sendinginvites"));
+                                        widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
+                                                promise.fulfill();
                                                 Config.get("observer").notify("start-mu_session", cdb.get("_id"));
                                                 cdb.unsync();
-                                                widget.reset();        
-                                        }        
-                                });
-                        }, 250);
+                                                        widget.reset();
+                                        });
+                                }
+                                else {
+                                        promise.fulfill();
+                                        Config.get("observer").notify("start-mu_session", cdb.get("_id"));
+                                        cdb.unsync();
+                                        widget.reset();        
+                                }        
+                        });
+                        return promise;
                 };
                 
                 widget.sendInvites = function sendInvites(idlist, sid, stitle){

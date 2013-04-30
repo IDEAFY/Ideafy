@@ -137,8 +137,6 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         user.set("sessionInProgress", {id: sid, type: "musession", mode:"rejoin"});
                                         user.upload();
                                 });
-                                
-                                return promise;
                         };
                         
                         // initiator or a participant decides to leave the waiting room

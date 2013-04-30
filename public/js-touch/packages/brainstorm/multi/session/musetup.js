@@ -221,7 +221,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 
                                 if (_next === "step" && $session.get("initiator").id === _user.get("_id")){
                                         if (_cards.get(_type).id){
-                                                _sel.selected = !sel.selected; 
+                                                _sel.selected = !_sel.selected; 
                                         }
                                         else {
                                                 _sel.selected = false;        
@@ -300,9 +300,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                // retrieve chat document
                                 if ($session.get("chat")[1]){
                                         chatUI.reset($session.get("chat")[1]);
-                                }
-                                else{
-                                        chatUI.clear();
                                 }
                                 if (replay){
                                         
@@ -496,11 +493,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         });        
                                 }
                                 
-                                // reset chat interface if not done so yet
-                                if ($session.get("chat")[1] && $session.get("chat")[1] !== chatUI.getModel().get("_id")){
-                                        chatUI.reset(chat[1]);
-                                }
-                                
                                 _next = "step";        
                         };
                         
@@ -532,13 +524,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 var selPb = _selection.get("problem");
                                 selPb.selected = val;
                                 _selection.set("problem", selPb);      
-                        });
-                        
-                        // init chat
-                        $session.watchValue("chat", function(chat){
-                                if (chat[1] && chat[1] !== chatUI.getModel().get("_id")){
-                                        chatUI.reset(chat[1]);
-                                }       
                         });
                         
                         // Return

@@ -6419,6 +6419,10 @@ li.my2q{
     left: 130px;
 }
 
+#musession .sessionchat{
+    left: 218px;
+}
+
 .sessionchat .chatread{
     background: white;
     border: 1px dashed #657B99;

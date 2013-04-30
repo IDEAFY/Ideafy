@@ -250,14 +250,13 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         
                         widget.updateField = function(event, node){
                                 var field = node.getAttribute("name");
-                                console.log("blur event fired");
                                 widget.updateSession(field, node.innerHTML);        
                         };
                         
                         widget.updateSession = function updateSession(field, value){
                                 if (session.get(field) !== value){
                                         session.set(field, value);
-                                        session.upload()
+                                        session.upload();
                                 }        
                         };
                         
@@ -267,22 +266,56 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         };
                         
                         widget.start = function(event, node){
-                                var now = new Date();
+                                var now = new Date(), chat = session.get("chat");
+                                // notify session start in chat window
                                 chatUI.startingSession();
                                 node.classList.remove("pressed");
-                                console.log("starting session");
+                                
+                                // make changes to session document
                                 session.set("status", "in progress");
                                 session.set("step", "musetup");
                                 session.set("startTime", now.getTime());
                                 session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
-                                session.upload().then(function(){
+                                chat.push(session.get("_id")+"_1");
+                                session.set("chat", chat);
+                                
+                                // create chat document for next phase then upload session
+                                widget.createChat(session.get("chat")[1])
+                                .then(function(){
+                                        return session.upload();
+                                })
+                                .then(function(){
                                         console.log("session start upload successful", $start);
                                         // unsync session & remove exit listener
                                         document.removeEventListener("touchstart", exitListener.listener, true);
                                         session.unsync();
-                                        $start(session.get("_id"));
+                                        $start(session.get("_id"));        
                                 });
                         };
+                        
+                        widget.createChat = function createChat(id){
+                                var cdb = new CouchDBStore(),
+                                now = new Date().getTime(),
+                                promise = new Promise();
+                                cdb.setTransport(Config.get("transport"));
+                        
+                                cdb.set("users", chatUI.getModel().get("users"));
+                                cdb.set("msg", [{user: "SYS", "type": 5, "arg": "quicksetup", "time": now}]);
+                                cdb.set("sid", session.get("_id"));
+                                cdb.set("lang", session.get("lang"));
+                                cdb.set("readonly", false); // once the step is cleared readonly is set to true
+                                cdb.set("step", 1);
+                                cdb.set("type", 17);
+                                cdb.sync(Config.get("db"), id);
+                                setTimeout(function(){
+                                        cdb.upload().then(function(){
+                                                promise.fulfill();
+                                                cdb.unsync();
+                                        });
+                                }, 150);
+                                return promise;
+                        };
+
                         
                         // watch for session status change
                         session.watchValue("status", function(value){

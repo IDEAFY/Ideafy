@@ -123,7 +123,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         
                 // initiator decides to cancel the session
                 _widget.cancelSession = function cancelSession(){
-                        var countdown = 10000; // better to pick a high number and cancel earlier if all actions are finished
+                        var countdown = 5000; // better to pick a high number and cancel earlier if all actions are finished
                         _widget.displayInfo("deleting", countdown).then(function(){
                                 $exit();
                         });      
@@ -163,25 +163,26 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 .then(function(){
                                         // remove chat documents
                                         var chat = _session.get("chat"), nb = chat.length, p = new Promise();
-                                        chat.forEach(function(id){
-                                                var cdb = new CouchDBStore();
-                                                cdb.setTransport(Config.get("transport"));
-                                                cdb.sync(Config.get("db"), id).then(function(){
-                                                        setTimeout(function(){
-                                                                cdb.remove();
-                                                                nb --;
-                                                                if (nb <= 0) p.fulfill;
+                                        if (nb){
+                                                chat.forEach(function(id){
+                                                        var cdb = new CouchDBStore();
+                                                        cdb.setTransport(Config.get("transport"));
+                                                        cdb.sync(Config.get("db"), id).then(function(){
+                                                                setTimeout(function(){
+                                                                        cdb.remove();
+                                                                        nb --;
+                                                                        if (nb <= 0) p.fulfill;
                                                                 
-                                                        }, 100);
+                                                                }, 100);
+                                                        });
                                                 });
-                                        });
+                                        }
+                                        else {p.fulfill();}
                                         return p;
                                 })
                                 .then(function(){
                                         // and finally
-                                        _session.remove();
-                                        // if there is still time remaining clear timeout
-                                        if (timeout > 0) timeout = 0;     
+                                        _session.remove();     
                                 }); 
                                        
                         }
@@ -270,13 +271,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
                                 // reset step UIs
-                                muStart.reset(replay);
+                                /*muStart.reset(replay);
                                 muSetup.reset(replay);
-                                console.log("initial reset muSetup");
                                 muScenario.reset(replay);
                                 muTech.reset(replay);
                                 muIdea.reset(replay);
-                                muWrapup.reset(replay);
+                                muWrapup.reset(replay);*/
                                 
                                 // init exit confirmation UI
                                 confirmUI = new Confirm(_widget.dom);
@@ -305,6 +305,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
                                         if (i<current){
+                                                // reset step UI
+                                                _stack.getStack().get(v.name).reset("replay");
                                                 if (v.name === step){
                                                         current = i;
                                                         _steps.update(i, "currentStep", true);
@@ -320,20 +322,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         _stack.getStack().show("muwrapup");
                                 }
                                 else{
-                                        // check if current step already has a chat document (leader must create one if necessary)
-                                        if (!_session.get("chat")[current] && _user.get("_id") === _session.get("initiator").id){
-                                                console.log("leader before createChat");
-                                                _widget.createChat(current).then(function(){
-                                                        spinner.stop();
-                                                        console.log("leader after createchat");
-                                                        _stack.getStack().show(step);        
-                                                });
-                                        }
-                                        else {
-                                                console.log("participant");
-                                                spinner.stop();
-                                                _stack.getStack().show(step);
-                                        }
+                                        spinner.stop();
+                                        _stack.getStack().show(step);
                                 }
                            });
                    };

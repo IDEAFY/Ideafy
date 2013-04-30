@@ -213,7 +213,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                         msg.push({user: "SYS", time: now, type: 1, arg: pos});
                         chatCDB.set("users", arr);
                         chatCDB.set("msg", msg);
-                        console.log(chatCDB.get("_rev"));
                         chatCDB.upload().then(function(){
                                 position = pos;
                                 console.log(chatCDB.get("_rev"));

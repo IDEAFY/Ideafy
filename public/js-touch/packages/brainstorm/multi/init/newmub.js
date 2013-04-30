@@ -316,8 +316,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 
                 widget.create = function(event, node){
                         node.classList.remove("pressed");
-                        node.classList.add("invisible");
-                        spinner.spin(node.parentNode);
                         error.set("errormsg", "");
                         if (session.get("title").length<3 || session.get("description").length<3){
                                 error.set("errormsg", labels.get("providesessioninfo"));
@@ -329,12 +327,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                 error.set("errormsg", labels.get("inviteatleastone"));        
                         }
                         else {
-                                setTimeout(function(){
-                                        widget.uploadSession().then(function(){
+                                node.classList.add("invisible");
+                                spinner.spin(node.parentNode);
+                                widget.uploadSession().then(function(){
                                         spinner.stop();
                                         node.classList.remove("invisible");
-                                        });
-                                }, 1200000);
+                                });
                         }
                 };
                 

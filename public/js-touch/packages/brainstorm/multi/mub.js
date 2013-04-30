@@ -116,10 +116,12 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 Config.get("observer").watch("start-mu_session", function(sid){
                         spinner.spin(widget.dom);
                         // show needs to be called prior to reset to make sure widget.dom exists in mubwait
-                        muWait.reset(sid).then(function(){
-                                spinner.stop();
-                                stack.getStack().show("mubwait");   
-                        });
+                        setTimeout(function(){
+                                muWait.reset(sid).then(function(){
+                                        spinner.stop();
+                                        stack.getStack().show("mubwait");   
+                                });
+                        }, 120000);
                 });
                 
                 MUBSPIN = spinner;

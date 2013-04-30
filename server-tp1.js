@@ -13,8 +13,8 @@
 var http = require("http"), 
     socketIO = require("socket.io"),
     connect = require("connect"), 
-    olives = require("olives"),
     CouchDBTools = require("couchdb-emily-tools"),
+		olives = require("olives"),
     cookie = require("cookie"), 
     RedisStore = require("connect-redis")(connect), 
     nodemailer = require("nodemailer"), 
@@ -24,7 +24,7 @@ var http = require("http"),
     url = require("url"), 
     redirect = require('connect-redirection'), 
     sessionStore = new RedisStore({
-        hostname : "127.0.0.1",
+        host : "127.0.0.1",
         port : "6379"
     }),
     wrap = require("./wrap");
@@ -33,8 +33,9 @@ var http = require("http"),
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
-        host: "localhost",
-        secureConnection : true,
+        //host: "localhost",
+        host: "10.224.0.27",
+				secureConnection : true,
         port : 465,
         auth : {
                 user : "ideafy-taiaut",
@@ -53,6 +54,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 .use(connect.bodyParser({ uploadDir:__dirname+'/public/upload', keepExtensions: true }))
                 .use('/upload', function(req, res){
                         var type = req.body.type,
+                            //_path = __dirname+'/attachments/',
                             _path = '/shared/attachments/',
                             filename, // final name of the file on server
                             tempname, // temp name after file upload
@@ -124,7 +126,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 path : "/"
                         }
                 }))
-                .use(connect.static(__dirname + "/public"))).listen(1664),
+                .use(connect.static(__dirname + "/public"))).listen(3113),
                 io = socketIO.listen(app, {
                         log : true
                 });
@@ -133,11 +135,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
        io.enable('browser client minification');  // send minified client
        io.enable('browser client etag');          // apply etag caching logic based on version number
        io.enable('browser client gzip');          // gzip the file
-       io.set('log level', 3);                    // reduce logging
+       io.set('log level', 0);                    // reduce logging
        io.set('transports', [                     // enable all transports (optional if you want flashsocket)
                         'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
-        io.set("close timeout", 15);
-        io.set("heartbeat interval", 10);
+        io.set("close timeout", 300);
+        io.set("heartbeat interval", 25);
         
         // we need lots of sockets
         http.globalAgent.maxSockets = Infinity;
@@ -146,8 +148,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         olives.registerSocketIO(io);
         
         // couchdb config update (session authentication)
-        olives.config.update("CouchDB", "sessionStore", sessionStore);
-        
+        // olives.config.update("CouchDB", "sessionStore", sessionStore);
+        CouchDBTools.configuration.sessionStore = sessionStore;
+        olives.handlers.set("CouchDB", CouchDBTools.handler);                
+
         // Application utility functions
         var updateUserIP = function(userid, reason, increment, onEnd){
                 var usercdb = new CouchDBStore(),
@@ -155,14 +159,24 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 getDocAsAdmin(userid, usercdb).then(function(){
                         switch(reason){
                                 case "newtc":
-                                        var tc_count = usercdb.get("twocent_count") || 0;
+                                        var tc_count = usercdb.get("twocents_count") || 0;
                                         tc_count++;
-                                        usercdb.set("twocent_count", tc_count);
+                                        usercdb.set("twocents_count", tc_count);
                                         break;
                                 case "deltc":
-                                        var tc_count = usercdb.get("twocent_count");
+                                        var tc_count = usercdb.get("twocents_count");
                                         tc_count--;
-                                        usercdb.set("twocent_count", tc_count);
+                                        usercdb.set("twocents_count", tc_count);
+                                        break;
+                                case "su_session_complete":
+                                        var sus = usercdb.get("su_sessions_count") || 0;
+                                        sus++;
+                                        usercdb.set("su_sessions_count", sus);
+                                        break;
+                                case "mu_session_complete":
+                                        var mus = usercdb.get("su_sessions_count") || 0;
+                                        mus++;
+                                        usercdb.set("su_sessions_count", mus);
                                         break;
                                 default:
                                         break;        
@@ -188,7 +202,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 }, function (res) {
                         var json = JSON.parse(res);
                         if (json.ok) {
-                                promise.resolve();
+                                promise.fulfill();
                         } else {
                                 promise.reject();
                         }});
@@ -196,7 +210,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 return promise;      
         },
             getDocAsAdmin = function(docId, cdbStore){
-                var promise = new Promise();
+							var promise = new Promise();
                 transport.request("CouchDB", {
                         method : "GET",
                         path:"/"+_db+"/"+docId,
@@ -209,7 +223,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         var json = JSON.parse(res);
                         if (json._id) {
                                 cdbStore.reset(json);
-                                promise.resolve();
+                                promise.fulfill();
                         } else {
                                 promise.reject();
                         }});
@@ -230,7 +244,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 }, function (res) {
                         var json = JSON.parse(res);
                         if (json.ok) {
-                                promise.resolve();
+                                promise.fulfill();
                         }
                         else {
                                 promise.reject();
@@ -254,7 +268,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         var json = JSON.parse(res);
                         if (json.rows) {
                                 cdbStore.reset(json.rows);
-                                promise.resolve();
+                                promise.fulfill();
                         } else {
                                 promise.reject();
                         }});
@@ -290,15 +304,16 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         
         // Application handlers
         olives.handlers.set("Lang", function(json, onEnd){
-                var _path = __dirname+'/i8n/'+json.lang+'.json';
-                fs.exists(_path, function(exists){
+               
+		var _path = __dirname+'/i8n/'+json.lang+'.json';
+		fs.exists(_path, function(exists){
                         if (exists){
                                 var labels=fs.readFileSync(_path, 'utf8');
                                 onEnd(JSON.parse(labels));
                         }
                         else{
                                 onEnd("nok");
-                        }    
+                        }
                 });
         });
         
@@ -330,7 +345,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         }
                 }, function (res) {
                         cdb.reset(JSON.parse(res));
-                        console.log(cdb.toJSON());
                         cdb.set("password", json.pwd);
                         transport.request("CouchDB", {
                                 method : "PUT",
@@ -364,6 +378,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         user.setTransport(transport);
                         user.set("password", json.password);
                         user.set("name", json.name);
+	            	        user.set("type", "user");
                         
                         user.create().then(function (si) {
                                 
@@ -431,8 +446,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 });
         
         olives.handlers.set('Welcome', function(json, onEnd){
-                var Id = "", cdb = new CouchDBStore(), lang  = json.language.toUpperCase();
-                
+                var Id = "", cdb = new CouchDBStore(), lang="EN-US";
+                // workaround to solve language issue 
+                if (json.language) {
+		      lang =  json.language.toUpperCase();
+		      }
                 (["US", "FR"].indexOf(lang.substr(2))>-1) ? Id = "I:WELCOME:"+lang : Id = "I:WELCOME:US";
                 
                 getDocAsAdmin(Id, cdb).then(function(){
@@ -504,8 +522,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         
         // retrieve an attachment document (e.g brainstorming session)
         olives.handlers.set("GetFile", function(json, onEnd){
-                var _filename =  '/shared/attachments/'+ json.sid+'/'+json.filename;
-                    
+                //var _filename =  __dirname+'/attachments/'+ json.sid+'/'+json.filename;
+								var _filename = '/shared/attachments/'+ json.sid + '/' + json.filename;                
+    
                 fs.readFile(_filename, 'utf8', function(error, data){
                         if (data){
                                 onEnd(data);
@@ -531,8 +550,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                         }
                         // otherwise return file located in attachments directory (should already be base64)
                         else {
-                                _file = "/shared/attachments/avatars/"+_image;
-                                fs.readFile(_file, 'utf8', function (error, data){
+                                //_file = __dirname+"/attachments/avatars/"+_image;
+                                _file = '/shared/attachments/avatars/'+_image;
+																fs.readFile(_file, 'utf8', function (error, data){
                                         if (data){
                                                 onEnd(data);  
                                         }
@@ -602,7 +622,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                         res.distinction = dis[3];
                                 }
                                 else {
-                                        i = Math.min(l-1,9); console.log(i)
+                                        i = Math.min(l-1,9); 
                                         if (json.ip >= leaders[i].key && json.ip >= arr[5].min_score){
                                                 res.distinction = dis[2];
                                         }
@@ -733,7 +753,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         var rating;
                                                         //8. 100 votes and minimum grade of 3.5
                                                         if (v.votes && v.votes.length >= 100){
-                                                                rating = Math.round(v.votes.reduce(function(x,y){return x+y;})/votes.length*100)/100;
+                                                                rating = Math.round(v.votes.reduce(function(x,y){return x+y;})/v.votes.length*100)/100;
                                                                 if (rating >= 3.5){
                                                                         if (!userRewards.get("bronzeacorn")){
                                                                                 user.ip += achievements.bronzeacorn.reward;
@@ -937,8 +957,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                                                 }
                                                                                 result.push(achievements.allday);
                                                                         }
-                                                                        console.log(result, update);
                                                                         if (update){
+                                                                                console.log("updating : ", userCDB.get("_id"));
                                                                                 // update user rewards documents
                                                                                 updateDocAsAdmin(userRewards.get("_id"), userRewards).then(function(){
                                                                                         // update user doc (score and news) if necessary
@@ -976,7 +996,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                  */
 
                 // manually build the http request to couchDB
-                options.hostname = "127.0.0.1";
+                options.hostname = "10.224.7.243";
                 options.port = 5984;
                 options.method = "POST";
                 options.auth = cdbAdminCredentials;
@@ -1088,7 +1108,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                  */
 
                 // manually build the http request to couchDB
-                options.hostname = "127.0.0.1";
+                options.hostname = "10.224.7.243";
                 options.port = 5984;
                 options.method = "POST";
                 options.auth = cdbAdminCredentials;
@@ -1315,8 +1335,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 var votercdb = new CouchDBStore();
                                 votercdb.setTransport(transport);
                                 getDocAsAdmin(json.voter, votercdb).then(function(){
-                                        var ri = votercdb.get("rated_ideas"),
-                                            ip = votercdb.get("ip");
+                                        var ri = votercdb.get("rated_ideas") || [],
+                                            ip = votercdb.get("ip") || 0;
                                         ri.unshift(json.id);
                                         votercdb.set("rated_ideas", ri);
                                         votercdb.set("ip", ip+2);
@@ -1386,13 +1406,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                                         }
                                                         else{
                                                                 onEnd("ok");
-                                                        }
-                                                        cdb.unsync();       
+                                                        }       
                                                 });
                                         }
                                         else {
                                                 onEnd("ok");
-                                                cdb.unsync();
                                         }
                         });     
                 });
@@ -1479,7 +1497,39 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
 
         // updating a session's score
         olives.handlers.set("UpdateSessionScore", function(json, onEnd){
-                var cdb = new CouchDBStore(), increment, min_score, bonus, coeff, wbdata, t, input;
+                var cdb = new CouchDBStore(), increment, min_score, bonus, coeff, wbdata, t, input,
+                    updateUserWithSessionScore = function(sessionCDB){
+                        var promise = new Promise(),
+                            ip = sessionCDB.get("score"),
+                            idList = [],
+                            parts = sessionCDB.get("participants"),
+                            reason;
+                        
+                        // gather list of users who should be credited
+                        idList.push(sessionCDB.get("initiator").id);
+                        if (parts && parts.length){
+                                parts.forEach(function(part){
+                                        idList.push(part.id);
+                                });
+                        }
+                        
+                        // indicate session mode
+                        switch (sessionCDB.get("mode")){
+                                case "quick":
+                                        reason = "su_session_complete";
+                                        break;
+                                        
+                                default:
+                                        reason = "mu_session_complete";
+                                        break;        
+                        }
+                        
+                        // for each user update IP with reason sessionComplete
+                        idList.forEach(function(id){
+                                updateUserIP(id, "su_session_complete", ip, promise.fulfill);
+                        });
+                        return promise;
+                };
                 
                 switch(json.step){
                         case "quicksetup":
@@ -1489,25 +1539,25 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 increment = 15 - (json.cards*3);
                                 if (increment<0) { increment = 0;}
                                 increment += bonus;
-                                if (increment < min_score) increment = min_score;
+                                if (increment < min_score) {increment = min_score;}
                                 break;
                         case "quickscenario":
                                 wbdata = JSON.parse(json.wbcontent);
                                 input = JSON.parse(json.scenario);
                                 t = json.time;
-                                if (t>=900000) coeff = 0.75; // too long
-                                if (t<900000) coeff = 1; // ok
-                                if (t<600000) coeff = 1.5; // great !!
-                                if (t<300000) coeff = 0.75; // too fast
-                                if (t<120000) coeff = 0.25; // way too fast
-                                if (input.title.length+input.story.length+input.solution.length < 200) coeff *= 0.5; // need a bit more effort
-                                if (wbdata.length>12) coeff *= 1.25
+                                if (t>=900000) {coeff = 0.75;} // too long
+                                if (t<900000) {coeff = 1;} // ok
+                                if (t<600000) {coeff = 1.5;} // great !!
+                                if (t<300000) {coeff = 0.75;} // too fast
+                                if (t<120000) {coeff = 0.25;} // way too fast
+                                if (input.title.length+input.story.length+input.solution.length < 200) {coeff *= 0.5;} // need a bit more effort
+                                if (wbdata.length>12) {coeff *= 1.25;}
                                 else {
-                                        if (wbdata.length < 3) coeff *= 0.25
-                                        else if (wbdata.length < 6) coeff *= 0.75
+                                        if (wbdata.length < 3) {coeff *= 0.25;}
+                                        else if (wbdata.length < 6) {coeff *= 0.75;}
                                  }
-                                if (json.wbcontent.search("import") && json.wbcontent.search("drawing")) bonus = 25
-                                else if (json.wbcontent.search("import") || json.wbcontent.search("drawing"))  bonus = 10
+                                if (json.wbcontent.search("import")>-1 && json.wbcontent.search("drawing")>-1) {bonus = 25;}
+                                else if (json.wbcontent.search("import")>-1 || json.wbcontent.search("drawing")>-1)  {bonus = 10;}
                                 
                                 increment = Math.floor((wbdata.length*10 + bonus)*coeff);
                                 break;
@@ -1518,25 +1568,25 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 increment = 15 - (json.cards*3);
                                 if (increment<0) { increment = 0;}
                                 increment += bonus;
-                                if (increment < min_score) increment = min_score;
+                                if (increment < min_score) {increment = min_score;}
                                 break;
                         case "quickidea":
                                 wbdata = JSON.parse(json.wbcontent);
                                 input = JSON.parse(json.idea);
                                 t = json.time;
-                                if (t>=900000) coeff = 1; // too long
-                                if (t<900000) coeff = 1.5; // ok
-                                if (t<600000) coeff = 1.5; // great !!
-                                if (t<300000) coeff = 0.8; // too fast
-                                if (t<120000) coeff = 0.5; // way too fast
-                                if (input.title.length+input.description.length+input.solution.length < 200) coeff *= 0.5; // need a bit more effort
-                                if (wbdata.length>6) coeff *= 1.25
+                                if (t>=900000) {coeff = 1;} // too long
+                                if (t<900000) {coeff = 1.5;} // ok
+                                if (t<600000) {coeff = 1.5;} // great !!
+                                if (t<300000) {coeff = 0.8;} // too fast
+                                if (t<120000) {coeff = 0.5;} // way too fast
+                                if (input.title.length+input.description.length+input.solution.length < 200) {coeff *= 0.5;} // need a bit more effort
+                                if (wbdata.length>6) {coeff *= 1.25;}
                                 else {
-                                        if (wbdata.length < 3) coeff *= 0.25
-                                        else if (wbdata.length < 6) coeff *= 0.75
+                                        if (wbdata.length < 3) {coeff *= 0.25;}
+                                        else if (wbdata.length < 6) {coeff *= 0.75;}
                                  }
-                                if (json.wbcontent.search("import") && json.wbcontent.search("drawing")) bonus = 25
-                                else if (json.wbcontent.search("import") || json.wbcontent.search("drawing"))  bonus = 10
+                                if (json.wbcontent.search("import")>-1 && json.wbcontent.search("drawing")>-1) {bonus = 25;}
+                                else if (json.wbcontent.search("import")>-1 || json.wbcontent.search("drawing")>-1) {bonus = 10;}
                                 
                                 increment = Math.floor((wbdata.length*10 + bonus)*coeff);
                                 break;       
@@ -1545,23 +1595,30 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                                 break;
                 }
                 
-                if (increment !== 0){
+                if (increment !== 0 || json.step.search("idea")>-1){
                         getDocAsAdmin(json.sid, cdb).then(function(){
                                 cdb.set("score", parseInt(cdb.get("score")+increment, 10));
                                 updateDocAsAdmin(json.sid, cdb).then(function(){
-                                   onEnd({res: "ok", value: cdb.get("score")});
-                                   cdb.unsync();  
+                                        // if idea has been created then credit participants with session points
+                                        if (json.step.search("idea")>-1){
+                                                updateUserWithSessionScore(cdb).then(function(){
+                                                        onEnd({res: "ok", value: cdb.get("score")});
+                                                });
+                                        }
+                                        else {
+                                                onEnd({res: "ok", value: cdb.get("score")});        
+                                        }
                                 });
                         });
                 }
                 else {
                         onEnd({res:"ok", value: 0})
                 }
-                        
         });
         
         // Clean up attachments from drive when user deletes a session
         olives.handlers.set("cleanUpSession", function(id, onEnd){
+                //var _path = __dirname+'/attachments/'+id;
                 var _path = '/shared/attachments/'+id;
                 
                 fs.exists(_path, function(exists){
@@ -1584,7 +1641,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
                 var     date = new Date(json.date),
                         mailOptions = {
                                 from : "IDEAFY <ideafy@taiaut.com>", // sender address
-                                to : "contact@taiaut.com", // list of receivers
+                                to : "contact@taiaut.com, vincent.weyl@taiaut.com", // list of receivers
                                 replyTo : "", // recipient should reply to sender
                                 subject : "Support request from "+json.userid + " "+ date.toDateString(), // Subject line
                                 html : "Userid : "+json.userid+"\nDate : " + date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear()+ " "+date.getHours()+":"+date.getMinutes()+"\n\nRequest :\n"+ json.request // html body

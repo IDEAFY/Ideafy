@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "Store", "lib/spin.min"],
         function(Widget, Config, Model, Event, Avatar, Utils, Store, Spinner){
                 
-           return new function EditProfileConstructor(){
+           return function EditProfileConstructor(){
                    
                 var editProfile = new Widget(),
                     user = Config.get("user"),

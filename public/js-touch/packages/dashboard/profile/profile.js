@@ -254,7 +254,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // init Leaderboard
                         if (!LB){
-                                LB = Leaderboard;
+                                LB = new Leaderboard();
                                 LB.init(lb);
                         }
                         
@@ -272,7 +272,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var editDOM =  document.querySelector(".edituserdetails");  
                         document.querySelector(".userdetails").classList.add("invisible");
                         if (!EP){
-                                EP = EditProfile;
+                                EP = new EditProfile();
                                 EP.init(editDOM);
                         }
                         else {

@@ -4,8 +4,8 @@
 
 function ChangePassword() {
         
-        this.setCouchDBStore = function (CouchDBStore) {
-                _CouchDBStore = CouchDBStore;
+        this.setCouchDBDocument = function (CouchDBDocument) {
+                _CouchDBDocument = CouchDBDocument;
                 
         };
         
@@ -26,7 +26,7 @@ function ChangePassword() {
         };
         
         this.handler = function(json, onEnd){
-                var cdb = new _CouchDBStore(),
+                var cdb = new _CouchDBDocument(),
                         userPath = "/_users/org.couchdb.user:"+json.userid,
                         cookieJSON = _cookie.parse(json.handshake.headers.cookie),
                         sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0] ;
@@ -53,7 +53,6 @@ function ChangePassword() {
                                 data: cdb.toJSON()
                         }, function (res) {
                                 if (JSON.parse(res).ok) {
-                                        console.log("password successfully changed");
                                         _sessionStore.get(sessionID, function(err, session) {
                                         if (err) {
                                                 throw new Error(err);

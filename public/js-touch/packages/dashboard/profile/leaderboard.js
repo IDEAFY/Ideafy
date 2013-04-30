@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/utils", "service/avatar"],
         function(Widget, Config, Model, Event, CouchDBStore, Utils, Avatar){
                 
-                return new function LeaderboardConstructor(){
+                return function LeaderboardConstructor(){
                         
                         var leaderboard = new Widget(),
                             leaders = new CouchDBStore([]);

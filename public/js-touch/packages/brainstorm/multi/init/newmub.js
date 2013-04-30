@@ -322,10 +322,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         if (session.get("title").length<3 || session.get("description").length<3){
                                 error.set("errormsg", labels.get("providesessioninfo"));
                         }
-                        else if (session.get("mode") === "roulette"){
-                                widget.uploadSession(); 
-                        }
-                        else if (user.get("connections").length < 1){
+                        else if (session.get("mode") !== "roulette" && user.get("connections").length < 1){
                                 error.set("errormsg", labels.get("nofriendtoinvite"));
                         }
                         else if (session.get("mode") === "boardroom" && !invited.getNbItems()){
@@ -337,7 +334,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                         spinner.stop();
                                         node.classList.remove("invisible");
                                         });
-                                }, 120000);
+                                }, 1200000);
                         }
                 };
                 

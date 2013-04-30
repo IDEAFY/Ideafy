@@ -167,22 +167,19 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                         });
                                 }); 
                                 // no need to wait for upload result to leave session
-                                widget.goToScreen()             
+                                widget.goToScreen();             
                         };
                         
                         // initiator decides to cancel the session
                         widget.cancelSession = function cancelSession(){
-                                //set session status to "deleted" to notify participants
-                                session.set("status", "deleted");
-                                session.upload().then(function(){
-                                        chatUI.cancel();
-                                        widget.displayInfo("deleting", 5000).then(function(){
-                                                session.remove();
-                                                session.unsync();
-                                                session.reset({});
-                                                widget.goToScreen();       
-                                        });
-                                }, function(err){console.log(err);});        
+                                var countdown = 5000;
+                                if (!session.get("participants").length) countdown = 2000;
+                                widget.displayInfo("deleting", countdown).then(function(){
+                                        session.remove();
+                                        session.unsync();
+                                        widget.goToScreen();
+                                        session.reset({});      
+                                });        
                         };
                         
                         // display info popup
@@ -206,6 +203,15 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                                 if (timeout <= 0) clearInfo();
                                                 timeout -= 1000;
                                 }, 1000);
+                                
+                                // remove session from CouchDB if cancel is called
+                                if (message === "deleting"){
+                                        //set session status to "deleted" to notify participants
+                                        session.set("status", "deleted");
+                                        session.upload().then(function(){
+                                                chatUI.cancel();
+                                        });        
+                                }
                                 return promise;
                         };
                         

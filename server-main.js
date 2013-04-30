@@ -333,7 +333,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         });
         
         // change password handler
-        changePassword.setCouchDBStore(CouchDBStore);
+        changePassword.setCouchDBDocument(CouchDBDocument);
         changePassword.setCookie(cookie);
         changePassword.setTransport(transport);
         changePassword.setAdminCredentials(cdbAdminCredentials);

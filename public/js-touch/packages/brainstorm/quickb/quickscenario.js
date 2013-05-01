@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore", "service/cardpopup", "../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise, Utils, Spinner){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBDocument", "service/cardpopup", "../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, Store, CouchDBDocument, CardPopup, Whiteboard, Promise, Utils, Spinner){
                 
                 return function QuickScenarioConstructor($session, $data, $prev, $next, $progress){
                         
@@ -119,20 +119,20 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         $data.set("scenario", JSON.parse(_scenario.toJSON()));
                                         
                                         // update session score
-                                        _widget.updateSessionScore(_timer.get("timer")).then(function(){
-                                                // resync with db
+                                        _widget.updateSessionScore(_timer.get("timer"))
+                                        .then(function(){
                                                 $session.unsync();
-                                                $session.sync(Config.get("db"), $session.get("_id")).then(function(){
-                                                        var timers = $session.get("elapsedTimers");
-                                                        
-                                                        timers.quickscenario = _timer.get("timer");
-                                                        // update session document
-                                                        $session.set("scenario", [JSON.parse(_scenario.toJSON())]);
-                                                        $session.set("elapsedTimers", timers);
-                                                        // set idea to readonly
-                                                        _tools.set("readonly", true);
-                                                        $next("quickscenario");         
-                                                });      
+                                                return $session.sync(Config.get("db"), $session.get("_id"));
+                                        })
+                                        .then(function(){
+                                                var timers = $session.get("elapsedTimers");
+                                                timers.quickscenario = _timer.get("timer");
+                                                // update session document
+                                                $session.set("scenario", [JSON.parse(_scenario.toJSON())]);
+                                                $session.set("elapsedTimers", timers);
+                                                // set idea to readonly
+                                                _tools.set("readonly", true);
+                                                $next("quickscenario");         
                                         });
                                 }
                                 else $next("quickscenario");
@@ -203,7 +203,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }
                                 // else fetch card details in couchDB
                                 else{
-                                        cdb = new CouchDBStore();
+                                        cdb = new CouchDBDocument();
                                         cdb.setTransport(_transport);
                                         cdb.sync(Config.get("db"), card.id).then(function(){
                                                 details = cdb.toJSON();

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "service/utils", "service/avatarlist", "service/confirm", "lib/spin.min", "Promise"],
-        function(Widget, Map, Model, Event, Config, CouchDBStore, Store, Utils, AvatarList, Confirm, Spinner, Promise){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBView", "CouchDBDocument", "Store", "service/utils", "service/avatarlist", "service/confirm", "lib/spin.min", "Promise"],
+        function(Widget, Map, Model, Event, Config, CouchDBView, CouchDBDocument, Store, Utils, AvatarList, Confirm, Spinner, Promise){
                 
            return function MySessionsContructor(){
               
@@ -31,7 +31,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   _sessionData = [],
                   _searchData = [],
                   _currentSearch = "", // the current search, if empty _sessionData is used
-                  _sessionsCDB = new CouchDBStore(),
+                  _sessionsCDB = new CouchDBView(),
                   spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10, top: 330}).spin(),
                   confirmUI, confirmCallback;
                   
@@ -250,31 +250,35 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _id = node.getAttribute("data-sessions_id"), _sid = _sessions.get(_id).id,
                             // remove function
                             removeFromDB = function(docId){
-                                var cdb = new CouchDBStore(),
+                                var cdb = new CouchDBDocument(),
                                     promise = new Promise();
                                 cdb.setTransport(_transport);
-                                cdb.sync(_db, docId).then(function(){
+                                cdb.sync(_db, docId)
+                                .then(function(){
                                         var arr = cdb.get("replayIdeas") || [];
                                         // update related idea docs if any
                                         arr.forEach(function(idea){
-                                                var ideaDB = new CouchDBStore();
+                                                var ideaDB = new CouchDBDocument();
                                                 ideaDB.setTransport(_transport);
-                                                ideaDB.sync(_db, idea).then(function(){
+                                                ideaDB.sync(_db, idea)
+                                                .then(function(){
                                                         ideaDB.set("sessionId", ideaDB.get("sessionId")+"_deleted");
                                                         ideaDB.set("sessionReplay", false);
-                                                        ideaDB.upload().then(function(){
-                                                                ideaDB.unsync();        
-                                                        }, function(err){
-                                                                console.log(err);
-                                                        });  
+                                                        return ideaDB.upload();
+                                                })
+                                                .then(function(){
+                                                        ideaDB.unsync();        
+                                                }, function(err){
+                                                        console.log(err);
                                                 });  
                                         });
                                         // remove session attachments (if any) from the server 
                                         _transport.request("cleanUpSession", _sid, function(res){
                                                 if (res.err) {console.log(res.err);}
-                                                cdb.remove();
-                                                cdb.unsync();
-                                                promise.fulfill();       
+                                                cdb.remove().then(function(){
+                                                        cdb.unsync();
+                                                        promise.fulfill();       
+                                                });      
                                         });       
                                 });
                                 return promise;
@@ -312,10 +316,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               };
               
               _widget.resetSessionData = function resetSessionData(){
-                                _sessionData = [];
-                                _sessionsCDB.loop(function(v,i){
-                                        // only keep useful information to speed up sorting
-                                        var _item= {
+                        _sessionData = [];
+                        _sessionsCDB.loop(function(v,i){
+                                // only keep useful information to speed up sorting
+                                var _item= {
                                                 id:v.id,
                                                 title:v.value.title,
                                                 date:v.value.date,
@@ -327,22 +331,22 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 mode: v.value.mode,
                                                 replayIdeas: v.value.replayIdeas
                                          };
-                                         // merge initiator and participants
-                                        _item.participants.push(v.value.initiator.id);
-                                        _item.usernames.push(v.value.initiator.username);
+                                // merge initiator and participants
+                                _item.participants.push(v.value.initiator.id);
+                                _item.usernames.push(v.value.initiator.username);
                                         
-                                        for (j=0; j<v.value.participants.length; j++){
-                                                _item.participants.push(v.value.participants[j].id);
-                                                _item.usernames.push(v.value.participants[j].username);        
-                                        }
-                                        // if there are multiple ideas in a session, sort them by title
-                                        if (_item.idea && _item.idea.length>1){
-                                                Utils.sortByProperty(_item.idea, "title", false);
-                                        }
-                                        _sessionData.push(_item);
-                                });
-                                //_sessions.reset(_sessionData);
-                                _widget.sortSessions("sbydate");
+                                for (j=0; j<v.value.participants.length; j++){
+                                        _item.participants.push(v.value.participants[j].id);
+                                        _item.usernames.push(v.value.participants[j].username);        
+                                }
+                                // if there are multiple ideas in a session, sort them by title
+                                if (_item.idea && _item.idea.length>1){
+                                        Utils.sortByProperty(_item.idea, "title", false);
+                                }
+                                _sessionData.push(_item);
+                        });
+                        //_sessions.reset(_sessionData);
+                        _widget.sortSessions("sbydate");
               };
               
               _widget.getMode = function getMode(sid){
@@ -360,14 +364,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               
               // init session data
               _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
-                                _widget.resetSessionData();
-                                ["added", "deleted", "updated"].forEach(function(change){
-                                        _sessionsCDB.watch(change, function(idx, value){
-                                                _widget.resetSessionData();
-                                                // apply current sorting methods
-                                                _widget.sortSessions(_currentSort);        
-                                        });   
-                               });
+                        _widget.resetSessionData();
+                        ["added", "deleted", "updated"].forEach(function(change){
+                                _sessionsCDB.watch(change, function(idx, value){
+                                        _widget.resetSessionData();
+                                        // apply current sorting methods
+                                        _widget.sortSessions(_currentSort);        
+                                });   
+                        });
               });
               // return
               return _widget;

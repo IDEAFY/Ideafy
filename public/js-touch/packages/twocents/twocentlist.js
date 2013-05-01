@@ -5,14 +5,14 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "CouchDBStore", "Store", "service/utils", "Bind.plugin", "Event.plugin", "twocents/twocentreplylist", "twocents/writetwocent", "twocents/writetwocentreply", "service/avatar"],
-        function(Widget, Config, CouchDBStore, Store, Utils, Model, Event, TwocentReplyList, WriteTwocent, WriteTwocentReply, Avatar){
+define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils", "Bind.plugin", "Event.plugin", "twocents/twocentreplylist", "twocents/writetwocent", "twocents/writetwocentreply", "service/avatar", "Promise"],
+        function(Widget, Config, CouchDBDocument, Store, Utils, Model, Event, TwocentReplyList, WriteTwocent, WriteTwocentReply, Avatar, Promise){
                 
                 return function TwocentListConstructor(){
                        
                         // declaration
                         var ui = new Widget(),
-                            cdb = new CouchDBStore(),
+                            cdb = new CouchDBDocument(),
                             labels = Config.get("labels"),
                             store = new Store([]),
                             transport = Config.get("transport"),
@@ -123,6 +123,7 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "service/utils", "
                         };
                         
                         ui.reset = function reset(id, view){
+                                var promise = new Promise();
                                 $id = id;
                                 $view = view; 
                                 cdb.unsync();
@@ -146,10 +147,8 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "service/utils", "
                                         cdb.watchValue("twocents", function(value){
                                                 store.reset(value);        
                                         });
-                                        
+                                        promise.fulfill();
                                 });
-                                
-                                     
                         };
                         
                         ui.deleteTwocent = function(event, node){

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBStore"], 
-        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBStore){
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBView"], 
+        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBView){
                 return function IdeaDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
@@ -16,7 +16,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,
                              user = Config.get("user"),
-                             ideaCDB = new CouchDBStore(), // used to get idea details and synchronize with idea
+                             ideaCDB = new CouchDBView(), // used to get idea details and synchronize with idea
                              ideaCDBUpdate, // store observer handle
                              transport = Config.get("transport"),
                              observer = Config.get("observer"),

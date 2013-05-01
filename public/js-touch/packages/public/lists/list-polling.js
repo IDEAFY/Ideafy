@@ -5,9 +5,9 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBStore, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
+define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function ListPollingConstructor($db, $design, $view, $query) {
-                var _store = new Store([]),
+                var _store = new CouchDBView([]),
                 touchStart,
                 touchPoint,
                 polling, // timer variable (to use clearInterval)
@@ -30,20 +30,20 @@ define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Ev
 
                 this.plugins.addAll({
                         "listideas" : new Model(_store, {
-                                date : function date(date) {
-                                        this.innerHTML = Utils.formatDate(date);
+                                date : function date(creadate) {
+                                        this.innerHTML = Utils.formatDate(creadate);
                                 },
                                 setRating : function setRating(rating) {
                                         if (rating === undefined) {
                                                 var _id = this.getAttribute("data-listideas_id"),
                                                     _arr = _store.get(_id).doc.votes || [];
-                                                if (_arr.length === 0) {this.innerHTML = ""}
+                                                if (_arr.length === 0) {this.innerHTML = "";}
                                                 else {
                                                         this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
                                                 }
                                                 
                                         }
-                                        else this.innerHTML = rating;
+                                        else {this.innerHTML = rating;}
                                 },
                                 setAvatar : function setAvatar(authors){
                                         var _ui, _frag;
@@ -60,7 +60,7 @@ define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Ev
                         return _store;
                 };
                 
-                widget.resetQuery = function(query) {
+                widget.resetQuery = function resetQuery(query) {
                         var promise=new Promise(),
                             interval = user.get("settings").polling_interval || Config.get("polling_interval"),
                             cdb = new CouchDBStore();
@@ -86,7 +86,7 @@ define(["OObject", "CouchDBStore", "Store", "service/config", "Bind.plugin", "Ev
                 this.setStart = function(event, node){
                         touchStart = [event.pageX, event.pageY];
                         
-                        if (currentBar) this.hideActionBar(currentBar);  // hide previous action bar 
+                        if (currentBar) {this.hideActionBar(currentBar);}  // hide previous action bar 
                 };
                 
                 this.showActionBar = function(event, node){

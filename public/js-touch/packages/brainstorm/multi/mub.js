@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "./mubinit", "./mubwait", "./session/mucontroller", "lib/spin.min"],
-        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, MUInit, MUWait, MUController, Spinner){
+define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDocument", "CouchDBView", "service/config", "Promise", "Store", "./mubinit", "./mubwait", "./session/mucontroller", "lib/spin.min"],
+        function(Widget, Stack, Model, Event, CouchDBDocument, CouchDBView, Config, Promise, Store, MUInit, MUWait, MUController, Spinner){
                 
            return function MultiBConstructor($sip, $exit){
            
@@ -43,7 +43,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 // joining an existing session
                 
                 widget.join = function join(sid){
-                        var cdb = new CouchDBStore();
+                        var cdb = new CouchDBDocument();
                         
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), sid).then(function(){
@@ -118,14 +118,15 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                         stack.getStack().show("mubwait");
                 });
                 
+                // session tools for dev/testing purposes only
                 MUBSPIN = spinner;
                 DELCHAT = function delChat(){
-                        var cdb = new CouchDBStore();
+                        var cdb = new CouchDBView();
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), "chat", "_view/all")
                         .then(function(){
                                 cdb.loop(function(v,i){
-                                        var doc = new CouchDBStore();
+                                        var doc = new CouchDBDocument();
                                         doc.setTransport(Config.get("transport"));
                                         doc.sync(Config.get("db"), v.id).then(function(){
                                                 setTimeout(function(){doc.remove();}, 150);
@@ -136,13 +137,13 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBSt
                 };
                 
                 DELMUSESSIONS = function delMusessions(){
-                      var cdb = new CouchDBStore();
+                      var cdb = new CouchDBView();
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), "library", "_view/sessions")
                         .then(function(){
                                 cdb.unsync();
                                 cdb.loop(function(v,i){
-                                        var doc = new CouchDBStore();
+                                        var doc = new CouchDBDocument();
                                         doc.setTransport(Config.get("transport"));
                                         if (v.id.search("S:MU") >-1){
                                                 doc.sync(Config.get("db"), v.id).then(function(){

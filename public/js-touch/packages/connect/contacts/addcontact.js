@@ -5,13 +5,13 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStore", "Store", "service/avatar", "Promise"],
-        function(Widget, Config, Model, Event, CouchDBStore, Store, Avatar, Promise){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView", "Store", "service/avatar", "Promise"],
+        function(Widget, Config, Model, Event, CouchDBView, Store, Avatar, Promise){
                 
            return function AddContactConstructor(){
                    
              var addContactUI = new Widget(),
-                 count = new CouchDBStore(),
+                 count = new CouchDBView(),
                  search = new Store({"email":"", "firstname":"", "lastname":"", "result":"", "display": false, "sentok": false, "message":""}),
                  displayContacts = new Store([]),
                  selected = {},
@@ -45,17 +45,19 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStor
                          }
                  },
                  searchContact = function(type, value){
-                         var cdb = new CouchDBStore();
+                         var cdb = new CouchDBView();
                          cdb.setTransport(transport);
                          if (type === "userid"){
-                                cdb.sync(Config.get("db"), "users", "_view/searchbyid", {key: '"'+value+'"', descending: true}).then(function(){
+                                cdb.sync(Config.get("db"), "users", "_view/searchbyid", {key: '"'+value+'"', descending: true})
+                                .then(function(){
                                         displayContacts.reset(JSON.parse(cdb.toJSON()));
                                         (displayContacts.getNbItems()) ? search.set("display", true) : search.set("result", labels.get("noentryfound"));
                                         cdb.unsync();
                                 });        
                          }
                          else{
-                                cdb.sync(Config.get("db"), "users", "_view/searchbyusername", {key: '"'+value+'"', descending: true}).then(function(){
+                                cdb.sync(Config.get("db"), "users", "_view/searchbyusername", {key: '"'+value+'"', descending: true})
+                                .then(function(){
                                         displayContacts.reset(JSON.parse(cdb.toJSON()));
                                         (displayContacts.getNbItems()) ? search.set("display", true) : search.set("result", labels.get("noentryfound"));
                                         cdb.unsync();
@@ -99,8 +101,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStor
                                 json.contactInfo = { "firstname": user.get("firstname"), "lastname": user.get("lastname"), "userid": user.get("_id"), "username": user.get("username"), "intro": user.get("intro"), "type":"user"};
                                 
                                 transport.request("Notify", json, function(result){
-                                        var result = JSON.parse(result);
-                                        if (result[0].res === "ok") {
+                                        var res = JSON.parse(result);
+                                        if (res[0].res === "ok") {
                                                 search.set("result", labels.get("CXRsent"));
                                                 // wait 2 seconds then clear the UI
                                                 setTimeout(function(){addContactUI.reset();}, 2000);

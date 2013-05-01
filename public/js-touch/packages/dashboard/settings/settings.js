@@ -159,17 +159,12 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                    };
                    
                    // init
-                   
-                   // init
                    settingsUI.reset = function reset(){
                            // get user settings and watch for changes
                         settings.reset(user.get("settings"));
                         user.watchValue("settings", function(change){
                                 settings.reset(user.get("settings"));
                         });
-                   
-                        // update labels
-                        Utils.updateLabels(user.get("lang"));
                    
                         // get available languages
                         transport.request("GetLanguages", {}, function(result){
@@ -178,6 +173,9 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                    };
                    
                    settingsUI.reset();
+                   
+                   // update labels do it once per session in case some new labels have been added on the server side
+                   Utils.updateLabels(user.get("lang"));
                    
                    return settingsUI;
            };    

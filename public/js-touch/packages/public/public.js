@@ -6,9 +6,9 @@
  */
 
 define(["OObject", "Amy/Control-plugin" ,
-	"Bind.plugin", "Amy/Delegate-plugin", "CouchDBStore", "service/map", "service/config",
+	"Bind.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
 	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Promise"], 
-	function(Widget, Control, Model, Delegate, Store, Map, 
+	function(Widget, Control, Model, Delegate, Map, 
 		Config, Detail, Utils, List, Polling, Stack, Menu){
 		return function PublicConstructor(){
 		//declaration
@@ -71,10 +71,6 @@ define(["OObject", "Amy/Control-plugin" ,
 			     }    
 			};
 
-			this.selectEnd = function(event){
-				//_detail.reset(_ideas.get(event.target.getAttribute("data-publicideas_id")));
-			};
-
 			this.mosaic = function(){
 				var domDetail = document.getElementById("public-detail");
                                 _dom.classList.toggle("mosaic");
@@ -113,7 +109,8 @@ define(["OObject", "Amy/Control-plugin" ,
                              // hide sorting buttons (not available for the time being in search mode)
                                 byDate.setAttribute("style", "display: none;");
                                 byRating.setAttribute("style", "display: none;");
-                                listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
+                                listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true})
+                                .then(function(){
                                         _stack.getStack().show("#list-search");
                                         if (listSearch.getModel().getNbItems() >0){
                                                 document.getElementById("noresult").classList.add("invisible");
@@ -162,7 +159,6 @@ define(["OObject", "Amy/Control-plugin" ,
 		        listRating.init();
 		        
 		        listDate.init().then(function(){
-		              var initLI; // used to initialize list selection
 		              _stack.getStack().show("#list-date");
 		              _widget.displayHighlightedIdea();      
 		        });

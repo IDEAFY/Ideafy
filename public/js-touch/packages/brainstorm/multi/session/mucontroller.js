@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBStore", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin", "service/confirm"],
-        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBStore, Config, Promise, Store, Spinner, Place, Confirm){
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBDocument", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin", "service/confirm"],
+        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBDocument, Config, Promise, Store, Spinner, Place, Confirm){
                 
            return function MUControllerConstructor($exit){
                    
@@ -27,7 +27,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                        muStart, muSetup, muScenario, muTech, muIdea, muWrapup,
                        _steps = new Store(steps),
                        _user = Config.get("user"),
-                       _session = new CouchDBStore(),
+                       _session = new CouchDBDocument(),
                        _sessionData = new Store(),
                        info = new Store({"msg":""}),
                        confirmUI, confirmCallBack,
@@ -70,9 +70,14 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    };
                    
                    _progress.exit = function(event, node){
-                           console.log("exit called");
                            node.classList.remove("pressed");
-                           confirmUI.show(); 
+                           if (_session.get("step") === "muwrapup"){
+                                muWrapup.getChatUI().leave();
+                                $exit();        
+                           }
+                           else {
+                                   confirmUI.show();
+                           }
                    };
                    
                    // Main UI setup
@@ -96,29 +101,26 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    // initiator or a participant decides to leave the waiting room
                    // participant decides to leave session
                    _widget.leaveSession = function leaveSession(){
-                        var p = _session.get("participants"), i;
+                        var p = _session.get("participants"), i, currentUI = _stack.getStack().get(_session.get("step"));
+                        
                         for (i=p.length-1; i>=0; i--){
                                 if (p[i].id === _user.get("_id")){
-                                        console.log("participant leaving : ", p[i].username);
                                         p.splice(i, 1);
                                         break; 
                                 }
                         }
                         _session.set("participants", p);
                         _session.upload().then(function(){
-                                /*
-                                 * need to get chatUI for the current step (getChatUI method)
-                                 */
-                                // reset sessionInProgress in user doc
-                                _user.set("sessionInProgress", "");
-                                _user.upload();
-                                // chatUI.leave().then(function(){
-                                    _session.unsync();
-                                    confirmUI.hide();        
-                                //});
+                                // notify current chat interface
+                                currentUI.getChatUI().leave();
+                                _session.unsync();
+                                confirmUI.hide();
                         }); 
-                       // no need to wait for upload result to leave session
-                        $exit();           
+                       // reset sessionInProgress in user doc
+                        _user.set("sessionInProgress", "");
+                        _user.upload().then(function(){
+                                $exit();        
+                        });          
                    };
                         
                 // initiator decides to cancel the session
@@ -165,15 +167,15 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         var chat = _session.get("chat"), nb = chat.length, p = new Promise();
                                         if (nb){
                                                 chat.forEach(function(id){
-                                                        var cdb = new CouchDBStore();
+                                                        var cdb = new CouchDBDocument();
                                                         cdb.setTransport(Config.get("transport"));
-                                                        cdb.sync(Config.get("db"), id).then(function(){
-                                                                setTimeout(function(){
-                                                                        cdb.remove();
-                                                                        nb --;
-                                                                        if (nb <= 0) p.fulfill;
-                                                                
-                                                                }, 100);
+                                                        cdb.sync(Config.get("db"), id)
+                                                        .then(function(){
+                                                                return cdb.remove();
+                                                        })
+                                                        .then(function(){
+                                                                nb --;
+                                                                if (nb <= 0) {p.fulfill;}
                                                         });
                                                 });
                                         }
@@ -192,7 +194,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 // create Chat document
                 _widget.createChat = function createChat(step){
-                        var cdb = new CouchDBStore(),
+                        var cdb = new CouchDBDocument(),
                             now = new Date().getTime(),
                             usr = [], arg, id,
                             promise = new Promise();
@@ -265,7 +267,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            
                         spinner.spin(document.getElementById("brainstorm"));
                            
-                        // connect to couchdbstore and retrieve session
+                        // connect to couchdb and retrieve session
                         _session.reset();
                         _session.sync(Config.get("db"), sid).then(function(){
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
@@ -415,7 +417,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            muTech = new MUTech(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress);
                            muIdea = new MUIdea(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress);
                            muWrapup = new MUWrapup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress);
-                           // setup -- initialize UIs (progress bar and stack) and _session couchdbstore
+                           // setup -- initialize UIs (progress bar and stack) and _session couchdbdocument
                            
                            _session.setTransport(Config.get("transport"));
                            

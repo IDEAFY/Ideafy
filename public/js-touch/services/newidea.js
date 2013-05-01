@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore"],
-        function(Widget, Map, Model, Event, Config, Store){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, Store, Spinner){
                 
                 return function newIdeaConstructor(){
                 
@@ -15,7 +15,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _user = Config.get("user"),
                             _labels = Config.get("labels"),
                             _error = new Store({"error": ""}),
-                            upload = false;
+                            spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
                             
                         _store.setTransport(Config.get("transport"));
                         
@@ -107,14 +107,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     
                                 node.classList.remove("pressed");
                                 // check for errors (missing fields)
-                                if (!_store.get("title")) _error.set("error", "notitle");
-                                else if (!_store.get("description")) _error.set("error", "nodesc");
-                                else if (!_store.get("solution")) _error.set("error", "nosol");
+                                if (!_store.get("title")) {_error.set("error", "notitle");}
+                                else if (!_store.get("description")) {_error.set("error", "nodesc");}
+                                else if (!_store.get("solution")) {_error.set("error", "nosol");}
 
-                                if (!_error.get("error") && !_store.get("_id") && !upload){ 
-                                        
-                                        // set upload flag to true
-                                        upload = true;
+                                if (!_error.get("error") && !_store.get("_id")){ 
+                                        node.classList.add("invisible");
+                                        spinner.spin(node.parentNode);
                                         timer = setInterval(function(){
                                                 if (_error.get("error") === _labels.get("uploadinprogress")){
                                                         _error.set("error", _labels.get("uploadinprogress")+"...");
@@ -122,38 +121,36 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 else _error.set("error", _labels.get("uploadinprogress"));
                                         }, 100);
                                                                    
-                                        
                                         // fill cdb document
                                         _store.set("authors", [_user.get("_id")]);
                                         _store.set("authornames", _user.get("username"));
                                         _store.set("creation_date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
-                                        
                                         // set language to the user's language by default
                                         _store.set("lang", _user.get("lang"));
-                                        
                                         // create document in couchdb and upload
-                                        _store.sync(Config.get("db"), id);
-                                        setTimeout(function(){
-                                                _store.upload();
+                                        _store.sync(Config.get("db"), id)
+                                        .then(function(){
+                                                return _store.upload();
+                                        })
+                                        .then(function(){
                                                 if (_store.get("visibility") === "public"){
                                                         Config.get("transport").request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "docTitle": _store.get("title")}, function(result){
                                                                 if (result !== "ok") console.log(result);
+                                                                spinner.stop();
+                                                                node.classList.remove("invisible");
                                                                 _widget.closePopup();
                                                                 clearInterval(timer);
                                                         });       
                                                 }
                                                 else{
+                                                        spinner.stop();
+                                                        node.classList.remove("invisible");
                                                         _widget.closePopup();
                                                         clearInterval(timer);
                                                 }
-                                        }, 500); // timeout to retrieve _id field in _store
+                                        });
                                 }
-                                else{
-                                        node.classList.remove("pressed");
-                                } 
                         };
-                        
                         return _widget;
                 };
-                
         });

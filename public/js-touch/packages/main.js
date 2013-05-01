@@ -7,8 +7,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "CouchDBStore", "service/utils", "Promise"], 
-    function(Widget, LocalStore, Store, Map, Stack, Model, Event, Dock, Login, Config, CouchDBStore, Utils, Promise) {
+require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "service/utils", "Promise"], 
+    function(Widget, LocalStore, Map, Stack, Model, Event, Dock, Login, Config, Utils, Promise) {
         
         //declaration
         var _body = new Widget(), _login = null, _stack = new Stack({
@@ -24,50 +24,55 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
         _body.init = function init(firstStart) {
                 // add dock UI to the stack
                 _stack.getStack().add("#dock", _dock);
+                // check db
+                if (_local.get("db") && _local.get("db") !== _db){
+                        _db = _local.get("db");
+                }
                 // synchronize user document
-                _user.sync(_db, _local.get("currentLogin")).then(function() {
-                        var lblUpdate = false;
+                _user.sync(_db, _local.get("currentLogin"))
+                .then(function() {
+                        var lblUpdate = new Promise();
                         // set uid for future queries
                         Config.set("uid", '"' + _user.get("_id") + '"');
                         // check user defined language
                         if (_user.get("lang") !== Config.get("lang")) {
-                                lblUpdate = true;
+                                updateLabels(_user.get("lang")).then(function(){
+                                        lblUpdate.fulfill();
+                                });
                         }
-                        
+                        else {lblUpdate.fulfill();}
+                        return lblUpdate;
+                })
+                .then(function(){
+                        var loadAvatar = new Promise();      
                          // get user avatar and labels if necessary
                          if (_user.get("picture_file").search("img/avatars/deedee")>-1){
                                 Config.set("avatar", _user.get("picture_file"));
-                                if (lblUpdate){
-                                        updateLabels(_user.get("lang")).then(function(){
-                                                lblUpdate = false;
-                                                _dock.init();
-                                                //if everything is downloaded
-                                                _stack.getStack().show("#dock");
-                                                _dock.start(firstStart);      
-                                        }); 
-                                }
-                                else{
-                                        _dock.init();
-                                        //if everything is downloaded
-                                        _stack.getStack().show("#dock");
-                                        _dock.start(firstStart);
-                                }
-                        }
-                        // if avatar is customized no need to wait for labels download (shorter than avatar file)
-                        else{
-                                if (lblUpdate) updateLabels(_user.get("lang")).then(function(){lblUpdate = false;});
+                                loadAvatar.fulfill(); 
+                         }
+                         else if (_local.get("userAvatar")){
+                                 Config.set("avatar", _local.get("userAvatar"));
+                                 loadAvatar.fulfill();
+                         }
+                         else{
                                 _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                         if (!result.error) {
                                                 Config.set("avatar", result);
-                                                _dock.init();
-                                                //if everything is downloaded
-                                                _stack.getStack().show("#dock");
-                                                _dock.start(firstStart);
                                         }
-                                        else alert(result.error);
-                                });
+                                        else {
+                                                console.log(result.error);
+                                                Config.set("avatar", "img/avatars/deedee1.png");
+                                        }
+                                        loadAvatar.fulfill();
+                                });         
                         }
-                });       
+                        return loadAvatar;
+                })
+                .then(function(){
+                        _dock.init();
+                        _stack.getStack().show("#dock");
+                        _dock.start(firstStart);        
+                });      
         };
         
         _body.reload = function reload(firstStart) {
@@ -75,49 +80,50 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                 _user.reset();
                 
                 // synchronize user document
-                _user.sync(_db, _local.get("currentLogin")).then(function() {
-                        var lblUpdate = false;
+                _user.sync(_db, _local.get("currentLogin"))
+                .then(function() {
+                        var lblUpdate = new Promise();
                         // set uid for future queries
                         Config.set("uid", '"' + _user.get("_id") + '"');
                         // check user defined language
                         if (_user.get("lang") !== Config.get("lang")) {
-                                lblUpdate = true;
+                                updateLabels(_user.get("lang")).then(function(){
+                                        lblUpdate.fulfill();
+                                });
                         }
-                        
+                        else {lblUpdate.fulfill();}
+                        return lblUpdate;
+                })
+                .then(function(){
+                        var loadAvatar = new Promise();      
                          // get user avatar and labels if necessary
                          if (_user.get("picture_file").search("img/avatars/deedee")>-1){
                                 Config.set("avatar", _user.get("picture_file"));
-                                if (lblUpdate){
-                                        updateLabels(_user.get("lang")).then(function(){
-                                                lblUpdate = false;
-                                                _dock.reset();
-                                                //if everything is downloaded
-                                                _stack.getStack().show("#dock");
-                                                _dock.start(firstStart);      
-                                        }); 
-                                }
-                                else{
-                                        _dock.reset();
-                                        //if everything is downloaded
-                                        _stack.getStack().show("#dock");
-                                        _dock.start(firstStart);
-                                }
-                        }
-                        // if avatar is customized no need to wait for labels download (shorter than avatar file)
-                        else{
-                                if (lblUpdate) updateLabels(_user.get("lang")).then(function(){lblUpdate = false;});
+                                loadAvatar.fulfill(); 
+                         }
+                         else if (_local.get("userAvatar")){
+                                 Config.set("avatar", _local.get("userAvatar"));
+                                 loadAvatar.fulfill();
+                         }
+                         else{
                                 _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                         if (!result.error) {
                                                 Config.set("avatar", result);
-                                                _dock.reset();
-                                                //if everything is downloaded
-                                                _stack.getStack().show("#dock");
-                                                _dock.start(firstStart);
                                         }
-                                        else alert(result.error);
-                                });
+                                        else {
+                                                console.log(result.error);
+                                                Config.set("avatar", "img/avatars/deedee1.png");
+                                        }
+                                        loadAvatar.fulfill();
+                                });         
                         }
-                });       
+                        return loadAvatar;
+                })
+                .then(function(){
+                        _dock.reset();
+                        _stack.getStack().show("#dock");
+                        _dock.start(firstStart);        
+                });      
         };
         
         _body.alive(Map.get("body"));
@@ -142,7 +148,8 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                 _login.setScreen("#nointernet");
         }
         else {
-                checkServerStatus().then(function(result){
+                checkServerStatus()
+                .then(function(result){
         
                         // initialize labels to device language if available or US by default
                         if (_local.get("labels")) {
@@ -168,7 +175,6 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                                         }
                                 });
                         }
-                
                 }, function(error){
                         (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
                         _login.setScreen("#maintenance-screen");
@@ -202,13 +208,17 @@ require(["OObject", "LocalStore", "Store", "service/map", "Amy/Stack-plugin", "B
                 if (navigator.connection && navigator.connection.type === "none"){
                         _login.setScreen("#nointernet");
                 }
-                else checkServerStatus.then(function(){
-                        _user.unsync();
-                        _user.sync(_db, _local.get("currentLogin")).then(function(){
+                else {
+                        checkServerStatus
+                        .then(function(){
+                                _user.unsync();
+                                return _user.sync(_db, _local.get("currentLogin"));
+                        }, function(){
+                                _login.setScreen("#maintenance-screen");        
+                        })
+                        .then(function(){
                                 console.log("user resynchronized");
                         });          
-                }, function(){
-                        _login.setScreen("#maintenance-screen");        
-                });     
+                }    
         });
 }); 

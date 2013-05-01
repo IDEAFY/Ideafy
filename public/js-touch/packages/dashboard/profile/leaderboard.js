@@ -5,13 +5,13 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/utils", "service/avatar"],
-        function(Widget, Config, Model, Event, CouchDBStore, Utils, Avatar){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView", "service/utils", "service/avatar"],
+        function(Widget, Config, Model, Event, CouchDBView, Utils, Avatar){
                 
                 return function LeaderboardConstructor(){
                         
                         var leaderboard = new Widget(),
-                            leaders = new CouchDBStore([]);
+                            leaders = new CouchDBView([]);
                         
                         leaderboard.template = '<div><ul data-leaders="foreach"><li class="leader"><div data-leaders="bind:setAvatar, value.userid"></div><div class="username" data-leaders="bind:innerHTML, value.username">Username</div><div class="distinction" data-leaders="bind:setDistinction, value.ip"></div><div class="grade" data-leaders="bind:setGrade, value.ip"></div><div class="score" data-leaders="bind: setScore, value.ip"></div></li></ul></div>';
                         

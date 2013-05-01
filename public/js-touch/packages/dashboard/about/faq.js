@@ -5,13 +5,13 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugin", "Store"],
-        function(Widget, Config, CouchDBStore, Model, Event, Store){
+define(["OObject", "service/config", "CouchDBView", "Bind.plugin", "Event.plugin", "Store"],
+        function(Widget, Config, CouchDBView, Model, Event, Store){
            
            return function FAQConstructor(){
                 
                 var FAQ = new Widget(),
-                    cdb = new CouchDBStore(),
+                    cdb = new CouchDBView(),
                     user = Config.get("user");
                     faqlist = new Store([]);
                     
@@ -30,8 +30,8 @@ define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugi
                 
                         cdb.sync(Config.get("db"), "about", "_view/faq").then(function(){
                                 cdb.loop(function(v,i){
-                                        if (v.value.default_lang === lang || !v.value.translations[lang]) faqlist.alter("push", v.value)
-                                        else faqlist.alter("push", v.value.translations[lang]);
+                                        if (v.value.default_lang === lang || !v.value.translations[lang]) {faqlist.alter("push", v.value);}
+                                        else {faqlist.alter("push", v.value.translations[lang]);}
                                 });      
                         });
                 };

@@ -5,14 +5,14 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "lib/spin.min"],
-        function(Widget, Config, CouchDBStore, Store, Model, Event, Avatar, Utils, Spinner){
+define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "lib/spin.min"],
+        function(Widget, Config, CouchDBDocument, Store, Model, Event, Avatar, Utils, Spinner){
                 
                 return function MUPreviewConstructor(){
                         
                         var muPreviewUI = new Widget(),
                             labels = Config.get("labels"),
-                            muCDB =  new CouchDBStore(),
+                            muCDB =  new CouchDBDocument(),
                             info = new Store({"msg":""}),
                             participants = new Store([]),
                             spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 269, top: 306}).spin(),

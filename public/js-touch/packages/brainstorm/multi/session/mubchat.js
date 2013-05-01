@@ -5,14 +5,14 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils","lib/spin.min", "Promise"],
-        function(Widget, Config, CouchDBStore, Store, Model, Event, Avatar, Utils, Spinner, Promise){
+define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils","lib/spin.min", "Promise"],
+        function(Widget, Config, CouchDBDocument, Store, Model, Event, Avatar, Utils, Spinner, Promise){
                 
                 function MUBChatConstructor(){
                 
                 var mubChat = this,
                     chat = new Store([]),
-                    chatCDB = new CouchDBStore(),
+                    chatCDB = new CouchDBDocument(),
                     labels = Config.get("labels"),
                     user = Config.get("user"),
                     position = "null", // used to determine the position of the user in the chat participants group
@@ -185,7 +185,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         }
                                 }
                                 
-                                console.log("position in chatCDB reset before chat is set : ", position);
                                 // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
                                 if (isNaN(position) && !chatCDB.get("readonly")){
                                         mubChat.joinChat().then(function(){
@@ -199,7 +198,6 @@ define(["OObject", "service/config", "CouchDBStore", "Store", "Bind.plugin", "Ev
                                         spinner.stop();
                                 }      
                         });
-                              
                 };
                 
                 mubChat.joinChat = function joinChat(){

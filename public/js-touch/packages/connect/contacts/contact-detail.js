@@ -126,7 +126,6 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                     upload = document.getElementById("uploadnotes"),
                                     cancel = document.getElementById("cancelnotes");
                                 
-                                console.log(contact.get("notes"));
                                 for (i=0; i<l; i++){
                                        if (contacts[i].userid === contact.get("userid")){
                                                contacts[i].notes = contact.get("notes");

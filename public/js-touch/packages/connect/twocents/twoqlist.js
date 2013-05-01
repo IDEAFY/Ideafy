@@ -5,9 +5,9 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
+define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, Store, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function TwoQListConstructor($type, $db, $design, $view, $query) {
-                var _store = new Store([]),
+                var _store = new CouchDBView([]),
                     _searchList = new Store([]),
                     touchStart,
                     touchPoint,
@@ -102,8 +102,12 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                         });
 
                 this.getModel = function() {
-                        return _store;
+                        var ret,search;
+                        search = !widget.dom.getElementById("twoq-searchlist").classList.contains("invisible");
+                        (search) ? ret = _searchList : ret = _store;
+                        return ret;
                 };
+                
                 this.resetQuery = function(query) {
                         var promise = new Promise();
                         
@@ -120,18 +124,19 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                 this.setStart = function(event, node){
                         touchStart = [event.pageX, event.pageY];
                         
-                        if (currentBar) this.hideActionBar(currentBar);  // hide previous action bar 
+                        if (currentBar) {this.hideActionBar(currentBar);}  // hide previous action bar 
                 };
                 
                 this.showActionBar = function(event, node){
                         var id = node.getAttribute("data-twoqlist_id"),
-                            dom = document.getElementById("mtc-list");
+                            dom = document.getElementById("mtc-list"),
+                            actionbar, frag;
                         
                         touchPoint = [event.pageX, event.pageY];
                         
                         if (!dom.classList.contains("mosaic") && !display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                var actionBar = new ActionBar("2Q", node, _store.get(id).value, this.hideActionBar),
-                                    frag = document.createDocumentFragment();  
+                                actionBar = new ActionBar("2Q", node, _store.get(id).value, this.hideActionBar);
+                                frag = document.createDocumentFragment();  
                                 
                                 actionBar.place(frag); // render action bar    
                                 node.appendChild(frag); // display action bar
@@ -143,7 +148,6 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                 this.hideActionBar = function hideActionBar(ui){
                         
                         var parent = ui.dom.parentElement;
-                        
                         parent.removeChild(parent.lastChild);
                         display = false;
                         currentBar = null;
@@ -179,7 +183,7 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                                         if (JSON.stringify(v).search(text) > -1) _searchList.alter("push", v)        
                                 });
                         }
-                        else this.hideSearch();  
+                        else {this.hideSearch();} 
                 };
 
                 // set default query parameters

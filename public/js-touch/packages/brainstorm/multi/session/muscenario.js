@@ -5,14 +5,15 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore", "service/cardpopup", "../../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBStore, CardPopup, Whiteboard, Promise, Utils, Spinner){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBDocument", "service/cardpopup", "../../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min", "./mubchat"],
+        function(Widget, Map, Model, Event, Config, Store, CouchDBDocument, CardPopup, Whiteboard, Promise, Utils, Spinner, Chat){
                 
                 return function MUScenarioConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
                             _popupUI, _currentPopup,
+                            chatUI = new Chat(),
                              _labels = Config.get("labels"),
                              _char = new Store(), _context = new Store(), _problem = new Store(),
                              _cards = new Store({
@@ -199,7 +200,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }
                                 // else fetch card details in couchDB
                                 else{
-                                        cdb = new CouchDBStore();
+                                        cdb = new CouchDBDocument();
                                         cdb.setTransport(_transport);
                                         cdb.sync(Config.get("db"), card.id).then(function(){
                                                 details = cdb.toJSON();
@@ -228,6 +229,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Creating the popup UI
                         _popupUI = new CardPopup(_widget.closePopup);
+                        
+                        // Getting the chat UI
+                        _widget.getChatUI = function getChatUI(){
+                                return ChatUI;        
+                        };
                         
                         // create/edit postit
                         _widget.post = function(event, node){

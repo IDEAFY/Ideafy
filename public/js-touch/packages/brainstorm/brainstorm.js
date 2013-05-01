@@ -12,8 +12,9 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		//declaration
 			var _widget = new Widget(),
 			    _submenu = new Menu(Map.get("brainstorm-menu")),
-			    _store = new Store();
-			    _stack = new Stack();
+			    _store = new Store(),
+			    _stack = new Stack(),
+			    _user = Config.get("user");
 			
 		//setup
 		        _widget.plugins.addAll({
@@ -121,8 +122,8 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                  */
                 Config.get("observer").watch("join-musession", function(sid){
                       var sip ={type: "musession", id: sid, mode:"join"};
-                      Config.get("user").set("sessionInProgress", sip);
-                      Config.get("user").upload().then(function(){
+                      _user.set("sessionInProgress", sip);
+                      _user.upload().then(function(){
                              _widget.selectScreen(sip.type, sip);        
                       });
                 });

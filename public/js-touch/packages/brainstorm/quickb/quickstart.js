@@ -57,13 +57,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 
                                         // IMPORTANT: the new session doc is created in CDB and the session document is synched for the entire session
                                         $session.set("_id", "S:QUICK:"+$session.get("startTime"));
-                                        $session.sync(_db, $session.get("_id"));
-                                        
-                                        // set session in progress in user document
-                                        _user.set("sessionInProgress", {id : $session.get("_id"), type: "quick"});
-                                        _user.upload().then(function(){
+                                        $session.sync(_db, $session.get("_id"))
+                                        .then(function(){
+                                                // set session in progress in user document
+                                                _user.set("sessionInProgress", {id : $session.get("_id"), type: "quick"});
+                                                return _user.upload();
+                                        })
+                                        .then(function(){
                                                 // next step
-                                                $next("quickstart");        
+                                                $next("quickstart"); 
                                         });
                                         
                                 }

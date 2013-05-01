@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "service/utils", "lib/spin.min", "Place.plugin", "./mupreview"],
-        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store, Utils, Spinner, UIPlugin, MUPreview){
+define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config", "Promise", "Store", "service/utils", "lib/spin.min", "Place.plugin", "./mupreview"],
+        function(Widget, Model, Event, CouchDBView, Config, Promise, Store, Utils, Spinner, UIPlugin, MUPreview){
                 
            return function MuListConstructor($exit){
            
@@ -134,19 +134,22 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         var arr = [], promise = new Promise();
                         if (listId === "mulistall"){
                                 muListAll.reset([]);
-                                widget.addSessions(arr, "roulette").then(function(){
-                                        widget.addSessions(arr, "campfire").then(function(){
-                                                widget.addSessions(arr, "boardroom").then(function(){
-                                                        if (arr.length){
-                                                                document.getElementById("noresult").classList.add("invisible");
-                                                        }
-                                                        else {
-                                                                document.getElementById("noresult").classList.remove("invisible");
-                                                        }
-                                                        muListAll.reset(arr);
-                                                        promise.fulfill();      
-                                                }); 
-                                        });   
+                                widget.addSessions(arr, "roulette")
+                                .then(function(){
+                                        return widget.addSessions(arr, "campfire");
+                                })
+                                .then(function(){
+                                        return widget.addSessions(arr, "boardroom");
+                                })
+                                .then(function(){
+                                        if (arr.length){
+                                                document.getElementById("noresult").classList.add("invisible");
+                                        }
+                                        else {
+                                                document.getElementById("noresult").classList.remove("invisible");
+                                        }
+                                        muListAll.reset(arr);
+                                        promise.fulfill();      
                                 });  
                         }
                         if (listId === "musearch"){
@@ -166,7 +169,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 widget.syncSearch = function syncSearch(arr, query, filter){
-                        var promise = new Promise(), cdb = new CouchDBStore();
+                        var promise = new Promise(), cdb = new CouchDBView();
                         cdb.setTransport(transport);
                         cdb.sync("_fti/local/"+db, "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
                                 cdb.loop(function(v,i){
@@ -196,7 +199,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 // a function to add qualifying sessions (e.g. waiting, less than 4 participants and relevant to user)
                 widget.addSessions = function addSessions(arr, mode, filter){
                         var promise = new Promise(),
-                            cdb = new CouchDBStore(),
+                            cdb = new CouchDBView(),
                             view = "_view/"+mode, query = {};
                         
                         cdb.setTransport(transport);
@@ -304,19 +307,22 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                                                 });
                                         }
                                         else{
-                                                widget.addSessions(arr, "roulette", {lang: lang}).then(function(){
-                                                        widget.addSessions(arr, "campfire", {lang: lang}).then(function(){
-                                                                widget.addSessions(arr, "boardroom", {lang: lang}).then(function(){
-                                                                        muListAll.reset(arr);
-                                                                        if (arr.length){
-                                                                                document.getElementById("noresult").classList.add("invisible");
-                                                                        }
-                                                                        else {
-                                                                                document.getElementById("noresult").classList.remove("invisible");
-                                                                        }
-                                                                        promise.fulfill();      
-                                                                }); 
-                                                        });   
+                                                widget.addSessions(arr, "roulette", {lang: lang})
+                                                .then(function(){
+                                                        return widget.addSessions(arr, "campfire", {lang: lang});
+                                                })
+                                                .then(function(){
+                                                        return widget.addSessions(arr, "boardroom", {lang: lang});
+                                                })
+                                                .then(function(){
+                                                        muListAll.reset(arr);
+                                                        if (arr.length){
+                                                                document.getElementById("noresult").classList.add("invisible");
+                                                        }
+                                                        else {
+                                                                document.getElementById("noresult").classList.remove("invisible");
+                                                        }
+                                                        promise.fulfill();      
                                                 });
                                         }
                                 }
@@ -389,6 +395,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 MUALL = muListAll;
                 MUSEARCH = muSearch;
                 MUOPTIONS = muListOptions;
+                
+                
                 return widget;
                    
            };

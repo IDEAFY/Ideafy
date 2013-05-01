@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "./init/newmub", "./init/mulist"],
-        function(Widget, Stack, Model, Event, CouchDBStore, Config, Promise, Store, NewMUB, MUList){
+define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/config", "Promise", "Store", "./init/newmub", "./init/mulist"],
+        function(Widget, Stack, Model, Event, Config, Promise, Store, NewMUB, MUList){
                 
            return function MultiBInitConstructor($exit){
            

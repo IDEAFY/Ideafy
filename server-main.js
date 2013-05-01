@@ -1449,7 +1449,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
 
         // updating a session's score
         olives.handlers.set("UpdateSessionScore", function(json, onEnd){
-                var cdb = new CouchDBDocument(), increment = 0, min_score, bonus, coeff, wbdata, t, input,
+                var cdb = new CouchDBDocument(), increment = 0, min_score, bonus, coeff = 0, wbdata, t, input,
                     updateUserWithSessionScore = function(sessionCDB){
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
@@ -1507,8 +1507,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         if (wbdata.length < 3) {coeff *= 0.25;}
                                         else if (wbdata.length < 6) {coeff *= 0.75;}
                                  }
-                                if (json.wbcontent.search("import")>-1 && json.wbcontent.search("drawing")>-1) {bonus = 25;}
-                                else if (json.wbcontent.search("import")>-1 || json.wbcontent.search("drawing")>-1)  {bonus = 10;}
+                                if ((json.wbcontent.search("import")>-1) && (json.wbcontent.search("drawing")>-1)) {bonus = 25;}
+                                else if ((json.wbcontent.search("import")>-1) || (json.wbcontent.search("drawing")>-1))  {bonus = 10;}
                                 
                                 increment = Math.floor((wbdata.length*10 + bonus)*coeff);
                                 break;
@@ -1530,14 +1530,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 if (t<600000) {coeff = 1.5;} // great !!
                                 if (t<300000) {coeff = 0.8;} // too fast
                                 if (t<120000) {coeff = 0.5;} // way too fast
-                                if (input.title.length+input.description.length+input.solution.length < 200) {coeff *= 0.5;} // need a bit more effort
+                                if (input.title.length+input.description.length+input.solution.length < 300) {coeff *= 0.5;} // need a bit more effort
                                 if (wbdata.length>6) {coeff *= 1.25;}
                                 else {
                                         if (wbdata.length < 3) {coeff *= 0.25;}
                                         else if (wbdata.length < 6) {coeff *= 0.75;}
                                  }
-                                if (json.wbcontent.search("import")>-1 && json.wbcontent.search("drawing")>-1) {bonus = 25;}
-                                else if (json.wbcontent.search("import")>-1 || json.wbcontent.search("drawing")>-1)  {bonus = 10;}
+                                if ((json.wbcontent.search("import")>-1) && (json.wbcontent.search("drawing")>-1)) {bonus = 25;}
+                                else if ((json.wbcontent.search("import")>-1) || (json.wbcontent.search("drawing")>-1))  {bonus = 10;}
                                 increment = Math.floor((wbdata.length*10 + bonus)*coeff);
                                 break;       
                         default:
@@ -1548,9 +1548,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 if (increment !== 0 || json.step.search("idea")>-1){
                         getDocAsAdmin(json.sid, cdb)
                         .then(function(){
-                                var currentScore = cdb.get("score"),
-                                    newScore = parseInt(currentScore, 10) + increment;
-                                cdb.set("score", newScore);
+                                var score = parseInt(cdb.get("score"), 10);
+                                    score += increment
+                                cdb.set("score", score);
                                 return updateDocAsAdmin(json.sid, cdb);
                         })
                         .then(function(){

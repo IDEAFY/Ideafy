@@ -227,7 +227,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         _session.set("step", _steps.get(_id+1).name);
                                         _session.upload().then(function(){
                                                 _nextui = _stack.getStack().get(_steps.get(_id+1).name);
-                                                if (_nextui.initTimer) _nextui.initTimer();
+                                                if (_nextui.initTimer) {_nextui.initTimer();}
                                                 _currentui.stopSpinner();
                                                 _stack.getStack().show(_steps.get(_id+1).name);
                                                 promise.fulfill();        

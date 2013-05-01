@@ -1548,7 +1548,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 if (increment !== 0 || json.step.search("idea")>-1){
                         getDocAsAdmin(json.sid, cdb)
                         .then(function(){
-                                var score = parseInt(cdb.get("score"), 10);
+                                var score = cdb.get("score") || 0;
                                     score += increment
                                 cdb.set("score", score);
                                 return updateDocAsAdmin(json.sid, cdb);

@@ -5,9 +5,9 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
+define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function IdeaListConstructor($db, $design, $view, $query) {
-                var _store = new Store([]),
+                var _store = new CouchDBView([]),
                 touchStart,
                 touchPoint,
                 display = false,
@@ -78,7 +78,7 @@ define(["OObject", "CouchDBStore", "service/config", "Bind.plugin", "Event.plugi
                 this.setStart = function(event, node){
                         touchStart = [event.pageX, event.pageY];
                         
-                        if (currentBar) this.hideActionBar(currentBar);  // hide previous action bar 
+                        if (currentBar) {this.hideActionBar(currentBar);}  // hide previous action bar 
                 };
                 
                 this.showActionBar = function(event, node){

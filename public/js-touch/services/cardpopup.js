@@ -37,7 +37,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store"],
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        this.setAttribute("style", "background-image: none;");
                                                 }
                                         },
                                         setSources : function(sources){
@@ -49,11 +49,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store"],
                                                 }        
                                         },
                                         formatTitle : function(title){
-                                                if (title) this.innerHTML = title.toUpperCase();
-                                                /*if (title) {
-                                                        this.innerHTML = title.substring(0,1).toUpperCase()+title.substring(1).toLowerCase(); 
-                                                        }
-                                                if (title && cardDetails.get("type") == 4) this.innerHTML = title.toUpperCase();    */  
+                                                if (title) {this.innerHTML = title.toUpperCase();}
                                         },
                                         formatName : function(firstname){
                                                 if (firstname) {
@@ -65,10 +61,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store"],
                                                     children = family.children,
                                                     res1, res2;
                                                 
-                                                if (couple === 0) res1 = labels.get("singlelbl")
-                                                else if (couple === 1) res1 = labels.get("marriedlbl")
-                                                else if (couple === 2) res1 = labels.get("divorcedlbl")
-                                                else if (couple === 3) res1 = labels.get("widowlbl")
+                                                if (couple === 0) {res1 = labels.get("singlelbl");}
+                                                else if (couple === 1) {res1 = labels.get("marriedlbl");}
+                                                else if (couple === 2) {res1 = labels.get("divorcedlbl");}
+                                                else if (couple === 3) {res1 = labels.get("widowlbl");}
                                                 
                                                 if (children === 0) {res2 = "";}
                                                 else{
@@ -85,7 +81,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store"],
                                                               
                                         },
                                         setLeisure : function(hobbies){
-                                                var res = "<ul>";
+                                                var res = "<ul>", i;
                                                 if (hobbies && hobbies.length){
                                                         for (i=0; i<hobbies.length; i++){
                                                                 if (hobbies[i].comment){
@@ -103,7 +99,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store"],
                                                 } 
                                         },
                                         setInterests : function(interests){
-                                                var res = "<ul>";
+                                                var res = "<ul>", i;
                                                 if (interests && interests.length){
                                                         for (i=0; i<interests.length; i++){
                                                                 if (interests[i].comment){
@@ -120,7 +116,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store"],
                                                 } 
                                         },
                                         setComments : function(comments){
-                                                var res = "<ul>";
+                                                var res = "<ul>", i;
                                                 if (comments && comments.length){
                                                         for (i=0; i<comments.length; i++){
                                                                 res+="<li>"+comments[i]+"</li>";
@@ -150,9 +146,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store"],
                                 cardDetails.set("position", position);
                                 (caret === "left") ? cardDetails.set("caret", {left:true, right: false}) : cardDetails.set("caret", {left:false, right: true});
                                 
-                                if (cardDetails.get("type") === 1) this.template = charTemplate
-                                else if (cardDetails.get("type") === 5) this.template = storyTemplate
-                                else this.template = defaultTemplate;
+                                if (cardDetails.get("type") === 1) {this.template = charTemplate;}
+                                else if (cardDetails.get("type") === 5) {this.template = storyTemplate;}
+                                else {this.template = defaultTemplate;}
                                 
                                 this.render();
                                 this.place(_dom);

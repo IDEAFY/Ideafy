@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/config", "Promise", "Store", "service/utils", "lib/spin.min"],
-        function(Widget, Model, Event, CouchDBStore, Config, Promise, Store, Utils, Spinner){
+define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/config", "Promise", "Store", "service/utils", "lib/spin.min"],
+        function(Widget, Model, Event, CouchDBDocument, Config, Promise, Store, Utils, Spinner){
                 
            return function NewMUBConstructor($exit){
            
@@ -337,7 +337,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                 };
                 
                 widget.createChat = function createChat(id){
-                        var cdb = new CouchDBStore(),
+                        var cdb = new CouchDBDocument(),
                             now = new Date().getTime(),
                             promise = new Promise();
                         cdb.setTransport(Config.get("transport"));
@@ -349,19 +349,20 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         cdb.set("readonly", false); // once the step is cleared readonly is set to true
                         cdb.set("step", 0); // mubwait or mubstart will display the same chat
                         cdb.set("type", 17);
-                        cdb.sync(Config.get("db"), id);
-                        setTimeout(function(){
-                                cdb.upload().then(function(){
-                                        promise.fulfill();
-                                        cdb.unsync();
-                                });
-                        }, 150);
+                        cdb.sync(Config.get("db"), id)
+                        .then(function(){
+                                return cdb.upload();
+                        })
+                        .then(function(){
+                                promise.fulfill();
+                                cdb.unsync();
+                        });
                         return promise;
                 };
                 
                 widget.uploadSession = function uploadSession(){
                         // add invitees to session document
-                        var cdb = new CouchDBStore(),
+                        var cdb = new CouchDBDocument(),
                             now = new Date(),
                             chatId, chat = session.get("chat") || [],
                             promise = new Promise();
@@ -388,20 +389,21 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBStore", "service/confi
                         chat.push(chatId);
                         session.set("chat", chat);
                         
-                        // init session couchdbstore
+                        // init session couchdbdocument
                         cdb.reset(JSON.parse(session.toJSON()));
                         cdb.setTransport(Config.get("transport"));
                         
-                        // create session document in database --> THENABLE
-                        cdb.sync(Config.get("db"), cdb.get("_id"));
-                        
-                        // create chat document
-                       widget.createChat(chatId)
-                       .then(function(){
+                        // create session document in database
+                        cdb.sync(Config.get("db"), cdb.get("_id"))
+                        .then(function(){
+                                // create chat document
+                                return widget.createChat(chatId);
+                        })
+                        .then(function(){
                         // upload session document
                                 return cdb.upload();      
-                       })
-                       .then(function(){
+                        })
+                        .then(function(){
                                 if (cdb.get("mode") === "boardroom"){
                                         error.set("errormsg", labels.get("sendinginvites"));
                                         widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){

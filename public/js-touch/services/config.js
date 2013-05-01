@@ -5,8 +5,9 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["Store", "SocketIOTransport", "CouchDBStore", "Observable"], function(Store, Transport, CouchDBStore, Observable) {
-        var _loation, _transport, _user, _observer, _config = new Store(), _socket;
+define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"], 
+   function(Store, Transport, CouchDBDocument, Observable) {
+        var _location, _transport, _user, _observer, _config = new Store(), _socket;
         
         this.reset = function(){
                  
@@ -15,7 +16,7 @@ define(["Store", "SocketIOTransport", "CouchDBStore", "Observable"], function(St
                 //_location = location.origin;
                 _socket = io.connect(_location);
                 _transport = new Transport(_socket);
-                _user =  new CouchDBStore();
+                _user =  new CouchDBDocument();
                 _observer = new Observable();
                 _user.setTransport(_transport);
                 

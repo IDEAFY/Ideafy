@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils"],
-        function(Widget, Map, Model, Event, Config, Store, Utils){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils", "./mubchat"],
+        function(Widget, Map, Model, Event, Config, Store, Utils, Chat){
                 
                 return function MUWrapupConstructor($session, $data, $prev, $next, $progress){
                         
@@ -14,7 +14,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _widget = new Widget(),
                             _wrapup = new Store(),
                             _cards = new Store([]),
-                            _labels = Config.get("labels");
+                            _labels = Config.get("labels"),
+                            chatUI = new Chat();
                         
                         // Setup
                         _widget.plugins.addAll({
@@ -81,6 +82,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.toggleCards = function(event, node){
                                 node.classList.contains("expanded")?node.classList.remove("expanded"):node.classList.add("expanded");        
+                        };
+                        
+                        // Getting the chat UI
+                        _widget.getChatUI = function getChatUI(){
+                                return ChatUI;        
                         };
                         
                         _widget.reset = function reset(sip){

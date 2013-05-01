@@ -60,87 +60,82 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 			if (sentences[0].length > 140) {
 				elementid.innerHTML = sentences[0].substr(0,139).replace(/\w*\s(\S)*$/, ' ...');					
 			}
-			else 
-			return elementid.innerHTML;elementid.innerHTML = sentences[0]+'...';
+			return elementid.innerHTML;
 		},
 
 		/*
 		 * A function that truncates text (stops at a full word and adds ...)
 		 */
 		 truncate : function(elementid, desc) {
-
-		 	elementid.innerHTML = desc;
-
-		 	while (elementid.scrollHeight > elementid.offsetHeight) {
-		 		var text = elementid.innerHTML;
-		 		elementid.innerHTML= text.replace(/\W*\s(\S)*$/, '...');
-		 	}
-		 	return elementid.innerHTML;
+                        elementid.innerHTML = desc;
+                        while (elementid.scrollHeight > elementid.offsetHeight) {
+	                       var text = elementid.innerHTML;
+	                       elementid.innerHTML= text.replace(/\W*\s(\S)*$/, '...');
+                        }
+	                return elementid.innerHTML;
 		 },
 
 		 setRating : function(node, rating){
 				
-				var img0 = "<img src = 'img/wall/disableIdeaVote.png'>";
-				var img05 = "<img src = 'img/wall/semi-activeIdeaVote.png'>";
-				var img1 = "<img src = 'img/wall/activeIdeaVote.png'>";
-				var res = "";
+				var img0 = "<img src = 'img/wall/disableIdeaVote.png'>",
+				    img05 = "<img src = 'img/wall/semi-activeIdeaVote.png'>",
+				    img1 = "<img src = 'img/wall/activeIdeaVote.png'>",
+				    res = "",
+				    i;
 				
 				if (!rating){
-					
 					for (i=0; i<5; i++){
 						res = res + img0;
-					};
-					
+					}
 				}
 				
 				else {
-					var i=0;
+					i=0;
 					while (i<Math.floor(rating)){
 						res = res +img1;
 						i++;
-					};
+					}
 					if (i<5) {
 						Math.round(rating-Math.floor(rating)) ? res = res+img05 : res = res+img0;
 						i++;
-					};
+					}
 					while(i<5){
 						res = res +img0;
-						i++
-					};
+						i++;
+					}
 				}
-				
 				node.innerHTML = res;
-				
-				
 			},
+			
 	         searchArray : function searchArray(array, s){
-			     var _keywords = s.toLowerCase().split(" "),
-			         _res = [];
+		      var _keywords = s.toLowerCase().split(" "),
+			  _res = [], i, j, _s, _match;
 			         
-			     for (i=0, l=array.length; i<l; i++){
-			             // convert array item into string
-			             var _s = JSON.stringify(array[i]).toLowerCase(), _match = 0;
-			             for (j=0; j<_keywords.length; j++){
-			                     if (_s.search(_keywords[j]) > -1) _match++;
-			                     else break;
-			             }
-			             if (_match === _keywords.length){
-			                     _res.push(array[i]);
-			             }   
+	               for (i=0, l=array.length; i<l; i++){
+			     // convert array item into string
+			     _s = JSON.stringify(array[i]).toLowerCase();
+			     _match = 0;
+			     for (j=0; j<_keywords.length; j++){
+			             if (_s.search(_keywords[j]) > -1) {_match++;}
+			             else {break;}
 			     }
-			     return _res;
-			             
-			},
+			     if (_match === _keywords.length){
+			             _res.push(array[i]);
+			     }   
+		      }
+		      return _res;
+		},
+	         
 	         sortByProperty : function sortByProperty(array, prop, descending){
-			        // need a special treatment for certain properties
-			        switch(prop){
+			     // need a special treatment for certain properties
+			     switch(prop){
 			             case "idea":
 			                     // sort array by ideas title (idea is an array of objects [{"title": "..", ..}, {"title": "..", ..}])
 			                     array.sort(function(x,y){
 			                             var _x = x[prop], _y = y[prop],
 			                                 a,b;  // variables used for actual comparison
 			                             if (descending){    
-			                                     if (!_x || !(_x instanceof Array) || !_x.length) a=""
+			                                     if (!_x || !(_x instanceof Array) || !_x.length) {a="";}
 			                                     else {
 			                                             // sort _x array by title
 			                                             sortByProperty(_x, "title", true);
@@ -148,17 +143,17 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 			                                             a = _x[0].title;
 			                                     }
 			                                     
-			                                     if (!_y || !(_y instanceof Array) || !_y.length) b=""
+			                                     if (!_y || !(_y instanceof Array) || !_y.length) {b="";}
                                                              else {
                                                                      sortByProperty(_y, "title", true);
                                                                      b = _y[0].title;
                                                              }    
-                                                             if (a<b) return 1;
-                                                             if (a>b) return -1;
+                                                             if (a<b) {return 1;}
+                                                             if (a>b) {return -1;}
                                                              return 0;
-                                                        }
-                                                        else{
-                                                             if (!_x || !(_x instanceof Array) || !_x.length) a=""
+                                                     }
+                                                     else{
+                                                             if (!_x || !(_x instanceof Array) || !_x.length) {a="";}
                                                              else {
                                                                      // sort _x array by title
                                                                      sortByProperty(_x, "title", false);
@@ -166,16 +161,16 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                                                                      a = _x[0].title;
                                                              }
                                                              
-                                                             if (!_y || !(_y instanceof Array) || !_y.length) b=""
+                                                             if (!_y || !(_y instanceof Array) || !_y.length) {b="";}
                                                              else {
                                                                      sortByProperty(_y, "title", false);
                                                                      b = _y[0].title;
                                                              }    
-                                                             if (a<b) return -1;
-                                                             if (a>b) return 1;
+                                                             if (a<b) {return -1;}
+                                                             if (a>b) {return 1;}
                                                              return 0;        
-                                                        }
-                                                });
+                                                     }
+                                             });
 			                     break;
 			             case "date":
 			                     array.sort(function(x,y){
@@ -184,13 +179,13 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 			                                  d2 = new Date(_dy[0], _dy[1], _dy[2]);
 			                             
 			                             if (descending){
-			                                     if (d1<d2) return 1;
-			                                     if (d1>d2) return -1;
+			                                     if (d1<d2) {return 1;}
+			                                     if (d1>d2) {return -1;}
 			                                     return 0;
 			                             }
 			                             else {
-			                                     if (d1<d2) return -1;
-			                                     if (d1>d2) return 1;
+			                                     if (d1<d2) {return -1;}
+			                                     if (d1>d2) {return 1;}
 			                                     return 0;
 			                             }
 			                     });
@@ -199,29 +194,29 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 			                     array.sort(function(x, y){
 			                        var _x = x[prop], _y=y[prop];
 			                        // should work even if the property is not defined or null for one of the array elements
-			                        if (typeof _x == "string" || typeof _y == "string")   {
-                                                        if (_x && _x.toLowerCase) _x=_x.toLowerCase();
-                                                        if(_y && _y.toLowerCase) _y=_y.toLowerCase();
+			                        if (typeof _x === "string" || typeof _y === "string")   {
+                                                        if (_x && _x.toLowerCase) {_x=_x.toLowerCase();}
+                                                        if(_y && _y.toLowerCase) {_y=_y.toLowerCase();}
                                                         if (descending){    
-                                                                if (_x<_y) return 1;
-                                                                if (_x>_y) return -1;
+                                                                if (_x<_y) {return 1;}
+                                                                if (_x>_y) {return -1;}
                                                                 return 0;
                                                         }
                                                         else{
-                                                                if (_x<_y) return -1;
-                                                                if (_x>_y) return 1;
+                                                                if (_x<_y) {return -1;}
+                                                                if (_x>_y) {return 1;}
                                                                 return 0;        
                                                         }  
                                                 }			             
 			                        else{
                                                         if (descending){    
-                                                                if (_x<_y) return 1;
-                                                                if (_x>_y) return -1;
+                                                                if (_x<_y) {return 1;}
+                                                                if (_x>_y) {return -1;}
                                                                 return 0;
                                                         }
                                                         else{
-                                                                if (_x<_y) return -1;
-                                                                if (_x>_y) return 1;
+                                                                if (_x<_y) {return -1;}
+                                                                if (_x>_y) {return 1;}
                                                                 return 0;        
                                                         }         
                                                 }
@@ -270,7 +265,6 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                                      }
                              };
                         req.send();
-                        
                         return promise;
                 },	
 		
@@ -282,8 +276,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                         if (!sock.socket.connected){
                                 sock.socket.connect(Config.get("location"));
                                 Config.get("observer").notify("reconnect");
-                        }
-                        SOCK = sock;              
+                        }              
                 },
                 
                 /*
@@ -328,31 +321,31 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                 
                 getAvatarById : function(id){
 		      var promise = new Promise,
+		          local = new LocalStore(),
 		          avatars = Config.get("avatars");
 		      
 		      if (id === Config.get("user").get("_id")) {
-		              Config.get("transport").request("GetFile", {sid: "avatars", "filename":id+"_@v@t@r"}, function(result){
-		                      Config.set("avatar", result);
-		                      promise.fulfill()
-		              });
+		              local.sync("ideafy-data");
+		              Config.set("avatar", local.get("userAvatar"));
+		              promise.fulfill();
 		      }
 		      else {
 		              Config.get("transport").request("GetAvatar", {id: id}, function(result){
-		              if (result.error){
-		                      promise.reject();
-		              }
-		              else{
-		                      if (avatars.getNbItems() < 100){
-		                              avatars.set(id, result);
+		                      if (result.error){
+		                              promise.reject();
 		                      }
-		                      else {
-		                          var obj = avatars.toJSON(),
-		                              arr = obj.keys();
-		                          avatars.del(arr[0]);
-		                          avatars.set(id, result);
-		                      }
-		                      promise.fulfill();
-		              }      
+		                      else{
+		                              if (avatars.getNbItems() < 100){
+		                                      avatars.set(id, result);
+		                              }
+		                              else {
+		                                      var obj = avatars.toJSON(),
+		                                          arr = obj.keys();
+		                                      avatars.del(arr[0]);
+		                                      avatars.set(id, result);
+		                              }
+		                              promise.fulfill();
+		                      }      
 		              });
 		              return promise;
 		      }      
@@ -390,12 +383,6 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                        
                        transport.request("GetAchievements", {userid: userid, lang: user.get("lang")}, function(res){
                                onEnd(res);
-                               /* if (res.length){
-                                        user.unsync();
-                                        user.sync(Config.get("db"), userid).then(function(){
-                                                onEnd(res);         
-                                        });        
-                               }*/
                        });
                 },
                 

@@ -284,21 +284,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    // watch for updates in user profile
                    Config.get("observer").watch("profile-updated", function(change){
                            profileUI.checkProfileCompletion().then(function(){
-                                Utils.getGrade(user.get("ip"), function(result){
-                                        profileUI.updateGrade(result);
-                                });
-                   
-                                Utils.getAchievements(user.get("_id"), function(result){
-                                        if (result.length) profileUI.updateAchievements(result);        
-                                });        
+                                profileUI.updateGrade();
+                                profileUI.updateAchievements();       
                         });
                    });
                    
                    // watch for changes in user score
                    user.watchValue("ip", function(){
-                        Utils.getGrade(user.get("ip"), function(result){
-                                profileUI.updateGrade(result);
-                        });
+                        profileUI.updateGrade();
                         profileUI.updateProgressBar();       
                    });
                    
@@ -322,8 +315,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    // language change
                    user.watchValue("lang", function(){
                         // check score and achievements
-                        profileUI.updateGrade();
-                        profileUI.updateAchievements();
+                        profileUI.updateGrade()
+                        .then(function(){
+                                profileUI.updateAchievements();        
+                        });
                         // update news
                         news.reset([]);
                         news.reset(user.get("news"));      
@@ -362,19 +357,23 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    };
                    
                    profileUI.updateGrade = function updateGrade(){
-                           Utils.getGrade(user.get("ip"), function(result){
-                                   var array;
-                                   (result.distinction)?array=[result.grade, result.distinction]:array=[result.grade];
+                        var promise = new Promise();
+                        Utils.getGrade(user.get("ip"), function(result){
+                                var array;
+                                (result.distinction)?array=[result.grade, result.distinction]:array=[result.grade];
                                 grades.reset(array);
                                 // update title with grade
                                 stats.set("title", result.grade.label);
+                                promise.fulfill();
                         });
                    };
                    
                    profileUI.updateAchievements = function updateAchievements(){
+                           var promise = new Promise();
                            Utils.getAchievements(user.get("_id"), function(result){
-                                if (result.length) achievements.reset(result);        
-                        });
+                                if (result.length) {achievements.reset(result);}
+                                promise.fulfill();       
+                           });
                    };
                    
                    profileUI.updateProgressBar = function updateProgressBar(){
@@ -397,7 +396,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    };
                    
                    profileUI.cleanOldNews = function cleanOldNew(){
-                        var now = new Date(), news = user.get("news"), i, then;
+                        var now = new Date(), news = user.get("news"), i, then,
+                            promise = new Promise();
                         if (news.length){
                                 for (i = news.length-1; i>=0; i--){
                                         then = new Date(news[i].date[0],news[i].date[1],news[i].date[2]);
@@ -406,22 +406,25 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }       
                                 }
                                 user.set("news", news);
-                                user.upload();
+                                user.upload().then(function(){
+                                        promise.fulfill();
+                                });
                         }
                    };
                    
                    //init
                    
-                   profileUI.checkProfileCompletion().then(function(){
-                        profileUI.updateGrade();
-                        profileUI.updateAchievements();        
+                   profileUI.checkProfileCompletion()
+                   .then(function(){
+                        return profileUI.updateGrade();
+                   })
+                   .then(function(){
+                        return profileUI.updateAchievements();        
+                   })
+                   .then(function(){
+                        profileUI.updateProgressBar();
+                        profileUI.cleanOldNews();        
                    });
-                   
-                   profileUI.updateProgressBar();
-                   
-                   profileUI.cleanOldNews();
-                   
-                   USR = user;
                    
                    return profileUI;
            };    

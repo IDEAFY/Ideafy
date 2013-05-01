@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "Store", "lib/spin.min"],
-        function(Widget, Config, Model, Event, Avatar, Utils, Store, Spinner){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "Store", "lib/spin.min", "LocalStore"],
+        function(Widget, Config, Model, Event, Avatar, Utils, Store, Spinner, LocalStore){
                 
            return function EditProfileConstructor(){
                    
@@ -77,7 +77,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                         fd.append("filename", updates.picture_file);
                         fd.append("img", profile.get("avatar"));
                         Utils.uploadFile(url, fd, progress, function(result){
-                                if (result.response !== "ok") console.log(result);
+                                if (result.response !== "ok") {console.log(result);}
                         });         
                     };
                     
@@ -175,9 +175,10 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                 
                 editProfile.cameraPreview = function(event, node){ 
                         var _img = new Image(),
-                            _options = {quality:50, correctOrientation: true};
+                            _options = {quality:50, correctOrientation: true},
+                            onSuccess, onFail;
                         
-                        function onSuccess(imageData){
+                        onSuccess = function (imageData){
                                _img.src = imageData;
                                 setTimeout(function(){
                                         cropImage(resizeImage(_img));
@@ -187,7 +188,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                                 }, 1000);
                         };
                         
-                        function onFail(message){
+                        onFail = function(message){
                                 alert("error: "+message);
                         };
                         
@@ -195,12 +196,12 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                 };
                 
                 editProfile.picturePreview = function(event, node){
-                        var source = navigator.camera.PictureSourceType.PHOTOLIBRARY;
+                        var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
+                            _img = new Image(),
+                            _options = {quality:50, correctOrientation: true, sourceType: source},
+                            onSuccess, onFail;
                         
-                        var _img = new Image(),
-                            _options = {quality:50, correctOrientation: true, sourceType: source};
-                        
-                        function onSuccess(imageData){
+                        onSuccess = function(imageData){
                                _img.src = imageData;
                                 setTimeout(function(){
                                         cropImage(resizeImage(_img));
@@ -210,12 +211,11 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                                 }, 1000);
                         };
                         
-                        function onFail(message){
+                        onFail = function(message){
                                 alert("error: "+message);
                         };
                         
                         navigator.camera.getPicture(onSuccess, onFail, _options);
-                                
                 };
                 
                 editProfile.changeAvatar = function(event, node){
@@ -374,9 +374,12 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                         }
                         if (changes) {
                                 user.upload().then(function(){
-                                        // also update avatar in Config store
+                                        var local = new LocalStore();
+                                        // also update avatar in Config store and localstore
                                         if (updates.picture_file) {
                                                 Config.set("avatar", profile.get("avatar"));
+                                                local.sync("ideafy-data");
+                                                local.set("userAvatar", Config.get("avatar"));
                                         }
                                         if (updates.picture_file && updates.picture_file.search("img/avatars/deedee") <0){
                                                 uploadAvatar();

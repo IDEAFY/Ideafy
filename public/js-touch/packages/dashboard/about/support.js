@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBStore"],
-        function(Widget, Config, Model, Event, Store, CouchDBStore){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBDocument"],
+        function(Widget, Config, Model, Event, Store, CouchDBDocument){
                 return function SupportConstructor(){
                   
                         var support = new Widget(),
@@ -15,8 +15,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                             model = new Store({"body": "", "result":""}),
                             supportMSG = new Store({}),
                             maintenanceMSG = new Store({}),
-                            supportCDB = new CouchDBStore(),
-                            maintenanceCDB = new CouchDBStore();
+                            supportCDB = new CouchDBDocument(),
+                            maintenanceCDB = new CouchDBDocument();
                             
                         supportCDB.setTransport(Config.get("transport"));
                         maintenanceCDB.setTransport(Config.get("transport"));
@@ -44,8 +44,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         
                         support.send = function(event, node){
                                 node.classList.remove("pressed");
-                                support.sendRequest(model.get("body"));
-                                model.set("body", "");                
+                                support.sendRequest(model.get("body"));               
                         };
                         
                         support.cancel = function(event, node){
@@ -67,6 +66,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         (result === "ok")? model.set("result", labels.get("requestsent")) :model.set("result", result);
                                         setTimeout(function(){
                                                 model.set("result", "");
+                                                model.set("body", "");
                                         }, 3000);               
                                 });  
                         };

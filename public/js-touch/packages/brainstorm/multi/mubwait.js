@@ -5,13 +5,13 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise", "service/avatar", "./session/mubchat"],
-        function(Widget, Store, CouchDBStore, Map, Model, Event, Place, Config, Help, Utils, Confirm, Promise, Avatar, Chat){
+define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise", "service/avatar", "./session/mubchat"],
+        function(Widget, Store, CouchDBDocument, Map, Model, Event, Place, Config, Help, Utils, Confirm, Promise, Avatar, Chat){
                 
                 return function MultiBWaitConstructor($exit, $start){
                 
                         var widget = new Widget(),
-                            session = new CouchDBStore(),
+                            session = new CouchDBDocument(),
                             participants = new Store(),
                             info = new Store({"msg":""}),
                             user = Config.get("user"),
@@ -159,12 +159,14 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 session.set("participants", p);
                                 // set session status to waiting as it may have been "full" before participant left
                                 session.set("status", "waiting"); 
-                                session.upload().then(function(){
-                                        chatUI.leave().then(function(){
-                                                //widget.goToScreen();
-                                                session.unsync();
-                                                session.reset({});        
-                                        });
+                                session.upload()
+                                .then(function(){
+                                        return chatUI.leave();
+                                })
+                                .then(function(){
+                                        //widget.goToScreen();
+                                        session.unsync();
+                                        session.reset({});        
                                 }); 
                                 // no need to wait for upload result to leave session
                                 widget.goToScreen();             
@@ -294,7 +296,7 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                         };
                         
                         widget.createChat = function createChat(id){
-                                var cdb = new CouchDBStore(),
+                                var cdb = new CouchDBDocument(),
                                 now = new Date().getTime(),
                                 promise = new Promise();
                                 cdb.setTransport(Config.get("transport"));
@@ -306,13 +308,14 @@ define(["OObject", "Store", "CouchDBStore", "service/map", "Bind.plugin", "Event
                                 cdb.set("readonly", false); // once the step is cleared readonly is set to true
                                 cdb.set("step", 1);
                                 cdb.set("type", 17);
-                                cdb.sync(Config.get("db"), id);
-                                setTimeout(function(){
-                                        cdb.upload().then(function(){
-                                                promise.fulfill();
-                                                cdb.unsync();
-                                        });
-                                }, 150);
+                                cdb.sync(Config.get("db"), id)
+                                .then(function(){
+                                        return cdb.upload();
+                                })
+                                .then(function(){
+                                        promise.fulfill();
+                                        cdb.unsync();
+                                });
                                 return promise;
                         };
 

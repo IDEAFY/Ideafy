@@ -6,7 +6,7 @@
  */
 
 define(["OObject", "Amy/Control-plugin" ,
-	"Bind.plugin", "Amy/Delegate-plugin", "CouchDBStore", "service/map", "service/config",
+	"Bind.plugin", "Amy/Delegate-plugin", "Store", "service/map", "service/config",
 	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin"], 
 	function(Widget, Control, Model, Delegate, Store, Map, 
 		Config, Detail, List, Stack){

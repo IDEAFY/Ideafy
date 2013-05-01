@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBStore", "Promise", "service/cardpopup", "service/utils", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Help, Store, CouchDBStore, Promise, CardPopup, Utils, Spinner){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBDocument", "Promise", "service/cardpopup", "service/utils", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, Help, Store, CouchDBDocument, Promise, CardPopup, Utils, Spinner){
                 
                 return function QuickTechConstructor($session, $data, $prev, $next, $progress){
                         
@@ -118,17 +118,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _widget.updateSessionScore(_timer.get("timer")).then(function(){
                                                // resync with db
                                                 $session.unsync();
-                                                $session.sync(Config.get("db"), $session.get("_id")).then(function(){
-                                                        var timers = $session.get("elapsedTimers");
+                                                return $session.sync(Config.get("db"), $session.get("_id"))
+                                        })
+                                        .then(function(){
+                                                var timers = $session.get("elapsedTimers");
                                                         
-                                                        timers.quicktech = _timer.get("timer");
+                                                timers.quicktech = _timer.get("timer");
                                                         
-                                                        // update session document
-                                                        $session.set("elapsedTimers", timers);
-                                                        $session.set("techno", [[_techCards.get(0).id, _techCards.get(1).id, _techCards.get(2).id]]);
-                                                        //upload and move to next step
-                                                        $next("quicktech");         
-                                                });     
+                                                // update session document
+                                                $session.set("elapsedTimers", timers);
+                                                $session.set("techno", [[_techCards.get(0).id, _techCards.get(1).id, _techCards.get(2).id]]);
+                                                
+                                                //upload and move to next step
+                                                $next("quicktech");         
                                         });
                                 }
                                 else {
@@ -227,7 +229,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 if (node.classList.contains("drawok")){
                                         if (_draw[name].get("_id") && _next === "step") node.classList.add("pushed")     
                                 }
-                                else node.classList.add("pushed")
+                                else {node.classList.add("pushed");}
                         };
                         
                         _widget.draw = function(event, node){
@@ -237,21 +239,22 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _ready = false; // to prevent fast clicks
                                         
                                         // check which cards are needed
-                                        if (!_techDisplay.get("tech1").selected) toDraw.push("tech1");
-                                        if (!_techDisplay.get("tech2").selected) toDraw.push("tech2");
-                                        if (!_techDisplay.get("tech3").selected) toDraw.push("tech3");
+                                        ["tech1", "tech2", "tech3"].forEach(function(tech){
+                                                if (!_techDisplay.get(tech).selected) {
+                                                        toDraw.push(tech);
+                                                }
+                                        });
                                         
-                                        _widget.drawTech(toDraw);
-                                        
-                                        setTimeout(function(){
+                                        _widget.drawTech(toDraw)
+                                        .then(function(){
                                                 node.classList.remove("pushed");
-                                                _ready = true;
-                                        }, 350);
+                                                _ready = true;        
+                                        });
                                  }
                         };
                         
                         _widget.drawTech = function drawTech(arr){
-                                var idx, accepted = [];
+                                var idx, accepted = [], promise = new Promise();
                                 
                                 arr.forEach(function(name){
                                         if (_techs.length){
@@ -264,9 +267,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         else{
                                                 _techs = $data.get("deck").techno.concat();
                                                 // remove selected cards from deck
-                                                if (_techDisplay.get("tech1").selected) {accepted.push(_techCards.get(0).id);}
-                                                if (_techDisplay.get("tech2").selected) {accepted.push(_techCards.get(1).id);}
-                                                if (_techDisplay.get("tech3").selected) {accepted.push(_techCards.get(2).id);}
+                                                ["tech1", "tech2", "tech3"].forEach(function(tech, idx){
+                                                        if (_techDisplay.get(tech).selected) {accepted.push(_techCards.get(idx).id);}        
+                                                });
                                                 _techs.filter(function(value){
                                                         return !(accepted.indexOf(value)>-1);
                                                 });
@@ -277,10 +280,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 _drawnCards++; 
                                         }
                                 });
+                                return promise;
                         };
                         
                         _widget.getCardDetails = function getCardDetails(id, name){
-                                var cdb = new CouchDBStore(), idx = ["tech1", "tech2", "tech3"].indexOf(name), promise = new Promise();
+                                var cdb = new CouchDBDocument(), idx = ["tech1", "tech2", "tech3"].indexOf(name), promise = new Promise();
                                 
                                 cdb.setTransport(_transport);
                                 cdb.sync(Config.get("db"), id).then(function(){
@@ -291,7 +295,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         promise.fulfill();
                                         cdb.unsync();      
                                 });
-                                
                                 return promise; 
                         };
                         
@@ -342,15 +345,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 if (sip && sessionTech && sessionTech.length){
                                         _next = "screen"; // read-only
                                         // retrieve card information from session data
-                                        _widget.getCardDetails(sessionTech[0], "tech1").then(function(){
-                                                _widget.getCardDetails(sessionTech[1], "tech2").then(function(){
-                                                        _widget.getCardDetails(sessionTech[2], "tech3").then(function(){
-                                                                ["tech1", "tech2", "tech3"].forEach(function(value){
-                                                                        _techDisplay.set(value, {"popup": false, "selected": true});
-                                                                });
-                                                                $data.set("techno", _techCards);        
-                                                        });          
-                                                });  
+                                        _widget.getCardDetails(sessionTech[0], "tech1")
+                                        .then(function(){
+                                                return _widget.getCardDetails(sessionTech[1], "tech2");
+                                        })
+                                        .then(function(){
+                                                return _widget.getCardDetails(sessionTech[2], "tech3");
+                                        })
+                                        .then(function(){
+                                                ["tech1", "tech2", "tech3"].forEach(function(value){
+                                                        _techDisplay.set(value, {"popup": false, "selected": true});
+                                                });
+                                                $data.set("techno", _techCards);  
                                         });
                                 }
                                 else{

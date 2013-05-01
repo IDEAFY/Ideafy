@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/cardpopup", "../whiteboard/whiteboard", "Store", "CouchDBStore", "Promise", "service/utils", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, CardPopup, Whiteboard, Store, CouchDBStore, Promise, Utils, Spinner){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/cardpopup", "../whiteboard/whiteboard", "Store", "CouchDBDocument", "Promise", "service/utils", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, CardPopup, Whiteboard, Store, CouchDBDocument, Promise, Utils, Spinner){
                 
                 return function QuickIdeaConstructor($session, $data, $prev, $next, $progress){
                         
@@ -134,34 +134,36 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         $data.set("idea", JSON.parse(_idea.toJSON()));
                                         
                                         // create separate idea document in couchdb
-                                        _widget.createIdeaDoc().then(function(){
-                                        
+                                        _widget.createIdeaDoc()
+                                        .then(function(){
                                                 // update session score
-                                                _widget.updateSessionScore(_timer.get("timer")).then(function(){
-                                                        // resync with db
-                                                        $session.unsync();
-                                                        $session.sync(Config.get("db"), $session.get("_id")).then(function(){
-                                                                var timers = $session.get("elapsedTimers");
-                                                        
-                                                                timers.quickidea = _timer.get("timer");
-                                                                // update session document
-                                                                $session.set("idea", [JSON.parse(_idea.toJSON())]);
-                                                                $session.set("elapsedTimers", timers);
-                                                                $session.set("duration", duration);
-                                                                $session.set("status", "completed");
-                                                                // set idea to readonly
-                                                                _tools.set("readonly", true);
-                                                                
-                                                                $next("quickidea").then(function(){
-                                                                        // remove session in progress
-                                                                        _user.set("sessionInProgress", {});
-                                                                        _user.upload();
-                                                                });       
-                                                        });      
-                                                });
+                                                return _widget.updateSessionScore(_timer.get("timer"));
+                                        })
+                                        .then(function(){
+                                                // resync with db
+                                                $session.unsync();
+                                                return $session.sync(Config.get("db"), $session.get("_id"));
+                                        })
+                                        .then(function(){
+                                                var timers = $session.get("elapsedTimers");
+                                                timers.quickidea = _timer.get("timer");
+                                                // update session document
+                                                $session.set("idea", [JSON.parse(_idea.toJSON())]);
+                                                $session.set("elapsedTimers", timers);
+                                                $session.set("duration", duration);
+                                                $session.set("status", "completed");
+                                                // set idea to readonly
+                                                _tools.set("readonly", true);
+                                                // move to next step
+                                                return $next("quickidea");
+                                        })
+                                        .then(function(){
+                                                // remove session in progress
+                                                _user.set("sessionInProgress", {});
+                                                user.upload();
                                         });
                                 }
-                                else $next("quickidea");
+                                else {$next("quickidea");}
                         };
                         
                         _widget.stopSpinner = function stopSpinner(){
@@ -251,7 +253,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 _popupUI.reset(details, pos, caret, document.getElementById("quickidea-popup"));
                                         }
                                         else{
-                                               cdb = new CouchDBStore();
+                                               cdb = new CouchDBDocument();
                                                 cdb.setTransport(_transport);
                                                 cdb.sync(Config.get("db"), $data.get("techno").get(id).id).then(function(){
                                                         details = cdb.toJSON();
@@ -340,7 +342,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // create separate idea doc in couchDB
                         _widget.createIdeaDoc = function createIdeaDoc(){
-                                var cdb = new CouchDBStore(Config.get("ideaTemplate")),
+                                var cdb = new CouchDBDocument(Config.get("ideaTemplate")),
                                     now = new Date(),
                                     _id = "I:"+now.getTime(),
                                     promise = new Promise();
@@ -359,19 +361,21 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 //set the idea's language to the same language as the session
                                 cdb.set("lang", $session.get("lang"));
                                 cdb.set("_id", _id);
-                                cdb.sync(Config.get("db"), _id);
-                                setTimeout(function(){
-                                        cdb.upload().then(function(){
-                                                // updateUIP is visibility is public
-                                                if (cdb.get("visibility") === "public"){
-                                                        _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": cdb.get("type"), "docId": cdb.get("_id"), "docTitle": cdb.get("title")}, function(result){
-                                                                if (result !== "ok") {console.log(result);}
-                                                        });
-                                                }
-                                                promise.fulfill();
-                                                cdb.unsync();
-                                        });
-                                }, 200);
+                                //upload idea in the database
+                                cdb.sync(Config.get("db"), _id)
+                                .then(function(){
+                                        return cdb.upload();
+                                })
+                                .then(function(){
+                                        // updateUIP is visibility is public
+                                        if (cdb.get("visibility") === "public"){
+                                                _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": cdb.get("type"), "docId": cdb.get("_id"), "docTitle": cdb.get("title")}, function(result){
+                                                        if (result !== "ok") {console.log(result);}
+                                                });
+                                        }
+                                        promise.fulfill();
+                                        cdb.unsync();
+                                });
                                 return promise;      
                         };
                         

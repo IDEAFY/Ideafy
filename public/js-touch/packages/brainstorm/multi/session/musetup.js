@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin", "service/config", "CouchDBStore", "Store", "Promise", "service/cardpopup", "service/help", "service/utils", "lib/spin.min", "./mubchat"],
-        function(Widget, Map, Model, Place, Event, Config, CouchDBStore, Store, Promise, CardPopup, Help, Utils, Spinner, Chat){
+define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin", "service/config", "CouchDBDocument", "Store", "Promise", "service/cardpopup", "service/help", "service/utils", "lib/spin.min", "./mubchat"],
+        function(Widget, Map, Model, Place, Event, Config, CouchDBDocument, Store, Promise, CardPopup, Help, Utils, Spinner, Chat){
                 
                 return function MUSetupConstructor($session, $data, $prev, $next, $progress){
                         
@@ -113,18 +113,20 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         _timer.set("display", true);
                                         
                                         // compute session score
-                                        _widget.updateSessionScore(_timer.get("timer")).then(function(){
+                                        _widget.updateSessionScore(_timer.get("timer"))
+                                        .then(function(){
                                                 // resync with db
                                                 $session.unsync();
-                                                $session.sync(Config.get("db"), $session.get("_id")).then(function(){
-                                                        // update session document
-                                                        $session.set("elapsedTimers", {"quicksetup": _timer.get("timer")});
-                                                        $session.set("characters", [_cards.get("char").id]);
-                                                        $session.set("contexts", [_cards.get("context").id]);
-                                                        $session.set("problems", [_cards.get("problem").id]);
-                                                        //upload and move to next step
-                                                        $next("musetup");         
-                                                });      
+                                                return $session.sync(Config.get("db"), $session.get("_id"));
+                                        })
+                                        .then(function(){
+                                                // update session document
+                                                $session.set("elapsedTimers", {"quicksetup": _timer.get("timer")});
+                                                $session.set("characters", [_cards.get("char").id]);
+                                                $session.set("contexts", [_cards.get("context").id]);
+                                                $session.set("problems", [_cards.get("problem").id]);
+                                                //upload and move to next step
+                                                $next("musetup");         
                                         });
                                 }
                                 else {
@@ -277,6 +279,11 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         // Creating the popup UI
                         _popupUI = new CardPopup(_widget.closePopup);
                         
+                        // Getting the chat UI
+                        _widget.getChatUI = function getChatUI(){
+                                return ChatUI;        
+                        };
+                        
                         // Init timer
                         _widget.initTimer = function(init){
                                 var now = new Date(),
@@ -302,50 +309,45 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         chatUI.reset($session.get("chat")[1]);
                                 }
                                 if (replay){
-                                        
                                         // check if time has been spent on this step already
                                         _elapsed = $session.get("elapsedTimers").musetup || 0;
+                                        
+                                        // reset selection & popup status
+                                        _selection.reset({
+                                                char : {selected: true, left: 1, popup: false},
+                                                context : {selected: true, left: 1, popup: false},
+                                                problem : {selected: true, left: 1, popup: false}
+                                        });
+                                        _currentPopup = "";
+                                        
+                                        // set timer and display
+                                        _timer.set("timer", _elapsed);
+                                        _timer.set("display", true);
                                         
                                         if ($session.get("characters").length){
                                                 _next = "screen"; // read-only
                                                 // retrieve session deck
                                                 _widget.getDeck($session.get("deck")).then(function(){
                                                         // retrieve card information
-                                                        _widget.getCard($session.get("characters")[0], _currentCards.char).then(function(){
-                                                                var c = _currentCards.char;
-                                                                _cards.set("char", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
-                                                                $data.set("characters", _cards.get("char"));        
-                                                                });
-                                                        _widget.getCard($session.get("contexts")[0], _currentCards.context).then(function(){
-                                                                var c = _currentCards.context;
-                                                                _cards.set("context", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
-                                                                $data.set("contexts", _cards.get("context"));
-                                                                });
-                                                        _widget.getCard($session.get("problems")[0], _currentCards.problem).then(function(){
-                                                                var c = _currentCards.problem;
-                                                                _cards.set("problem", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
-                                                                $data.set("problems", _cards.get("problem"));
-                                                        });
-                                        
-                                                        // reset selection & popup status
-                                                        _selection.reset({
-                                                                char : {selected: true, left: 1, popup: false},
-                                                                context : {selected: true, left: 1, popup: false},
-                                                                problem : {selected: true, left: 1, popup: false}
-                                                        });
-                                                        _currentPopup = "";
-                                        
-                                                        // set timer and display
-                                                        _timer.set("timer", _elapsed);
-                                                        _timer.set("display", true);
-                                                        
-                                                                
+                                                        return _widget.getCard($session.get("characters")[0], _currentCards.char);
+                                                })
+                                                .then(function(){
+                                                        var c = _currentCards.char;
+                                                        _cards.set("char", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
+                                                        $data.set("characters", _cards.get("char"));        
+                                                        return _widget.getCard($session.get("contexts")[0], _currentCards.context);
+                                                })
+                                                .then(function(){
+                                                        var c = _currentCards.context;
+                                                        _cards.set("context", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
+                                                        $data.set("contexts", _cards.get("context"));
+                                                        return _widget.getCard($session.get("problems")[0], _currentCards.problem);
+                                                })
+                                                .then(function(){
+                                                        var c = _currentCards.problem;
+                                                         _cards.set("problem", {id:c.get("_id"),title:c.get("title"), pic:c.get("picture_file")});
+                                                        $data.set("problems", _cards.get("problem"));
                                                 });       
-                                        }
-                                        else{
-                                                _widget.init();
-                                                // init timer
-                                                _widget.initTimer(_elapsed);       
                                         }
                                 }
                                 else{
@@ -357,7 +359,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         // Method  called to retrieve the active deck from the database in the appropriate language
                         _widget.getDeck = function getDeck(deckId){
                                 var promise = new Promise(),
-                                    cdb = new CouchDBStore();
+                                    cdb = new CouchDBDocument();
                                 
                                 cdb.setTransport(_transport);
                                 cdb.sync(_db, deckId).then(function(){
@@ -383,7 +385,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         // Method called to retrieve a card information from the database
                         _widget.getCard = function getCard(id, store){
                                 var promise = new Promise,
-                                    cdb = new CouchDBStore();
+                                    cdb = new CouchDBDocument();
                                 
                                 cdb.setTransport(_transport);
                                 cdb.sync(_db, id).then(function(){

@@ -6,8 +6,8 @@
  */
 
 define(["OObject" ,"Amy/Stack-plugin", 
-        "service/map", "Event.plugin", "service/config", "Bind.plugin", "Store", "lib/spin.min", "Promise", "CouchDBStore"],
-        function(Widget, Stack, Map, Event, Config, Model, Store, Spinner, Promise, CouchDBStore){
+        "service/map", "Event.plugin", "service/config", "Bind.plugin", "Store", "lib/spin.min", "Promise", "CouchDBDocument"],
+        function(Widget, Stack, Map, Event, Config, Model, Store, Spinner, Promise, CouchDBDocument){
                 return function LoginConstructor($init, $reload, $local){
                 //declaration
                         var _login = new Widget(),
@@ -89,7 +89,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                     fn = _store.get("firstname"),
                                     ln = _store.get("lastname"),
                                     promise = new Promise(),
-                                    user = new CouchDBStore();
+                                    user = new CouchDBDocument();
                                 // handle form errors
                                 if (email === "") {
                                         _store.set("error", _labels.get("signupmissingemail"));
@@ -156,22 +156,23 @@ define(["OObject" ,"Amy/Stack-plugin",
 
                                                                         // get database info
                                                                         if (result.db){
-                                                                                Config.set("db", result.db);
+                                                                                $local.set("db", result.db);
                                                                         }
 
                                                                         // upload to database
                                                                         user.setTransport(_transport);
-                                                                        user.sync(result.db, userid);
-                                                                        setTimeout(function(){
-                                                                                user.upload().then(function(){
-                                                                                        $local.set("currentLogin", userid);
-                                                                                        $local.set("userAvatar", user.get("picture_file"));
-                                                                                        $local.sync("ideafy-data");
-                                                                                        Config.set("uid", '"' + userid + '"');
-                                                                                        user.unsync();
-                                                                                        (reload)? $reload(true) : $init(true);
-                                                                                });
-                                                                        }, 350);
+                                                                        user.sync(result.db, userid)
+                                                                        .then(function(){
+                                                                                return user.upload();
+                                                                        })
+                                                                        .then(function(){
+                                                                                $local.set("currentLogin", userid);
+                                                                                $local.set("userAvatar", user.get("picture_file"));
+                                                                                $local.sync("ideafy-data");
+                                                                                Config.set("uid", '"' + userid + '"');
+                                                                                user.unsync();
+                                                                                (reload)? $reload(true) : $init(true);
+                                                                        });
                                                                 }
                                                                 else {
                                                                         _store.set("error", "error : " + result.message);
@@ -224,7 +225,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                         Config.set("uid", '"' + email + '"');
                                                         // check if there is a new db
                                                         if (result.db){
-                                                                Config.set("db", result.db);
+                                                                $local.set("db", result.db);
                                                         }
                                                         $local.set("currentLogin", email);
                                                         _transport.request("GetAvatar", {id: email}, function(result){

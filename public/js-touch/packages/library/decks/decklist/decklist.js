@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin', 'Store', 'CouchDBStore', "Promise", "service/utils"],
-        function(Widget, Map, Config, Model, Event, Store, CouchDBStore, Promise, Utils){
+define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin', 'Store', 'CouchDBBulkDocuments', "Promise", "service/utils"],
+        function(Widget, Map, Config, Model, Event, Store, CouchDBBulkDocuments, Promise, Utils){
                 
                 return function DeckListConstructor($type){
                         
@@ -50,7 +50,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         };
                         
                         deckList.getDecks = function getDecks(type, onEnd){
-                                var cdb = new CouchDBStore();
+                                var cdb = new CouchDBBulkDocuments();
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), {keys : user.get(type)}).then(function(){
                                         var lang = user.get("lang");
@@ -63,7 +63,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                                         (v.doc.translations && v.doc.translations[lang]) ? decks.alter("push", v.doc.translations[lang]) : decks.alter("push", v.doc);
                                                 }                
                                         });
-                                        if (onEnd) onEnd("ok");
+                                        if (onEnd) {onEnd("ok");}
                                 });             
                         };
                         

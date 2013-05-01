@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBStore"],
-        function(Widget, Map, Model, Event, Config, Store){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "Promise", "lib/spin.min"],
+        function(Widget, Map, Model, Event, Config, Store, Promise, Spinner){
                 
                 return function new2QConstructor(){
                 
@@ -15,8 +15,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _user = Config.get("user"),
                             _labels = Config.get("labels"),
                             _maxLength = 140,
-                            upload = false,
-                            _error = new Store({"error": ""});
+                            _error = new Store({"error": ""}),
+                            spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
                             
                         _store.setTransport(Config.get("transport"));
                         
@@ -72,19 +72,21 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     timer,
                                     id = "Q:"+now.getTime();
                                 
+                                node.classList.remove("pressed");
                                 
                                 // check for errors (missing fields)
-                                if (!_store.get("question")) _error.set("error", "noquestion")
+                                if (!_store.get("question")) {_error.set("error", "noquestion");}
 
-                                if (!_error.get("error") && !_store.get("_id") && !upload){
+                                if (!_error.get("error") && !_store.get("_id")){
                                         
-                                        // set upload flag to true
-                                        upload = true;
+                                        node.classList.add("invisible");
+                                        spinner.spin(node.parentNode);
+                                        
                                         timer = setInterval(function(){
                                                 if (_error.get("error") === _labels.get("uploadinprogress")){
                                                         _error.set("error", _labels.get("uploadinprogress")+"...");
                                                 }
-                                                else _error.set("error", _labels.get("uploadinprogress"));
+                                                else {_error.set("error", _labels.get("uploadinprogress"));}
                                         }, 150);
                                                                        
                                         // fill cdb document
@@ -95,9 +97,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _store.set("lang", _user.get("lang"));
                                         
                                         // create document in couchdb and upload
-                                        _store.sync(Config.get("db"), id);
-                                        setTimeout(function(){
-                                                _store.upload();
+                                        _store.sync(Config.get("db"), id)
+                                        .then(function(){
+                                                return _store.upload();
+                                        })
+                                        .then(function(){
                                                 Config.get("transport").request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "question": _store.get("question")}, function(result){
                                                         var i, contacts = _user.get("connections"), l=contacts.length, dest =[], 
                                                             json = {
@@ -114,8 +118,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 "body" : _store.get("question"),
                                                                 "signature" : ""
                                                              };
-                                                        if (result !== "ok") console.log(result);
-                                                        _widget.closePopup();
+                                                        if (result !== "ok") {console.log(result);}
+                                                        
                                                         clearInterval(timer);
                                                                 
                                                         // notifying contacts
@@ -128,7 +132,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         
                                                         // building recipient list
                                                         for(i=0; i<l; i++){
-                                                                if (contacts[i].type === "user") dest.push(contacts[i].userid);
+                                                                if (contacts[i].type === "user") {dest.push(contacts[i].userid);}
                                                         }
                                                         json.dest = dest;
                                                         // notification request
@@ -136,11 +140,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 var result = JSON.parse(result);
                                                                 console.log(result);
                                                         });
+                                                        
+                                                        spinner.stop();
+                                                        node.classList.remove("invisible");
+                                                        _widget.closePopup();
                                                 });
-                                        }, 500);
-                                }
-                                else{
-                                        node.classList.remove("pressed");        
+                                        });
                                 } 
                         };
                         

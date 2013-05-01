@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./quickstart", "./quicksetup", "./quickscenario", "./quicktech", "./quickidea", "./quickwrapup", "CouchDBStore", "service/config", "Promise", "Store", "lib/spin.min"],
-        function(Widget, Map, Stack, Model, Event, QuickStart, QuickSetup, QuickScenario, QuickTech, QuickIdea, QuickWrapup, CouchDBStore, Config, Promise, Store, Spinner){
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./quickstart", "./quicksetup", "./quickscenario", "./quicktech", "./quickidea", "./quickwrapup", "CouchDBDocument", "service/config", "Promise", "Store", "lib/spin.min"],
+        function(Widget, Map, Stack, Model, Event, QuickStart, QuickSetup, QuickScenario, QuickTech, QuickIdea, QuickWrapup, CouchDBDocument, Config, Promise, Store, Spinner){
                 
            return function QuickBConstructor($sip, $exit){
                    
@@ -26,7 +26,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                {name: "quickwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
                                ]),
                        _user = Config.get("user"),
-                       _session = new CouchDBStore(),
+                       _session = new CouchDBDocument(),
                        _sessionData = new Store(),
                        spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBStore", "Promise", "service/cardpopup", "service/utils", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Help, Store, CouchDBStore, Promise, CardPopup, Utils, Spinner){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBDocument", "Promise", "service/cardpopup", "service/utils", "lib/spin.min", "./mubchat"],
+        function(Widget, Map, Model, Event, Config, Help, Store, CouchDBDocument, Promise, CardPopup, Utils, Spinner, Chat){
                 
                 return function MUTechConstructor($session, $data, $prev, $next, $progress){
                         
@@ -20,6 +20,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _user = Config.get("user"),
                             _labels = Config.get("labels"),
                             _popupUI, _currentPopup,
+                            chatUI = new Chat(),
                             _techDisplay = new Store({
                                 "left": "",
                                 "scenario":{"popup": false},
@@ -275,7 +276,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.getCardDetails = function getCardDetails(id, name){
-                                var cdb = new CouchDBStore(), arr = ["tech1", "tech2", "tech3"], idx = arr.indexOf(name);
+                                var cdb = new CouchDBDocument(), arr = ["tech1", "tech2", "tech3"], idx = arr.indexOf(name);
                                 
                                 cdb.setTransport(_transport);
                                 cdb.sync(Config.get("db"), id).then(function(){
@@ -394,6 +395,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
 
                         // Creating the popup UI
                         _popupUI = new CardPopup(_widget.closePopup);
+                        
+                        // Getting the chat UI
+                        _widget.getChatUI = function getChatUI(){
+                                return ChatUI;        
+                        };
                         
                         // Retrieve deck information as soon as it becomes available                        
                         $data.watchValue("deck", function(value){

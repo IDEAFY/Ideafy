@@ -5,14 +5,14 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBStore){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView"],
+        function(Widget, Map, Model, Event, Config, Store, CouchDBView){
                 
                 return function TipsConstructor($firstStart){
                 
                         var _widget = new Widget(),
                             _labels = Config.get("labels"),
-                            _cdb = new CouchDBStore([]),
+                            _cdb = new CouchDBView([]),
                             _user = Config.get("user"),
                             _previous = [],
                             _allTips = new Store([]),
@@ -35,7 +35,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         
                         _widget.init = function init(firstStart){
-                                _cdb.sync(Config.get("db"), "about", "_view/tip").then(function(){
+                                _cdb.sync(Config.get("db"), "about", "_view/tip")
+                                .then(function(){
                                         // init allTips store with proper language
                                         var lang = _user.get("lang");
                                                 
@@ -101,8 +102,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         });
                                 }
                         };
-                        
                         return _widget;
                 };
-                
         });

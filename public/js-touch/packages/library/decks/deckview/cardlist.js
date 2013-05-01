@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBStore", "Store", "service/cardpopup"],
-        function(Widget, Config, Model, Event, CouchDBStore, Store, CardPopup){
+define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "Store", "service/cardpopup"],
+        function(Widget, Config, Model, Event, CouchDBBulkDocuments, Store, CardPopup){
                 
                 return function CardListConstructor($cardType){
                         
@@ -69,7 +69,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBSto
                         };
                         
                         cardList.getCardList = function getCardList(idlist){
-                                var cdb = new CouchDBStore();
+                                var cdb = new CouchDBBulkDocuments();
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), {keys:idlist}).then(function(){
                                         cards.reset([]);

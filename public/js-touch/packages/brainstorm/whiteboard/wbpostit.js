@@ -50,7 +50,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                 };
                 
                 _widget.choose = function(event, node){
-                        var id = node.getAttribute("data-colors_id");;
+                        var id = node.getAttribute("data-colors_id");
                         
                         // set new color selection
                         _colors.loop(function(v,i){

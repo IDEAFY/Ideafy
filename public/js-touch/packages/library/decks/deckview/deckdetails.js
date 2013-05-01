@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "CouchDBStore"],
-        function(Widget, Config, Model, Event, Store, Avatar, Utils, CouchDBStore){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "CouchDBView"],
+        function(Widget, Config, Model, Event, Store, Avatar, Utils, CouchDBView){
                 
                 return function DeckDetailsConstructor(){
                  
@@ -14,7 +14,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                             deckModel = new Store(),
                             range = new Store({"max": 0}),
                             deckCards = new Store([]),
-                            allCards = new CouchDBStore(),
+                            allCards = new CouchDBView(),
                             labels = Config.get("labels");
                         
                         

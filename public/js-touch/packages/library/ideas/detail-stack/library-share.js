@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "service/autocontact", "CouchDBStore"], 
-        function(Widget, Map, Config, Model, Event, Store, Avatar, Utils, AutoContact, CouchDBStore){
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "service/autocontact", "CouchDBDocument", "Promise"], 
+        function(Widget, Map, Config, Model, Event, Store, Avatar, Utils, AutoContact, CouchDBDocument, Promise){
                 return function LibraryShareConstructor($action){
                 //declaration
                         var _widget = new Widget(),
@@ -86,7 +86,9 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                     userid = shareContacts.get(id).userid;
                                 shareContacts.alter("splice", id, 1);
                                 contactList.loop(function(v,i){
-                                        if (v.userid === userid) setTimeout(function(){contactList.update(i, "selected", false);}, 200);
+                                        if (v.userid === userid) {
+                                                setTimeout(function(){contactList.update(i, "selected", false);}, 200);
+                                        }
                                 });
                                 // unselect group if applicable
                                 _widget.unselectGroup(userid);      
@@ -153,7 +155,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                                 break;
                                                         }
                                                 }
-                                                if (add) contactList.update(i, "selected", true);
+                                                if (add) {contactList.update(i, "selected", true);}
                                         }        
                                 });  
                         };
@@ -173,12 +175,14 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 else{
                                         for(i=0, l=contact.contacts.length; i<l; i++){
                                                 shareContacts.loop(function(val,idx){
-                                                        if (val.userid === contact.contacts[i].userid) add = false                
+                                                        if (val.userid === contact.contacts[i].userid) {add = false;}              
                                                 });
                                                 if (add) {
                                                         shareContacts.alter("push", contact.contacts[i]);
                                                         contactList.loop(function(val,idx){
-                                                                if (val.userid === contact.contacts[i].userid) contactList.update(idx, "selected", true);
+                                                                if (val.userid === contact.contacts[i].userid) {
+                                                                        contactList.update(idx, "selected", true);
+                                                                }
                                                         }); 
                                                 }
                                         }       
@@ -220,12 +224,12 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                 _error.set("errormsg", _labels.get("shareok"));
                                                 node.classList.remove("pressed");
                                                 // update sharedwith field of idea
-                                                _widget.updateSharedWith(json.docId, json.dest);
-                                        
-                                                setTimeout(function(){
+                                                _widget.updateSharedWith(json.docId, json.dest)
+                                                .then(function(){
                                                         _error.set("errormsg", "");
                                                         sendInProgress = false;
-                                                        $action("close");}, 1000);
+                                                        $action("close"); 
+                                                });
                                         });
                                 }            
                         };
@@ -236,7 +240,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         };
                         
                         _widget.updateSharedWith = function updateSharedWith(id, userlist){
-                                var cdb = new CouchDBStore();
+                                var cdb = new CouchDBDocument(),
+                                    promise = new Promise();
                                 cdb.setTransport(_transport);
                                 cdb.sync(Config.get("db"), id).then(function(){
                                         var sharedwith = cdb.get("sharedwith") || [], i, add = true;
@@ -252,7 +257,10 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                 });
                                                 cdb.set("sharedwith", sharedwith);
                                         }
-                                        cdb.upload();       
+                                        return cdb.upload();
+                                })
+                                .then(function(){
+                                        promise.fulfill();      
                                 });                  
                         };
                         

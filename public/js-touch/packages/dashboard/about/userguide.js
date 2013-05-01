@@ -5,13 +5,13 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugin", "Store"],
-        function(Widget, Config, CouchDBStore, Model, Event, Store){
+define(["OObject", "service/config", "CouchDBView", "Bind.plugin", "Event.plugin", "Store"],
+        function(Widget, Config, CouchDBView, Model, Event, Store){
            
            return function UserGuideConstructor(){
                 
                 var userGuide = new Widget(),
-                    cdb = new CouchDBStore(),
+                    cdb = new CouchDBView(),
                     user = Config.get("user"),
                     labels = Config.get("labels"),
                     howTolist = new Store([]);
@@ -50,8 +50,8 @@ define(["OObject", "service/config", "CouchDBStore", "Bind.plugin", "Event.plugi
                         howTolist.reset([]);
                         cdb.sync(Config.get("db"), "about", "_view/howto").then(function(){
                                 cdb.loop(function(v,i){
-                                        if (v.value.default_lang === lang || !v.value.translations[lang]) howTolist.alter("push", v.value)
-                                        else howTolist.alter("push", v.value.translations[lang]);
+                                        if (v.value.default_lang === lang || !v.value.translations[lang]) {howTolist.alter("push", v.value);}
+                                        else {howTolist.alter("push", v.value.translations[lang]);}
                                 });      
                         });
                 };

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */ 
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBStore", "Promise", "service/new2c", "lib/spin.min"],
-        function(Widget, Model, Event, Config, Store, CouchDBStore, Promise, New2C, Spinner){
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min"],
+        function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner){
                 function ActionBarConstructor($type, $parent, $data, $hide){
                 
                         var buttons = new Store([]),
@@ -96,9 +96,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 if (data.sessionId && data.sessionId.search("deleted") === -1){
                                                         if (data.sessionReplay || data.authors.indexOf(user.get("_id"))>-1){
                                                                 // double check if session is still around (legacy sessions)
-                                                                var cdb = new CouchDBStore();
+                                                                var cdb = new CouchDBView();
                                                                 cdb.setTransport(Config.get("transport"));
-                                                                cdb.sync(Config.get("db"), "ideas", "_view/ideasbysession", {key: '"'+data.sessionId+'"'}).then(function(){
+                                                                cdb.sync(Config.get("db"), "ideas", "_view/ideasbysession", {key: '"'+data.sessionId+'"'})
+                                                                .then(function(){
                                                                         cdb.loop(function(v,i){
                                                                                 if (v.id === data._id){
                                                                                         buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"});
@@ -148,15 +149,18 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         this.deleteItem = function deleteItem(){
                                 var promise = new Promise(),
-                                    cdb = new CouchDBStore();
+                                    cdb = new CouchDBDocument();
                                 
                                 cdb.setTransport(transport);
                                 
                                 switch($type){
                                         case "idea":
                                                 if ($data.authors.length === 1 && $data.authors[0] === user.get("_id")){
-                                                        cdb.sync(Config.get("db"), $data._id).then(function(){
-                                                                setTimeout(function(){cdb.remove();}, 150);
+                                                        cdb.sync(Config.get("db"), $data._id)
+                                                        .then(function(){
+                                                                return cdb.remove();
+                                                        })
+                                                        .then(function(){
                                                                 promise.fulfill();
                                                         });
                                                 }
@@ -202,7 +206,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 user.set("connections", arr);
                                                 // if contact is of type user add contact deletion to news
                                                 if ($data.type === "user") user.get("news").unshift({type: "CX-", date:date, content:{userid: $data.userid, username: $data.username}});
-                                                user.upload().then(function(){
+                                                user.upload()
+                                                .then(function(){
                                                         // if contact is a user notify the other end that the contact is terminated.
                                                         if ($data.type === "user"){
                                                                 var now = new Date(),
@@ -233,15 +238,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                         console.log(result);
                                                                 });
                                                         }
-                                                        
                                                         observer.notify("contact-deleted");        
                                                 });
-                                                
                                                 break;
                                         default:
                                                 break;        
                                 }
-                                
                                 return promise;
                         };
                         
@@ -295,8 +297,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         buildButtons($type, $data);
                         
-                        //hide if no action is taken after 3s
-                       // setTimeout(function(){$hide(ui);}, 30000);
+                        //hide if no action is taken after 5s
+                        setTimeout(function(){
+                                if ($hide) {$hide(ui);}
+                        }, 5000);
                 
                 }
                 

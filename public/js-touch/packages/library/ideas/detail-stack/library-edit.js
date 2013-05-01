@@ -5,12 +5,12 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise"], 
-	function(Widget, Map, Store, Model, Event, Config, Confirm, Promise){
+define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise"], 
+	function(Widget, Map, Store, CouchDBDocument, Model, Event, Config, Confirm, Promise){
 		return function LibraryEditConstructor($action){
 		//declaration
 			var _widget = new Widget(),
-			    _store = new Store(),  // the idea
+			    _store = new CouchDBDocument(),  // the idea
 			    _labels = Config.get("labels"),
 			    _error = new Store({"error": ""}),
 			    updateReplay; // flag, set to true if sessionReplay option is modified
@@ -98,7 +98,7 @@ define(["OObject", "service/map", "CouchDBStore", "Bind.plugin", "Event.plugin",
                          * @Returns promise
                          */
                         _widget.updateSessionReplay = function updateSessionReplay(bool){
-                                var promise = new Promise(), cdb = new Store();
+                                var promise = new Promise(), cdb = new CouchDBDocument();
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), _store.get("sessionId")).then(function(){
                                         var arr = cdb.get("replayIdeas") || [], i;

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "CouchDBStore", "Store"],
-        function(Widget, Config, Model, CouchDBStore, Store){
+define(["OObject", "service/config", "Bind.plugin", "CouchDBDocument", "Store"],
+        function(Widget, Config, Model, CouchDBDocument, Store){
            
                 return function EULAConstructor(){
                         
@@ -14,13 +14,13 @@ define(["OObject", "service/config", "Bind.plugin", "CouchDBStore", "Store"],
                             user = Config.get("user"),
                             model = new Store();
                             
-                        eula.plugins.add("eula", new Model(model))
+                        eula.plugins.add("eula", new Model(model));
                         
                         eula.template = '<div class="aboutcontent"><h4 data-eula = "bind:innerHTML, title"></h4><div data-eula="bind:innerHTML, body"></div></div>';
                         
                         // fetch faqs from database
                         eula.fetch = function fetch(lang){
-                                var cdb = new CouchDBStore();
+                                var cdb = new CouchDBDocument();
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), "EULA").then(function(){
                                         if (cdb.get("default_lang") === lang || !cdb.get("translations")[lang]){

@@ -284,7 +284,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 
                                 cdb.setTransport(_transport);
                                 cdb.sync(Config.get("db"), id).then(function(){
-                                        console.log(id, idx, name, "cdb synchronized");
                                         _draw[name].reset(JSON.parse(cdb.toJSON()));
                                         _techCards.update(idx,"id",id);
                                         _techCards.update(idx,"title",cdb.get("title"));
@@ -416,7 +415,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Retrieve deck information as soon as it becomes available                        
                         $data.watchValue("deck", function(value){
-                                console.log("deck value change detected");
                                 _techs = value.techno.concat();
                                 _techDisplay.set("left", _techs.length);      
                         });

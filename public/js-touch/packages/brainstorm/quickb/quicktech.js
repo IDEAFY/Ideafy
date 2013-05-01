@@ -270,11 +270,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                         // draw card, increment drawncards and get card details
                                         idx = Math.floor(Math.random()*_techs.length);
-                                        _techs.splice(idx, 1);
                                         _techDisplay.set("left", _techs.length);
                                         _drawnCards++;
                                         _widget.getCardDetails(_techs[idx], name)
                                         .then(function(){
+                                                // remove drawn card from tech stack
+                                                _techs.splice(idx, 1);
                                                 // do the same for other cards to draw
                                                 idxToDraw++;
                                                 leftToDraw--;

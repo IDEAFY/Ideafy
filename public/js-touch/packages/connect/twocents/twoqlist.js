@@ -103,7 +103,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
 
                 this.getModel = function() {
                         var ret,search;
-                        search = !widget.dom.getElementById("twoq-searchlist").classList.contains("invisible");
+                        search = !widget.dom.querySelector("#twoq-searchlist").classList.contains("invisible");
                         (search) ? ret = _searchList : ret = _store;
                         return ret;
                 };

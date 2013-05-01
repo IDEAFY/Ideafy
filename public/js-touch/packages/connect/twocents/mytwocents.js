@@ -227,10 +227,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         myTwocentUI.selectStart = function(event, node){
                                 var store = mtcStack.getStack().getCurrentScreen().getModel(),
                                     id;
-                                    console.log(store.toJSON());
                                 if (mtcTools.get("view") === "#mytwoq" || mtcTools.get("view") === "#contacttwoq"){
-                                        id = event.target.getAttribute("data-twoqlist_id");
-                                        console.log(id, store.get(id));
+                                        id = node.getAttribute("data-twoqlist_id") || node.getAttribute("data-twoqsearch_id");
                                         mtcDetails.reset("2Q", store.get(id));       
                                 }      
                         };

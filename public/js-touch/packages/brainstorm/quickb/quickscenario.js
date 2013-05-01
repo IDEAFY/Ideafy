@@ -278,7 +278,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "wbcontent": _wbContent.toJSON(),
                                         "scenario": _scenario.toJSON()
                                 };
-                               JSONOBJ = json;
                                 _transport.request("UpdateSessionScore", json, function(result){
                                         if (result.res === "ok"){
                                                 promise.fulfill();

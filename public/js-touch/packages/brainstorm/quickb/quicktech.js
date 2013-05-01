@@ -256,7 +256,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.drawTech = function drawTech(arr){
                                 var idx, accepted = [], promise = new Promise(), leftToDraw = arr.length, idxToDraw = 0, ready = true;
                                 
-                                console.log("leftToDraw : ", leftToDraw, _techs.length, $data.get("deck"));
                                 while(leftToDraw){
                                         // if no cards left in tech stack, reload stack and eliminate already drawn cards
                                         if (_techs.length <= 0){

@@ -254,17 +254,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.drawTech = function drawTech(arr){
-                                var idx, accepted = [], promise = new Promise();
+                                var idx, accepted = [], promise = new Promise(), leftToDraw = arr.length, idxToDraw = 0;
                                 
-                                arr.forEach(function(name){
-                                        if (_techs.length){
-                                                idx = Math.floor(Math.random()*_techs.length);
-                                                _widget.getCardDetails(_techs[idx], name);
-                                                _techs.splice(idx, 1);
-                                                _techDisplay.set("left", _techs.length);
-                                                _drawnCards++;        
-                                        }
-                                        else{
+                                while(leftToDraw){
+                                        // if no cards left in tech stack, reload stack and eliminate already drawn cards
+                                        if (_techs.length <= 0){
                                                 _techs = $data.get("deck").techno.concat();
                                                 // remove selected cards from deck
                                                 ["tech1", "tech2", "tech3"].forEach(function(tech, idx){
@@ -272,14 +266,21 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 });
                                                 _techs.filter(function(value){
                                                         return !(accepted.indexOf(value)>-1);
-                                                });
-                                                idx = Math.floor(Math.random()*_techs.length);
-                                                _widget.getCardDetails(_techs[idx], name);
-                                                _techs.splice(idx, 1);
-                                                _techDisplay.set("left", _techs.length);
-                                                _drawnCards++; 
+                                                });        
                                         }
-                                });
+                                        // draw card, increment drawncards and get card details
+                                        idx = Math.floor(Math.random()*_techs.length);
+                                        _techs.splice(idx, 1);
+                                        _techDisplay.set("left", _techs.length);
+                                        _drawnCards++;
+                                        _widget.getCardDetails(_techs[idx], name)
+                                        .then(function(){
+                                                // do the same for other cards to draw
+                                                idxToDraw++;
+                                                leftToDraw--;
+                                        });    
+                                }
+                                promise.fulfill();
                                 return promise;
                         };
                         

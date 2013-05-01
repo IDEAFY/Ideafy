@@ -273,6 +273,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }        
                    });
                    
+                   // for debugging purposes
                    SESS = _session;
                    SDATA = _sessionData;
                    // return

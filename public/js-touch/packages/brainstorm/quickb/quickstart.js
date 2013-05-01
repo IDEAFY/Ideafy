@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Help, Spinner){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "lib/spin.min", "Promise"],
+        function(Widget, Map, Model, Event, Config, Help, Spinner, Promise){
                 
                 return function QuickStartConstructor($session, $prev, $next, $progress){
                         
@@ -89,11 +89,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.reset = function reset(sip){
-                                var now = new Date(), step = $session.get("step");
+                                var now = new Date(), step = $session.get("step"), promise = new Promise();
                                 if (sip){
                                         (step === "quickstart") ? _next = "step" : _next = "screen";
                                         // set resume time (to be added to elapsed time) if session is still in progress
-                                        if (step !== "quickwrapup") $session.set("resumeTime", now.getTime());       
+                                        if (step !== "quickwrapup") $session.set("resumeTime", now.getTime());    
                                 }
                                 else{
                                         $session.set("startTime", now.getTime());

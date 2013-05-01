@@ -1449,7 +1449,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
 
         // updating a session's score
         olives.handlers.set("UpdateSessionScore", function(json, onEnd){
-                var cdb = new CouchDBDocument(), increment = 0, min_score, bonus, coeff = 0, wbdata, t, input,
+                var cdb = new CouchDBDocument(), increment = 0, min_score, bonus = 0, coeff = 0, wbdata, t, input,
                     updateUserWithSessionScore = function(sessionCDB){
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
@@ -1549,7 +1549,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         getDocAsAdmin(json.sid, cdb)
                         .then(function(){
                                 var score = cdb.get("score") || 0;
-                                    score += increment
+                                    score += increment;
                                 cdb.set("score", score);
                                 return updateDocAsAdmin(json.sid, cdb);
                         })

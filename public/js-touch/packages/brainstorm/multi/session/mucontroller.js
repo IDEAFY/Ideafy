@@ -307,15 +307,16 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
                                         if (i<current){
-                                                // reset step UI
+                                                // reset step UI with replay option
                                                 _stack.getStack().get(v.name).reset("replay");
+                                                _steps.update(i, "status", "done"); 
                                                 if (v.name === step){
                                                         current = i;
+                                                        // reset current step UI
+                                                        _stack.getStack().get(step).reset();
                                                         _steps.update(i, "currentStep", true);
                                                         (v.name === "muwrapup") ? _steps.update(i, "status", "done") : _steps.update(i, "status", "ongoing");
-                                                        
-                                                } 
-                                                else _steps.update(i, "status", "done");       
+                                                }      
                                         }      
                                 });
                                 

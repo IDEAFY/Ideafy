@@ -228,7 +228,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                 var store = mtcStack.getStack().getCurrentScreen().getModel(),
                                     id;
                                 if (mtcTools.get("view") === "#mytwoq" || mtcTools.get("view") === "#contacttwoq"){
-                                        id = node.getAttribute("data-twoqlist_id") || node.getAttribute("data-twoqsearch_id");
+                                        id = event.target.getAttribute("data-twoqlist_id") || event.target.getAttribute("data-twoqsearch_id");
                                         mtcDetails.reset("2Q", store.get(id));       
                                 }      
                         };

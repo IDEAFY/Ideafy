@@ -254,9 +254,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.drawTech = function drawTech(arr){
-                                var idx, accepted = [], promise = new Promise(), leftToDraw = arr.length, idxToDraw = 0, ready = true;
+                                var idx, accepted = [], promise = new Promise();
                                 
-                                while(leftToDraw){
+                                arr.forEach(function(name){
                                         // if no cards left in tech stack, reload stack and eliminate already drawn cards
                                         if (_techs.length <= 0){
                                                 _techs = $data.get("deck").techno.concat();
@@ -268,24 +268,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         return !(accepted.indexOf(value)>-1);
                                                 });        
                                         }
-                                        if (ready){
-                                                ready = false;
-                                                // draw card, increment drawncards and get card details
-                                                idx = Math.floor(Math.random()*_techs.length);
-                                                _techDisplay.set("left", _techs.length);
-                                                _drawnCards++;
-                                                _widget.getCardDetails(_techs[idx], arr[idxToDraw])
-                                                .then(function(){
-                                                        console.log("then after getCard details");
-                                                        // remove drawn card from tech stack
-                                                        _techs.splice(idx, 1);
-                                                        // do the same for other cards to draw
-                                                        idxToDraw++;
-                                                        leftToDraw--;
-                                                        ready = true;
-                                                }); 
+                                        // draw card, increment drawncards and get card details
+                                        idx = Math.floor(Math.random()*_techs.length);
+                                        _widget.getCardDetails(_techs[idx], name);
+                                        _techDisplay.set("left", _techs.length);
+                                        _drawnCards++;
+                                        _techs.splice(idx, 1);
                                         }  
-                                }
+                                });
                                 promise.fulfill();
                                 return promise;
                         };
@@ -429,8 +419,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         $data.watchValue("deck", function(value){
                                 console.log("deck value change detected");
                                 _techs = value.techno.concat();
-                                _techDisplay.set("left", _techs.length); 
-                                console.log("_techs : ", _techs);       
+                                _techDisplay.set("left", _techs.length);      
                         });
                         
                         // Return

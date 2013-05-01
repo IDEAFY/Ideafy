@@ -256,6 +256,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.drawTech = function drawTech(arr){
                                 var idx, accepted = [], promise = new Promise(), leftToDraw = arr.length, idxToDraw = 0;
                                 
+                                console.log("leftToDraw : ", leftToDraw, _techs.length, $data.get("deck"));
                                 while(leftToDraw){
                                         // if no cards left in tech stack, reload stack and eliminate already drawn cards
                                         if (_techs.length <= 0){
@@ -272,8 +273,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         idx = Math.floor(Math.random()*_techs.length);
                                         _techDisplay.set("left", _techs.length);
                                         _drawnCards++;
-                                        _widget.getCardDetails(_techs[idx], name)
+                                        console.log("before getCardDetails : ", _techs[idx], arr[idxToDraw]);
+                                        _widget.getCardDetails(_techs[idx], arr[idxToDraw])
                                         .then(function(){
+                                                console.log("then after getCard details");
                                                 // remove drawn card from tech stack
                                                 _techs.splice(idx, 1);
                                                 // do the same for other cards to draw
@@ -421,8 +424,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Retrieve deck information as soon as it becomes available                        
                         $data.watchValue("deck", function(value){
+                                console.log("deck value change detected");
                                 _techs = value.techno.concat();
-                                _techDisplay.set("left", _techs.length);        
+                                _techDisplay.set("left", _techs.length); 
+                                console.log("_techs : ", _techs);       
                         });
                         
                         // Return

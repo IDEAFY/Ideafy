@@ -63,7 +63,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 widget.resetQuery = function resetQuery(query) {
                         var promise=new Promise(),
                             interval = user.get("settings").polling_interval || Config.get("polling_interval"),
-                            cdb = new CouchDBStore();
+                            cdb = new CouchDBView();
                         if (query) {_options.query = query;}
                         
                         clearInterval(polling);
@@ -123,7 +123,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 this.init = function init(){
                         var promise = new Promise(),
                             interval = user.get("settings").polling_interval || Config.get("polling_interval"),
-                            cdb = new CouchDBStore();
+                            cdb = new CouchDBView();
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));
@@ -142,7 +142,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 
                 // watch for change in polling interval in user settings
                 user.watchValue("settings", function(){
-                        var cdb = new CouchDBStore(), interval;
+                        var cdb = new CouchDBView(), interval;
                         if (user.get("settings").polling_interval !== Config.get("polling_interval")){
                                 Config.set("polling_interval", user.get("settings").polling_interval);
                                 interval = Config.get("polling_interval");

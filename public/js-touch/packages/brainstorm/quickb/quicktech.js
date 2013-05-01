@@ -273,8 +273,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _widget.getCardDetails(_techs[idx], name);
                                         _techDisplay.set("left", _techs.length);
                                         _drawnCards++;
-                                        _techs.splice(idx, 1);
-                                        }  
+                                        _techs.splice(idx, 1); 
                                 });
                                 promise.fulfill();
                                 return promise;

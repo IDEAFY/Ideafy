@@ -146,7 +146,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                 
                 //library
                         _widget.reset = function reset(viewStore, index){
-                                var id = viewStore.get(index).id;
+                                var id = viewStore.get(index).id,
+                                    promise = new Promise();
                                 
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
@@ -155,8 +156,11 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         _twocentWriteUI.reset(_store.get("_id"));
                                         _twocentList.reset(_store.get("_id"), "library");
                                         _domWrite = document.getElementById("library-writetwocents");
-                                        _twocentWriteUI.place(_domWrite);        
+                                        _twocentWriteUI.place(_domWrite);
+                                        promise.fulfill();        
                                 });
+                                
+                                return promise;
                         };
                         
                         _widget.getIdea = function getIdea(id){

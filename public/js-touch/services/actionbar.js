@@ -297,10 +297,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         buildButtons($type, $data);
                         
-                        //hide if no action is taken after 5s
+                        /*hide if no action is taken after 5s
                         setTimeout(function(){
                                 if ($hide) {$hide(ui);}
-                        }, 5000);
+                        }, 10000);
+                        */
                 
                 }
                 

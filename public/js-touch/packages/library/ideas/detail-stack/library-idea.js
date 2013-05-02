@@ -159,7 +159,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         _twocentWriteUI.place(_domWrite);
                                         promise.fulfill();        
                                 });
-                                
                                 return promise;
                         };
                         

@@ -30,12 +30,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-id
 			_widget.reset = function reset(viewStore, index){
 			        _store = viewStore;
 			        current = index;
+			        _stack.getStack().show("#library-ideadetail");
 			        spinner.spin(_dom);
 			        _stack.getStack().get("#library-ideadetail").reset(viewStore, index)
 			        .then(function(){
 			                spinner.stop();
 			        });
-			        _stack.getStack().show("#library-ideadetail");
 			};
 			
 			_widget.action = function action(name){

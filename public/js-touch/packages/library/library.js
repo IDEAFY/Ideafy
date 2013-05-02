@@ -32,9 +32,13 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 			
 			// reset function
 			_widget.reset = function reset(){
+			     console.log("library reset");
 			     _ideas.reset();
-			     _decks.reset();   
+			     console.log("ideas reset ok");
+			     _decks.reset();
+			     console.log("decks reset ok");  
 			     _sessions.reset();
+			     console.log("sessions reset ok");
 			     _stack.getStack().show("#ideas");        
 			};
 			

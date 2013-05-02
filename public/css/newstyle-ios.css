@@ -174,7 +174,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   pointer-events:none;
 }
 
-.list-item p{
+#library .list-item p{
     width: 261px;
     overflow-x: hidden;
     word-wrap: break-word;

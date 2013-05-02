@@ -32,6 +32,7 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 			
 			// reset function
 			_widget.reset = function reset(){
+			     _sessions.reset();
 			     _stack.getStack().show("#ideas");        
 			};
 			

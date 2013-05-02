@@ -21,12 +21,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   _user = Config.get("user"),
                   _avatars = Config.get("avatars"),
                   _labels = Config.get("labels"),
-                  _sortStatus = new Store({
-                          "sbytitle": {selected: false, "descending": true},
-                          "sbydate": {selected: true, "descending": true},
-                          "sbyidea": {selected: false, "descending": true},
-                          "sbyscore": {selected: false, "descending": true}
-                          }),
+                  _sortStatus = new Store({}),
                   _currentSort = "sbydate", // the current sorting type of the list
                   _sessionData = [],
                   _searchData = [],
@@ -94,11 +89,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                 },
                                 setAvatars: function(array){
-                                        var ui = new AvatarList(array),
-                                            frag = document.createDocumentFragment(),
-                                            node = this;
-                                            ui.place(frag);
-                                            (!node.hasChildNodes())?node.appendChild(frag):node.replaceChild(frag, node.firstChild);
+                                        var ui, frag;
+                                        if (array){
+                                                ui = new AvatarList(array);
+                                                frag = document.createDocumentFragment();
+                                                node = this;
+                                                ui.place(frag);
+                                                (!node.hasChildNodes())?node.appendChild(frag):node.replaceChild(frag, node.firstChild);
+                                        }
                                 },
                                 setStatus : function(status){
                                         (status === "completed") ? this.innerHTML = _labels.get("completed") : this.innerHTML = _labels.get("inprogress");
@@ -362,17 +360,39 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               
               _widget.place(_dom);
               
-              // init session data
-              _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
-                        _widget.resetSessionData();
-                        ["added", "deleted", "updated"].forEach(function(change){
-                                _sessionsCDB.watch(change, function(idx, value){
-                                        _widget.resetSessionData();
-                                        // apply current sorting methods
-                                        _widget.sortSessions(_currentSort);        
-                                });   
+              
+              _widget.reset = function reset(){
+                        // reset list
+                        _sessions.reset([]);
+                        // reset sorting status
+                        _sortStatus.reset({
+                          "sbytitle": {selected: false, "descending": true},
+                          "sbydate": {selected: true, "descending": true},
+                          "sbyidea": {selected: false, "descending": true},
+                          "sbyscore": {selected: false, "descending": true}
+                          });
+                        _currentSort = "sbydate";
+                        _sessionData = [];
+                        _searchData = [];
+                        _currentSearch = "";
+                        // retrieve session list from CouchDB
+                        _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
+                                _widget.resetSessionData();
+                        });         
+              };
+              
+              // watch for changes in the view
+              ["added", "deleted", "updated"].forEach(function(change){
+                        _sessionsCDB.watch(change, function(idx, value){
+                                _widget.resetSessionData();
+                                // apply current sorting methods
+                                _widget.sortSessions(_currentSort);        
                         });
               });
+              
+              // init
+              _widget.reset();
+              
               // return
               return _widget;
                    

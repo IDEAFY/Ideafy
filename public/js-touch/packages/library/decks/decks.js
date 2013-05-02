@@ -30,7 +30,17 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy
               // setup
               widget.alive(Map.get("decks"));
               
-              widget.reset = function(reset){
+              widget.reset = function reset(){
+                      ideafyDecks.reset(function(sync){
+                              if (sync){
+                                      stack.getStack().show("ideafy");
+                                      deckView.init();
+                                      ideafyDecks.initSelected(deckControl.init,0);
+                                      deckView.reset(ideafyDecks.getModel().get(0));
+                                      currentSelected = 0;
+                              }
+                      });
+                      // customDecks.reset();
                       deckList.reset();
                       deckView.reset();
               };

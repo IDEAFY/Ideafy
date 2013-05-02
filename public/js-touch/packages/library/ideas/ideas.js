@@ -130,9 +130,20 @@ define(["OObject", "Amy/Control-plugin" ,
 			
 			//may be set the list dom
                         _widget.alive(_dom);
-
+                        
+                        // reset function
+                        _widget.reset = function reset(){
+                                _searchInput.set("search", "");
+                                listSearch.resetQuery({q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
+                                listRating.resetQuery({startkey: '["'+Config.get("user").get("_id")+'",{}]', endkey: '["'+Config.get("user").get("_id")+'"]', descending: true, include_docs:true}) ;
+                                listDate.resetQuery({key: Config.get("uid"), descending: true, include_docs:true})
+                                .then(function(){
+                                        _stack.getStack().show("#list-date");
+                                        _widget.displayHighlightedIdea();         
+                                });       
+                        };
+                        
 			// init
-			
 			// for library for the time being only propose list by date or search tool
 			// additional options (rating/favorites etc. may be offered in the future)
 			
@@ -146,7 +157,6 @@ define(["OObject", "Amy/Control-plugin" ,
 			
 			listRating.init();
 			listDate.init().then(function(){
-		              var initLI; // used to initialize list selection
                               _stack.getStack().show("#list-date");
                               _widget.displayHighlightedIdea();         
 		        });

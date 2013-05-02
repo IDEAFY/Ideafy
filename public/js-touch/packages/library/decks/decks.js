@@ -34,15 +34,11 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy
                       ideafyDecks.reset(function(sync){
                               if (sync){
                                       stack.getStack().show("ideafy");
-                                      deckView.init();
                                       ideafyDecks.initSelected(deckControl.init,0);
                                       deckView.reset(ideafyDecks.getModel().get(0));
                                       currentSelected = 0;
                               }
                       });
-                      // customDecks.reset();
-                      deckList.reset();
-                      deckView.reset();
               };
               
               widget.init = function init(){

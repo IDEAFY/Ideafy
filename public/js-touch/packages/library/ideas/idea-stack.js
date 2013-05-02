@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-idea", "./detail-stack/library-edit", "./detail-stack/library-sendmail", "./detail-stack/library-share", "service/config", "Store"], 
-	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store){
+define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-idea", "./detail-stack/library-edit", "./detail-stack/library-sendmail", "./detail-stack/library-share", "service/config", "Store", "lib/spin.min"], 
+	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store, Spinner){
 		return function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
@@ -14,7 +14,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-id
 		             _dom = Map.get("ideas-detail"),
 		             _observer = Config.get("observer"),
 		             _store = new Store(),
-		             current = 0;
+		             current = 0,
+		             spinner = new Spinner({color:"#9AC9CD", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
 
 		//setup
 		        
@@ -29,7 +30,11 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-id
 			_widget.reset = function reset(viewStore, index){
 			        _store = viewStore;
 			        current = index;
-			        _stack.getStack().get("#library-ideadetail").reset(viewStore, index);
+			        spinner.spin(_dom);
+			        _stack.getStack().get("#library-ideadetail").reset(viewStore, index)
+			        .then(function(){
+			                spinner.stop();
+			        });
 			        _stack.getStack().show("#library-ideadetail");
 			};
 			

@@ -11,6 +11,7 @@ define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
                 function SubMenuConstructor($dom, $setWidget){
 
                         var _active = false, publicTemplate, libraryTemplate, brainstormTemplate, connectTemplate, dashboardTemplate,
+                            _ctrl = new Control(this),
                             toggleActiveState = function (state){
                                 (state) ? $dom.setAttribute("style", "display : block;") : $dom.setAttribute("style", "display : none;");
                                 _active = state;        
@@ -26,16 +27,16 @@ define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
                         
                         dashboardTemplate = '<div class="sub-menu"><div class="left-caret"></div><ul class="menu-list" data-menucontrol="radio:li,selected,touchstart,setCurrentWidget"><li class="menu-item selected" name="#profile" data-menucontrol="init"><a class="dashboard-item" href="#dashboard-profile" data-label="bind:innerHTML, dashboard-profile"></a></li><li class="menu-item" name="#settings"><a class="dashboard-item" href="#dashboard-settings" data-label="bind:innerHTML, dashboard-settings">Settings</a></li><li class="menu-item" name="#about"><a class="dashboard-item" href="#dashboard-about" data-label="bind:innerHTML, dashboard-about">About Ideafy</a></li></ul></div>';
                         
-                        if ($dom.id.search("public")>-1) this.template = publicTemplate;
-                        if ($dom.id.search("library")>-1) this.template = libraryTemplate;
-                        if ($dom.id.search("brainstorm")>-1) this.template = brainstormTemplate;
-                        if ($dom.id.search("connect")>-1) this.template = connectTemplate;
-                        if ($dom.id.search("dashboard")>-1) this.template = dashboardTemplate;
+                        if ($dom.id.search("public")>-1) {this.template = publicTemplate;}
+                        if ($dom.id.search("library")>-1) {this.template = libraryTemplate;}
+                        if ($dom.id.search("brainstorm")>-1) {this.template = brainstormTemplate;}
+                        if ($dom.id.search("connect")>-1) {this.template = connectTemplate;}
+                        if ($dom.id.search("dashboard")>-1) {this.template = dashboardTemplate;}
                         
                         // setup
                         this.plugins.addAll({
                                 "label" : new Model(Config.get("labels")),
-                                "menucontrol" : new Control(this)
+                                "menucontrol" : _ctrl
                         });
                         
                         this.getState = function getState(){
@@ -50,6 +51,13 @@ define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
                                 var ui = event.target.getAttribute("name");
                                 if ($setWidget) {$setWidget(ui);}
                                 setTimeout(function(){toggleActiveState(false);}, 200);
+                        };
+                        
+                        this.reset = function reset(){
+                                var parent = this.dom.querySelector(".menu-list");
+                                if (parent) {
+                                        _ctrl.init(parent.firstChild);
+                                }
                         };
                         
                         this.render();

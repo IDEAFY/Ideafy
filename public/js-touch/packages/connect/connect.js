@@ -37,8 +37,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
 			      contactsUI.reset();
 			      msgUI.reset();
 			      twocentsUI.reset();
-			      console.log("twocents reset ok");
-		              _stack.getStack().show("#messages");      
+			      _stack.getStack().show("#messages");      
 			};
 			
                 // init

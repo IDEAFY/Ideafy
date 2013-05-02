@@ -238,9 +238,11 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         };
                         
                         myTwocentUI.reset = function reset(){
+                                var i;
                                 twoQButtons.reset(btns);
                                 mtcTools.set("view", "#mytwoq");
                                 //reset contactlist
+                                contactList.reset([]);
                                 connections = user.get("connections");
                                 for (i=0, l=connections.length; i<l; i++){
                                         if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false})

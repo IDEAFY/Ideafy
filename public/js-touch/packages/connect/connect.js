@@ -34,11 +34,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
 			
 			_widget.reset = function reset(){
 			      _menu.reset();
-			      console.log("menu reset ok");
 			      contactsUI.reset();
-			      console.log("contacts reset ok");
 			      msgUI.reset();
-			      console.log("msg reset ok");
 			      twocentsUI.reset();
 			      console.log("twocents reset ok");
 		              _stack.getStack().show("#messages");      

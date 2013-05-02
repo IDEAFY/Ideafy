@@ -158,7 +158,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                        var search = document.querySelector(".twoq-searchlist"),
                            list = document.querySelector(".twoq-list");
                         
-                        if (search.classList.contains("invisible")){
+                        if (search && search.classList.contains("invisible")){
                                 list.classList.add("invisible");
                                 search.classList.remove("invisible");
                         }     
@@ -168,7 +168,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                        var search = this.dom.querySelector(".twoq-searchlist"),
                            list = this.dom.querySelector(".twoq-list");
                         
-                        if (!search.classList.contains("invisible")){
+                        if (search && !search.classList.contains("invisible")){
                                 list.classList.remove("invisible");
                                 search.classList.add("invisible");
                         }     
@@ -180,7 +180,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                         if (text.toLowerCase()){
                                 this.showSearch();
                                 _store.loop(function(v,i){
-                                        if (JSON.stringify(v).search(text) > -1) _searchList.alter("push", v)        
+                                        if (JSON.stringify(v).search(text) > -1) {_searchList.alter("push", v);}        
                                 });
                         }
                         else {this.hideSearch();} 

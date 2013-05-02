@@ -362,15 +362,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               
               
               _widget.reset = function reset(){
+                        console.log("resetting sessions UI", Config.get("uid"));
+                        // reset couchDBView
+                        _sessionsCDB.unsync();
+                        _sessionsCDB.reset();
                         // reset list
                         _sessions.reset([]);
                         // reset sorting status
                         _sortStatus.reset({
-                          "sbytitle": {selected: false, "descending": true},
-                          "sbydate": {selected: true, "descending": true},
-                          "sbyidea": {selected: false, "descending": true},
-                          "sbyscore": {selected: false, "descending": true}
-                          });
+                                "sbytitle": {selected: false, "descending": true},
+                                "sbydate": {selected: true, "descending": true},
+                                "sbyidea": {selected: false, "descending": true},
+                                "sbyscore": {selected: false, "descending": true}
+                        });
                         _currentSort = "sbydate";
                         _sessionData = [];
                         _searchData = [];

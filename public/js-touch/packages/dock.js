@@ -83,7 +83,6 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			
 			_widget.reset = function reset(){
 			     _public.reset();
-			     console.log("public reset ok");
 			     _library.reset();
 			     console.log("library reset ok");
 			     _brainstorm.reset();

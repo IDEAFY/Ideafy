@@ -31,6 +31,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy
               widget.alive(Map.get("decks"));
               
               widget.reset = function reset(){
+                      console.log("deck reset called");
                       ideafyDecks.reset(function(sync){
                               if (sync){
                                       stack.getStack().show("ideafy");

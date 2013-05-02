@@ -16,7 +16,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy
                   user = Config.get("user"),
                   currentSelected,
                   stack = new Stack(),  // in the future will allow to display taiaut decks or custom decks or search decks
-                  deckList = new List(),
+                  ideafyDecks, customDecks,
                   deckView = new DeckView();
               
               
@@ -31,7 +31,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy
               widget.alive(Map.get("decks"));
               
               widget.reset = function reset(){
-                      console.log("deck reset called", ideafyDecks.reset);
                       ideafyDecks.reset(function(sync){
                               if (sync){
                                       stack.getStack().show("ideafy");
@@ -44,7 +43,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy
               
               widget.init = function init(){
                       
-                      var ideafyDecks = new List("taiaut_decks");
+                      ideafyDecks = new List("taiaut_decks");
                           // customDecks = new List("custom_decks"); -- feature not available in the first release
                       
                       stack.getStack().add("ideafy", ideafyDecks);

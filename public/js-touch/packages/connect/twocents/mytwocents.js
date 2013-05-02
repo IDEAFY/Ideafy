@@ -245,9 +245,11 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                 contactList.reset([]);
                                 connections = user.get("connections");
                                 for (i=0, l=connections.length; i<l; i++){
-                                        if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false})
+                                        if (connections[i].type === "user") {
+                                                contactList.alter("push", {"contact":connections[i], "selected":false});
+                                        }
                                 }
-                                myTwoq.resetQuery({key: Config.get("uid"), descending: true})
+                                mytwoq.resetQuery({key: Config.get("uid"), descending: true})
                                 .then(function(){
                                         mtcStack.getStack().show("#mytwoq");
                                         mtcDetails.reset("default");

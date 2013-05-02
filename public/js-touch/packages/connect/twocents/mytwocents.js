@@ -237,6 +237,22 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                 mtcStack.getStack().getCurrentScreen().search(node.value);              
                         };
                         
+                        myTwocentUI.reset = function reset(){
+                                twoQButtons.reset(btns);
+                                mtcTools.set("view", "#mytwoq");
+                                //reset contactlist
+                                connections = user.get("connections");
+                                for (i=0, l=connections.length; i<l; i++){
+                                        if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false})
+                                }
+                                myTwoq.resetQuery({key: Config.get("uid"), descending: true})
+                                .then(function(){
+                                        mtcStack.getStack().show("#mytwoq");
+                                        mtcDetails.reset("default");
+                                });
+                                        
+                        };
+                        
                         // Manage events
                         Config.get("observer").watch("display-twoq", function(id, userid){
                                 contacttwoq.resetQuery({key: '"'+userid+'"', descending: true}).then(function(){

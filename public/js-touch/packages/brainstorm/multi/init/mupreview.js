@@ -101,7 +101,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         muPreviewUI.dom.classList.add("invisible");
                                         muCDB.unsync();
                                         muCDB.reset();
-                                }, 5000);
+                                }, 15000);
                         };
                         
                         muPreviewUI.init = function init(callback){

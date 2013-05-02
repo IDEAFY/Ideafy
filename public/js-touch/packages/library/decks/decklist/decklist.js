@@ -43,6 +43,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         deckList.template = '<ul id="deck-list" data-decks="foreach"><li class="list-item" data-decklistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, title"></h3><span class="version" data-decks="bind:setVersion, version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, author"></div><span class="date" data-decks="bind:date, date"></div></div></li></ul>';
                         
                         deckList.reset = function reset(onEnd){
+                                console.log("decklist reset : ", $type, onEnd);
                                 deckList.getDecks($type, onEnd);              
                         };
                         
@@ -53,6 +54,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         deckList.getDecks = function getDecks(type, onEnd){
                                 var cdb = new CouchDBBulkDocuments();
                                 cdb.setTransport(Config.get("transport"));
+                                console.log("before sync", user.get(type));
                                 cdb.sync(Config.get("db"), {keys : user.get(type)}).then(function(){
                                         var lang = user.get("lang");
                                         decks.reset([]);
@@ -65,6 +67,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                                 }                
                                         });
                                         if (onEnd) {onEnd("ok");}
+                                        cdb.unsync();
                                 });             
                         };
                         
@@ -89,7 +92,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         // also watch for change of language
                         user.watchValue("lang", function(){
                                 // check selected deck
-                                
                                 deckList.getDecks($type);         
                         });
                         

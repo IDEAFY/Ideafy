@@ -56,6 +56,8 @@ define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
                         this.reset = function reset(){
                                 var parent = this.dom.querySelector(".menu-list");
                                 if (parent) {
+                                        parent.querySelector(".selected").classList.remove("selected");
+                                        parent.firstChild.classList.add("selected");
                                         _ctrl.init(parent.firstChild);
                                 }
                         };

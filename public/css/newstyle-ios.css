@@ -4162,7 +4162,7 @@ li.color-item{
 
 .innersplash{
     width:100%;
-    height:100%;
+    height:712px;
     background: white;
     background-image: url('../img/brainstorm/doctordeedee87x85.png');
     background-repeat: no-repeat;
@@ -4172,6 +4172,7 @@ li.color-item{
     font-family: Pacifico;
     font-size: 24px;
     color: #404040;
+    overflow-y: hidden;
 }
 
 #msgdetail .msgdetailarea{

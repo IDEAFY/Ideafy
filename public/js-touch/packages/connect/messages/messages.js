@@ -216,6 +216,18 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                 messageUI.cleanOld();
                         };
                         
+                        messageUI.reset = function reset(){
+                                sortButtons.reset([
+                                    {"name": "all", "label": "allbtn", "selected": true},
+                                    {"name": "messages", "label": "msgbtn", "selected": false},
+                                    {"name": "notifications", "label": "notifbtn", "selected": false},
+                                    {"name": "unread", "label": "unreadbtn", "selected": false}
+                                ]);
+                                messageUI.init();
+                                // show default page
+                                detailStack.getStack().show("#defaultPage");      
+                        };
+                        
                         messageUI.getSelectedmsg = function(){
                                 var node = document.querySelector(".msg.selected"), id = -1;
                                 if (node) id = node.getAttribute("data-msg_id");

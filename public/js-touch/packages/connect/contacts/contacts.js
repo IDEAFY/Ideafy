@@ -126,6 +126,12 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                 groupDetails.init();
                         };
                         
+                        contactsUI.reset = function reset(){
+                                contactList.reset(user.get("connections"));
+                                addContact.reset();
+                                detailStack.getStack().show("#addcontact");        
+                        };
+                        
                         contactsUI.getSelectedContact = function(){
                                 var node = document.querySelector(".contact.selected"), id = -1;
                                 if (node) id = node.getAttribute("data-contact_id");

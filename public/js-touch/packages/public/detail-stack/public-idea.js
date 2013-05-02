@@ -137,6 +137,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 
                                 var id = viewStore.get(index).id;
                                 
+                                // reset voting popup
+                                vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
+                                
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents

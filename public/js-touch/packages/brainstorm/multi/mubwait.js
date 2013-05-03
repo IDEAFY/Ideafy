@@ -20,7 +20,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                             confirmUI, confirmCallBack,
                             exitListener = {"listener": null},
                             exitDest,
-                            spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 0, top: 0}).spin();
+                            spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 269, top: 306}).spin();
                         
                         session.setTransport(Config.get("transport"));
                         
@@ -272,7 +272,9 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 var now = new Date(), chat = session.get("chat");
                                 // notify session start in chat window
                                 chatUI.startingSession();
+                                node.classList.add("invisible");
                                 node.classList.remove("pressed");
+                                spinner.spin(node.parentNode);
                                 
                                 // make changes to session document
                                 session.set("status", "in progress");
@@ -288,10 +290,11 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         return session.upload();
                                 })
                                 .then(function(){
-                                        console.log("session start upload successful", $start);
                                         // unsync session & remove exit listener
                                         document.removeEventListener("touchstart", exitListener.listener, true);
                                         session.unsync();
+                                        spinner.stop();
+                                        node.classList.remove("invisible");
                                         $start(session.get("_id"));        
                                 });
                         };

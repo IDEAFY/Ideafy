@@ -18,8 +18,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         design : $design,
                         query : {
                                 descending : true,
-                                include_docs : true,
-                                limit : 30
+                                limit : 50
                         }
                 };
 

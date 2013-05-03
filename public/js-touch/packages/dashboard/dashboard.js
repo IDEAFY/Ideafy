@@ -30,12 +30,12 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                         };
                         
                         _widget.reset = function reset(){
+                                _menu.reset();
                                 _profile.reset();
                                 _settings.reset();        
                         };
                 
                 // init
-                        console.log("dashboard init");
                        _menu.toggleActive(false);
                        _profile = new Profile();
                        console.log("profile ok");

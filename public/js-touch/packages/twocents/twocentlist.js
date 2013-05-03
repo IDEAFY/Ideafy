@@ -52,13 +52,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                                 (author === user.get("_id")) ? this.setAttribute("style", "display: none;") : this.setAttribute("style", "display: block;");
                                         },
                                         deleteOK : function(replies){
-                                                var tc = this.getAttribute("data-twocents_id");
+                                                var tc;
                                                 //Author cannot delete a twocent if there are already replies from other users
                                                 if (replies && replies.length>0){
                                                         this.setAttribute("style", "display: none;");
                                                 }
                                                 else{
                                                         //check if user is actual author
+                                                        tc = this.getAttribute("data-twocents_id");
                                                         (user.get("_id") === store.get(tc).author) ? this.setAttribute("style", "display: block;") : this.setAttribute("style", "display: none;");         
                                                 }       
                                         },
@@ -75,14 +76,15 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                                }      
                                         },
                                         displayReplies : function(replies){
+                                                var tc, _ui, frag;
                                                 if (!replies || !replies.length){
                                                         this.classList.add("invisible");}
                                                 else {
-                                                        var tc = this.getAttribute("data-twocents_id");
-                                                        var ui = new TwocentReplyList(replies, $id, tc, $view),
-                                                            frag = document.createDocumentFragment();
-                                                        ui.render();
-                                                        ui.place(frag);
+                                                        tc = this.getAttribute("data-twocents_id");
+                                                        _ui = new TwocentReplyList(replies, $id, tc, $view);
+                                                        frag = document.createDocumentFragment();
+                                                        _ui.render();
+                                                        _ui.place(frag);
                                                         
                                                         if (this.hasChildNodes()){
                                                                 this.replaceChild(frag, this.firstChild);
@@ -94,10 +96,13 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                                 }    
                                         },
                                         setAvatar : function setAvatar(author){
-                                                var _frag = document.createDocumentFragment(),
-                                                    _ui = new Avatar([author]);
-                                                _ui.place(_frag);
-                                                (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                                var _frag, _ui;
+                                                if (author){
+                                                        _frag = document.createDocumentFragment();
+                                                        _ui = new Avatar([author]);
+                                                        _ui.place(_frag);
+                                                        (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                                }
                                         }
                                 }),
                                 "twocentevent" : new Event(ui)        

@@ -18,15 +18,12 @@ define(["OObject", "Amy/Control-plugin" ,
                                 byRating =  _dom.querySelector(".byrating"),        // disabled if search is active
 				_db = Config.get("db"),
 				_radio = new Control(this),
-				_detail,
+				_detail= new Detail(),
                                 _menu = new Menu(Map.get("public-menu")),
 				_stack = new Stack();
 
 		//setup
-		      console.log("init detail");
-		      _detail = new Detail();
-		      console.log("detail ok");
-			_widget.plugins.addAll({
+		      _widget.plugins.addAll({
 				"liststack" : _stack,
 				"label" : new Model(Config.get("labels")),
 

@@ -147,7 +147,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                         _voted = false;
                                         _twocentWriteUI.reset(_store.get("id"));
+                                        console.log("after 2C write reset");
                                         _twocentList.reset(_store.get("id"), "public");
+                                        console.log("after 2C list reset");
                                         console.log("before domwrite");
                                         _domWrite = document.getElementById("public-writetwocents");
                                         console.log(_domWrite);

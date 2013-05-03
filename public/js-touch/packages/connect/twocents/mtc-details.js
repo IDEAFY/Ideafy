@@ -13,7 +13,7 @@ define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "tw
                         var mtcDetailUI = new Widget(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),
-                            twocentList = new TwocentList();
+                            twocentList = new TwocentList("connect");
                         
                         mtcDetailUI.plugins.addAll({
                                 "labels" : new Model(labels)      
@@ -24,8 +24,9 @@ define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "tw
                        mtcDetailUI.reset = function reset(){
                                 twocentList.reset(user.get("_id"), "connect");        
                        };
-                                              
-                        return mtcDetailUI;       
+                       
+                       TwocentList.setTarget(mtcDetailUI.dom.querySelector("#connect-twocents"));                       
+                       return mtcDetailUI;       
                 };
         });
 

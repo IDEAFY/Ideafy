@@ -11,7 +11,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                 //declaration
                         var  _widget = new Widget(),
                              _twocentWriteUI = new WriteTwocent(),
-                             _twocentList = new TwocentList(),
+                             _twocentList = new TwocentList("public"),
                              _labels = Config.get("labels"),
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,
@@ -240,6 +240,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.place(_dom);
+                        TwocentList.setTarget(_dom.querySelector("#public-twocents"));
                         
 
                 //return

@@ -10,7 +10,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                 return function IdeaDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
-                             _twocentList = new TwocentList(),
+                             _twocentList = new TwocentList("library"),
                              _twocentWriteUI = new WriteTwocent("library"),
                              _labels = Config.get("labels"),
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
@@ -157,7 +157,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                         _voted = false;
                                         _twocentWriteUI.reset(_store.get("_id"));
-                                        _twocentList.reset(_store.get("_id"), "library");
+                                        _twocentList.reset(_store.get("_id"));
                                         _domWrite = document.getElementById("library-writetwocents");
                                         _twocentWriteUI.place(_domWrite);
                                         promise.fulfill();        
@@ -255,6 +255,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.place(_dom);
+                        TwocentList.setTarget(_dom.querySelector("#library-twocents"));
 
                 //return
                         return _widget;

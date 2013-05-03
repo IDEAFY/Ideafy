@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils", "Bind.plugin", "Event.plugin", "twocents/twocentreplylist", "twocents/writetwocent", "twocents/writetwocentreply", "service/avatar", "Promise"],
         function(Widget, Config, CouchDBDocument, Store, Utils, Model, Event, TwocentReplyList, WriteTwocent, WriteTwocentReply, Avatar, Promise){
                 
-                function TwocentListConstructor(){
+                function TwocentListConstructor($view){
                        
                         // declaration
                         var ui = new Widget(),
@@ -17,8 +17,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                             store = new Store([]),
                             transport = Config.get("transport"),
                             user = Config.get("user"),
-                            $id,
-                            $view;
+                            $id;
                         
                         cdb.setTransport(transport);
                         // define plugins and methods
@@ -126,26 +125,13 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                 var promise = new Promise();
                                     
                                 $id = id;
-                                $view = view;
                                 store.reset([]);
                                 cdb.unsync();
                                 cdb.reset({});
                                 // retrieve twocents data from couchdb
                                 cdb.sync(Config.get("db"), $id).then(function(){
-                                        console.log("after cdb sync", $id, $view);
+                                        console.log("after cdb sync", $id);
                                         store.reset(cdb.get("twocents"));
-                                        switch($view){
-                                                case "connect":
-                                                        ui.place(document.getElementById("connect-twocents"));
-                                                        break;
-                                                case "library":
-                                                        ui.place(document.getElementById("library-twocents"));
-                                                        break;
-                                                default:
-                                                        ui.place(document.getElementById("public-twocents"));
-                                                        break; 
-                                        }
-                                        
                                         cdb.watchValue("twocents", function(value){
                                                 store.reset(value);        
                                         });
@@ -206,6 +192,10 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                         node.classList.remove("hideReplies");
                                         node.classList.add("showReplies");
                                 }
+                        };
+                        
+                        ui.setTarget = function setTarget(target){
+                                ui.place(target);
                         };
                 }
                 

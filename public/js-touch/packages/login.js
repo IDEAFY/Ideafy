@@ -29,7 +29,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                              _transport = Config.get("transport"),
                              _db = Config.get("db"),
                              spinner,
-                             loginSpinner = new Spinner({color:"#657B99", lines:10, length: 10, width: 8, radius:15, top: 70}).spin(),
+                             loginSpinner = new Spinner({color:"#657B99", lines:10, length: 10, width: 8, radius:15, top: 270}).spin(),
                              reload = false;  // boolean to differentiate between initial start and usbsequent logout/login
                 
                 //setup && UI DEFINITIONS               

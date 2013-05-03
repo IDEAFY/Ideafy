@@ -218,7 +218,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               _widget.press = function(event, node){
                        var id = node.getAttribute("data-sessions_id");
                        node.classList.add("pressed");
-                       console.log(node, id);
                        if (id){
                                spinner.spin(document.getElementById("sessionlistspinner"));
                        }     
@@ -362,7 +361,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               
               
               _widget.reset = function reset(){
-                        console.log("resetting sessions UI", Config.get("uid"));
                         // reset couchDBView
                         _sessionsCDB.unsync();
                         _sessionsCDB.reset();

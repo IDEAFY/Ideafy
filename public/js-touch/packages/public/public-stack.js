@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-idea", "./detail-stack/public-edit", "./detail-stack/public-sendmail", "./detail-stack/public-share", "service/config", "Store"], 
-	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store){
+define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-idea", "./detail-stack/public-edit", "./detail-stack/public-sendmail", "./detail-stack/public-share", "service/config", "Store", "lib/spin.min"], 
+	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store, Spinner){
 		return function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
@@ -14,7 +14,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 		             _dom = Map.get("public-detail"),
 		             _observer = Config.get("observer"),
 		             _store = new Store(),
-		             current = 0;
+		             current = 0,
+		             spinner = new Spinner({color:"#9AC9CD", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
 
 		//setup
 		        
@@ -27,10 +28,18 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 
 		//detail
 			_widget.reset = function reset(viewStore, index){
+			        var cache;
 			        _store = viewStore;
 			        current = index;
-			        _stack.getStack().get("#public-ideadetail").reset(viewStore, index);
 			        _stack.getStack().show("#public-ideadetail");
+                                cache = document.getElementById("idea-cache");
+                                cache.classList.remove("invisible");
+                                spinner.spin(_dom);
+			        _stack.getStack().get("#public-ideadetail").reset(viewStore, index)
+                                .then(function(){
+                                        spinner.stop();
+                                        cache.classList.add("invisible");
+                                });
 			};
 			
 			_widget.action = function action(name){

@@ -130,12 +130,13 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "publicdetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, authors" data-publicdetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleRateEdit, authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, authors"></div><h2 data-publicdetail="bind:innerHTML,title"></h2><span class="date" data-publicdetail="bind:date, creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-publicdetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><p data-publicdetail="bind:setDescription,description"></p><p data-publicdetail="bind:setSolution,solution"></p></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,votes"></div><div class="publicButton" data-publicdetail="bind:toggleVoteButton, votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, twocents"></div></div>';
+                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, authors" data-publicdetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleRateEdit, authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache" class="invisible"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, authors"></div><h2 data-publicdetail="bind:innerHTML,title"></h2><span class="date" data-publicdetail="bind:date, creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-publicdetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><p data-publicdetail="bind:setDescription,description"></p><p data-publicdetail="bind:setSolution,solution"></p></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,votes"></div><div class="publicButton" data-publicdetail="bind:toggleVoteButton, votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, twocents"></div></div>';
                 
                 //Public
                         _widget.reset = function reset(viewStore, index){
                                 
-                                var id = viewStore.get(index).id;
+                                var id = viewStore.get(index).id,
+                                    promise = new Promise();
                                 
                                 // reset voting popup
                                 vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
@@ -147,8 +148,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         _twocentWriteUI.reset(_store.get("id"));
                                         _twocentList.reset(_store.get("id"), "public");
                                         _domWrite = document.getElementById("public-writetwocents");
-                                        _twocentWriteUI.place(_domWrite);        
+                                        _twocentWriteUI.place(_domWrite);   
+                                        promise.fulfill();     
                                 });
+                                return promise;
                         };
                         
                         _widget.getIdea = function getIdea(id){

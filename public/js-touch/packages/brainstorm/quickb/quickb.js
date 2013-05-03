@@ -204,7 +204,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    _widget.next = function next(currentName){
                         var _id,
                             _nextui,
-                            _currentui = _stack.getStack().get(currentName);
+                            _currentui = _stack.getStack().get(currentName),
                             promise = new Promise();
                             
                         _steps.loop(function(value, idx){

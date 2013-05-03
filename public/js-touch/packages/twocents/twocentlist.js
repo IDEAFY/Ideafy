@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils", "Bind.plugin", "Event.plugin", "twocents/twocentreplylist", "twocents/writetwocent", "twocents/writetwocentreply", "service/avatar", "Promise"],
         function(Widget, Config, CouchDBDocument, Store, Utils, Model, Event, TwocentReplyList, WriteTwocent, WriteTwocentReply, Avatar, Promise){
                 
-                return function TwocentListConstructor(){
+                function TwocentListConstructor(){
                        
                         // declaration
                         var ui = new Widget(),
@@ -207,8 +207,10 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                         node.classList.add("showReplies");
                                 }
                         };
-                        
-                        return ui;
+                }
                 
+                return function TwocentListFactory(){
+                        TwocentListConstructor.prototype = new Widget();
+                        return new TwocentListConstructor();
                 };
         });

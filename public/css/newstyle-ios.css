@@ -5466,6 +5466,10 @@ li.my2q{
     background: #F2F2F2;
 }
 
+#leaderboard li.userleader{
+    background: #9AC9CD;
+}
+
 #leaderboard li{
     height: 60px;
 }

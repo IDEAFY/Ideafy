@@ -11,7 +11,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                 function TwocentListConstructor($view){
                        
                         // declaration
-                        var ui = new Widget(),
+                        var ui = this,
                             cdb = new CouchDBDocument(),
                             labels = Config.get("labels"),
                             store = new Store([]),

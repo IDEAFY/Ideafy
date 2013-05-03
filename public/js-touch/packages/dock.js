@@ -86,7 +86,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			     _brainstorm.reset();
 			     _connect.reset();
 			     _dashboard.reset();
-                             _notify.init();      
+                             _notify.reset();      
 			};
 
 			this.setCurrentWidget = function(event){

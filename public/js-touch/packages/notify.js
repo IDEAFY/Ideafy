@@ -143,13 +143,16 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 
                 // init notifications engine
                  notify.init = function init(){
-                        // initialize store with user data
+                        notify.reset();
+                        notifyPopup.place(popup);    
+                };
+                
+                // reset notify UI
+                notify.reset = function reset(){
                         currentUnread = notify.getUnread();
                         notif.set("unread", currentUnread);
                         notif.set("newmsg", false);
-                        
-                        messages.reset(user.get("notifications"));
-                        notifyPopup.place(popup);    
+                        messages.reset(user.get("notifications"));        
                 };
                 
                 // watch for new/unread messages

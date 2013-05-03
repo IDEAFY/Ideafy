@@ -128,6 +128,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                 $view = view; 
                                 cdb.unsync();
                                 cdb.reset();
+                                console.log("twocent list reset");
                                 // retrieve twocents data from couchdb
                                 cdb.sync(Config.get("db"), $id).then(function(){
                                         store.reset(cdb.get("twocents"));
@@ -149,6 +150,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                         });
                                         promise.fulfill();
                                 });
+                                return promise;
                         };
                         
                         ui.deleteTwocent = function(event, node){

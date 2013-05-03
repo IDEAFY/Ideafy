@@ -138,16 +138,16 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                         
                         ui.reset = function reset(id){
                                 var promise = new Promise();
-                                    
                                 $id = id;
                                 store.reset([]);
                                 cdb.unsync();
                                 cdb.reset();
+                                promise.fulfill();
                                 // retrieve twocents data from couchdb
                                 cdb.sync(Config.get("db"), $id).then(function(){
-                                        console.log("after cdb sync", $id, cdb.toJSON());
-                                        store.reset(cdb.get("twocents"));
+                                        var tc = cdb.get("twocents");
                                         promise.fulfill();
+                                        if (tc.length) {store.reset(cdb.get("twocents"));}
                                         cdb.watchValue("twocents", function(value){
                                                 store.reset(value);        
                                         });

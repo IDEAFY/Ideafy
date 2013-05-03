@@ -28,13 +28,17 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-id
 
 		//library
 			_widget.reset = function reset(viewStore, index){
+			        var cache;
 			        _store = viewStore;
 			        current = index;
 			        _stack.getStack().show("#library-ideadetail");
+			        cache = document.getElementById("idea-cache");
+			        cache.classList.remove("invisible");
 			        spinner.spin(_dom);
 			        _stack.getStack().get("#library-ideadetail").reset(viewStore, index)
 			        .then(function(){
 			                spinner.stop();
+			                cache.classList.add("invisible");
 			        });
 			};
 			

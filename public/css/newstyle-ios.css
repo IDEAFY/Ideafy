@@ -1174,6 +1174,13 @@ ul.notify-list{
   opacity: 0.3;
 }
 
+#idea-cache{
+    width: 630px;
+    height: 712px;
+    background: white;
+    z-index: 1000
+}
+
 /* factorize with other header buttons */
 #public-detail .option.right, #ideas-detail .option.right {
   background-size:40%;

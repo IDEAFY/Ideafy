@@ -193,11 +193,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                         node.classList.add("showReplies");
                                 }
                         };
-                        
-                        ui.setTarget = function setTarget(target){
-                                console.log(target);
-                                ui.place(target);
-                        };
                 }
                 
                 return function TwocentListFactory(){

@@ -38,9 +38,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                 // init
                        _menu.toggleActive(false);
                        _profile = new Profile();
-                       console.log("profile ok");
                        _settings = new Settings();
-                       console.log("settings ok");
                        _about = new About();
                        _stack.getStack().add("#profile", _profile);
                        _stack.getStack().add("#settings", _settings);

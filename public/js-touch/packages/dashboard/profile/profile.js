@@ -413,19 +413,28 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    };
                    
                    //init
+                   profile.init = function init(){
+                        profileUI.checkProfileCompletion()
+                        .then(function(){
+                                return profileUI.updateGrade();
+                        })
+                        .then(function(){
+                                return profileUI.updateAchievements();        
+                        })
+                        .then(function(){
+                                profileUI.updateProgressBar();
+                                profileUI.cleanOldNews();        
+                        });
+                   };
                    
-                   profileUI.checkProfileCompletion()
-                   .then(function(){
-                        return profileUI.updateGrade();
-                   })
-                   .then(function(){
-                        return profileUI.updateAchievements();        
-                   })
-                   .then(function(){
-                        profileUI.updateProgressBar();
-                        profileUI.cleanOldNews();        
-                   });
+                   profile.reset = function reset(){
+                        news.reset([]);
+                        news.rese(user.get("news"));
+                        profile.init();        
+                   };
                    
+                   
+                   profile.init();
                    return profileUI;
            };    
         });

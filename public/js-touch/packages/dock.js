@@ -57,13 +57,15 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			 * used to highlight statrtup screen in the left menu and display tips if and as necessary
 			 */
 			_widget.start = function start(firstStart){
-			        var pub = document.querySelector('a[href="#public"]'),
-			            current = document.getElementById("dock").querySelector('a.selected'),
-			            startScreen = document.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
+			        var pub = _widget.dom.querySelector('a[href="#public"]'),
+			            current = _widget.dom.querySelector('a.selected'),
+			            startScreen = _widget.dom.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
 			         //set current stack view
                                 if (!_user.get("settings").startupScreen){
-                                        _control.radioClass(pub, current, "selected");
-                                        _control.init(startScreen);
+                                        if (current !== pub) {
+                                                _control.radioClass(pub, current, "selected");
+                                                _control.init(pub);
+                                        }
                                         _stack.getStack().show("#public");
                                 }
                                 else {

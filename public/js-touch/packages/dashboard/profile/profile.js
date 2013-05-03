@@ -429,7 +429,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    
                    profile.reset = function reset(){
                         news.reset([]);
-                        news.rese(user.get("news"));
+                        news.reset(user.get("news"));
                         profile.init();        
                    };
                    

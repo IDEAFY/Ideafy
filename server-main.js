@@ -411,6 +411,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                                 message: "An account with this user name already exists."
                                         });
                                 }
+                                else{
+                                        onEnd({status: "failed", reason: json, message:"failed to create new user"});
+                                }
                          });
                 });
         

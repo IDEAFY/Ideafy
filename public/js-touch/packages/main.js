@@ -70,6 +70,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 })
                 .then(function(){
                         _dock.init();
+                        _login.stopSpinner();
                         _stack.getStack().show("#dock");
                         _dock.start(firstStart);        
                 });      
@@ -121,6 +122,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 })
                 .then(function(){
                         _dock.reset();
+                        _login.stopSpinner();
                         _stack.getStack().show("#dock");
                         _dock.start(firstStart);        
                 });      

@@ -124,15 +124,16 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                         
                         ui.reset = function reset(id, view){
                                 var promise = new Promise();
+                                    
                                 $id = id;
-                                $view = view; 
+                                $view = view;
+                                store.reset([]);
                                 cdb.unsync();
-                                cdb.reset();
-                                console.log("twocent list reset");
+                                cdb.reset({});
                                 // retrieve twocents data from couchdb
                                 cdb.sync(Config.get("db"), $id).then(function(){
+                                        console.log("after cdb sync", $id, $view);
                                         store.reset(cdb.get("twocents"));
-                                        
                                         switch($view){
                                                 case "connect":
                                                         ui.place(document.getElementById("connect-twocents"));
@@ -149,7 +150,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                                 store.reset(value);        
                                         });
                                         promise.fulfill();
-                                });
+                                }, function(err){console.log(err);});
                                 return promise;
                         };
                         

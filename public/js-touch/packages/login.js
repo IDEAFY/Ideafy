@@ -29,6 +29,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                              _transport = Config.get("transport"),
                              _db = Config.get("db"),
                              spinner,
+                             loginSpinner = new Spinner({color:"#657B99", lines:10, length: 10, width: 8, radius:15}).spin(),
                              reload = false;  // boolean to differentiate between initial start and usbsequent logout/login
                 
                 //setup && UI DEFINITIONS               
@@ -121,6 +122,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                 }
                                                 else {
                                                 // NO MISTAKES -- PROCEED TO SIGNUP
+                                                        loginSpinner.spin(_signupForm.dom);
                                                         _transport.request("Signup", {name : userid, password : password}, function(result) {
                                                                 if (result.signup === "ok") {
                                                                         // display loading screen
@@ -177,6 +179,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                 else {
                                                                         _store.set("error", "error : " + result.message);
                                                                         _store.set("email", "");
+                                                                        loginSpinner.stop();
                                                                 }
                                                         }, this);
                                                 }
@@ -220,6 +223,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 var email = _store.get("email").toLowerCase(), password = _store.get("password");
 
                                 if (email && password) {
+                                        loginSpinner.spin(_loginForm.dom);
                                         _transport.request("Login", {name : email, password : password}, function(result) {
                                                 if (result.login === "ok") {
                                                         Config.set("uid", '"' + email + '"');
@@ -240,6 +244,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                 }
                                                 else {
                                                         _store.set("error", _labels.get("invalidlogin"));
+                                                        loginSpinner.stop();
                                                 }
                                         });
                                 }
@@ -278,6 +283,11 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 if (signout){ reload = true;}
                         };
                         
+                        _login.stopSpinner = function stopSpinner(){
+                                loginSpinner.stop();        
+                        };
+                
+                LOGINSPIN = loginSpinner;        
                 //return
                 return _login;
                 };

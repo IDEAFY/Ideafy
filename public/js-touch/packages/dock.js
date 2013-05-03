@@ -31,19 +31,12 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 
 		//logic
 			_widget.init = function init(){
-			        console.log("entering dock init function");
 			        _notify = new Notify();
-			        console.log("notify ok");
 			        _public = new Public();
-			        console.log("public ok");
 			        _library = new Library();
-			        console.log("library ok");
 			        _brainstorm = new Brainstorm();
-			        console.log("brainstorm ok");
 			        _connect = new Connect();
-			        console.log("connect ok");
 			        _dashboard = new Dashboard();
-			        console.log("dashboard ok");
 			        
 			        _stack.getStack().add("#public", _public);
 				_stack.getStack().add("#library", _library);
@@ -65,14 +58,18 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			 */
 			_widget.start = function start(firstStart){
 			        var pub = document.querySelector('a[href="#public"]'),
+			            current = document.getElementById("dock").querySelector('a.selected'),
 			            startScreen = document.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
 			         //set current stack view
-                                if (!_user.get("settings").startupScreen) _stack.getStack().show("#public")
+                                if (!_user.get("settings").startupScreen){
+                                        _control.radioClass(pub, current, "selected");
+                                        _control.init(startScreen);
+                                        _stack.getStack().show("#public");
+                                }
                                 else {
-                                       _control.radioClass(startScreen, pub, "selected");
+                                       _control.radioClass(startScreen, current, "selected");
                                        _control.init(startScreen);
                                        _stack.getStack().show(_user.get("settings").startupScreen);
-                                       
                                 }
                                 
                                 // show tips if applicable
@@ -84,15 +81,10 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			_widget.reset = function reset(){
 			     _public.reset();
 			     _library.reset();
-			     console.log("library reset ok");
 			     _brainstorm.reset();
-			     console.log("brainstorm reset ok");
 			     _connect.reset();
-			     console.log("connect reset ok");
 			     _dashboard.reset();
-			     console.log("dashboard reset ok");
-			     // init notification engine
-                              _notify.init();      
+                             _notify.init();      
 			};
 
 			this.setCurrentWidget = function(event){

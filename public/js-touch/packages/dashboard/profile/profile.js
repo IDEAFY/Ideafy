@@ -22,7 +22,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                        progressBar = new Store({"total":0, "ideas": 0, "sessions": 0, "contacts": 0, "twoQ": 0}),
                        progress = new Store({"status": ""}),
                        stats = new Store({"view": "info", "completion": 0, "socialnw": 0}),
-                       news = new Store(user.get("news")),
+                       recentNews = new Store(user.get("news")),
                        LB, EP, // used to initialize leaderboard and editprofile UIs
                        grades = new Store([]),
                        achievements = new Store(); // always start with grade (or distinction then grade if distinction is present)
@@ -198,7 +198,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         else this.setAttribute("style", "width: 25%")
                                 }
                            }),
-                           "news": new Model(news,{
+                           "news": new Model(recentNews,{
                                    setType : function(type){
                                         if (type.search("CX")>-1) this.setAttribute("style", "background: url('img/profileDisable.png') no-repeat center center; background-size: contain;")
                                         else if (type.search("RWD")>-1 || type.search("RANK") >-1) this.setAttribute("style", "background: url('img/brainstorm/yourScore40.png') no-repeat center center; background-size: 40px;")
@@ -208,12 +208,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                    },
                                    setContent : function(content){
                                         var id = this.getAttribute("data-news_id");
-                                        switch (news.get(id).type){
+                                        switch (recentNews.get(id).type){
                                                 case "CX+":
-                                                        this.innerHTML = "<span class='newsinfo'>" + news.get(id).content.username + "</span>" + labels.get("isnowacontact");
+                                                        this.innerHTML = "<span class='newsinfo'>" + recentNews.get(id).content.username + "</span>" + labels.get("isnowacontact");
                                                         break;
                                                 case "CX-":
-                                                        this.innerHTML = "<span class='newsinfo'>" + news.get(id).content.username  + "</span>" + labels.get("isnolongeracontact");
+                                                        this.innerHTML = "<span class='newsinfo'>" + recentNews.get(id).content.username  + "</span>" + labels.get("isnolongeracontact");
                                                         break;
                                                 case "IDEA+":
                                                         this.innerHTML = labels.get("enterednewidea") + "<span class='newsinfo'>" + news.get(id).content.title + "</span>";
@@ -232,7 +232,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         this.innerHTML = labels.get("posted2q") +"<span class='newsinfo'>" +news.get(id).content.question + "</span>";
                                                         break;
                                                 case "2CTS":
-                                                        this.innerHTML = labels.get("commentedon") +"<span class='newsinfo'>" + news.get(id).content.title + "</span>" + labels.get("by")+news.get("id").content.username;
+                                                        this.innerHTML = labels.get("commentedon") +"<span class='newsinfo'>" + news.get(id).content.title + "</span>" + labels.get("by")+recentNews.get("id").content.username;
                                                         // can be refined later to differentiate between 2cts on ideas, usersor twoquestions
                                                         break;
                                                 
@@ -309,7 +309,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    
                    // monitor user document
                    user.watchValue("news", function(){
-                           news.reset(user.get("news"));
+                           recentNews.reset(user.get("news"));
                    });
                    
                    // language change
@@ -320,8 +320,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 profileUI.updateAchievements();        
                         });
                         // update news
-                        news.reset([]);
-                        news.reset(user.get("news"));      
+                        recentNews.reset([]);
+                        recentNews.reset(user.get("news"));      
                    });
                    
                    profileUI.checkProfileCompletion = function(){
@@ -410,10 +410,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         promise.fulfill();
                                 });
                         }
+                        
                    };
                    
                    //init
                    profile.init = function init(){
+                           console.log("profile init called");
                         profileUI.checkProfileCompletion()
                         .then(function(){
                                 return profileUI.updateGrade();
@@ -423,16 +425,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         })
                         .then(function(){
                                 profileUI.updateProgressBar();
-                                profileUI.cleanOldNews();        
+                                profileUI.cleanOldNews();
+                                console.log("profile init complete");        
                         });
                    };
                    
                    profile.reset = function reset(){
-                        news.reset([]);
-                        news.reset(user.get("news"));
+                        recentNews.reset([]);
+                        recentNews.reset(user.get("news"));
                         profile.init();        
                    };
-                   
                    
                    profile.init();
                    return profileUI;

@@ -154,7 +154,9 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         // Method called to display step timer instead of current time
                         _widget.toggleTimer = function(event,node){
-                                _timer.set("display", !_timer.get("display"));        
+                                if ($session.get("initiator").id === _user.get("_id")){
+                                        _timer.set("display", !_timer.get("display")); 
+                                }       
                         };
                         
                         // Method called when clicking on the draw buttons (toggles the "pushed" class)
@@ -231,7 +233,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         $session.set("selected_"+_type, _sel.selected);
                                         $session.upload().then(function(){
                                                 spinnerOk.stop();
-                                                node.removeAttribute("z-index");
+                                                node.setAttribute("z-index", "10");
                                                 _selection.set(_type, _sel);
                                         });
                                 }      
@@ -290,7 +292,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                     _start = now.getTime(),
                                     elapsed = init || 0;
                                 
-                                _timer.set("display", false);
                                 _timer.set("timer", elapsed);
                                 // make sure current step is ongoing before restarting timer
                                 if ($session.get("step") === "musetup"){
@@ -495,7 +496,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 _widget.initTimer();
                                         });        
                                 }
-                                else {_widget.toggleTimer();}
+                                else {_timer.set("display", false);}
                                 
                                 _next = "step";        
                         };

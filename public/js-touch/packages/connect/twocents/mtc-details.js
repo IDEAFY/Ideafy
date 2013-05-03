@@ -17,7 +17,7 @@ define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "tw
                         
                         mtcDetailUI.plugins.addAll({
                                 "labels" : new Model(labels),
-                                "place" : new Place({"TwocentUI": twocentList});      
+                                "place" : new Place({"TwocentUI": twocentList})      
                         });
                         
                         mtcDetailUI.template = '<div class="twocent-detail"><div class="header blue-dark"><span data-labels="bind: innerHTML, mytwocentwall"></span></div><div class = "detail-contents"><div id="connect-twocents" class="twocents" data-place="place: TwocentUI"></div></div></div>';

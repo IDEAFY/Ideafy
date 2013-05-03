@@ -492,8 +492,10 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 _deckStack.context = _deck.context.concat();
                                                 _deckStack.problem = _deck.problem.concat();
                                                 _ready = true;
+                                                _widget.initTimer();
                                         });        
                                 }
+                                else {_widget.toggleTimer();}
                                 
                                 _next = "step";        
                         };

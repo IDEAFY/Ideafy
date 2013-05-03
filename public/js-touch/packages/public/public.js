@@ -18,11 +18,14 @@ define(["OObject", "Amy/Control-plugin" ,
                                 byRating =  _dom.querySelector(".byrating"),        // disabled if search is active
 				_db = Config.get("db"),
 				_radio = new Control(this),
-				_detail = new Detail(),
+				_detail,
                                 _menu = new Menu(Map.get("public-menu")),
 				_stack = new Stack();
 
 		//setup
+		      console.log("init detail");
+		      _detail = new Detail();
+		      console.log("detail ok");
 			_widget.plugins.addAll({
 				"liststack" : _stack,
 				"label" : new Model(Config.get("labels")),
@@ -144,6 +147,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			
 			// init
                        _menu.toggleActive(false);
+                       
 			
 			var listDate = new Polling(_db, "library", "_view/publicideas"),
 			     // list date needs to be in polling mode with a polling_interval defined in Config to avoid traffic overload

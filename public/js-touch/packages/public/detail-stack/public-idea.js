@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBView", "Promise"], 
-        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBView, Promise){
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBView"], 
+        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBView){
                 return function PublicDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
@@ -143,6 +143,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
+                                        console.log(id);
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                         _voted = false;
                                         _twocentWriteUI.reset(_store.get("id"));
@@ -162,6 +163,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         ideaCDB.unwatch(ideaCDBUpdate);
                                 }
                                 
+                                console.log(id);
                                 // reinitialize couchdbstore
                                 ideaCDB.unsync();
                                 ideaCDB.reset();

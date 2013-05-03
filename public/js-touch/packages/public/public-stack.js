@@ -37,6 +37,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                                 spinner.spin(_dom);
 			        _stack.getStack().get("#public-ideadetail").reset(viewStore, index)
                                 .then(function(){
+                                        console.log("then after reset");
                                         spinner.stop();
                                         cache.classList.add("invisible");
                                 });

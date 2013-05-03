@@ -46,10 +46,12 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                 },
                                 setAvatar : function setAvatar(authors){
                                         var _ui, _frag;
-                                        _frag = document.createDocumentFragment();
-                                        _ui = new Avatar(authors);
-                                        _ui.place(_frag);
-                                        (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                        if (authors){
+                                                _frag = document.createDocumentFragment();
+                                                _ui = new Avatar(authors);
+                                                _ui.place(_frag);
+                                                (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                        }
                                 }
                         }),
                         "listevent" : new Event(this)

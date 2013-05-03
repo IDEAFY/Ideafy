@@ -212,8 +212,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "ser
                         };
                 }
                 
-                return function TwocentListFactory(){
+                return function TwocentListFactory($view){
                         TwocentListConstructor.prototype = new Widget();
-                        return new TwocentListConstructor();
+                        return new TwocentListConstructor($view);
                 };
         });

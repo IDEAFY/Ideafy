@@ -144,20 +144,12 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
-                                        console.log(id);
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                         _voted = false;
-                                        _twocentWriteUI.reset(_store.get("id"));
-                                        console.log("after 2C write reset");
-                                        _publicTwocentList.reset(_store.get("id")).then(function(){
-                                                console.log("twocent promise resolved");
-                                        });
-                                        console.log("after 2C list reset");
-                                        console.log("before domwrite");
+                                        _twocentWriteUI.reset(_store.get("_id"));
+                                        _publicTwocentList.reset(_store.get("_id"));
                                         _domWrite = document.getElementById("public-writetwocents");
-                                        console.log(_domWrite);
                                         _twocentWriteUI.place(_domWrite); 
-                                        console.log("before promise fulfill");  
                                         promise.fulfill();     
                                 });
                                 return promise;

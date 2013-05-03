@@ -46,12 +46,12 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                                 },
                                 setAvatar : function setAvatar(authors){
                                         var _ui, _frag;
-                                        if (authors){
+                                        /*if (authors){
                                                 _frag = document.createDocumentFragment();
                                                 _ui = new Avatar(authors);
                                                 _ui.place(_frag);
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
-                                        }
+                                        }*/
                                 }
                         }),
                         "listevent" : new Event(this)

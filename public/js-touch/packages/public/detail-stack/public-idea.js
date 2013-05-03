@@ -149,7 +149,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         _voted = false;
                                         _twocentWriteUI.reset(_store.get("id"));
                                         console.log("after 2C write reset");
-                                        _twocentList.reset(_store.get("id"));
+                                        _twocentList.reset(_store.get("id")).then(function(){
+                                                console.log("twocent promise resolved");
+                                        });
                                         console.log("after 2C list reset");
                                         console.log("before domwrite");
                                         _domWrite = document.getElementById("public-writetwocents");

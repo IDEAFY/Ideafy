@@ -28,28 +28,38 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                                 if (date) {this.innerHTML = Utils.formatDate(date);}
                                         },
                                         setFirstName : function(firstname){
-                                                if (firstname !== user.get("firstname")){
-                                                        this.innerHTML = firstname;
-                                                }
-                                                else {
-                                                        var id = this.getAttribute("data-twocents_id");
-                                                        (store.get(id).author === user.get("_id")) ? this.innerHTML = Config.get("labels").get("youlbl"): this.innerHTML = firstname;
+                                                var id;
+                                                if (firstname){
+                                                        if (firstname !== user.get("firstname")){
+                                                                this.innerHTML = firstname;
+                                                        }
+                                                        else {
+                                                                id = this.getAttribute("data-twocents_id");
+                                                                (store.get(id).author === user.get("_id")) ? this.innerHTML = Config.get("labels").get("youlbl"): this.innerHTML = firstname;
+                                                        }
                                                 }
                                         },
                                         setCommentlbl : function(firstname){
-                                                if (firstname !== user.get("firstname")){
-                                                        this.innerHTML = labels.get("twocentcommentlbl");
-                                                }
-                                                else {
-                                                        var id = this.getAttribute("data-twocents_id");
-                                                        (store.get(id).author === user.get("_id")) ? this.innerHTML = labels.get("youcommentedlbl"): this.innerHTML = labels.get("twocentcommentlbl");
+                                                var id;
+                                                if (firstname){
+                                                        if (firstname !== user.get("firstname")){
+                                                                this.innerHTML = labels.get("twocentcommentlbl");
+                                                        }
+                                                        else {
+                                                                id = this.getAttribute("data-twocents_id");
+                                                                (store.get(id).author === user.get("_id")) ? this.innerHTML = labels.get("youcommentedlbl"): this.innerHTML = labels.get("twocentcommentlbl");
+                                                        }
                                                 }
                                         },
                                         setVisible : function(author){
-                                                (author === user.get("_id")) ? this.setAttribute("style", "display: block;") : this.setAttribute("style", "display: none;");
+                                                if (author){
+                                                        (author === user.get("_id")) ? this.setAttribute("style", "display: block;") : this.setAttribute("style", "display: none;");
+                                                }
                                         },
                                         setInVisible : function(author){
-                                                (author === user.get("_id")) ? this.setAttribute("style", "display: none;") : this.setAttribute("style", "display: block;");
+                                                if (author){
+                                                        (author === user.get("_id")) ? this.setAttribute("style", "display: none;") : this.setAttribute("style", "display: block;");
+                                                }
                                         },
                                         deleteOK : function(replies){
                                                 var tc;

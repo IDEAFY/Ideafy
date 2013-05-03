@@ -17,7 +17,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "ser
                             store = new Store([]),
                             transport = Config.get("transport"),
                             user = Config.get("user"),
-                            $id;
+                            $id,
+                            view = $view;
                         
                         cdb.setTransport(transport);
                         // define plugins and methods
@@ -91,7 +92,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "ser
                                                         this.classList.add("invisible");}
                                                 else {
                                                         tc = this.getAttribute("data-twocents_id");
-                                                        _ui = new TwocentReplyList(replies, $id, tc, $view);
+                                                        _ui = new TwocentReplyList(replies, $id, tc, view);
                                                         frag = document.createDocumentFragment();
                                                         _ui.render();
                                                         _ui.place(frag);
@@ -142,7 +143,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "ser
                                 store.reset([]);
                                 cdb.unsync();
                                 cdb.reset({});
-                                console.log("before sync : ", id, promise, promise.fulfill, $view);
+                                console.log("before sync : ", id, promise, promise.fulfill, view);
                                 // retrieve twocents data from couchdb
                                 cdb.sync(Config.get("db"), $id)
                                 .then(function(){

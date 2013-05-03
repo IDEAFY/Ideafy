@@ -145,7 +145,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                 cdb.reset();
                                 // retrieve twocents data from couchdb
                                 cdb.sync(Config.get("db"), $id).then(function(){
-                                        console.log("after cdb sync", $id, cdb.get("twocents"));
+                                        console.log("after cdb sync", $id, cdb.toJSON());
                                         store.reset(cdb.get("twocents"));
                                         promise.fulfill();
                                         cdb.watchValue("twocents", function(value){

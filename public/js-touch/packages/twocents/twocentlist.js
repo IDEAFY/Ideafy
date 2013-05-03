@@ -195,6 +195,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                         };
                         
                         ui.setTarget = function setTarget(target){
+                                console.log(target);
                                 ui.place(target);
                         };
                 }

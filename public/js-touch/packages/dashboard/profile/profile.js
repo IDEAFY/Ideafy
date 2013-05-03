@@ -216,23 +216,23 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         this.innerHTML = "<span class='newsinfo'>" + recentNews.get(id).content.username  + "</span>" + labels.get("isnolongeracontact");
                                                         break;
                                                 case "IDEA+":
-                                                        this.innerHTML = labels.get("enterednewidea") + "<span class='newsinfo'>" + news.get(id).content.title + "</span>";
+                                                        this.innerHTML = labels.get("enterednewidea") + "<span class='newsinfo'>" + recentNews.get(id).content.title + "</span>";
                                                         break;
                                                 case "SHID":
-                                                        this.innerHTML = labels.get("sharedanidea") + "("+"<span class='newsinfo'>" + news.get(id).content.title + "</span>)";
+                                                        this.innerHTML = labels.get("sharedanidea") + "("+"<span class='newsinfo'>" + recentNews.get(id).content.title + "</span>)";
                                                         // add the list of usernames the idea was shared with
                                                         break;
                                                 case "RANK":
-                                                        this.innerHTML = labels.get("reachedrank") +"<span class='newsinfo'>" +news.get(id).content.label + "</span>";
+                                                        this.innerHTML = labels.get("reachedrank") +"<span class='newsinfo'>" +recetNews.get(id).content.label + "</span>";
                                                         break;
                                                 case "RWD":
-                                                        this.innerHTML = labels.get("gotaward") +"<span class='newsinfo'>" +news.get(id).content.label + "</span>";
+                                                        this.innerHTML = labels.get("gotaward") +"<span class='newsinfo'>" +recentNews.get(id).content.label + "</span>";
                                                         break;
                                                 case "2Q+":
-                                                        this.innerHTML = labels.get("posted2q") +"<span class='newsinfo'>" +news.get(id).content.question + "</span>";
+                                                        this.innerHTML = labels.get("posted2q") +"<span class='newsinfo'>" +recentNews.get(id).content.question + "</span>";
                                                         break;
                                                 case "2CTS":
-                                                        this.innerHTML = labels.get("commentedon") +"<span class='newsinfo'>" + news.get(id).content.title + "</span>" + labels.get("by")+recentNews.get("id").content.username;
+                                                        this.innerHTML = labels.get("commentedon") +"<span class='newsinfo'>" + recentNews.get(id).content.title + "</span>" + labels.get("by")+recentNews.get("id").content.username;
                                                         // can be refined later to differentiate between 2cts on ideas, usersor twoquestions
                                                         break;
                                                 
@@ -415,7 +415,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    
                    //init
                    profile.init = function init(){
-                           console.log("profile init called");
+                        console.log("profile init called");
                         profileUI.checkProfileCompletion()
                         .then(function(){
                                 return profileUI.updateGrade();

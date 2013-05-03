@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "service/avatar", "service/utils"],
-        function(Widget, Config, Store, Model, Event, WriteTwocent, TwocentList, Avatar, Utils){
+define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "service/avatar", "service/utils", "Place.plugin"],
+        function(Widget, Config, Store, Model, Event, WriteTwocent, TwocentList, Avatar, Utils, Place){
                 
                 return function MTQDetailsConstructor(){
                         
@@ -15,7 +15,7 @@ define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "tw
                             user = Config.get("user"),
                             model = new Store(),
                             twocentWriteUI = new WriteTwocent("connect"),
-                            twocentList = new TwocentList(),
+                            twoqTwocentList = new TwocentList("connect"),
                             domWrite;
                         
                         mtqDetailUI.plugins.addAll({
@@ -71,10 +71,11 @@ define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "tw
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                         },
                                 }),
+                                "place" : new Place({"TwoQTwocentList": twoqTwocentList}),
                                 "tqevent" : new Event(mtqDetailUI)       
                         });
                         
-                        mtqDetailUI.template = '<div class="twocent-detail"><div class="header blue-dark"><span data-tqdetail="bind: setHeader, author"></span></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-tqdetail="bind:setAvatar, author"></div><span class="author" data-tqdetail="bind:setAuthor,username"></span><span class="commentlbl" data-tqdetail="bind: setWrotelbl, author"></span><p data-tqdetail="bind:innerHTML,question"></p><span class="date" data-tqdetail="bind:date, creation_date"></span></div><div class="detail-body"></div><div class="detail-footer"><div class="tcbutton" data-tqevent="listen:touchstart, press; listen: touchend, write"></div><div class="tcreplies" data-tqdetail = "bind: displayTwocentNB, twocents"></div></div><div id="connect-writetwocents" class="invisible" data-tqdetail="bind: displayWriteTwocent, author"></div><div id="connect-twocents" class="twocents" data-tqdetail="bind: displayTwocentList, twocents"></div></div></div>';
+                        mtqDetailUI.template = '<div class="twocent-detail"><div class="header blue-dark"><span data-tqdetail="bind: setHeader, author"></span></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-tqdetail="bind:setAvatar, author"></div><span class="author" data-tqdetail="bind:setAuthor,username"></span><span class="commentlbl" data-tqdetail="bind: setWrotelbl, author"></span><p data-tqdetail="bind:innerHTML,question"></p><span class="date" data-tqdetail="bind:date, creation_date"></span></div><div class="detail-body"></div><div class="detail-footer"><div class="tcbutton" data-tqevent="listen:touchstart, press; listen: touchend, write"></div><div class="tcreplies" data-tqdetail = "bind: displayTwocentNB, twocents"></div></div><div id="connect-writetwocents" class="invisible" data-tqdetail="bind: displayWriteTwocent, author"></div><div id="connect-twocents" class="twocents" data-tqdetail="bind: displayTwocentList, twocents" data-place="place:TwoQTwocentList"></div></div></div>';
                        
                        
                        mtqDetailUI.press = function(event, node){
@@ -94,7 +95,7 @@ define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "tw
                        mtqDetailUI.reset = function reset(content){
                                 model.reset(content.value);
                                 twocentWriteUI.reset(model.get("_id"));
-                                twocentList.reset(model.get("_id"), "connect");
+                                twoqTwocentList.reset(model.get("_id"));
                                 domWrite = mtqDetailUI.dom.querySelector("#connect-writetwocents");
                                 twocentWriteUI.place(domWrite);      
                        };

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils", "Bind.plugin", "Event.plugin", "twocents/twocentreplylist", "twocents/writetwocent", "twocents/writetwocentreply", "service/avatar", "Promise"],
-        function(Widget, Config, CouchDBDocument, Store, Utils, Model, Event, TwocentReplyList, WriteTwocent, WriteTwocentReply, Avatar, Promise){
+define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "service/utils", "Bind.plugin", "Event.plugin", "twocents/twocentreplylist", "twocents/writetwocent", "twocents/writetwocentreply", "service/avatar"],
+        function(Widget, Config, CouchDBDocument, Store, Promise, Utils, Model, Event, TwocentReplyList, WriteTwocent, WriteTwocentReply, Avatar){
                 
                 function TwocentListConstructor($view){
                        
@@ -141,16 +141,17 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "service/utils"
                                 $id = id;
                                 store.reset([]);
                                 cdb.unsync();
-                                cdb.reset();
-                                promise.fulfill();
+                                cdb.reset({});
+                                console.log("before sync : ", id, promise, promise.fulfill);
                                 // retrieve twocents data from couchdb
-                                cdb.sync(Config.get("db"), $id).then(function(){
+                                cdb.sync(Config.get("db"), $id)
+                                .then(function(){
                                         var tc = cdb.get("twocents");
-                                        promise.fulfill();
                                         if (tc.length) {store.reset(cdb.get("twocents"));}
                                         cdb.watchValue("twocents", function(value){
                                                 store.reset(value);        
                                         });
+                                        promise.fulfill();
                                 }, function(err){console.log(err);});
                                 return promise;
                         };

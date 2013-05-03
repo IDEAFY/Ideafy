@@ -211,7 +211,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         // Method called when clicking on the accept buttton
                         _widget.pushOk = function(event, node){
                                 if (_user.get("_id") === $session.get("initiator").id){
-                                        node.classList.add("invisible");
+                                        node.setAttribute("style", "display: none;");
                                         spinnerOk = new Spinner().spin(node);
                                 }        
                         };
@@ -231,7 +231,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         $session.set("selected_"+_type, _sel.selected);
                                         $session.upload().then(function(){
                                                 spinnerOk.stop();
-                                                node.classList.remove("invisible");
+                                                node.classList.node.setAttribute("style", "display: inline-block;");
                                                 _selection.set(_type, _sel);
                                         });
                                 }      

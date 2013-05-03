@@ -11,7 +11,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                 //declaration
                         var  _widget = new Widget(),
                              _twocentWriteUI = new WriteTwocent(),
-                             _twocentList = new TwocentList("public"),
+                             _twocentList,
                              _labels = Config.get("labels"),
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,
@@ -26,6 +26,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                              _obs = new Observable();
 
                 //setup
+                        console.log("before init Twocentlist");
+                        _twocentList = new TwocentList("public");
+                        console.log("after init Twocentlist");
                         ideaCDB.setTransport(transport);
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),

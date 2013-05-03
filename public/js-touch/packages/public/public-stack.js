@@ -35,6 +35,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                                 cache = document.getElementById("idea-cache");
                                 cache.classList.remove("invisible");
                                 spinner.spin(_dom);
+                                console.log("inside public stack reset : ", viewStore, index);
 			        _stack.getStack().get("#public-ideadetail").reset(viewStore, index)
                                 .then(function(){
                                         console.log("then after reset");

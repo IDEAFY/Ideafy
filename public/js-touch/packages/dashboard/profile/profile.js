@@ -413,7 +413,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    };
                    
                    //init
-                   profile.init = function init(){
+                   profileUI.init = function init(){
                         profileUI.checkProfileCompletion()
                         .then(function(){
                                 return profileUI.updateGrade();
@@ -427,14 +427,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         });
                    };
                    
-                   profile.reset = function reset(){
+                   profileUI.reset = function reset(){
                         news.reset([]);
                         news.reset(user.get("news"));
                         profile.init();        
                    };
                    
                    
-                   profile.init();
+                   profileUI.init();
                    return profileUI;
            };    
         });

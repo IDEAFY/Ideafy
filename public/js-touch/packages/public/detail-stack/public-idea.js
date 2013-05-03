@@ -149,7 +149,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         _twocentWriteUI.reset(_store.get("id"));
                                         _twocentList.reset(_store.get("id"), "public");
                                         _domWrite = document.getElementById("public-writetwocents");
-                                        _twocentWriteUI.place(_domWrite);   
+                                        _twocentWriteUI.place(_domWrite); 
+                                        console.log("before promise fulfill");  
                                         promise.fulfill();     
                                 });
                                 return promise;

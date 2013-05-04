@@ -36,7 +36,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                             _start =  null, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
                             spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 335, left: 410}).spin(),
-                            spinnerOk;
+                            spinnerOk = {};
                             // deduct 20px from position shown in navigator
                             
                         // Setup
@@ -214,7 +214,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         _widget.pushOk = function(event, node){
                                 if (_user.get("_id") === $session.get("initiator").id){
                                         node.setAttribute("z-index", "-1000");
-                                        spinnerOk = new Spinner().spin(node);
+                                        spinnerOk[node.getAttribute("name")] = new Spinner().spin(node);
                                 }        
                         };
                         
@@ -232,7 +232,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         }
                                         $session.set("selected_"+_type, _sel.selected);
                                         $session.upload().then(function(){
-                                                spinnerOk.stop();
+                                                spinnerOk[node.getAttribute("name")].stop();
                                                 node.setAttribute("z-index", "10");
                                                 _selection.set(_type, _sel);
                                         });

@@ -155,7 +155,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                 };
                 
                 mubChat.setMessage = function setMessage(message){
-                        var now = new Date().getTime(), msg = chatCDB.get("msg"), id, newMsg;
+                        var now = new Date().getTime(), msg = chatCDB.get("msg"), id, newMsg, promise = new Promise();
                         switch(message){
                                 case "start":
                                         newMsg = {"user": "SYS", "time": now, "type": 4};

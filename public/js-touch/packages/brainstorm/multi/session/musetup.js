@@ -120,7 +120,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 // notify participants via chat
                                                 chatUI.conclude("next");
                                                 // update session document
-                                                $session.set("elapsedTimers", {"quicksetup": _timer.get("timer")});
+                                                $session.set("elapsedTimers", {"musetup": _timer.get("timer")});
                                                 $session.set("characters", [_cards.get("char").id]);
                                                 $session.set("contexts", [_cards.get("context").id]);
                                                 $session.set("problems", [_cards.get("problem").id]);
@@ -531,6 +531,14 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 var selPb = _selection.get("problem");
                                 selPb.selected = val;
                                 _selection.set("problem", selPb);      
+                        });
+                        
+                        // display timer once the step is complete
+                        $session.watchValue("elapsedTimers", function(value){
+                                if (value.musetup) {
+                                        _timer.set("timer", value.musetup);
+                                        _timer.set("display", true);
+                                }        
                         });
                         
                         // Return

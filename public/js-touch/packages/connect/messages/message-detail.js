@@ -106,7 +106,6 @@ define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Eve
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 showSessionBtn : function(sessionStatus){
-                                        console.log(sessionStatus, message.toJSON());
                                         (sessionStatus && sessionStatus === "waiting" && !message.get("joined"))?this.classList.remove("invisible"):this.classList.add("invisible");   
                                 },
                                 setJoinMsg : function(sessionStatus){
@@ -312,7 +311,7 @@ define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Eve
                         var cdb = new CouchDBView();
                         cdb.setTransport(transport);
                         cdb.unsync();
-                        cdb.sync(Config.get("db"), "library", "_view/boardroomsessions", {key: '"'+sid+'"'}).then(function(){
+                        cdb.sync(Config.get("db"), "library", "_view/boardroom", {key: '"'+sid+'"'}).then(function(){
                                 if (cdb.getNbItems()){
                                         message.set("sessionStatus", "waiting");
                                 }
@@ -346,9 +345,8 @@ define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Eve
                         
                         // check if message type is a session invite and if so check session status
                         if (message.get("type") === "INV"){
-                                console.log(message.toJSON());
                                 if (message.get("joined")){
-                                        message.set("sessionStatus", "joined");
+                                        message.set("joined", true);
                                 }
                                 else{
                                         message.set("sessionStatus", null);

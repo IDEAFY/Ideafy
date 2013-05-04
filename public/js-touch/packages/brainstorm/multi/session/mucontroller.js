@@ -10,47 +10,47 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
            return function MUControllerConstructor($exit){
                    
-                   // declaration
-                   var _widget = new Widget(),
-                       _progress = new Widget(),
-                       _frag = document.createDocumentFragment(),
-                       _stack = new Stack(),
-                       _labels = Config.get("labels"),
-                       steps = [
-                               {name: "mustart", label: _labels.get("quickstepstart"), currentStep: false, status:"done"},
-                               {name: "musetup", label: _labels.get("quickstepsetup"), currentStep: false, status:null},
-                               {name: "muscenario", label: _labels.get("quickstepscenario"), currentStep: false, status:null},
-                               {name: "mutech", label: _labels.get("quicksteptech"), currentStep: false, status:null},
-                               {name: "muidea", label: _labels.get("quickstepidea"), currentStep: false, status:null},
-                               {name: "muwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
-                               ],
-                       muStart, muSetup, muScenario, muTech, muIdea, muWrapup,
-                       _steps = new Store(steps),
-                       _user = Config.get("user"),
-                       _session = new CouchDBDocument(),
-                       _sessionData = new Store(),
-                       info = new Store({"msg":""}),
-                       confirmUI, confirmCallBack,
-                       spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
+                // declaration
+                var _widget = new Widget(),
+                    _progress = new Widget(),
+                    _frag = document.createDocumentFragment(),
+                    _stack = new Stack(),
+                    _labels = Config.get("labels"),
+                    steps = [
+                        {name: "mustart", label: _labels.get("quickstepstart"), currentStep: false, status:"done"},
+                        {name: "musetup", label: _labels.get("quickstepsetup"), currentStep: false, status:null},
+                        {name: "muscenario", label: _labels.get("quickstepscenario"), currentStep: false, status:null},
+                        {name: "mutech", label: _labels.get("quicksteptech"), currentStep: false, status:null},
+                        {name: "muidea", label: _labels.get("quickstepidea"), currentStep: false, status:null},
+                        {name: "muwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
+                    ],
+                    muStart, muSetup, muScenario, muTech, muIdea, muWrapup,
+                    _steps = new Store(steps),
+                    _user = Config.get("user"),
+                    _session = new CouchDBDocument(),
+                    _sessionData = new Store(),
+                    info = new Store({"msg":""}),
+                    confirmUI, confirmCallBack,
+                    spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
-                   // progress bar setup
-                   _progress.plugins.addAll({
-                           "labels" : new Model(_labels),
-                           "step" : new Model(_steps, {
-                                   setCurrent : function(currentStep){
+                // progress bar setup
+                _progress.plugins.addAll({
+                        "labels" : new Model(_labels),
+                        "step" : new Model(_steps, {
+                                setCurrent : function(currentStep){
                                            (currentStep) ? this.classList.add("pressed") : this.classList.remove("pressed");
                                    },
-                                   setActive : function(status){
+                                setActive : function(status){
                                            (status) ? this.classList.remove("inactive") : this.classList.add("inactive");
                                    }
-                           }),
-                           "progressevent" : new Event(_progress)
+                        }),
+                        "progressevent" : new Event(_progress)
                    });
-                   _progress.template = '<div class = "progressbar invisible"><ul id = "musteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
+                _progress.template = '<div class = "progressbar invisible"><ul id = "musteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
                    
-                   // progress bar UI methods
+                // progress bar UI methods
                    
-                   _progress.changeStep = function(event, node){
+                _progress.changeStep = function(event, node){
                         var _id = node.getAttribute("data-step_id");
                         // only change if new step status is not null
                         if (_steps.get(_id).status){
@@ -65,11 +65,11 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }              
                    };
                    
-                   _progress.press = function(event, node){
+                _progress.press = function(event, node){
                            node.classList.add("pressed");
                    };
                    
-                   _progress.exit = function(event, node){
+                _progress.exit = function(event, node){
                            node.classList.remove("pressed");
                            if (_session.get("step") === "muwrapup"){
                                 muWrapup.getChatUI().leave();
@@ -80,27 +80,27 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            }
                    };
                    
-                   // Main UI setup
-                   _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></div><div class="stack" data-musessionstack="destination"></div></div>';
+                // Main UI setup
+                _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></div><div class="stack" data-musessionstack="destination"></div></div>';
                    
-                   _widget.plugins.addAll({
-                           "musessionstack": _stack,
-                           "place": new Place({"progress": _progress}),
-                           "info": new Model(info)
-                   });
+                _widget.plugins.addAll({
+                        "musessionstack": _stack,
+                        "place": new Place({"progress": _progress}),
+                        "info": new Model(info)
+                });
                    
                    
                    
-                   // Main UI methods
+                // Main UI methods
                    
-                   // show progress bar
-                   _widget.toggleProgress = function toggleProgress(){
+                // show progress bar
+                _widget.toggleProgress = function toggleProgress(){
                            _progress.dom.classList.toggle("invisible");      
                    };
                    
-                   // initiator or a participant decides to leave the waiting room
-                   // participant decides to leave session
-                   _widget.leaveSession = function leaveSession(){
+                // initiator or a participant decides to leave the waiting room
+                // participant decides to leave session
+                _widget.leaveSession = function leaveSession(){
                         var p = _session.get("participants"), i, currentUI = _stack.getStack().get(_session.get("step"));
                         
                         for (i=p.length-1; i>=0; i--){
@@ -127,6 +127,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 _widget.cancelSession = function cancelSession(){
                         var countdown = 5000; // better to pick a high number and cancel earlier if all actions are finished
                         _widget.displayInfo("deleting", countdown).then(function(){
+                                return _session.remove();
+                        })
+                        .then(function(){
                                 $exit();
                         });      
                 };
@@ -186,9 +189,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         // and finally
                                         _session.remove();     
                                 }); 
-                                       
                         }
-                        
                         return promise;
                 };
                 
@@ -206,7 +207,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         });
                         cdb.set("users", usr);
                         
-                        // build intro message
+                        // build intro message -- arg refer to quicksteps to be able to re-use existing labels
                         switch(step){
                                 case 1:
                                         arg = "quicksetup";
@@ -256,15 +257,11 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         promise.fulfill();
                                 })
                         }, 200);
-                        
                         return promise;
                 };
                 
                 // retrieve session and start brainstorming   
                 _widget.retrieveSession = function retrieveSession(sid, replay){
-                        
-                        console.log("retrieving session");
-                           
                         spinner.spin(document.getElementById("brainstorm"));
                            
                         // connect to couchdb and retrieve session
@@ -308,12 +305,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _steps.loop(function(v, i){
                                         if (i<current){
                                                 // reset step UI with replay option
-                                                _stack.getStack().get(v.name).reset("replay");
+                                                _stack.getStack().get(v.name).reset(replay);
                                                 _steps.update(i, "status", "done"); 
                                                 if (v.name === step){
                                                         current = i;
                                                         // reset current step UI
-                                                        _stack.getStack().get(step).reset();
+                                                        _stack.getStack().get(step).reset(replay);
                                                         _steps.update(i, "currentStep", true);
                                                         (v.name === "muwrapup") ? _steps.update(i, "status", "done") : _steps.update(i, "status", "ongoing");
                                                 }      
@@ -331,10 +328,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            });
                    };
                    
-                   _widget.reset = function reset(sid, replay){
+                _widget.reset = function reset(sid, replay){
                            
-                        console.log("mucontroller reset function called");
-                        
                         // unsync session
                         _session.unsync(); 
                         
@@ -348,7 +343,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         _widget.retrieveSession(sid, replay);  
                    };
                    
-                   _widget.prev = function prev(currentName){
+                _widget.prev = function prev(currentName){
                         var _id;
                         _steps.loop(function(value, idx){
                                 if (value.name === currentName){
@@ -366,10 +361,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }            
                    };
                    
-                   _widget.next = function next(currentName){
+                _widget.next = function next(currentName){
                         var _id,
-                            _nextui,
-                            _currentui = _stack.getStack().get(currentName);
+                            _currentui = _stack.getStack().get(currentName),
                             promise = new Promise();
                             
                         _steps.loop(function(value, idx){
@@ -388,11 +382,11 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 if (_steps.get(_id).status !== "done"){
                                         _steps.update(_id, "status", "done");
                                         _steps.update(_id+1, "status", "ongoing");
-                                        
+                                        _widget.createChat(2);
                                         _session.set("step", _steps.get(_id+1).name);
                                         _session.upload().then(function(){
-                                                _nextui = _stack.getStack().get(_steps.get(_id+1).name);
-                                                if (_nextui.initTimer) _nextui.initTimer();
+                                                var _nextui = _stack.getStack().get(_steps.get(_id+1).name);
+                                                if (_nextui.initTimer) {_nextui.initTimer();}
                                                 _currentui.stopSpinner();
                                                 _stack.getStack().show(_steps.get(_id+1).name);
                                                 promise.fulfill();        
@@ -408,7 +402,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         return promise;       
                    };
                    
-                   _widget.init = function init(){
+                _widget.init = function init(){
                            
                            console.log("mucontroller init entered");
                            // initialize step UIs
@@ -431,13 +425,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            
                    };
                    
-                   // init
-                   _widget.init();
+                // init
+                _widget.init();
                    
-                   // watch for session events
-                   // watch for session status change
-                   _session.watchValue("status", function(value){
-                        console.log(value);
+                // watch for session events
+                // watch for session status change
+                _session.watchValue("status", function(value){
                         // if session is deleted (in case initiator decides to cancel)
                         if (value === "deleted" && _session.get("initiator").id !== _user.get("_id")){
                              // reset sessionInProgress in user doc
@@ -448,10 +441,18 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         $exit();     
                                 });
                         }    
-                   });
+                });
+                
+                // trigger move to the next step for session participants
+                _session.watchValue("step", function(value){
+                        console.log(value);
+                        if (_session.get("initiator").id !== _user.get("_id")){
+                                _stack.getStack().show(value);
+                        }       
+                });
                    
-                   SESSION = _session;
-                   // return
-                   return _widget;
+                SESSION = _session;
+                // return
+                return _widget;
            };    
         });

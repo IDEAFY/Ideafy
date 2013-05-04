@@ -100,6 +100,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 node.classList.add("invisible");
                                 node.classList.remove("pressed");
                                 
+                                // only the session leader can push next
                                 if (_next === "step"){
                                         _next = "screen"; //only one upload
                                         
@@ -112,14 +113,12 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         clearInterval(_qsTimer);
                                         _timer.set("display", true);
                                         
-                                        // compute session score
-                                        _widget.updateSessionScore(_timer.get("timer"))
-                                        .then(function(){
-                                                // resync with db
-                                                $session.unsync();
-                                                return $session.sync(Config.get("db"), $session.get("_id"));
-                                        })
-                                        .then(function(){
+                                        // compute session score -- score change triggers move to the next step
+                                        _widget.updateSessionScore(_timer.get("timer"));
+                                        $session.watchValue("score", function(score){
+                                                console.log("score changed : ", score)
+                                                // notify participants via chat
+                                                chatUI.conclude("next");
                                                 // update session document
                                                 $session.set("elapsedTimers", {"quicksetup": _timer.get("timer")});
                                                 $session.set("characters", [_cards.get("char").id]);
@@ -132,6 +131,10 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 else {
                                         $next("musetup");
                                 }
+                        };
+                        
+                        _widget.stopSpinner = function stopSpinner(){
+                                spinner.stop();
                         };
                         
                         // Help popup
@@ -213,7 +216,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         // Method called when clicking on the accept buttton
                         _widget.pushOk = function(event, node){
                                 if (_user.get("_id") === $session.get("initiator").id){
-                                        node.setAttribute("z-index", "-1000");
                                         spinnerOk[node.getAttribute("name")] = new Spinner().spin(node);
                                 }        
                         };
@@ -233,7 +235,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         $session.set("selected_"+_type, _sel.selected);
                                         $session.upload().then(function(){
                                                 spinnerOk[node.getAttribute("name")].stop();
-                                                node.setAttribute("z-index", "10");
                                                 _selection.set(_type, _sel);
                                         });
                                 }      
@@ -451,6 +452,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         "cards": _drawnCards.char + _drawnCards.context + _drawnCards.problem
                                 };
                                 
+                                console.log("before transport request : ", json);
                                 _transport.request("UpdateSessionScore", json, function(result){
                                         if (result.res === "ok"){
                                                 promise.fulfill();

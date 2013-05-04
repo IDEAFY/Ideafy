@@ -1542,6 +1542,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 if ((json.wbcontent.search("import")>-1) && (json.wbcontent.search("drawing")>-1)) {bonus = 25;}
                                 else if ((json.wbcontent.search("import")>-1) || (json.wbcontent.search("drawing")>-1))  {bonus = 10;}
                                 increment = Math.floor((wbdata.length*10 + bonus)*coeff);
+                                break;
+                        case "musetup":
+                                min_score = 10;
+                                bonus = 30 - Math.floor(json.time/10000); // time bonus
+                                if (bonus < 0) {bonus = 0;}
+                                increment = 24 - (json.cards*3);
+                                if (increment<0) { increment = 0;}
+                                increment += bonus;
+                                if (increment < min_score) {increment = min_score;}
                                 break;       
                         default:
                                 increment = 0;

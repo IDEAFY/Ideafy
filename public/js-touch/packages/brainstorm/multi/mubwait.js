@@ -271,7 +271,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         widget.start = function(event, node){
                                 var now = new Date(), chat = session.get("chat");
                                 // notify session start in chat window
-                                chatUI.startingSession();
+                                chatUI.conclude("start");
                                 node.classList.add("invisible");
                                 node.classList.remove("pressed");
                                 spinner.spin(node.parentNode);

@@ -468,6 +468,7 @@
 	"chatmsg3" : " a annulé la session",
 	"chatmsg4" : "Votre session démarre maintenant",
 	"chatmsg5" : "Nouvelle étape du brainstorming : ",
+	"chatmsg6" : "Ce message conclut l'étape en cours. Démarrage de l'étape suivante...",
 	"typemsg" : "Tapez votre message",
 	"said": " a dit :",
 	"noresult": "Aucun résultat",

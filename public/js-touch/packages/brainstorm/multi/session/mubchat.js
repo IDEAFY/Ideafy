@@ -149,9 +149,26 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         chatCDB.set("readonly", true);
                 };
                 
-                mubChat.startingSession = function startingSession(){
-                        var now = new Date().getTime(), msg = chatCDB.get("msg"), id;
+                mubChat.conclude = function conclude(reason){
                         mubChat.setReadonly();
+                        mubChat.setMessage(reason);
+                };
+                
+                mubChat.setMessage = function setMessage(message){
+                        var now = new Date().getTime(), msg = chatCDB.get("msg"), id, newMsg;
+                        switch(message){
+                                case "start":
+                                        newMsg = {"user": "SYS", "time": now, "type": 4};
+                                        break;
+                                case "leave":
+                                        newMsg = {user: "SYS", type: 2, time: now, arg: position};
+                                        break;
+                                case "next":
+                                        newMsg = {user: "SYS", type: 6, time: now};
+                                        break;
+                                default:
+                                        break;        
+                        }
                         chat.alter("push", {"user": "SYS", "time": now, "type": 4});
                         id = chat.getNbItems()-1;
                         document.getElementById("chatmessages").querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
@@ -159,7 +176,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         msg.push({"user": "SYS", "time": now, "type": 4});
                         chatCDB.set("msg", msg);
                         
-                        chatCDB.upload();
+                        chatCDB.upload()
+                        .then(function(){
+                                promise.fulfill();
+                        });
+                        
+                        return promise; 
                 };
                 
                 mubChat.clear = function clear(){
@@ -221,13 +243,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                 
                 mubChat.leave = function leave(){
                         var promise = new Promise(),
-                            users = chatCDB.get("users"),
-                            msg = chatCDB.get("msg");
-                        users.splice(position, 1);
-                        msg.push({user: "SYS", type: 2, time: now, arg: position});
-                        chatCDB.set("users", users);
-                        chatCDB.set("msg", msg);
-                        chatCDB.upload().then(function(){
+                            users = chatCDB.get("users");
+                        mubChat.setMessage("leave")
+                        .then(function(){
+                                users.splice(position, 1);
+                                chatCDB.set("users", users);
+                                return chatCDB.upload();
+                        })
+                        .then(function(){
                                 promise.fulfill();
                                 chatCDB.unsync();
                                 chatCDB.reset();

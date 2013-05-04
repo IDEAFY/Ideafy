@@ -18,7 +18,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                             _transport = Config.get("transport"), _db = Config.get("db"), _user = Config.get("user"),
                             _deckStack = {}, // the cards remaining in the stack after each draw
                             _timer = new Store({"timer":null, "display":false}),
-                            _qsTimer,
+                            _msTimer,
                             _selection = new Store({
                                      char : {selected: false, left: null, popup: false},
                                      context : {selected: false, left: null, popup: false},
@@ -103,14 +103,13 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 // only the session leader can push next
                                 if (_next === "step"){
                                         _next = "screen"; //only one upload
-                                        
                                         //update session data
                                         $data.set("characters", _cards.get("char"));
                                         $data.set("contexts", _cards.get("context"));
                                         $data.set("problems", _cards.get("problem"));
                                         
                                         // stop timer and update display
-                                        clearInterval(_qsTimer);
+                                        clearInterval(_msTimer);
                                         _timer.set("display", true);
                                         
                                         // compute session score -- score change triggers move to the next step
@@ -215,7 +214,8 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         // Method called when clicking on the accept buttton
                         _widget.pushOk = function(event, node){
-                                if (_user.get("_id") === $session.get("initiator").id){
+                                var spok = spinnerOk[node.getAttribute("name")] || null;
+                                if (_user.get("_id") === $session.get("initiator").id && !spok){
                                         spinnerOk[node.getAttribute("name")] = new Spinner().spin(node);
                                 }        
                         };
@@ -235,6 +235,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         $session.set("selected_"+_type, _sel.selected);
                                         $session.upload().then(function(){
                                                 spinnerOk[node.getAttribute("name")].stop();
+                                                spinnerOk[node.getAttribute("name")]=null;
                                                 _selection.set(_type, _sel);
                                         });
                                 }      
@@ -296,7 +297,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 _timer.set("timer", elapsed);
                                 // make sure current step is ongoing before restarting timer
                                 if ($session.get("step") === "musetup"){
-                                        _qsTimer = setInterval(function(){
+                                        _msTimer = setInterval(function(){
                                                 var now = new Date();
                                                 _timer.set("timer", elapsed + now.getTime()-_start);
                                         }, 1000);
@@ -454,6 +455,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 
                                 console.log("before transport request : ", json);
                                 _transport.request("UpdateSessionScore", json, function(result){
+                                        console.log(result);
                                         if (result.res === "ok"){
                                                 promise.fulfill();
                                         }

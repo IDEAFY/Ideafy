@@ -106,6 +106,7 @@ define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Eve
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 showSessionBtn : function(sessionStatus){
+                                        console.log(sessionStatus, message.toJSON());
                                         (sessionStatus && sessionStatus === "waiting" && !message.get("joined"))?this.classList.remove("invisible"):this.classList.add("invisible");   
                                 },
                                 setJoinMsg : function(sessionStatus){
@@ -322,7 +323,7 @@ define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Eve
                 msgDetailUI.gotoSession = function(event, node){
                         var arr = user.get("notifications");
                         node.classList.remove("pressed");
-                        message.set("sessionStatus", "joined");
+                        message.set("joined", true);
                         Config.get("observer").notify("join-musession", message.get("docId"));
                         
                         // can only join a session once

@@ -429,10 +429,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _next="step";     
                                 }
                                 
-                                // retrieve time already spent on this step
-                                ($session.get("elapsedTimers").quickidea) ? _elapsed = $session.get("elapsedTimers").quickidea : _elapsed = 0;
-                                _timer.set("timer", _elapsed);
-                                (_next === "screen") ? _timer.set("display", true) : _widget.initTimer(_elapsed);
+                                // retrieve time already spent on this step and init/display timer as appropriate
+                                if ($session.get("elapsedTimers").quickidea){
+                                        _elapsed = $session.get("elapsedTimers").quickidea;
+                                        _timer.set("timer", _elapsed);
+                                        (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
+                                }
                          };
                          
                          _widget.initTimer = function(init){
@@ -444,6 +446,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _timer.set("timer", elapsed);
                                 // make sure current step is ongoing before restarting timer
                                 if ($session.get("step") === "quickidea"){
+                                        clearInterval(_qiTimer);
                                         _qiTimer = setInterval(function(){
                                                 var now = new Date();
                                                 _timer.set("timer", elapsed + now.getTime()-_start);

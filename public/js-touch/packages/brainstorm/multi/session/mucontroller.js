@@ -253,7 +253,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         return _session.upload();    
                                 })
                                 .then(function(){
-                                        console.log(cdb.toJSON(), _session.get("chat"));
                                         promise.fulfill();
                                 })
                         }, 200);
@@ -364,6 +363,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 _widget.next = function next(currentName){
                         var _id,
                             _currentui = _stack.getStack().get(currentName),
+                            _nextui,
+                            _newStep = "", // name of the next step
                             promise = new Promise();
                             
                         _steps.loop(function(value, idx){
@@ -373,28 +374,33 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         });
                         
                         if (_id < _steps.getNbItems()-1) {
+                                _newStep = _steps.get(_id+1).name;
+                                _nextui = _stack.getStack().get(_newStep);
                                 
                                 // update progress bar
                                 _steps.update(_id, "currentStep", false);
                                 _steps.update(_id+1, "currentStep", true);
                                 
-                                // if previous step was already done do not modify status
+                                // if previous step was already done do not modify status (means next=screen used for navigation only)
                                 if (_steps.get(_id).status !== "done"){
                                         _steps.update(_id, "status", "done");
                                         _steps.update(_id+1, "status", "ongoing");
-                                        _widget.createChat(2);
-                                        _session.set("step", _steps.get(_id+1).name);
+                                        // initialize new step
+                                        _nextui.reset();
+                                        _widget.createChat(_id+1);
+                                        _session.set("step", _newStep);
                                         _session.upload().then(function(){
-                                                var _nextui = _stack.getStack().get(_steps.get(_id+1).name);
-                                                if (_nextui.initTimer) {_nextui.initTimer();}
+                                                if (_nextui.initTimer) {
+                                                        _nextui.initTimer();
+                                                }
                                                 _currentui.stopSpinner();
-                                                _stack.getStack().show(_steps.get(_id+1).name);
+                                                _stack.getStack().show(_newStep);
                                                 promise.fulfill();        
                                         });
                                 }
                                 else {
                                         _currentui.stopSpinner();
-                                        _stack.getStack().show(_steps.get(_id+1).name);
+                                        _stack.getStack().show(_newStep);
                                         promise.fulfill();
                                 }
                         }

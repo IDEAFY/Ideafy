@@ -330,20 +330,23 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _next="step";     
                                 }
                                 // retrieve time already spent on this step and init/display timer as appropriate
-                                ($session.get("elapsedTimers").quickscenario) ? _elapsed = $session.get("elapsedTimers").quickscenario : _elapsed = 0;
-                                _timer.set("timer", _elapsed);
-                                (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
+                                if ($session.get("elapsedTimers").quickscenario){
+                                        _elapsed = $session.get("elapsedTimers").quickscenario;
+                                        _timer.set("timer", _elapsed);
+                                        (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
+                                }
                          };
                          
                          _widget.initTimer = function(init){
                                 var now = new Date(),
                                     _start = now.getTime(),
                                     elapsed = init || 0;
-                                
+                                console.log("starting quickscenario timer", init);
                                 _timer.set("display", false);
                                 _timer.set("timer", elapsed);
                                 // make sure current step is ongoing before restarting timer
                                 if ($session.get("step") === "quickscenario"){
+                                        clearInterval(_qsTimer);
                                         _qsTimer = setInterval(function(){
                                                 var now = new Date();
                                                 _timer.set("timer", elapsed + now.getTime()-_start);

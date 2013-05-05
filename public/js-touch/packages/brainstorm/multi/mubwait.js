@@ -106,6 +106,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                                 confirmUI.hide();
                                         }
                                         else{
+                                                user.set("sessionInProgress", "");
+                                                user.upload();
                                                 if (session.get("initiator").id === user.get("_id")){
                                                         widget.cancelSession();
                                                 }
@@ -150,6 +152,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         // participant decides to leave session
                         widget.leaveSession = function leaveSession(){
                                 var p = session.get("participants"), i;
+                                
                                 for (i=p.length-1; i>=0; i--){
                                         if (p[i].id === user.get("_id")){
                                                 console.log("participant leaving : ", p[i].username);
@@ -176,7 +179,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         // initiator decides to cancel the session
                         widget.cancelSession = function cancelSession(){
                                 var countdown = 5000;
-                                if (!session.get("participants").length) countdown = 2000;
+                                if (!session.get("participants").length) {countdown = 2000;}
                                 widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
                                         widget.goToScreen();

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBDocument", "service/cardpopup", "../../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min", "./mubchat"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBDocument, CardPopup, Whiteboard, Promise, Utils, Spinner, Chat){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "Store", "CouchDBDocument", "service/cardpopup", "../../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min", "./mubchat"],
+        function(Widget, Map, Model, Event, Place, Config, Store, CouchDBDocument, CardPopup, Whiteboard, Promise, Utils, Spinner, Chat){
                 
                 return function MUScenarioConstructor($session, $data, $prev, $next, $progress){
                         

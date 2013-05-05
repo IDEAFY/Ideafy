@@ -341,7 +341,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 var now = new Date(),
                                     _start = now.getTime(),
                                     elapsed = init || 0;
-                                console.log("starting quickscenario timer", init);
                                 _timer.set("display", false);
                                 _timer.set("timer", elapsed);
                                 // make sure current step is ongoing before restarting timer

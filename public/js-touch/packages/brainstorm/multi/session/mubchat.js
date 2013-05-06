@@ -154,7 +154,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         mubChat.setMessage(reason);
                 };
                 
-                mubChat.setMessage = function setMessage(message){
+                mubChat.setMessage = function setMessage(message, arg){
                         var now = new Date().getTime(), msg = chatCDB.get("msg"), id, newMsg, promise = new Promise();
                         switch(message){
                                 case "start":
@@ -166,14 +166,17 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 case "next":
                                         newMsg = {user: "SYS", type: 6, time: now};
                                         break;
+                                case "initStep":
+                                        newMsg = {user: "SYS", type: 5, time:now, arg:arg};
+                                        break;
                                 default:
                                         break;        
                         }
-                        chat.alter("push", {"user": "SYS", "time": now, "type": 4});
+                        chat.alter("push", newMsg);
                         id = chat.getNbItems()-1;
                         document.getElementById("chatmessages").querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
                         
-                        msg.push({"user": "SYS", "time": now, "type": 4});
+                        msg.push(newMsg);
                         chatCDB.set("msg", msg);
                         
                         chatCDB.upload()
@@ -242,6 +245,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                 };
                 
                 mubChat.leave = function leave(){
+                        console.log("participant leaving chat");
                         var promise = new Promise(),
                             users = chatCDB.get("users");
                         mubChat.setMessage("leave")

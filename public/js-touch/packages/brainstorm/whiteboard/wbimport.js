@@ -5,12 +5,13 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise", "Camera"],
-        function(Widget, Map, Config, Model, Event, Utils, Store, Promise, Camera){
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise", "cordova"],
+        function(Widget, Map, Config, Model, Event, Utils, Store, Promise, cordova){
                 
            return function ImportConstructor($store, $exit){
              
                 var _widget = new Widget(),
+                    Camera = cordova.require("cordova/plugin/Camera"),
                     _labels = Config.get("labels"),
                     _reader = new FileReader(),
                     _progress = new Store({"status": null}),

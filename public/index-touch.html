@@ -22,20 +22,37 @@
   	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/newstyle-ios.css">
   	<script type="text/javascript" src="cordova-2.5.0-min.js" charset="utf-8"></script>
   	<script type="text/javascript" charset="utf-8">
-        
-        function onLoad(){
-        	// Wait for Cordova to load
-        	//
-        	console.log("listening for cordova event");
-        	document.addEventListener("deviceready", onDeviceReady, true);	
-        }
-        
-        function onDeviceReady() {
+  	
+  	var ideafy = {
+    	// Application Constructor
+    	initialize: function() {
+        	this.bindEvents();
+    	},
+    	// Bind Event Listeners
+    	//
+    	// Bind any events that are required on startup. Common events are:
+    	// 'load', 'deviceready', 'offline', and 'online'.
+   		 bindEvents: function() {
+        	document.addEventListener('deviceready', this.onDeviceReady, false);
+    	},
+    	// deviceready Event Handler
+    	//
+    	// The scope of 'this' is the event. In order to call the 'receivedEvent'
+    	// function, we must explicity call 'app.receivedEvent(...);'
+    	onDeviceReady: function() {
+        	app.receivedEvent('deviceready');
+    	},
+    	// Update DOM on a Received Event
+    	receivedEvent: function() {
         	var app = document.createElement('script');
             app.setAttribute("data-main", "js-touch/build");
             app.setAttribute("src", "js-touch/libs/require.js");
-            document.head.appendChild(app);
-        }
+            document.head.appendChild(app);	
+    	}
+	};
+	
+	ideafy.initialize();
+	
 </script>
 </head>
 <body onload="onLoad()" data-stack="destination" data-event="selector:.pressed-btn, touchstart, press; selector:.pressed-btn, touchend, release; listen: orientationchange, forceLandscape">

@@ -310,12 +310,12 @@ define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Eve
                 msgDetailUI.checkSessionStatus = function checkSessionStatus(sid){
                         var cdb = new CouchDBView();
                         cdb.setTransport(transport);
-                        cdb.unsync();
-                        cdb.sync(Config.get("db"), "library", "_view/boardroom", {key: '"'+sid+'"'}).then(function(){
-                                if (cdb.getNbItems()){
+                        cdb.sync(Config.get("db"), sid).then(function(){
+                                if (cdb.get("status") === "waiting"){
                                         message.set("sessionStatus", "waiting");
                                 }
                                 else{message.set("sessionStatus", "unavailable");}
+                                cdb.unsync();
                          }, function(error){alert(error);});       
                 };
                 

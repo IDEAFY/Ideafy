@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise", "cordova/plugin/Camera"],
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise", "Camera"],
         function(Widget, Map, Config, Model, Event, Utils, Store, Promise, Camera){
                 
            return function ImportConstructor($store, $exit){

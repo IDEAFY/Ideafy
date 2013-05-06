@@ -294,7 +294,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // INIT SCENARIO
                         // Initializing the muscenario UI
-                        _widget.reset = function reset(sip){
+                        _widget.reset = function reset(replay){
+                                // retrieve chat document
+                                if ($session.get("chat")[1]){
+                                        chatUI.reset($session.get("chat")[1]);
+                                }
+                                
                                 // reset all tools and status indicators
                                 _tools.reset({"cardpopup":{"char":false, "context":false, "problem":false}},{"postit": "inactive"},{"import": "inactive"},{"drawing": "inactive"},{"ready": false},{"showstory": false},{"shownext" : false},{"readonly" : false});
                                 
@@ -372,6 +377,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // get session id and pass it to Whiteboard
                         $session.watchValue("_id", function(sid){
                                 _wb.setSessionId(sid);        
+                        });
+                        
+                        // reset chatUI
+                        $session.watchValue("chat", function(arr){
+                                if (arr.length === 3){
+                                        chatUI.reset(arr[2]);
+                                }        
                         });
                         
                         // upload whiteboard content to database as soon as it is updated

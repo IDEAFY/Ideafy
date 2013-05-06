@@ -139,6 +139,11 @@
 </div>
 <script type="text/javascript" charset="utf-8">
         
+        // Wait for Cordova to load
+        //
+        console.log("before adding cordova device ready");
+        document.addEventListener("deviceready", onDeviceReady, true);
+        
         function onDeviceReady() {
         	console.log("device ready");
             var app = document.createElement('script');
@@ -147,10 +152,6 @@
             document.head.appendChild(app);
         }
         
-        // Wait for Cordova to load
-        //
-        console.log("before qdding cordova device ready");
-        document.addEventListener("deviceready", onDeviceReady, true);
         
 </script>
 </body>

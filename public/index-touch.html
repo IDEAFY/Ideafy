@@ -140,7 +140,7 @@
 <script type="text/javascript" charset="utf-8">
         
         function onDeviceReady() {
-        	console.log("device reqdy");
+        	console.log("device ready");
             var app = document.createElement('script');
             app.setAttribute("data-main", "js-touch/build");
             app.setAttribute("src", "js-touch/libs/require.js");
@@ -150,7 +150,7 @@
         // Wait for Cordova to load
         //
         console.log("before qdding cordova device ready");
-        document.addEventListener("deviceready", onDeviceReady, false);
+        document.addEventListener("deviceready", onDeviceReady, true);
         
 </script>
 </body>

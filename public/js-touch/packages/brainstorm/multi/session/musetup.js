@@ -506,33 +506,42 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         };
                         
                         $session.watchValue("drawn_char", function(val){
-                                _widget.updateDrawnCard("char", val);       
+                                val && _widget.updateDrawnCard("char", val);       
                         });
                         
                         $session.watchValue("drawn_context", function(val){
-                                _widget.updateDrawnCard("context", val);       
+                                val && _widget.updateDrawnCard("context", val);       
                         });
                         
                         $session.watchValue("drawn_problem", function(val){
-                                _widget.updateDrawnCard("problem", val);       
+                                val && _widget.updateDrawnCard("problem", val);       
                         });
                         
                         $session.watchValue("selected_char", function(val){
-                                var selChar = _selection.get("char");
-                                selChar.selected = val;
-                                _selection.set("char", selChar);       
+                                var selChar;
+                                if (val){
+                                        selChar = _selection.get("char");
+                                        selChar.selected = val;
+                                        _selection.set("char", selChar);
+                                }       
                         });
                         
                         $session.watchValue("selected_context", function(val){
-                                var selCtx = _selection.get("context");
-                                selCtx.selected = val;
-                                _selection.set("context", selCtx);       
+                                var selCtx;
+                                if (val){
+                                        selCtx = _selection.get("context");
+                                        selCtx.selected = val;
+                                        _selection.set("context", selCtx);
+                                }       
                         });
                         
                         $session.watchValue("selected_problem", function(val){
-                                var selPb = _selection.get("problem");
-                                selPb.selected = val;
-                                _selection.set("problem", selPb);      
+                                var selPb;
+                                if (val){
+                                        selPb= _selection.get("problem");
+                                        selPb.selected = val;
+                                        _selection.set("problem", selPb);
+                                }     
                         });
                         
                         // display timer once the step is complete

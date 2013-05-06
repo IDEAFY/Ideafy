@@ -403,19 +403,30 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 }        
                         });
                         
-                        // upload whiteboard content to database as soon as it is updated
+                        // upload whiteboard content to database as soon as it is updated locally
                         ["added", "deleted", "updated"].forEach(function(change){
+                                console.log("local change");
                                 _wbContent.watch(change, function(){
                                         
                                         // avoid upload if $session is already up-to-date (e.g. replay)
-                                        if (JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
+                                        if ($session.get("scenarioWB") !== _wbContent.getNbItems() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
                                                 $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
                                                 $session.upload();
+                                        }
+                                        else{
+                                                console.log("no upload required");
                                         }
                                         
                                         // toggle ready button
                                         (_wbContent.getNbItems() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);     
                                 });  
+                        });
+                        
+                        // uopdate local whiteboard content as soon as it is updated in the database
+                        $session.watchValue("scenarioWB", function(content){
+                                if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
+                                        _wbContent.reset(content);       
+                                }
                         });
                         
                         // watch contents of scenario and display next button if ready

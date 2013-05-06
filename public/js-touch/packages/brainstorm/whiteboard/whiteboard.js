@@ -14,9 +14,7 @@ define(["Amy/Stack-plugin", "./wbdefault", "./wbmain", "./wbpostit", "./wbimport
                             _stack = this;
                             
                         this.selectScreen = function selectScreen(name, param){
-                                if (param){
-                                        _stack.getStack().get(name).reset(param);
-                                }
+                                _stack.getStack().get(name).reset(param);
                                 _stack.getStack().show(name);
                         };
                         

@@ -125,7 +125,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         
                 // initiator decides to cancel the session
                 _widget.cancelSession = function cancelSession(){
-                        var countdown = 10000; // better to pick a high number and cancel earlier if all actions are finished
+                        var countdown = 5000; // better to pick a high number and cancel earlier if all actions are finished
                         _widget.displayInfo("deleting", countdown).then(function(){
                                 $exit();
                         });      

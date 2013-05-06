@@ -534,7 +534,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         selCtx = _selection.get("context");
                                         selCtx.selected = val;
                                         _selection.set("context", selCtx);
-                                         $data.set("contexts", _cards.get("char"));
+                                         $data.set("contexts", _cards.get("context"));
                                 }       
                         });
                         
@@ -544,7 +544,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         selPb= _selection.get("problem");
                                         selPb.selected = val;
                                         _selection.set("problem", selPb);
-                                         $data.set("problems", _cards.get("char"));
+                                         $data.set("problems", _cards.get("problem"));
                                 }     
                         });
                         

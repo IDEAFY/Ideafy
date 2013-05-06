@@ -2825,6 +2825,7 @@ textarea.solution {
 #muscenario .whiteboard{
     width: 717px;
     height: 380px;
+    margin-top: 15px;
 }
 
 .whiteboard .defaultcontent{
@@ -2875,6 +2876,11 @@ textarea.solution {
     background: white;
     border-radius: 5px;
     -webkit-box-shadow: 0px 3px 5px 1px rgba(23,41,48,0.4);
+}
+
+#musession .wbpostit{
+    height: 270px;
+    margin-top: 20px;
 }
 
 .import .wbpostit{
@@ -2961,6 +2967,10 @@ textarea.solution {
     background-repeat: no-repeat;
 }
 
+#musession .postit{
+    padding-top:5px;
+}
+
 .postit textarea{
     font-size: 16px;
     text-align: center;       
@@ -3009,6 +3019,10 @@ textarea.solution {
     margin-bottom: 5px;
     word-wrap: break-word;
     overflow-y: scroll;
+}
+
+#musession .wb-item{
+    margin-top: 5px;
 }
 
 .wb-item.postit{

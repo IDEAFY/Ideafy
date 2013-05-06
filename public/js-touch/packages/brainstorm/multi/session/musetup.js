@@ -523,6 +523,8 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         selChar = _selection.get("char");
                                         selChar.selected = val;
                                         _selection.set("char", selChar);
+                                        // update session data store (used in further steps)
+                                        $data.set("characters", _cards.get("char"));
                                 }       
                         });
                         
@@ -532,6 +534,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         selCtx = _selection.get("context");
                                         selCtx.selected = val;
                                         _selection.set("context", selCtx);
+                                         $data.set("contexts", _cards.get("char"));
                                 }       
                         });
                         
@@ -541,6 +544,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         selPb= _selection.get("problem");
                                         selPb.selected = val;
                                         _selection.set("problem", selPb);
+                                         $data.set("problems", _cards.get("char"));
                                 }     
                         });
                         

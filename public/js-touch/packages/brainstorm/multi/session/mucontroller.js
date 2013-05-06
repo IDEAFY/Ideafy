@@ -386,9 +386,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         _steps.update(_id+1, "status", "ongoing");
                                         // initialize new step
                                         _nextui.reset();
-                                        _widget.createChat(_id+1);
                                         _session.set("step", _newStep);
-                                        _session.upload().then(function(){
+                                        // session upload occurs in the create chat function
+                                        _widget.createChat(_id+1).then(function(){
                                                 if (_nextui.initTimer) {
                                                         _nextui.initTimer();
                                                 }

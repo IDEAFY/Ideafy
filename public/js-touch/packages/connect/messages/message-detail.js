@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply"],
-        function(Widget, Config, Store, CouchDBView, Model, Event, Avatar, Utils, Reply){
+define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply"],
+        function(Widget, Config, Store, CouchDBDocument, Model, Event, Avatar, Utils, Reply){
                 
            return function MessageDetailConstructor($close){
            
@@ -309,7 +309,7 @@ define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Eve
                 
                 // a function to check the status of a multi-user session user has been invited to
                 msgDetailUI.checkSessionStatus = function checkSessionStatus(sid){
-                        var cdb = new CouchDBView();
+                        var cdb = new CouchDBDocument();
                         cdb.setTransport(transport);
                         cdb.sync(Config.get("db"), sid).then(function(){
                                 console.log(cdb.get("status"));

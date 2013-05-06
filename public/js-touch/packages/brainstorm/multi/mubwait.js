@@ -352,9 +352,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 participants.reset(array);        
                         });
                         
-                        CHAT = chatUI.getModel();
-                        MUWSPIN = spinner;
-                        
                         return widget;
                 
                 };

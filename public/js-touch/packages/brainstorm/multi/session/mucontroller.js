@@ -230,6 +230,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }
                         cdb.set("msg", [{user: "SYS", "type": 5, "arg": arg, "time": now}]);
                         
+                        console.log(step, arg);
                         // complete chat template
                         cdb.set("sid", _session.get("_id"));
                         cdb.set("lang", _session.get("lang"));
@@ -240,22 +241,21 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                          // set id
                         id = cdb.get("sid")+"_"+step;
                         cdb.setTransport(Config.get("transport"));
-                        cdb.sync(Config.get("db"), id);
-                        setTimeout(function(){
-                                cdb.upload()
-                                .then(function(){
-                                        return cdb.unsync();
-                                })
-                                .then(function(){
+                        cdb.sync(Config.get("db"), id)
+                        .then(function(){
+                                return cdb.upload();
+                        })
+                        .then(function(){
                                         var chat = _session.get("chat").concat();
+                                        cdb.unsync();
                                         chat.push(id);
                                         _session.set("chat", chat);
                                         return _session.upload();    
-                                })
-                                .then(function(){
-                                        promise.fulfill();
-                                })
-                        }, 200);
+                        })
+                        .then(function(){
+                                promise.fulfill();
+                        });
+                        
                         return promise;
                 };
                 
@@ -279,7 +279,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 // init exit confirmation UI
                                 confirmUI = new Confirm(_widget.dom);
                                 confirmCallBack = function(decision){
-                                        console.log("callback called, decision : ", decision);
                                         if (!decision){
                                                 confirmUI.hide();
                                         }
@@ -451,9 +450,17 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 // trigger move to the next step for session participants
                 _session.watchValue("step", function(value){
+                        var idx, newStep = _session.get("step");
                         console.log(value);
                         if (_session.get("initiator").id !== _user.get("_id")){
+                                _steps.loop(function(v, i){
+                                        if (v.name === newStep){idx = i;}
+                                });
                                 _stack.getStack().show(value);
+                                _steps.update(idx-1, "currentStep", false);
+                                _steps.update(idx-1, "status", done;
+                                _steps.update(idx, "currentStep", true);
+                                _steps.update(idx, "status", "ongoing");
                         }       
                 });
                    

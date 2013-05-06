@@ -2838,6 +2838,10 @@ textarea.solution {
     text-align: justify;
 }
 
+#muscenario .whiteboard .defaultcontent{
+    margin: 40px;
+}
+
 .whiteboard .defaultcontent strong{
     color: #254066;
 }
@@ -3794,13 +3798,13 @@ li.color-item{
 
 /* quickscenario */
 
-#quickscenario-left{
+#quickscenario-left, #muscenario .scenario-cards{
     padding-top: 93px;
     height: 619px;
     text-align: center;
 }
 
-#quickscenario-left .card{
+#quickscenario-left .card, #muscenario .scenario-cards .card{
     margin: 10px 30px;
 }
 
@@ -6442,7 +6446,7 @@ li.my2q{
     left: 130px;
 }
 
-#musession .sessionchat{
+#muscenario .sessionchat{
     left: 301px;
 }
 

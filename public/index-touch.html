@@ -139,17 +139,19 @@
 </div>
 <script type="text/javascript" charset="utf-8">
         
-        // Wait for Cordova to load
-        //
-        console.log("before adding cordova device ready");
-        document.addEventListener("deviceready", function(){
+        var onDeviceReady = function() {
         	console.log("device ready");
             var app = document.createElement('script');
             app.setAttribute("data-main", "js-touch/build");
             app.setAttribute("src", "js-touch/libs/require.js");
             document.head.appendChild(app);
-        }, false);
-
+        }
+        
+        // Wait for Cordova to load
+        //
+        console.log("before adding cordova device ready");
+        document.addEventListener("deviceready", onDeviceReady, false);
+        
 </script>
 </body>
 </html>

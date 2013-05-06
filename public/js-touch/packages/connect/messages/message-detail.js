@@ -106,6 +106,7 @@ define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Eve
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 showSessionBtn : function(sessionStatus){
+                                        console.log(sessionStatus);
                                         (sessionStatus && sessionStatus === "waiting" && !message.get("joined"))?this.classList.remove("invisible"):this.classList.add("invisible");   
                                 },
                                 setJoinMsg : function(sessionStatus){
@@ -311,6 +312,7 @@ define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Eve
                         var cdb = new CouchDBView();
                         cdb.setTransport(transport);
                         cdb.sync(Config.get("db"), sid).then(function(){
+                                console.log(cdb.get("status"));
                                 if (cdb.get("status") === "waiting"){
                                         message.set("sessionStatus", "waiting");
                                 }

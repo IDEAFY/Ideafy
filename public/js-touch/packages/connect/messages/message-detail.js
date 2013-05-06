@@ -344,7 +344,7 @@ define(["OObject", "service/config", "Store", "CouchDBView", "Bind.plugin", "Eve
                         cxrConfirm.reset({"response":""});
                         message.reset(msg);
                         msgReplyUI.reset(msg, "reply");
-                        
+                        console.log(msg);
                         // check if message type is a session invite and if so check session status
                         if (message.get("type") === "INV"){
                                 if (message.get("joined")){

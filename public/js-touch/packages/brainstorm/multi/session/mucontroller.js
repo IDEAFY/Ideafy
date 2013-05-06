@@ -458,7 +458,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 });
                                 _stack.getStack().show(value);
                                 _steps.update(idx-1, "currentStep", false);
-                                _steps.update(idx-1, "status", done;
+                                _steps.update(idx-1, "status", done);
                                 _steps.update(idx, "currentStep", true);
                                 _steps.update(idx, "status", "ongoing");
                         }       

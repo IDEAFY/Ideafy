@@ -231,11 +231,13 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                             pos= arr.length,
                             now = new Date().getTime(),
                             msg = chatCDB.get("msg");
-                                
+                        
+                        if (chatCDB.get("_id").search("_0")>-1){
+                                msg.push({user: "SYS", time: now, type: 1, arg: pos});
+                                chatCDB.set("msg", msg);        
+                        }        
                         arr.push({"username": user.get("username"), "userid": user.get("_id")});
-                        msg.push({user: "SYS", time: now, type: 1, arg: pos});
                         chatCDB.set("users", arr);
-                        chatCDB.set("msg", msg);
                         chatCDB.upload().then(function(){
                                 position = pos;
                                 console.log(chatCDB.get("_rev"));

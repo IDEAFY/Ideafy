@@ -20,18 +20,21 @@
 	<meta name="viewport" content="user-scalable=no,width=device-width, initial-scale=1.0">
   	<link rel="stylesheet" href="css/login-min.css">
   	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/newstyle-ios.css">
-  	<script type="text/javascript" src="cordova-2.5.0-min.js" charset="utf-8"></script>
+  	<script type="text/javascript" src="cordova-2.5.0.js" charset="utf-8"></script>
   	<script type="text/javascript" charset="utf-8">
-  	
-  	
         
         function onLoad(){
         	// Wait for Cordova to load
         	//
+        	document.addEventListener("deviceready", onDeviceReady, false);
+        	cordova.fireDocumentEvent("deviceready");	
+        }
+        
+        function onDeviceReady() {
         	var app = document.createElement('script');
             app.setAttribute("data-main", "js-touch/build");
             app.setAttribute("src", "js-touch/libs/require.js");
-            document.head.appendChild(app);	
+            document.head.appendChild(app);
         }
 </script>
 </head>

@@ -80,7 +80,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }),
                                 "quickscenariotimer" : new Model(_timer, {
                                       setTime: function(timer){
-                                                      this.innerHTML = Utils.formatDuration(timer);       
+                                                      if (timer) {this.innerHTML = Utils.formatDuration(timer);}      
                                       },
                                       displayTimer: function(display){
                                               (display) ? this.classList.add("showtimer") : this.classList.remove("showtimer");
@@ -331,10 +331,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }
                                 // retrieve time already spent on this step and init/display timer as appropriate
                                 if ($session.get("elapsedTimers").quickscenario){
-                                        _elapsed = $session.get("elapsedTimers").quickscenario || 0;
+                                        _elapsed = $session.get("elapsedTimers").quickscenario;
                                         _timer.set("timer", _elapsed);
-                                        (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
                                 }
+                                (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
                          };
                          
                          _widget.initTimer = function(init){
@@ -390,6 +390,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         (_scenario.get("title") && _scenario.get("story") && _scenario.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
                         
+                        TIM = _timer;
                         // Return
                         return _widget;
                 };     

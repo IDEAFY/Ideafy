@@ -3149,8 +3149,8 @@ textarea.solution {
 
 .pencil, .erase, .clear, .canceldrawing, .deletedrawing, .savedrawing{
     width:60px;
-    height:39px;
-    line-height:39px;
+    height:42px;
+    line-height:42px;
     background-repeat: no-repeat;
     background-position:center center;
     background-size: 20px 20px;

@@ -311,9 +311,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 _steps.update(i, "status", "done"); 
                                                 if (v.name === step){
                                                         current = i;
+                                                        _steps.update(i, "currentStep", true);
                                                         // reset current step UI
                                                         _stack.getStack().get(step).reset(replay);
-                                                        _steps.update(i, "currentStep", true);
                                                         (v.name === "muwrapup") ? _steps.update(i, "status", "done") : _steps.update(i, "status", "ongoing");
                                                 }      
                                         }      
@@ -459,7 +459,11 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _steps.loop(function(v, i){
                                         if (v.name === newStep){idx = i;}
                                 });
+                                // init and show new step UI
+                                _stack.getStack().get(value).reset();}
                                 _stack.getStack().show(value);
+                                
+                                // update progress bar and status
                                 _steps.update(idx-1, "currentStep", false);
                                 _steps.update(idx-1, "status", done);
                                 _steps.update(idx, "currentStep", true);

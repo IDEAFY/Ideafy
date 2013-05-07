@@ -213,7 +213,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
                                 if (isNaN(position) && !chatCDB.get("readonly")){
                                         mubChat.joinChat().then(function(){
-                                                chat.reset(chatCDB.get("msg"));
                                                 spinner.stop();       
                                         });        
                                 }
@@ -241,7 +240,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         chatCDB.set("users", arr);
                         chatCDB.upload().then(function(){
                                 position = pos;
-                                console.log(chatCDB.get("_rev"));
                                 promise.fulfill();
                         });
                         return promise;

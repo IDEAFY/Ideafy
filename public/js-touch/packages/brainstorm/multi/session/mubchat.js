@@ -234,7 +234,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         
                         if (chatCDB.get("_id").search("_0")>-1){
                                 msg.push({user: "SYS", time: now, type: 1, arg: pos});
-                                chatCDB.set("msg", msg);        
+                                chatCDB.set("msg", msg); 
+                                chat.reset(msg);       
                         }        
                         arr.push({"username": user.get("username"), "userid": user.get("_id")});
                         chatCDB.set("users", arr);

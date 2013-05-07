@@ -35,7 +35,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                             _currentPopup = "", // which card if any is magnified
                             _start =  null, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 335, left: 410}).spin(),
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 337, left: 490}).spin(),
                             spinnerOk = {};
                             // deduct 20px from position shown in navigator
                             

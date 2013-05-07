@@ -126,19 +126,18 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         document.getElementById("postpic").classList.remove("invisible");
                                         node.classList.remove("pressed");
                                 }, 1000);
-                        };
+                        }
                         
                         function onFail(message){
                                 alert("error: "+message);
-                        };
+                        }
                         
                         navigator.camera.getPicture(onSuccess, onFail, _options);       
                 };
                 
                 _widget.picturePreview = function(event, node){
-                        var source = navigator.camera.PictureSourceType.PHOTOLIBRARY;
-                        
-                        var _img = new Image(),
+                        var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
+                            _img = new Image(),
                             _options = {quality:50, correctOrientation: true, sourceType: source};
                         
                         function onSuccess(imageData){
@@ -148,11 +147,11 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         document.getElementById("postpic").classList.remove("invisible");
                                         node.classList.remove("pressed");
                                 }, 1000);
-                        };
+                        }
                         
                         function onFail(message){
                                 alert("error: "+message);
-                        };
+                        }
                         
                         navigator.camera.getPicture(onSuccess, onFail, _options);
                                 

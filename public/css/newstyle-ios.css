@@ -2822,7 +2822,7 @@ textarea.solution {
     margin-top: 20px;    
 }
 
-#muscenario .whiteboard{
+#muscenario .whiteboard, #muidea .whiteboard{
     width: 717px;
     height: 380px;
     margin-top: 15px;
@@ -2839,7 +2839,7 @@ textarea.solution {
     text-align: justify;
 }
 
-#muscenario .whiteboard .defaultcontent{
+#muscenario .whiteboard .defaultcontent, #muidea .whiteboard .defaultcontent{
     margin: 40px;
 }
 
@@ -3143,6 +3143,10 @@ textarea.solution {
         -webkit-box-shadow: 0 0 5px 1px gray;
 }
 
+#muscenario .wbdrawing, #muscenario .drawingcanvas, #muscenario .drawingtools, #muidea .wbdrawing, #muidea .drawingcanvas, #muidea .drawingtools{
+    height: 380px;
+}
+
 .pencil, .erase, .clear, .canceldrawing, .deletedrawing, .savedrawing{
     width:60px;
     height:39px;
@@ -3151,6 +3155,13 @@ textarea.solution {
     background-position:center center;
     background-size: 20px 20px;
 }
+
+#muscenario .pencil, #muscenario .erase, #muscenario .clear, #muscenario .canceldrawing, #muscenario .deletedrawing, #muscenario .savedrawing, #muidea .pencil, #muidea .erase, #muidea .clear, #muidea .canceldrawing, #muidea .deletedrawing, #muidea .savedrawing{
+    height: 30px;
+    line-height: 30px;
+    background-size: 15px 15px;
+}
+
 .pencil, .erase, .clear, .canceldrawing, .deletedrawing{
     border-bottom: 1px solid white;
 }
@@ -3160,6 +3171,10 @@ textarea.solution {
     background-repeat: no-repeat;
     background-position:center center;
     background-size: 20px 20px; 
+}
+
+#muscenario .pencil.selected, #muscenario .erase.selected, #muidea .pencil.selected, #muidea .erase.selected{
+    background-size: 15px 15px;
 }
 
 .drawinglabel{
@@ -3204,6 +3219,10 @@ textarea.solution {
 
 }
 
+#muscenario .vertical, #muidea .vertical{
+    top: 145px;
+}
+
 .vertical::-webkit-slider-thumb {
      -webkit-appearance: none;
     background: url('../img/brainstorm/rulerArrow.png') no-repeat left 30px;
@@ -3236,7 +3255,7 @@ circle.stroke {
     border-radius: 3px;
 }
 
-#pencilcolors, #pencilbgcolors{
+.pencilcolors, .pencilbgcolors{
     position:absolute;
     left: 346px;
     padding: 15px 15px 15px 0px;
@@ -3248,12 +3267,20 @@ circle.stroke {
     border-bottom-right-radius: 5px;
 }
 
-#pencilcolors{
+.pencilcolors{
     top: 253px;
 }
 
-#pencilbgcolors{
+#muscenario .pencilcolors, #muidea .pencilcolors{
+    top: 206px;
+}
+
+.pencilbgcolors{
     top: 315px;
+}
+
+#muscenario .pencilbgcolors, #muidea .pencilbgcolors{
+    top: 266px;
 }
 
 li.color-item{
@@ -3302,6 +3329,10 @@ li.color-item{
     border-bottom-left-radius:10px; 
 }
 
+#muscenario .savedrawing, #muidea .savedrawing{
+    height: 42px;
+}
+
 .canceldrawing.selected, .deletedrawing.selected{
     -webkit-box-shadow: inset 0 0 10px 1px rgba(255,255,255,0.6);
 }
@@ -3311,6 +3342,10 @@ li.color-item{
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
     color: black;
     font-size: 12px;
+}
+
+#muscenario .canceldrawing, #muscenario .deletedrawing, #muidea .canceldrawing, #muidea .deletedrawing{
+    background-size: 10px 10px;
 }
 
 #pencilcolor, #pencilbgcolor{
@@ -3334,7 +3369,7 @@ li.color-item{
     padding: 30px 0px;
 }
 
-#muscenario .toolbox{
+#muscenario .toolbox, #muidea .toolbox{
     float:left;
     width: 132px;
 }
@@ -3345,7 +3380,7 @@ li.color-item{
     margin: 0px 15px;
     float: left;
 }
-#muscenario .toolbox-button{
+#muscenario .toolbox-button, #muidea .toolbox-button{
     float: none;
     margin-left: 20px;
     margin-top: 30px;
@@ -3822,13 +3857,13 @@ li.color-item{
 
 /* quickscenario */
 
-#quickscenario-left, #muscenario .scenario-cards{
+#quickscenario-left, #muscenario .scenario-cards, #muidea .idea-cards{
     padding-top: 93px;
     height: 619px;
     text-align: center;
 }
 
-#muscenario-left{
+#muscenario-left, #muidea-left{
     float: left;
     width: 167px;
     height: 712px;
@@ -3836,13 +3871,12 @@ li.color-item{
     overflow-x: hidden;
 }
 
-#quickscenario-left .card, #muscenario .scenario-cards .card{
+#quickscenario-left .card, #muscenario .scenario-cards .card, #muidea .idea-cards .card{
     margin: 10px 30px;
 }
 
-#muscenario .scenario-cards.folded{
+#muscenario .scenario-cards.folded, #muidea .idea-cards.folded{
     width:30px;
-    -webkit-transition:width 0.2s ease-in-out 0;
 }
 
 #quickscenario-right{
@@ -6487,7 +6521,7 @@ li.my2q{
     left: 218px;
 }
 
-#muscenario .sessionchat{
+#muscenario .sessionchat, #muidea .sessionchat{
     left: 301px;
 }
 

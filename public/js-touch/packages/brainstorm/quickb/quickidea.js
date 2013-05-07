@@ -431,7 +431,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 
                                 // retrieve time already spent on this step and init/display timer as appropriate
                                 if ($session.get("elapsedTimers").quickidea){
-                                        _elapsed = $session.get("elapsedTimers").quickidea;
+                                        _elapsed = $session.get("elapsedTimers").quickidea || 0;
                                         _timer.set("timer", _elapsed);
                                         (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
                                 }

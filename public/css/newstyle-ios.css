@@ -2925,21 +2925,22 @@ textarea.solution {
 .importbutton{
     margin: 25px;
     border-radius: 50px;
-    background: white;
-    border: 1px solid #E6E6E6;
+    background: #657b99;
+    border: 2px solid whitesmoke;
     height: 100px;
     width: 100px;
     background-repeat: no-repeat;
-    background-size: 80px 80px;
     background-position: center center;
 }
 
 .import .takepic{
-    background-image:url('img/decks/photoBy14.png');
+    background-image:url('../img/decks/photoBy14.png');
+    background-size: 40px;
 }
 
 .import .choosepic{
-    background-image:url('img/disableLibrary.png');
+    background-image:url('../img/decks/source14.png');
+    background-size: 60px;
 }
 
 .importbutton .pressed{

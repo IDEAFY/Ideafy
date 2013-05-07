@@ -156,6 +156,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         
                         function onFail(message){
                                 alert("error: "+message);
+                                node.classList.remove("pressed");
                         }
                         
                         navigator.camera.getPicture(onSuccess, onFail, _options);

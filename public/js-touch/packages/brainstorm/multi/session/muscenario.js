@@ -312,8 +312,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // Initializing the muscenario UI
                         _widget.reset = function reset(replay){
                                 // retrieve chat document
-                                if ($session.get("chat")[1]){
-                                        chatUI.reset($session.get("chat")[1]);
+                                if ($session.get("chat")[2]){
+                                        chatUI.reset($session.get("chat")[2]);
                                 }
                                 
                                 // reset all tools and status indicators
@@ -325,8 +325,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if scenario is present show write up interface and board in readonly mode
-                                if ($session.get("scenario").length){
-                                        
+                                if ($session.get("scenario").length){                                        
                                         // set _next to screen
                                         _next="screen";
                                         _tools.set("ready", false);

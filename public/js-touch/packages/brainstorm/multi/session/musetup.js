@@ -471,8 +471,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         // initialize musetup step
                         _widget.init = function init(){
                                 
-                                // reset timer
-                                _start = null;
                                 // reset cards
                                 _cards.reset({
                                         char : {id:"",title:_labels.get("char"), pic: ""},

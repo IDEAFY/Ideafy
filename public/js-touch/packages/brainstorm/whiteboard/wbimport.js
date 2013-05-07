@@ -153,6 +153,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 alert("error: "+message);
                         }
                         
+                        console.log("before calling getPicture");
                         navigator.camera.getPicture(onSuccess, onFail, _options);
                                 
                 };

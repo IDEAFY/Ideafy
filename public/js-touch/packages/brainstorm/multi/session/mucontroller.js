@@ -460,7 +460,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         if (v.name === newStep){idx = i;}
                                 });
                                 // init and show new step UI
-                                _stack.getStack().get(value).reset();}
+                                _stack.getStack().get(value).reset();
                                 _stack.getStack().show(value);
                                 
                                 // update progress bar and status

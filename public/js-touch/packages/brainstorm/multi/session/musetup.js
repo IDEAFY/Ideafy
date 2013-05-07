@@ -14,7 +14,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         var _widget = new Widget(),
                             _popupUI, chatUI = new Chat(),
                             _labels = Config.get("labels"),
-                            _user = Config.get("user"),
                             _transport = Config.get("transport"), _db = Config.get("db"), _user = Config.get("user"),
                             _deckStack = {}, // the cards remaining in the stack after each draw
                             _timer = new Store({"timer":null, "display":false}),
@@ -58,7 +57,9 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 }),
                                 "musetuptimer" : new Model(_timer, {
                                       setTime: function(timer){
-                                                      this.innerHTML = Utils.formatDuration(timer);       
+                                                      if (timer){
+                                                              this.innerHTML = Utils.formatDuration(timer);
+                                                       }      
                                       },
                                       displayTimer: function(display){
                                               (display) ? this.classList.add("showtimer") : this.classList.remove("showtimer");
@@ -470,8 +471,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         // initialize musetup step
                         _widget.init = function init(){
                                 
-                                // reset timer
-                                _start = null;
                                 // reset cards
                                 _cards.reset({
                                         char : {id:"",title:_labels.get("char"), pic: ""},

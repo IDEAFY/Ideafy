@@ -80,7 +80,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }),
                                 "quickideatimer" : new Model(_timer, {
                                       setTime: function(timer){
-                                                      this.innerHTML = Utils.formatDuration(timer);       
+                                                      if (timer) {this.innerHTML = Utils.formatDuration(timer);}       
                                       },
                                       displayTimer: function(display){
                                               (display) ? this.classList.add("showtimer") : this.classList.remove("showtimer");
@@ -431,10 +431,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 
                                 // retrieve time already spent on this step and init/display timer as appropriate
                                 if ($session.get("elapsedTimers").quickidea){
-                                        _elapsed = $session.get("elapsedTimers").quickidea || 0;
+                                        _elapsed = $session.get("elapsedTimers").quickidea;
                                         _timer.set("timer", _elapsed);
-                                        (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
                                 }
+                                (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
                          };
                          
                          _widget.initTimer = function(init){

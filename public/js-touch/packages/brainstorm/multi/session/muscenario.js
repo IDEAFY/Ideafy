@@ -15,6 +15,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                             _popupUI, _currentPopup,
                             chatUI = new Chat(),
                              _labels = Config.get("labels"),
+                             _user = Config.get("user"),
                              _char = new Store(), _context = new Store(), _problem = new Store(),
                              _cards = new Store({
                                      "char": {"id":"", "title": "", "pic": ""},
@@ -138,7 +139,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 });      
                                         });
                                 }
-                                else $next("muscenario");
+                                else {
+                                        $next("muscenario");
+                                }
                         };
                         
                         // move to previous screen
@@ -154,7 +157,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // toggle timer
                         _widget.toggleTimer = function(event,node){
-                                _timer.set("display", !_timer.get("display"));        
+                                if ($session.get("initiator").id === _user.get("_id")){
+                                        _timer.set("display", !_timer.get("display"));
+                                }       
                         };
                         
                         // function called when selecting one of the scenario tools
@@ -307,8 +312,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // Initializing the muscenario UI
                         _widget.reset = function reset(replay){
                                 // retrieve chat document
-                                if ($session.get("chat")[1]){
-                                        chatUI.reset($session.get("chat")[1]);
+                                if ($session.get("chat")[2]){
+                                        chatUI.reset($session.get("chat")[2]);
                                 }
                                 
                                 // reset all tools and status indicators
@@ -320,8 +325,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if scenario is present show write up interface and board in readonly mode
-                                if ($session.get("scenario").length){
-                                        
+                                if ($session.get("scenario").length){                                        
                                         // set _next to screen
                                         _next="screen";
                                         _tools.set("ready", false);
@@ -349,10 +353,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         _next="step";     
                                 }
                                 // retrieve time already spent on this step and init/display timer as appropriate
-                                if ($session.get("elapsedTimers").muscenario){
+                                if ($session.get("elapsedTimers").muscenario ){
                                         _elapsed = $session.get("elapsedTimers").muscenario;
                                         _timer.set("timer", _elapsed);
-                                        (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
+                                        if (_next === "screen"){
+                                                _timer.set("display", true);
+                                        }
+                                        else if ($session.get("initiator").id === _user.get("_id")){
+                                                _widget.initTimer(_elapsed);
+                                        }
                                 }
                                 
                                 // automatically fold setup cards after a short period of time
@@ -435,6 +444,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         });
                         
                         SCCHAT = chatUI;
+                        TOOLS = _tools;
+                        WBSC = _wbContent;
                         
                         // Return
                         return _widget;

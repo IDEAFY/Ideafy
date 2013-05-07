@@ -21,19 +21,25 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                  */
                         
                 formatDuration : function(duration){
-                        var d = Math.round(duration/1000),
-                            days = Math.floor(d / 86400),
-                            hrs = Math.floor(d % 86400 / 3600),
-                            min = Math.floor(d % 86400 % 3600 / 60),
-                            sec =  Math.floor(d % 86400 % 3600 % 60),
-                            res;
+                        var d, days, hrs, min, sec, res;
+                        
+                        if (duration){
+                                d = Math.round(duration/1000);
+                                days = Math.floor(d / 86400);
+                                hrs = Math.floor(d % 86400 / 3600);
+                                min = Math.floor(d % 86400 % 3600 / 60);
+                                sec =  Math.floor(d % 86400 % 3600 % 60);
                             
-                            days>0 ? res = days+"d ": res="";
-                            hrs>0 ? res += hrs+":" : res+="";
-                            min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : res+="0:";
-                            sec<10 ? res += "0"+sec : res+= sec;
-                                                
-                            return res;
+                                days>0 ? res = days+"d ": res="";
+                                hrs>0 ? res += hrs+":" : res+="";
+                                min>0 ? res += (hrs>0 && min<10 ? "0":"")+min+":" : res+="0:";
+                                sec<10 ? res += "0"+sec : res+= sec;
+                        }
+                        else {
+                                res = "";
+                        }
+                        
+                        return res;
                 },
                 
                 formatTime : function(time){

@@ -444,6 +444,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         });
                         
                         SCCHAT = chatUI;
+                        TOOLS = _tools;
+                        WBSC = _wbContent;
                         
                         // Return
                         return _widget;

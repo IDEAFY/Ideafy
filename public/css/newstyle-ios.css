@@ -2886,30 +2886,60 @@ textarea.solution {
 .import .wbpostit{
     width: 480px;
     height: 340px;
-    margin-top: 5px;
+    margin-top: 25px;
     padding: 20px 40px;
+}
+
+#muscenario .import .wbpostit, #muidea .import .wbpostit{
+    height: 300px;
+    padding-top: 10px;
 }
 
 .import .postit-cancel{
     margin-top:-35px;
 }
 
-.importbutton{
-    margin: 5px;
-    overflow: hidden;
-    cursor: pointer;
+#muscenario .import .postit-cancel, #muidea .import .postit-cancel{
+    margin-top:-25px;    
+}
+
+#importbuttons{
+    margin-top: 100px;
+    text-align: center;
+}
+
+#importbuttons li{
     display: inline-block;
-    border-radius: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    background: white;
+    width: 152px;
+    height: 202px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#importbuttons label{
     font-family: Helvetica;
     font-size: 14px;
-    color: #292929;
-    text-align: center;
+    color: #292929;    
+}
+
+.importbutton{
+    margin: 25px;
+    border-radius: 50px;
+    background: white;
     border: 1px solid #E6E6E6;
-    height: 30px;
-    line-height: 30px;
+    height: 100px;
+    width: 100px;
+    background-repeat: no-repeat;
+    background-size: 80px 80px;
+    background-position: center center;
+}
+
+.import .takepic{
+    background-image:url('img/decks/photoBy14.png');
+}
+
+.import .choosepic{
+    background-image:url('img/disableLibrary.png');
 }
 
 .importbutton .pressed{

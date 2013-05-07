@@ -145,15 +145,22 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         confirmUI.hide();
                         infoUI.classList.remove("invisible");
                         timer = setInterval(function(){
-                                if (message !== "deleting") {info.set("msg", message);}
-                                else {
-                                        info.set("msg", _labels.get("deletingsession") + timeout/1000 + "s");
+                                switch(message){
+                                        case "deleting":
+                                                info.set("msg", _labels.get("deletingsession") + timeout/1000 + "s");
+                                                break;
+                                        case "participantsleft":
+                                                info.set("msg", _labels.get("participantsleft"));
+                                                break;
+                                        default:
+                                                info.set("msg", message);
+                                                break;      
                                 }
-                                if (timeout <= 0) clearInfo();
+                                if (timeout <= 0) {clearInfo();}
                                 timeout -= 1000;
                         }, 1000);
                         
-                        if (message === "deleting"){
+                        if (message === "deleting" || message === "participantsleft"){
                                 //set session status to "deleted" to notify participants
                                 _session.set("status", "deleted");
                                 _session.upload()
@@ -400,7 +407,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         promise.fulfill();
                                 }
                         }
-                        
                         return promise;       
                    };
                    
@@ -459,6 +465,16 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _steps.update(idx, "currentStep", true);
                                 _steps.update(idx, "status", "ongoing");
                         }       
+                });
+                
+                // end session if there are no more participants
+                _session.watchValue("participants", function(part){
+                        if (part.length === 0 && _session.get("step") !== "muwrapup"){
+                                _widget.displayInfo("participantsleft", 5000)
+                                .then(function(){
+                                        $exit();
+                                })
+                        }                
                 });
                    
                 SESSION = _session;

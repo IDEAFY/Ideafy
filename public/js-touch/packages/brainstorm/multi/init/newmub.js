@@ -332,7 +332,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                 widget.uploadSession().then(function(){
                                         spinner.stop();
                                         node.classList.remove("invisible");
-                                        Config.get("observer").notify("start-mu_session", cdb.get("_id"));
                                         widget.reset();
                                 });
                         }
@@ -409,11 +408,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                 if (cdb.get("mode") === "boardroom"){
                                         error.set("errormsg", labels.get("sendinginvites"));
                                         widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
+                                                Config.get("observer").notify("start-mu_session", cdb.get("_id"));
                                                 promise.fulfill();
                                                 cdb.unsync();
                                         });
                                 }
                                 else {
+                                        Config.get("observer").notify("start-mu_session", cdb.get("_id"));
                                         promise.fulfill();
                                         cdb.unsync();       
                                 }        

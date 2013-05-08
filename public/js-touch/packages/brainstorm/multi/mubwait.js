@@ -99,7 +99,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 chatUI.clear();
                                 session.unsync();
                                 session.reset({});
-                                participants.rest([]);
+                                participants.reset([]);
                                 
                                 // create confirmation UI
                                 confirmCallBack = function(decision){

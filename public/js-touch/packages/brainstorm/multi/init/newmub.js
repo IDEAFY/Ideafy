@@ -332,6 +332,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                 widget.uploadSession().then(function(){
                                         spinner.stop();
                                         node.classList.remove("invisible");
+                                        Config.get("observer").notify("start-mu_session", cdb.get("_id"));
+                                        widget.reset();
                                 });
                         }
                 };
@@ -408,16 +410,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                         error.set("errormsg", labels.get("sendinginvites"));
                                         widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
                                                 promise.fulfill();
-                                                Config.get("observer").notify("start-mu_session", cdb.get("_id"));
                                                 cdb.unsync();
-                                                        widget.reset();
                                         });
                                 }
                                 else {
                                         promise.fulfill();
-                                        Config.get("observer").notify("start-mu_session", cdb.get("_id"));
-                                        cdb.unsync();
-                                        widget.reset();        
+                                        cdb.unsync();       
                                 }        
                         });
                         return promise;

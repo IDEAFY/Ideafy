@@ -20,16 +20,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                      "context": {"id":"", "title": "", "pic": ""},
                                      "problem": {"id":"", "title": "", "pic": ""}
                                      }),
-                             _tools = new Store(
-                                     {"cardpopup":{"char":false, "context":false, "problem":false}},
-                                     {"postit": "inactive"},
-                                     {"import": "inactive"},
-                                     {"drawing": "inactive"},
-                                     {"ready": false}, // display finish button
-                                     {"showstory": false}, // display write up interface
-                                     {"shownext" : false}, // display next button
-                                     {"readonly" : false} // set story textareas in readonly mode
-                                     ),
+                             _initTools = {
+                                     "cardpopup":{"char":false, "context":false, "problem":false},
+                                     "postit": "inactive",
+                                     "import": "inactive",
+                                     "drawing": "inactive",
+                                     "ready": false, // display finish button
+                                     "showstory": false, // display write up interface
+                                     "shownext" : false, // display next button
+                                     "readonly" : false // set story textareas in readonly mode
+                             },
+                             _tools = new Store(_initTools),
                             _timer = new Store({"timer":null, "display":false}),
                             _qsTimer,
                             _scenario = new Store({"title" : "", "story" : "", "solution" : ""}),
@@ -91,7 +92,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "quickscenarioevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quickscenario"><div class="previousbutton" data-quickscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickscenario" data-quickscenarioevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quickscenariotimer="bind:setTime, timer; bind: displayTimer, display" data-quickscenarioevent="listen:touchstart,toggleTimer"></div><div id="quickscenario-left" class="leftarea"><div class = "card char" data-wbtools="bind:popup,cardpopup.char" name="char" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context" name="context" data-wbtools="bind: popup,cardpopup.context" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem" name="problem" data-wbtools="bind:popup, cardpopup.problem" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div></div><div id="quickscenario-popup"></div><div id="quickscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div class="finish-button" class="invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickscenario-writeup" class="writeup invisible" data-wbtools="bind: setReady,showstory"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea><div class = "finish-button finish-writeup"></div></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
+                        _widget.template = '<div id = "quickscenario"><div class="previousbutton" data-quickscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickscenario" data-quickscenarioevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quickscenariotimer="bind:setTime, timer; bind: displayTimer, display" data-quickscenarioevent="listen:touchstart,toggleTimer"></div><div id="quickscenario-left" class="leftarea"><div class = "card char" data-wbtools="bind:popup,cardpopup.char" name="char" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context" name="context" data-wbtools="bind: popup,cardpopup.context" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem" name="problem" data-wbtools="bind:popup, cardpopup.problem" data-quickscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div></div><div id="quickscenario-popup"></div><div id="quickscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickscenario-writeup" class="writeup invisible" data-wbtools="bind: setReady,showstory"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
                         
                         _widget.place(Map.get("quickscenario"));
                         
@@ -265,7 +266,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _wb.setReadonly(true);
                                 // hide finish button, toolbox and show writeup interface
                                 _tools.set("ready", false);
-                                _tools.set("showstory", true);      
+                                _tools.set("showstory", true);
+                                node.classList.remove("pressed");    
                         };
                         
                         // update session score
@@ -293,7 +295,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // Initializing the QuickScenario UI
                         _widget.reset = function reset(sip){
                                 // reset all tools and status indicators
-                                _tools.reset({"cardpopup":{"char":false, "context":false, "problem":false}},{"postit": "inactive"},{"import": "inactive"},{"drawing": "inactive"},{"ready": false},{"showstory": false},{"shownext" : false},{"readonly" : false});
+                                _tools.reset({
+                                     "cardpopup":{"char":false, "context":false, "problem":false},
+                                     "postit": "inactive",
+                                     "import": "inactive",
+                                     "drawing": "inactive",
+                                     "ready": false, // display finish button
+                                     "showstory": false, // display write up interface
+                                     "shownext" : false, // display next button
+                                     "readonly" : false // set story textareas in readonly mode
+                                });
                                 
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));

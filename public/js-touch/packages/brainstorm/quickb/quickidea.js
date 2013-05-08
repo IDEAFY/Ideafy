@@ -22,16 +22,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _scenario = new Store(),
                             _techs = new Store([]),
                             _techDetails = [], //used to store tech card details
-                            _tools = new Store(
-                                     {"cardpopup":{"scenario":false, "techs":[false, false, false]}},
-                                     {"postit": "inactive"},
-                                     {"import": "inactive"},
-                                     {"drawing": "inactive"},
-                                     {"ready": false}, // display finish button
-                                     {"showidea": false}, // display write up interface
-                                     {"shownext" : false}, // display next button
-                                     {"readonly" : false} // set story textareas in readonly mode
-                                     ),
+                            _initTools = {
+                                    "cardpopup":{"scenario":false, "techs":[false, false, false]},
+                                    "postit": "inactive",
+                                    "import": "inactive",
+                                    "drawing": "inactive",
+                                    "ready": false, // display finish button
+                                    "showidea": false, // display write up interface
+                                    "shownext" : false, // display next button
+                                    "readonly" : false // set story textareas in readonly mode
+                            },
+                            _tools = new Store(_initTools),
                             _wbContent = new Store([]),
                             _wb = new Whiteboard("idea", _wbContent, _tools),
                             _transport = Config.get("transport"),
@@ -102,7 +103,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "quickideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quickidea"><div class="previousbutton" data-quickideaevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickidea" data-quickideaevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quickideatimer="bind:setTime, timer; bind: displayTimer, display" data-quickideaevent="listen:touchstart,toggleTimer"></div><div id="quickidea-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-quickideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.scenario"><div class="cardpicture"></div><div class="cardtitle" data-scenario="bind:innerHTML, title"></div></div><ul class="cardlist" data-techs="foreach"><li><div class="card tech" data-quickideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.techs"><div class="cardpicture" data-techs="bind:setPic, pic"></div><div class="cardtitle" data-techs="bind:innerHTML,title"></div></div></li></ul></div><div id="quickidea-popup"></div><div id="quickidea-right" class="workarea"><div id="idea-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showidea"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickideaevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickideaevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickideaevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div id="finish-button" class="invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickideaevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickidea-writeup" class="writeup invisible" data-wbtools="bind: setReady,showidea"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, ideatitleplaceholder" data-idea="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><input class="visibility-slider" type="range" min="0" max="1" value ="1" data-idea="bind: setVisibility, visibility" data-quickideaevent="listen:touchend, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><textarea class = "enterDesc" data-labels="bind:setPlaceholder, ideadescplaceholder" data-idea="bind:value, description" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, ideasolplaceholder" data-idea="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea><div class = "finish-button finish-writeup"></div></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickideaevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
+                        _widget.template = '<div id = "quickidea"><div class="previousbutton" data-quickideaevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickidea" data-quickideaevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quickideatimer="bind:setTime, timer; bind: displayTimer, display" data-quickideaevent="listen:touchstart,toggleTimer"></div><div id="quickidea-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-quickideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.scenario"><div class="cardpicture"></div><div class="cardtitle" data-scenario="bind:innerHTML, title"></div></div><ul class="cardlist" data-techs="foreach"><li><div class="card tech" data-quickideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.techs"><div class="cardpicture" data-techs="bind:setPic, pic"></div><div class="cardtitle" data-techs="bind:innerHTML,title"></div></div></li></ul></div><div id="quickidea-popup"></div><div id="quickidea-right" class="workarea"><div id="idea-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showidea"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-quickideaevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-quickideaevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-quickideaevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-quickideaevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "quickidea-writeup" class="writeup invisible" data-wbtools="bind: setReady,showidea"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, ideatitleplaceholder" data-idea="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><input class="visibility-slider" type="range" min="0" max="1" value ="1" data-idea="bind: setVisibility, visibility" data-quickideaevent="listen:touchend, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><textarea class = "enterDesc" data-labels="bind:setPlaceholder, ideadescplaceholder" data-idea="bind:value, description" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, ideasolplaceholder" data-idea="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-quickideaevent="listen: touchstart, press; listen:touchend, next"></div></div></div>';
                         
                         _widget.place(Map.get("quickidea"));
                         
@@ -308,7 +309,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _wb.setReadonly(true);
                                 // hide finish button, toolbox and show writeup interface
                                 _tools.set("ready", false);
-                                _tools.set("showidea", true);      
+                                _tools.set("showidea", true);
+                                node.classList.remove("pressed");   
                         };
                         
                         // update session score
@@ -382,16 +384,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // INIT QUICKIDEA STEP
                         _widget.reset = function reset(sip){
                                 // reset all tools and status indicators
-                                _tools.reset(
-                                     {"cardpopup":{"scenario":false, "techs":[false, false, false]}},
-                                     {"postit": "inactive"},
-                                     {"import": "inactive"},
-                                     {"drawing": "inactive"},
-                                     {"ready": false}, // display finish button
-                                     {"showidea": false}, // display write up interface
-                                     {"shownext" : false}, // display next button
-                                     {"readonly" : false} // set story textareas in readonly mode
-                                     );
+                                _tools.reset({
+                                    "cardpopup":{"scenario":false, "techs":[false, false, false]},
+                                    "postit": "inactive",
+                                    "import": "inactive",
+                                    "drawing": "inactive",
+                                    "ready": false, // display finish button
+                                    "showidea": false, // display write up interface
+                                    "shownext" : false, // display next button
+                                    "readonly" : false // set story textareas in readonly mode
+                                });
                                 
                                 // reset technology
                                 _techs.reset();

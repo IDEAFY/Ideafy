@@ -270,17 +270,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         spinner.spin(document.getElementById("brainstorm"));
                            
                         // connect to couchdb and retrieve session
-                        _session.reset();
+                        _session.reset({});
                         _session.sync(Config.get("db"), sid).then(function(){
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
-                                
-                                // reset step UIs
-                                /*muStart.reset(replay);
-                                muSetup.reset(replay);
-                                muScenario.reset(replay);
-                                muTech.reset(replay);
-                                muIdea.reset(replay);
-                                muWrapup.reset(replay);*/
                                 
                                 // init exit confirmation UI
                                 confirmUI = new Confirm(_widget.dom);
@@ -335,7 +327,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 _widget.reset = function reset(sid, replay){
                            
                         // unsync session
-                        _session.unsync(); 
+                        _session.unsync();
                         
                         // reset local session data
                         _sessionData.reset(); 
@@ -414,7 +406,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                 _widget.init = function init(){
                            
-                           console.log("mucontroller init entered");
                            // initialize step UIs
                            muStart = new MUStart(_session, _widget.prev, _widget.next, _widget.toggleProgress);
                            muSetup = new MUSetup(_session, _sessionData, _widget.prev, _widget.next, _widget.toggleProgress);
@@ -432,7 +423,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            _stack.getStack().add("mutech", muTech);
                            _stack.getStack().add("muidea", muIdea);
                            _stack.getStack().add("muwrapup", muWrapup);
-                           
                    };
                    
                 // init
@@ -466,10 +456,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _stack.getStack().show(value);
                                 
                                 // update progress bar and status
-                                _steps.update(idx-1, "currentStep", false);
                                 _steps.update(idx-1, "status", done);
-                                _steps.update(idx, "currentStep", true);
                                 _steps.update(idx, "status", "ongoing");
+                                _steps.update(idx-1, "currentStep", false);
+                                _steps.update(idx, "currentStep", true);
                         }       
                 });
                 

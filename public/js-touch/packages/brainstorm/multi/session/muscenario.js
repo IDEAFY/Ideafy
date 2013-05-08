@@ -407,7 +407,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // reset chatUI
                         $session.watchValue("chat", function(arr){
-                                if (arr.length === 3){
+                                if (arr.length === 3 && chatUI.getModel().get("_id") !== arr[2]){
                                         chatUI.reset(arr[2]);
                                 }        
                         });
@@ -433,6 +433,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // uopdate local whiteboard content as soon as it is updated in the database
                         $session.watchValue("scenarioWB", function(content){
+                                if (content.length){
+                                        _wb.selectScreen("main");        
+                                }
                                 if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
                                         _wbContent.reset(content);       
                                 }

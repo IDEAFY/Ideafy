@@ -70,7 +70,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 (status === "active") ? this.classList.add("pushed") : this.classList.remove("pushed");
                                         },
                                         setReady : function(ready){
-                                                (ready) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                                if ($session.get("initiator").id === _user.get("_id")){
+                                                        (ready) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                                }
+                                                else{
+                                                        this.classList.add("invisible");
+                                                }
                                         },
                                         toggleToolbox : function(showstory){
                                                 (showstory) ? this.classList.add("invisible") : this.classList.remove("invisible");
@@ -96,7 +101,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 "muscenarioevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "muscenario"><div class="previousbutton" data-muscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muscenario" data-muscenarioevent="listen:touchstart, toggleProgress"></div><div class="timer" data-muscenariotimer="bind:setTime, timer; bind: displayTimer, display" data-muscenarioevent="listen:touchstart,toggleTimer"></div><div id="muscenario-left"><div class="scenario-cards leftarea" data-muscenarioevent="listen:touchstart, fold"><div class = "card char" data-wbtools="bind:popup,cardpopup.char" name="char" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context" name="context" data-wbtools="bind: popup,cardpopup.context" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem" name="problem" data-wbtools="bind:popup, cardpopup.problem" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div></div><div id="muscenario-popup"></div><div class ="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-muscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-muscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-muscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muscenarioevent="listen: touchstart, press; listen:touchend, finish"></div></div></div><div id="muscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id = "muscenario-writeup" class="writeup invisible" data-wbtools="bind: setReady,showstory"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-muscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        _widget.template = '<div id = "muscenario"><div class="previousbutton" data-muscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muscenario" data-muscenarioevent="listen:touchstart, toggleProgress"></div><div class="timer" data-muscenariotimer="bind:setTime, timer; bind: displayTimer, display" data-muscenarioevent="listen:touchstart,toggleTimer"></div><div id="muscenario-left"><div class="scenario-cards leftarea folded" data-muscenarioevent="listen:touchstart, fold"><div class = "card char" data-wbtools="bind:popup,cardpopup.char" name="char" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context" name="context" data-wbtools="bind: popup,cardpopup.context" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem" name="problem" data-wbtools="bind:popup, cardpopup.problem" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div></div><div id="muscenario-popup"></div><div class ="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-muscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-muscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-muscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muscenarioevent="listen: touchstart, press; listen:touchend, finish"></div></div></div><div id="muscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div id = "muscenario-writeup" class="writeup invisible" data-wbtools="bind: setReady,showstory"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-muscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         _widget.place(Map.get("muscenario"));
                         
@@ -281,16 +286,27 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // user is done with whiteboard
                         _widget.finish = function(event, node){
-                                // change mode to readonly
-                                _wb.setReadonly(true);
-                                // hide finish button, toolbox and show writeup interface
+                                // hide finish button
+                                node.classList.remove("pushed");
                                 _tools.set("ready", false);
+                                
+                                _widget.displayStory(); 
+                                
+                                // notify other participants
+                                $session.set("scReady", true);
+                        };
+                        
+                        _widget.displayStory = function displayStory(){
+                                // change whiteboard mode to readonly
+                                _wb.setReadonly(true);
+                                // hide toolbox and show writeup interface
                                 _tools.set("showstory", true);
                                 // removed folded class from scenario cards
                                 _widget.dom.querySelector(".scenario-cards").classList.remove("folded");
                                 // display writeup interface
                                 _widget.dom.querySelector(".writeup").scrollIntoView();
-                                // display caret at the bottom of the whiteboard     
+                                // display caret at the bottom of the whiteboard  
+                                        
                         };
                         
                         // update session score
@@ -458,6 +474,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
                                         _wbContent.reset(content);       
                                 }
+                        });
+                        
+                        $session.watchValue("scReady", function(ready){
+                                if (ready && $session.get("initiator").id !== _user.get("_id")){
+                                        _tools.set("readonly", true);
+                                        _widget.displayStory();        
+                                } 
                         });
                         
                         // watch contents of scenario and display next button if ready

@@ -70,7 +70,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 (status === "active") ? this.classList.add("pushed") : this.classList.remove("pushed");
                                         },
                                         setReady : function(ready){
-                                                if ($session.get("initiator").id === _user.get("_id")){
+                                                if ($session.get("initiator").id && $session.get("initiator").id === _user.get("_id")){
                                                         (ready) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                                 }
                                                 else{

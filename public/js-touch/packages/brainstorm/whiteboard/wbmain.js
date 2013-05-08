@@ -29,7 +29,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                                                 case "postit":
                                                         node.classList.remove("photo");
                                                         node.classList.remove("drawing");
-                                                        node.innerHTML = '<div class="inner-postit">'+content+"</div>";
+                                                        node.innerHTML = '<div class="inner-postit">'+content.replace(/\n/g, "<br>")+"</div>";
                                                         node.setAttribute("style", "background:url('img/brainstorm/"+style.img+"') no-repeat center center; background-size: contain; color:"+style.marker+";");
                                                         break;
                                                 case "import":

@@ -14,7 +14,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                     chat = new Store([]),
                     chatCDB = new CouchDBDocument(),
                     labels = Config.get("labels"),
-                    user = Config.get("user"),
                     position = "null", // used to determine the position of the user in the chat participants group
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 6, radius:10, top: 20}).spin();
                 
@@ -200,7 +199,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         chat.reset([]);
                         spinner.spin(document.getElementById("chatspinner"));
                         chatCDB.sync(Config.get("db"), chatId).then(function(){
-                                var i, arr = chatCDB.get("users");
+                                var i, arr = chatCDB.get("users"), user = Config.get("user");
                                 
                                 // get user position
                                 for (i=0; i<arr.length; i++){
@@ -226,6 +225,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                 
                 mubChat.joinChat = function joinChat(){
                         var promise = new Promise(),
+                            user = Config.get("user"),
                             arr = chatCDB.get("users"),
                             pos= arr.length,
                             now = new Date().getTime(),

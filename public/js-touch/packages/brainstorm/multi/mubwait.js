@@ -137,7 +137,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         chatUI.reset(session.get("chat")[0]);
                                         
                                         // set as session in progress
-                                        user.set("sessionInProgress", {id: sid, type: "musession", mode:"rejoin"});
+                                        user.set("sessionInProgress", {id: sid, type: "musession", mode:"join"});
                                         user.upload();
                                 });
                         };

@@ -150,10 +150,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 info.set("msg", _labels.get("deletingsession") + timeout/1000 + "s");
                                                 break;
                                         case "participantsleft":
-                                                info.set("msg", _labels.get("participantsleft"));
+                                                info.set("msg", _labels.get("participantsleft") + " " + timeout/1000 + "s");
                                                 break;
                                         default:
-                                                info.set("msg", message);
+                                                if (message !== info.get("msg")){
+                                                        info.set("msg", message);
+                                                }
                                                 break;      
                                 }
                                 if (timeout <= 0) {clearInfo();}

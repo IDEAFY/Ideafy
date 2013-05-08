@@ -298,6 +298,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 _timer.set("timer", elapsed);
                                 // make sure current step is ongoing before restarting timer
                                 if ($session.get("step") === "musetup"){
+                                        clearInterval(_msTimer);
                                         _msTimer = setInterval(function(){
                                                 var now = new Date();
                                                 _timer.set("timer", elapsed + now.getTime()-_start);
@@ -501,7 +502,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 }
                                 else {_timer.set("display", false);}
                                 
-                                _next = "step";        
+                           l     _next = "step";        
                         };
                         
                         $session.watchValue("drawn_char", function(val){

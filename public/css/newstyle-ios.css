@@ -2851,7 +2851,7 @@ textarea.solution {
 #muscenario .whiteboard .caret, #muidea .whiteboard .caret{
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    margin: 10px auto;
+    margin: -20px auto;
     height: 0;
     width: 0;
     border-bottom: 10px solid #B3B3B3;
@@ -2866,7 +2866,7 @@ textarea.solution {
 #muscenario .scenario-cards .caret, #muidea .scenario-cards .caret{
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    margin: 100px auto;
+    margin: 580px auto;
     height: 0;
     width: 0;
     border-left: 10px solid #B3B3B3;
@@ -3076,6 +3076,10 @@ textarea.solution {
     height: 438px;  
 }
 
+#muscenario .wbmain, #muscenario .wbdrawing, #muidea .wbmain, #muidea .wbdrawing{
+    height: 380px;
+}
+
 .wb-item{
     display:inline-block;
     background-size:contain;
@@ -3098,10 +3102,10 @@ textarea.solution {
 }
 
 .inner-postit{
-    padding-top: 5px;
     overflow-y:scroll;
     line-height:25px;
-    padding-bottom: 20px;
+    padding: 5px 3px 10px 3px;
+    
 }
 
 .photo, .drawing{

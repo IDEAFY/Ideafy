@@ -42,7 +42,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 _url = '/upload',
                                 _fd = new FormData(),
                                 _type = "postit",
-                                _canvas = document.getElementById("drawarea"),
+                                _canvas = _widget.dom.querySelector(".drawingcanvas"),
                                 _dataURL = _canvas.toDataURL("image/png"),
                                 _now=new Date(),
                                 _filename = filename || Config.get("user").get("_id")+'_'+_now.getTime();
@@ -129,7 +129,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 _widget.clear = function(event, node){
-                        var _canvas = document.getElementById("drawarea"),
+                        var _canvas = _widget.dom.querySelector(".drawingcanvas"),
                             _ctx = _canvas.getContext("2d");
                         
                         _ctx.clearRect(0,0,_canvas.width, _canvas.height);

@@ -555,6 +555,8 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 }        
                         });
                         
+                        
+                        STPCHAT = chatUI;
                         // Return
                         return _widget;
                 };     

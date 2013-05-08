@@ -99,6 +99,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 chatUI.clear();
                                 session.unsync();
                                 session.reset({});
+                                participants.rest([]);
                                 
                                 // create confirmation UI
                                 confirmCallBack = function(decision){
@@ -182,8 +183,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 if (!session.get("participants").length) {countdown = 2000;}
                                 widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
-                                        widget.goToScreen();
-                                        session.reset({});      
+                                        widget.goToScreen();    
                                 });        
                         };
                         
@@ -243,6 +243,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                                 }
                                         });
                                 }
+                                participants.reset([]);
+                                session.reset({});
                         };
                         
                         // handle edit events

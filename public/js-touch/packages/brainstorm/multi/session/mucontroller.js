@@ -447,19 +447,20 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 _session.watchValue("step", function(value){
                         var idx, newStep = _session.get("step");
                         console.log(value);
-                        if (_session.get("initiator").id !== _user.get("_id")){
+                        if (_session.get("initiator") && _session.get("initiator").id !== _user.get("_id")){
                                 _steps.loop(function(v, i){
                                         if (v.name === newStep){idx = i;}
                                 });
-                                // init and show new step UI
-                                _stack.getStack().get(value).reset();
-                                _stack.getStack().show(value);
                                 
                                 // update progress bar and status
-                                _steps.update(idx-1, "status", done);
+                                _steps.update(idx-1, "status", "done");
                                 _steps.update(idx, "status", "ongoing");
                                 _steps.update(idx-1, "currentStep", false);
                                 _steps.update(idx, "currentStep", true);
+                                
+                                // init and show new step UI
+                                _stack.getStack().get(value).reset();
+                                _stack.getStack().show(value);
                         }       
                 });
                 

@@ -231,13 +231,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                             now = new Date().getTime(),
                             msg = chatCDB.get("msg");
                         
+                        // add new user to participant list
+                        arr.push({"username": user.get("username"), "userid": user.get("_id")});
+                        chatCDB.set("users", arr);
                         if (chatCDB.get("_id").search("_0")>-1){
                                 msg.push({user: "SYS", time: now, type: 1, arg: pos});
                                 chatCDB.set("msg", msg); 
                                 chat.reset(msg);       
-                        }        
-                        arr.push({"username": user.get("username"), "userid": user.get("_id")});
-                        chatCDB.set("users", arr);
+                        }
                         chatCDB.upload().then(function(){
                                 position = pos;
                                 promise.fulfill();

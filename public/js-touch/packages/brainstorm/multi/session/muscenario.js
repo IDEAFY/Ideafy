@@ -285,7 +285,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _wb.setReadonly(true);
                                 // hide finish button, toolbox and show writeup interface
                                 _tools.set("ready", false);
-                                _tools.set("showstory", true);      
+                                _tools.set("showstory", true);
+                                // removed folded class from scenario cards
+                                _widget.dom.querySelector(".scenario-cards").classList.remove("folded");
+                                // display writeup interface
+                                _widget.dom.querySelector(".writeup").scrollIntoView();
+                                // display caret at the bottom of the whiteboard     
                         };
                         
                         // update session score

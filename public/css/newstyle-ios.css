@@ -3186,7 +3186,7 @@ textarea.solution {
     background-size: 20px 20px;
 }
 
-#muscenario .pencil, #muscenario .erase, #muscenario .clear, #muscenario .canceldrawing, #muscenario .deletedrawing, #muscenario .savedrawing, #muidea .pencil, #muidea .erase, #muidea .clear, #muidea .canceldrawing, #muidea .deletedrawing, #muidea .savedrawing{
+#muscenario .pencil, #muscenario .erase, #muscenario .clear, #muscenario .canceldrawing, #muscenario .deletedrawing, #muidea .pencil, #muidea .erase, #muidea .clear, #muidea .canceldrawing, #muidea .deletedrawing{
     height: 30px;
     line-height: 30px;
     background-size: 15px 15px;

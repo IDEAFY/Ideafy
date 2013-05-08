@@ -2848,6 +2848,22 @@ textarea.solution {
     margin: 40px;
 }
 
+#muscenario .whiteboard .caret{
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    display: inline-block;
+    margin-top: 10px;
+    height: 0;
+    width: 0;
+    border-bottom: 10px solid #B3B3B3;
+    border-top: none;  
+}
+
+#muscenario .whiteboard .caret.descending{
+    border-top: 10px solid #B3B3B3;
+    border-bottom: none;
+}
+
 .whiteboard .defaultcontent strong{
     color: #254066;
 }

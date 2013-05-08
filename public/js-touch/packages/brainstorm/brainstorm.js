@@ -122,10 +122,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                  */
                 Config.get("observer").watch("join-musession", function(sid){
                       var sip ={type: "musession", id: sid, mode:"join"};
-                      _user.set("sessionInProgress", sip);
-                      _user.upload().then(function(){
-                             _widget.selectScreen(sip.type, sip);        
-                      });
+                      _widget.selectScreen(sip.type, sip);
                 });
 		
 		//return

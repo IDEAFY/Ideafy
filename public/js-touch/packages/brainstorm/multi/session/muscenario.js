@@ -45,6 +45,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                             // deduct 20px from position shown in navigator 
                              
                         
+                        // identify if user is the current session leader
+                        _widget.isLeader = function isLeader(){
+                                return ($session.get("initiator") && $session.get("initiator").id === _user.get("_id"));
+                        };
                         
                         // Setup
                         _widget.plugins.addAll({

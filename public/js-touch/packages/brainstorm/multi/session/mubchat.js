@@ -281,8 +281,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         document.getElementById("chatmessages").querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
                 });
                 
-                MUBCHAT = mubChat;
-                
         }
         
         return function MUBChatFactory(){

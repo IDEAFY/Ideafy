@@ -2812,6 +2812,11 @@ textarea.solution {
     background: white;    
 }
 
+#muscenario .workarea, #muidea .workarea{
+    height: 400px;
+    overflow-y: scroll;
+}
+
 .whiteboard{
     width: 717px;
     height: 438px;
@@ -3401,7 +3406,7 @@ li.color-item{
 
 #muscenario .toolbox, #muidea .toolbox{
     float:left;
-    width: 132px;
+    width: 137px;
 }
 
 .toolbox-button{
@@ -3410,6 +3415,7 @@ li.color-item{
     margin: 0px 15px;
     float: left;
 }
+
 #muscenario .toolbox-button, #muidea .toolbox-button{
     float: none;
     margin-left: 20px;
@@ -3466,6 +3472,11 @@ li.color-item{
     border-radius: 5px;
     text-align: center;
     margin: 0 auto;
+}
+
+#muscenario .finish-button, #muidea .finish-button{ 
+    width: 100px;
+    margin-top: 60px;    
 }
 
 /* quickstart */
@@ -3921,6 +3932,10 @@ li.color-item{
     padding: 20px 20px 10px 20px;
     font-family: Helvetica;
     font-size: 12px;
+}
+
+#muscenario .writeup, #muidea .writeup{
+    height: 340px;
 }
 
 .enterTitle, .enterDesc, .enterSol{

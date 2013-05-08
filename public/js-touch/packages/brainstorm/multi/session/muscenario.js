@@ -371,7 +371,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 }, 5000);
                          };
                          
-                         _widget.initTimer = function(init){
+                        _widget.initTimer = function(init){
                                 var now = new Date(),
                                     _start = now.getTime(),
                                     elapsed = init || 0;
@@ -435,6 +435,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         $session.watchValue("scenarioWB", function(content){
                                 if (content.length){
                                         _wb.selectScreen("main");        
+                                }
+                                else {
+                                        _wb.selectScreen("default");
                                 }
                                 if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
                                         _wbContent.reset(content);       

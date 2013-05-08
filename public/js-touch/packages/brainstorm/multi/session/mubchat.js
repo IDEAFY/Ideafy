@@ -14,6 +14,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                     chat = new Store([]),
                     chatCDB = new CouchDBDocument(),
                     labels = Config.get("labels"),
+                    user = Config.get("user"),
                     position = "null", // used to determine the position of the user in the chat participants group
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 6, radius:10, top: 20}).spin();
                 
@@ -37,19 +38,19 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 }
                         }),
                         "chat" : new Model(chat, {
-                                setLiStyle : function(user){
-                                        if (user === position){
+                                setLiStyle : function(usr){
+                                        if (usr === position){
                                                 this.setAttribute("style", "text-align: right;");
                                         }
                                         else{
                                                 this.setAttribute("style", "text-align: left;");        
                                         }
                                 },
-                                setInnerMsgStyle : function(user){
-                                        if (user === "SYS"){
+                                setInnerMsgStyle : function(usr){
+                                        if (usr === "SYS"){
                                                 this.setAttribute("style", "background: none; border: none");
                                         }
-                                        else if (user === position){
+                                        else if (usr === position){
                                                 this.setAttribute("style", "background: #9AC9CD; border: 1px solid #808080; border-radius: 5px;");
                                         }
                                         else{
@@ -61,27 +62,27 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 this.innerHTML = Utils.formatTime(time);
                                         }
                                 },
-                                setAvatar : function(user){
+                                setAvatar : function(usr){
                                         var frag, ui, uid;
-                                        if (user === "SYS"){
+                                        if (usr === "SYS"){
                                                 this.classList.remove("invisible");
                                                 this.classList.add("doctor-deedee");       
                                         }
-                                        else if (user === position){
+                                        else if (usr === position){
                                                 this.classList.add("invisible");
                                         }
-                                        else if (typeof user === "number"){
+                                        else if (typeof usr === "number"){
                                                 this.classList.remove("invisible");
                                                 frag = document.createDocumentFragment();
-                                                uid = chatCDB.get("users")[user].userid;
+                                                uid = chatCDB.get("users")[usr].userid;
                                                 ui = new Avatar([uid]);
                                                 ui.place(frag);
                                                 (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
                                         }       
                                 },
-                                setUserName : function(user){
-                                        if (typeof user === "number" && user !== position){
-                                                this.innerHTML = " "+ chatCDB.get("users")[user].username + labels.get("said");
+                                setUserName : function(usr){
+                                        if (typeof usr === "number" && usr !== position){
+                                                this.innerHTML = " "+ chatCDB.get("users")[usr].username + labels.get("said");
                                         }        
                                 },
                                 setMsg : function(msg){
@@ -199,7 +200,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         chat.reset([]);
                         spinner.spin(document.getElementById("chatspinner"));
                         chatCDB.sync(Config.get("db"), chatId).then(function(){
-                                var i, arr = chatCDB.get("users"), user = Config.get("user");
+                                var i, arr = chatCDB.get("users");
                                 
                                 // get user position
                                 for (i=0; i<arr.length; i++){
@@ -225,7 +226,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                 
                 mubChat.joinChat = function joinChat(){
                         var promise = new Promise(),
-                            user = Config.get("user"),
                             arr = chatCDB.get("users"),
                             pos= arr.length,
                             now = new Date().getTime(),
@@ -280,6 +280,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         chat.reset(arrCDB);
                         document.getElementById("chatmessages").querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
                 });
+                
+                MUBCHAT = mubChat;
+                
         }
         
         return function MUBChatFactory(){

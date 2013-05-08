@@ -502,7 +502,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 }
                                 else {_timer.set("display", false);}
                                 
-                           l     _next = "step";        
+                                _next = "step";        
                         };
                         
                         $session.watchValue("drawn_char", function(val){

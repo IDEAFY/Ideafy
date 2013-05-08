@@ -354,6 +354,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 participants.reset(array);        
                         });
                         
+                        MUWCHAT = chaUI;
                         return widget;
                 
                 };

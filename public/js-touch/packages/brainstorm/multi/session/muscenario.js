@@ -34,7 +34,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                              },
                              _tools = new Store(_initTools),
                             _timer = new Store({"timer":null, "display":false}),
-                            _qsTimer,
+                            _mscTimer, _mscInterval,
                             _scenario = new Store({"title" : "", "story" : "", "solution" : ""}),
                             _wbContent = new Store([]), // a store of whiteboard objects
                             _wb = new Whiteboard("scenario", _wbContent, _tools),
@@ -70,12 +70,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 (status === "active") ? this.classList.add("pushed") : this.classList.remove("pushed");
                                         },
                                         setReady : function(ready){
-                                                if ($session.get("initiator") && $session.get("initiator").id === _user.get("_id")){
+                                                if (_widget.isLeader()){
                                                         (ready) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                                 }
                                                 else{
                                                         this.classList.add("invisible");
                                                 }
+                                        },
+                                        showStory : function(showstory){
+                                                (showstory) ? this.classList.remove("invisible") : this.classList.add("invisible");        
                                         },
                                         toggleToolbox : function(showstory){
                                                 (showstory) ? this.classList.add("invisible") : this.classList.remove("invisible");
@@ -101,13 +104,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 "muscenarioevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "muscenario"><div class="previousbutton" data-muscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muscenario" data-muscenarioevent="listen:touchstart, toggleProgress"></div><div class="timer" data-muscenariotimer="bind:setTime, timer; bind: displayTimer, display" data-muscenarioevent="listen:touchstart,toggleTimer"></div><div id="muscenario-left"><div class="scenario-cards leftarea folded" data-muscenarioevent="listen:touchstart, fold"><div class = "card char" data-wbtools="bind:popup,cardpopup.char" name="char" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context" name="context" data-wbtools="bind: popup,cardpopup.context" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem" name="problem" data-wbtools="bind:popup, cardpopup.problem" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div><div class="caret"></div></div><div id="muscenario-popup"></div><div class ="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-muscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-muscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-muscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muscenarioevent="listen: touchstart, press; listen:touchend, finish"></div></div></div><div id="muscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div><div class="caret invisible" data-muscenarioevent="listen:touchstart, toggleCaret"></div></div><div id = "muscenario-writeup" class="writeup invisible" data-wbtools="bind: setReady,showstory"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-muscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        _widget.template = '<div id = "muscenario"><div class="previousbutton" data-muscenarioevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muscenario" data-muscenarioevent="listen:touchstart, toggleProgress"></div><div class="timer" data-muscenariotimer="bind:setTime, timer; bind: displayTimer, display" data-muscenarioevent="listen:touchstart,toggleTimer"></div><div id="muscenario-left"><div class="scenario-cards leftarea folded" data-muscenarioevent="listen:touchstart, fold"><div class = "card char" data-wbtools="bind:popup,cardpopup.char" name="char" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,char.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,char.title">Character</div></div><div class="card context" name="context" data-wbtools="bind: popup,cardpopup.context" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,context.pic"></div><div class="cardtitle" data-cards="bind: formatTitle,context.title">Context</div></div><div class="card problem" name="problem" data-wbtools="bind:popup, cardpopup.problem" data-muscenarioevent="listen:touchstart, zoom"><div class="cardpicture" data-cards="bind:setPic,problem.pic"></div><div class="cardtitle" data-cards="bind:formatTitle,problem.title">Problem</div></div><div class="caret"></div></div><div id="muscenario-popup"></div><div class ="toolbox" data-wbtools="bind:toggleToolbox, showstory"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-muscenarioevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-muscenarioevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-muscenarioevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muscenarioevent="listen: touchstart, press; listen:touchend, finish"></div></div></div><div id="muscenario-right" class="workarea"><div id="scenario-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div><div class="caret invisible" data-muscenarioevent="listen:touchstart, toggleCaret"></div></div><div id = "muscenario-writeup" class="writeup invisible" data-wbtools="bind: showStory,showstory"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, storytitleplaceholder" data-scenario="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><div class="setPrivate"></div><div class="setPublic"></div><textarea class = "enterDesc" data-labels="bind:setPlaceholder, storydescplaceholder" data-scenario="bind:value, story" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, storysolplaceholder" data-scenario="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-muscenarioevent="listen: touchstart, press; listen:touchend, next"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         _widget.place(Map.get("muscenario"));
                         
                         // function called when pressing a button (next or finish)
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");        
+                        };
+                        
+                        // identify if user is the current session leader
+                        _widget.isLeader = function isLeader(){
+                                return ($session.get("initiator") && $session.get("initiator").id === _user.get("_id"));
                         };
                         
                         // move to next screen
@@ -122,8 +130,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         _next = "screen";
                                         
                                         // stop timer and update display
-                                        clearInterval(_qsTimer);
+                                        clearInterval(_mscTimer);
                                         _timer.set("display", true);
+                                        
+                                        // stop scenario autoupdates
+                                        clearInterval(_mscInterval);
                                         
                                         // add scenario to session data
                                         $data.set("scenario", JSON.parse(_scenario.toJSON()));
@@ -163,7 +174,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // toggle timer
                         _widget.toggleTimer = function(event,node){
-                                if ($session.get("initiator").id === _user.get("_id")){
+                                if (_widget.isLeader()){
                                         _timer.set("display", !_timer.get("display"));
                                 }       
                         };
@@ -189,7 +200,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 if (_currentPopup){
                                         _popupUI.close();
                                 }
-                                       
                         };
                         
                         // Method called to initialize a card popup
@@ -291,7 +301,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 node.classList.remove("pushed");
                                 _tools.set("ready", false);
                                 
-                                _widget.displayStory(); 
+                                _widget.displayStory();
+                                 
+                                 // monitor scenario updates if user is the session leader
+                                 if (_widget.isLeader()) {
+                                         _widget.updateScenario();
+                                 }
                                 
                                 // notify other participants
                                 $session.set("scReady", true);
@@ -323,8 +338,27 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _widget.dom.querySelector(".whiteboard .caret").classList.add("invisible");        
                         };
                         
+                        // toggle whiteboard/writeup display
                         _widget.toggleCaret = function(event, node){
-                                node.classList.toggle("descending");        
+                                var _writeup = _widget.dom.querySelector(".writeup"),
+                                    _whiteboard = _widget.dom.querySelector(".whiteboard");
+                                node.classList.toggle("descending");
+                                (node.classList.contains("descending")) ? _whiteboard.scrollIntoView() : _writeup.scrollIntoView();        
+                        };
+                        
+                        // update database with scenario changes made by leader
+                        _widget.updateScenario = function updateScenario(){
+                                _mscInterval = setInterval(function(){
+                                        var cdbScen = $session.get("scenario")[0];
+                                        
+                                        if (_scenario.get("title") !== cdbScen.title || _scenario.get("story") !== cdbScen.story || _scenario.get("description") !== cdbScen.description){
+                                                cdbScen.title = _scenario.get("title");
+                                                cdbScen.story = _scenario.get("story");
+                                                cdbScen.description = _scenario.get("description");
+                                                $session.set("scenario", [cdbScen]);
+                                                $session.upload();
+                                        }
+                                }, 20000);        
                         };
                         
                         // update session score
@@ -412,7 +446,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         if (_next === "screen"){
                                                 _timer.set("display", true);
                                         }
-                                        else if ($session.get("initiator").id === _user.get("_id")){
+                                        else if (_widget.isLeader()){
                                                 _widget.initTimer(_elapsed);
                                         }
                                 }
@@ -433,8 +467,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _timer.set("timer", elapsed);
                                 // make sure current step is ongoing before restarting timer
                                 if ($session.get("step") === "muscenario"){
-                                        clearInterval(_qsTimer);
-                                        _qsTimer = setInterval(function(){
+                                        clearInterval(_mscTimer);
+                                        _mscTimer = setInterval(function(){
                                                 var now = new Date();
                                                 _timer.set("timer", elapsed + now.getTime()-_start);
                                         }, 1000);
@@ -467,7 +501,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // upload whiteboard content to database as soon as it is updated locally
                         ["added", "deleted", "updated"].forEach(function(change){
-                                console.log("local change");
                                 _wbContent.watch(change, function(){
                                         
                                         // avoid upload if $session is already up-to-date (e.g. replay)
@@ -497,16 +530,24 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 }
                         });
                         
+                        // display wrote up interface once the leader has "closed" the whiteboard
                         $session.watchValue("scReady", function(ready){
-                                if (ready && $session.get("initiator").id !== _user.get("_id")){
+                                if (ready && _widget.isLeader()){
                                         _tools.set("readonly", true);
                                         _widget.displayStory();        
                                 } 
                         });
                         
+                        // display leader updates made to the scenario
+                        $session.watchValue("scenario", function(arr){
+                                if (!_widget.isLeader()) {
+                                        _scenario.reset(arr[0]);
+                                }        
+                        });
+                        
                         // watch contents of scenario and display next button if ready
                         _scenario.watch("updated", function(){
-                                        (_scenario.get("title") && _scenario.get("story") && _scenario.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
+                                        (_widget.isLeader() && _scenario.get("title") && _scenario.get("story") && _scenario.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
                         
                         SCCHAT = chatUI;

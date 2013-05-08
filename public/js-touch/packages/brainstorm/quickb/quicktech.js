@@ -20,13 +20,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _user = Config.get("user"),
                             _labels = Config.get("labels"),
                             _popupUI, _currentPopup,
-                            _techDisplay = new Store({
+                            _displayInit = {
                                 "left": "",
                                 "scenario":{"popup": false},
                                 "tech1":{"popup": false, "selected": false},
                                 "tech2":{"popup": false, "selected":false},
                                 "tech3":{"popup": false, "selected": false}
-                            }),
+                            },
+                            _techDisplay = new Store(_displayInit),
                             _techs = [],
                             _ready = true,
                             _tech1 = new Store(),
@@ -89,7 +90,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "quicktechevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quicktech"><div class="previousbutton" data-quicktechevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="quicktech-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech" data-quicktechevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quicktechtimer="bind:setTime, timer; bind: displayTimer, display" data-quicktechevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-quicktechevent="listen:touchstart, help"></div><div id="quicktech-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-quicktechevent="listen: touchstart, select; listen:touchstart, zoom" data-display="bind: popup, scenario.popup"><div class="cardpicture"></div><div class="cardtitle" data-labels="bind:innerHTML, scenariolbl"></div></div></div><div class="drawarea"><div class="decks"><div class="drawbutton drawtech" "name"="tech" data-quicktechevent="listen: touchstart, push; listen:touchend, draw" data-display="bind: setReload, left"></div></div><div class="cards"><div class="card tech defaultcard" name="tech1" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 0.pic" data-display="bind: popup, tech1.popup"><div class="cardpicture" data-techcards="bind:setPic, 0.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 0.title" data-labels="bind:innerHTML, tech1lbl"></div></div><div class="card tech defaultcard" name="tech2" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 1.pic" data-display="bind: popup, tech2.popup"><div class="cardpicture" data-techcards="bind:setPic, 1.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 1.title" data-labels="bind:innerHTML,tech2lbl"></div></div><div class="card tech defaultcard" name="tech3" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 2.pic" data-display="bind: popup, tech3.popup"><div class="cardpicture" data-techcards="bind:setPic, 2.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 2.title" data-labels="bind:innerHTML, tech3lbl"></div></div></div><div class="confirmdraw"><div class="drawok" name="tech1" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech2" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech3" data-quicktechevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quicktechevent="listen: touchstart, press; listen:touchend, next" data-display="bind:updateNext, tech1.selected;bind:updateNext, tech2.selected;bind:updateNext, tech3.selected"></div></div></div>';
+                        _widget.template = '<div id = "quicktech"><div class="previousbutton" data-quicktechevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="quicktech-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quicktech" data-quicktechevent="listen:touchstart, toggleProgress"></div><div class="timer" data-quicktechtimer="bind:setTime, timer; bind: displayTimer, display" data-quicktechevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-quicktechevent="listen:touchstart, help"></div><div id="quicktech-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-quicktechevent="listen: touchstart, select; listen:touchstart, zoom" data-display="bind: popup, scenario.popup"><div class="cardpicture"></div><div class="cardtitle" data-labels="bind:innerHTML, scenariolbl"></div></div></div><div class="drawarea"><div class="decks"><div class="drawbutton drawtech" "name"="tech" data-quicktechevent="listen: touchstart, push; listen:touchend, draw" data-display="bind: setReload, left"></div></div><div class="cards"><div class="card tech defaultcard" name="tech1" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 0.pic" data-display="bind: popup, tech1.popup"><div class="cardpicture" data-techcards="bind:setPic, 0.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 0.title" data-labels="bind:innerHTML, tech1lbl"></div></div><div class="card tech defaultcard" name="tech2" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 1.pic" data-display="bind: popup, tech2.popup"><div class="cardpicture" data-techcards="bind:setPic, 1.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 1.title" data-labels="bind:innerHTML,tech2lbl"></div></div><div class="card tech defaultcard" name="tech3" data-quicktechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 2.pic" data-display="bind: popup, tech3.popup"><div class="cardpicture" data-techcards="bind:setPic, 2.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 2.title" data-labels="bind:innerHTML, tech3lbl"></div></div></div><div class="confirmdraw"><div class="drawok" name="tech1" data-display="bind:setSelected, tech1.selected" data-quicktechevent="listen: touchstart,  accept"></div><div class="drawok" name="tech2" data-display="bind:setSelected, tech2.selected" data-quicktechevent="listen: touchstart, accept"></div><div class="drawok" name="tech3" data-display="bind:setSelected, tech3.selected" data-quicktechevent="listen: touchstart, accept"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quicktechevent="listen: touchstart, press; listen:touchend, next" data-display="bind:updateNext, tech1.selected;bind:updateNext, tech2.selected;bind:updateNext, tech3.selected"></div></div></div>';
                         
                         _widget.place(Map.get("quicktech"));
                         
@@ -300,20 +301,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     display = _techDisplay.get(name);
                                 
                                 if (_next === "step"){
-                                        if (_techCards.get(idx) && _techCards.get(idx).id){
-                                                if (display.selected){
-                                                        node.classList.remove("pushed");
-                                                        display.selected = false;
-                                                        _techDisplay.set(name, display);        
-                                                }
-                                                else {
-                                                        display.selected = true;
-                                                        _techDisplay.set(name, display);
-                                                }   
+                                        if (_techCards.get(idx).id){
+                                        display.selected = !display.selected;
+                                                _techDisplay.set(name, display);
                                         }
                                         else{
-                                                alert("please draw a card first");
-                                                node.classList.remove("pushed");        
+                                                alert("please draw a card first"); // replace with a label
                                         }
                                 }        
                         };
@@ -321,7 +314,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.reset = function(sip){
                                 
                                 var sessionTech = $session.get("techno")[0];
-                                
                                 //reset display
                                 _techDisplay.reset({
                                         "left": "",
@@ -330,6 +322,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "tech2":{"popup": false, "selected":false},
                                         "tech3":{"popup": false, "selected": false}
                                 });
+                                
                                 _techCards.reset([
                                                 {"id":"", "title":"", "pic":""},
                                                 {"id":"", "title":"", "pic":""},

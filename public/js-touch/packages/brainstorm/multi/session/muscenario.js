@@ -311,6 +311,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // INIT SCENARIO
                         // Initializing the muscenario UI
                         _widget.reset = function reset(replay){
+                                console.log("reset muscenario : ", $session.toJSON());
                                 // retrieve chat document
                                 if ($session.get("chat")[2]){
                                         chatUI.reset($session.get("chat")[2]);

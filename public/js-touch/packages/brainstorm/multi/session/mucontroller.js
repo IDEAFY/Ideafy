@@ -484,6 +484,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 });
                    
                 SESSION = _session;
+                STEPS = _steps;
                 // return
                 return _widget;
            };    

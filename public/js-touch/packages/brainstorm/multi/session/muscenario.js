@@ -22,16 +22,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                      "context": {"id":"", "title": "", "pic": ""},
                                      "problem": {"id":"", "title": "", "pic": ""}
                                      }),
-                             _tools = new Store(
-                                     {"cardpopup":{"char":false, "context":false, "problem":false}},
-                                     {"postit": "inactive"},
-                                     {"import": "inactive"},
-                                     {"drawing": "inactive"},
-                                     {"ready": false}, // display finish button
-                                     {"showstory": false}, // display write up interface
-                                     {"shownext" : false}, // display next button
-                                     {"readonly" : false} // set story textareas in readonly mode
-                                     ),
+                             _initTools = {
+                                     "cardpopup":{"char":false, "context":false, "problem":false},
+                                     "postit": "inactive",
+                                     "import": "inactive",
+                                     "drawing": "inactive",
+                                     "ready": false, // display finish button
+                                     "showstory": false, // display write up interface
+                                     "shownext" : false, // display next button
+                                     "readonly" : false // set story textareas in readonly mode
+                             },
+                             _tools = new Store(_initTools),
                             _timer = new Store({"timer":null, "display":false}),
                             _qsTimer,
                             _scenario = new Store({"title" : "", "story" : "", "solution" : ""}),
@@ -318,7 +319,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 }
                                 
                                 // reset all tools and status indicators
-                                _tools.reset({"cardpopup":{"char":false, "context":false, "problem":false}},{"postit": "inactive"},{"import": "inactive"},{"drawing": "inactive"},{"ready": false},{"showstory": false},{"shownext" : false},{"readonly" : false});
+                                _tools.reset(_initTools);
                                 
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));

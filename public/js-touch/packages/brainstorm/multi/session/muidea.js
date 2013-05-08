@@ -23,16 +23,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _scenario = new Store(),
                             _techs = new Store([]),
                             _techDetails = [], //used to store tech card details
-                            _tools = new Store(
-                                     {"cardpopup":{"scenario":false, "techs":[false, false, false]}},
-                                     {"postit": "inactive"},
-                                     {"import": "inactive"},
-                                     {"drawing": "inactive"},
-                                     {"ready": false}, // display finish button
-                                     {"showidea": false}, // display write up interface
-                                     {"shownext" : false}, // display next button
-                                     {"readonly" : false} // set story textareas in readonly mode
-                                     ),
+                            _initTools = {
+                                    "cardpopup":{"scenario":false, "techs":[false, false, false]},
+                                    "postit": "inactive",
+                                    "import": "inactive",
+                                    "drawing": "inactive",
+                                    "ready": false, // display finish button
+                                    "showidea": false, // display write up interface
+                                    "shownext" : false, // display next button
+                                    "readonly" : false // set story textareas in readonly mode
+                            },
+                            _tools = new Store(_initTools),
                             _wbContent = new Store([]),
                             _wb = new Whiteboard("idea", _wbContent, _tools),
                             _transport = Config.get("transport"),
@@ -385,16 +386,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // INIT muidea STEP
                         _widget.reset = function reset(sip){
                                 // reset all tools and status indicators
-                                _tools.reset(
-                                     {"cardpopup":{"scenario":false, "techs":[false, false, false]}},
-                                     {"postit": "inactive"},
-                                     {"import": "inactive"},
-                                     {"drawing": "inactive"},
-                                     {"ready": false}, // display finish button
-                                     {"showidea": false}, // display write up interface
-                                     {"shownext" : false}, // display next button
-                                     {"readonly" : false} // set story textareas in readonly mode
-                                     );
+                                _tools.reset(_initTools);
                                 
                                 // reset technology
                                 _techs.reset();

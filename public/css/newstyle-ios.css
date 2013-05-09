@@ -3624,6 +3624,12 @@ li.color-item{
     top: 400px;
 }
 
+#muscenario .next-button, #muscenario .next-button{
+    float: right;
+    margin-top: -66px;
+    margin-right: 40px;
+}
+
 /* cards, reusable */
 .card{
     display: inline-block;
@@ -4000,6 +4006,15 @@ li.color-item{
 
 .enterSol{
     margin-left: 19px;
+}
+
+#muscenario .enterTitle, #muidea .enterTitle{
+    font-size: 16px;
+}
+
+#muscenario .enterDesc, #muscenario .enterSol, #muidea .enterDesc, #muidea .enterSol{
+    height: 180px;
+    font-size: 16px;
 }
 
 .finish-writeup{

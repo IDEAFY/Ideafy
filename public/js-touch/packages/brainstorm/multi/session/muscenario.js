@@ -198,11 +198,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // show/hide the setup cards
                         _widget.fold = function(event, node){
-                                node.classList.toggle("folded");
-                                node.querySelector(".caret").classList.toggle("folding");
-                                // hide card popup if present
-                                if (_currentPopup){
-                                        _popupUI.close();
+                                // disable toggle in scenario write up phase
+                                if (!$session.get("scReady")){
+                                        node.classList.toggle("folded");
+                                        node.querySelector(".caret").classList.toggle("folding");
+                                        // hide card popup if present
+                                        if (_currentPopup){
+                                                _popupUI.close();
+                                        }
                                 }
                         };
                         
@@ -372,7 +375,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // update database with scenario changes made by leader
                         _widget.updateScenario = function updateScenario(){
-                                _clearInterval(_mscInterval);
+                                _mscInterval && _clearInterval(_mscInterval);
                                 _mscInterval = setInterval(function(){
                                         var cdbScen = $session.get("scenario")[0] || {title:"", story:"", solution: ""};
                                         
@@ -381,7 +384,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 cdbScen.story = _scenario.get("story");
                                                 cdbScen.solution = _scenario.get("solution");
                                                 $session.set("scenario", [cdbScen]);
-                                                $session.upload();
+                                                $session.upload()
+                                                .then(function(success){return true;}, function(err){console.log(err);});
                                         }
                                 }, 20000);        
                         };

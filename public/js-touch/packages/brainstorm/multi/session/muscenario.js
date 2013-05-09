@@ -302,20 +302,24 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // user is done with whiteboard
                         _widget.finish = function(event, node){
+                                var finishSpinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 500, left: 120}).spin();
                                 // hide finish button
-                                node.classList.remove("pushed");
-                                _tools.set("ready", false);
-                                
-                                _widget.displayStory();
+                                node.classList.add("invisible");
+                                finishSpinner.spin(node.parentNode);
                                  
-                                 // monitor scenario updates if user is the session leader
-                                 if (_widget.isLeader()) {
-                                         _widget.updateScenario();
-                                 }
-                                
                                 // notify other participants
                                 $session.set("scReady", true);
-                                $session.upload();
+                                $session.upload()
+                                .then(function(){
+                                        setTimeout(function(){finishSpinner.stop();}, 120000);
+                                        // reset and hide finish button
+                                        node.classList.remove("pressed");
+                                        _tools.set("ready", false);
+                                
+                                        _widget.displayStory();
+                                        // monitor scenario updates if user is the session leader
+                                        _widget.updateScenario();       
+                                });
                         };
                         
                         // function called to display the story writeup interface

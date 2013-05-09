@@ -352,7 +352,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // toggle view (same as caret) if user clicks on the bottom of the whiteboard
                         _widget.toggleView = function(event, node){
-                                alert(event.pageX, event.pageY);      
+                                console.log(event.pageX, event.pageY);      
                         };
                         
                         // update database with scenario changes made by leader

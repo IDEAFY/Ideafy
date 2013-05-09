@@ -347,12 +347,25 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 var _writeup = _widget.dom.querySelector(".writeup"),
                                     _whiteboard = _widget.dom.querySelector(".whiteboard");
                                 node.classList.toggle("descending");
-                                (node.classList.contains("descending")) ? _whiteboard.scrollIntoView() : _writeup.scrollIntoView();        
+                                (node.classList.contains("descending")) ? _writeup.scrollIntoView() : _whiteboard.scrollIntoView();        
                         };
                         
                         // toggle view (same as caret) if user clicks on the bottom of the whiteboard
                         _widget.toggleView = function(event, node){
-                                console.log(event.pageX, event.pageY);      
+                                var caret = node.querySelector(".caret"),
+                                    _writeup = _widget.dom.querySelector(".writeup"),
+                                    _whiteboard = _widget.dom.querySelector(".whiteboard");
+                                // if whiteboard is folded then diusplay it
+                                if (caret.classList.contains("descending")){
+                                        caret.classList.remove("descending");
+                                        _whiteboard.scrollIntoView();
+                                }
+                                else{
+                                        // else if touch event occurs near the bottom of the whiteboard
+                                        if ( (event.pageY - node.scrollHeight) > 0){
+                                                caret.classList.add("descending");
+                                        }
+                                }
                         };
                         
                         // update database with scenario changes made by leader

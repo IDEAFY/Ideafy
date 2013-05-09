@@ -163,6 +163,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 }
                         };
                         
+                        _widget.stopSpinner = function stopSpinner(){
+                                spinner.stop();
+                        };
+                        
                         // move to previous screen
                         _widget.prev = function(event, node){
                                 node.classList.remove("pressed");
@@ -302,16 +306,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // user is done with whiteboard
                         _widget.finish = function(event, node){
-                                var finishSpinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 500, left: 120}).spin();
+                                var finishSpinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 550, left: 50}).spin();
                                 // hide finish button
                                 node.classList.add("invisible");
                                 finishSpinner.spin(node.parentNode);
                                  
                                 // notify other participants
                                 $session.set("scReady", true);
+                                
                                 $session.upload()
                                 .then(function(){
-                                        setTimeout(function(){finishSpinner.stop();}, 120000);
+                                        finishSpinner.stop();
                                         // reset and hide finish button
                                         node.classList.remove("pressed");
                                         _tools.set("ready", false);
@@ -380,12 +385,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _widget.updateScenario = function updateScenario(){
                                 clearInterval(_mscInterval);
                                 _mscInterval = setInterval(function(){
-                                        var cdbScen = $session.get("scenario")[0] || {title:"", story:"", solution: ""};
+                                        var _title = widget.dom.querySelector(".enterTitle").value,
+                                            _story = widget.dom.querySelector(".enterDesc").value,
+                                            _solution = widget.dom.querySelector(".enterSol").value,
+                                            cdbScen = {};
                                         
-                                        if (_scenario.get("title") !== cdbScen.title || _scenario.get("story") !== cdbScen.story || _scenario.get("solution") !== cdbScen.solution){
-                                                cdbScen.title = _scenario.get("title");
-                                                cdbScen.story = _scenario.get("story");
-                                                cdbScen.solution = _scenario.get("solution");
+                                        if (_scenario.get("title") !== _title || _scenario.get("story") !== _story || _scenario.get("solution") !== _solution){
+                                                cdbScen.title = _title;
+                                                cdbScen.story = _story;
+                                                cdbScen.solution = _solution;
                                                 $session.set("scenario", [cdbScen]);
                                                 $session.upload()
                                                 .then(function(success){return true;}, function(err){console.log(err);});
@@ -581,11 +589,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _scenario.watch("updated", function(){
                                         (_widget.isLeader() && _scenario.get("title") && _scenario.get("story") && _scenario.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
-                        
-                        SCCHAT = chatUI;
-                        TOOLS = _tools;
-                        WBSC = _wbContent;
-                        MUSCSPIN = spinner;
                         
                         // Return
                         return _widget;

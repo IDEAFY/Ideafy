@@ -41,7 +41,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                             _start, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
                             _transport = Config.get("transport"),
-                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 665, left: 690}).spin();
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 695, left: 670}).spin();
                             // deduct 20px from position shown in navigator 
                              
                         
@@ -386,7 +386,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 $session.upload()
                                                 .then(function(success){return true;}, function(err){console.log(err);});
                                         }
-                                }, 20000);        
+                                }, 10000);        
                         };
                         
                         // update session score

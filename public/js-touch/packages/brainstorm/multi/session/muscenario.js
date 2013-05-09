@@ -355,6 +355,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 var caret = node.querySelector(".caret"),
                                     _writeup = _widget.dom.querySelector(".writeup"),
                                     _whiteboard = _widget.dom.querySelector(".whiteboard");
+                                    
                                 // if whiteboard is folded then diusplay it
                                 if (caret.classList.contains("descending")){
                                         caret.classList.remove("descending");
@@ -364,6 +365,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         // else if touch event occurs near the bottom of the whiteboard
                                         if ( (event.pageY - node.scrollHeight) > 0){
                                                 caret.classList.add("descending");
+                                                _writeup.scrollIntoView();
                                         }
                                 }
                         };

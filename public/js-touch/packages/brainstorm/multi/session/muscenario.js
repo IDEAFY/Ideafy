@@ -144,20 +144,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         $data.set("scenario", JSON.parse(_scenario.toJSON()));
                                         
                                         // update session score
-                                        _widget.updateSessionScore(_timer.get("timer")).then(function(){
-                                                // resync with db
-                                                $session.unsync();
-                                                $session.sync(Config.get("db"), $session.get("_id")).then(function(){
-                                                        var timers = $session.get("elapsedTimers");
-                                                        
-                                                        timers.muscenario = _timer.get("timer");
-                                                        // update session document
-                                                        $session.set("scenario", [JSON.parse(_scenario.toJSON())]);
-                                                        $session.set("elapsedTimers", timers);
-                                                        // set idea to readonly
-                                                        _tools.set("readonly", true);
-                                                        $next("muscenario");         
-                                                });      
+                                        _widget.updateSessionScore(_timer.get("timer"));
+                                        $session.watchValue("score", function(score){
+                                                var timers;
+                                                console.log("score changed : ", score);
+                                                // notify participants via chat
+                                                chatUI.conclude("next");
+                                                // update session document
+                                                timers = $session.get("elapsedTimers");
+                                                timers.muscenario = _timer.get("timer");
+                                                $session.set("elapsedTimers", timers);
+                                                _tools.set("readonly", true);
+                                                $next("muscenario");         
                                         });
                                 }
                                 else {
@@ -347,6 +345,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // toggle whiteboard/writeup display
                         _widget.toggleCaret = function(event, node){
+                                event.stopPropagation();
                                 var _writeup = _widget.dom.querySelector(".writeup"),
                                     _whiteboard = _widget.dom.querySelector(".whiteboard");
                                 node.classList.toggle("descending");
@@ -375,7 +374,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // update database with scenario changes made by leader
                         _widget.updateScenario = function updateScenario(){
-                                _mscInterval && _clearInterval(_mscInterval);
+                                _clearInterval(_mscInterval);
                                 _mscInterval = setInterval(function(){
                                         var cdbScen = $session.get("scenario")[0] || {title:"", story:"", solution: ""};
                                         

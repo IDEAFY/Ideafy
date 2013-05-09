@@ -385,9 +385,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _widget.updateScenario = function updateScenario(){
                                 clearInterval(_mscInterval);
                                 _mscInterval = setInterval(function(){
-                                        var _title = widget.dom.querySelector(".enterTitle").value,
-                                            _story = widget.dom.querySelector(".enterDesc").value,
-                                            _solution = widget.dom.querySelector(".enterSol").value,
+                                        var _title = _widget.dom.querySelector(".enterTitle").value,
+                                            _story = _widget.dom.querySelector(".enterDesc").value,
+                                            _solution = _widget.dom.querySelector(".enterSol").value,
                                             cdbScen = {};
                                         
                                         if (_scenario.get("title") !== _title || _scenario.get("story") !== _story || _scenario.get("solution") !== _solution){

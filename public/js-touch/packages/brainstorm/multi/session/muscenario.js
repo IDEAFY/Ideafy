@@ -358,12 +358,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // update database with scenario changes made by leader
                         _widget.updateScenario = function updateScenario(){
                                 _mscInterval = setInterval(function(){
-                                        var cdbScen = $session.get("scenario")[0] || {title:"", story:"", description: ""};
+                                        var cdbScen = $session.get("scenario")[0] || {title:"", story:"", solution: ""};
                                         
-                                        if (_scenario.get("title") !== cdbScen.title || _scenario.get("story") !== cdbScen.story || _scenario.get("description") !== cdbScen.description){
+                                        if (_scenario.get("title") !== cdbScen.title || _scenario.get("story") !== cdbScen.story || _scenario.get("solution") !== cdbScen.solution){
                                                 cdbScen.title = _scenario.get("title");
                                                 cdbScen.story = _scenario.get("story");
-                                                cdbScen.description = _scenario.get("description");
+                                                cdbScen.solution = _scenario.get("solution");
                                                 $session.set("scenario", [cdbScen]);
                                                 $session.upload();
                                         }

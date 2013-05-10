@@ -120,8 +120,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 $session.unsync();
                                                 return $session.sync(Config.get("db"), $session.get("_id"))
                                         })
-                                        .then(function(score){
-                                                console.log("score changed : ", score)
+                                        .then(function(){
                                                 // notify participants via chat
                                                 chatUI.conclude("next");
                                                 // update session document

@@ -2737,10 +2737,14 @@ textarea.solution {
     -webkit-box-shadow: 0px 10px 10px 1px rgba(23,41,48,0.4);
 }
 
-#musetup .drawarea{
+#musetup .drawarea, #mutech .drawarea{
     margin-top: 10px;
     padding: 10px 20px;
     height: 365px;
+}
+
+#mutech .drawarea{
+    text-align: center;
 }
 
 .next-button{
@@ -4023,7 +4027,7 @@ li.color-item{
 
 /* quicktech */
 
-#quicktech-left .card{
+#quicktech-left .card, #mutech-left .card{
     margin: 240px 30px 30px 30px;
 }
 

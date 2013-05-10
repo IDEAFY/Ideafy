@@ -116,7 +116,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _timer.set("display", true);
                                         
                                         // compute session score
-                                        _widget.updateSessionScore(_timer.get("timer")).then(function(){
+                                        _widget.updateSessionScore(_timer.get("timer"))
+                                        .then(function(){
                                                // resync with db
                                                 $session.unsync();
                                                 return $session.sync(Config.get("db"), $session.get("_id"))

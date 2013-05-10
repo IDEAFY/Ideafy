@@ -147,8 +147,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         // update session score
                                         _widget.updateSessionScore(_timer.get("timer"))
                                         .then(function(){
+                                               // resync with db
+                                                $session.unsync();
+                                                return $session.sync(Config.get("db"), $session.get("_id"))
+                                        })
+                                        .then(function(){
                                                 var timers;
-                                                console.log("score updated (muscenario) : ", score);
                                                 // notify participants via chat
                                                 chatUI.conclude("next");
                                                 // update session document

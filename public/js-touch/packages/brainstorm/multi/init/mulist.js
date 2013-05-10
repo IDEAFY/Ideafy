@@ -204,22 +204,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         
                         cdb.setTransport(transport);
                         if (mode === "roulette"){
-                                query = {descending:true, limit:50};
+                                query = {descending:false, limit:50};
                         }
                         else{
                                 query={key: Config.get("uid"),descending:false};      
                         }
                         cdb.sync(db, "library", view, query).then(function(){
-                                if (mode === "roulette"){
-                                        cdb.loop(function(v,i){
-                                                if (!filter || v.value.lang.search(filter.lang) > -1) arr.push(v);        
-                                        });
-                                }
-                                else {
-                                        cdb.loop(function(v,i){
-                                                if (!filter || v.value.lang.search(filter.lang) > -1) arr.unshift(v);        
-                                        });        
-                                }
+                                cdb.loop(function(v,i){
+                                        arr.unshift(v);
+                                });
                                 promise.fulfill();
                                 cdb.unsync();
                         }, function(err){console.log(err, mode);});

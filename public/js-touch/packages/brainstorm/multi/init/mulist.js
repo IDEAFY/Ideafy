@@ -197,7 +197,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 // a function to add qualifying sessions (e.g. waiting, less than 4 participants and relevant to user)
-                widget.addSessions = function addSessions(arr, mode, filter){
+                widget.addSessions = function addSessions(arr, mode){
                         var promise = new Promise(),
                             cdb = new CouchDBView(),
                             view = "_view/"+mode, query = {};

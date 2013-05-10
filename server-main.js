@@ -322,7 +322,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("GetLanguages", function(json, onEnd){
                 fs.readdir(__dirname+'/i8n/', function(err, list){
                         var res = [];
-                        if (err) onEnd(err)
+                        if (err) {onEnd(err);}
                         else {
                                 list.forEach(function(file){
                                         res.push(file.substr(0,5));        

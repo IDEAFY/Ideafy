@@ -11,17 +11,17 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
            return function MuListConstructor($exit){
            
                 var widget = new Widget(),
+                    labels=Config.get("labels"),
+                    user = Config.get("user"),
+                    db = Config.get("db"),
+                    transport = Config.get("transport"),
                     muListAll = new Store([]),
                     muSearch = new Store([]),
                     muPreviewUI = new MUPreview(),
                     musessions = new Store([]),
-                    muListOptions = new Store({"lang":[], "modes":["allmodes", "roulette", "campfire", "boardroom"], "selectedLang": "all", "selectedMode": "allmodes"}),
+                    muListOptions = new Store({"lang":[labels.get("all")], "modes":["allmodes", "roulette", "campfire", "boardroom"], "selectedLang": "all", "selectedMode": "allmodes"}),
                     currentList = "mulistall",
-                    labels=Config.get("labels"),
-                    user = Config.get("user"),
                     contacts = Utils.getUserContactIds(), // array of user ids
-                    db = Config.get("db"),
-                    transport = Config.get("transport"),
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 6, radius:10, top: 200}).spin();
                 
                 widget.plugins.addAll({
@@ -142,6 +142,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                         return widget.addSessions(arr, "boardroom");
                                 })
                                 .then(function(){
+                                        console.log("after last query", arr, widget.dom.querySelector("#noresult"));
                                         if (arr.length){
                                                 widget.dom.querySelector("#noresult").classList.add("invisible");
                                         }
@@ -368,6 +369,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 
                 // init
                 // get available languages
+                
                 transport.request("GetLanguages", {}, function(result){
                         console.log("get languages :", result);
                         muListOptions.set("lang", [labels.get("all")].concat(result));      

@@ -174,6 +174,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                     _now = new Date();
                                
                                 if (_user.get("_id") === $session.get("initiator").id && _next === "step" && _ready){
+                                        _ready = false;
                                         // if reload button -- could've used classList.contains("reload") but browser compat issue
                                         if (_sel.left === 0){
                                                 // reinitialize deckStack
@@ -183,11 +184,10 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         }
                                         // if a card is already selected(accepted) disable drawing
                                         if (_sel.selected){
-                                                alert("please unlock selected card first");        
+                                                _ready = true; 
+                                                alert("please unlock selected card first");
                                         }
-                               
-                                        if (_ready && !_sel.selected){
-                                                _ready = false;
+                                        else {
                                                 // check if a card of this type is already selected (nothing should happen then)
                                                 if (_sel.selected === false){
                                                         _widget.drawCard(_type).then(function(){

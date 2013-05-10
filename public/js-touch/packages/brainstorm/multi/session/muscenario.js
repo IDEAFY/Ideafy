@@ -397,7 +397,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 cdbScen.solution = _solution;
                                                 $session.set("scenario", [cdbScen]);
                                                 $session.upload()
-                                                .then(function(success){return true;}, function(err){console.log(err);});
+                                                .then(function(success){console.log("scenario updated in CouchDB");return true;}, function(err){console.log("failed to update scenario", err);});
                                         }
                                 }, 10000);        
                         };

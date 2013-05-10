@@ -125,7 +125,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                        muListOptions.set("selectedLang", "all");
                        muListOptions.set("selectedMode", "allmodes");
                        // synchronize list with database
-                        widget.buildList(currentList).then(function(){
+                       widget.buildList(currentList).then(function(){
                                 spinner.stop();
                         });
                 };
@@ -143,10 +143,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 })
                                 .then(function(){
                                         if (arr.length){
-                                                document.getElementById("noresult").classList.add("invisible");
+                                                widget.dom.querySelector("#noresult").classList.add("invisible");
                                         }
                                         else {
-                                                document.getElementById("noresult").classList.remove("invisible");
+                                                widget.dom.querySelector("#noresult").classList.remove("invisible");
                                         }
                                         muListAll.reset(arr);
                                         promise.fulfill();      

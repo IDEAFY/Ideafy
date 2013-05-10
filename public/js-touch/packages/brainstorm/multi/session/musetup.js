@@ -114,9 +114,9 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         _timer.set("display", true);
                                         
                                         // compute session score -- score change triggers move to the next step
-                                        _widget.updateSessionScore(_timer.get("timer"));
-                                        $session.watchValue("score", function(score){
-                                                console.log("score changed : ", score)
+                                        _widget.updateSessionScore(_timer.get("timer"))
+                                        .then(function(){
+                                                console.log("score updated (musetup): ", score)
                                                 // notify participants via chat
                                                 chatUI.conclude("next");
                                                 // update session document

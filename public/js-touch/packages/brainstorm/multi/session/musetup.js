@@ -116,7 +116,12 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         // compute session score -- score change triggers move to the next step
                                         _widget.updateSessionScore(_timer.get("timer"))
                                         .then(function(){
-                                                console.log("score updated (musetup): ", score);
+                                               // resync with db
+                                                $session.unsync();
+                                                return $session.sync(Config.get("db"), $session.get("_id"))
+                                        })
+                                        .then(function(score){
+                                                console.log("score changed : ", score)
                                                 // notify participants via chat
                                                 chatUI.conclude("next");
                                                 // update session document
@@ -455,6 +460,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         "cards": _drawnCards.char + _drawnCards.context + _drawnCards.problem
                                 };
                                 
+                                console.log("before transport request : ", json);
                                 _transport.request("UpdateSessionScore", json, function(result){
                                         console.log(result);
                                         if (result.res === "ok"){

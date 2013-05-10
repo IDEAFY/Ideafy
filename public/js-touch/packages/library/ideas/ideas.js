@@ -118,6 +118,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                         // display search list and fill search field with idea title if applicable
                                         _stack.getStack().show("#list-search");
                                         if (listSearch.getModel().getNbItems() >0){
+                                                console.log(listSearch.getModel().toJSON());
                                                 _searchInput.set("search", listSearch.getModel().get(0).doc.title);
                                                 document.getElementById("noresult").classList.add("invisible");
                                                 _widget.displayHighlightedIdea();

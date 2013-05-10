@@ -319,7 +319,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 // notify other participants
                                 $session.set("scReady", true);
                                 
-                                $session.upload()
+                                $session.unsync();
+                                $session.sync(Config.get("db"), $session.get("_id"))
+                                .then(function(){
+                                        return $session.upload();       
+                                })
                                 .then(function(){
                                         finishSpinner.stop();
                                         // reset and hide finish button

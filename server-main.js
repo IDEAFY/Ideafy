@@ -1553,6 +1553,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 if (increment < min_score) {increment = min_score;}
                                 break;
                         case "muscenario":
+                                min_score = 20;
                                 wbdata = JSON.parse(json.wbcontent);
                                 input = JSON.parse(json.scenario);
                                 t = json.time;
@@ -1570,7 +1571,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 if ((json.wbcontent.search("import")>-1) && (json.wbcontent.search("drawing")>-1)) {bonus = 25;}
                                 else if ((json.wbcontent.search("import")>-1) || (json.wbcontent.search("drawing")>-1))  {bonus = 10;}
                                 
-                                increment = Math.floor((wbdata.length*12 + bonus)*coeff);
+                                increment = Math.floor((wbdata.length*12 + bonus)*coeff) + min_score;
                                 break;      
                         default:
                                 increment = 0;

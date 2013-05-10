@@ -369,6 +369,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 // init
                 // get available languages
                 transport.request("GetLanguages", {}, function(result){
+                        console.log("get languages :", result);
                         muListOptions.set("lang", [labels.get("all")].concat(result));      
                 });
                 

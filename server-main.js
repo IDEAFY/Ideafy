@@ -372,7 +372,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                                 
                                                 // create reward doc
                                                  // create reward document
-                                                var rewards = new CouchDBStore({
+                                                var rewards = new CouchDBDocument({
                                                         "profilecomplete": 0,
                                                         "playthegame": 0,
                                                         "tutorialcomplete": 0,

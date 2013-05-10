@@ -493,11 +493,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         }
                                 }
                                 
-                                // automatically fold setup cards after a short period of time
-                                setTimeout(function(){
-                                        var stpCards = _widget.dom.querySelector(".scenario-cards");
-                                        stpCards.classList.add("folded");
-                                }, 5000);
                          };
                          
                         _widget.initTimer = function(init){

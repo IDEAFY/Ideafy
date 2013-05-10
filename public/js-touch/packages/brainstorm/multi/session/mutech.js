@@ -14,7 +14,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _widget = new Widget(),
                             _start = null, //timer
                             _elapsed = null, //time already elapsed in this step
-                            _qtTimer,
+                            _mtTimer,
                             _timer = new Store({"timer":null, "display":false}),
                             _transport = Config.get("transport"),
                             _user = Config.get("user"),
@@ -42,6 +42,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             ]), // {id, title, pic}) -- there are always 3 tech cards in quick mode
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
                             spinner  = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 373, left:373}).spin();
+                        
+                        // identify if user is the current session leader
+                        _widget.isLeader = function isLeader(){
+                                return ($session.get("initiator") && $session.get("initiator").id === _user.get("_id"));
+                        };
                         
                         // Setup
                         _widget.plugins.addAll({
@@ -112,7 +117,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         $data.set("techno", _techCards);
                                         
                                         // stop timer and update display
-                                        clearInterval(_qtTimer);
+                                        clearInterval(_mtTimer);
                                         _timer.set("display", true);
                                         
                                         // compute session score
@@ -135,6 +140,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 else {
                                         $next("mutech");
                                 }
+                        };
+                        
+                        _widget.stopSpinner = function stopSpinner(){
+                                spinner.stop();
                         };
                         
                         // Help popup
@@ -229,50 +238,48 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.draw = function(event, node){
                                 var toDraw = [];
                                 
-                                if (_next === "step" && _ready){
+                                if (_widget.isLeader() && _next === "step" && _ready){
                                         _ready = false; // to prevent fast clicks
                                         
                                         // check which cards are needed
-                                        if (!_techDisplay.get("tech1").selected) toDraw.push("tech1");
-                                        if (!_techDisplay.get("tech2").selected) toDraw.push("tech2");
-                                        if (!_techDisplay.get("tech3").selected) toDraw.push("tech3");
+                                        ["tech1", "tech2", "tech3"].forEach(function(tech){
+                                                if (!_techDisplay.get(tech).selected) {
+                                                        toDraw.push(tech);
+                                                }
+                                        });
                                         
-                                        _widget.drawTech(toDraw);
-                                        
-                                        setTimeout(function(){
+                                        _widget.drawTech(toDraw)
+                                        .then(function(){
                                                 node.classList.remove("pushed");
-                                                _ready = true;
-                                        }, 350);
+                                                _ready = true;        
+                                        });
                                  }
                         };
                         
                         _widget.drawTech = function drawTech(arr){
-                                var idx, accepted = [];
+                                var idx, accepted = [], promise = new Promise();
                                 
                                 arr.forEach(function(name){
-                                        if (_techs.length){
-                                                idx = Math.floor(Math.random()*_techs.length);
-                                                _widget.getCardDetails(_techs[idx], name);
-                                                _techs.splice(idx, 1);
-                                                _techDisplay.set("left", _techs.length);
-                                                _drawnCards++;        
-                                        }
-                                        else{
+                                        // if no cards left in tech stack, reload stack and eliminate already drawn cards
+                                        if (_techs.length <= 0){
                                                 _techs = $data.get("deck").techno.concat();
                                                 // remove selected cards from deck
-                                                if (_techDisplay.get("tech1").selected) {accepted.push(_techCards.get(0).id);}
-                                                if (_techDisplay.get("tech2").selected) {accepted.push(_techCards.get(1).id);}
-                                                if (_techDisplay.get("tech3").selected) {accepted.push(_techCards.get(2).id);}
+                                                ["tech1", "tech2", "tech3"].forEach(function(tech, idx){
+                                                        if (_techDisplay.get(tech).selected) {accepted.push(_techCards.get(idx).id);}        
+                                                });
                                                 _techs.filter(function(value){
                                                         return !(accepted.indexOf(value)>-1);
-                                                });
-                                                idx = Math.floor(Math.random()*_techs.length);
-                                                _widget.getCardDetails(_techs[idx], name);
-                                                _techs.splice(idx, 1);
-                                                _techDisplay.set("left", _techs.length);
-                                                _drawnCards++; 
+                                                });        
                                         }
+                                        // draw card, increment drawncards and get card details
+                                        idx = Math.floor(Math.random()*_techs.length);
+                                        _widget.getCardDetails(_techs[idx], name);
+                                        _techDisplay.set("left", _techs.length);
+                                        _drawnCards++;
+                                        _techs.splice(idx, 1); 
                                 });
+                                promise.fulfill();
+                                return promise;
                         };
                         
                         _widget.getCardDetails = function getCardDetails(id, name){
@@ -326,15 +333,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 });
                                 if (sip && sessionTech.length){
                                         _next = "screen"; // read-only
-                                        // retrieve card information from _sessionData
-                                        _widget.getCardDetails(sessionTech[0], "tech1");
-                                        _widget.getCardDetails(sessionTech[1], "tech2");
-                                        _widget.getCardDetails(sessionTech[2], "tech3");
-                                        ["tech1", "tech2", "tech3"].forEach(function(value){
-                                                _techDisplay.set(value, {"popup": false, "selected": true});
-                                        });
-                                        _techCards.watch("updated", function(){
-                                                if (_techCards.getNbItems() === 3) $data.set("techno", _techCards);
+                                        // retrieve card information from session data
+                                        _widget.getCardDetails(sessionTech[0], "tech1")
+                                        .then(function(){
+                                                return _widget.getCardDetails(sessionTech[1], "tech2");
+                                        })
+                                        .then(function(){
+                                                return _widget.getCardDetails(sessionTech[2], "tech3");
+                                        })
+                                        .then(function(){
+                                                ["tech1", "tech2", "tech3"].forEach(function(value){
+                                                        _techDisplay.set(value, {"popup": false, "selected": true});
+                                                });
+                                                $data.set("techno", _techCards);  
                                         });
                                 }
                                 else{
@@ -351,9 +362,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }
                                 
                                 // retrieve time already spent on this step and init/display timer as appropriate
-                                ($session.get("elapsedTimers").mutech) ? _elapsed = $session.get("elapsedTimers").mutech : _elapsed = 0;
-                                _timer.set("timer", _elapsed);
-                                (_next === "screen")?_timer.set("display", true):_widget.initTimer(_elapsed);
+                                if ($session.get("elapsedTimers").mutech ){
+                                        _elapsed = $session.get("elapsedTimers").mutech;
+                                        _timer.set("timer", _elapsed);
+                                        if (_next === "screen"){
+                                                _timer.set("display", true);
+                                        }
+                                        else if (_widget.isLeader()){
+                                                _widget.initTimer(_elapsed);
+                                        }
+                                }
                         };
                         
                         // Method called to update the session score at the end of the current step
@@ -386,7 +404,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _timer.set("timer", elapsed);
                                 // make sure current step is ongoing before restarting timer
                                 if ($session.get("step") === "mutech"){
-                                        _qtTimer = setInterval(function(){
+                                        clearInterval(_mtTimer);
+                                        _mtTimer = setInterval(function(){
                                                 var now = new Date();
                                                 _timer.set("timer", elapsed + now.getTime()-_start);
                                         }, 1000);

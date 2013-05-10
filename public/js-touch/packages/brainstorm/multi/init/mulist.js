@@ -118,6 +118,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 widget.template = '<div id="mulist"><div id="mulist-content"><div id="mulistspinner"></div><div data-mupreview = "place: preview"></div><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><select class="modes" data-options="bind: setMode, modes" data-mulistevent="listen:change, filterMode"></select><select data-options="bind: setLang, lang" data-mulistevent="listen:change, filterLang"></select></div><hr/><div class="mulistheader"><div class="mumode" data-labels="bind:innerHTML, mode"></div><div class="mutitle" data-labels="bind:innerHTML, title"></div><div class="mulang" data-labels="bind:innerHTML, lang"></div><div class="muleadername" data-labels="bind:innerHTML, leader"></div><div class="muparts" data-labels="bind:innerHTML, participants"></div></div><div id="noresult" class="invisible" data-labels="bind:innerHTML, nosessionfound"></div><ul id="mulistall" data-muall="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-muall="bind:setMode, value.mode"></div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mulang" data-muall="bind:setLang, value.lang"></div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musearch" class="invisible" data-musearch="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-musearch="bind:setMode, fields.mode"></div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mulang" data-musearch="bind:setLang, fields.lang"></div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
                 
                 widget.reset = function reset(){
+                        console.log("reset mulist");
                        currentList = "mulistall";
                        // init spinner
                        spinner.spin(document.getElementById("mulistspinner"));
@@ -372,7 +373,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 
                 transport.request("GetLanguages", {}, function(result){
                         console.log("get languages :", result);
-                        muListOptions.set("lang", [labels.get("all")].concat(result));      
+                        muListOptions.set("lang", [labels.get("all")].concat(result));     
                 });
                 
                 // pass the refresh callback to the preview UI to automatically refresh the current list once a preview window is closed

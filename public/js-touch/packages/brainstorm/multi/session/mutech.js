@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBDocument", "Promise", "service/cardpopup", "service/utils", "lib/spin.min", "./mubchat"],
-        function(Widget, Map, Model, Event, Config, Help, Store, CouchDBDocument, Promise, CardPopup, Utils, Spinner, Chat){
+define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBDocument", "Promise", "service/cardpopup", "service/utils", "lib/spin.min", "./mubchat"],
+        function(Widget, Map, Place, Model, Event, Config, Help, Store, CouchDBDocument, Promise, CardPopup, Utils, Spinner, Chat){
                 
                 return function MUTechConstructor($session, $data, $prev, $next, $progress){
                         
@@ -92,10 +92,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                               (display) ? this.classList.add("showtimer") : this.classList.remove("showtimer");
                                       }
                                 }),
+                                "place" : new Place({"chat": chatUI}),
                                 "mutechevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "mutech"><div class="previousbutton" data-mutechevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="mutech-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, mutech" data-mutechevent="listen:touchstart, toggleProgress"></div><div class="timer" data-mutechtimer="bind:setTime, timer; bind: displayTimer, display" data-mutechevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-mutechevent="listen:touchstart, help"></div><div id="mutech-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-mutechevent="listen: touchstart, select; listen:touchstart, zoom" data-display="bind: popup, scenario.popup"><div class="cardpicture"></div><div class="cardtitle" data-labels="bind:innerHTML, scenariolbl"></div></div></div><div class="drawarea"><div class="decks"><div class="drawbutton drawtech" "name"="tech" data-mutechevent="listen: touchstart, push; listen:touchend, draw" data-display="bind: setReload, left"></div></div><div class="cards"><div class="card tech defaultcard" name="tech1" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 0.pic" data-display="bind: popup, tech1.popup"><div class="cardpicture" data-techcards="bind:setPic, 0.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 0.title" data-labels="bind:innerHTML, tech1lbl"></div></div><div class="card tech defaultcard" name="tech2" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 1.pic" data-display="bind: popup, tech2.popup"><div class="cardpicture" data-techcards="bind:setPic, 1.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 1.title" data-labels="bind:innerHTML,tech2lbl"></div></div><div class="card tech defaultcard" name="tech3" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 2.pic" data-display="bind: popup, tech3.popup"><div class="cardpicture" data-techcards="bind:setPic, 2.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 2.title" data-labels="bind:innerHTML, tech3lbl"></div></div></div><div class="confirmdraw"><div class="drawok" name="tech1" data-mutechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech2" data-mutechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech3" data-mutechevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-mutechevent="listen: touchstart, press; listen:touchend, next" data-display="bind:updateNext, tech1.selected;bind:updateNext, tech2.selected;bind:updateNext, tech3.selected"></div></div></div>';
+                        _widget.template = '<div id = "mutech"><div class="previousbutton" data-mutechevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="mutech-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, mutech" data-mutechevent="listen:touchstart, toggleProgress"></div><div class="timer" data-mutechtimer="bind:setTime, timer; bind: displayTimer, display" data-mutechevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-mutechevent="listen:touchstart, help"></div><div id="mutech-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-mutechevent="listen: touchstart, select; listen:touchstart, zoom" data-display="bind: popup, scenario.popup"><div class="cardpicture"></div><div class="cardtitle" data-labels="bind:innerHTML, scenariolbl"></div></div></div><div class="drawarea"><div class="decks"><div class="drawbutton drawtech" "name"="tech" data-mutechevent="listen: touchstart, push; listen:touchend, draw" data-display="bind: setReload, left"></div></div><div class="cards"><div class="card tech defaultcard" name="tech1" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 0.pic" data-display="bind: popup, tech1.popup"><div class="cardpicture" data-techcards="bind:setPic, 0.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 0.title" data-labels="bind:innerHTML, tech1lbl"></div></div><div class="card tech defaultcard" name="tech2" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 1.pic" data-display="bind: popup, tech2.popup"><div class="cardpicture" data-techcards="bind:setPic, 1.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 1.title" data-labels="bind:innerHTML,tech2lbl"></div></div><div class="card tech defaultcard" name="tech3" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 2.pic" data-display="bind: popup, tech3.popup"><div class="cardpicture" data-techcards="bind:setPic, 2.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 2.title" data-labels="bind:innerHTML, tech3lbl"></div></div></div><div class="confirmdraw"><div class="drawok" name="tech1" data-mutechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech2" data-mutechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech3" data-mutechevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-mutechevent="listen: touchstart, press; listen:touchend, next" data-display="bind:updateNext, tech1.selected;bind:updateNext, tech2.selected;bind:updateNext, tech3.selected"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         _widget.place(Map.get("mutech"));
                         
@@ -164,7 +165,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // toggle timer
                         _widget.toggleTimer = function(event,node){
-                                _timer.set("display", !_timer.get("display"));        
+                                if (_widget.isLeader()){
+                                        _timer.set("display", !_timer.get("display"));
+                               }        
                         };
                         
                         _widget.select = function(event, node){
@@ -230,7 +233,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.push = function(event, node){
                                 var name = node.getAttribute("name");
                                 if (node.classList.contains("drawok")){
-                                        if (_draw[name].get("_id") && _next === "step") node.classList.add("pushed")     
+                                        if (_draw[name].get("_id") && _next === "step" && _widget.isLeader()){
+                                                node.classList.add("pushed");
+                                        }   
                                 }
                                 else node.classList.add("pushed")
                         };
@@ -300,7 +305,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     arr = ["tech1", "tech2", "tech3"], idx = arr.indexOf(name),
                                     display = _techDisplay.get(name);
                                 
-                                if (_next === "step"){
+                                if (_next === "step" && _widget.isLeader){
                                         if (_techCards.get(idx) && _techCards.get(idx).id){
                                                 if (display.selected){
                                                         node.classList.remove("pushed");

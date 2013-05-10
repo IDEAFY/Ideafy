@@ -313,8 +313,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _widget.finish = function(event, node){
                                 var finishSpinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 550, left: 50}).spin();
                                 // hide finish button
-                                node.classList.add("invisible");
                                 finishSpinner.spin(node.parentNode);
+                                node.classList.add("invisible");
                                  
                                 // notify other participants
                                 $session.set("scReady", true);

@@ -17,14 +17,24 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         view : $view,
                         design : $design,
                         query : {
-                                descending : true,
-                                include_docs : true
+                                descending : true
                         }
                 };
 
                 //setup
                 _store.setTransport(Config.get("transport"));
+                
+                // set default query parameters
+                if ($query) {
+                        _options.query = $query;
+                }
+                
                 this.template = '<div><div id="noresult" class="date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,value.doc.authors"></div><h2 data-listideas="bind:innerHTML,value.doc.authornames"></h2><span class="date" data-listideas="bind:date, value.doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,value.doc.title"></h3><p data-listideas="bind:innerHTML, value.doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, value.doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, value.rating"></span></div></li></ul></div>';
+                
+                // change template for listSearch
+                if (_options.q){
+                        this.template = '<div><div id="noresult" class="date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames"></h2><span class="date" data-listideas="bind:date, doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:innerHTML, doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, rating"></span></div></li></ul></div>';        
+                }
 
                 this.plugins.addAll({
                         "labels": new Model(Config.get("labels")),
@@ -107,13 +117,6 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         currentBar = null;
                 };
 
-
-                // set default query parameters
-                if ($query) {
-                        _options.query = $query;
-                }
-                
-                
                 this.init = function init(){
                         var promise = new Promise();
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){

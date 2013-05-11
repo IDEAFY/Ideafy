@@ -262,8 +262,10 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         };
                         
                         _widget.drawTech = function drawTech(arr){
-                                var idx, accepted = [], promise = new Promise();
+                                var idx, accepted = [], promise = new Promise(),
+                                    drawStatus = new Store(arr);
                                 
+                                console.log(drawStatus.toJSON());
                                 arr.forEach(function(name){
                                         // if no cards left in tech stack, reload stack and eliminate already drawn cards
                                         if (_techs.length <= 0){
@@ -276,14 +278,22 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                         return !(accepted.indexOf(value)>-1);
                                                 });        
                                         }
-                                        // draw card, increment drawncards and get card details
+                                        // draw card, notifyparticipants increment drawncards and get card details
                                         idx = Math.floor(Math.random()*_techs.length);
                                         _widget.getCardDetails(_techs[idx], name);
-                                        _techDisplay.set("left", _techs.length);
-                                        _drawnCards++;
-                                        _techs.splice(idx, 1); 
+                                        _widget.updateDrawnTech(_techs[idx], name)
+                                        .then(function(){
+                                                _techDisplay.set("left", _techs.length);
+                                                _drawnCards++;
+                                                _techs.splice(idx, 1); 
+                                                // update drawStatus by removing the card drawn
+                                                drawStatus.del(arr.indexOf(name));        
+                                        }); 
                                 });
-                                promise.fulfill();
+                                // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
+                                drawStatus.watch("deleted", function(){
+                                        if (!drawStatus.getNbItems()) {promise.fulfill();}
+                                });
                                 return promise;
                         };
                         
@@ -296,8 +306,19 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         _techCards.update(idx,"id",id);
                                         _techCards.update(idx,"title",cdb.get("title"));
                                         _techCards.update(idx,"pic", cdb.get("picture_file"));
-                                        setTimeout(function(){cdb.unsync();}, 500);       
+                                        cdb.unsync();      
                                 });  
+                        };
+                        
+                        // set current drawn card information in the database for other participants to display
+                        _widget.updateDrawnTech = function(techId, name){
+                                var promise = new Promise();
+                                $session.set("drawn"+name, techId);
+                                $session.upload()
+                                .then(function(){
+                                        promise.fulfill();
+                                });
+                                return promise;
                         };
                         
                         _widget.accept = function(event, node){
@@ -430,6 +451,17 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 _techs = value.techno.concat();
                                 _techDisplay.set("left", _techs.length);        
                         });
+                        
+                        // If user is a participant, retrieve drawn cards from CouchDB
+                        ["tech1", "tech2", "tech3"].forEach(
+                                function(val){
+                                        $session.watchValue("drawn"+val, function(techId){
+                                                if (!_widget.isLeader()){
+                                                        _widget.getCardDetails(techId, val);
+                                                }     
+                                        });
+                                }
+                        )
                         
                         // Return
                         return _widget;

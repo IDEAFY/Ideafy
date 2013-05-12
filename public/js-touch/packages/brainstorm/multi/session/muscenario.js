@@ -317,11 +317,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 node.classList.add("invisible");
                                  
                                 // notify other participants
-                                $session.set("scReady", true);
-                                
                                 $session.unsync();
                                 $session.sync(Config.get("db"), $session.get("_id"))
                                 .then(function(){
+                                        $session.set("scReady", true);
                                         return $session.upload();       
                                 })
                                 .then(function(){

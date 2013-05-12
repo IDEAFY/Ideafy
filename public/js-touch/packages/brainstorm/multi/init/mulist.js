@@ -132,14 +132,17 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 widget.buildList = function buildList(listId, query){
+                        console.log("building list :", listId, query);
                         var arr = [], promise = new Promise();
                         if (listId === "mulistall"){
                                 muListAll.reset([]);
                                 widget.addSessions(arr, "roulette")
                                 .then(function(){
+                                        console.log("roulette ok");
                                         return widget.addSessions(arr, "campfire");
                                 })
                                 .then(function(){
+                                        console.log("campfire ok");
                                         return widget.addSessions(arr, "boardroom");
                                 })
                                 .then(function(){
@@ -212,6 +215,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 query={key: Config.get("uid"),descending:false};      
                         }
                         cdb.sync(db, "library", view, query).then(function(){
+                                console.log("query result for : ", mode, cdb.toJSON());
                                 cdb.loop(function(v,i){
                                         arr.unshift(v);
                                 });

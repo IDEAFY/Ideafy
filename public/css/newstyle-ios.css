@@ -3622,7 +3622,7 @@ li.color-item{
     margin-left: 364px;
 }
 
-#musetup .next-button{
+#musetup .next-button, #mutech .next-button{
     position: absolute;
     left: 820px;
     top: 400px;
@@ -6619,7 +6619,7 @@ li.my2q{
     left: 218px;
 }
 
-#muscenario .sessionchat, #muidea .sessionchat{
+#muscenario .sessionchat, #muidea .sessionchat, #mutech .sessionchat{
     left: 301px;
 }
 

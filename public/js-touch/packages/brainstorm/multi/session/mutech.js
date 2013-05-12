@@ -96,7 +96,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 "mutechevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "mutech"><div class="previousbutton" data-mutechevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="mutech-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, mutech" data-mutechevent="listen:touchstart, toggleProgress"></div><div class="timer" data-mutechtimer="bind:setTime, timer; bind: displayTimer, display" data-mutechevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-mutechevent="listen:touchstart, help"></div><div id="mutech-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-mutechevent="listen: touchstart, select; listen:touchstart, zoom" data-display="bind: popup, scenario.popup"><div class="cardpicture"></div><div class="cardtitle" data-labels="bind:innerHTML, scenariolbl"></div></div></div><div class="drawarea"><div class="decks"><div class="drawbutton drawtech" "name"="tech" data-mutechevent="listen: touchstart, push; listen:touchend, draw" data-display="bind: setReload, left"></div></div><div class="cards"><div class="card tech defaultcard" name="tech1" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 0.pic" data-display="bind: popup, tech1.popup"><div class="cardpicture" data-techcards="bind:setPic, 0.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 0.title" data-labels="bind:innerHTML, tech1lbl"></div></div><div class="card tech defaultcard" name="tech2" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 1.pic" data-display="bind: popup, tech2.popup"><div class="cardpicture" data-techcards="bind:setPic, 1.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 1.title" data-labels="bind:innerHTML,tech2lbl"></div></div><div class="card tech defaultcard" name="tech3" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 2.pic" data-display="bind: popup, tech3.popup"><div class="cardpicture" data-techcards="bind:setPic, 2.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 2.title" data-labels="bind:innerHTML, tech3lbl"></div></div></div><div class="confirmdraw"><div class="drawok" name="tech1" data-mutechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech2" data-mutechevent="listen: touchstart, push; listen:touchend, accept"></div><div class="drawok" name="tech3" data-mutechevent="listen: touchstart, push; listen:touchend, accept"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-mutechevent="listen: touchstart, press; listen:touchend, next" data-display="bind:updateNext, tech1.selected;bind:updateNext, tech2.selected;bind:updateNext, tech3.selected"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        _widget.template = '<div id = "mutech"><div class="previousbutton" data-mutechevent="listen: touchstart, press; listen: touchstart, prev"></div><div id="mutech-popup" class="invisible"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, mutech" data-mutechevent="listen:touchstart, toggleProgress"></div><div class="timer" data-mutechtimer="bind:setTime, timer; bind: displayTimer, display" data-mutechevent="listen:touchstart,toggleTimer"></div><div class="help-brainstorm" data-mutechevent="listen:touchstart, help"></div><div id="mutech-left" class="leftarea"><div class="card defaultscenario" name="scenario" data-mutechevent="listen: touchstart, select; listen:touchstart, zoom" data-display="bind: popup, scenario.popup"><div class="cardpicture"></div><div class="cardtitle" data-labels="bind:innerHTML, scenariolbl"></div></div></div><div class="drawarea"><div class="decks"><div class="drawbutton drawtech" "name"="tech" data-mutechevent="listen: touchstart, push; listen:touchend, draw" data-display="bind: setReload, left"></div></div><div class="cards"><div class="card tech defaultcard" name="tech1" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 0.pic" data-display="bind: popup, tech1.popup"><div class="cardpicture" data-techcards="bind:setPic, 0.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 0.title" data-labels="bind:innerHTML, tech1lbl"></div></div><div class="card tech defaultcard" name="tech2" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 1.pic" data-display="bind: popup, tech2.popup"><div class="cardpicture" data-techcards="bind:setPic, 1.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 1.title" data-labels="bind:innerHTML,tech2lbl"></div></div><div class="card tech defaultcard" name="tech3" data-mutechevent="listen: touchstart, select; listen:touchend, zoom" data-techcards="bind:removeDefault, 2.pic" data-display="bind: popup, tech3.popup"><div class="cardpicture" data-techcards="bind:setPic, 2.pic"></div><div class="cardtitle" data-techcards="bind:formatTitle, 2.title" data-labels="bind:innerHTML, tech3lbl"></div></div></div><div class="confirmdraw"><div class="drawok" name="tech1" data-mutech="bind:setSelected, tech1.selected" data-mutechevent="listen: touchstart, pushOk; listen:touchend, accept"></div><div class="drawok" name="tech2" data-mutech="bind:setSelected, tech2.selected" data-mutechevent="listen: touchstart, pushOk; listen:touchend, accept"></div><div class="drawok" name="tech3" data-mutech="bind:setSelected, tech3.selected" data-mutechevent="listen: touchstart, pushOk; listen:touchend, accept"></div></div><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-mutechevent="listen: touchstart, press; listen:touchend, next" data-display="bind:updateNext, tech1.selected;bind:updateNext, tech2.selected;bind:updateNext, tech3.selected"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         _widget.place(Map.get("mutech"));
                         
@@ -189,7 +189,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         
                         // Method called to initialize a card popup
                         _widget.setPopup = function setPopup(type){
-                                var pos = {x:0, y:337}, // the position of the popup
+                                var pos = {x:0, y:257}, // the position of the popup
                                     caret = "left", // the position of the caret
                                     old = _techDisplay.get(_currentPopup) || "",
                                     story = new Store(),
@@ -265,35 +265,44 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 var idx, accepted = [], promise = new Promise(),
                                     drawStatus = new Store(arr);
                                 
-                                console.log(drawStatus.toJSON());
-                                arr.forEach(function(name){
-                                        // if no cards left in tech stack, reload stack and eliminate already drawn cards
-                                        if (_techs.length <= 0){
-                                                _techs = $data.get("deck").techno.concat();
-                                                // remove selected cards from deck
-                                                ["tech1", "tech2", "tech3"].forEach(function(tech, idx){
-                                                        if (_techDisplay.get(tech).selected) {accepted.push(_techCards.get(idx).id);}        
-                                                });
-                                                _techs.filter(function(value){
-                                                        return !(accepted.indexOf(value)>-1);
-                                                });        
-                                        }
-                                        // draw card, notifyparticipants increment drawncards and get card details
-                                        idx = Math.floor(Math.random()*_techs.length);
-                                        _widget.getCardDetails(_techs[idx], name);
-                                        _widget.updateDrawnTech(_techs[idx], name)
-                                        .then(function(){
-                                                _techDisplay.set("left", _techs.length);
-                                                _drawnCards++;
-                                                _techs.splice(idx, 1); 
-                                                // update drawStatus by removing the card drawn
-                                                drawStatus.del(arr.indexOf(name));        
-                                        }); 
-                                });
-                                // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
-                                drawStatus.watch("deleted", function(){
-                                        if (!drawStatus.getNbItems()) {promise.fulfill();}
-                                });
+                                if (arr.length){
+                                        arr.forEach(function(name){
+                                                // if no cards left in tech stack, reload stack and eliminate already drawn cards
+                                                if (_techs.length <= 0){
+                                                        _techs = $data.get("deck").techno.concat();
+                                                        // remove selected cards from deck
+                                                        ["tech1", "tech2", "tech3"].forEach(function(tech, idx){
+                                                                if (_techDisplay.get(tech).selected) {accepted.push(_techCards.get(idx).id);}        
+                                                        });
+                                                        _techs.filter(function(value){
+                                                                return !(accepted.indexOf(value)>-1);
+                                                        });        
+                                                }
+                                                // draw card, notifyparticipants increment drawncards and get card details
+                                                idx = Math.floor(Math.random()*_techs.length);
+                                                _widget.getCardDetails(_techs[idx], name)
+                                                .then(function(){
+                                                        $session.set("drawn"+name, _techs[idx]);
+                                                        _techDisplay.set("left", _techs.length);
+                                                        _drawnCards++;
+                                                        _techs.splice(idx, 1); 
+                                                        // update drawStatus by removing the card drawn
+                                                        drawStatus.del(arr.indexOf(name));        
+                                                }); 
+                                        });
+                                        // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
+                                        drawStatus.watch("deleted", function(){
+                                                if (!drawStatus.getNbItems()) {
+                                                        $session.upload()
+                                                        .then(function(){
+                                                                promise.fulfill();
+                                                        });
+                                                }
+                                        });
+                                }
+                                else{
+                                        promise.fulfill();
+                                }
                                 return promise;
                         };
                         
@@ -310,15 +319,17 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 });  
                         };
                         
-                        // set current drawn card information in the database for other participants to display
-                        _widget.updateDrawnTech = function(techId, name){
-                                var promise = new Promise();
-                                $session.set("drawn"+name, techId);
-                                $session.upload()
-                                .then(function(){
-                                        promise.fulfill();
-                                });
-                                return promise;
+                        // Method called when clicking on the accept buttton
+                        _widget.pushOk = function(event, node){
+                                var spok = spinnerOk[node.getAttribute("name")] || null;
+                                if (_widget.isLeader()){
+                                        if (spok){
+                                                spinnerOk[node.getAttribute("name")].spin(node);        
+                                        }
+                                        else{
+                                                spinnerOk[node.getAttribute("name")] = new Spinner().spin(node);
+                                        }
+                                }        
                         };
                         
                         _widget.accept = function(event, node){
@@ -326,22 +337,18 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                     arr = ["tech1", "tech2", "tech3"], idx = arr.indexOf(name),
                                     display = _techDisplay.get(name);
                                 
-                                if (_next === "step" && _widget.isLeader){
+                                if (_next === "step" && _widget.isLeader()){
                                         if (_techCards.get(idx) && _techCards.get(idx).id){
-                                                if (display.selected){
-                                                        node.classList.remove("pushed");
-                                                        display.selected = false;
-                                                        _techDisplay.set(name, display);        
-                                                }
-                                                else {
-                                                        display.selected = true;
-                                                        _techDisplay.set(name, display);
-                                                }   
+                                                display.selected = !display.selected;  
                                         }
                                         else{
-                                                alert("please draw a card first");
-                                                node.classList.remove("pushed");        
+                                                display.selected = false;      
                                         }
+                                        $session.set("selected_"+name, display.selected);
+                                        $session.upload().then(function(){
+                                                spinnerOk[node.getAttribute("name")].stop();
+                                                _techDisplay.set(name, display);
+                                        });
                                 }        
                         };
                         

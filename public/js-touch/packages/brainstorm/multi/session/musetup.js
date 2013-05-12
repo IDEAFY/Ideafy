@@ -556,7 +556,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 var selPb;
                                 selPb= _selection.get("problem");
                                 selPb.selected = val;
-                                selection.set("problem", selPb);
+                                _selection.set("problem", selPb);
                                 if (val){
                                         $data.set("problems", _cards.get("problem"));
                                 }     

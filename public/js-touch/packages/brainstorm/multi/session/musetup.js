@@ -245,7 +245,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         // make sure session is up-to-date by resyncing
                                         $session.unsync();
                                         $session.sync(Config.get("db"), $session.get("_id"))
-                                        .then(function()){
+                                        .then(function(){
                                                 $session.set("selected_"+_type, _sel.selected);
                                                 return $session.upload();
                                         })

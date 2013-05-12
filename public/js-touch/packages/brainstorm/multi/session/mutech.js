@@ -189,7 +189,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         
                         // Method called to initialize a card popup
                         _widget.setPopup = function setPopup(type){
-                                var pos = {x:0, y:337}, // the position of the popup
+                                var pos = {x:0, y:257}, // the position of the popup
                                     caret = "left", // the position of the caret
                                     old = _techDisplay.get(_currentPopup) || "",
                                     story = new Store(),
@@ -265,35 +265,44 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 var idx, accepted = [], promise = new Promise(),
                                     drawStatus = new Store(arr);
                                 
-                                console.log(drawStatus.toJSON());
-                                arr.forEach(function(name){
-                                        // if no cards left in tech stack, reload stack and eliminate already drawn cards
-                                        if (_techs.length <= 0){
-                                                _techs = $data.get("deck").techno.concat();
-                                                // remove selected cards from deck
-                                                ["tech1", "tech2", "tech3"].forEach(function(tech, idx){
-                                                        if (_techDisplay.get(tech).selected) {accepted.push(_techCards.get(idx).id);}        
-                                                });
-                                                _techs.filter(function(value){
-                                                        return !(accepted.indexOf(value)>-1);
-                                                });        
-                                        }
-                                        // draw card, notifyparticipants increment drawncards and get card details
-                                        idx = Math.floor(Math.random()*_techs.length);
-                                        _widget.getCardDetails(_techs[idx], name);
-                                        _widget.updateDrawnTech(_techs[idx], name)
-                                        .then(function(){
-                                                _techDisplay.set("left", _techs.length);
-                                                _drawnCards++;
-                                                _techs.splice(idx, 1); 
-                                                // update drawStatus by removing the card drawn
-                                                drawStatus.del(arr.indexOf(name));        
-                                        }); 
-                                });
-                                // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
-                                drawStatus.watch("deleted", function(){
-                                        if (!drawStatus.getNbItems()) {promise.fulfill();}
-                                });
+                                if (arr.length){
+                                        arr.forEach(function(name){
+                                                // if no cards left in tech stack, reload stack and eliminate already drawn cards
+                                                if (_techs.length <= 0){
+                                                        _techs = $data.get("deck").techno.concat();
+                                                        // remove selected cards from deck
+                                                        ["tech1", "tech2", "tech3"].forEach(function(tech, idx){
+                                                                if (_techDisplay.get(tech).selected) {accepted.push(_techCards.get(idx).id);}        
+                                                        });
+                                                        _techs.filter(function(value){
+                                                                return !(accepted.indexOf(value)>-1);
+                                                        });        
+                                                }
+                                                // draw card, notifyparticipants increment drawncards and get card details
+                                                idx = Math.floor(Math.random()*_techs.length);
+                                                _widget.getCardDetails(_techs[idx], name)
+                                                .then(function(){
+                                                        $session.set("drawn"+name, _techs[idx]);
+                                                        _techDisplay.set("left", _techs.length);
+                                                        _drawnCards++;
+                                                        _techs.splice(idx, 1); 
+                                                        // update drawStatus by removing the card drawn
+                                                        drawStatus.del(arr.indexOf(name));        
+                                                }); 
+                                        });
+                                        // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
+                                        drawStatus.watch("deleted", function(){
+                                                if (!drawStatus.getNbItems()) {
+                                                        $session.upload()
+                                                        .then(function(){
+                                                                promise.fulfill();
+                                                        });
+                                                }
+                                        });
+                                }
+                                else{
+                                        promise.fulfill();
+                                }
                                 return promise;
                         };
                         
@@ -308,17 +317,6 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         _techCards.update(idx,"pic", cdb.get("picture_file"));
                                         cdb.unsync();      
                                 });  
-                        };
-                        
-                        // set current drawn card information in the database for other participants to display
-                        _widget.updateDrawnTech = function(techId, name){
-                                var promise = new Promise();
-                                $session.set("drawn"+name, techId);
-                                $session.upload()
-                                .then(function(){
-                                        promise.fulfill();
-                                });
-                                return promise;
                         };
                         
                         // Method called when clicking on the accept buttton

@@ -533,10 +533,10 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         $session.watchValue("selected_char", function(val){
                                 var selChar;
+                                selChar = _selection.get("char");
+                                selChar.selected = val;
+                                _selection.set("char", selChar);
                                 if (val){
-                                        selChar = _selection.get("char");
-                                        selChar.selected = val;
-                                        _selection.set("char", selChar);
                                         // update session data store (used in further steps)
                                         $data.set("characters", _cards.get("char"));
                                 }       
@@ -544,21 +544,21 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         $session.watchValue("selected_context", function(val){
                                 var selCtx;
+                                selCtx = _selection.get("context");
+                                selCtx.selected = val;
+                                _selection.set("context", selCtx);
                                 if (val){
-                                        selCtx = _selection.get("context");
-                                        selCtx.selected = val;
-                                        _selection.set("context", selCtx);
-                                         $data.set("contexts", _cards.get("context"));
+                                        $data.set("contexts", _cards.get("context"));
                                 }       
                         });
                         
                         $session.watchValue("selected_problem", function(val){
                                 var selPb;
+                                selPb= _selection.get("problem");
+                                selPb.selected = val;
+                                selection.set("problem", selPb);
                                 if (val){
-                                        selPb= _selection.get("problem");
-                                        selPb.selected = val;
-                                        _selection.set("problem", selPb);
-                                         $data.set("problems", _cards.get("problem"));
+                                        $data.set("problems", _cards.get("problem"));
                                 }     
                         });
                         

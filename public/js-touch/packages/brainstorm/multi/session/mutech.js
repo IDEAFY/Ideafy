@@ -344,8 +344,13 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         else{
                                                 display.selected = false;      
                                         }
-                                        $session.set("selected_"+name, display.selected);
-                                        $session.upload().then(function(){
+                                        $session.unsync();
+                                        $session.sync(Config.get("db"), $session.get("_id"))
+                                        .then(function(){
+                                                $session.set("selected_"+name, display.selected);
+                                                return $session.upload();
+                                        })
+                                        .then(function(){
                                                 spinnerOk[node.getAttribute("name")].stop();
                                                 _techDisplay.set(name, display);
                                         });

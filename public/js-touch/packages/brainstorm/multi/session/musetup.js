@@ -242,11 +242,17 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         else {
                                                 _sel.selected = false;        
                                         }
-                                        $session.set("selected_"+_type, _sel.selected);
-                                        $session.upload().then(function(){
+                                        // make sure session is up-to-date by resyncing
+                                        $session.unsync();
+                                        $session.sync(Config.get("db"), $session.get("_id"))
+                                        .then(function()){
+                                                $session.set("selected_"+_type, _sel.selected);
+                                                return $session.upload();
+                                        })
+                                        .then(function(){
                                                 spinnerOk[node.getAttribute("name")].stop();
-                                                _selection.set(_type, _sel);
-                                        });
+                                                selection.set(_type, _sel);
+                                        }); 
                                 }      
                         };
                        

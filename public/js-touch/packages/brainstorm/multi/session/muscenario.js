@@ -561,11 +561,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         
                                         // avoid upload if $session is already up-to-date (e.g. replay)
                                         if ($session.get("scenarioWB") !== _wbContent.getNbItems() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
-                                                $session.unsync();
                                                 $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
                                                 $session.upload()
                                                 .then(function(response){
-                                                       console.log(response);
+                                                       console.log("success : ", response);
+                                                }, function(response){
+                                                       console.log("failure : ", response);
                                                 });
                                         }
                                         else{
@@ -610,6 +611,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _scenario.watch("updated", function(){
                                         (_widget.isLeader() && _scenario.get("title") && _scenario.get("story") && _scenario.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
+                        
+                        SCWHITEB = _wb;
+                        SCCONTENT = _wbContent;
                         
                         // Return
                         return _widget;

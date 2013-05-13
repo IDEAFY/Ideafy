@@ -307,7 +307,10 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         };
                         
                         _widget.getCardDetails = function getCardDetails(id, name){
-                                var cdb = new CouchDBDocument(), arr = ["tech1", "tech2", "tech3"], idx = arr.indexOf(name);
+                                var cdb = new CouchDBDocument(),
+                                    arr = ["tech1", "tech2", "tech3"],
+                                    idx = arr.indexOf(name),
+                                    promise = new Promise();
                                 
                                 cdb.setTransport(_transport);
                                 cdb.sync(Config.get("db"), id).then(function(){
@@ -315,8 +318,10 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         _techCards.update(idx,"id",id);
                                         _techCards.update(idx,"title",cdb.get("title"));
                                         _techCards.update(idx,"pic", cdb.get("picture_file"));
+                                        promise.fulfill();
                                         cdb.unsync();      
-                                });  
+                                });
+                                return promise; 
                         };
                         
                         // Method called when clicking on the accept buttton

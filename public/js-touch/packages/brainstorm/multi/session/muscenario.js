@@ -611,6 +611,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         (_widget.isLeader() && _scenario.get("title") && _scenario.get("story") && _scenario.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
                         
+                        SCWHITEB = _wb;
+                        SCCONTENT = _wbContent;
+                        
                         // Return
                         return _widget;
                 };     

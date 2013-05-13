@@ -145,7 +145,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // we need lots of sockets
         http.globalAgent.maxSockets = Infinity;
-
+        
+        setInterval(function(){
+                console.log("number of sockets used : ", http.globalAgent.sockets);
+        }, 2000);
+        
         // register transport
         olives.registerSocketIO(io);
         
@@ -310,8 +314,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 var _path = __dirname+'/i8n/'+json.lang+'.json';
                 fs.exists(_path, function(exists){
                         if (exists){
-                                var labels=fs.readFileSync(_path, 'utf8');
-                                onEnd(JSON.parse(labels));
+                                var labels=fs.readFile(_path, 'utf8', function(err){
+                                        onEnd(JSON.parse(labels));        
+                                });
                         }
                         else{
                                 onEnd("nok");

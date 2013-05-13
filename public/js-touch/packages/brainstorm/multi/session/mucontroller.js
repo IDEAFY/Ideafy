@@ -27,6 +27,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                     muStart, muSetup, muScenario, muTech, muIdea, muWrapup,
                     _steps = new Store(steps),
                     _user = Config.get("user"),
+                    _db = Config.get("db"),
                     _session = new CouchDBDocument(),
                     _sessionData = new Store(),
                     info = new Store({"msg":""}),
@@ -178,7 +179,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 chat.forEach(function(id){
                                                         var cdb = new CouchDBDocument();
                                                         cdb.setTransport(Config.get("transport"));
-                                                        cdb.sync(Config.get("db"), id)
+                                                        cdb.sync(_db, id)
                                                         .then(function(){
                                                                 return cdb.remove();
                                                         })
@@ -247,7 +248,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                          // set id
                         id = cdb.get("sid")+"_"+step;
                         cdb.setTransport(Config.get("transport"));
-                        cdb.sync(Config.get("db"), id)
+                        cdb.sync(_db, id)
                         .then(function(){
                                 return cdb.upload();
                         })
@@ -255,6 +256,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         var chat = _session.get("chat").concat();
                                         cdb.unsync();
                                         chat.push(id);
+                                        _session.unsync();
+                                        return _session.sync(_db, _session.get("_id"));
+                        })
+                        .then(function(){
                                         _session.set("chat", chat);
                                         return _session.upload();    
                         })
@@ -271,7 +276,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            
                         // connect to couchdb and retrieve session
                         _session.reset({});
-                        _session.sync(Config.get("db"), sid).then(function(){
+                        _session.sync(_db, sid).then(function(){
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
                                 // init exit confirmation UI

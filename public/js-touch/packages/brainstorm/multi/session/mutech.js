@@ -18,6 +18,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                             _timer = new Store({"timer":null, "display":false}),
                             _transport = Config.get("transport"),
                             _user = Config.get("user"),
+                            _db = Config.get("db"),
                             _labels = Config.get("labels"),
                             _popupUI, _currentPopup,
                             chatUI = new Chat(),
@@ -125,7 +126,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         _widget.updateSessionScore(_timer.get("timer")).then(function(){
                                                // resync with db
                                                 $session.unsync();
-                                                $session.sync(Config.get("db"), $session.get("_id")).then(function(){
+                                                $session.sync(_db, $session.get("_id")).then(function(){
                                                         var timers = $session.get("elapsedTimers");
                                                         
                                                         timers.quicktech = _timer.get("timer");
@@ -293,7 +294,10 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
                                         drawStatus.watch("deleted", function(){
                                                 if (!drawStatus.getNbItems()) {
-                                                        $session.upload()
+                                                        $session.sync()
+                                                        .then(function(){
+                                                                return $session.upload();
+                                                        })
                                                         .then(function(){
                                                                 promise.fulfill();
                                                         });
@@ -313,7 +317,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                     promise = new Promise();
                                 
                                 cdb.setTransport(_transport);
-                                cdb.sync(Config.get("db"), id).then(function(){
+                                cdb.sync(_db, id).then(function(){
                                         _draw[name].reset(JSON.parse(cdb.toJSON()));
                                         _techCards.update(idx,"id",id);
                                         _techCards.update(idx,"title",cdb.get("title"));
@@ -350,7 +354,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 display.selected = false;      
                                         }
                                         $session.unsync();
-                                        $session.sync(Config.get("db"), $session.get("_id"))
+                                        $session.sync(_db, $session.get("_id"))
                                         .then(function(){
                                                 $session.set("selected_"+name, display.selected);
                                                 return $session.upload();

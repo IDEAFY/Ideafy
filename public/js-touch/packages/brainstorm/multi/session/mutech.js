@@ -283,19 +283,25 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 idx = Math.floor(Math.random()*_techs.length);
                                                 _widget.getCardDetails(_techs[idx], name)
                                                 .then(function(){
-                                                        $session.set("drawn"+name, _techs[idx]);
-                                                        _techDisplay.set("left", _techs.length);
-                                                        _drawnCards++;
-                                                        _techs.splice(idx, 1); 
                                                         // update drawStatus by removing the card drawn
-                                                        drawStatus.del(arr.indexOf(name));        
-                                                }); 
+                                                        drawStatus.del(arr.indexOf(name)); 
+                                                });
+                                                _techDisplay.set("left", _techs.length);
+                                                // increment number of cards drwan and remove card from deck
+                                                _drawnCards++;
+                                                _techs.splice(idx, 1);
                                         });
+                                        
                                         // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
                                         drawStatus.watch("deleted", function(){
                                                 if (!drawStatus.getNbItems()) {
-                                                        $session.sync()
+                                                        $session.unsync();
+                                                        $session.sync(_db, $session.get("_id"))
                                                         .then(function(){
+                                                                // updated drawn tech cards
+                                                                ["tech1", "tech2", "tech3"].forEach(function(v,i){
+                                                                        $session.set("drawn"+v, _techCards.get(i).id);       
+                                                                });
                                                                 return $session.upload();
                                                         })
                                                         .then(function(){

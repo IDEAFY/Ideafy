@@ -16,6 +16,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                             chatUI = new Chat(),
                              _labels = Config.get("labels"),
                              _user = Config.get("user"),
+                             _db = Config.get("db"),
                              _char = new Store(), _context = new Store(), _problem = new Store(),
                              _cards = new Store({
                                      "char": {"id":"", "title": "", "pic": ""},
@@ -149,7 +150,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         .then(function(){
                                                // resync with db
                                                 $session.unsync();
-                                                return $session.sync(Config.get("db"), $session.get("_id"))
+                                                return $session.sync(_db, $session.get("_id"))
                                         })
                                         .then(function(){
                                                 var timers;
@@ -250,7 +251,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 else{
                                         cdb = new CouchDBDocument();
                                         cdb.setTransport(_transport);
-                                        cdb.sync(Config.get("db"), card.id).then(function(){
+                                        cdb.sync(_db, card.id).then(function(){
                                                 details = cdb.toJSON();
                                                 _popupUI.reset(details, pos, caret, document.getElementById("muscenario-popup"));
                                                 // save contents in the appropriate local store for further use
@@ -318,7 +319,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                  
                                 // notify other participants
                                 $session.unsync();
-                                $session.sync(Config.get("db"), $session.get("_id"))
+                                $session.sync(_db, $session.get("_id"))
                                 .then(function(){
                                         $session.set("scReady", true);
                                         return $session.upload();       
@@ -403,7 +404,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 cdbScen.story = _story;
                                                 cdbScen.solution = _solution;
                                                 $session.unsync();
-                                                $session.sync(Config.get("db"), $session.get("_id"))
+                                                $session.sync(_db, $session.get("_id"))
                                                 .then(function(){
                                                         $session.set("scenario", [cdbScen]);
                                                         return $session.upload();

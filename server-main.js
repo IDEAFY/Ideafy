@@ -146,7 +146,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         setInterval(function(){
                 console.log("number of sockets used : ", Object.keys(io.connected).length);
-        }, 2000);
+        }, 1200000);
         
         // register transport
         olives.registerSocketIO(io);

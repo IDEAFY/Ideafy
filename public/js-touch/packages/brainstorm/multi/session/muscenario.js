@@ -562,10 +562,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         // avoid upload if $session is already up-to-date (e.g. replay)
                                         if ($session.get("scenarioWB") !== _wbContent.getNbItems() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
                                                 $session.unsync();
-                                                $session.sync(_db, $session.get("_id"))
-                                                .then(function(){
-                                                        $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
-                                                        $session.upload();
+                                                $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
+                                                $session.upload()
+                                                .then(function(response){
+                                                       console.log(response);
                                                 });
                                         }
                                         else{

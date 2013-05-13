@@ -185,7 +185,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                                         updates.picture_file = user.get("_id")+"_@v@t@r";
                                         document.getElementById("changeavatar").classList.add("invisible");
                                         node.classList.remove("pressed");
-                                }, 1000);
+                                }, 500);
                         };
                         
                         onFail = function(message){
@@ -208,7 +208,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                                         updates.picture_file = user.get("_id")+"_@v@t@r";
                                         document.getElementById("changeavatar").classList.add("invisible");
                                         node.classList.remove("pressed");
-                                }, 1000);
+                                }, 500);
                         };
                         
                         onFail = function(message){

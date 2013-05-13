@@ -346,6 +346,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         document.removeEventListener("touchstart", exitListener.listener, true);
                                         session.unsync();
                                         $start(session.get("_id"));
+                                        session.reset({});
+                                        participants.reset([]);
                                 }     
                         });
                         
@@ -354,7 +356,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 participants.reset(array);        
                         });
                         
-                        MUWCHAT = chatUI;
                         return widget;
                 
                 };

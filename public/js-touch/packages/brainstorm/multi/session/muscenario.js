@@ -572,7 +572,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // uopdate local whiteboard content as soon as it is updated in the database
                         $session.watchValue("scenarioWB", function(content){
-                                if (content.length){
+                                if (content.length && _wb.getCurrentName() === "default"){
                                         _wb.selectScreen("main");        
                                 }
                                 else {

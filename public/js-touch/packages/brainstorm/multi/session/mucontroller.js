@@ -256,10 +256,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         var chat = _session.get("chat").concat();
                                         cdb.unsync();
                                         chat.push(id);
-                                        _session.unsync();
-                                        return _session.sync(_db, _session.get("_id"));
-                        })
-                        .then(function(){
                                         _session.set("chat", chat);
                                         return _session.upload();    
                         })
@@ -389,9 +385,16 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         _steps.update(_id+1, "status", "ongoing");
                                         // initialize new step
                                         _nextui.reset();
-                                        _session.set("step", _newStep);
-                                        // session upload occurs in the create chat function
-                                        _widget.createChat(_id+1).then(function(){
+                                        
+                                        // set new step
+                                        _session.unsync();
+                                        _session.sync(_db, _session.get("_id"))
+                                        .then(function(){
+                                                _session.set("step", _newStep);
+                                                // session upload occurs in the create chat function
+                                                return _widget.createChat(_id+1);
+                                        })
+                                        .then(function(){
                                                 if (_nextui.initTimer) {
                                                         _nextui.initTimer();
                                                 }

@@ -556,10 +556,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         ["added", "deleted", "updated"].forEach(function(change){
                                 _wbContent.watch(change, function(){
                                         
+                                        console.log("local wb change");
+                                        
                                         // avoid upload if $session is already up-to-date (e.g. replay)
                                         if ($session.get("scenarioWB") !== _wbContent.getNbItems() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
-                                                $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
-                                                $session.upload();
+                                                $session.unsync();
+                                                $session.sync(_db, $session.get("_id"))
+                                                .then(function(){
+                                                        $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
+                                                        $session.upload();
+                                                });
                                         }
                                         else{
                                                 console.log("no upload required");
@@ -570,9 +576,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 });  
                         });
                         
-                        // uopdate local whiteboard content as soon as it is updated in the database
+                        // update local whiteboard content as soon as it is updated in the database
                         $session.watchValue("scenarioWB", function(content){
-                                if (content.length){
+                                console.log("remote wb change");
+                                if (content.length && _wb.getCurrentName() === "default"){
                                         _wb.selectScreen("main");        
                                 }
                                 else {

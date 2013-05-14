@@ -283,6 +283,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 idx = Math.floor(Math.random()*_techs.length);
                                                 _widget.getCardDetails(_techs[idx], name)
                                                 .then(function(){
+                                                        console.log("fulfill get card request for : ", name);
                                                         // update drawStatus by removing the card drawn
                                                         drawStatus.del(arr.indexOf(name)); 
                                                 });
@@ -302,7 +303,8 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                                 console.log("tech resync successful");
                                                                 // updated drawn tech cards
                                                                 ["tech1", "tech2", "tech3"].forEach(function(v,i){
-                                                                        $session.set("drawn"+v, _techCards.get(i).id);       
+                                                                        $session.set("drawn"+v, _techCards.get(i).id);
+                                                                        console.log(v, i, _techCards.get(i).id)), ;       
                                                                 });
                                                                 return $session.upload();
                                                         })
@@ -332,7 +334,6 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         _techCards.update(idx,"id",id);
                                         _techCards.update(idx,"title",cdb.get("title"));
                                         _techCards.update(idx,"pic", cdb.get("picture_file"));
-                                        console.log("fulfill get card request for : ", name);
                                         promise.fulfill();
                                         cdb.unsync();      
                                 });

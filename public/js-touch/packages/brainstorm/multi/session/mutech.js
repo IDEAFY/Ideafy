@@ -42,7 +42,8 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                     {"id":"", "title":"", "pic":""}
                             ]), // {id, title, pic}) -- there are always 3 tech cards in quick mode
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            spinner  = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 373, left:373}).spin();
+                            spinner  = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 373, left:373}).spin(),
+                            spinnerOk = {};
                         
                         // identify if user is the current session leader
                         _widget.isLeader = function isLeader(){
@@ -312,7 +313,6 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                         })
                                                         .then(function(){
                                                                 console.log("tech upload successful");
-                                                                drawStatus.reset({});
                                                                 promise.fulfill();
                                                         });
                                                 }
@@ -488,32 +488,30 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 _techDisplay.set("left", _techs.length);        
                         });
                         
-                        // If user is a participant, retrieve drawn cards from CouchDB
-                        ["tech1", "tech2", "tech3"].forEach(
-                                function(val){
-                                        $session.watchValue("drawn"+val, function(techId){
-                                                if (!_widget.isLeader()){
-                                                        _widget.getCardDetails(techId, val);
-                                                }     
-                                        });
-                                }
-                        );
                         
-                        // watch if tech cards are selected or not
                         ["tech1", "tech2", "tech3"].forEach(
                                 function(name){
-                                        if (!_widget.isLeader()){
-                                                $session.watchValue("selected_"+name, function(val){
-                                                        var sel;
+                                        
+                                        // If user is a participant, retrieve drawn cards from CouchDB
+                                        $session.watchValue("drawn"+name, function(techId){
+                                                if (!_widget.isLeader()){
+                                                        _widget.getCardDetails(techId, name);
+                                                }     
+                                        });
+                                        
+                                        $session.watchValue("selected_"+name, function(val){
+                                                var sel;
+                                                if (!_widget.isLeader()){
                                                         sel = _techDisplay.get(name);
                                                         sel.selected = val;
                                                         _techDisplay.set(name, sel);
                                                         if (val){
                                                                 // update session data store (used in further steps)
                                                                 $data.set("techno", _techCards);
-                                                        }       
-                                                });
-                                        }
+                                                        }
+                                                }      
+                                        });
+                                        
                                 }
                         );
                         

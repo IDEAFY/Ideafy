@@ -19,7 +19,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                             {name: "yellow", color: "#F2E520",img: "postItYellow.png", selected: true},
                             {name: "orange", color: "#F27B3D",img: "postItOrange.png", selected: false}
                             ],
-                    _colors = new Store(_initColors.concat()),
+                    _colors = new Store(_initColors),
                    _pos = null, // the position of the postit
                    _postit = new Store({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png","marker": "#4D4D4D"}});
                    
@@ -85,7 +85,12 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                         _pos = $pos;
                         if (!_pos && _pos !== 0){
                                 _postit.reset({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png", "marker": "#4D4D4D"}});
-                                _colors.reset(_initColors);
+                                _colors.reset([
+                                        {name: "blue", color: "#657B99",img: "postItBlue.png", selected: false},
+                                        {name: "azur", color: "#9AC9CD",img: "postItAzur.png", selected: false},
+                                        {name: "yellow", color: "#F2E520",img: "postItYellow.png", selected: true},
+                                        {name: "orange", color: "#F27B3D",img: "postItOrange.png", selected: false}
+                                ]);
                         }
                         else{
                                _postit.reset($store.get(_pos)); 

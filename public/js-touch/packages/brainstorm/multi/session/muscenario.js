@@ -580,21 +580,23 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // update local whiteboard content as soon as it is updated in the database
                         $session.watchValue("scenarioWB", function(content){
-                                console.log("remote wb change", content);
-                                if (content.length && _wb.getStack().getCurrentName() === "default"){
-                                        _wb.selectScreen("main");        
-                                }
-                                if (!content.length) {
-                                        _wb.selectScreen("default");
-                                }
-                                if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
-                                        _wbContent.reset(content);       
+                                if ($session.get("step") === "muscenario"){
+                                        console.log("remote wb change", content);
+                                        if (content.length && _wb.getStack().getCurrentName() === "default"){
+                                                _wb.selectScreen("main");        
+                                        }
+                                        if (!content.length) {
+                                                _wb.selectScreen("default");
+                                        }
+                                        if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
+                                                _wbContent.reset(content);       
+                                        }
                                 }
                         });
                         
                         // display wrote up interface once the leader has "closed" the whiteboard
                         $session.watchValue("scReady", function(ready){
-                                if (ready && !_widget.isLeader()){
+                                if ($session.get("step") === "muscenario" && ready && !_widget.isLeader()){
                                         _tools.set("readonly", true);
                                         _widget.displayStory();        
                                 } 

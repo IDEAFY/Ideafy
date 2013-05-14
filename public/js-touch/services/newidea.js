@@ -97,7 +97,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.cancel = function(event, node){
-                                _widget.closePopup();    
+                                _widget.closePopup();
+                                _store.reset(Config.get("ideaTemplate"));   
                         };
                         
                         _widget.upload = function(event, node){
@@ -140,6 +141,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 node.classList.remove("invisible");
                                                                 _widget.closePopup();
                                                                 clearInterval(timer);
+                                                                _store.reset(Config.get("ideaTemplate"));
                                                         });       
                                                 }
                                                 else{
@@ -147,6 +149,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         node.classList.remove("invisible");
                                                         _widget.closePopup();
                                                         clearInterval(timer);
+                                                        _store.reset(Config.get("ideaTemplate"));
                                                 }
                                         });
                                 }

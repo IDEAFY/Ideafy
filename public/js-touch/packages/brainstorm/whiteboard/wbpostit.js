@@ -19,7 +19,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                             {name: "yellow", color: "#F2E520",img: "postItYellow.png", selected: true},
                             {name: "orange", color: "#F27B3D",img: "postItOrange.png", selected: false}
                             ],
-                    _colors = new Store(_initColors),
+                    _colors = new Store(_initColors.concat()),
                    _pos = null, // the position of the postit
                    _postit = new Store({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png","marker": "#4D4D4D"}});
                    

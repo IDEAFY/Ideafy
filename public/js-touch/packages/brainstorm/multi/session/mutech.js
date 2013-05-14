@@ -283,9 +283,11 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 idx = Math.floor(Math.random()*_techs.length);
                                                 _widget.getCardDetails(_techs[idx], name)
                                                 .then(function(){
-                                                        console.log("fulfill get card request for : ", name);
+                                                        var newCount = drawStatus.get("count");
+                                                        newCount--;
+                                                        console.log("fulfill get card request for : ", name, newCount);
                                                         // update drawStatus by removing the card drawn
-                                                        drawStatus.set(count, drawStatus.get("count")--); 
+                                                        drawStatus.set("count", newCount); 
                                                 });
                                                 _techDisplay.set("left", _techs.length);
                                                 // increment number of cards drwan and remove card from deck

@@ -304,7 +304,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                                 // updated drawn tech cards
                                                                 ["tech1", "tech2", "tech3"].forEach(function(v,i){
                                                                         $session.set("drawn"+v, _techCards.get(i).id);
-                                                                        console.log(v, i, _techCards.get(i).id));       
+                                                                        console.log(v, i, _techCards.get(i).id);       
                                                                 });
                                                                 return $session.upload();
                                                         })

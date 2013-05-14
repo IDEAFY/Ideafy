@@ -253,14 +253,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 return cdb.upload();
                         })
                         .then(function(){
+                                        // update chat field in session document
                                         var chat = _session.get("chat").concat();
                                         cdb.unsync();
                                         chat.push(id);
                                         _session.set("chat", chat);
-                                        return _session.upload();    
-                        })
-                        .then(function(){
-                                promise.fulfill();
+                                        promise.fulfill();
                         });
                         
                         return promise;
@@ -387,12 +385,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         _nextui.reset();
                                         
                                         // set new step
-                                        _session.unsync();
-                                        _session.sync(_db, _session.get("_id"))
+                                        _widget.createChat(_id+1)
                                         .then(function(){
                                                 _session.set("step", _newStep);
-                                                // session upload occurs in the create chat function
-                                                return _widget.createChat(_id+1);
+                                                return _session.upload();
                                         })
                                         .then(function(){
                                                 if (_nextui.initTimer) {

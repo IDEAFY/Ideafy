@@ -264,7 +264,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         
                         _widget.drawTech = function drawTech(arr){
                                 var idx, accepted = [], promise = new Promise(),
-                                    drawStatus = new Store(arr);
+                                    drawStatus = new Store({"count":arr.length});
                                 
                                 if (arr.length){
                                         arr.forEach(function(name){
@@ -285,7 +285,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 .then(function(){
                                                         console.log("fulfill get card request for : ", name);
                                                         // update drawStatus by removing the card drawn
-                                                        drawStatus.del(arr.indexOf(name)); 
+                                                        drawStatus.set(count, drawStatus.get("count")--); 
                                                 });
                                                 _techDisplay.set("left", _techs.length);
                                                 // increment number of cards drwan and remove card from deck
@@ -294,8 +294,8 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         });
                                         
                                         // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
-                                        drawStatus.watch("deleted", function(){
-                                                if (drawStatus.getNbItems() === 0) {
+                                        drawStatus.watchValue("count", function(val){
+                                                if (!val) {
                                                         console.log("all cards drawn and displayed");
                                                         $session.unsync();
                                                         $session.sync(_db, $session.get("_id"))
@@ -310,6 +310,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                         })
                                                         .then(function(){
                                                                 console.log("tech upload successful");
+                                                                drawStatus.reset({});
                                                                 promise.fulfill();
                                                         });
                                                 }

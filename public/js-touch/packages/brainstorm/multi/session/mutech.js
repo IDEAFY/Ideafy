@@ -493,16 +493,18 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         // watch if tech cards are selected or not
                         ["tech1", "tech2", "tech3"].forEach(
                                 function(name){
-                                        $session.watchValue("selected_"+name, function(val){
-                                                var sel;
-                                                sel = _techDisplay.get(name);
-                                                sel.selected = val;
-                                                _techDisplay.set(name, sel);
-                                                if (val){
-                                                        // update session data store (used in further steps)
-                                                        $data.set("techno", _techCards);
-                                                }       
-                                        });
+                                        if (!_widget.isLeader()){
+                                                $session.watchValue("selected_"+name, function(val){
+                                                        var sel;
+                                                        sel = _techDisplay.get(name);
+                                                        sel.selected = val;
+                                                        _techDisplay.set(name, sel);
+                                                        if (val){
+                                                                // update session data store (used in further steps)
+                                                                $data.set("techno", _techCards);
+                                                        }       
+                                                });
+                                        }
                                 }
                         );
                         

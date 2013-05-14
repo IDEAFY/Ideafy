@@ -584,7 +584,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 if (content.length && _wb.getStack().getCurrentName() === "default"){
                                         _wb.selectScreen("main");        
                                 }
-                                else {
+                                if (!content.length) {
                                         _wb.selectScreen("default");
                                 }
                                 if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){

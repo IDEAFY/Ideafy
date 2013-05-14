@@ -606,6 +606,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         $session.watchValue("scenario", function(arr){
                                 if (!_widget.isLeader()) {
                                         _scenario.reset(arr[0]);
+                                         $data.set("scenario", JSON.parse(_scenario.toJSON()));
                                 }        
                         });
                         

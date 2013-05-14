@@ -17,6 +17,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                             labels = Config.get("labels"),
                             observer = Config.get("observer"),
                             transport = Config.get("transport"),
+                            db = Config.get("db"),
                             buildButtons,
                             ui = this,
                             spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10}).spin();
@@ -84,53 +85,64 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         };
                         
                         buildButtons = function(type, data){
-                                
+                                var cdbView; 
                                 switch (type){
                                         case "idea":
                                                 console.log(data);
-                                                // actions: edit, delete, email, share, replaysession, add to favorites ?
-                                                // edit : allow edits if user is one of the authors
-                                                // note: original idea is always saved with session
-                                                if (data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"edit", icon:"img/wall/35modify.png"});
+                                                cdbView = new CouchDBView();
+                                                cdbView.setTransport(transport);
+                                                cdbView.sync(db, "ideas", "_view/all",{
+                                                        key: '"'+data+'"',
+                                                        include_docs: true
+                                                })
+                                                .then(function(){
+                                                        data = cdbView.get(0).doc;
+                                                        $data = cdbView.get(0).doc;
+                                                        // actions: edit, delete, email, share, replaysession, add to favorites ?
+                                                        // edit : allow edits if user is one of the authors
+                                                        // note: original idea is always saved with session
+                                                        if (data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"edit", icon:"img/wall/35modify.png"});
                                                 
-                                                // if idea is coming from a session display replaysession
-                                                if (data.sessionId && data.sessionId.search("deleted") === -1){
-                                                        if (data.sessionReplay || data.authors.indexOf(user.get("_id"))>-1){
-                                                                // double check if session is still around (legacy sessions)
-                                                                var cdb = new CouchDBView();
-                                                                cdb.setTransport(Config.get("transport"));
-                                                                cdb.sync(Config.get("db"), "ideas", "_view/ideasbysession", {key: '"'+data.sessionId+'"'})
-                                                                .then(function(){
-                                                                        cdb.loop(function(v,i){
-                                                                                if (v.id === data._id){
-                                                                                        buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"});
-                                                                                }
-                                                                        });       
-                                                                });
+                                                        // if idea is coming from a session display replaysession
+                                                        console.log(data.sessionId);
+                                                        if (data.sessionId && (data.sessionId !== "") && (data.sessionId.search("deleted") === -1)){
+                                                                if (data.sessionReplay || data.authors.indexOf(user.get("_id"))>-1){
+                                                                        // double check if session is still around (legacy sessions)
+                                                                        var cdb = new CouchDBView();
+                                                                        cdb.setTransport(Config.get("transport"));
+                                                                        cdb.sync(Config.get("db"), "ideas", "_view/ideasbysession", {key: '"'+data.sessionId+'"'})
+                                                                        .then(function(){
+                                                                                cdb.loop(function(v,i){
+                                                                                        if (v.id === data._id){
+                                                                                                buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"});
+                                                                                        }
+                                                                                });       
+                                                                        });
+                                                                }
                                                         }
-                                                }
                                                 
-                                                // email -- if you can see it you can email it
-                                                buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});
+                                                        // email -- if you can see it you can email it
+                                                        buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});
                                                 
-                                                // if user has contacts or twitter/facebook/google profiles then share is ok
-                                                if ( data.authors.indexOf(user.get("_id")) > -1){
-                                                        if(user.get("connections") && user.get("connections").length){
-                                                                buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
+                                                        // if user has contacts or twitter/facebook/google profiles then share is ok
+                                                        if ( data.authors.indexOf(user.get("_id")) > -1){
+                                                                if(user.get("connections") && user.get("connections").length){
+                                                                        buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
+                                                                }
+                                                                else if (user.get("facebook") || user.get("twitter") || user.get("gplus") || user.get("linkedin")){
+                                                                        buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
+                                                                }
                                                         }
-                                                        else if (user.get("facebook") || user.get("twitter") || user.get("gplus") || user.get("linkedin")){
-                                                                buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
-                                                        }
-                                                }
                                                 
-                                                // if user is sole author, idea has not been shared and no twocents, then delete is ok
-                                                if (data.authors.length === 1 && data.authors[0] === user.get("_id") && !data.twocents.length && !data.sharedwith.length && data.visibility !== "public") {
-                                                        buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
-                                                }
-                                                // if user is not an author but idea has been shared with him, he can delete it from his library
-                                                if (data.authors.indexOf(user.get("_id")) === -1 && data.sharedwith.indexOf(user.get("_id")) >-1 && document.getElementById("library")){
-                                                        buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
-                                                }
+                                                        // if user is sole author, idea has not been shared and no twocents, then delete is ok
+                                                        if (data.authors.length === 1 && data.authors[0] === user.get("_id") && !data.twocents.length && !data.sharedwith.length && data.visibility !== "public") {
+                                                                buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
+                                                        }
+                                                        // if user is not an author but idea has been shared with him, he can delete it from his library
+                                                        if (data.authors.indexOf(user.get("_id")) === -1 && data.sharedwith.indexOf(user.get("_id")) >-1 && document.getElementById("library")){
+                                                                buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
+                                                        }
+                                                });
                                                 break;
                                         case "message":
                                                 // export vi email -- if you can see it you can email it

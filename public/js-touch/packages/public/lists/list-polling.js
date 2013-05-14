@@ -97,7 +97,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         touchPoint = [event.pageX, event.pageY];
                         
                         if (!dom.classList.contains("mosaic") && !display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                var actionBar = new ActionBar("idea", node, _store.get(id).doc, this.hideActionBar),
+                                var actionBar = new ActionBar("idea", node, _store.get(id).id, this.hideActionBar),
                                     frag = document.createDocumentFragment();  
                                 
                                 actionBar.place(frag); // render action bar    

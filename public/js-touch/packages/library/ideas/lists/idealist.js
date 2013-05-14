@@ -8,11 +8,10 @@
 define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function IdeaListConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
-                    widget = this,
-                    touchStart,
-                    touchPoint,
-                    display = false,
-                    currentBar = null,
+                touchStart,
+                touchPoint,
+                display = false,
+                currentBar = null,
                     _options = {
                         db : $db,
                         view : $view,
@@ -20,7 +19,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         query : {
                                 descending : true
                         }
-                    };
+                };
 
                 //setup
                 _store.setTransport(Config.get("transport"));
@@ -91,49 +90,30 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         if (currentBar) {this.hideActionBar(currentBar);}  // hide previous action bar 
                 };
                 
+                this.showActionBar = function(event, node){
+                        var id = node.getAttribute("data-listideas_id"),
+                            dom = document.getElementById("ideas");
+                        
+                        touchPoint = [event.pageX, event.pageY];
+                        
+                        if (!dom.classList.contains("mosaic") && !display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                var actionBar = new ActionBar("idea", node, _store.get(id).id, this.hideActionBar),
+                                    frag = document.createDocumentFragment();  
+                                
+                                actionBar.place(frag); // render action bar    
+                                node.appendChild(frag); // display action bar
+                                currentBar = actionBar; // store current action bar
+                                display = true; // prevent from showing it multiple times
+                        }
+                };
+                
                 this.hideActionBar = function hideActionBar(ui){
+                        
                         var parent = ui.dom.parentElement;
+                        
                         parent.removeChild(parent.lastChild);
                         display = false;
                         currentBar = null;
-                };
-                
-                this.showActionBar = function(event, node){
-                        var id = node.getAttribute("data-listideas_id"),
-                            dom = document.getElementById("ideas"),
-                            actionBar,
-                            cdbView,
-                            frag = document.createDocumentFragment(); 
-                        
-                        touchPoint = [event.pageX, event.pageY];
-                        if (!dom.classList.contains("mosaic") && !display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                if (_options.query.q){
-                                        actionBar = new ActionBar("idea", node, _store.get(id).doc, widget.hideActionBar);
-                                        actionBar.place(frag); // render action bar    
-                                        node.appendChild(frag); // display action bar
-                                        currentBar = actionBar; // store current action bar
-                                        display = true; // prevent from showing it multiple times
-                                }
-                                else{
-                                        // need to retrieve complete idea document from ideas/all view
-                                        cdbView = new CouchDBView();
-                                        cdbView.setTransport(Config.get("transport"));
-                                        cdbView.sync(Config.get("db"), "ideas", "_view/all", {
-                                                key: '"' + _store.get(id).id + '"',
-                                                include_docs: true
-                                        })
-                                        .then(function(){
-                                                console.log("before actionbar ", node, _cdbView.get(0).doc, widget.hideActionBar);
-                                                actionBar = new ActionBar("idea", node, _cdbView.get(0).doc, widget.hideActionBar);
-                                                console.log("after action bar call");
-                                                actionBar.place(frag); // render action bar    
-                                                node.appendChild(frag); // display action bar
-                                                currentBar = actionBar; // store current action bar
-                                                display = true; // prevent from showing it multiple times
-                                                cdbView.unsync();      
-                                        });
-                                }
-                        }
                 };
 
                 this.init = function init(){

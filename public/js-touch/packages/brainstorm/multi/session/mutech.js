@@ -294,10 +294,12 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         
                                         // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
                                         drawStatus.watch("deleted", function(){
-                                                if (!drawStatus.getNbItems()) {
+                                                if (drawStatus.getNbItems() === 0) {
+                                                        console.log("all cards drawn and displayed");
                                                         $session.unsync();
                                                         $session.sync(_db, $session.get("_id"))
                                                         .then(function(){
+                                                                console.log("tech resync successful");
                                                                 // updated drawn tech cards
                                                                 ["tech1", "tech2", "tech3"].forEach(function(v,i){
                                                                         $session.set("drawn"+v, _techCards.get(i).id);       
@@ -305,6 +307,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                                 return $session.upload();
                                                         })
                                                         .then(function(){
+                                                                console.log("tech upload successful");
                                                                 promise.fulfill();
                                                         });
                                                 }
@@ -313,6 +316,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 else{
                                         promise.fulfill();
                                 }
+                                DRS = drawStatus;
                                 return promise;
                         };
                         
@@ -328,6 +332,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         _techCards.update(idx,"id",id);
                                         _techCards.update(idx,"title",cdb.get("title"));
                                         _techCards.update(idx,"pic", cdb.get("picture_file"));
+                                        console.log("fulfill get card request for : ", name);
                                         promise.fulfill();
                                         cdb.unsync();      
                                 });

@@ -63,13 +63,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.toggleVisibility = function(event, node){
                                 var vis = _store.get("visibility");
-                                node.classList.remove("pressed");
                                 (vis === "public") ? _store.set("visibility", "private") : _store.set("visibility", "public");
                         };
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
-                                document.querySelector(".publicwarning").classList.add("invisible");
+                                _widget.dom.querySelector(".publicwarning").classList.add("invisible");
                         };
                         
                         _widget.closePopup = function closePopup(){
@@ -82,7 +81,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _error.reset({"error":""});
                                 
                                 //reset visibility slider
-                                document.querySelector(".visibility-slider").value = 1;        
+                                _widget.dom.querySelector(".visibility-slider").value = 1;        
                         };
                         
                         _widget.resetError = function(event, node){
@@ -97,8 +96,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.cancel = function(event, node){
-                                _widget.closePopup();
-                                _store.reset(Config.get("ideaTemplate"));   
+                                _widget.closePopup();   
                         };
                         
                         _widget.upload = function(event, node){
@@ -141,7 +139,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 node.classList.remove("invisible");
                                                                 _widget.closePopup();
                                                                 clearInterval(timer);
-                                                                _store.reset(Config.get("ideaTemplate"));
                                                         });       
                                                 }
                                                 else{
@@ -149,7 +146,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         node.classList.remove("invisible");
                                                         _widget.closePopup();
                                                         clearInterval(timer);
-                                                        _store.reset(Config.get("ideaTemplate"));
                                                 }
                                         });
                                 }

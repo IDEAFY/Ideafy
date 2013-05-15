@@ -324,6 +324,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         _widget.reset = function reset(replay){
                                 
                                // retrieve chat document
+                               chatUI.clear();
                                 if ($session.get("chat")[1]){
                                         chatUI.reset($session.get("chat")[1]);
                                 }

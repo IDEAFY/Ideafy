@@ -385,6 +385,11 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 
                                 var sessionTech = $session.get("techno")[0];
                                 
+                                chatUI.clear();
+                                if ($session.get("chat")[3]){
+                                        chatUI.reset($session.get("chat")[3]);
+                                }
+                                
                                 //reset display
                                 _techDisplay.reset({
                                         "left": "",

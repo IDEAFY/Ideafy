@@ -595,7 +595,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 }
                         });
                         
-                        // display wrote up interface once the leader has "closed" the whiteboard
+                        // display write up interface once the leader has "closed" the whiteboard
                         $session.watchValue("scReady", function(ready){
                                 if ($session.get("step") === "muscenario" && ready && !_widget.isLeader()){
                                         _tools.set("readonly", true);

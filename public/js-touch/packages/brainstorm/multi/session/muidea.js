@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/cardpopup", "../../whiteboard/whiteboard", "Store", "CouchDBDocument", "Promise", "service/utils", "lib/spin.min", "./mubchat"],
-        function(Widget, Map, Model, Event, Config, CardPopup, Whiteboard, Store, CouchDBDocument, Promise, Utils, Spinner, Chat){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "service/cardpopup", "../../whiteboard/whiteboard", "Store", "CouchDBDocument", "Promise", "service/utils", "lib/spin.min", "./mubchat"],
+        function(Widget, Map, Model, Event, Place, Config, CardPopup, Whiteboard, Store, CouchDBDocument, Promise, Utils, Spinner, Chat){
                 
                 return function MUIdeaConstructor($session, $data, $prev, $next, $progress){
                         
@@ -41,6 +41,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _labels = Config.get("labels"),
                             spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 665, left: 690}).spin();
                         
+                        // identify if user is the current session leader
+                        _widget.isLeader = function isLeader(){
+                                return ($session.get("initiator") && $session.get("initiator").id === _user.get("_id"));
+                        };
+                        
                         // Setup
                         _widget.plugins.addAll({
                                 "labels" : new Model(_labels, {
@@ -61,7 +66,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 (status === "active") ? this.classList.add("pushed") : this.classList.remove("pushed");
                                         },
                                         setReady : function(ready){
-                                                (ready) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                                if (_widget.isLeader()){
+                                                        (ready) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                                }
+                                                else{
+                                                        this.classList.add("invisible");
+                                                }
                                         },
                                         toggleToolbox : function(showstory){
                                                 (showstory) ? this.classList.add("invisible") : this.classList.remove("invisible");
@@ -101,10 +111,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                 }),
                                 "wbstack" : _wb,
+                                "place" : new Place({"chat": chatUI}),
                                 "muideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "muidea"><div class="previousbutton" data-muideaevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muidea" data-muideaevent="listen:touchstart, toggleProgress"></div><div class="timer" data-muideatimer="bind:setTime, timer; bind: displayTimer, display" data-muideaevent="listen:touchstart,toggleTimer"></div><div id="muidea-left"><div class="idea-cards leftarea" data-muideaevent="listen:touchstart, fold"><div class="card defaultscenario" name="scenario" data-muideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.scenario"><div class="cardpicture"></div><div class="cardtitle" data-scenario="bind:innerHTML, title"></div></div><ul class="cardlist" data-techs="foreach"><li><div class="card tech" data-muideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.techs"><div class="cardpicture" data-techs="bind:setPic, pic"></div><div class="cardtitle" data-techs="bind:innerHTML,title"></div></div></li></ul></div><div id="muidea-popup"></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showidea"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-muideaevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-muideaevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-muideaevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div></div><div id="muidea-right" class="workarea"><div id="idea-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muideaevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "muidea-writeup" class="writeup invisible" data-wbtools="bind: setReady,showidea"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, ideatitleplaceholder" data-idea="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><input class="visibility-slider" type="range" min="0" max="1" value ="1" data-idea="bind: setVisibility, visibility" data-muideaevent="listen:touchend, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><textarea class = "enterDesc" data-labels="bind:setPlaceholder, ideadescplaceholder" data-idea="bind:value, description" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, ideasolplaceholder" data-idea="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-muideaevent="listen: touchstart, press; listen:touchend, next"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        _widget.template = '<div id = "muidea"><div class="previousbutton" data-muideaevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muidea" data-muideaevent="listen:touchstart, toggleProgress"></div><div class="timer" data-muideatimer="bind:setTime, timer; bind: displayTimer, display" data-muideaevent="listen:touchstart,toggleTimer"></div><div id="muidea-left"><div class="idea-cards leftarea folded" data-muideaevent="listen:touchstart, fold"><div class="card defaultscenario" name="scenario" data-muideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.scenario"><div class="cardpicture"></div><div class="cardtitle" data-scenario="bind:innerHTML, title"></div></div><ul class="cardlist" data-techs="foreach"><li><div class="card tech" data-muideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.techs"><div class="cardpicture" data-techs="bind:setPic, pic"></div><div class="cardtitle" data-techs="bind:innerHTML,title"></div></div></li></ul><div class="caret"></div></div><div id="muidea-popup"></div><div id="toolbox" data-wbtools="bind:toggleToolbox, showidea"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-muideaevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-muideaevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-muideaevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div></div></div><div id="muidea-right" class="workarea"><div id="idea-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div><div class="caret descending invisible" data-muideaevent="listen:touchstart, toggleCaret"></div></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muideaevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "muidea-writeup" class="writeup invisible" data-wbtools="bind: setReady,showidea"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, ideatitleplaceholder" data-idea="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><input class="visibility-slider" type="range" min=0 max=1 value =1 data-idea="bind: setVisibility, visibility" data-muideaevent="listen:touchend, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><textarea class = "enterDesc" data-labels="bind:setPlaceholder, ideadescplaceholder" data-idea="bind:value, description" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, ideasolplaceholder" data-idea="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-muideaevent="listen: touchstart, press; listen:touchend, next"></div></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         _widget.place(Map.get("muidea"));
                         
@@ -176,12 +187,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // toggle timer
                         _widget.toggleTimer = function(event,node){
-                                _timer.set("display", !_timer.get("display"));        
+                                if (_widget.isLeader()){
+                                        _timer.set("display", !_timer.get("display"));
+                                }       
                         };
                         
                         // toggle visibility (public/private) buttons
                         _widget.toggleVisibility = function(event, node){
-                                if (_next === "step"){
+                                if (_next === "step" && _widget.isLeader()){
                                         (_idea.get("visibility") === "public") ? _idea.set("visibility", "private") : _idea.set("visibility", "public");        
                                 }
                         };
@@ -210,12 +223,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // show/hide the setup cards
                         _widget.fold = function(event, node){
-                                node.classList.toggle("folded");
-                                // hide card popup if present
-                                if (_currentPopup){
-                                        _popupUI.close();
+                                // disable toggle in scenario write up phase
+                                if (!$session.get("ideaReady")){
+                                        node.classList.toggle("folded");
+                                        node.querySelector(".caret").classList.toggle("folding");
+                                        // hide card popup if present
+                                        if (_currentPopup){
+                                                _popupUI.close();
+                                        }
                                 }
                         };
+                        
                         // Method called to initialize a card popup
                         _widget.setPopup = function setPopup(type, id){
                                 var pos = {x:240, y: 30}, // the position of the popup
@@ -309,11 +327,110 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // user is done with whiteboard
                         _widget.finish = function(event, node){
-                                // change mode to readonly
+                                var finishSpinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 550, left: 50}).spin();
+                                // hide finish button
+                                finishSpinner.spin(node.parentNode);
+                                node.classList.add("invisible");
+                                 
+                                // notify other participants
+                                $session.unsync();
+                                $session.sync(_db, $session.get("_id"))
+                                .then(function(){
+                                        $session.set("ideaReady", true);
+                                        return $session.upload();       
+                                })
+                                .then(function(){
+                                        finishSpinner.stop();
+                                        // reset and hide finish button
+                                        node.classList.remove("pressed");
+                                        _tools.set("ready", false);
+                                
+                                        _widget.displayIdea();
+                                        // monitor scenario updates if user is the session leader
+                                });      
+                        };
+                        
+                        // function called to display the story writeup interface
+                        _widget.displayIdea = function displayIdea(){
+                                // change whiteboard mode to readonly
                                 _wb.setReadonly(true);
-                                // hide finish button, toolbox and show writeup interface
-                                _tools.set("ready", false);
-                                _tools.set("showidea", true);      
+                                // hide toolbox and show writeup interface
+                                _tools.set("showidea", true);
+                                // removed folded class from scenario cards
+                                _widget.dom.querySelector(".idea-cards").classList.remove("folded");
+                                _widget.dom.querySelector(".idea-cards .caret").classList.add("invisible");
+                                // display writeup interface
+                                _widget.dom.querySelector(".writeup").scrollIntoView();
+                                // display caret at the bottom of the whiteboard
+                                _widget.dom.querySelector(".whiteboard .caret").classList.remove("invisible");
+                        };
+                        
+                        // function to reset / hide story
+                        _widget.hideIdea = function hideIdea(){
+                                // add folded class to scenario cards
+                                _widget.dom.querySelector(".idea-cards").classList.add("folded");
+                                _widget.dom.querySelector(".idea-cards .caret").classList.remove("invisible");
+                                
+                                // remove caret at the bottom of the whiteboard
+                                _widget.dom.querySelector(".whiteboard .caret").classList.add("invisible");        
+                        };
+                        
+                        // toggle whiteboard/writeup display
+                        _widget.toggleCaret = function(event, node){
+                                event.stopPropagation();
+                                var _writeup = _widget.dom.querySelector(".writeup"),
+                                    _whiteboard = _widget.dom.querySelector(".whiteboard");
+                                node.classList.toggle("descending");
+                                (node.classList.contains("descending")) ? _writeup.scrollIntoView() : _whiteboard.scrollIntoView();        
+                        };
+                        
+                        // toggle view (same as caret) if user clicks on the bottom of the whiteboard
+                        _widget.toggleView = function(event, node){
+                                var caret = node.querySelector(".caret"),
+                                    _writeup = _widget.dom.querySelector(".writeup"),
+                                    _whiteboard = _widget.dom.querySelector(".whiteboard");
+                                    
+                                // if whiteboard is folded then diusplay it
+                                if (caret.classList.contains("descending")){
+                                        caret.classList.remove("descending");
+                                        _whiteboard.scrollIntoView();
+                                }
+                                else{
+                                        // else if touch event occurs near the bottom of the whiteboard
+                                        if ( (event.pageY - node.scrollHeight) > 0){
+                                                caret.classList.add("descending");
+                                                _writeup.scrollIntoView();
+                                        }
+                                }
+                        };
+                        
+                        // update database with scenario changes made by leader
+                        _widget.updateIdea = function updateIdea(){
+                                clearInterval(_midInterval);
+                                _midInterval = setInterval(function(){
+                                        var _title = _widget.dom.querySelector(".enterTitle").value,
+                                            _description = _widget.dom.querySelector(".enterDesc").value,
+                                            _solution = _widget.dom.querySelector(".enterSol").value,
+                                            cdbId = {};
+                                        
+                                        if (_idea.get("title") !== _title || _idea.get("description") !== _description || _idea.get("solution") !== _solution){
+                                                cdbId.title = _title;
+                                                cdbId.story = _story;
+                                                cdbId.solution = _solution;
+                                                $session.unsync();
+                                                $session.sync(_db, $session.get("_id"))
+                                                .then(function(){
+                                                        $session.set("idea", [cdbId]);
+                                                        return $session.upload();
+                                                })
+                                                .then(function(success){
+                                                        console.log("idea updated in CouchDB");
+                                                        return true;
+                                                }, function(err){
+                                                        console.log("failed to update idea", err);
+                                                });
+                                        }
+                                }, 10000);        
                         };
                         
                         // update session score
@@ -433,10 +550,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _next="step";     
                                 }
                                 
-                                // retrieve time already spent on this step
-                                ($session.get("elapsedTimers").muidea) ? _elapsed = $session.get("elapsedTimers").muidea : _elapsed = 0;
-                                _timer.set("timer", _elapsed);
-                                (_next === "screen") ? _timer.set("display", true) : _widget.initTimer(_elapsed);
+                                // retrieve time already spent on this step and init/display timer as appropriate
+                                if ($session.get("elapsedTimers").muidea ){
+                                        _elapsed = $session.get("elapsedTimers").muidea;
+                                        _timer.set("timer", _elapsed);
+                                        if (_next === "screen"){
+                                                _timer.set("display", true);
+                                        }
+                                        else if (_widget.isLeader()){
+                                                _widget.initTimer(_elapsed);
+                                        }
+                                }
                          };
                          
                          _widget.initTimer = function(init){
@@ -483,9 +607,25 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 });  
                         });
                         
-                        // watch contents of scenario and display next button if ready
+                        // display write up interface once the leader has "closed" the whiteboard
+                        $session.watchValue("ideaReady", function(ready){
+                                if ($session.get("step") === "muidea" && ready && !_widget.isLeader()){
+                                        _tools.set("readonly", true);
+                                        _widget.displayIdea();        
+                                } 
+                        });
+                        
+                        // display leader updates made to the scenario
+                        $session.watchValue("idea", function(arr){
+                                if (!_widget.isLeader()) {
+                                        _idea.reset(arr[0]);
+                                         $data.set("idea", JSON.parse(_idea.toJSON()));
+                                }        
+                        });
+                        
+                        // watch contents of idea and display next button if ready
                         _idea.watch("updated", function(){
-                                        (_idea.get("title") && _idea.get("description") && _idea.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
+                                        (_widget.isLeader() && _idea.get("title") && _idea.get("description") && _idea.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
                         
                         // Return

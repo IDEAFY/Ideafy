@@ -502,6 +502,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // INIT muidea STEP
                         _widget.reset = function reset(sip){
+                                
+                                chatUI.clear();
+                                if ($session.get("chat")[4]){
+                                        chatUI.reset($session.get("chat")[4]);
+                                }
+                                
                                 // reset all tools and status indicators
                                 _tools.reset({
                                     "cardpopup":{"scenario":false, "techs":[false, false, false]},

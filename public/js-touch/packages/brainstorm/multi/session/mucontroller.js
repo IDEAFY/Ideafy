@@ -332,10 +332,19 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         _sessionData.reset(); 
                            
                         // reset progress bar
-                        _steps.reset(steps);
+                        _steps.reset([
+                                {name: "mustart", label: _labels.get("quickstepstart"), currentStep: false, status:"done"},
+                                {name: "musetup", label: _labels.get("quickstepsetup"), currentStep: false, status:null},
+                                {name: "muscenario", label: _labels.get("quickstepscenario"), currentStep: false, status:null},
+                                {name: "mutech", label: _labels.get("quicksteptech"), currentStep: false, status:null},
+                                {name: "muidea", label: _labels.get("quickstepidea"), currentStep: false, status:null},
+                                {name: "muwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
+                        ]);
                         
                         // retrieve session document and launch   
-                        _widget.retrieveSession(sid, replay);  
+                        if (sid){
+                                _widget.retrieveSession(sid, replay);
+                        } 
                    };
                    
                 _widget.prev = function prev(currentName){

@@ -137,7 +137,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 0);                    // reduce logging
+        io.set('log level', 3);                    // reduce logging
         io.set("close timeout", 60);
         io.set("heartbeat interval", 25);
         
@@ -1584,7 +1584,29 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 if (increment<0) { increment = 0;}
                                 increment += bonus;
                                 if (increment < min_score) {increment = min_score;}
-                                break;      
+                                break;
+                        case "muscenario":
+                                min_score = 20;
+                                wbdata = JSON.parse(json.wbcontent);
+                                input = JSON.parse(json.idea);
+                                t = json.time;
+                                if (t>=120000) {coeff = 0.75;} // too long
+                                if (t<1200000) {coeff = 1;} // ok
+                                if (t<900000) {coeff = 1.5;} // great !!
+                                if (t<600000) {coeff = 0.75;} // too fast
+                                if (t<300000) {coeff = 0.25;} // way too fast
+                                if (input.title.length+input.description.length+input.solution.length < 300) {coeff *= 0.5;} // need a bit more effort
+                                if (wbdata.length>12) {coeff *= 1.25;}
+                                else {
+                                        if (wbdata.length < 3) {coeff *= 0.25;}
+                                        else if (wbdata.length < 6) {coeff *= 0.75;}
+                                 }
+                                if ((json.wbcontent.search("import")>-1) && (json.wbcontent.search("drawing")>-1)) {bonus = 25;}
+                                else if ((json.wbcontent.search("import")>-1) || (json.wbcontent.search("drawing")>-1))  {bonus = 10;}
+                                
+                                if (json.visibility === "public") {bonus +=20;}
+                                increment = Math.floor((wbdata.length*12 + bonus)*coeff) + min_score;
+                                break;     
                         default:
                                 increment = 0;
                                 break;

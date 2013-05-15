@@ -470,11 +470,20 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 var cdb = new CouchDBDocument(Config.get("ideaTemplate")),
                                     now = new Date(),
                                     _id = "I:"+now.getTime(),
+                                    auth = [],
+                                    names = [],
                                     promise = new Promise();
+                                    
+                                auth.push($session.get("initiator").id);
+                                names.push($session.get("initiator").username());
+                                $session.get("participants").forEach(function(part){
+                                        auth.push(part.id);
+                                        names.push(part.username);        
+                                });
                                 cdb.setTransport(_transport);
                                 cdb.set("title", _idea.get("title"));
                                 cdb.set("sessionId", $session.get("_id"));
-                                cdb.set("authors", [$session.get("initiator").id]);
+                                cdb.set("authors", auth);
                                 cdb.set("description", _idea.get("description"));
                                 cdb.set("solution", _idea.get("solution"));
                                 cdb.set("creation_date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
@@ -482,7 +491,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 cdb.set("problem", $session.get("problems")[0]);
                                 cdb.set('context', $session.get("contexts")[0]);
                                 cdb.set("visibility", _idea.get("visibility"));
-                                cdb.set("authornames", $session.get("initiator").username);
+                                cdb.set("authornames", names.join(", "));
                                 //set the idea's language to the same language as the session
                                 cdb.set("lang", $session.get("lang"));
                                 cdb.set("_id", _id);

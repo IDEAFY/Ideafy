@@ -42,7 +42,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                     {"id":"", "title":"", "pic":""}
                             ]), // {id, title, pic}) -- there are always 3 tech cards in quick mode
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
-                            spinner  = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 373, left:373}).spin(),
+                            spinner  = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 336, left:406}).spin(),
                             spinnerOk = {};
                         
                         // identify if user is the current session leader

@@ -160,6 +160,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 timers = $session.get("elapsedTimers");
                                                 timers.muscenario = _timer.get("timer");
                                                 $session.set("elapsedTimers", timers);
+                                                $session.set("scenario", $data.get("scenario"));
                                                 _tools.set("readonly", true);
                                                 $next("muscenario");         
                                         });

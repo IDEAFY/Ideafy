@@ -515,6 +515,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 }
                         );
                         
+                        MTSPIN = spinner;
                         // Return
                         return _widget;
                 };     

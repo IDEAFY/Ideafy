@@ -3958,10 +3958,16 @@ li.color-item{
 
 /* quickscenario */
 
-#quickscenario-left, #muscenario .scenario-cards, #muidea .idea-cards{
+#quickscenario-left, #muscenario .scenario-cards{
     padding-top: 93px;
     height: 619px;
     text-align: center;
+}
+
+#muidea .idea-cards{
+    padding-top: 10px;
+    height: 702px;
+    text-align: center;    
 }
 
 #muscenario-left, #muidea-left{

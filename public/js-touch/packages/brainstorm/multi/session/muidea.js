@@ -17,7 +17,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                              _next="step",
                             _start,
                             _elapsed = 0,
-                            _qiTimer,
+                            _miTimer, _miInterval,
                             _timer = new Store({"timer":null, "display":false}),
                             _idea = new Store({"title" : "", "description" : "", "solution" : "", "visibility": "private"}),
                             _scenario = new Store(),
@@ -137,8 +137,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         _next = "screen";
                                         
                                         // stop timer and update display
-                                        clearInterval(_qiTimer);
+                                        clearInterval(_miTimer);
                                         _timer.set("display", true);
+                                        
+                                        // stop scenario autoupdates
+                                        clearInterval(_miInterval);
                                         
                                         // compute overall session time
                                         duration = _widget.getSessionDuration();
@@ -406,8 +409,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // update database with scenario changes made by leader
                         _widget.updateIdea = function updateIdea(){
-                                clearInterval(_midInterval);
-                                _midInterval = setInterval(function(){
+                                clearInterval(_miInterval);
+                                _miInterval = setInterval(function(){
                                         var _title = _widget.dom.querySelector(".enterTitle").value,
                                             _description = _widget.dom.querySelector(".enterDesc").value,
                                             _solution = _widget.dom.querySelector(".enterSol").value,
@@ -529,7 +532,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // reset timer if previous session was exited while in muidea step
-                                clearInterval(_qiTimer);
+                                clearInterval(_miTimer);
                                 
                                 // if idea is present show write up interface and board in readonly mode
                                 if ($session.get("idea").length){
@@ -578,7 +581,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _timer.set("timer", elapsed);
                                 // make sure current step is ongoing before restarting timer
                                 if ($session.get("step") === "muidea"){
-                                        _qiTimer = setInterval(function(){
+                                        _miTimer = setInterval(function(){
                                                 var now = new Date();
                                                 _timer.set("timer", elapsed + now.getTime()-_start);
                                         }, 1000);
@@ -588,6 +591,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // get session id and pass it to Whiteboard
                         $session.watchValue("_id", function(sid){
                                 _wb.setSessionId(sid);        
+                        });
+                        
+                        // reset chatUI
+                        $session.watchValue("chat", function(arr){
+                                if (arr.length === 5 && chatUI.getModel().get("_id") !== arr[4]){
+                                        chatUI.reset(arr[4]);
+                                }        
                         });
                         
                         // get scenario card from session data

@@ -487,6 +487,13 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 return ChatUI;        
                         };
                         
+                        // reset chatUI
+                        $session.watchValue("chat", function(arr){
+                                if (arr.length === 4 && chatUI.getModel().get("_id") !== arr[3]){
+                                        chatUI.reset(arr[3]);
+                                }        
+                        });
+                        
                         // Retrieve deck information as soon as it becomes available                        
                         $data.watchValue("deck", function(value){
                                 _techs = value.techno.concat();

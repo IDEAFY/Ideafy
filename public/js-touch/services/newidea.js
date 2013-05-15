@@ -56,20 +56,23 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:touchstart, cancel"></div></div><form class="form"><p><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title"></p><p><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea></p><div class="visibility-input"><input class="visibility-slider" type="range" min="0" max="1" value ="1" data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:touchstart, cancel"></div></div><form class="form"><p><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title"></p><p><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea></p><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
                         
                         _widget.toggleVisibility = function(event, node){
-                                var vis = _store.get("visibility");
-                                node.classList.remove("pressed");
-                                (vis === "public") ? _store.set("visibility", "private") : _store.set("visibility", "public");
+                                if (node.value === "1"){
+                                        _store.set("visibility", "private");
+                                }
+                                else {
+                                        _store.set("visibility", "public");
+                                }
                         };
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
-                                document.querySelector(".publicwarning").classList.add("invisible");
+                                _widget.dom.querySelector(".publicwarning").classList.add("invisible");
                         };
                         
                         _widget.closePopup = function closePopup(){
@@ -82,7 +85,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _error.reset({"error":""});
                                 
                                 //reset visibility slider
-                                document.querySelector(".visibility-slider").value = 1;        
+                                _widget.dom.querySelector(".visibility-slider").value = 1;        
                         };
                         
                         _widget.resetError = function(event, node){
@@ -97,7 +100,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.cancel = function(event, node){
-                                _widget.closePopup();    
+                                _widget.closePopup();   
                         };
                         
                         _widget.upload = function(event, node){
@@ -151,6 +154,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         });
                                 }
                         };
+                        
                         return _widget;
                 };
         });

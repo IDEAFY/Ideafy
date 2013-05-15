@@ -830,7 +830,13 @@ ul.notify-list{
 .idea-edit .confirm{
     width: 280px;
     padding: 40px 30px 10px 30px;
-    right:20px;   
+    right:20px;
+    background: white;
+    border-radius: 5px;  
+}
+
+.idea-edit .confirm p{
+    color: #4D4D4D;
 }
 
 .confirm .help-doctor{
@@ -893,6 +899,11 @@ ul.notify-list{
     font-size: 12px;
     border-color: white;
     margin: 5px;
+}
+
+.idea-edit .confirm .option{
+    background: #E6E6E6;
+    border-color: #CCCCCC;
 }
 
 .confirm .option.pressed{
@@ -1394,6 +1405,11 @@ ul.notify-list{
   width:630px;
   overflow-y: scroll;
 }
+
+#ideas-detail .detail-stack{
+    height: 748px;
+}
+
 .idea-edit .header, .idea-sendmail .header{
     z-index: 1000;
 }

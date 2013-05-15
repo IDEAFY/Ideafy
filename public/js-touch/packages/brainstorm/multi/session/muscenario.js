@@ -555,9 +555,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // upload whiteboard content to database as soon as it is updated locally
                         ["added", "deleted", "updated"].forEach(function(change){
-                                _wbContent.watch(change, function(){
+                                _wbContent.watch(change, function(change){
                                         
-                                        console.log("local wb change", change);
+                                        console.log("local wb change", change, JSON.stringify($session.get("scenarioWB")), _wbContent.toJSON());
                                         
                                         // avoid upload if $session is already up-to-date (e.g. replay)
                                         if ($session.get("scenarioWB").length !== _wbContent.getNbItems() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
@@ -606,6 +606,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         $session.watchValue("scenario", function(arr){
                                 if (!_widget.isLeader()) {
                                         _scenario.reset(arr[0]);
+                                         $data.set("scenario", JSON.parse(_scenario.toJSON()));
                                 }        
                         });
                         

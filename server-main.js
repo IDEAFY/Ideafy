@@ -420,12 +420,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });
         
         olives.handlers.set('Welcome', function(json, onEnd){
-                var Id = "", cdb = new CouchDBDocument(), lang="EN-US";
+                var Id = "I:WELCOME:US", cdb = new CouchDBDocument(), lang="EN-US";
                 // workaround to solve language issue 
                 if (json.language) {
                       lang =  json.language.toUpperCase();
                       }
-                (["US", "FR"].indexOf(lang.substr(2))>-1) ? Id = "I:WELCOME:"+lang : Id = "I:WELCOME:US";
+                if (["US", "FR"].indexOf(lang.substr(3))>-1) {
+                        Id = "I:WELCOME:"+lang.substr(3);
+                }
                 
                 getDocAsAdmin(Id, cdb)
                 .then(function(){

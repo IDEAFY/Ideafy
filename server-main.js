@@ -357,11 +357,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 // add credentials to the cookie
                                 var cookieJSON = cookie.parse(json.handshake.headers.cookie), 
                                     sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0];
-                                    
                                 sessionStore.get(sessionID, function(err, session) {
                                         if (err) {
                                                 throw new Error(err);
                                         } else {
+                                                debugger;
                                                 session.auth = json.name + ":" + json.password;
                                                 sessionStore.set(sessionID, session);
                                                 onEnd({

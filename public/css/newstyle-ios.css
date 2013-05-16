@@ -2880,12 +2880,12 @@ textarea.solution {
     border-top: none;  
 }
 
-#muscenario .whiteboard .caret.descending, #muscenario .whiteboard .caret.descending{
+#muscenario .whiteboard .caret.descending, #muidea .whiteboard .caret.descending{
     border-top: 10px solid #B3B3B3;
     border-bottom: none;
 }
 
-#muscenario .scenario-cards .caret, #muidea .scenario-cards .caret{
+#muscenario .scenario-cards .caret, #muidea .idea-cards .caret{
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
     margin: 580px auto;
@@ -2895,7 +2895,7 @@ textarea.solution {
     border-right: none;  
 }
 
-#muscenario .scenario-cards .caret.folding, #muscenario .scenario-cards .caret.folding{
+#muscenario .scenario-cards .caret.folding, #muidea .idea-cards .caret.folding{
     border-right: 10px solid #B3B3B3;
     border-left: none;
 }

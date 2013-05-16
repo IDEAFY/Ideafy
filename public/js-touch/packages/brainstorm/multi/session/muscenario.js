@@ -559,7 +559,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         ["added", "deleted", "updated"].forEach(function(change){
                                 _wbContent.watch(change, function(change){
                                         
-                                        console.log("change");
+                                        console.log(change);
                                         // avoid upload if $session is already up-to-date (e.g. replay)
                                         if ($session.get("scenarioWB").length !== _wbContent.getNbItems() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
                                                 $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
@@ -591,6 +591,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         }
                                         if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
                                                 _wbContent.reset(content);       
+                                        }
+                                        else{
+                                                console.log("no local update necessary");
                                         }
                                 }
                         });

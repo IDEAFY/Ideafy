@@ -301,7 +301,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 }
                 smtpTransport.sendMail(mailOptions, function(error, response) {
                         if (error) {
-                                console.log(error, response);
+                                console.log(error, response, "it's right here");
                         }
                 });        
             };
@@ -432,7 +432,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 getDocAsAdmin(Id, cdb)
                 .then(function(){
                         var shared = cdb.get("sharewith");
-                        shared.alter("push", json.userid);
+                        shared.push(json.userid);
                         return updateDocAsAdmin(Id, cdb);
                 })
                 .then(function(){

@@ -192,7 +192,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         $store.alter("push", JSON.parse(_postit.toJSON()));
                                 }
                                 else {
-                                        $store.update(_pos, "content", _postit.get("content"));
+                                        $store.alter("splice", _pos, 1, JSON.parse(_postit.toJSON()));
                                 }
                                 node.classList.remove("pressed"); 
                                 // reset postit & clear canvas

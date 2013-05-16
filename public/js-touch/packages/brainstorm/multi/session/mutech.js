@@ -58,7 +58,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 (!left && _drawnCards>0) ? this.classList.add("reload") : this.classList.remove("reload");
                                         },
                                         updateNext : function(selected){
-                                                (_techDisplay.get("tech1").selected && _techDisplay.get("tech2").selected && _techDisplay.get("tech3").selected) ? this.classList.remove("invisible"):this.classList.add("invisible");
+                                                (_widget.isLeader() && _techDisplay.get("tech1").selected && _techDisplay.get("tech2").selected && _techDisplay.get("tech3").selected) ? this.classList.remove("invisible"):this.classList.add("invisible");
                                         },
                                         setSelected : function(selected){
                                                 (selected) ? this.classList.add("pushed") : this.classList.remove("pushed");        

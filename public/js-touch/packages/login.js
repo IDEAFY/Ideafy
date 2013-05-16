@@ -149,7 +149,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                                 "username" : "Ideafy",
                                                                                 "body" : _labels.get("signupwelcomebody")
                                                                         }]);
-                                                        
+                                                                        
+                                                                        console.log(userid, user.get("lang"));
                                                                         // add welcome contents
                                                                         _transport.request("Welcome", {userid:userid, language:user.get("lang")}, function(result){console.log(result);});
 

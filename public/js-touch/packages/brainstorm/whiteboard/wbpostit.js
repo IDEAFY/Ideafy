@@ -72,8 +72,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                                 $store.alter("push", JSON.parse(_postit.toJSON()));
                         }
                         else {
-                                $store.update(_pos, "content", _postit.get("content"));
-                                $store.update(_pos, "style", _postit.get("style"));
+                                $store.alter("splice", _pos, 1, JSON.parse(_postit.toJSON()));
                         }
                         node.classList.remove("pressed");
                         $exit("postit");  

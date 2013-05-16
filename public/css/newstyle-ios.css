@@ -2855,6 +2855,11 @@ textarea.solution {
     margin-top: 15px;
 }
 
+#muscenario .inner-postit, #muidea .inner-postit{
+    height: 120px;
+    margin-top: 5px;
+}
+
 .whiteboard .defaultcontent{
     display: inline-block;
     color: #657B99;
@@ -3646,7 +3651,7 @@ li.color-item{
     top: 400px;
 }
 
-#muscenario .next-button, #muscenario .next-button{
+#muscenario .next-button, #muidea .next-button{
     float: right;
     margin-top: -66px;
     margin-right: 40px;

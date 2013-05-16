@@ -137,7 +137,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 0);                    // reduce logging
+        io.set('log level', 3);                    // reduce logging
         io.set("close timeout", 60);
         io.set("heartbeat interval", 25);
         
@@ -146,7 +146,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         setInterval(function(){
                 console.log("number of sockets used : ", Object.keys(io.connected).length);
-        }, 1200000);
+        }, 120000);
         
         // register transport
         olives.registerSocketIO(io);
@@ -361,7 +361,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         if (err) {
                                                 throw new Error(err);
                                         } else {
-                                                debugger;
                                                 session.auth = json.name + ":" + json.password;
                                                 sessionStore.set(sessionID, session);
                                                 onEnd({
@@ -464,7 +463,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 
                 user.login(json.name, json.password).then(function(result) {
                         
-                        console.log(result);
                         var result = JSON.parse(result);
                         
                         if (!result.error) {
@@ -599,7 +597,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 res.distinction = dis[3];
                         }
                         else {
-                                i = Math.min(l-1,9); console.log(i)
+                                i = Math.min(l-1,9);
                                 if (json.ip >= leaders[i].key && json.ip >= arr[5].min_score){
                                         res.distinction = dis[2];
                                 }
@@ -902,7 +900,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         }
                                 }
                         }
-                        console.log(result, update);
+                        
                         if (update){
                                 // update user rewards documents
                                 updateDocAsAdmin(userRewards.get("_id"), userRewards)

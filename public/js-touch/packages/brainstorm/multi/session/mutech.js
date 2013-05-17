@@ -487,7 +487,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         
                         // Getting the chat UI
                         _widget.getChatUI = function getChatUI(){
-                                return ChatUI;        
+                                return chatUI;        
                         };
                         
                         // reset chatUI

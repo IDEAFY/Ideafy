@@ -304,7 +304,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // Getting the chat UI
                         _widget.getChatUI = function getChatUI(){
-                                return ChatUI;        
+                                return chatUI;        
                         };
                         
                         // create/edit postit

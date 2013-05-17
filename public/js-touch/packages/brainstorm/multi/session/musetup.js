@@ -300,7 +300,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         // Getting the chat UI
                         _widget.getChatUI = function getChatUI(){
-                                return ChatUI;        
+                                return chatUI;        
                         };
                         
                         // Init timer

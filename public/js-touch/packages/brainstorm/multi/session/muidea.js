@@ -40,7 +40,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                             _user = Config.get("user"),
                             _db = Config.get("db"),
                             _labels = Config.get("labels"),
-                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 665, left: 690}).spin();
+                            spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 695, left: 670}).spin();
                         
                         // identify if user is the current session leader
                         _widget.isLeader = function isLeader(){
@@ -481,7 +481,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                     promise = new Promise();
                                     
                                 auth.push($session.get("initiator").id);
-                                names.push($session.get("initiator").username());
+                                names.push($session.get("initiator").username);
                                 $session.get("participants").forEach(function(part){
                                         auth.push(part.id);
                                         names.push(part.username);        

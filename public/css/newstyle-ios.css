@@ -6659,6 +6659,32 @@ li.my2q{
     left: 301px;
 }
 
+#muwrapup .sessionchat{
+    height:302;
+    top:226;
+    left:223;
+}
+
+#muwrapup .sessionchat.folded{
+    left: 0;
+    width: 30px;
+}
+
+#muwrapup .chatread{
+    height: 250px;
+}
+
+#muwrapup .togglechat{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background: #9AC9CD;
+}
+
+#muwrapup .togglechat.flashing{
+    background: white;
+}
+
 .sessionchat .chatread{
     background: white;
     border: 1px dashed #657B99;

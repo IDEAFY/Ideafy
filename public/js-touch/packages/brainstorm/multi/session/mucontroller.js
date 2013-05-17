@@ -474,7 +474,16 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 // init and show new step UI
                                 _stack.getStack().get(value).reset();
                                 _stack.getStack().show(value);
-                        }       
+                        }
+                        
+                        if (step === "muwrapup"){
+                                _user.unsync();
+                                _user.sync(Config.get("db"), _user.get("_id"))
+                                .then(function(){
+                                        _user.set("sessionInProgress", "");;
+                                        return _user.upload();       
+                                });
+                        }      
                 });
                 
                 // end session if there are no more participants
@@ -489,6 +498,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                 SESSION = _session;
                 STEPS = _steps;
+                MSTACK = _stack;
                 // return
                 return _widget;
            };    

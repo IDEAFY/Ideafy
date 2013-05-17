@@ -15,7 +15,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                             _wrapup = new Store(),
                             _cards = new Store([]),
                             _labels = Config.get("labels"),
-                            chatUI = new Chat()
+                            chatUI = new Chat(),
                             _flash;
                         
                         // Setup
@@ -175,6 +175,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 }               
                         });
                         
+                        MUWRAP=_widget;
                         // Return
                         return _widget;
                 };     

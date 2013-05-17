@@ -378,7 +378,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 }
                         });
                         
-                        if (_id < _steps.getNbItems()-1) {
+                        if (_id < _steps.getNbItems()) {
                                 _newStep = _steps.get(_id+1).name;
                                 _nextui = _stack.getStack().get(_newStep);
                                 
@@ -390,6 +390,11 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 if (_steps.get(_id).status !== "done"){
                                         _steps.update(_id, "status", "done");
                                         _steps.update(_id+1, "status", "ongoing");
+                                        
+                                        if (_steps.get(_id+1).name === "muwrapup"){
+                                                _steps.update(_id+1, "status", "done");        
+                                        }
+                                        
                                         // initialize new step
                                         _nextui.reset();
                                         

@@ -358,6 +358,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 cdb.set("character", $session.get("characters")[0]);
                                 cdb.set("problem", $session.get("problems")[0]);
                                 cdb.set('context', $session.get("contexts")[0]);
+                                cdb.set("techno", $session.get("techno")[0]);
                                 cdb.set("visibility", _idea.get("visibility"));
                                 cdb.set("authornames", $session.get("initiator").username);
                                 //set the idea's language to the same language as the session

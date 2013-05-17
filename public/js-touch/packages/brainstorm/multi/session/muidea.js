@@ -414,13 +414,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         };
                         
                         // update database with scenario changes made by leader
-                        _widget.updateIdea = function updateIdea(){
+                        _widget.updateIdea = function updateIdea(event, node){
+                                console.log(node);
                                 clearInterval(_miInterval);
                                 _miInterval = setInterval(function(){
                                         var _title = _widget.dom.querySelector(".enterTitle").value,
                                             _description = _widget.dom.querySelector(".enterDesc").value,
                                             _solution = _widget.dom.querySelector(".enterSol").value,
                                             cdbId = {};
+                                        
+                                        console.log(_title, _description, _solution);
                                         
                                         if (_idea.get("title") !== _title || _idea.get("description") !== _description || _idea.get("solution") !== _solution){
                                                 cdbId.title = _title;

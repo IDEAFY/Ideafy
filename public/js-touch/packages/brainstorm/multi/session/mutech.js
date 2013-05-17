@@ -261,6 +261,9 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 _ready = true;        
                                         });
                                  }
+                                 else{
+                                        node.classList.remove("pushed");        
+                                 }
                         };
                         
                         _widget.drawTech = function drawTech(arr){

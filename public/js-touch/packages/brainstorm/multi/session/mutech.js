@@ -130,7 +130,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 $session.sync(_db, $session.get("_id")).then(function(){
                                                         var timers = $session.get("elapsedTimers");
                                                         
-                                                        timers.quicktech = _timer.get("timer");
+                                                        timers.mutech = _timer.get("timer");
                                                         
                                                         // update session document
                                                         $session.set("elapsedTimers", timers);

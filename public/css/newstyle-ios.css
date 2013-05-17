@@ -3647,8 +3647,15 @@ li.color-item{
 
 #musetup .next-button, #mutech .next-button{
     position: absolute;
-    left: 820px;
     top: 400px;
+}
+
+#musetup .next-button{
+    left: 820px;
+}
+
+#mutech .next-button{
+    left: 895px
 }
 
 #muscenario .next-button, #muidea .next-button{
@@ -4097,7 +4104,7 @@ li.color-item{
     text-align: center;
 }
 
-#quickwrapup .congrats{
+#quickwrapup .congrats, #muwrapup .congrats{
     height: 92px;
     width: 445px; 
     margin: 0 auto;
@@ -4105,7 +4112,7 @@ li.color-item{
     padding-left: 113px;
 }
 
-#quickwrapup .congrats .message{
+#quickwrapup .congrats .message, #muwrapup .congrats .message{
     float: left;
     width: 330px;
     height: 72px;
@@ -4117,18 +4124,18 @@ li.color-item{
     font-family: Pacifico;    
 }
 
-#quickwrapup .congrats .messagetitle{
+#quickwrapup .congrats .messagetitle, #muwrapup .congrats .messagetitle{
     font-size: 18px;
     display: block;
 }
 
-#quickwrapup .congrats .sessioncompleted{
+#quickwrapup .congrats .sessioncompleted, #muwrapup .congrats .sessioncompleted{
     display: block;
     font-size: 14px;
     line-height: 14px;   
 }
 
-#quickwrapup .congrats .enddeedee{
+#quickwrapup .congrats .enddeedee, #muwrapup .congrats .enddeedee{
     display: inline-block;
     float: left;
     margin-left: 15px;
@@ -4138,7 +4145,7 @@ li.color-item{
     background-size: contain;
 }
 
-#quickwrapup .summary{
+#quickwrapup .summary, #muwrapup .summary{
     width: 664px;
     height: 430px;
     padding-left: 8px;
@@ -4149,7 +4156,7 @@ li.color-item{
     background-size: contain;
 }
 
-#quickwrapup .storysummary, #quickwrapup .ideasummary{
+#quickwrapup .storysummary, #quickwrapup .ideasummary, #muwrapup .storysummary, #muwrapup .ideasummary{
     width: 262px;
     height: 385px;
     padding: 25px 0px 20px 25px;
@@ -4158,43 +4165,43 @@ li.color-item{
     text-align: left;
 }
 
-#quickwrapup .storyheader, #quickwrapup .storytitle, #quickwrapup .ideaheader, #quickwrapup .ideatitle{
+#quickwrapup .storyheader, #quickwrapup .storytitle, #quickwrapup .ideaheader, #quickwrapup .ideatitle, #muwrapup .storyheader, #muwrapup .storytitle, #muwrapup .ideaheader, #muwrapup .ideatitle{
     color: white;
     font-family: Pacifico;
     font-size: 16px;
     text-overflow: ellipsis;        
 }
 
-#quickwrapup .storyheader, #quickwrapup .ideaheader{
+#quickwrapup .storyheader, #quickwrapup .ideaheader, #muwrapup .storyheader, #muwrapup .ideaheader{
     padding-left: 25px;
     background-repeat: no-repeat;
 }
 
-#quickwrapup .storyheader{
+#quickwrapup .storyheader, #muwrapup .storyheader{
     background-image: url('../img/brainstorm/iconStory16x14.png');
     background-position: left 10px;   
     background-size: 16px 14px;    
 }
 
-#quickwrapup .ideaheader{
+#quickwrapup .ideaheader, #muwrapup .ideaheader{
     background-image: url('../img/brainstorm/iconIdea12x16.png');
         background-position: left 8px;    
 }
 
-#quickwrapup .storycontent, #quickwrapup .ideacontent{
+#quickwrapup .storycontent, #quickwrapup .ideacontent, #muwrapup .storycontent, #muwrapup .ideacontent{
     margin-top: 20px;
     overflow-y: scroll;
     max-height: 280px;
 }
 
-#quickwrapup .storycontent .summaryheader, #quickwrapup .ideacontent .summaryheader{
+#quickwrapup .storycontent .summaryheader, #quickwrapup .ideacontent .summaryheader, #muwrapup .storycontent .summaryheader, #muwrapup .ideacontent .summaryheader{
     text-align: left;
     font-family: Pacifico;
     font-size: 14px;
     height: 25px;
 }
 
-#quickwrapup .storycontent .content, #quickwrapup .ideacontent .content{
+#quickwrapup .storycontent .content, #quickwrapup .ideacontent .content, #muwrapup .storycontent .content, #muwrapup .ideacontent .content{
     font-family: Helvetica;
     border-top: 1px solid #CCCCCC;
     margin-top: 5px;
@@ -4204,12 +4211,12 @@ li.color-item{
     text-align: justify;
 }
 
-#quickwrapup .sessionresults{
+#quickwrapup .sessionresults, #muwrapup .sessionresults{
     width: 624px;
     display: inline-block;
 }
 
-#quickwrapup .sessiontime, #quickwrapup .sessionscore{
+#quickwrapup .sessiontime, #quickwrapup .sessionscore, #muwrapup .sessiontime, #muwrapup .sessionscore{
     float: left;
     display: inline-block;
     width: 252px;
@@ -4221,7 +4228,7 @@ li.color-item{
     background-repeat: no-repeat;   
 }
 
-#quickwrapup .sessiontime span, #quickwrapup .sessionscore span{
+#quickwrapup .sessiontime span, #quickwrapup .sessionscore span, #muwrapup .sessiontime span, #muwrapup .sessionscore span{
     display: block;
     text-align: left;
     line-height:20px;
@@ -4232,15 +4239,15 @@ li.color-item{
     text-align:center;
 }
 
-#quickwrapup .sessiontime{
+#quickwrapup .sessiontime, #muwrapup .sessiontime{
     background-image: url('../img/brainstorm/yourTime40.png');    
 }
 
-#quickwrapup .sessionscore{
+#quickwrapup .sessionscore, #muwrapup .sessionscore{
     background-image: url('../img/brainstorm/yourScore40.png');      
 }
 
-#quickwrapup .sessioncards{
+#quickwrapup .sessioncards, #muwrapup .sessioncards{
     position:absolute;
     width: 931px;
     height: 240px;
@@ -4253,19 +4260,19 @@ li.color-item{
     -webkit-box-shadow: inset 0px 0px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-#quickwrapup .sessioncards.expanded{
+#quickwrapup .sessioncards.expanded, #muwrapup .sessioncards.expanded{
     top:500px;
     -webkit-transition:top 0.2s ease-out 0;
 }
 
-#quickwrapup .sessioncards legend{
+#quickwrapup .sessioncards legend, #muwrapup .sessioncards legend{
     font-family: Pacifico;
     font-size: 14px;
     margin: 0 auto;
     color: #666666;
 }
 
-#quickwrapup .cardlist{
+#quickwrapup .cardlist, #muwrapup .cardlist{
     margin: 20px 0px 0px 20px;
 }
 

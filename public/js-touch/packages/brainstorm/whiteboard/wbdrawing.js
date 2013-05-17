@@ -252,7 +252,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _widget.resetColors();
                         _lines = [];
                         // adjust height of drawing canvas based on brainstorming type
-                        if (document.getElementById("muscenario")){
+                        if (document.getElementById("muscenario") || document.getElementById("muidea")){
                                 cv.setAttribute("height", 380);
                         }
                         if (!_pos && _pos !== 0){

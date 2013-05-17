@@ -144,7 +144,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         // add scenario to session data
                                         $data.set("scenario", JSON.parse(_scenario.toJSON()));
                                         
-                                        console.log(_scenario.toJSON());
                                         // update session score
                                         _widget.updateSessionScore(_timer.get("timer"))
                                         .then(function(){

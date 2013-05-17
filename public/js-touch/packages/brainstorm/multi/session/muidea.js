@@ -172,6 +172,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 $session.set("elapsedTimers", timers);
                                                 $session.set("duration", duration);
                                                 $session.set("status", "completed");
+                                                $session.set("idea", [$data.get("idea")]);
                                                 // set idea to readonly
                                                 _tools.set("readonly", true);
                                                 // remove invisible
@@ -354,6 +355,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 
                                         _widget.displayIdea();
                                         // monitor scenario updates if user is the session leader
+                                        _widget.updateIdea();
                                 });      
                         };
                         
@@ -484,6 +486,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         auth.push(part.id);
                                         names.push(part.username);        
                                 });
+                                console.log(auth, names);
                                 cdb.setTransport(_transport);
                                 cdb.set("title", _idea.get("title"));
                                 cdb.set("sessionId", $session.get("_id"));

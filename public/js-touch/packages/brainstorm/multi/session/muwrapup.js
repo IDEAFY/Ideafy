@@ -93,7 +93,27 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _widget.reset = function reset(sip){
                                 _cards.reset([]);
                                 _wrapup.reset();
-                                       
+                                
+                                chatUI.clear();
+                                if ($session.get("chat")[5]){
+                                        chatUI.reset($session.get("chat")[5]);
+                                }
+                                
+                                // build wrapup UI
+                                _wrapup.set("scenario", $data.get("scenario"));
+                                _wrapup.set("idea", $data.get("idea"));
+                                _wrapup.set("score", $session.get("score"));
+                                _wrapup.set("duration", $session.get("duration"));
+                                
+                                // build card UI
+                                _cards.reset([
+                                        $data.get("characters"),
+                                        $data.get("contexts"),
+                                        $data.get("problems"),
+                                        $data.get("techno").get(0),
+                                        $data.get("techno").get(1),
+                                        $data.get("techno").get(2)        
+                                ]);    
                         };
                         
                         // watch session data for updates
@@ -105,6 +125,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _wrapup.set("idea", value);
                         });
                         
+                        $session.watchValue("score", function(score){
+                                _wrapup.set("score", score);        
+                        });
+                        
+                        $session.watchValue("duration", function(val){
+                                _wrapup.set("duration", val);        
+                        });
                         
                         // watch $data store for cards
                         ["added", "updated"].forEach(function(change){
@@ -124,20 +151,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         }                
                                 });
                         });
-                        
-                        
-                        // watch session store for score update
-                        $session.watchValue("score", function(score){
-                                _wrapup.set("score", score);        
-                        });
-                        
-                        // wtahc session for furation update
-                        $session.watchValue("duration", function(duration){
-                                _wrapup.set("duration", duration);     
-                        });
-                        
-                        
-                        CARDS = _cards;
                         // Return
                         return _widget;
                 };     

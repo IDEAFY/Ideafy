@@ -134,6 +134,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 if (_next === "step"){
                                         _next = "screen";
                                         
+                                        // set UI to readonly
+                                        _tools.set("readonly", true);
+                                        
                                         // stop timer and update display
                                         clearInterval(_mscTimer);
                                         _timer.set("display", true);
@@ -144,13 +147,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         // add scenario to session data
                                         $data.set("scenario", JSON.parse(_scenario.toJSON()));
                                         
-                                        // update session score
-                                        _widget.updateSessionScore(_timer.get("timer"))
-                                        .then(function(){
-                                               // resync with db
-                                                $session.unsync();
-                                                return $session.sync(_db, $session.get("_id"))
-                                        })
+                                        // unsync session document, resync, add new data
+                                        $session.unsync();
+                                        $session.sync(_db, $session.get("_id"))
                                         .then(function(){
                                                 var timers;
                                                 // notify participants via chat
@@ -160,7 +159,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 timers.muscenario = _timer.get("timer");
                                                 $session.set("elapsedTimers", timers);
                                                 $session.set("scenario", [$data.get("scenario")]);
-                                                _tools.set("readonly", true);
+                                                return $session.upload();        
+                                        })
+                                        .then(function(){
+                                                // update session score
+                                                return _widget.updateSessionScore(_timer.get("timer"));       
+                                        })
+                                        .then(function(){
                                                 $next("muscenario");         
                                         });
                                 }
@@ -428,7 +433,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _transport.request("UpdateSessionScore", json, function(result){
                                         console.log(result);
                                         if (result.res === "ok"){
-                                                promise.fulfill();
+                                                $session.unsync();
+                                                $session.sync(db, $session.get("_id"))
+                                                .then(function(){
+                                                        promise.fulfill();        
+                                                });
                                         }
                                         else {
                                                 promise.reject();

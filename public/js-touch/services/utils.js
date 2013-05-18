@@ -335,7 +335,17 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 		              Config.set("avatar", local.get("userAvatar"));
 		              promise.fulfill();
 		      }
+		      // prevent multiple requests to fetch the same avatar
+		      else if (avatars.get(id) === "in progress"){
+		              avatars.watchValue(id, function(val){
+		                      if (val && val !== "in progress"){
+		                              avatars.unwatch(id);
+		                              promise.fulfill();
+		                      }        
+		              });
+		      }
 		      else {
+		              avatars.set(id, "in progress");
 		              Config.get("transport").request("GetAvatar", {id: id}, function(result){
 		                      if (result.error){
 		                              promise.reject();

@@ -166,7 +166,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 return _widget.updateSessionScore(_timer.get("timer"));       
                                         })
                                         .then(function(){
-                                                console.log("before calling next : ", $session.get("_rev"));
                                                 $next("muscenario");         
                                         });
                                 }

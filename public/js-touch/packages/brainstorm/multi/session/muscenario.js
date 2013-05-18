@@ -434,7 +434,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         console.log(result);
                                         if (result.res === "ok"){
                                                 $session.unsync();
-                                                $session.sync(db, $session.get("_id"))
+                                                $session.sync(_db, $session.get("_id"))
                                                 .then(function(){
                                                         promise.fulfill();        
                                                 });

@@ -401,7 +401,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         "tech2":{"popup": false, "selected":false},
                                         "tech3":{"popup": false, "selected": false}
                                 });
-                                if (sip && sessionTech.length){
+                                if (replay|| sessionTech.length){
                                         _next = "screen"; // read-only
                                         // retrieve card information from session data
                                         _widget.getCardDetails(sessionTech[0], "tech1")

@@ -403,12 +403,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 cdbScen.title = _title;
                                                 cdbScen.story = _story;
                                                 cdbScen.solution = _solution;
-                                                $session.unsync();
-                                                $session.sync(_db, $session.get("_id"))
-                                                .then(function(){
-                                                        $session.set("scenario", [cdbScen]);
-                                                        return $session.upload();
-                                                })
+                                                session.set("scenario", [cdbScen]);
+                                                $session.upload()
                                                 .then(function(success){
                                                         console.log("scenario updated in CouchDB");
                                                         return true;
@@ -558,30 +554,30 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         ["added", "deleted", "updated"].forEach(function(change){
                                 _wbContent.watch(change, function(val){
                                         
-                                        console.log(change, val);
-                                        // avoid upload if $session is already up-to-date (e.g. replay)
-                                        if ($session.get("scenarioWB").length !== _wbContent.getNbItems() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
-                                                $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
-                                                $session.upload()
-                                                .then(function(response){
-                                                       console.log("success : ", response);
-                                                }, function(response){
-                                                       console.log("failure : ", response);
-                                                });
-                                        }
-                                        else{
-                                                console.log("no upload required");
-                                        }
+                                        if (!_tools.get("showstory")){
+                                                // avoid upload if $session is already up-to-date (e.g. replay)
+                                                if ($session.get("scenarioWB").length !== _wbContent.getNbItems() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
+                                                        $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
+                                                        $session.upload()
+                                                        .then(function(response){
+                                                                console.log("success : ", response);
+                                                        }, function(response){
+                                                                console.log("failure : ", response);
+                                                        });
+                                                }
+                                                else{
+                                                        console.log("no upload required");
+                                                }
                                         
-                                        // toggle ready button
-                                        (_wbContent.getNbItems() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);     
+                                                // toggle ready button
+                                                 (_wbContent.getNbItems() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        }
                                 });  
                         });
                         
                         // update local whiteboard content as soon as it is updated in the database
                         $session.watchValue("scenarioWB", function(content){
-                                if ($session.get("step") === "muscenario"){
-                                        console.log("remote wb change", content);
+                                if ($session.get("step") === "muscenario" && !_tools.get("showstory")){
                                         if (content.length && _wb.getStack().getCurrentName() === "default"){
                                                 _wb.selectScreen("main");        
                                         }

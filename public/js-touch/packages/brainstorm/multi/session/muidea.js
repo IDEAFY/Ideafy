@@ -182,6 +182,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 else $next("muidea");
                         };
                         
+                        // stop spinner when next is successful
+                        _widget.stopSpinner = function stopSpinner(){
+                                spinner.stop();
+                        };
+                        
                         // move to previous screen
                         _widget.prev = function(event, node){
                                 node.classList.remove("pressed");
@@ -429,12 +434,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 cdbId.title = _title;
                                                 cdbId.description = _description;
                                                 cdbId.solution = _solution;
-                                                $session.unsync();
-                                                $session.sync(_db, $session.get("_id"))
-                                                .then(function(){
-                                                        $session.set("idea", [cdbId]);
-                                                        return $session.upload();
-                                                })
+                                                $session.set("idea", [cdbId]);
+                                                $session.upload()
                                                 .then(function(success){
                                                         console.log("idea updated in CouchDB");
                                                         return true;
@@ -524,7 +525,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         };
                         
                         // INIT muidea STEP
-                        _widget.reset = function reset(sip){
+                        _widget.reset = function reset(replay){
                                 
                                 chatUI.clear();
                                 if ($session.get("chat")[4]){
@@ -632,30 +633,31 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // upload whiteboard content to database as soon as it is updated
                         ["added", "deleted", "updated"].forEach(function(change){
-                                _wbContent.watch(change, function(){
+                                _wbContent.watch(change, function(val){
+                                        if (!_tools.get("showidea")){
+                                                // avoid upload if $session is already up-to-date (e.g. replay)
+                                                if ($session.get("ideaWB").length !== _wbContent.getNbItems() || JSON.stringify($session.get("ideaWB")) !== _wbContent.toJSON()){
+                                                        $session.set("ideaWB", JSON.parse(_wbContent.toJSON()));
+                                                        $session.upload()
+                                                        .then(function(response){
+                                                                console.log("success : ", response);
+                                                        }, function(response){
+                                                                console.log("failure : ", response);
+                                                        });
+                                                }
+                                                else{
+                                                        console.log("no upload required");
+                                                }
                                         
-                                        // avoid upload if $session is already up-to-date (e.g. replay)
-                                        if ($session.get("ideaWB").length !== _wbContent.getNbItems() || JSON.stringify($session.get("ideaWB")) !== _wbContent.toJSON()){
-                                                $session.set("ideaWB", JSON.parse(_wbContent.toJSON()));
-                                                $session.upload()
-                                                .then(function(response){
-                                                       console.log("success : ", response);
-                                                }, function(response){
-                                                       console.log("failure : ", response);
-                                                });
-                                        }
-                                        else{
-                                                console.log("no upload required");
-                                        }
-                                        
-                                        // toggle ready button
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);     
-                                });  
+                                                // toggle ready button
+                                                (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        }     
+                                });
                         });
                         
                         // update local whiteboard content as soon as it is updated in the database
                         $session.watchValue("ideaWB", function(content){
-                                if ($session.get("step") === "muidea"){
+                                if ($session.get("step") === "muidea" && !_tools.get("showidea")){
                                         console.log("remote wb change", content);
                                         if (content.length && _wb.getStack().getCurrentName() === "default"){
                                                 _wb.selectScreen("main");        

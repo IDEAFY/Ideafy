@@ -464,7 +464,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 // trigger move to the next step for session participants
                 _session.watchValue("step", function(value){
                         var idx, newStep = _session.get("step");
-                        console.log(value);
                         if (_session.get("initiator") && _session.get("initiator").id !== _user.get("_id")){
                                 _steps.loop(function(v, i){
                                         if (v.name === newStep){idx = i;}

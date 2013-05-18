@@ -107,7 +107,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 return chatUI;        
                         };
                         
-                        _widget.reset = function reset(sip){
+                        _widget.reset = function reset(replay){
                                 _cards.reset([]);
                                 _wrapup.reset();
                                 
@@ -168,6 +168,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         }                
                                 });
                         });
+                        
+                        // reset chatUI
+                        $session.watchValue("chat", function(arr){
+                                if (arr.length === 6 && chatUI.getModel().get("_id") !== arr[5]){
+                                        chatUI.reset(arr[5]);
+                                }        
+                        })
                         
                         chatUI.getModel().watchValue("msg", function(arr){
                                 if(arr.length>1) {

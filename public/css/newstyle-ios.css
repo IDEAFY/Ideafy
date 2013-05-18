@@ -6660,14 +6660,14 @@ li.my2q{
 }
 
 #muwrapup .sessionchat{
-    height:302;
-    top:226;
-    left:223;
+    height:302px;
+    top:226px;
+    left:223px;
 }
 
 #muwrapup .sessionchat.folded{
-    left: 0;
-    width: 30px;
+    left: 73;
+    width: 40px;
 }
 
 #muwrapup .chatread{
@@ -6681,7 +6681,11 @@ li.my2q{
     width: 40px;
     height: 40px;
     border-radius: 20px;
-    background: #9AC9CD;
+    background: #657b99;
+    -webkit-box-shadow: 0px 0px 2px #657B99;
+    background-image: url('../img/brainstorm/doctordeedee87x85.png');
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 #muwrapup .togglechat.flashing{
@@ -6721,6 +6725,10 @@ li.my2q{
 
 .sessionchat .chatwrite.placeholder{
     color: #808080;
+}
+
+#muwrapup .sessionchat.folded .chatwrite{
+    display: hidden;
 }
 
 #chatmessages li{

@@ -384,7 +384,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 }        
                         };
                         
-                        _widget.reset = function(sip){
+                        _widget.reset = function reset(replay){
                                 
                                 var sessionTech = $session.get("techno")[0];
                                 

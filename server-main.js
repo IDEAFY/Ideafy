@@ -654,7 +654,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 })
                 .then(function(){
                         achievements = achievementsCDB.get(json.lang);
-                        console.log(achievements, json.lang);
                         // check completed achievements
                         //1. profile complete
                         if (user.profile_complete) {

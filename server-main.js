@@ -583,7 +583,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         // retrieve a user's grade information
         olives.handlers.set("GetGrade", function(json, onEnd){
                 var cdb = new CouchDBDocument(), leadercdb = new CouchDBView(), arr, dis, res={grade:null, distinction:null};
-                console.log("get grade function - lang : ", json.lang);
                 getDocAsAdmin("GRADES", cdb).then(function(){
                         arr = cdb.get(json.lang).grades;
                         dis = cdb.get(json.lang).distinctions;
@@ -655,6 +654,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 })
                 .then(function(){
                         achievements = achievementsCDB.get(json.lang);
+                        console.log(achievements);
                         // check completed achievements
                         //1. profile complete
                         if (user.profile_complete) {
@@ -666,6 +666,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 }
                                 result.push(achievements.profilecomplete);
                         }
+                        console.log("result 1 : ", result);
                         //2. tutorial complete
                         if (user.tutorial_complete){
                                 if (!userRewards.get("tutorialcomplete")){
@@ -676,6 +677,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 }
                                 result.push(achievements.tutorialcomplete);
                         }
+                        console.log("result 2 : ", result);
                         //3. use as character
                         if (user.settings.useascharacter){
                                 if (!userRewards.get("playthegame")){
@@ -686,6 +688,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 }
                                 result.push(achievements.playthegame);
                         }
+                        console.log("result 3 : ", result);
                         console.log("partial result, before public ideas", result);
                         //Check user ideas (public ones)
                         return getViewAsAdmin("achievements", "publicideas", {key: '"'+json.userid+'"'}, userIdeasCDB);

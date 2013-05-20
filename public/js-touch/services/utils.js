@@ -242,8 +242,8 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                 uploadFile : function(url, body, progress, onEnd){
                              var req = new XMLHttpRequest();
                              
-                             req.setRequestHeader("Connection", "close");
                              req.open('POST', Config.get("location")+url);
+                             req.setRequestHeader("Connection", "close");
                              req.onreadystatechange = function(){
                                      if(req.readyState === 4 && onEnd){
                                              onEnd(req);
@@ -265,8 +265,8 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                 checkServerStatus : function(){
                         var promise = new Promise(),
                             req = new XMLHttpRequest();
-                        req.setRequestHeader("Connection", "close");
                         req.open('GET', Config.get("location"));
+                        req.setRequestHeader("Connection", "close");
                         req.onreadystatechange = function(){
                                      if(req.readyState === 4){
                                              (req.status === 200) ? promise.fulfill() : promise.reject();

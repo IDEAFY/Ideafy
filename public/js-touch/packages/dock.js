@@ -74,6 +74,8 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
 			            current = _widget.dom.querySelector('a.selected'),
 			            startScreen = _widget.dom.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
 			         //set current stack view
+			         console.log("start function in dock");
+			         console.log(_user.toJSON());
 			         console.log(_user.get("settings").startupScreen);
                                 if (!_user.get("settings").startupScreen){
                                         if (current !== pub) {
@@ -206,7 +208,8 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
                                 }           
                         });
                         
-		//return
+		      //return
+		        DOCK = _stack.getStack();
 			return _widget;
 
 		};

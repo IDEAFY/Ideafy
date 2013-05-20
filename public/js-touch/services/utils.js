@@ -243,7 +243,6 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                              var req = new XMLHttpRequest();
                              
                              req.open('POST', Config.get("location")+url);
-                             req.setRequestHeader("Connection", "close");
                              req.onreadystatechange = function(){
                                      if(req.readyState === 4 && onEnd){
                                              onEnd(req);
@@ -266,7 +265,6 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                         var promise = new Promise(),
                             req = new XMLHttpRequest();
                         req.open('GET', Config.get("location"));
-                        req.setRequestHeader("Connection", "close");
                         req.onreadystatechange = function(){
                                      if(req.readyState === 4){
                                              (req.status === 200) ? promise.fulfill() : promise.reject();

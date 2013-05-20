@@ -366,6 +366,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 stats.set("title", result.grade.label);
                                 promise.fulfill();
                         });
+                        return promise;
                    };
                    
                    profileUI.updateAchievements = function updateAchievements(){
@@ -374,6 +375,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 if (result.length) {achievements.reset(result);}
                                 promise.fulfill();       
                            });
+                           return promise;
                    };
                    
                    profileUI.updateProgressBar = function updateProgressBar(){
@@ -410,6 +412,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         promise.fulfill();
                                 });
                         }
+                        return promise;
                    };
                    
                    //init
@@ -433,7 +436,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         profileUI.init();        
                    };
                    
-                   
+                   GRAD = grades;
+                   ACHI = achievements;
                    profileUI.init();
                    return profileUI;
            };    

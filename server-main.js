@@ -199,6 +199,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
+                        agent:false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -220,6 +221,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         method : "GET",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
+                        agent:false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -241,6 +243,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
+                        agent:false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -265,6 +268,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         path:"/"+_db+"/_design/"+design+"/_view/"+view,
                         query: query,
                         auth: cdbAdminCredentials,
+                        agent:false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -579,11 +583,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         // retrieve a user's grade information
         olives.handlers.set("GetGrade", function(json, onEnd){
                 var cdb = new CouchDBDocument(), leadercdb = new CouchDBView(), res={grade:null, distinction:null};
+                console.log("get grade function - lang : ", json.lang);
                 getDocAsAdmin("GRADES", cdb).then(function(){
                         var arr = cdb.get(json.lang).grades, dis = cdb.get(json.lang).distinctions;
                         for(i=0, l=arr.length; i<l; i++){
                                 if (json.ip >= arr[i].min_score) res.grade=arr[i];        
                         }
+                        console.log("grade result : ", res.grade);
                         // check ranking
                         return getViewAsAdmin("users", "leaderboard", {descending:true, limit:100}, leadercdb);
                 })
@@ -616,6 +622,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         }
                                 }
                         }
+                        console.log("distinction result : ", res.distinction);
                         onEnd(res);
                 }); 
         });

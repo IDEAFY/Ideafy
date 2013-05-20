@@ -603,9 +603,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBStore", "Store", "Pr
         
         // retrieve a user's grade information
         olives.handlers.set("GetGrade", function(json, onEnd){
-                var cdb = new CouchDBStore(), leadercdb = new CouchDBStore(), res={grade:null, distinction:null};
+                var cdb = new CouchDBStore(), leadercdb = new CouchDBStore(), arr, dis, res={grade:null, distinction:null};
                 getDocAsAdmin("GRADES", cdb).then(function(){
-                        var arr = cdb.get(json.lang).grades, dis = cdb.get(json.lang).distinctions;
+                        arr = cdb.get(json.lang).grades;
+                        dis = cdb.get(json.lang).distinctions;
                         for(i=0, l=arr.length; i<l; i++){
                                 if (json.ip >= arr[i].min_score) res.grade=arr[i];        
                         }

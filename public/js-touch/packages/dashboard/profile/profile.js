@@ -373,6 +373,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                            var promise = new Promise();
                            Utils.getAchievements(user.get("_id"), function(result){
                                 if (result.length) {achievements.reset(result);}
+                                else {achievements.reset(user.get("achievements"));}
                                 promise.fulfill();       
                            });
                            return promise;

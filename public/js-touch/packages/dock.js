@@ -5,10 +5,10 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
+define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", 
 	"public/public", "library/library", "brainstorm/brainstorm", "connect/connect", "dashboard/dashboard",
 	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips"], 
-	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){
+	function(Widget, Stack, Control, Event, Place, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){
 		return function DockConstructor(){
 
 		//declaration
@@ -24,8 +24,12 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			//labels have to configurable
 			_widget.plugins.addAll({
 				"dockstack" : _stack,
-				"dockcontrol" : _control
+				"dockcontrol" : _control,
+				"dockevent" : new Event(_widget),
+				"place" : new Place({"notify": _notify})
 			});
+			
+			_widget.template = '<nav data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class = "signout-bubble" data-dockevent="listen:touchstart, signout"><div id="notify" data-place="place:notify"></div>';
 			
 			_widget.alive(Map.get("dock"));
 
@@ -51,11 +55,14 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 				_stack.getStack().add("#dashboard", _dashboard);
 				// init notification engine
 				_notify.init();
+				console.log("notify ok");
 				
 				// initialize popups
 				_newIdea = new NewIdea();
                                 _new2q = new New2Q();
                                 _tips = new Tips();
+                                
+                                console.log("init complete");
 			};
 			
 			/*
@@ -95,7 +102,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                              _notify.reset();      
 			};
 
-			this.setCurrentWidget = function(event){
+			_widget.setCurrentWidget = function(event){
 				var href = event.target.getAttribute("href"), timeout= 3000;
 				if(href !== _stack.getStack().getCurrentName()){
 				        //hide current submenu if present
@@ -113,6 +120,16 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 				        _stack.getStack().getCurrentScreen().showMenu();
 				}
 			};
+			
+			                                
+                        // signout function
+                        _widget.signout = function signout(event, node){
+                                document.getElementById("cache").classList.add("appear");
+                                // remove highlight from dock item and set it back to public
+                                _widget.dom.querySelector(".selected").classList.remove("selected");
+                                _widget.dom.querySelector('a[href="#public"]').classList.add("selected");
+                                Config.get("observer").notify("signout");        
+                        };
 			
 	       
                /*

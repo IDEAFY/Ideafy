@@ -5653,6 +5653,7 @@ li.my2q{
     float:left;
     text-align:center;
     width: 83px;
+    height: 120px
 }
 
 .userachievements .badge div{
@@ -5667,6 +5668,8 @@ li.my2q{
     margin: 0 auto;
     -webkit-padding-start: 0px;
     -webkit-padding-end: 0px;
+    height: 40px;
+    font-size: 12px;
     line-height:100%;
 }
 

@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
         function(Widget, Map, Model, Event, Config, Store){
                 
-                function MuVoteConstructor($session){
+                return function MuVoteConstructor($session){
                 
                         var _widget = new Widget(),
                             _labels = Config.get("labels"),

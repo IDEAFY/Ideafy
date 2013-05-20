@@ -12,15 +12,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                 
                         var _widget = new Widget(),
                             _labels = Config.get("labels"),
+                            _vote = new Store(),
                             _user = Config.get("users");
                         
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
                                 "model" : new Model(_vote),
-                                "event" : new Event(_wdiget)
+                                "event" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div class = "confirm"><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-confirmevent="listen:touchstart, press; listen:touchend, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-confirmevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl">Skip</div></div>';
+                        _widget.template = '<div class = "confirm"><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-event="listen:touchstart, press; listen:touchend, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-event="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl">Skip</div></div>';
                         
                         _widget.press = function(event, node){
                                 event.stopPropagation();
@@ -34,7 +35,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.cancel = function(event, node){
                                 node && node.classList.remove("pressed");
-                                Map.get("cache").classList.remove("appear");
+                                _widget.close();
                         };
                         
                         _widget.close = function hide(){

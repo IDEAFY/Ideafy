@@ -31,7 +31,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
 			
 			_widget.template = '<nav data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class = "signout-bubble" data-dockevent="listen:touchstart, signout"><div id="notify" data-place="place:notify"></div>';
 			
-			_widget.alive(Map.get("dock"));
+			_widget.place(Map.get("dock"));
 
 		//logic
 			_widget.init = function init(){

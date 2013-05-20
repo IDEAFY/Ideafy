@@ -71,6 +71,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         return loadAvatar;
                 })
                 .then(function(){
+                        console.log("dock init");
                         _dock.init();
                         _login.stopSpinner();
                         _stack.getStack().show("#dock");

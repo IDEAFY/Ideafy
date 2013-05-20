@@ -137,7 +137,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 0);                    // reduce logging
+        io.set('log level', 3);                    // reduce logging
         io.set("close timeout", 60);
         io.set("heartbeat interval", 25);
         
@@ -666,7 +666,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 }
                                 result.push(achievements.profilecomplete);
                         }
-                        console.log("result 1 : ", result);
                         //2. tutorial complete
                         if (user.tutorial_complete){
                                 if (!userRewards.get("tutorialcomplete")){
@@ -677,7 +676,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 }
                                 result.push(achievements.tutorialcomplete);
                         }
-                        console.log("result 2 : ", result);
                         //3. use as character
                         if (user.settings.useascharacter){
                                 if (!userRewards.get("playthegame")){
@@ -687,14 +685,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         update = true;
                                 }
                                 result.push(achievements.playthegame);
-                        }
-                        console.log("result 3 : ", result);
-                        console.log("partial result, before public ideas", result);
-                        //Check user ideas (public ones)
+                        }//Check user ideas (public ones)
                         return getViewAsAdmin("achievements", "publicideas", {key: '"'+json.userid+'"'}, userIdeasCDB);
                 })
                 .then(function(){
-                        console.log("achievement: after get publicideas");
                         var idea_count = userIdeasCDB.getNbItems();
                         // update user doc if needed
                         if (user.ideas_count !== idea_count){
@@ -756,7 +750,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return getViewAsAdmin("achievements", "singlesessions", {key: '"'+json.userid+'"'}, ssCDB);
                 })
                 .then(function(){
-                        console.log("achievement: after single sessions");
                         var ss_count = ssCDB.getNbItems();
                         // update user doc if needed
                         if (user.su_sessions_count !== ss_count){
@@ -797,7 +790,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                        return getViewAsAdmin("achievements", "multisessions", {key: '"'+json.userid+'"'}, msCDB);
                 })
                 .then(function(){
-                        console.log("achievement: after multisessions");
                         var ms_count = msCDB.getNbItems();
                         // update user doc if needed
                         if (user.mu_sessions_count !== ms_count){
@@ -838,7 +830,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return getViewAsAdmin("achievements", "twoquestions", {key: '"'+json.userid+'"'}, questionsCDB);
                 })
                 .then(function(){
-                        console.log("achievement: after twoquestions");
                         var tq_count = questionsCDB.getNbItems();
                          // update user doc if needed
                         if (user.twoquestions_count !== tq_count){
@@ -916,7 +907,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         }
                                 }
                         }
-                        console.log("checking update : ", update, result);
                         if (update){
                                 // update user rewards documents
                                 updateDocAsAdmin(userRewards.get("_id"), userRewards)

@@ -5,15 +5,15 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", 
+define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"public/public", "library/library", "brainstorm/brainstorm", "connect/connect", "dashboard/dashboard",
 	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips"], 
-	function(Widget, Stack, Control, Event, Place, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){
+	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){
 		return function DockConstructor(){
 
 		//declaration
 			var _widget = new Widget(),
-			    _newIdea, _new2q, _tips, _notify = new Notify(),
+			    _newIdea, _new2q, _tips, _notify,
 			    _public, _library, _brainstorm, _connect, _dashboard,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),
@@ -24,17 +24,15 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
 			//labels have to configurable
 			_widget.plugins.addAll({
 				"dockstack" : _stack,
-				"dockcontrol" : _control,
-				"dockevent" : new Event(_widget),
-				"place" : new Place({"notify": _notify})
+				"dockcontrol" : _control
 			});
 			
-			_widget.template = '<div><nav data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class = "signout-bubble" data-dockevent="listen:touchstart, signout"><div id="notify" data-place="place:notify"></div></div>';
-			
-			_widget.place(Map.get("dock"));
+			_widget.alive(Map.get("dock"));
 
 		//logic
 			_widget.init = function init(){
+			        _notify = new Notify();
+			        console.log("notify ok");
 			        _public = new Public();
 			        console.log("public ok");
 			        _library = new Library();
@@ -52,7 +50,9 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
 				_stack.getStack().add("#connect", _connect);
 				_stack.getStack().add("#dashboard", _dashboard);
 				// init notification engine
+				console.log("before notify init");
 				_notify.init();
+				console.log("notify ok");
 				
 				// initialize popups
 				_newIdea = new NewIdea();
@@ -69,9 +69,6 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
 			            current = _widget.dom.querySelector('a.selected'),
 			            startScreen = _widget.dom.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
 			         //set current stack view
-			         console.log("start function in dock");
-			         console.log(_user.toJSON());
-			         console.log(_user.get("settings").startupScreen);
                                 if (!_user.get("settings").startupScreen){
                                         if (current !== pub) {
                                                 _control.radioClass(pub, current, "selected");
@@ -100,7 +97,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
                              _notify.reset();      
 			};
 
-			_widget.setCurrentWidget = function(event){
+			this.setCurrentWidget = function(event){
 				var href = event.target.getAttribute("href"), timeout= 3000;
 				if(href !== _stack.getStack().getCurrentName()){
 				        //hide current submenu if present
@@ -118,16 +115,6 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
 				        _stack.getStack().getCurrentScreen().showMenu();
 				}
 			};
-			
-			                                
-                        // signout function
-                        _widget.signout = function signout(event, node){
-                                document.getElementById("cache").classList.add("appear");
-                                // remove highlight from dock item and set it back to public
-                                _widget.dom.querySelector(".selected").classList.remove("selected");
-                                _widget.dom.querySelector('a[href="#public"]').classList.add("selected");
-                                Config.get("observer").notify("signout");        
-                        };
 			
 	       
                /*
@@ -203,9 +190,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
                                 }           
                         });
                         
-		      //return
-		        DOCK = _stack.getStack();
-		        DOCKWID = _widget;
+		//return
 			return _widget;
 
 		};

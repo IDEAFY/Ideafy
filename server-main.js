@@ -590,12 +590,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         for(i=0, l=arr.length; i<l; i++){
                                 if (json.ip >= arr[i].min_score) res.grade=arr[i];        
                         }
-                        console.log("grade result : ", res.grade);
                         // check ranking
                         return getViewAsAdmin("users", "leaderboard", {descending:true, limit:100}, leadercdb);
                 })
                 .then(function(){
-                        console.log("getviewasadmin then, dis : ", leadercdb.toJSON());
                         var leaders = JSON.parse(leadercdb.toJSON()), l = leaders.length, i = 0;
                         if (json.ip === leaders[0].key && json.ip >= arr[3].min_score) {
                                 res.distinction = dis[5];
@@ -624,7 +622,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         }
                                 }
                         }
-                        console.log("distinction result : ", res.distinction);
                         onEnd(res);
                 }); 
         });
@@ -653,10 +650,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return getDocAsAdmin(json.userid+"_rewards", userRewards);
                 })
                 .then(function(){
+                        console.log("achievement: after get user");
                         // get achievements and retrieve the appropriate language
                         return getDocAsAdmin("ACHIEVEMENTS", achievementsCDB);
                 })
                 .then(function(){
+                        console.log("achievement: after get achievemenets");
                         achievements = achievementsCDB.get(json.lang);
                         // check completed achievements
                         //1. profile complete
@@ -693,6 +692,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return getViewAsAdmin("achievements", "publicideas", {key: '"'+json.userid+'"'}, userIdeasCDB);
                 })
                 .then(function(){
+                        console.log("achievement: after get publicideas");
                         var idea_count = userIdeasCDB.getNbItems();
                         // update user doc if needed
                         if (user.ideas_count !== idea_count){
@@ -754,6 +754,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return getViewAsAdmin("achievements", "singlesessions", {key: '"'+json.userid+'"'}, ssCDB);
                 })
                 .then(function(){
+                        console.log("achievement: after single sessions");
                         var ss_count = ssCDB.getNbItems();
                         // update user doc if needed
                         if (user.su_sessions_count !== ss_count){
@@ -794,6 +795,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                        return getViewAsAdmin("achievements", "multisessions", {key: '"'+json.userid+'"'}, msCDB);
                 })
                 .then(function(){
+                        console.log("achievement: after multisessions");
                         var ms_count = msCDB.getNbItems();
                         // update user doc if needed
                         if (user.mu_sessions_count !== ms_count){
@@ -834,6 +836,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return getViewAsAdmin("achievements", "twoquestions", {key: '"'+json.userid+'"'}, questionsCDB);
                 })
                 .then(function(){
+                        console.log("achievement: after twoquestions");
                         var tq_count = questionsCDB.getNbItems();
                          // update user doc if needed
                         if (user.twoquestions_count !== tq_count){
@@ -911,7 +914,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         }
                                 }
                         }
-                        
+                        console.log("checking update : ", update, result);
                         if (update){
                                 // update user rewards documents
                                 updateDocAsAdmin(userRewards.get("_id"), userRewards)

@@ -382,10 +382,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 	        getGrade : function(ip, onEnd){
 	               var transport = Config.get("transport"),
 	                   user = Config.get("user"); 
-	               
-	               console.log("before calling get grade handler");
 	               transport.request("GetGrade", {ip: ip, lang: user.get("lang")}, function(res){
-	                       console.log("get grade result :", res);
 	                       onEnd(res);        
 	               });
 	        },
@@ -398,7 +395,6 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                 getAchievements : function(userid, onEnd){
                        var transport = Config.get("transport"),
                            user = Config.get("user");
-                       
                        transport.request("GetAchievements", {userid: userid, lang: user.get("lang")}, function(res){
                                onEnd(res);
                        });

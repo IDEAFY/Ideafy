@@ -437,8 +437,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         profileUI.init();        
                    };
                    
-                   GRAD = grades;
-                   ACHI = achievements;
                    profileUI.init();
                    return profileUI;
            };    

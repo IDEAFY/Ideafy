@@ -650,12 +650,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return getDocAsAdmin(json.userid+"_rewards", userRewards);
                 })
                 .then(function(){
-                        console.log("achievement: after get user");
                         // get achievements and retrieve the appropriate language
                         return getDocAsAdmin("ACHIEVEMENTS", achievementsCDB);
                 })
                 .then(function(){
-                        console.log("achievement: after get achievemenets");
                         achievements = achievementsCDB.get(json.lang);
                         // check completed achievements
                         //1. profile complete
@@ -688,6 +686,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 }
                                 result.push(achievements.playthegame);
                         }
+                        console.log("partial result, before public ideas", result);
                         //Check user ideas (public ones)
                         return getViewAsAdmin("achievements", "publicideas", {key: '"'+json.userid+'"'}, userIdeasCDB);
                 })

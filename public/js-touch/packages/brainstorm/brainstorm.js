@@ -84,7 +84,9 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                                                         name = "";
                                                         break;                       
                                         }
-                                        if (name) _stack.getStack().show(name);
+                                        if (name) {
+                                                _stack.getStack().show(name);
+                                        }
                                 }
                         };
                 
@@ -110,7 +112,9 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		      }
 		      else{
 		              //attempt to detect mode from session name
-		              if (sid.toLowerCase().search("quick") > -1) _sip.type = "quick";
+		              if (sid.toLowerCase().search("quick") > -1) {
+		                      _sip.type = "quick";
+		              }
 		              
 		              // need a default mode ??
 		      }

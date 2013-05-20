@@ -6649,6 +6649,7 @@ li.my2q{
     position: absolute;
     top: 426px;
     left: 130px;
+    display: block;
 }
 
 #musetup .sessionchat{
@@ -6666,8 +6667,7 @@ li.my2q{
 }
 
 #muwrapup .sessionchat.folded{
-    left: 73;
-    width: 40px;
+    display:none;
 }
 
 #muwrapup .chatread{
@@ -6680,16 +6680,19 @@ li.my2q{
     left: 100px;
     width: 40px;
     height: 40px;
-    border-radius: 20px;
-    background: #657b99;
-    -webkit-box-shadow: 0px 0px 2px #657B99;
+    border-radius: 5px;
+    background: white;
     background-image: url('../img/brainstorm/doctordeedee87x85.png');
     background-size: contain;
     background-repeat: no-repeat;
 }
 
 #muwrapup .togglechat.flashing{
-    background: white;
+    background: #657b99;
+    -webkit-box-shadow: 0px 0px 2px #657b99;
+    background-image: url('../img/brainstorm/doctordeedee87x85.png');
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .sessionchat .chatread{

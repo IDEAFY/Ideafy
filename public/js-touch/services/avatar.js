@@ -35,8 +35,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         _store.set("img", Config.get("avatar"));        
                                 });
                         }
-                        else if (_id === "ideafy@taiaut.com" || _id === "IDEAFY") _store.set("img", "img/avatars/doctordeedee.png")
-                        else if (_avatars.get(_id)) _store.set("img", _avatars.get(_id))
+                        else if (_id === "ideafy@taiaut.com" || _id === "IDEAFY") {
+                                _store.set("img", "img/avatars/doctordeedee.png");
+                        }
+                        else if (_avatars.get(_id) && _avatars.get(_id) !== "in progress") {
+                                _store.set("img", _avatars.get(_id));
+                        }
                         else {
                                 Utils.getAvatarById(_id).then(function(){
                                         _store.set("img", _avatars.get(_id));

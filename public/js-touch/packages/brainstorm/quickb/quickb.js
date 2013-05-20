@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./quickstart", "./quicksetup", "./quickscenario", "./quicktech", "./quickidea", "./quickwrapup", "CouchDBDocument", "service/config", "Promise", "Store", "lib/spin.min"],
-        function(Widget, Map, Stack, Model, Event, QuickStart, QuickSetup, QuickScenario, QuickTech, QuickIdea, QuickWrapup, CouchDBDocument, Config, Promise, Store, Spinner){
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./quickstart", "./quicksetup", "./quickscenario", "./quicktech", "./quickidea", "./quickwrapup", "CouchDBDocument", "CouchDBView", "service/config", "Promise", "Store", "lib/spin.min"],
+        function(Widget, Map, Stack, Model, Event, QuickStart, QuickSetup, QuickScenario, QuickTech, QuickIdea, QuickWrapup, CouchDBDocument, CouchDBView, Config, Promise, Store, Spinner){
                 
            return function QuickBConstructor($sip, $exit){
                    
@@ -83,6 +83,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    _widget.retrieveSession = function retrieveSession(sip){
                            
+                           console.log(sip);
+                           
                            spinner.spin(document.getElementById("brainstorm"));
                            
                            // reset local session data
@@ -91,7 +93,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            // connect to couchdbstore and retrieve session
                            _session.unsync();
                            _session.reset();
-                           _session.sync(Config.get("db"), sip.id).then(function(){
+                           _widget.sessionExists(sip.id)
+                           .then(function(){
+                                return _session.sync(Config.get("db"), sip.id);
+                           })
+                           .then(function(){
+                                   console.log(_session.toJSON());
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
                                 // reset step UIs
@@ -167,6 +174,24 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         
                         // display first step
                         _stack.getStack().show("quickstart");
+                   };
+                   
+                   // check existence of a session in the database
+                   _widget.sessionExists = function sessionExists(sid){
+                        var promise = new Promise(),
+                            cdb = new CouchDBView();
+                        
+                        cdb.setTransport(Config.get("transport"));
+                        cdb.sync(Config.get("db"), "library", "_view/sessioncount", {key: '"'+sid+'"'})
+                        .then(function(){
+                                if (cdb.getNbItems()){
+                                        promise.fulfill();
+                                }
+                                else{
+                                        promise.reject("not found");
+                                }        
+                        });
+                        return promise;        
                    };
                    
                    _widget.reset = function reset(sip){

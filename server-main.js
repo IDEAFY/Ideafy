@@ -582,10 +582,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // retrieve a user's grade information
         olives.handlers.set("GetGrade", function(json, onEnd){
-                var cdb = new CouchDBDocument(), leadercdb = new CouchDBView(), res={grade:null, distinction:null};
+                var cdb = new CouchDBDocument(), leadercdb = new CouchDBView(), arr, dis, res={grade:null, distinction:null};
                 console.log("get grade function - lang : ", json.lang);
                 getDocAsAdmin("GRADES", cdb).then(function(){
-                        var arr = cdb.get(json.lang).grades, dis = cdb.get(json.lang).distinctions;
+                        arr = cdb.get(json.lang).grades;
+                        dis = cdb.get(json.lang).distinctions;
                         for(i=0, l=arr.length; i<l; i++){
                                 if (json.ip >= arr[i].min_score) res.grade=arr[i];        
                         }
@@ -594,7 +595,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return getViewAsAdmin("users", "leaderboard", {descending:true, limit:100}, leadercdb);
                 })
                 .then(function(){
-                        console.log("getviewasadmin then, dis : ", dis);
+                        console.log("getviewasadmin then, dis : ", leadercdb.toJSON());
                         var leaders = JSON.parse(leadercdb.toJSON()), l = leaders.length, i = 0;
                         if (json.ip === leaders[0].key && json.ip >= arr[3].min_score) {
                                 res.distinction = dis[5];

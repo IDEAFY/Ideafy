@@ -330,9 +330,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 		          local = new LocalStore(),
 		          avatars = Config.get("avatars");
 		      
-		      if (id === Config.get("user").get("_id")) {
-		              local.sync("ideafy-data");
-		              Config.set("avatar", local.get("userAvatar"));
+		      if (avatars.get(id) && avatars.get(id) !== "in progress"){
 		              promise.fulfill();
 		      }
 		      // prevent multiple requests to fetch the same avatar

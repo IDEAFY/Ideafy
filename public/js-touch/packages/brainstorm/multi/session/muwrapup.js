@@ -177,6 +177,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         })
                         
                         chatUI.getModel().watchValue("msg", function(arr){
+                                console.log(arr);
                                 if(arr.length>1) {
                                         _wrapup.set("newmsg", true);
                                 }               

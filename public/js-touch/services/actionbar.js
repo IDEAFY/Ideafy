@@ -104,19 +104,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         if (data.authors.indexOf(user.get("_id"))>-1) buttons.alter("push", {name:"edit", icon:"img/wall/35modify.png"});
                                                 
                                                         // if idea is coming from a session display replaysession
-                                                        console.log(data.sessionId);
                                                         if (data.sessionId && (data.sessionId !== "") && (data.sessionId.search("deleted") === -1)){
                                                                 if (data.sessionReplay || data.authors.indexOf(user.get("_id"))>-1){
                                                                         // double check if session is still around (legacy sessions)
                                                                         var cdb = new CouchDBView();
                                                                         cdb.setTransport(Config.get("transport"));
-                                                                        cdb.sync(Config.get("db"), "ideas", "_view/ideasbysession", {key: '"'+data.sessionId+'"'})
+                                                                        cdb.sync(Config.get("db"), "library", "_view/sessioncount", {key: '"'+data.sessionId+'"'})
                                                                         .then(function(){
-                                                                                cdb.loop(function(v,i){
-                                                                                        if (v.id === data._id){
+                                                                                if (cdb.get(0)){
                                                                                                 buttons.alter("push", {name:"replay", icon:"img/library/25goToSession.png"});
-                                                                                        }
-                                                                                });       
+                                                                                }     
                                                                         });
                                                                 }
                                                         }

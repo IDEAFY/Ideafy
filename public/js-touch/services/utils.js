@@ -384,6 +384,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 	                   user = Config.get("user"); 
 	               
 	               transport.request("GetGrade", {ip: ip, lang: user.get("lang")}, function(res){
+	                       console.log("get grade result :", res);
 	                       onEnd(res);        
 	               });
 	        },

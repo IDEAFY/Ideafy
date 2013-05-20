@@ -199,6 +199,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
+                        agent:false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -220,6 +221,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         method : "GET",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
+                        agent:false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -241,6 +243,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
+                        agent:false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -265,6 +268,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         path:"/"+_db+"/_design/"+design+"/_view/"+view,
                         query: query,
                         auth: cdbAdminCredentials,
+                        agent:false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"

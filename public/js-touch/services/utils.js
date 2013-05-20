@@ -383,6 +383,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 	               var transport = Config.get("transport"),
 	                   user = Config.get("user"); 
 	               
+	               console.log("before calling get grade handler");
 	               transport.request("GetGrade", {ip: ip, lang: user.get("lang")}, function(res){
 	                       console.log("get grade result :", res);
 	                       onEnd(res);        

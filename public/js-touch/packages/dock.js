@@ -13,7 +13,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
 
 		//declaration
 			var _widget = new Widget(),
-			    _newIdea, _new2q, _tips, _notify,
+			    _newIdea, _new2q, _tips, _notify = new Notify(),
 			    _public, _library, _brainstorm, _connect, _dashboard,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),
@@ -31,12 +31,10 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
 			
 			_widget.template = '<nav data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class = "signout-bubble" data-dockevent="listen:touchstart, signout"><div id="notify" data-place="place:notify"></div>';
 			
-			_widget.alive(Map.get("dock"));
+			_widget.place(Map.get("dock"));
 
 		//logic
 			_widget.init = function init(){
-			        _notify = new Notify();
-			        console.log("notify ok");
 			        _public = new Public();
 			        console.log("public ok");
 			        _library = new Library();
@@ -55,14 +53,11 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
 				_stack.getStack().add("#dashboard", _dashboard);
 				// init notification engine
 				_notify.init();
-				console.log("notify ok");
 				
 				// initialize popups
 				_newIdea = new NewIdea();
                                 _new2q = new New2Q();
                                 _tips = new Tips();
-                                
-                                console.log("init complete");
 			};
 			
 			/*

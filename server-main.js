@@ -594,6 +594,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return getViewAsAdmin("users", "leaderboard", {descending:true, limit:100}, leadercdb);
                 })
                 .then(function(){
+                        console.log("getviewasadmin then, dis : ", dis);
                         var leaders = JSON.parse(leadercdb.toJSON()), l = leaders.length, i = 0;
                         if (json.ip === leaders[0].key && json.ip >= arr[3].min_score) {
                                 res.distinction = dis[5];

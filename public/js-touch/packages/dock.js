@@ -205,6 +205,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
                         
 		      //return
 		        DOCK = _stack.getStack();
+		        DOCKWID = _widget;
 			return _widget;
 
 		};

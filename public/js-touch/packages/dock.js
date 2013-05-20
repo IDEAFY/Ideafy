@@ -74,6 +74,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Pl
 			            current = _widget.dom.querySelector('a.selected'),
 			            startScreen = _widget.dom.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
 			         //set current stack view
+			         console.log(_user.get("settings").startupScreen);
                                 if (!_user.get("settings").startupScreen){
                                         if (current !== pub) {
                                                 _control.radioClass(pub, current, "selected");

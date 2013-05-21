@@ -123,6 +123,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                         if (author){
                                                 _ui = new Avatar([author]);
                                                 (node.firstChild) ? node.replaceChild(_ui, node.firstChild) : _ui.place(node);
+                                                console.log(_ui.dom);
                                         }   
                                 }
                         }),

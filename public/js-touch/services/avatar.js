@@ -18,6 +18,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         this.plugins.addAll({
                                 "avatar" : new Model(_store, {
                                         setStyle : function(img){
+                                                console.log(img);
                                                 if (img && img !== "in progress") {
                                                         this.setAttribute("style", "background-image: url('"+img+"');");
                                                 }

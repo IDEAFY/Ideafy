@@ -330,7 +330,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 		          local = new LocalStore(),
 		          avatars = Config.get("avatars");
 		      
-		      if (avatars.get(id) && avatars.get(id) !== "in progress"){
+		      if (avatars.get(id) && (avatars.get(id) !== "in progress")){
 		              promise.fulfill(avatars.get(id));
 		      }
 		      // prevent multiple requests to fetch the same avatar

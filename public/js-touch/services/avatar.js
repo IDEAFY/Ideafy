@@ -14,8 +14,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                             _avatars = Config.get("avatars"),
                             _id = $array[0]; 
                         
-                        console.log(_id, _avatars.get(_id));
-                        
                         // setup
                         this.plugins.addAll({
                                 "avatar" : new Model(_store, {
@@ -51,6 +49,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         _store.set("img", _avatars.get(_id));
                                 });
                         }
+                        
+                        console.log(_id, _avatars.get(_id), _store.toJSON());
                              
                 }
                 

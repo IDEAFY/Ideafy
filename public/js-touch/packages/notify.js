@@ -182,6 +182,8 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         messages.reset(user.get("notifications"));                      
                 });
                 
+                NOTIF = messages;
+                NOTIFPOPUP = notifyPopup;
                 return notify;
                 }
         })

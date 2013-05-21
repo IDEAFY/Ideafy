@@ -83,33 +83,35 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         "notify" : new Model(messages,{
                                 setObject : function(type){
                                         var id = this.getAttribute("data-notify_id");
-                                        switch(type){
-                                                case "CXR":
-                                                        this.innerHTML = messages.get(id).username + labels.get("CXRobject");
-                                                        break;
-                                                case "INV":
-                                                        this.innerHTML = messages.get(id).username + labels.get("INVObject");
-                                                        break;
-                                                case "CXRaccept":
-                                                        this.innerHTML = messages.get(id).username + labels.get("acceptedCXR");
-                                                        break;
-                                                case "CXRreject":
-                                                        this.innerHTML = messages.get(id).username + labels.get("rejectedCXR");
-                                                        break;
-                                                case "CXCancel":
-                                                        this.innerHTML = messages.get(id).username + labels.get("canceledCX");
-                                                        break;
-                                                case "DOC":
-                                                        this.innerHTML = messages.get(id).username + labels.get("sentdocmsg");
-                                                        break;
-                                                case "2Q+":
-                                                        this.innerHTML = messages.get(id).username + labels.get("askednew");
-                                                        break;
-                                                case "2C+":
-                                                        this.innerHTML = messages.get(id).username + labels.get("senttc");
+                                        if (type){
+                                                switch(type){
+                                                        case "CXR":
+                                                                this.innerHTML = messages.get(id).username + labels.get("CXRobject");
+                                                                break;
+                                                        case "INV":
+                                                                this.innerHTML = messages.get(id).username + labels.get("INVObject");
+                                                                break;
+                                                        case "CXRaccept":
+                                                                this.innerHTML = messages.get(id).username + labels.get("acceptedCXR");
+                                                                break;
+                                                        case "CXRreject":
+                                                                this.innerHTML = messages.get(id).username + labels.get("rejectedCXR");
+                                                                break;
+                                                        case "CXCancel":
+                                                                this.innerHTML = messages.get(id).username + labels.get("canceledCX");
+                                                                break;
+                                                        case "DOC":
+                                                                this.innerHTML = messages.get(id).username + labels.get("sentdocmsg");
+                                                                break;
+                                                        case "2Q+":
+                                                                this.innerHTML = messages.get(id).username + labels.get("askednew");
+                                                                break;
+                                                        case "2C+":
+                                                                this.innerHTML = messages.get(id).username + labels.get("senttc");
                                                         break;
                                                 default :
                                                         this.innerHTML = messages.get(id).object;
+                                                }
                                         }        
                                 },
                                 setStyle : function(status){
@@ -147,9 +149,8 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 // init notifications engine
                  notify.init = function init(){
                         console.log("notify init called");
-                        console.log(popup);
                         notify.reset();
-                        console.log("after notify reset");
+                        console.log("after notify reset", messages.toJSON());
                         notifyPopup.place(popup);
                         console.log("after notify popup place");
                 };
@@ -159,8 +160,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         currentUnread = notify.getUnread();
                         notif.set("unread", currentUnread);
                         notif.set("newmsg", false);
-                        messages.reset(user.get("notifications"));
-                        console.log(messages.toJSON());       
+                        messages.reset(user.get("notifications"));     
                 };
                 
                 // watch for new/unread messages

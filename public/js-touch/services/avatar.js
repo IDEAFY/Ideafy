@@ -31,7 +31,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         this.template='<div class="avatar" data-avatar="bind: setStyle, img"></div>';
                         
                         // init
-                        if ($array.length>1) _store.set("img", "img/avatars/deedee6.png")
+                        if ($array.length>1) {
+                                _store.set("img", "img/avatars/deedee6.png");
+                        }
                         else if (_id === Config.get("user").get("_id")) {
                                 _store.set("img", Config.get("avatar"));
                                 Config.watchValue("avatar", function(){
@@ -41,8 +43,18 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         else if (_id === "ideafy@taiaut.com" || _id === "IDEAFY") {
                                 _store.set("img", "img/avatars/doctordeedee.png");
                         }
-                        else if (_avatars.get(_id) && _avatars.get(_id) !== "in progress") {
-                                _store.set("img", _avatars.get(_id));
+                        
+                        else if (_avatars.get(_id)){
+                                if (_avatars.get(_id) !== "in progress"){
+                                        _avatars.watchValue(_id, function(val){
+                                                (val && (val !== "in progress")){
+                                                        _store.set("img", val);
+                                                }
+                                        });
+                                }
+                                else {
+                                        _store.set("img", _avatars.get(_id));
+                                }
                         }
                         else {
                                 Utils.getAvatarById(_id).then(function(res){

@@ -150,7 +150,6 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                                 "body" : _labels.get("signupwelcomebody")
                                                                         }]);
                                                                         
-                                                                        console.log(userid, user.get("lang"));
                                                                         // add welcome contents
                                                                         _transport.request("Welcome", {userid:userid, language:user.get("lang")}, function(result){console.log(result);});
 
@@ -282,7 +281,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _login.stopSpinner = function stopSpinner(){
-                                loginSpinner.stop();        
+                                loginSpinner && loginSpinner.stop(); 
+                                spinner && spinner.stop();       
                         };
                 
                 LOGINSPIN = loginSpinner;        

@@ -73,6 +73,8 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 .then(function(){
                         console.log("dock init");
                         _dock.init();
+                        console.log("after dock init");
+                        
                         _login.stopSpinner();
                         _stack.getStack().show("#dock");
                         _dock.start(firstStart);        

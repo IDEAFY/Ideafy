@@ -118,13 +118,11 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                         (status === "unread") ? this.setAttribute("style", "font-weight: bold;") : this.setAttribute("style", "font-weight: normal;");
                                 },
                                 setAvatar : function(author){
-                                        var _frag, _ui;
+                                        var _ui, node = this;
                                         console.log(author);
                                         if (author){
-                                                _frag = document.createDocumentFragment();
                                                 _ui = new Avatar([author]);
-                                                _ui.place(_frag);
-                                                (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                                _ui.place(this);
                                         }   
                                 }
                         }),

@@ -45,7 +45,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 _store.set("img", _avatars.get(_id));
                         }
                         else {
-                                Utils.getAvatarById(_id).then(function(){
+                                Utils.getAvatarById(_id).then(function(res){
+                                        console.log("Utils.getAvatarById result : ", res);
                                         _store.set("img", _avatars.get(_id));
                                 });
                         }

@@ -47,7 +47,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         else if (_avatars.get(_id)){
                                 if (_avatars.get(_id) !== "in progress"){
                                         _avatars.watchValue(_id, function(val){
-                                                (val && (val !== "in progress")){
+                                                if (val && (val !== "in progress")){
                                                         _store.set("img", val);
                                                 }
                                         });

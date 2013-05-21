@@ -331,14 +331,14 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 		          avatars = Config.get("avatars");
 		      
 		      if (avatars.get(id) && avatars.get(id) !== "in progress"){
-		              promise.fulfill();
+		              promise.fulfill(avatars.get(id));
 		      }
 		      // prevent multiple requests to fetch the same avatar
 		      else if (avatars.get(id) === "in progress"){
 		              avatars.watchValue(id, function(val){
 		                      if (val && val !== "in progress"){
 		                              avatars.unwatch(id);
-		                              promise.fulfill();
+		                              promise.fulfill(val);
 		                      }        
 		              });
 		      }
@@ -358,7 +358,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 		                                      avatars.del(arr[0]);
 		                                      avatars.set(id, result);
 		                              }
-		                              promise.fulfill();
+		                              promise.fulfill(result);
 		                      }      
 		              });
 		              return promise;

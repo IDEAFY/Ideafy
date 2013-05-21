@@ -473,5 +473,11 @@
 	"typemsg" : "Enter your text",
 	"said" : " said :",
 	"noresult": "No result found",
-	"clicktoview": "Press the button below or visit your library to view"
+	"clicktoview": "Press the button below or visit your library to view",
+	"skiplbl": "Skip",
+	"decidemsg": "Decide how you want to share your work",
+	"unanimity": "(unanimity is required)",
+	"setpublic": "Make the idea public",
+	"enablereplay": "Enable session replay for allowed viewers"
+	
 }

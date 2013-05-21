@@ -195,8 +195,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 _local.set("userAvatar", "");
                 _local.sync("ideafy-data");
                 
-                console.log(_local.toJSON());
-                
                 _stack.getStack().add("#login", _login);
                 _login.reset(true);
                 _stack.getStack().show("#login");

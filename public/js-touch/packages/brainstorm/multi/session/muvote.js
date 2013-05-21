@@ -21,7 +21,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "event" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div class = "confirm"><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-event="listen:touchstart, press; listen:touchend, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-event="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl">Skip</div></div>';
+                        _widget.template = '<div class = "confirm"><legend data-label="bind:innerHTML, decidemsg"></legend><span class="unanimity" data-label="bind: innerHTML, unanimity"></span><div><p class="sessionquestion" data-label="bind:innerHTML,setpublic"></p></div><div><p class="sessionquestion" data-label="bind:innerHTML,enablereplay"></p></div><div class="option left" data-event="listen:touchstart, press; listen:touchend, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-event="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, skiplbl">Skip</div></div>';
                         
                         _widget.press = function(event, node){
                                 event.stopPropagation();

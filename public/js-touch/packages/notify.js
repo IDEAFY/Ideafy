@@ -159,7 +159,8 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         currentUnread = notify.getUnread();
                         notif.set("unread", currentUnread);
                         notif.set("newmsg", false);
-                        messages.reset(user.get("notifications"));        
+                        messages.reset(user.get("notifications"));
+                        console.log(messages.toJSON());       
                 };
                 
                 // watch for new/unread messages
@@ -182,6 +183,8 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         messages.reset(user.get("notifications"));                      
                 });
                 
+                NOTIF = messages;
+                NOTIFPOPUP = notifyPopup;
                 return notify;
                 }
         })

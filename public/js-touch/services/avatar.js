@@ -18,14 +18,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         this.plugins.addAll({
                                 "avatar" : new Model(_store, {
                                         setStyle : function(img){
-                                                this.setAttribute("style", "background-image: url('"+img+"');");
+                                                if (img) {
+                                                        this.setAttribute("style", "background-image: url('"+img+"');");
+                                                }
                                         }
                                 }),
                                 "event" : new Event(this)
                         });
                         
                         // set template
-                        this.template='<div class="avatar" data-avatar="bind: setStyle, img"></div>'
+                        this.template='<div class="avatar" data-avatar="bind: setStyle, img"></div>';
                         
                         // init
                         if ($array.length>1) _store.set("img", "img/avatars/deedee6.png")

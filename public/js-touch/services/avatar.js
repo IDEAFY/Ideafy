@@ -14,6 +14,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                             _avatars = Config.get("avatars"),
                             _id = $array[0]; 
                         
+                        console.log(_id);
+                        
                         // setup
                         this.plugins.addAll({
                                 "avatar" : new Model(_store, {
@@ -46,7 +48,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         }
                         else {
                                 Utils.getAvatarById(_id).then(function(res){
-                                        console.log("Utils.getAvatarById result : ", res);
                                         _store.set("img", _avatars.get(_id));
                                 });
                         }

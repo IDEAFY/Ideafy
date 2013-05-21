@@ -119,10 +119,10 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                 },
                                 setAvatar : function(author){
                                         var _ui, node = this;
-                                        console.log(author);
+                                        console.log(author, node, node.firstChild);
                                         if (author){
                                                 _ui = new Avatar([author]);
-                                                (this.firstChild) ? this.replaceChild(_ui, this.firstChild) : _ui.place(this);
+                                                (node.firstChild) ? node.replaceChild(_ui, node.firstChild) : _ui.place(node);
                                         }   
                                 }
                         }),

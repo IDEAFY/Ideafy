@@ -150,11 +150,8 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 
                 // init notifications engine
                  notify.init = function init(){
-                        console.log("notify init called");
                         notify.reset();
-                        console.log("after notify reset", messages.toJSON());
                         notifyPopup.place(popup);
-                        console.log("after notify popup place");
                 };
                 
                 // reset notify UI

@@ -31,7 +31,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin"))
                 .then(function() {
-                        console.log("checking lbl update");
                         var lblUpdate = new Promise();
                         // set uid for future queries
                         Config.set("uid", '"' + _user.get("_id") + '"');
@@ -45,7 +44,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         return lblUpdate;
                 })
                 .then(function(){
-                        console.log("checking avatar");
                         var loadAvatar = new Promise();      
                          // get user avatar and labels if necessary
                          if (_user.get("picture_file").search("img/avatars/deedee")>-1){
@@ -71,9 +69,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         return loadAvatar;
                 })
                 .then(function(){
-                        console.log("dock init");
                         _dock.init();
-                        console.log("after dock init");
                         _login.stopSpinner();
                         _stack.getStack().show("#dock");
                         _dock.start(firstStart);        

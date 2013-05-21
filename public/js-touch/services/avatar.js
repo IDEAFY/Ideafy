@@ -18,7 +18,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         this.plugins.addAll({
                                 "avatar" : new Model(_store, {
                                         setStyle : function(img){
-                                                console.log(_id, img);
                                                 if (img && img !== "in progress") {
                                                         this.setAttribute("style", "background-image: url('"+img+"');");
                                                 }
@@ -61,8 +60,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         _store.set("img", _avatars.get(_id));
                                 });
                         }
-                        
-                        console.log(_id, _avatars.get(_id), _store.toJSON());
                              
                 }
                 

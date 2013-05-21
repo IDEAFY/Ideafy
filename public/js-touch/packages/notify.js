@@ -120,12 +120,12 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                 setAvatar : function(author){
                                         var _frag, _ui;
                                         console.log(author);
-                                        /*if (author){
+                                        if (author){
                                                 _frag = document.createDocumentFragment();
                                                 _ui = new Avatar([author]);
                                                 _ui.place(_frag);
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
-                                        }  */    
+                                        }   
                                 }
                         }),
                         "notifyevent" : new Event(notifyPopup)

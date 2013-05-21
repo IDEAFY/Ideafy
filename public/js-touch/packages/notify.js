@@ -118,12 +118,14 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                         (status === "unread") ? this.setAttribute("style", "font-weight: bold;") : this.setAttribute("style", "font-weight: normal;");
                                 },
                                 setAvatar : function(author){
-                                        var _ui, node = this;
-                                        console.log(author, node, node.firstChild);
+                                        var _frag, _ui, node = this;
+                                        console.log(author);
                                         if (author){
+                                                _frag = document.createDocumentFragment();
                                                 _ui = new Avatar([author]);
-                                                (node.firstChild) ? node.replaceChild(_ui, node.firstChild) : _ui.place(node);
-                                                console.log(_ui.dom);
+                                                _ui.place(_frag);
+                                                console.log(_frag);
+                                                (!node.firstChild) ? node.appendChild(_frag) : node.replaceChild(_frag, node.firstChild);
                                         }   
                                 }
                         }),

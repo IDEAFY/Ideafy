@@ -51,7 +51,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 				_stack.getStack().add("#dashboard", _dashboard);
 				// init notification engine
 				console.log("before notify init");
-				// _notify.init();
+				_notify.init();
 				console.log("notify ok");
 				
 				// initialize popups

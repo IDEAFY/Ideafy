@@ -474,4 +474,9 @@
 	"said": " a dit :",
 	"noresult": "Aucun résultat",
 	"clicktoview": "Appuyez sur le bouton ou rendez-vous dans votre bibliothèque pour visualiser"
+	"skiplbl": "Passer",
+	"decidemsg": "Décidez comment partager vos travaux",
+	"unanimity": "(l'unanimité est requise)",
+	"setpublic": "Rendre votre idée publique",
+	"enablereplay": "Activer le mode Ideafy replay pour les utilisateurs autorisés"
 }

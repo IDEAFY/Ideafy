@@ -144,6 +144,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         // set idea to readonly
                                         _tools.set("readonly", true);
                                         
+                                        // show voting popup
+                                        voteUI.show();
+                                        
                                         // stop timer and update display
                                         clearInterval(_miTimer);
                                         _timer.set("display", true);
@@ -156,9 +159,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         
                                         // add idea to session data
                                         $data.set("idea", JSON.parse(_idea.toJSON()));
-                                        
-                                        // show voting popup
-                                        voteUI.show();
                                         
                                         // create separate idea document in couchdb
                                         _widget.createIdeaDoc()

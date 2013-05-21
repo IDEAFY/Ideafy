@@ -116,10 +116,13 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                         (status === "unread") ? this.setAttribute("style", "font-weight: bold;") : this.setAttribute("style", "font-weight: normal;");
                                 },
                                 setAvatar : function(author){
-                                        var _frag = document.createDocumentFragment(),
-                                                    _ui = new Avatar([author]);
+                                        var _frag, _ui;
+                                        if (author){
+                                                _frag = document.createDocumentFragment();
+                                                _ui = new Avatar([author]);
                                                 _ui.place(_frag);
-                                                (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);        
+                                                (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                        }      
                                 }
                         }),
                         "notifyevent" : new Event(notifyPopup)
@@ -143,10 +146,12 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 
                 // init notifications engine
                  notify.init = function init(){
-                         console.log("notify init called");
-                         console.log(popup);
+                        console.log("notify init called");
+                        console.log(popup);
                         notify.reset();
-                        notifyPopup.place(popup);    
+                        console.log("after notify reset");
+                        notifyPopup.place(popup);
+                        console.log("after notify popup place");
                 };
                 
                 // reset notify UI

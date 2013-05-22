@@ -39,7 +39,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "event" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div class = "confirm"><legend data-label="bind:innerHTML, decidemsg"></legend><span class="unanimity" data-label="bind: innerHTML, unanimity"></span><div class="votingitem" data-model="bind:setVisible,public"><p class="sessionquestion" data-label="bind:innerHTML,setpublic"></p><div class = "votingbuttons" name="public"><span class="yesvote" data-model="bind:setReadonly, publicResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="votingitem" data-model="bind:setVisible,replay"><p class="sessionquestion" data-label="bind:innerHTML,enablereplay"></p><div class = "votingbuttons" name="public"><span class="yesvote" data-model="bind:setReadonly, publicResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="option left invisible" data-event="listen:touchstart, press; listen:touchend, submit" data-model="bind:setVisible, submit" data-label="bind: innerHTML, submitlbl">Submit</div><div class="option right" data-event="listen:touchstart, press; listen:touchend, skip" data-model="bind:setVisible, leader" data-label="bind:innerHTML, skiplbl">Skip</div></div>';
+                        _widget.template = '<div class = "confirm invisible"><legend data-label="bind:innerHTML, decidemsg"></legend><span class="unanimity" data-label="bind: innerHTML, unanimity"></span><div class="votingitem" data-model="bind:setVisible,public"><p class="sessionquestion" data-label="bind:innerHTML,setpublic"></p><div class = "votingbuttons" name="public"><span class="yesvote" data-model="bind:setReadonly, publicResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="votingitem" data-model="bind:setVisible,replay"><p class="sessionquestion" data-label="bind:innerHTML,enablereplay"></p><div class = "votingbuttons" name="public"><span class="yesvote" data-model="bind:setReadonly, publicResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="option left invisible" data-event="listen:touchstart, press; listen:touchend, submit" data-model="bind:setVisible, submit" data-label="bind: innerHTML, submitlbl">Submit</div><div class="option right" data-event="listen:touchstart, press; listen:touchend, skip" data-model="bind:setVisible, leader" data-label="bind:innerHTML, skiplbl">Skip</div></div>';
                         
                         _widget.press = function(event, node){
                                 event.stopPropagation();
@@ -153,6 +153,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.skip = function(event, node){
                                 node && node.classList.remove("pressed");
                                 _widget.close();
+                                _onEnd({visibility: "private", replay: false});
                         };
                         
                         _widget.close = function hide(){
@@ -210,7 +211,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 result.replay = false;
                                                 if (vote.publicResult) {
                                                         result.visibility = vote.publicResult;
-                                                        result:replay = false;
+                                                        result.replay = false;
                                                         setTimeout(function(){
                                                                 _onEnd && _onEnd(result)
                                                         }, 3000);

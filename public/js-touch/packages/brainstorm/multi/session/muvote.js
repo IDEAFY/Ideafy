@@ -192,41 +192,41 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _vote.set("publicVote", false); // user voted on public
                                 _vote.set("replayVote", false); // user voted on private 
                                 
-                                _widget.show();     
+                                _widget.show();
+                                
+                                // watch the vote value of session
+                                _session.watchValue("vote", function(vote){
+                                        var result = {};
+                                        if (vote && vote.public && vote.replay){
+                                                if (vote.publicResult && vote.replayResult){
+                                                        (vote.publicResult) ? result.visibility = "public" : result.visibility = "private";
+                                                        (vote.replayResult === "accepted") ? result.replay = true : result.replay = false;
+                                                        setTimeout(function(){
+                                                                _onEnd && _onEnd(result)
+                                                        }, 3000);
+                                                }
+                                        }
+                                        else if (vote && vote.public){
+                                                result.replay = false;
+                                                if (vote.publicResult) {
+                                                        result.visibility = vote.publicResult;
+                                                        result:replay = false;
+                                                        setTimeout(function(){
+                                                                _onEnd && _onEnd(result)
+                                                        }, 3000);
+                                                }      
+                                        }
+                                        else if (vote && vote.replay){
+                                                result.visibility = "private";
+                                                if (vote.replayResult){
+                                                        (vote.replayResult === "accepted") ? result.replay = true : result.replay = false;
+                                                        setTimeout(function(){
+                                                                _onEnd && _onEnd(result)
+                                                        }, 3000);
+                                                }
+                                        }
+                                });    
                         };
-                        
-                        _session.watchValue("vote", function(vote){
-                                var result = {};
-                                if (vote && vote.public && vote.replay){
-                                        if (vote.publicResult && vote.replayResult){
-                                                (vote.publicResult) ? result.visibility = "public" : result.visibility = "private";
-                                                (vote.replayResult === "accepted") ? result.replay = true : result.replay = false;
-                                                setTimeout(function(){
-                                                        _onEnd && _onEnd(result)
-                                                }, 3000);
-                                        }
-                                }
-                                else if (vote && vote.public){
-                                        result.replay = false;
-                                        if (vote.publicResult) {
-                                                result.visibility = vote.publicResult;
-                                                result:replay = false;
-                                                setTimeout(function(){
-                                                        _onEnd && _onEnd(result)
-                                                }, 3000);
-                                        }      
-                                }
-                                else if (vote && vote.replay){
-                                        result.visibility = "private";
-                                        if (vote.replayResult){
-                                                (vote.replayResult === "accepted") ? result.replay = true : result.replay = false;
-                                                setTimeout(function(){
-                                                        _onEnd && _onEnd(result)
-                                                }, 3000);
-                                        }
-                                }
-                         });
-                        
                         VOTE = _vote;
                         return _widget;       
                 }

@@ -186,7 +186,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 _vote.set(type+"Vote", false);
                                                 _vote.set(type+"Votes", []);
                                                 _vote.set(type+"Result", "");
-                                        };
+                                        });
                                 }
                                 _vote.set("publicVote", false); // user voted on public
                                 _vote.set("replayVote", false); // user voted on private 

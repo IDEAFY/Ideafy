@@ -13,7 +13,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _widget = new Widget(),
                             _labels = Config.get("labels"),
                             _vote = new Store(),
-                            _user = Config.get("users"),
+                            _user = Config.get("user"),
                             _session = null, // the current session
                             _uploadInProgress = false, // to avoid conflicts between two upload requests triggered to quickly
                             _onEnd; // callback when voting is finished
@@ -228,6 +228,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 });    
                         };
                         VOTE = _vote;
+                        VOTEUI = _widget;
                         return _widget;       
                 }
         })

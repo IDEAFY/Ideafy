@@ -175,7 +175,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 
                                 _vote.reset({});
                                 // session vote {public: true, publicVote: false, publicVotes:[], publicResult:"accepted/rejected", replay: true; replayVote: false, replayVotes:[], replayResult:"accepted/rejected"}}
-                                if (_session.get("vote")) _vote.reset(_session.get("vote"));
+                                if (_session.get("vote")) {
+                                        _vote.reset(_session.get("vote"));
+                                }
                                 if (_session.get("initiator").id === _user.get("_id")){
                                         _vote.set("leader", true);
                                         _vote.set("submit", false);
@@ -184,7 +186,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 _vote.set(type+"Vote", false);
                                                 _vote.set(type+"Votes", []);
                                                 _vote.set(type+"Result", "");
-                                        }
+                                        };
                                 }
                                 _vote.set("publicVote", false); // user voted on public
                                 _vote.set("replayVote", false); // user voted on private 

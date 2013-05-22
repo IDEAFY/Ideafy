@@ -191,4 +191,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         return _widget;       
                 }
-        });
+        })

@@ -203,7 +203,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 setTimeout(function(){
                                                         _onEnd && _onEnd(result)
                                                 }, 3000);
-                                                
                                         }
                                 }
                                 else if (vote.public){

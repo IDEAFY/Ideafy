@@ -6752,6 +6752,7 @@ li.my2q{
     overflow-y: scroll;
     vertical-align: middle;
     display: table-cell;
+    text-align: left;
     width: 608px;
 }
 

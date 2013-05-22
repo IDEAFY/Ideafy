@@ -89,6 +89,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         if(type === "public") _vote.set("publicResult", "public");
                                                         if (type === "replay") _vote.set("replayResult", "accepted");
                                                 }
+                                        }
                                         
                                         // upload vote to database
                                         if (!_uploadInProgress){

@@ -197,7 +197,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _session.watchValue("vote", function(vote){
                                 var result = {};
-                                if (vote.public && vote.replay){
+                                if (vote && vote.public && vote.replay){
                                         if (vote.publicResult && vote.replayResult){
                                                 (vote.publicResult) ? result.visibility = "public" : result.visibility = "private";
                                                 (vote.replayResult === "accepted") ? result.replay = true : result.replay = false;
@@ -206,7 +206,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 }, 3000);
                                         }
                                 }
-                                else if (vote.public){
+                                else if (vote && vote.public){
                                         result.replay = false;
                                         if (vote.publicResult) {
                                                 result.visibility = vote.publicResult;
@@ -216,7 +216,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 }, 3000);
                                         }      
                                 }
-                                else if (vote.replay){
+                                else if (vote && vote.replay){
                                         result.visibility = "private";
                                         if (vote.replayResult){
                                                 (vote.replayResult === "accepted") ? result.replay = true : result.replay = false;

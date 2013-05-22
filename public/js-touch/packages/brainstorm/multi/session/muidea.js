@@ -103,24 +103,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                               (display) ? this.classList.add("showtimer") : this.classList.remove("showtimer");
                                       }
                                 }),
-                                "idea" : new Model(_idea, {
-                                        setVisibility : function(visibility){
-                                                if (visibility === "public"){
-                                                        this.value = 0;
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/publicforslider.png'); background-position: 50px center; background-repeat:no-repeat; background-size: 30px;");
-                                                }
-                                                else{
-                                                        this.value = 1;
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/privateforslider.png'); background-position: 15px center; background-repeat:no-repeat; background-size: 20px;");        
-                                                }
-                                        }
-                                }),
+                                "idea" : new Model(_idea),
                                 "wbstack" : _wb,
                                 "place" : new Place({"chat": chatUI, "vote": voteUI}),
                                 "muideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "muidea"><div class="previousbutton" data-muideaevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muidea" data-muideaevent="listen:touchstart, toggleProgress"></div><div class="timer" data-muideatimer="bind:setTime, timer; bind: displayTimer, display" data-muideaevent="listen:touchstart,toggleTimer"></div><div id="muidea-left"><div class="idea-cards leftarea folded" data-muideaevent="listen:touchstart, fold"><div class="card defaultscenario" name="scenario" data-muideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.scenario"><div class="cardpicture"></div><div class="cardtitle" data-scenario="bind:innerHTML, title"></div></div><ul class="cardlist" data-techs="foreach"><li><div class="card tech" data-muideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.techs"><div class="cardpicture" data-techs="bind:setPic, pic"></div><div class="cardtitle" data-techs="bind:innerHTML,title"></div></div></li></ul><div class="caret"></div></div><div id="muidea-popup"></div><div class ="toolbox" data-wbtools="bind:toggleToolbox, showidea"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-muideaevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-muideaevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-muideaevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muideaevent="listen: touchstart, press; listen:touchend, finish"></div></div></div><div id="muidea-right" class="workarea"><div id="idea-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div><div class="caret descending invisible" data-muideaevent="listen:touchstart, toggleCaret"></div></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muideaevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "muidea-writeup" class="writeup invisible" data-wbtools="bind: showIdea,showidea"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, ideatitleplaceholder" data-idea="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><input class="visibility-slider" type="range" min=0 max=1 value =1 data-idea="bind: setVisibility, visibility" data-muideaevent="listen:touchend, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><textarea class = "enterDesc" data-labels="bind:setPlaceholder, ideadescplaceholder" data-idea="bind:value, description" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, ideasolplaceholder" data-idea="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-muideaevent="listen: touchstart, press; listen:touchend, next"></div></div><div class="sessionvote invisible" data-place="place:vote"></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        _widget.template = '<div id = "muidea"><div class="previousbutton" data-muideaevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muidea" data-muideaevent="listen:touchstart, toggleProgress"></div><div class="timer" data-muideatimer="bind:setTime, timer; bind: displayTimer, display" data-muideaevent="listen:touchstart,toggleTimer"></div><div id="muidea-left"><div class="idea-cards leftarea folded" data-muideaevent="listen:touchstart, fold"><div class="card defaultscenario" name="scenario" data-muideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.scenario"><div class="cardpicture"></div><div class="cardtitle" data-scenario="bind:innerHTML, title"></div></div><ul class="cardlist" data-techs="foreach"><li><div class="card tech" data-muideaevent="listen: touchstart, select; listen:touchend, zoom" data-wbtools="bind: popup,cardpopup.techs"><div class="cardpicture" data-techs="bind:setPic, pic"></div><div class="cardtitle" data-techs="bind:innerHTML,title"></div></div></li></ul><div class="caret"></div></div><div id="muidea-popup"></div><div class ="toolbox" data-wbtools="bind:toggleToolbox, showidea"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-muideaevent="listen: touchstart, push; listen:touchend, post"></div><legend>Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-muideaevent="listen: touchstart, push; listen:touchend, importpic"></div><legend>Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-muideaevent="listen: touchstart, push; listen:touchend, draw"></div><legend>Drawing tool</legend></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muideaevent="listen: touchstart, press; listen:touchend, finish"></div></div></div><div id="muidea-right" class="workarea"><div id="idea-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div><div class="caret descending invisible" data-muideaevent="listen:touchstart, toggleCaret"></div></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muideaevent="listen: touchstart, press; listen:touchend, finish"></div><div id = "muidea-writeup" class="writeup invisible" data-wbtools="bind: showIdea,showidea"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, ideatitleplaceholder" data-idea="bind:value, title" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterDesc" data-labels="bind:setPlaceholder, ideadescplaceholder" data-idea="bind:value, description" data-wbtools="bind:setReadonly, readonly"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, ideasolplaceholder" data-idea="bind:value, solution" data-wbtools="bind:setReadonly, readonly"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-muideaevent="listen: touchstart, press; listen:touchend, next"></div></div><div class="sessionvote invisible" data-place="place:vote"></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         _widget.place(Map.get("muidea"));
                         
@@ -131,7 +120,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // move to next screen
                         _widget.next = function(event, node){
-                                var now = new Date(), _timers, duration;
+                                var now = new Date(), _timers, duration, visibility, replay, promise = new Promise();
                                 
                                 spinner.spin(node.parentNode);
                                 node.classList.add("invisible");
@@ -144,9 +133,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         // set idea to readonly
                                         _tools.set("readonly", true);
                                         
-                                        // show voting popup
-                                        voteUI.show();
-                                        
                                         // stop timer and update display
                                         clearInterval(_miTimer);
                                         _timer.set("display", true);
@@ -157,11 +143,23 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         // compute overall session time
                                         duration = _widget.getSessionDuration();
                                         
-                                        // add idea to session data
-                                        $data.set("idea", JSON.parse(_idea.toJSON()));
+                                        // display voting interface
+                                        voteUI.reset($session, function(result){
+                                                visibility = result.visibility;
+                                                replay = result.replay;
+                                                _idea.set("visibility", visibility);
+                                                _idea.set("sessionReplay", replay);
+                                                promise.fulfill();
+                                                voteUI.close();             
+                                        });
                                         
-                                        // create separate idea document in couchdb
-                                        _widget.createIdeaDoc()
+                                        promise.then(function(){
+                                                // add idea to session data
+                                                $data.set("idea", JSON.parse(_idea.toJSON()));
+                                        
+                                                // create separate idea document in couchdb
+                                                return _widget.createIdeaDoc();
+                                        })
                                         .then(function(){
                                                 // unsync session document, resync, add new data
                                                 $session.unsync();
@@ -172,6 +170,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 timers.muidea = _timer.get("timer");
                                                 // update session document
                                                 $session.set("idea", [JSON.parse(_idea.toJSON())]);
+                                                if (replay) {$session.set("replayIdeas", [])}
                                                 $session.set("elapsedTimers", timers);
                                                 $session.set("duration", duration);
                                                 $session.set("status", "completed");
@@ -514,6 +513,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 cdb.set('context', $session.get("contexts")[0]);
                                 cdb.set("techno", $session.get("techno")[0]);
                                 cdb.set("visibility", _idea.get("visibility"));
+                                cdb.set("sessionReplay", _idea.get("sessionReplay"));
                                 cdb.set("authornames", names.join(", "));
                                 //set the idea's language to the same language as the session
                                 cdb.set("lang", $session.get("lang"));
@@ -523,11 +523,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         return cdb.upload();
                                 })
                                 .then(function(){
-                                        // updateUIP is visibility is public
+                                        // updateUIP is visibility is public for leader and for participants
                                         if (cdb.get("visibility") === "public"){
                                                 _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": cdb.get("type"), "docId": cdb.get("_id"), "docTitle": cdb.get("title")}, function(result){
                                                         if (result !== "ok") {console.log(result);}
                                                 });
+                                                // do the same for participants
+                                                $session.get("participants").forEach(function(part){
+                                                        _transport.request("UpdateUIP", {"userid": part.id, "type": cdb.get("type"), "docId": cdb.get("_id"), "docTitle": cdb.get("title")}, function(result){
+                                                                if (result !== "ok") {console.log(part.id, " "+result);}
+                                                        });        
+                                                }); 
                                         }
                                         promise.fulfill();
                                         cdb.unsync();
@@ -701,6 +707,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // watch contents of idea and display next button if ready
                         _idea.watch("updated", function(){
                                         (_widget.isLeader() && _idea.get("title") && _idea.get("description") && _idea.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
+                        });
+                        
+                        // watch for voting event (if not the session leader)
+                        $session.watchValue("vote", function(vote){
+                                if (vote && !_widget.isLeader() && !voteUI.isActive() ){
+                                        voteUI.reset($session, function(result){
+                                                if (result) voteUI.close();
+                                        });       
+                                }
                         });
                         
                         // Return

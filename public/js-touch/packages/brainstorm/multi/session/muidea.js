@@ -167,6 +167,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         })
                                         .then(function(){
                                                 var timers = $session.get("elapsedTimers");
+                                                // notify participants via chat
+                                                chatUI.conclude("next");
+                                                
                                                 timers.muidea = _timer.get("timer");
                                                 // update session document
                                                 $session.set("idea", [JSON.parse(_idea.toJSON())]);

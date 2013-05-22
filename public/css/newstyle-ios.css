@@ -3551,6 +3551,22 @@ li.color-item{
     z-index: 2000;
 }
 
+#muidea .votingitem{
+        
+}
+
+#muidea .sessionquestion{
+    float: left;    
+}
+
+#muidea .votingbuttons{
+    float: left;    
+}
+
+#muidea .votingresult{
+    float: left;        
+}
+
 /* quickstart */
 
 #quickstart .quickstart-form{

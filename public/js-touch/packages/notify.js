@@ -119,12 +119,10 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                 },
                                 setAvatar : function(author){
                                         var _frag, _ui, node = this;
-                                        console.log(author);
                                         if (author){
                                                 _frag = document.createDocumentFragment();
                                                 _ui = new Avatar([author]);
                                                 _ui.place(_frag);
-                                                console.log(_frag);
                                                 (!node.firstChild) ? node.appendChild(_frag) : node.replaceChild(_frag, node.firstChild);
                                         }   
                                 }

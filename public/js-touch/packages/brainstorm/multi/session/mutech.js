@@ -130,6 +130,9 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 $session.sync(_db, $session.get("_id")).then(function(){
                                                         var timers = $session.get("elapsedTimers");
                                                         
+                                                        // notify participants via chat
+                                                        chatUI.conclude("next");
+                                                        
                                                         timers.mutech = _timer.get("timer");
                                                         
                                                         // update session document
@@ -349,7 +352,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         // Method called when clicking on the accept buttton
                         _widget.pushOk = function(event, node){
                                 var spok = spinnerOk[node.getAttribute("name")] || null;
-                                if (_widget.isLeader()){
+                                if (_widget.isLeader() && _next === "step"){
                                         if (spok){
                                                 spinnerOk[node.getAttribute("name")].spin(node);        
                                         }

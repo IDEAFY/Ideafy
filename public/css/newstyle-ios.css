@@ -3547,7 +3547,6 @@ li.color-item{
     position: absolute;
     top: 426px;
     left: 321px;
-    display: block;
     z-index: 2000;
 }
 
@@ -6753,6 +6752,7 @@ li.my2q{
     overflow-y: scroll;
     vertical-align: middle;
     display: table-cell;
+    text-align: left;
     width: 608px;
 }
 

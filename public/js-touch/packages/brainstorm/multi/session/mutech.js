@@ -352,7 +352,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         // Method called when clicking on the accept buttton
                         _widget.pushOk = function(event, node){
                                 var spok = spinnerOk[node.getAttribute("name")] || null;
-                                if (_widget.isLeader() && $session.step === "mutech"){
+                                if (_widget.isLeader() && _next === "step"){
                                         if (spok){
                                                 spinnerOk[node.getAttribute("name")].spin(node);        
                                         }

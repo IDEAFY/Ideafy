@@ -24,8 +24,22 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         setVisible : function(bool){
                                                 (bool) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         },
-                                        setLabel : function(pVote){
+                                        setButton : function(bool){
+                                                (bool) ? this.setAttribute("style", "display: inline-block;") : this.setAttribute("style", "display:none;");        
+                                        },
+                                        displayVote : function(vote){
+                                                var type = this.getAttribute("name"),
+                                                    votes = _vote.get(type+"Votes") || [],
+                                                    yes = this.querySelector(".yesvote"),
+                                                    no = this.querySelector(".novote");
                                                 
+                                                if (vote){
+                                                        (votes.indexOf(_user.get("_id")) > -1) ? no.classList.add("invisible") : yes.classList.add("invisible")
+                                                }
+                                                else{
+                                                        yes.classList.remove("invisible");
+                                                        no.classList.remove("invisible");
+                                                }
                                         },
                                         setResult : function(result){
                                                 if (result){
@@ -39,7 +53,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "event" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div class = "confirm invisible"><legend data-label="bind:innerHTML, decidemsg"></legend><span class="unanimity" data-label="bind: innerHTML, unanimity"></span><div class="votingitem" data-model="bind:setVisible,public"><p class="sessionquestion" data-label="bind:innerHTML,setpublic"></p><div class = "votingbuttons" name="public"><span class="yesvote" data-model="bind:setReadonly, publicResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="votingitem" data-model="bind:setVisible,replay"><p class="sessionquestion" data-label="bind:innerHTML,enablereplay"></p><div class = "votingbuttons" name="public"><span class="yesvote" data-model="bind:setReadonly, publicResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="option left invisible" data-event="listen:touchstart, press; listen:touchend, submit" data-model="bind:setVisible, submit" data-label="bind: innerHTML, submitlbl">Submit</div><div class="option right" data-event="listen:touchstart, press; listen:touchend, skip" data-model="bind:setVisible, leader" data-label="bind:innerHTML, skiplbl">Skip</div></div>';
+                        _widget.template = '<div class = "confirm invisible"><legend><span data-label="bind:innerHTML, decidemsg"></span><span class="unanimity" data-label="bind: innerHTML, unanimity"></span></legend><div class="votingitem" name="public" data-model="bind:setVisible,public; bind: displayVote, publicVote"><div class="sessionquestion" data-label="bind:innerHTML,setpublic"></div><div class = "votingbuttons" name="public"><span class="yesvote" data-model="bind:setReadonly, publicResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="votingitem" name = "replay" data-model="bind:setVisible,replay; bind: displayVote, replayVote"><div class="sessionquestion" data-label="bind:innerHTML,enablereplay"></div><div class = "votingbuttons" name="replay"><span class="yesvote" data-model="bind:setReadonly, replayResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, replayResult"></div></div><div class="option left invisible" data-event="listen:touchstart, press; listen:touchend, submit" data-model="bind:setButton, submit" data-label="bind: innerHTML, submitlbl">Submit</div><div class="option right" data-event="listen:touchstart, press; listen:touchend, skip" data-model="bind:setButton, leader" data-label="bind:innerHTML, skiplbl">Skip</div></div>';
                         
                         _widget.press = function(event, node){
                                 event.stopPropagation();
@@ -65,7 +79,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // handle vote if not voted yet
                                 if (!_vote.get(type+"Vote")){
                                         var votes = _vote.get(type+"Votes");
-                                        _vote.set(type+"Vote", true); // voted !
                                         
                                         // if vote is negative
                                         if (node.classList.contains("nolbl")){
@@ -83,13 +96,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 
                                                 // add vote
                                                 votes.push(_user.get("_id"));
-                                                _votes.set(type+"Votes", votes);
+                                                _vote.set(type+"Votes", votes);
                                                 // if all participants have voted yes on an item, set its result to public || accepted
                                                 if (votes.length === _session.get(partipants).length+1){
                                                         if(type === "public") _vote.set("publicResult", "public");
                                                         if (type === "replay") _vote.set("replayResult", "accepted");
                                                 }
                                         }
+                                        node.classList.add("voted");
+                                        _vote.set(type+"Vote", true); // voted !
                                         
                                         // upload vote to database
                                         if (!_uploadInProgress){
@@ -130,7 +145,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.submit = function(event, node){
                                 var vote = {};
                                 node.classList.remove("pressed");
-                                Map.get("cache").classList.remove("appear");
+                                Map.get("cache").classList.remove("votingcache");
                                 
                                 ["public", "replay"].forEach(function(type){
                                         if (_vote.get(type)){
@@ -139,7 +154,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                         _vote.set(type+"Vote", true); // once submit is pressed leader cannot vote anymore
                                 });
-                                console.log(vote);
                                 _session.set("vote", vote);
                                 _session.upload()
                                 .then(function(){
@@ -157,7 +171,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.close = function hide(){
-                                Map.get("cache").classList.remove("appear");
+                                Map.get("cache").classList.remove("votingcache");
                                 _widget.dom.classList.add("invisible");
                                 _session = null;        
                         };
@@ -167,7 +181,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.show = function show(){
-                                Map.get("cache").classList.add("appear");
+                                Map.get("cache").classList.add("votingcache");
                                 _widget.dom.classList.remove("invisible");        
                         };
                         

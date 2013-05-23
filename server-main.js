@@ -178,9 +178,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         usercdb.set("su_sessions_count", sus);
                                         break;
                                 case "mu_session_complete":
-                                        var mus = usercdb.get("su_sessions_count") || 0;
+                                        var mus = usercdb.get("mu_sessions_count") || 0;
                                         mus++;
-                                        usercdb.set("su_sessions_count", mus);
+                                        usercdb.set("mu_sessions_count", mus);
                                         break;
                                 default:
                                         break;        
@@ -1464,6 +1464,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                             ip = sessionCDB.get("score"),
                             idList = [],
                             parts = sessionCDB.get("participants"),
+                            i,l,
                             reason;
                         
                         // gather list of users who should be credited
@@ -1474,20 +1475,24 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 });
                         }
                         
-                        // indicate session mode
+                        // indicate session mode (default is any of the multi-user types)
                         switch (sessionCDB.get("mode")){
                                 case "quick":
-                                        reason = "su_session_complete";
+                                        updateUserIP(idList[0], "su_session_complete", ip, promise.fulfill);
                                         break;
                                 default:
-                                        reason = "mu_session_complete";
+                                        for (i=0, l=idList.length; i<l; i++){
+                                                // update session leader
+                                                if (i === 0){
+                                                        updateUserIP(idList[i], "mu_session_complete", ip, promise.fulfill);        
+                                                }
+                                                // update participant
+                                                else{
+                                                        updateUserIP(idList[i], "mu_participant", ip, promise.fulfill);         
+                                                }
+                                        }
                                         break;        
                         }
-                        
-                        // for each user update IP with reason sessionComplete
-                        idList.forEach(function(id){
-                                updateUserIP(id, reason, ip, promise.fulfill);
-                        });
                         return promise;
                 };
                 
@@ -1588,7 +1593,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 increment += bonus;
                                 if (increment < min_score) {increment = min_score;}
                                 break;
-                        case "muscenario":
+                        case "muidea":
                                 min_score = 20;
                                 wbdata = JSON.parse(json.wbcontent);
                                 input = JSON.parse(json.idea);
@@ -1607,8 +1612,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 if ((json.wbcontent.search("import")>-1) && (json.wbcontent.search("drawing")>-1)) {bonus = 25;}
                                 else if ((json.wbcontent.search("import")>-1) || (json.wbcontent.search("drawing")>-1))  {bonus = 10;}
                                 
-                                if (json.visibility === "public") {bonus +=20;}
                                 increment = Math.floor((wbdata.length*12 + bonus)*coeff) + min_score;
+                                
+                                
+                                if (json.visibility === "public") {increment *= 2;}
+                                if (json.sessionReplay){increment = Math.floor(increment*1.5);}
+                                console.log("muidea increment : ", increment);
                                 break;     
                         default:
                                 increment = 0;

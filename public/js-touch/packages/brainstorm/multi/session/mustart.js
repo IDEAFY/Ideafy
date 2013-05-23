@@ -92,6 +92,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 participants.reset($session.get("participants"));
                                 // reset chat window
                                 chatUI.reset($session.get("chat")[0]);
+                                chatUI.setReadonly();
                         };
                         
                         _widget.help = function(event, node){

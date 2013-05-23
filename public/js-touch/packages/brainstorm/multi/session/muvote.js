@@ -22,7 +22,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "label" : new Model(_labels),
                                 "model" : new Model(_vote, {
                                         setVisible : function(bool){
-                                                (bool && _vote.get("leader")) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                                (bool) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         },
                                         setButton : function(bool){
                                                 (bool) ? this.setAttribute("style", "display: inline-block;") : this.setAttribute("style", "display:none;");        
@@ -203,6 +203,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _vote.set("leader", true);
                                         _vote.set("submit", false); // hide submit button until a vote has been cast
                                         _vote.set("skip", true); // show skip button
+                                        // always dispaly both questions for leader
+                                        _vote.set("public", true);
+                                        _vote.set("replay", true);
                                         ["public", "replay"].forEach(function(type){
                                                 _vote.set(type, false);
                                                 _vote.set(type+"Vote", false);

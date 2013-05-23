@@ -127,7 +127,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         node.classList.remove("pressed");
                                         ul.classList.add("invisible");
                                         document.getElementById("postpic").classList.remove("invisible");
-                                }, 1000);
+                                }, 750);
                         }
                         
                         function onFail(message){

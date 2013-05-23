@@ -185,7 +185,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                                         updates.picture_file = user.get("_id")+"_@v@t@r";
                                         document.getElementById("changeavatar").classList.add("invisible");
                                         node.classList.remove("pressed");
-                                }, 500);
+                                }, 1000);
                         };
                         
                         onFail = function(message){
@@ -202,13 +202,13 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                             onSuccess, onFail;
                         
                         onSuccess = function(imageData){
-                               _img.src = imageData;
+                                _img.src = imageData;
                                 setTimeout(function(){
                                         cropImage(resizeImage(_img));
                                         updates.picture_file = user.get("_id")+"_@v@t@r";
                                         document.getElementById("changeavatar").classList.add("invisible");
                                         node.classList.remove("pressed");
-                                }, 500);
+                                }, 750);
                         };
                         
                         onFail = function(message){

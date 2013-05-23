@@ -96,7 +96,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 
                                                 // add vote
                                                 votes.push(_user.get("_id"));
-                                                _votes.set(type+"Votes", votes);
+                                                _vote.set(type+"Votes", votes);
                                                 // if all participants have voted yes on an item, set its result to public || accepted
                                                 if (votes.length === _session.get(partipants).length+1){
                                                         if(type === "public") _vote.set("publicResult", "public");
@@ -154,7 +154,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                         _vote.set(type+"Vote", true); // once submit is pressed leader cannot vote anymore
                                 });
-                                console.log(vote);
                                 _session.set("vote", vote);
                                 _session.upload()
                                 .then(function(){

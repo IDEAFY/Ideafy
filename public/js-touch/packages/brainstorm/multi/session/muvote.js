@@ -22,7 +22,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "label" : new Model(_labels),
                                 "model" : new Model(_vote, {
                                         setVisible : function(bool){
-                                                (bool) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                                (bool && _vote.get("leader")) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         },
                                         setButton : function(bool){
                                                 (bool) ? this.setAttribute("style", "display: inline-block;") : this.setAttribute("style", "display:none;");        
@@ -53,7 +53,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "event" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div class = "confirm invisible"><legend><span data-label="bind:innerHTML, decidemsg"></span><span class="unanimity" data-label="bind: innerHTML, unanimity"></span></legend><div class="votingitem" name="public" data-model="bind:setVisible,public; bind: displayVote, publicVote"><div class="sessionquestion" data-label="bind:innerHTML,setpublic"></div><div class = "votingbuttons" name="public"><span class="yesvote" data-model="bind:setReadonly, publicResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="votingitem" name = "replay" data-model="bind:setVisible,replay; bind: displayVote, replayVote"><div class="sessionquestion" data-label="bind:innerHTML,enablereplay"></div><div class = "votingbuttons" name="replay"><span class="yesvote" data-model="bind:setReadonly, replayResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, replayResult"></div></div><div class="option left invisible" data-event="listen:touchstart, press; listen:touchend, submit" data-model="bind:setButton, submit" data-label="bind: innerHTML, submitlbl">Submit</div><div class="option right" data-event="listen:touchstart, press; listen:touchend, skip" data-model="bind:setButton, leader" data-label="bind:innerHTML, skiplbl">Skip</div></div>';
+                        _widget.template = '<div class = "confirm invisible"><legend><span data-label="bind:innerHTML, decidemsg"></span><span class="unanimity" data-label="bind: innerHTML, unanimity"></span></legend><div class="votingitem" name="public" data-model="bind:setVisible,public; bind: displayVote, publicVote"><div class="sessionquestion" data-label="bind:innerHTML,setpublic"></div><div class = "votingbuttons" name="public"><span class="yesvote" data-model="bind:setReadonly, publicResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="votingitem" name = "replay" data-model="bind:setVisible,replay; bind: displayVote, replayVote"><div class="sessionquestion" data-label="bind:innerHTML,enablereplay"></div><div class = "votingbuttons" name="replay"><span class="yesvote" data-model="bind:setReadonly, replayResult" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, replayResult"></div></div><div class="option left votebutton" data-event="listen:touchstart, press; listen:touchend, submit" data-model="bind:setButton, submit" data-label="bind: innerHTML, submitlbl">Submit</div><div class="option right votebutton" data-event="listen:touchstart, press; listen:touchend, skip" data-model="bind:setButton, leader" data-label="bind:innerHTML, skiplbl">Skip</div></div>';
                         
                         _widget.press = function(event, node){
                                 event.stopPropagation();
@@ -98,7 +98,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 votes.push(_user.get("_id"));
                                                 _vote.set(type+"Votes", votes);
                                                 // if all participants have voted yes on an item, set its result to public || accepted
-                                                if (votes.length === _session.get(partipants).length+1){
+                                                if (votes.length === _session.get(participants).length+1){
                                                         if(type === "public") _vote.set("publicResult", "public");
                                                         if (type === "replay") _vote.set("replayResult", "accepted");
                                                 }
@@ -203,6 +203,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 _vote.set(type+"Votes", []);
                                                 _vote.set(type+"Result", "");
                                         });
+                                }
+                                else{
+                                        _vote.set("leader", false);
+                                        _vote.set("submit", false);
                                 }
                                 _vote.set("publicVote", false); // user voted on public
                                 _vote.set("replayVote", false); // user voted on private 

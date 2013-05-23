@@ -114,6 +114,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 chatUI.clear();
                                 if ($session.get("chat")[5]){
                                         chatUI.reset($session.get("chat")[5]);
+                                        chatUI.getModel().watchValue("msg", function(arr){
+                                                if(arr.length>1) {
+                                                        _wrapup.set("newmsg", true);
+                                                }               
+                                        });
                                 }
                                 
                                 // build wrapup UI
@@ -173,15 +178,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         $session.watchValue("chat", function(arr){
                                 if (arr.length === 6 && chatUI.getModel().get("_id") !== arr[5]){
                                         chatUI.reset(arr[5]);
-                                }        
-                        })
-                        
-                        chatUI.getModel().watchValue("msg", function(arr){
-                                console.log(arr);
-                                if(arr.length>1) {
-                                        _wrapup.set("newmsg", true);
-                                }               
+                                        chatUI.getModel().watchValue("msg", function(arr){
+                                                if(arr.length>1) {
+                                                        _wrapup.set("newmsg", true);
+                                                }               
+                                        });
+                                }
                         });
+                        
                         
                         MUWRAP=_widget;
                         // Return

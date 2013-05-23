@@ -122,7 +122,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _widget.next = function(event, node){
                                 var now = new Date(), _timers, duration, visibility, replay, promise = new Promise();
                                 
-                                spinner.spin(node.parentNode);
                                 node.classList.add("invisible");
                                 node.classList.remove("pressed");
                                 
@@ -154,6 +153,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         });
                                         
                                         promise.then(function(){
+                                                spinner.spin(node.parentNode);
                                                 // add idea to session data
                                                 $data.set("idea", JSON.parse(_idea.toJSON()));
                                         

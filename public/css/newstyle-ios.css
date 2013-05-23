@@ -315,6 +315,12 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     -webkit-transition: opacity 0.7s linear;
 }
 
+#cache.votingcache{
+    opacity: 0.3;
+    z-index: 1500;
+    -webkit-transition: opacity 0.7s linear;   
+}
+
 /* dock */
 
 #dock {
@@ -3542,28 +3548,68 @@ li.color-item{
 
 #muidea .sessionvote .confirm{
     width: 610px;
-    height: 100px;
+    height: 150px;
     padding: 10px;
     position: absolute;
-    top: 426px;
+    top: 356px;
     left: 321px;
     z-index: 2000;
 }
 
+#muidea .confirm .option{
+    margin-top: 15px;
+}
+
+#muidea .sessionvote legend{
+    color: #657b99;
+    font-weight: bold;
+}
+
 #muidea .votingitem{
-        
+    height: 40px;
+    width: 610px;
+    line-height: 40px;
+    margin-top: 5px;        
 }
 
 #muidea .sessionquestion{
-    float: left;    
+    float: left;
+    width: 300px;    
 }
 
 #muidea .votingbuttons{
-    float: left;    
+    float: left;
+    width: 200px;
+    text-align: center;    
+}
+
+#muidea .votingbuttons span{
+    width: 100px;
+    float: left;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 30px;
+}
+
+#muidea .yesvote{
+    background-image: url(../img/brainstorm/selectable.png);    
+}
+
+#muidea .novote{
+    background-image: url(../img/brainstorm/rejectable.png);     
+}
+
+#muidea .yesvote.voted{
+    background-image: url(../img/brainstorm/selected.png);    
+}
+
+#muidea .novote.voted{
+    background-image: url(../img/brainstorm/rejected.png);     
 }
 
 #muidea .votingresult{
-    float: left;        
+    float: left;
+    width: 105px;        
 }
 
 /* quickstart */

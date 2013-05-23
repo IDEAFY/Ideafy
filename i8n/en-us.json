@@ -479,7 +479,7 @@
 	"decidemsg": "Decide how you want to share your work",
 	"unanimity": "(unanimity is required)",
 	"setpublic": "Make the idea public",
-	"enablereplay": "Enable session replay for allowed viewers",
+	"enablereplay": "Enable session replay",
 	"yeslbl": "Yes",
 	"nolbl": "No",
 	"accepted": "ACCEPTED",

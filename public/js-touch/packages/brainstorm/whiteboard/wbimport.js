@@ -228,6 +228,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         node.parentNode.classList.add("invisible");
                         _widget.reset();
                         _clearCanvas();
+                        document.getElementById("importbuttons").classList.remove("invisible");
                         $exit("import");        
                 };
 

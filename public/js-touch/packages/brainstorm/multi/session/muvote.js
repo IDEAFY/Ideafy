@@ -203,11 +203,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _vote.set("leader", true);
                                         _vote.set("submit", false); // hide submit button until a vote has been cast
                                         _vote.set("skip", true); // show skip button
-                                        // always dispaly both questions for leader
-                                        _vote.set("public", true);
-                                        _vote.set("replay", true);
                                         ["public", "replay"].forEach(function(type){
-                                                _vote.set(type, false);
+                                                _vote.set(type, true); // always display both questions for leader
                                                 _vote.set(type+"Vote", false);
                                                 _vote.set(type+"Votes", []);
                                                 _vote.set(type+"Result", "");

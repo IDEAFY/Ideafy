@@ -3033,6 +3033,11 @@ textarea.solution {
     color: #292929;
 }
 
+#musession .import .uploadprogress{
+    margin-top: -20px;
+    margin-right: -10px;
+}
+
 .postit-cancel{
     float: right;
     width: 20px;

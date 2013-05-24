@@ -317,6 +317,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 fs.exists(_path, function(exists){
                         if (exists){
                                 var labels=fs.readFile(_path, 'utf8', function(err, data){
+                                        console.log(data.length);
                                         onEnd(JSON.parse(data));        
                                 });
                         }

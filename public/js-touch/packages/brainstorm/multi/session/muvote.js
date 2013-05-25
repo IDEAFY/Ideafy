@@ -67,6 +67,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 if (!_vote.get(type+"Vote") && !_vote.get(type+"Result")){
                                         node.setAttribute("style", "-webkit-box-shadow: 0px 0px 2px #657B99;");        
                                 }
+                                if (_vote.get("leader")){
+                                        nod.classList.toggle("voted");
+                                }
                         };
                         
                         _widget.vote = function vote(event, node){
@@ -98,7 +101,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 votes.push(_user.get("_id"));
                                                 _vote.set(type+"Votes", votes);
                                                 // if all participants have voted yes on an item, set its result to public || accepted
-                                                if (votes.length === _session.get(participants).length+1){
+                                                if (votes.length === _session.get("participants").length+1){
                                                         if(type === "public") _vote.set("publicResult", "public");
                                                         if (type === "replay") _vote.set("replayResult", "accepted");
                                                 }

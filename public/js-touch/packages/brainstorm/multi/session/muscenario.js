@@ -398,7 +398,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // update database with scenario changes made by leader
                         _widget.updateScenario = function updateScenario(){
                                 _mscInterval = setInterval(function(){
-                                        var _sSC = $session.get("scenario")[0],
+                                        var _sSC = $session.get("scenario")[0] || {title:"", story:"", solution:""},
                                             _title = _sSC.title || "",
                                             _story = _sSC.story || "",
                                             _solution = _sSC.solution | "",

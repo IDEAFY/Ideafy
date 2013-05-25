@@ -397,14 +397,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // update database with scenario changes made by leader
                         _widget.updateScenario = function updateScenario(){
-                                clearInterval(_mscInterval);
                                 _mscInterval = setInterval(function(){
-                                        var _title = _widget.dom.querySelector(".enterTitle").value,
-                                            _story = _widget.dom.querySelector(".enterDesc").value,
-                                            _solution = _widget.dom.querySelector(".enterSol").value,
+                                        var _sSC = _session.get("scenario")[0],
+                                            _title = _sSC.title || "",
+                                            _story = _sSC.story || "",
+                                            _solution = _sSC.solution | "",
                                             cdbScen = {};
                                         console.log("update scenario");
-                                        if (_scenario.get("title") !== _title || _scenario.get("story") !== _story || _scenario.get("solution") !== _solution){
+                                        if (_scenario.get("title") !== title || _scenario.get("story") !== _story || _scenario.get("solution") !== _solution){
                                                 cdbScen.title = _title;
                                                 cdbScen.story = _story;
                                                 cdbScen.solution = _solution;

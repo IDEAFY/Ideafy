@@ -34,7 +34,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                     no = this.querySelector(".novote");
                                                 
                                                 if (vote){
-                                                        (votes.indexOf(_user.get("_id")) > -1) ? no.classList.add("invisible") : yes.classList.add("invisible")
+                                                        (votes.indexOf(_user.get("_id")) > -1) ? no.classList.add("invisible") : yes.classList.add("invisible");
                                                 }
                                                 else{
                                                         yes.classList.remove("invisible");

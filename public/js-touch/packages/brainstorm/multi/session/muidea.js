@@ -429,8 +429,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // update database with scenario changes made by leader
                         _widget.updateIdea = function updateIdea(event, node){
-                                console.log(node);
-                                clearInterval(_miInterval);
                                 _miInterval = setInterval(function(){
                                         var _title = _widget.dom.querySelector(".enterTitle").value,
                                             _description = _widget.dom.querySelector(".enterDesc").value,

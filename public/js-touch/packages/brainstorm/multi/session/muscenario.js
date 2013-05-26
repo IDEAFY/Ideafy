@@ -401,10 +401,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         var _sSC = $session.get("scenario")[0] || {title:"", story:"", solution:""},
                                             _title = _sSC.title || "",
                                             _story = _sSC.story || "",
-                                            _solution = _sSC.solution | "",
+                                            _solution = _sSC.solution || "",
                                             cdbScen = {};
                                         console.log("update scenario");
-                                        if (_scenario.get("title") !== title || _scenario.get("story") !== _story || _scenario.get("solution") !== _solution){
+                                        if (_scenario.get("title") !== _title || _scenario.get("story") !== _story || _scenario.get("solution") !== _solution){
                                                 cdbScen.title = _title;
                                                 cdbScen.story = _story;
                                                 cdbScen.solution = _solution;
@@ -625,6 +625,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         SCWHITEB = _wb;
                         SCCONTENT = _wbContent;
+                        SC = _scenario;
                         
                         // Return
                         return _widget;

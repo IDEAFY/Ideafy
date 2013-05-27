@@ -68,7 +68,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         node.setAttribute("style", "-webkit-box-shadow: 0px 0px 2px #657B99;");        
                                 }
                                 if (_vote.get("leader")){
-                                        nod.classList.toggle("voted");
+                                        node.classList.toggle("voted");
                                 }
                         };
                         
@@ -123,7 +123,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 var vote;
                                 
                                 // leader's position gets uploaded when he pushes the submit button
-                                if (!vote.get("leader")){
+                                if (!_vote.get("leader")){
                                          vote = _session.get("vote");
                                         _uploadInProgress = true;
                                         if (vote.public){

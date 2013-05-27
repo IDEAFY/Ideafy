@@ -4336,6 +4336,31 @@ li.color-item{
     background-image: url('../img/brainstorm/yourScore40.png');      
 }
 
+#muwrapup .wrapupvisibility, #muwrapup .wrapupreplay{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    position: absolute;
+    left: 930px;
+}
+
+#muwrapup .wrapupvisibility{
+    top: 400px;
+    background: url('../img/privateForList.png') no-repeat center center;
+    background-size: contain;
+}
+
+#muwrapup .wrapupvisibility.publicwrapup{
+    background: url('../img/publicForList.png') no-repeat center center;
+    background-size: contain;
+}
+
+#muwrapup .wrapupreplay{
+    top: 480px;
+    background: url('../img/library/25goToSession.png') no-repeat center center;
+    background-size: contain;    
+}
+
 #quickwrapup .sessioncards, #muwrapup .sessioncards{
     position:absolute;
     width: 931px;

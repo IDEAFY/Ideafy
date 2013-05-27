@@ -109,7 +109,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         var votes = _vote.get(type+"Votes");
                                         
                                         // if vote is negative
-                                        if (node.classList.contains("nolbl")){
+                                        if (node.classList.contains("novote")){
                                                 if(type === "public") _vote.set("publicResult", "rejected");
                                                 if (type === "replay") _vote.set("replayResult", "rejected");
                                         }
@@ -258,10 +258,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                     setTimeout(function(){
                                                                 Map.get("cache").classList.remove("votingcache");
                                                                 _onEnd && _onEnd(result);
-                                                        }, 3000);
+                                                        }, 10000);
                                                     
                                             };
                                         if (vote && vote.public && vote.replay){
+                                                _vote.set("publicResult", vote.publicResult);
+                                                _vote.set("replayResult", vote.replayResult);
                                                 if (vote.publicResult && vote.replayResult){
                                                         (vote.publicResult === "accepted") ? result.visibility = "public" : result.visibility = "private";
                                                         (vote.replayResult === "accepted") ? result.replay = true : result.replay = false;
@@ -269,6 +271,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 }
                                         }
                                         else if (vote && vote.public){
+                                                _vote.set("publicResult", vote.publicResult);
                                                 result.replay = false;
                                                 if (vote.publicResult) {
                                                         (vote.publicResult === "accepted") ? result.visibility = "public" : result.visibility = "private";
@@ -277,6 +280,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 }      
                                         }
                                         else if (vote && vote.replay){
+                                                _vote.set("replayResult", vote.replayResult);
                                                 result.visibility = "private";
                                                 if (vote.replayResult){
                                                         (vote.replayResult === "accepted") ? result.replay = true : result.replay = false;

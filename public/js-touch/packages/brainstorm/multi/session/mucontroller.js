@@ -74,7 +74,11 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            node.classList.remove("pressed");
                            if (_session.get("step") === "muwrapup"){
                                 muWrapup.getChatUI().leave();
-                                $exit();        
+                                // reset sessionInProgress in user doc
+                                _user.set("sessionInProgress", "");
+                                _user.upload().then(function(){
+                                        $exit();        
+                                });        
                            }
                            else {
                                    confirmUI.show();

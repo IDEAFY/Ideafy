@@ -115,6 +115,9 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		              if (sid.toLowerCase().search("quick") > -1) {
 		                      _sip.type = "quick";
 		              }
+		              if (sid.toLowerCase().search("s:mu") > -1) {
+                                      _sip.type = "musession";
+                              } 
 		              
 		              // need a default mode ??
 		      }

@@ -414,7 +414,20 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 }
                                                 _currentui.stopSpinner();
                                                 _stack.getStack().show(_newStep);
-                                                promise.fulfill();        
+                                                if (_newStep === "muwrapup"){
+                                                        _user.unsync();
+                                                        _user.sync(Config.get("db"), _user.get("_id"))
+                                                        .then(function(){
+                                                                _user.set("sessionInProgress", "");;
+                                                                return _user.upload();       
+                                                        })
+                                                        .then(function(){
+                                                                promise.fulfill();
+                                                        });
+                                                }
+                                                else{
+                                                        promise.fulfill();
+                                                }        
                                         });
                                 }
                                 else {
@@ -497,10 +510,14 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 // end session if there are no more participants
                 _session.watchValue("participants", function(part){
                         if (part.length === 0 && _session.get("step") !== "muwrapup"){
-                                _widget.displayInfo("participantsleft", 5000)
+                                _widget.displayInfo("participantsleft", 10000)
+                                .then(function(){
+                                        _user.set("sessionInProgress", "");;
+                                        return _user.upload();       
+                                })
                                 .then(function(){
                                         $exit();
-                                })
+                                });
                         }                
                 });
                    

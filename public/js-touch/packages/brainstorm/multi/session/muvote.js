@@ -150,7 +150,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                         if (vote.replay){
                                                 vote.replayVotes = _vote.get("replayVotes");
-                                                vote.replayResult = _vote.get("publicResult");
+                                                vote.replayResult = _vote.get("replayResult");
                                         }
                                         _session.set("vote", vote);
                                         _session.upload()

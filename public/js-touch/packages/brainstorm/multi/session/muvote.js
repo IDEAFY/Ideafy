@@ -68,7 +68,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         node.setAttribute("style", "-webkit-box-shadow: 0px 0px 2px #657B99;");        
                                 }
                                 if (_vote.get("leader")){
-                                        nod.classList.toggle("voted");
+                                        node.classList.toggle("voted");
                                 }
                         };
                         
@@ -79,8 +79,29 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // remove pushed style
                                 node.setAttribute("style", "-webkit-box-shadow: none;");
                                 
-                                // handle vote if not voted yet
-                                if (!_vote.get(type+"Vote")){
+                                // handle leader choices (can vote until he/she skips or submits)
+                                if (_vote.get("leader")){
+                                        _vote.set(type+"Vote", true); // indicates leader has cast a vote (vs. no decision)
+                                        
+                                        if (node.classList.contains("voted")){
+                                                // set vote type to true
+                                                _vote.set(type+"Votes", [_user.get("_id")]);               
+                                        }
+                                        else {
+                                                _vote.set(type+"Votes", []);         
+                                        }
+                                        
+                                        // display or hide the submit button
+                                        if (!_vote.get("publicVotes").length && !_vote.get("replayVotes").length){
+                                                _vote.set("submit", false);
+                                        }
+                                        else{
+                                                _vote.set("submit", true);
+                                        }
+                                }
+                                
+                                // handle participant vote if not voted yet
+                                else if (!_vote.get(type+"Vote")){
                                         var votes = _vote.get(type+"Votes");
                                         
                                         // if vote is negative
@@ -90,13 +111,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                         else{
                                                 // vote is positive
-                                                
-                                                // set vote type to true (leader only)
-                                                if (_vote.get("leader")){
-                                                        _vote.set(type, true);
-                                                        _vote.set("submit", true);
-                                                }
-                                                
                                                 // add vote
                                                 votes.push(_user.get("_id"));
                                                 _vote.set(type+"Votes", votes);
@@ -123,7 +137,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 var vote;
                                 
                                 // leader's position gets uploaded when he pushes the submit button
-                                if (!vote.get("leader")){
+                                if (!_vote.get("leader")){
                                          vote = _session.get("vote");
                                         _uploadInProgress = true;
                                         if (vote.public){
@@ -148,7 +162,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.submit = function(event, node){
                                 var vote = {};
                                 node.classList.remove("pressed");
-                                Map.get("cache").classList.remove("votingcache");
                                 
                                 // hide skip and submit buttons (once vote is in progress leader has to wait for other's feedback)
                                 _vote.set("skip", false);
@@ -156,9 +169,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 
                                 // register vote
                                 ["public", "replay"].forEach(function(type){
-                                        if (_vote.get(type)){
+                                        if (_vote.get(type+"Votes").length){
                                                 vote[type] = true;
                                                 vote[type+"Votes"] = [_user.get("_id")];
+                                        }
+                                        else {
+                                                // hide question for leader as well if no choice was selected
+                                                if (!_vote.get(type+"Vote")){
+                                                        _vote.set(type, false);
+                                                }
+                                                else {
+                                                        _vote.set(type+"Result", "rejected");
+                                                }
                                         }
                                         _vote.set(type+"Vote", true); // once submit is pressed leader cannot vote anymore
                                 });
@@ -231,7 +253,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         (vote.publicResult) ? result.visibility = "public" : result.visibility = "private";
                                                         (vote.replayResult === "accepted") ? result.replay = true : result.replay = false;
                                                         setTimeout(function(){
-                                                                _onEnd && _onEnd(result)
+                                                                Map.get("cache").classList.remove("votingcache");
+                                                                _onEnd && _onEnd(result);
                                                         }, 3000);
                                                 }
                                         }
@@ -241,7 +264,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         result.visibility = vote.publicResult;
                                                         result.replay = false;
                                                         setTimeout(function(){
-                                                                _onEnd && _onEnd(result)
+                                                                Map.get("cache").classList.remove("votingcache");        
+                                                                _onEnd && _onEnd(result);
                                                         }, 3000);
                                                 }      
                                         }
@@ -250,7 +274,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 if (vote.replayResult){
                                                         (vote.replayResult === "accepted") ? result.replay = true : result.replay = false;
                                                         setTimeout(function(){
-                                                                _onEnd && _onEnd(result)
+                                                                Map.get("cache").classList.remove("votingcache");
+                                                                _onEnd && _onEnd(result);
                                                         }, 3000);
                                                 }
                                         }

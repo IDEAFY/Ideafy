@@ -1187,6 +1187,12 @@ ul.notify-list{
     -webkit-overflow-scrolling: touch;
 }
 
+#public-detail .detail-header, #ideas-detail .detail-header{
+    min-height: 80px;
+    height: auto;
+    padding-bottom: 5px;
+}
+
 .mosaic #public-detail {
   opacity: 0.3;
 }

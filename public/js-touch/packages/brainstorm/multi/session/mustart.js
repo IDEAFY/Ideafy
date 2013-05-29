@@ -91,8 +91,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _next = "step";
                                 participants.reset($session.get("participants"));
                                 // reset chat window
-                                chatUI.reset($session.get("chat")[0]);
-                                chatUI.setReadonly();
+                                chatUI.reset($session.get("chat")[0])
+                                .then(function(){
+                                        chatUI.setReadonly();
+                                        // expand chat read area in to cover write interface in case of replay
+                                        if (replay){
+                                                chatUI.dom.querySelector(".chatread").classList.add("extended");
+                                        }
+                                });
                         };
                         
                         _widget.help = function(event, node){

@@ -22,22 +22,23 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 
                 widget.place(document.getElementById("ideafy-multi"));
                 
-                widget.replayMUSession = function replayMUSession(){}; // may should be an observer instead
-                
-                
-                widget.reset = function reset(sip){ 
+                 widget.reset = function reset(sip){ 
                         if (!sip){
                                 muInit.reset();
                                 stack.getStack().show("mubinit");        
                         }
                         else if (sip.mode === "join"){
                                 widget.join(sip.id);        
+                        }
+                        else{
+                                widget.replayMUSession(sip.id);
                         }      
                 };
                 
                 // used to replay session
-                widget.view = function view(sid){
-                        
+                widget.replayMUSession = function replayMUSession(id){
+                        muController.reset(id, true);
+                        stack.getStack().show("musession");       
                 };
                 
                 // joining an existing session
@@ -109,6 +110,9 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                         if ($sip.mode === "join"){
                                 console.log("joining session", $sip);
                                 widget.join($sip.id);        
+                        }
+                        else{
+                                widget.replayMUSession($sip.id);
                         }
                 }
                 

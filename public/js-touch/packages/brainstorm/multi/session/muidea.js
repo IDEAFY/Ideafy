@@ -513,7 +513,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         auth.push(part.id);
                                         names.push(part.username);        
                                 });
-                                console.log(auth, names);
                                 cdb.setTransport(_transport);
                                 cdb.set("title", _idea.get("title"));
                                 cdb.set("sessionId", $session.get("_id"));
@@ -586,19 +585,25 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 clearInterval(_miTimer);
                                 
                                 // if idea is present show write up interface and board in readonly mode
-                                if ($session.get("idea").length){
+                                if (replay || $session.get("idea").length){
+                                        // set _next to screen
+                                        _next="screen"; 
+                                        // expand chat read area in to cover write interface in case of replay
+                                        chatUI.dom.querySelector(".chatread").classList.add("extended");
                                         _wb.setReadonly(true);
                                         _tools.set("ready", false);
                                         _tools.set("showidea", true);
+                                        
+                                        _widget.displayIdea();
+                                        
                                         // in quick mode only one scenario is available
                                         _idea.reset($session.get("idea")[0]);
                                         // add it to the session data store
                                         $data.set("idea", $session.get("idea")[0]);
                                         // idea should be readonly
                                         _tools.set("readonly", true);
-                                        _tools.set("shownext", true);
-                                        // set _next to screen
-                                        _next="screen";       
+                                        // hide next button
+                                        _tools.set("shownext", false);      
                                 }
                                 else{
                                         // idea fields are not uploaded separately        
@@ -675,9 +680,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                                 console.log("failure : ", response);
                                                         });
                                                 }
-                                                else{
-                                                        console.log("no upload required");
-                                                }
                                         
                                                 // toggle ready button
                                                 (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
@@ -688,7 +690,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // update local whiteboard content as soon as it is updated in the database
                         $session.watchValue("ideaWB", function(content){
                                 if ($session.get("step") === "muidea" && !_tools.get("showidea")){
-                                        console.log("remote wb change", content);
                                         if (content.length && _wb.getStack().getCurrentName() === "default"){
                                                 _wb.selectScreen("main");        
                                         }

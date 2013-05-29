@@ -461,7 +461,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // INIT SCENARIO
                         // Initializing the muscenario UI
                         _widget.reset = function reset(replay){
-                                console.log("reset muscenario : ", $session.toJSON());
                                 // retrieve chat document
                                 chatUI.clear();
                                 if ($session.get("chat")[2]){
@@ -486,17 +485,23 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if scenario is present show write up interface and board in readonly mode
-                                if ($session.get("scenario").length){                                        
+                                if (replay || $session.get("scenario").length){                                        
                                         // set _next to screen
                                         _next="screen";
+                                        
+                                        // expand chat read area in to cover write interface in case of replay
+                                        chatUI.dom.querySelector(".chatread").classList.add("extended");
+                                        
                                         _tools.set("ready", false);
                                         
-                                        // shown write up interface
+                                        // show write up interface
                                         _widget.displayStory();
                                         
                                         // story should be readonly
                                         _tools.set("readonly", true);
-                                        _tools.set("shownext", true);
+                                        
+                                        // hide next button
+                                        _tools.set("shownext", false);
                                         
                                         // in quick mode only one scenario is available
                                         _scenario.reset($session.get("scenario")[0]);
@@ -586,9 +591,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                                 console.log("failure : ", response);
                                                         });
                                                 }
-                                                else{
-                                                        console.log("no upload required");
-                                                }
                                         
                                                 // toggle ready button
                                                  (_wbContent.getNbItems() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);
@@ -607,9 +609,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         }
                                         if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
                                                 _wbContent.reset(content);       
-                                        }
-                                        else{
-                                                console.log("no local update necessary");
                                         }
                                 }
                         });

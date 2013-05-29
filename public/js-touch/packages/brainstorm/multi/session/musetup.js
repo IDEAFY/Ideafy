@@ -46,7 +46,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                                 (left === 0) ? this.classList.add("reload") : this.classList.remove("reload");
                                         },
                                         updateNext : function(selected){
-                                                (_selection.get("char").selected && _selection.get("context").selected && _selection.get("problem").selected && _user.get("_id") === $session.get("initiator").id) ? this.classList.remove("invisible"):this.classList.add("invisible");
+                                                (_next === "step" && _selection.get("char").selected && _selection.get("context").selected && _selection.get("problem").selected && _user.get("_id") === $session.get("initiator").id) ? this.classList.remove("invisible"):this.classList.add("invisible");
                                         },
                                         popup : function(pop){
                                                 (pop) ? this.classList.add("highlighted") : this.classList.remove("highlighted");
@@ -329,6 +329,11 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         chatUI.reset($session.get("chat")[1]);
                                 }
                                 if (replay){
+                                        _next = "screen"; // read-only
+                                        
+                                        // expand chat read area in to cover write interface in case of replay
+                                        chatUI.dom.querySelector(".chatread").classList.add("extended");
+                                        
                                         // check if time has been spent on this step already
                                         _elapsed = $session.get("elapsedTimers").musetup || 0;
                                         
@@ -345,7 +350,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         _timer.set("display", true);
                                         
                                         if ($session.get("characters").length){
-                                                _next = "screen"; // read-only
                                                 // retrieve session deck
                                                 _widget.getDeck($session.get("deck")).then(function(){
                                                         // retrieve card information
@@ -572,7 +576,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         });
                         
                         
-                        STPCHAT = chatUI;
                         // Return
                         return _widget;
                 };     

@@ -73,6 +73,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 _progress.exit = function(event, node){
                            node.classList.remove("pressed");
                            if (_session.get("step") === "muwrapup"){
+                                if (_session.get("initiator").id === _user.get("_id")){
+                                        muWrapup.getChatUI().setReadonly();
+                                }
                                 muWrapup.getChatUI().leave();
                                 // reset sessionInProgress in user doc
                                 _user.set("sessionInProgress", "");
@@ -241,7 +244,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }
                         cdb.set("msg", [{user: "SYS", "type": 5, "arg": arg, "time": now}]);
                         
-                        console.log(step, arg);
                         // complete chat template
                         cdb.set("sid", _session.get("_id"));
                         cdb.set("lang", _session.get("lang"));
@@ -522,6 +524,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 });
                    
                 SESSION = _session;
+                SDATA = _sessionData;
                 STEPS = _steps;
                 MSTACK = _stack;
                 // return

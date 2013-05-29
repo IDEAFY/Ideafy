@@ -4346,12 +4346,12 @@ li.color-item{
 
 #muwrapup .wrapupvisibility{
     top: 400px;
-    background: url('../img/privateForList.png') no-repeat center center;
+    background: url('../img/public/privateForList.png') no-repeat center center;
     background-size: contain;
 }
 
 #muwrapup .wrapupvisibility.publicwrapup{
-    background: url('../img/publicForList.png') no-repeat center center;
+    background: url('../img/public/publicForList.png') no-repeat center center;
     background-size: contain;
 }
 
@@ -6769,8 +6769,8 @@ li.my2q{
     display: block;
 }
 
-#musetup .sessionchat{
-    left: 218px;
+#musetup .sessionchat, #mustart .sessionchat{
+    left: 225px;
 }
 
 #muscenario .sessionchat, #muidea .sessionchat, #mutech .sessionchat{
@@ -6780,7 +6780,8 @@ li.my2q{
 #muwrapup .sessionchat{
     height:302px;
     top:226px;
-    left:223px;
+    left:231px;
+    width: 615px;
 }
 
 #muwrapup .sessionchat.folded{
@@ -6791,10 +6792,14 @@ li.my2q{
     height: 250px;
 }
 
+#muwrapup .chatread.replayed{
+    height: 287px;
+}
+
 #muwrapup .togglechat{
     position: absolute;
     top: 350px;
-    left: 100px;
+    left: 144px;
     width: 40px;
     height: 40px;
     border-radius: 5px;

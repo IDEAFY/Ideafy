@@ -121,6 +121,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		              
 		              // need a default mode ??
 		      }
+		      console.log(_sip);
 		      _widget.selectScreen(_sip.type, _sip);
 		});
 		

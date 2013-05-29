@@ -88,7 +88,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 var cdbView; 
                                 switch (type){
                                         case "idea":
-                                                console.log(data);
                                                 cdbView = new CouchDBView();
                                                 cdbView.setTransport(transport);
                                                 cdbView.sync(db, "ideas", "_view/all",{

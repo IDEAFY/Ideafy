@@ -45,7 +45,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 }
                                         },
                                         setVisibility : function(visibility){
-                                                (visibility === "public") ? this.classList.add("publicwrapup") : this.classList.remove("publicwrapup");
+                                                (visibility && visibility === "public") ? this.classList.add("publicwrapup") : this.classList.remove("publicwrapup");
                                         },
                                         setReplay : function(replay){
                                                 (replay) ? this.classList.remove("invisible") : this.classList.add("invisible");        
@@ -120,11 +120,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 
                                 chatUI.clear();
                                 if ($session.get("chat")[5]){
-                                        chatUI.reset($session.get("chat")[5]);
-                                        chatUI.getModel().watchValue("msg", function(arr){
-                                                if(arr.length>1) {
-                                                        _wrapup.set("newmsg", true);
-                                                }               
+                                        chatUI.reset($session.get("chat")[5])
+                                        .then(function(){
+                                                chatUI.getModel().watchValue("msg", function(arr){
+                                                        if(arr.length>1) {
+                                                                _wrapup.set("newmsg", true);
+                                                        }               
+                                                });
+                                                // expand chat read area in to cover write interface in case of replay
+                                                if (replay){
+                                                        chatUI.dom.querySelector(".chatread").classList.add("replayed");
+                                                }
                                         });
                                 }
                                 
@@ -134,15 +140,43 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _wrapup.set("score", $session.get("score"));
                                 _wrapup.set("duration", $session.get("duration"));
                                 
+                                _cards.reset([]);
+                                
+                                // watch $data store for cards
+                                ["added", "updated"].forEach(function(change){
+                                        $data.watch(change, function(){
+                                                var cards;
+                                        
+                                                if ($data.get("characters") && $data.get("contexts") && $data.get("problems") && ($data.get("techno").getNbItems() === 3)){
+                                                        cards = [
+                                                                $data.get("characters"),
+                                                                $data.get("contexts"),
+                                                                $data.get("problems"),
+                                                                $data.get("techno").get(0),
+                                                                $data.get("techno").get(1),
+                                                                $data.get("techno").get(2)
+                                                                ];
+                                                        _cards.reset(cards);
+                                                }                
+                                        });
+                                });
+                                
+                                /*
                                 // build card UI
-                                _cards.reset([
-                                        $data.get("characters"),
-                                        $data.get("contexts"),
-                                        $data.get("problems"),
-                                        $data.get("techno").get(0),
-                                        $data.get("techno").get(1),
-                                        $data.get("techno").get(2)        
-                                ]);    
+                                if (replay){
+                                        
+                                }
+                                else{
+                                        _cards.reset([
+                                                $data.get("characters"),
+                                                $data.get("contexts"),
+                                                $data.get("problems"),
+                                                $data.get("techno").get(0),
+                                                $data.get("techno").get(1),
+                                                $data.get("techno").get(2)        
+                                        ]);
+                                }
+                                */  
                         };
                         
                         // watch session data for updates
@@ -162,24 +196,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _wrapup.set("duration", val);        
                         });
                         
-                        // watch $data store for cards
-                        ["added", "updated"].forEach(function(change){
-                                $data.watch(change, function(){
-                                        var cards;
-                                        
-                                        if ($data.get("characters") && $data.get("contexts") && $data.get("problems") && ($data.get("techno").getNbItems() === 3)){
-                                                cards = [
-                                                        $data.get("characters"),
-                                                        $data.get("contexts"),
-                                                        $data.get("problems"),
-                                                        $data.get("techno").get(0),
-                                                        $data.get("techno").get(1),
-                                                        $data.get("techno").get(2)
-                                                        ];
-                                                _cards.reset(cards);
-                                        }                
-                                });
-                        });
+                        
                         
                         // reset chatUI
                         $session.watchValue("chat", function(arr){

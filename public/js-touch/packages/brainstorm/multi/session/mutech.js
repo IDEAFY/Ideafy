@@ -58,7 +58,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 (!left && _drawnCards>0) ? this.classList.add("reload") : this.classList.remove("reload");
                                         },
                                         updateNext : function(selected){
-                                                (_widget.isLeader() && _techDisplay.get("tech1").selected && _techDisplay.get("tech2").selected && _techDisplay.get("tech3").selected) ? this.classList.remove("invisible"):this.classList.add("invisible");
+                                                (_widget.isLeader() && _techDisplay.get("tech1").selected && _techDisplay.get("tech2").selected && _techDisplay.get("tech3").selected && _next === "step") ? this.classList.remove("invisible"):this.classList.add("invisible");
                                         },
                                         setSelected : function(selected){
                                                 (selected) ? this.classList.add("pushed") : this.classList.remove("pushed");        
@@ -292,7 +292,6 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                 .then(function(){
                                                         var newCount = drawStatus.get("count");
                                                         newCount--;
-                                                        console.log("fulfill get card request for : ", name, newCount);
                                                         // update drawStatus by removing the card drawn
                                                         drawStatus.set("count", newCount); 
                                                 });
@@ -305,20 +304,16 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
                                         drawStatus.watchValue("count", function(val){
                                                 if (!val) {
-                                                        console.log("all cards drawn and displayed");
                                                         $session.unsync();
                                                         $session.sync(_db, $session.get("_id"))
                                                         .then(function(){
-                                                                console.log("tech resync successful");
                                                                 // updated drawn tech cards
                                                                 ["tech1", "tech2", "tech3"].forEach(function(v,i){
-                                                                        $session.set("drawn"+v, _techCards.get(i).id);
-                                                                        console.log(v, i, _techCards.get(i).id);       
+                                                                        $session.set("drawn"+v, _techCards.get(i).id);       
                                                                 });
                                                                 return $session.upload();
                                                         })
                                                         .then(function(){
-                                                                console.log("tech upload successful");
                                                                 promise.fulfill();
                                                         });
                                                 }
@@ -404,8 +399,10 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                         "tech2":{"popup": false, "selected":false},
                                         "tech3":{"popup": false, "selected": false}
                                 });
-                                if (replay|| sessionTech.length){
+                                if (replay || sessionTech.length){
                                         _next = "screen"; // read-only
+                                        // expand chat read area in to cover write interface in case of replay
+                                        chatUI.dom.querySelector(".chatread").classList.add("extended");
                                         // retrieve card information from session data
                                         _widget.getCardDetails(sessionTech[0], "tech1")
                                         .then(function(){
@@ -533,7 +530,6 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 }
                         );
                         
-                        MTSPIN = spinner;
                         // Return
                         return _widget;
                 };     

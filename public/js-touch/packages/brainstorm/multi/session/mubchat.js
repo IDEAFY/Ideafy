@@ -192,13 +192,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                 };
                 
                 mubChat.reset = function reset(chatId){
+                        var promise = new Promise();
                         position = "null";
                         mubChat.dom.querySelector(".chatwrite").classList.add("placeholder");
                         mubChat.dom.querySelector(".chatwrite").innerHTML = labels.get("typemsg");
                         chatCDB.unsync();
                         chatCDB.reset({});
                         chat.reset([]);
-                        spinner.spin(document.getElementById("chatspinner"));
+                        spinner.spin(mubChat.dom.querySelector("#chatspinner"));
                         chatCDB.sync(Config.get("db"), chatId).then(function(){
                                 var i, arr = chatCDB.get("users");
                                 
@@ -212,16 +213,21 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 
                                 // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
                                 if (isNaN(position) && !chatCDB.get("readonly")){
+                                        console.log("join chat");
                                         mubChat.joinChat().then(function(){
-                                                spinner.stop();       
+                                                spinner.stop();
+                                                promise.fulfill();       
                                         });        
                                 }
                                 
                                 else{
+                                        console.log("display chat");
                                         chat.reset(chatCDB.get("msg"));
                                         spinner.stop();
+                                        promise.fulfill();
                                 }      
                         });
+                        return promise;
                 };
                 
                 mubChat.joinChat = function joinChat(){
@@ -247,7 +253,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                 };
                 
                 mubChat.leave = function leave(){
-                        console.log("participant leaving chat");
                         var promise = new Promise(),
                             users = chatCDB.get("users");
                         mubChat.setMessage("leave")

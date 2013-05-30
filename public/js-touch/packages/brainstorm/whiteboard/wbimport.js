@@ -211,7 +211,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 _postit.reset({"type": "import", "content":""});
                         }
                         else{
-                               _postit.reset($store.get($pos)); 
+                               _postit.reset($store.get($pos));
+                               _widget.dom.querySelector("#postpic").scrollIntoView();
                         }
                 };
                 

@@ -111,7 +111,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         "chatevent" : new Event(mubChat)
                 });
                 
-                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul id="chatmessages" data-chat="foreach" data-model="bind: setHeight, readonly"><li data-chat="bind:setLiStyle, user"><div class="container" data-chat="bind:setAvatar, user"></div><div class="innerchatmsg" data-chat="bind:setInnerMsgStyle, user"><span class="time" data-chat="bind: setTime, time"></span><span class="username" data-chat="bind:setUserName, user"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg"></span></div></li></ul></div><div class="chatwrite placeholder" data-model="bind:setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
+                mubChat.template = '<div class="mubchat"><div id="chatspinner"></div><div class="chatread"><ul class="chatmessages" data-chat="foreach" data-model="bind: setHeight, readonly"><li data-chat="bind:setLiStyle, user"><div class="container" data-chat="bind:setAvatar, user"></div><div class="innerchatmsg" data-chat="bind:setInnerMsgStyle, user"><span class="time" data-chat="bind: setTime, time"></span><span class="username" data-chat="bind:setUserName, user"></span><br/><span class="chatmsg" data-chat="bind: setMsg, msg"></span></div></li></ul></div><div class="chatwrite placeholder" data-model="bind:setReadonly, readonly" data-labels="bind:innerHTML, typemsg" data-chatevent = "listen:touchstart, removePlaceholder; listen: keypress, post"></div></div>';
                 
                 mubChat.removePlaceholder = function(event, node){
                         if (node.innerHTML === labels.get("typemsg")){
@@ -129,7 +129,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 // display message immediately
                                 chat.alter("push", {"user": position, "time": now, "msg": node.innerHTML});
                                 id = chat.getNbItems()-1;
-                                document.getElementById("chatmessages").querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
+                                mubChat.dom.querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
                                 
                                 // push message to couchdb
                                 msg.push({"user": position, "time": now, "msg": node.innerHTML});
@@ -174,7 +174,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         }
                         chat.alter("push", newMsg);
                         id = chat.getNbItems()-1;
-                        document.getElementById("chatmessages").querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
+                        mubChat.dom.querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
                         
                         msg.push(newMsg);
                         chatCDB.set("msg", msg);
@@ -284,7 +284,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                 chatCDB.watchValue("msg", function(arrCDB){
                         var l = arrCDB.length - 1; 
                         chat.reset(arrCDB);
-                        document.getElementById("chatmessages").querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
+                        mubChat.dom.querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
                 });
                 
         }

@@ -524,6 +524,13 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 _next = "step";        
                         };
                         
+                        // reset chatUI
+                        $session.watchValue("chat", function(arr){
+                                if (arr.length === 2 && chatUI.getModel().get("_id") !== arr[2]){
+                                        chatUI.reset(arr[2]);
+                                }        
+                        });
+                        
                         $session.watchValue("drawn_char", function(val){
                                 val && _widget.updateDrawnCard("char", val);       
                         });

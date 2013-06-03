@@ -38,7 +38,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                             _mscTimer, _mscInterval,
                             _scenario = new Store({"title" : "", "story" : "", "solution" : ""}),
                             _wbContent = new Store([]), // a store of whiteboard objects
-                            _wb = new Whiteboard("scenario", _wbContent, _tools),
+                            _wb = new Whiteboard("scenario", _wbContent, _tools, "mu"),
                             _start, _elapsed = 0,
                             _next = "step", // used to prevent multiple clicks/uploads on next button --> toggles "step"/"screen"
                             _transport = Config.get("transport"),

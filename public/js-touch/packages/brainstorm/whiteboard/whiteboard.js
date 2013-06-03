@@ -8,7 +8,7 @@
 define(["Amy/Stack-plugin", "./wbdefault", "./wbmain", "./wbpostit", "./wbimport", "./wbdrawing", "Store"],
         function(Stack, Default, Main, Postit, Import, Drawing, Store){
         
-                function WhiteboardConstructor($type, $store, $tools){
+                function WhiteboardConstructor($type, $store, $tools, $mode){
                         
                         var _wbContent = new Store([]), // a store of whiteboard objects
                             _stack = this;
@@ -45,8 +45,8 @@ define(["Amy/Stack-plugin", "./wbdefault", "./wbmain", "./wbpostit", "./wbimport
                         this.getStack().add("drawing", new Drawing($store, this.exitScreen));
                 }
                 
-                return function WhiteboardFactory($type, $store, $tools){
+                return function WhiteboardFactory($type, $store, $tools, $mode){
                         WhiteboardConstructor.prototype = new Stack();
-                        return new WhiteboardConstructor($type, $store, $tools);        
+                        return new WhiteboardConstructor($type, $store, $tools, $mode);        
                 };
         });

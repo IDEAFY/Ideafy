@@ -91,6 +91,12 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         
                         widget.place(document.getElementById("mubwait"));
                         
+                        widget.help = function(event, node){
+                                Help.setContent("mustarthelp");
+                                document.getElementById("cache").classList.add("appear");
+                                document.getElementById("help-popup").classList.add("appear");
+                         };
+                        
                         // create confirmation UI
                         confirmUI = new Confirm(widget.dom);
                      

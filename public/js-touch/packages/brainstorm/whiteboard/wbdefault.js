@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "Bind.plugin"],
         function(Widget, Config, Model){
                 
-           return function WBDefaultConstructor($type){
+           return function WBDefaultConstructor($type, $mode){
              
                 var _widget = new Widget(),
                     _helplbl = "",
@@ -18,7 +18,7 @@ define(["OObject", "service/config", "Bind.plugin"],
                 _widget.plugins.add("labels", new Model(_labels));
                 
                 //get session type
-                (document.getElementById("musession")) ? _sessionType = "mu" : _sessionType = "quick";
+                ($mode) ? _sessionType = $mode : _sessionType = "quick";
                 
                 //if whiteboard is of type scenario display appropriate help message
                 ($type === "scenario") ? _helplbl = _sessionType +"scenariohelp" : _helplbl = _sessionType + "ideahelp";

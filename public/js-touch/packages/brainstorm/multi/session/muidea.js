@@ -590,9 +590,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         _next="screen"; 
                                         // expand chat read area in to cover write interface in case of replay
                                         chatUI.dom.querySelector(".chatread").classList.add("extended");
-                                        _wb.setReadonly(true);
                                         _tools.set("ready", false);
-                                        _tools.set("showidea", true);
                                         
                                         _widget.displayIdea();
                                         

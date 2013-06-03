@@ -6880,12 +6880,12 @@ li.my2q{
     width: 595px;
 }
 
-#chatmessages .container{
+.chatmessages .container{
     float: left;
     padding-right: 10px;
 }
 
-#chatmessages .doctor-deedee{
+.chatmessages .doctor-deedee{
     width: 30px;
     height: 30px;
     background-image: url('../img/brainstorm/doctordeedee87x85.png');
@@ -6893,19 +6893,19 @@ li.my2q{
     background-repeat: no-repeat; 
 }
 
-#chatmessages .avatar{
+.chatmessages .avatar{
     width: 30px;
     height: 30px;
     border-radius: 15px;
     background-size: contain;
 }
 
-#chatmessages .innerchatmsg{
+.chatmessages .innerchatmsg{
     display: inline-block;
     padding: 0px 5px 3px 5px;
 }
 
-#chatmessages .time, #chatmessages .username{
+.chatmessages .time, .chatmessages .username{
     font-size: 10px;
     color: #808080;
 }

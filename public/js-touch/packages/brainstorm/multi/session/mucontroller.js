@@ -311,8 +311,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 if (v.name === step){
                                                         current = i;
                                                         _steps.update(i, "currentStep", true);
-                                                        // reset current step UI
-                                                        _stack.getStack().get(step).reset(replay);
                                                         (v.name === "muwrapup") ? _steps.update(i, "status", "done") : _steps.update(i, "status", "ongoing");
                                                 }      
                                         }      

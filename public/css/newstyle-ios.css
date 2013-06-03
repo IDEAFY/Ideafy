@@ -2957,6 +2957,11 @@ textarea.solution {
     margin-top: 20px;
 }
 
+#musession .import{
+    height: 380px;
+    overflow-y: scroll;
+}
+
 .import .wbpostit{
     width: 480px;
     height: 340px;
@@ -3183,6 +3188,14 @@ textarea.solution {
     background-size:contain;
     padding: 0px;
     border: none;
+}
+
+#musession .wb-item.enlarge{
+    display: block;
+    height: 380px;
+    top: 52px;
+    margin: 0px;
+    padding: 0px;
 }
 
 .choosecolorlbl{
@@ -6857,18 +6870,22 @@ li.my2q{
     display: hidden;
 }
 
-#chatmessages li{
+.chatmessages li{
     margin-bottom: 5px;
     width: 610px;
     display: inline-block;
 }
 
-#chatmessages .container{
+#muwrapup .chatmessages li{
+    width: 595px;
+}
+
+.chatmessages .container{
     float: left;
     padding-right: 10px;
 }
 
-#chatmessages .doctor-deedee{
+.chatmessages .doctor-deedee{
     width: 30px;
     height: 30px;
     background-image: url('../img/brainstorm/doctordeedee87x85.png');
@@ -6876,19 +6893,19 @@ li.my2q{
     background-repeat: no-repeat; 
 }
 
-#chatmessages .avatar{
+.chatmessages .avatar{
     width: 30px;
     height: 30px;
     border-radius: 15px;
     background-size: contain;
 }
 
-#chatmessages .innerchatmsg{
+.chatmessages .innerchatmsg{
     display: inline-block;
     padding: 0px 5px 3px 5px;
 }
 
-#chatmessages .time, #chatmessages .username{
+.chatmessages .time, .chatmessages .username{
     font-size: 10px;
     color: #808080;
 }

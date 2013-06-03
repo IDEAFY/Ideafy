@@ -41,7 +41,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                         }, 300);
                                                 }
                                                 else{
-                                                        clearInterval(_flash);
+                                                        _flash && clearInterval(_flash);
                                                 }
                                         },
                                         setVisibility : function(visibility){
@@ -78,7 +78,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 "muwrapupevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "muwrapup"><div class="previousbutton" data-muwrapupevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muwrapup" data-muwrapupevent="listen:touchstart, toggleProgress"></div><div class="congrats"><div class="message"><span class="messagetitle" data-labels="bind:innerHTML, congratulations"></span><span class="sessioncompleted" data-labels="bind:innerHTML, sessioncompleted"></span></div><div class="enddeedee"></div></div><div class="summary"><div class="storysummary"><div class="storyheader" data-labels="bind:innerHTML, storytitlelbl">Your Story</div><div class="storytitle" data-wrapup="bind:formatTitle, scenario.title"></div><div class="storycontent"><p class="summaryheader" data-labels="bind:innerHTML, scenarioheader"></p><p class="content" data-wrapup="bind:innerHTML, scenario.story"></p><p class="summaryheader" data-labels="bind:innerHTML, scenariosolution"></p><p class="content" data-wrapup="bind:innerHTML, scenario.solution">solution content</p></div></div><div class="ideasummary"><div class="ideaheader" data-labels="bind:innerHTML, ideatitlelbl"></div><div class="ideatitle" data-wrapup="bind:formatTitle, idea.title"></div><div class="ideacontent"><p class="summaryheader" data-labels="bind:innerHTML, ideadescription"></p><p class="content" data-wrapup="bind:innerHTML, idea.description"></p><p class="summaryheader" data-labels="bind:innerHTML, ideaimplementation"></p><p class="content" data-wrapup="bind:innerHTML, idea.solution">solution content</p></div></div></div><div class="sessionresults"><div class ="sessiontime"><span data-labels="bind:innerHTML, yourtime"></span><span data-wrapup = "bind: setTime, duration"></span></div><div class="sessionscore"><span data-labels="bind:innerHTML, yourscore"></span><span data-wrapup="bind:setScore, score"></span></div><div class="wrapupvisibility" data-wrapup="bind:setVisibility, idea.visibility"></div><div class="wrapupreplay invisible" data-wrapup="bind:setReplay, idea.replay"></div></div><div class="sessioncards" data-muwrapupevent="listen:touchstart, toggleCards"><legend>Cards used during this session</legend><ul class="cardlist" data-cards="foreach"><li class="card"><div class="cardpicture" data-cards="bind:setPic,pic"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></li></ul></div><div class="togglechat" data-muwrapup="bind:alertMsg, newmsg" data-muwrapupevent="listen: touchstart, toggleChat"></div><div class="sessionchat folded" data-place="place:chat"></div></div>';
+                        _widget.template = '<div id = "muwrapup"><div class="previousbutton" data-muwrapupevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muwrapup" data-muwrapupevent="listen:touchstart, toggleProgress"></div><div class="congrats"><div class="message"><span class="messagetitle" data-labels="bind:innerHTML, congratulations"></span><span class="sessioncompleted" data-labels="bind:innerHTML, sessioncompleted"></span></div><div class="enddeedee"></div></div><div class="summary"><div class="storysummary"><div class="storyheader" data-labels="bind:innerHTML, storytitlelbl">Your Story</div><div class="storytitle" data-wrapup="bind:formatTitle, scenario.title"></div><div class="storycontent"><p class="summaryheader" data-labels="bind:innerHTML, scenarioheader"></p><p class="content" data-wrapup="bind:innerHTML, scenario.story"></p><p class="summaryheader" data-labels="bind:innerHTML, scenariosolution"></p><p class="content" data-wrapup="bind:innerHTML, scenario.solution">solution content</p></div></div><div class="ideasummary"><div class="ideaheader" data-labels="bind:innerHTML, ideatitlelbl"></div><div class="ideatitle" data-wrapup="bind:formatTitle, idea.title"></div><div class="ideacontent"><p class="summaryheader" data-labels="bind:innerHTML, ideadescription"></p><p class="content" data-wrapup="bind:innerHTML, idea.description"></p><p class="summaryheader" data-labels="bind:innerHTML, ideaimplementation"></p><p class="content" data-wrapup="bind:innerHTML, idea.solution">solution content</p></div></div></div><div class="sessionresults"><div class ="sessiontime"><span data-labels="bind:innerHTML, yourtime"></span><span data-wrapup = "bind: setTime, duration"></span></div><div class="sessionscore"><span data-labels="bind:innerHTML, yourscore"></span><span data-wrapup="bind:setScore, score"></span></div><div class="wrapupvisibility" data-wrapup="bind:setVisibility, idea.visibility"></div><div class="wrapupreplay invisible" data-wrapup="bind:setReplay, idea.sessionReplay"></div></div><div class="sessioncards" data-muwrapupevent="listen:touchstart, toggleCards"><legend>Cards used during this session</legend><ul class="cardlist" data-cards="foreach"><li class="card"><div class="cardpicture" data-cards="bind:setPic,pic"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></li></ul></div><div class="togglechat" data-muwrapup="bind:alertMsg, newmsg" data-muwrapupevent="listen: touchstart, toggleChat"></div><div class="sessionchat folded" data-place="place:chat"></div></div>';
                         
                         _widget.place(Map.get("muwrapup"));
                         
@@ -123,8 +123,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         chatUI.reset($session.get("chat")[5])
                                         .then(function(){
                                                 chatUI.getModel().watchValue("msg", function(arr){
+                                                        console.log(arr.length);
                                                         if(arr.length>1) {
                                                                 _wrapup.set("newmsg", true);
+                                                                setTimeout(function(){
+                                                                        clearInterval(_flash);       
+                                                                }, 2500);
                                                         }               
                                                 });
                                                 // expand chat read area in to cover write interface in case of replay
@@ -142,31 +146,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 
                                 _cards.reset([]);
                                 
-                                // watch $data store for cards
-                                ["added", "updated"].forEach(function(change){
-                                        $data.watch(change, function(){
-                                                var cards;
-                                        
-                                                if ($data.get("characters") && $data.get("contexts") && $data.get("problems") && ($data.get("techno").getNbItems() === 3)){
-                                                        cards = [
-                                                                $data.get("characters"),
-                                                                $data.get("contexts"),
-                                                                $data.get("problems"),
-                                                                $data.get("techno").get(0),
-                                                                $data.get("techno").get(1),
-                                                                $data.get("techno").get(2)
-                                                                ];
-                                                        _cards.reset(cards);
-                                                }                
-                                        });
-                                });
-                                
-                                /*
-                                // build card UI
-                                if (replay){
-                                        
-                                }
-                                else{
+                                if (!replay){
                                         _cards.reset([
                                                 $data.get("characters"),
                                                 $data.get("contexts"),
@@ -176,7 +156,26 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 $data.get("techno").get(2)        
                                         ]);
                                 }
-                                */  
+                                else{
+                                        // watch $data store for cards
+                                        ["added", "updated"].forEach(function(change){
+                                                $data.watch(change, function(){
+                                                        var cards;
+                                        
+                                                        if ($data.get("characters") && $data.get("contexts") && $data.get("problems") && ($data.get("techno").getNbItems() === 3)){
+                                                                cards = [
+                                                                        $data.get("characters"),
+                                                                        $data.get("contexts"),
+                                                                        $data.get("problems"),
+                                                                        $data.get("techno").get(0),
+                                                                        $data.get("techno").get(1),
+                                                                        $data.get("techno").get(2)
+                                                                        ];
+                                                                _cards.reset(cards);
+                                                        }                
+                                                });
+                                        });
+                                } 
                         };
                         
                         // watch session data for updates

@@ -6772,7 +6772,7 @@ li.my2q{
     margin-right: -20px;  
 }
 
-#ideafy-multi .sessionchat{
+#ideafy-multi .mubchat{
     width: 630px;
     height: 282px;
     padding: 20px;
@@ -6782,15 +6782,15 @@ li.my2q{
     display: block;
 }
 
-#musetup .sessionchat, #mustart .sessionchat{
+#musetup .mubchat, #mustart .mubchat{
     left: 225px;
 }
 
-#muscenario .sessionchat, #muidea .sessionchat, #mutech .sessionchat{
+#muscenario .mubchat, #muidea .mubchat, #mutech .mubchat{
     left: 301px;
 }
 
-#muwrapup .sessionchat{
+#muwrapup .mubchat{
     height:302px;
     top:226px;
     left:231px;
@@ -6830,7 +6830,7 @@ li.my2q{
     background-repeat: no-repeat;
 }
 
-.sessionchat .chatread{
+.mubchat .chatread{
     background: white;
     border: 1px dashed #657B99;
     border-top-left-radius: 5px;
@@ -6841,11 +6841,11 @@ li.my2q{
     -webkit-transform: translate3d(0,0,0);
 }
 
-.sessionchat .chatread.extended{
+.mubchat .chatread.extended{
     height: 260px;
 }
 
-.sessionchat .chatwrite {
+.mubchat .chatwrite {
     background: #E6E6E6;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -6862,7 +6862,7 @@ li.my2q{
     width: 608px;
 }
 
-.sessionchat .chatwrite.placeholder{
+.mubchat .chatwrite.placeholder{
     color: #808080;
 }
 

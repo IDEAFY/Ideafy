@@ -1280,7 +1280,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 // get idea document
                 getDocAsAdmin(json.id, cdb)
                 .then(function() {
-                        console.log(json.id, json.voter, json.vote);
                         votes = cdb.get("votes");
                         if (!votes){votes=[];}
                         votes.unshift(json.vote);
@@ -1289,22 +1288,18 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 })
                 .then(function() {
                         //update user rated ideas & score
-                        console.log(json.id, json.voter, json.vote);
                         votercdb.setTransport(transport);
                         return getDocAsAdmin(json.voter, votercdb);
                 })
                 .then(function(){
-                        console.log(json.id, json.voter, json.vote, votercdb.toJSON());
                         var ri = votercdb.get("rated_ideas") || [],
                             ip = votercdb.get("ip") || 0;
                         ri.unshift(json.id);
                         votercdb.set("rated_ideas", ri);
                         votercdb.set("ip", ip+2);
-                        console.log("before updating user document :", ri, json.voter);
                         return updateDocAsAdmin(json.voter, votercdb);
                 })
                 .then(function(){
-                        console.log(json.id, json.voter, json.vote, votercdb.get("rated_ideas"));
                         onEnd("ok");       
                  });
         });

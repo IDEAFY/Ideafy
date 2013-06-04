@@ -165,7 +165,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 
                                 // reinitialize couchdbstore
                                 ideaCDB.unsync();
-                                ideaCDB.reset();
+                                ideaCDB.reset([]);
                                 
                                 ideaCDB.sync(Config.get("db"), "ideas", "_view/all", {key:'"'+id+'"', include_docs:true}).then(function(){
                                         _store.reset(ideaCDB.get(0).doc);

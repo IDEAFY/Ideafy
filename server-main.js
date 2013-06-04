@@ -194,6 +194,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });        
         },
             updateDocAsAdmin = function(docId, cdbStore){
+                    console.log(cdbStore.toJSON());
                 var promise = new Promise();
                 transport.request("CouchDB", {
                         method : "PUT",
@@ -1300,6 +1301,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         ri.unshift(json.id);
                         votercdb.set("rated_ideas", ri);
                         votercdb.set("ip", ip+2);
+                        console.log("before updating user document :", ri, json.voter);
                         return updateDocAsAdmin(json.voter, votercdb);
                 })
                 .then(function(){

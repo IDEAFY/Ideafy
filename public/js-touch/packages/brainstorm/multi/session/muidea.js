@@ -144,7 +144,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         duration = _widget.getSessionDuration();
                                         
                                         // display voting interface
-                                        _voted = false;
                                         voteUI.reset($session, function(result){
                                                 _voted = true;
                                                 visibility = result.visibility;
@@ -613,7 +612,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         // remove readonly
                                         _wb.setReadonly(false);
                                         // set next to step
-                                        _next="step";     
+                                        _next="step";
+                                        // set voted to false
+                                        _voted = false;     
                                 }
                                 
                                 // retrieve time already spent on this step and init/display timer as appropriate
@@ -729,7 +730,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 if (vote && !_voted && !_widget.isLeader() && !voteUI.isActive()){
                                         voteUI.reset($session, function(result){
                                                 if (result) voteUI.close();
-                                        });       
+                                        });
+                                        _voted = true;      
                                 }
                         });
                         

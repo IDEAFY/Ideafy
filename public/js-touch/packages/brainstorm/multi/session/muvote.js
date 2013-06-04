@@ -253,7 +253,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // watch the vote value of session
                                 _watcher = _session.watchValue("vote", function(vote){
                                         var result = {},
-                                            spinner = new Spinner();
+                                            spinner = new Spinner({lines:10, length: 8, width: 4, radius:8, top:20});
                                             exitVote = function(){
                                                     _session.unwatch(_watcher);
                                                     spinner.spin(_widget.dom.querySelector("#muvotespinner"));

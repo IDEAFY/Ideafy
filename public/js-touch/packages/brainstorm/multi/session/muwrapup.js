@@ -123,8 +123,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         chatUI.reset($session.get("chat")[5])
                                         .then(function(){
                                                 chatUI.getModel().watchValue("msg", function(arr){
-                                                        console.log(arr.length);
-                                                        if(arr.length>1) {
+                                                        if(arr.length>1 && !replay) {
                                                                 _wrapup.set("newmsg", true);
                                                                 setTimeout(function(){
                                                                         clearInterval(_flash);       

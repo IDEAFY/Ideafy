@@ -38,7 +38,7 @@ define(["Amy/Stack-plugin", "./wbdefault", "./wbmain", "./wbpostit", "./wbimport
                                 _stack.getStack().get("main").setReadonly(bool);
                         };
                         
-                        this.getStack().add("default", new Default($type));
+                        this.getStack().add("default", new Default($type, $mode));
                         this.getStack().add("main", new Main($store, $tools, this.selectScreen));
                         this.getStack().add("postit", new Postit($store, this.exitScreen));
                         this.getStack().add("import", new Import($store, this.exitScreen));

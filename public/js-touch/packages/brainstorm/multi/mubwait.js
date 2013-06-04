@@ -337,8 +337,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         
                         // watch for session status change
                         session.watchValue("status", function(value){
-                                console.log(value);
-                               // if session is deleted (in case initiator decides to cancel)
+                                // if session is deleted (in case initiator decides to cancel)
                                 if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
                                         widget.displayInfo(labels.get("canceledbyleader"), 2000).then(function(){
                                                 session.unsync();

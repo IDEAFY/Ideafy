@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
-        function(Widget, Map, Model, Event, Config, Store){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/spin.min"],
+        function(Widget, Map, Model, Event, Config, Store, Spinner){
                 
                 return function MuVoteConstructor(){
                 
@@ -53,7 +53,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "event" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div class = "confirm invisible"><legend><span data-label="bind:innerHTML, decidemsg"></span><span class="unanimity" data-label="bind: innerHTML, unanimity"></span></legend><div class="votingitem invisible" name="public" data-model="bind:setVisible,public; bind: displayVote, publicVote"><div class="sessionquestion" data-label="bind:innerHTML,setpublic"></div><div class = "votingbuttons" name="public"><span class="yesvote" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="votingitem invisible" name = "replay" data-model="bind:setVisible,replay; bind: displayVote, replayVote"><div class="sessionquestion" data-label="bind:innerHTML,enablereplay"></div><div class = "votingbuttons" name="replay"><span class="yesvote" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, replayResult"></div></div><div class="option left votebutton" data-event="listen:touchstart, press; listen:touchend, submit" data-model="bind:setButton, submit" data-label="bind: innerHTML, submitlbl">Submit</div><div class="option right votebutton" data-event="listen:touchstart, press; listen:touchend, skip" data-model="bind:setButton, skip" data-label="bind:innerHTML, skiplbl">Skip</div></div>';
+                        _widget.template = '<div class = "confirm invisible"><legend><span data-label="bind:innerHTML, decidemsg"></span><span class="unanimity" data-label="bind: innerHTML, unanimity"></span></legend><div class="votingitem invisible" name="public" data-model="bind:setVisible,public; bind: displayVote, publicVote"><div class="sessionquestion" data-label="bind:innerHTML,setpublic"></div><div class = "votingbuttons" name="public"><span class="yesvote" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, publicResult"></div></div><div class="votingitem invisible" name = "replay" data-model="bind:setVisible,replay; bind: displayVote, replayVote"><div class="sessionquestion" data-label="bind:innerHTML,enablereplay"></div><div class = "votingbuttons" name="replay"><span class="yesvote" data-event="listen: touchstart, push; listen: touchend, vote">Yes</span><span class="novote" data-event="listen: touchstart, push; listen: touchend, vote">No</span></div><div class="votingresult" data-model="bind: setResult, replayResult"></div></div><div id="muvotespinner"></div><div class="option left votebutton" data-event="listen:touchstart, press; listen:touchend, submit" data-model="bind:setButton, submit" data-label="bind: innerHTML, submitlbl">Submit</div><div class="option right votebutton" data-event="listen:touchstart, press; listen:touchend, skip" data-model="bind:setButton, skip" data-label="bind:innerHTML, skiplbl">Skip</div></div>';
                         
                         _widget.press = function(event, node){
                                 event.stopPropagation();
@@ -253,12 +253,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // watch the vote value of session
                                 _watcher = _session.watchValue("vote", function(vote){
                                         var result = {},
+                                            spinner = new Spinner();
                                             exitVote = function(){
                                                     _session.unwatch(_watcher);
+                                                    spinner.spin(_widget.dom.querySelector("#muvotespinner"));
                                                     setTimeout(function(){
+                                                                spinner.stop();
                                                                 Map.get("cache").classList.remove("votingcache");
                                                                 _onEnd && _onEnd(result);
-                                                        }, 10000);
+                                                        }, 5000);
                                                     
                                             };
                                         if (vote && vote.public && vote.replay){

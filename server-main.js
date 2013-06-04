@@ -1274,6 +1274,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("Vote", function(json, onEnd) {
 
                 var cdb = new CouchDBDocument(),
+                    votercdb = new CouchDBDocument(),
                     votes;
                 cdb.setTransport(transport);
                 // get idea document
@@ -1289,11 +1290,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 .then(function() {
                         //update user rated ideas & score
                         console.log(json.id, json.voter, json.vote);
-                        var votercdb = new CouchDBDocument();
                         votercdb.setTransport(transport);
                         return getDocAsAdmin(json.voter, votercdb);
                 })
-                .then(function(votercdb){
+                .then(function(){
                         console.log(json.id, json.voter, json.vote, votercdb.toJSON());
                         var ri = votercdb.get("rated_ideas") || [],
                             ip = votercdb.get("ip") || 0;

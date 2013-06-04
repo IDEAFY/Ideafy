@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/spin.min"],
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "lib/spin.min"],
         function(Widget, Map, Model, Event, Config, Store, Spinner){
                 
                 return function MuVoteConstructor(){

@@ -11,7 +11,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
            return function NewMUBConstructor($exit){
            
                 var widget = new Widget(),
-                    session = new CouchDBDocument({}),
+                    session = new Store({}),
                     contactList = new Store([]),
                     invited = new Store([]),
                     error = new Store({"errormsg":""}),
@@ -363,7 +363,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                 
                 widget.uploadSession = function uploadSession(){
                         // add invitees to session document
-                        var now = new Date(),
+                        var cdb = new CouchDBDocument(),
+                            now = new Date(),
                             chatId, chat = session.get("chat") || [],
                             promise = new Promise();
                         
@@ -390,32 +391,32 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         session.set("chat", chat);
                         
                         // init session couchdbdocument
-                        session.setTransport(Config.get("transport"));
+                        cdb.reset(JSON.parse(session.toJSON()));
+                        cdb.setTransport(Config.get("transport"));
                         
-                        // create chat and session documents in database
-                        widget.createChat(chatId)
+                        // create session document in database
+                        cdb.sync(Config.get("db"), cdb.get("_id"))
                         .then(function(){
-                                return session.sync(Config.get("db"), session.get("_id"));
+                                // create chat document
+                                return widget.createChat(chatId);
                         })
                         .then(function(){
-                                // upload session document
-                                return session.upload();      
+                        // upload session document
+                                return cdb.upload();      
                         })
                         .then(function(){
-                                if (session.get("mode") === "boardroom"){
+                                if (cdb.get("mode") === "boardroom"){
                                         error.set("errormsg", labels.get("sendinginvites"));
-                                        widget.sendInvites(session.get("invited"), session.get("_id"), session.get("title")).then(function(){
+                                        widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
                                                 Config.get("observer").notify("start-mu_session", cdb.get("_id"));
                                                 promise.fulfill();
-                                                session.unsync();
-                                                session.reset({});
+                                                cdb.unsync();
                                         });
                                 }
                                 else {
                                         Config.get("observer").notify("start-mu_session", cdb.get("_id"));
                                         promise.fulfill();
-                                        session.unsync();
-                                        session.reset({});    
+                                        cdb.unsync();       
                                 }        
                         });
                         return promise;

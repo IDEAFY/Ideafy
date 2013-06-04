@@ -41,6 +41,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                             _user = Config.get("user"),
                             _db = Config.get("db"),
                             _labels = Config.get("labels"),
+                            _voted = false, // to prevent voting popup from reappearing after voting has been done
                             spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 695, left: 670}).spin();
                         
                         // identify if user is the current session leader
@@ -143,7 +144,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         duration = _widget.getSessionDuration();
                                         
                                         // display voting interface
+                                        _voted = false;
                                         voteUI.reset($session, function(result){
+                                                _voted = true;
                                                 visibility = result.visibility;
                                                 replay = result.replay;
                                                 _idea.set("visibility", visibility);
@@ -723,7 +726,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // watch for voting event (if not the session leader)
                         $session.watchValue("vote", function(vote){
-                                if (vote && !_widget.isLeader() && !voteUI.isActive() ){
+                                if (vote && !_voted && !_widget.isLeader() && !voteUI.isActive()){
                                         voteUI.reset($session, function(result){
                                                 if (result) voteUI.close();
                                         });       

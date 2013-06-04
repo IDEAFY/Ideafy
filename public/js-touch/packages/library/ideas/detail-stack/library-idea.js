@@ -229,11 +229,15 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 if (!_voted){
                                         _voted = true;
                                         transport.request("Vote", json, function(result){
+                                                var ri = user.get("rated_ideas") || [];
                                                 if (result !== "ok"){
                                                         console.log(result, "something went wrong, please try again later");
                                                         _voted = false;
                                                 }
                                                 else {
+                                                        // update user store locally to keep consistency
+                                                        ri.unshift(id);
+                                                        user.set("rated_ideas", ri);
                                                         alert(Config.get("labels").get("thankyou"));
                                                         
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store

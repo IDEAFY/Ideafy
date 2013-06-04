@@ -1279,7 +1279,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 // get idea document
                 getDocAsAdmin(json.id, cdb)
                 .then(function() {
-                        console.log(json.id, json.voter, json.grade);
+                        console.log(json.id, json.voter, json.vote);
                         votes = cdb.get("votes");
                         if (!votes){votes=[];}
                         votes.unshift(json.vote);
@@ -1288,13 +1288,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 })
                 .then(function() {
                         //update user rated ideas & score
-                        console.log(json.id, json.voter, json.grade);
+                        console.log(json.id, json.voter, json.vote);
                         var votercdb = new CouchDBDocument();
                         votercdb.setTransport(transport);
                         return getDocAsAdmin(json.voter, votercdb);
                 })
                 .then(function(){
-                        console.log(json.id, json.voter, json.grade);
+                        console.log(json.id, json.voter, json.vote);
                         var ri = votercdb.get("rated_ideas"),
                             ip = votercdb.get("ip");
                         ri.unshift(json.id);
@@ -1303,7 +1303,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return updateDocAsAdmin(json.voter, votercdb);
                 })
                 .then(function(){
-                        console.log(json.id, json.voter, json.grade);
+                        console.log(json.id, json.voter, json.vote, votercdb.get("rated_ideas"));
                         onEnd("ok");       
                  });
         });

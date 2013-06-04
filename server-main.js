@@ -1293,7 +1293,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         votercdb.setTransport(transport);
                         return getDocAsAdmin(json.voter, votercdb);
                 })
-                .then(function(){
+                .then(function(votercdb){
                         console.log(json.id, json.voter, json.vote, votercdb.toJSON());
                         var ri = votercdb.get("rated_ideas") || [],
                             ip = votercdb.get("ip") || 0;

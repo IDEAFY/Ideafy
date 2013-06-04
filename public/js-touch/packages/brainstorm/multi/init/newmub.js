@@ -393,7 +393,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         session.setTransport(Config.get("transport"));
                         
                         // create chat and session documents in database
-                        widget.createChat(chhatId)
+                        widget.createChat(chatId)
                         .then(function(){
                                 return session.sync(Config.get("db"), session.get("_id"));
                         })

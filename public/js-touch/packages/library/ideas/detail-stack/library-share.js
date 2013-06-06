@@ -88,7 +88,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         };
                         
                         _widget.displayAutoContact = function(event, node){
-                                document.getElementById("sharelistauto").classList.remove('invisible');
+                                _widget.dom.querySelector("#sharelistauto").classList.remove('invisible');
                                 // reset contactList with all user connections
                                 contactList.reset(_user.get("connections"));       
                         };
@@ -235,8 +235,9 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                        node.classList.remove("pressed");
                                                        sendInProgress = false;
                                                        setTimeout(function(){
+                                                               _widget.reset(json.docId);
                                                                         $action("close");
-                                                                }, 2000);
+                                                                }, 2500);
                                                 }
                                                 else{
                                                         _transport.request("Notify", json, function(result){
@@ -244,8 +245,9 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                                 node.classList.remove("pressed");
                                                                 sendInProgress = false;
                                                                 setTimeout(function(){
+                                                                        _widget.reset(json.docId);
                                                                         $action("close");
-                                                                }, 2000);
+                                                                }, 2500);
                                                         });       
                                                 }
                                         });

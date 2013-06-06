@@ -55,7 +55,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-id
                                              
                                         case "#library-share":
                                                 console.log(_store.get(current));
-                                                _stack.getStack().get("#library-share").reset(_store.get(current).doc);
+                                                _stack.getStack().get("#library-share").reset(_store.get(current).id, _store.get(current.title));
                                                 _stack.getStack().show("#library-share");
                                              break;
                                         case "close":
@@ -78,7 +78,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-id
 			};
 			
 			_widget.share = function share(idea){
-			         _stack.getStack().get("#library-share").reset(idea);
+			         _stack.getStack().get("#library-share").reset(idea._id, idea.title);
                                  _stack.getStack().show("#library-share");        
                         };
 			

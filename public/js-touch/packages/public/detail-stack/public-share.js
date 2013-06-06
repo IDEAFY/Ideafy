@@ -225,7 +225,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                        sendInProgress = false;
                                                        setTimeout(function(){
                                                                         $action("close");
-                                                                }, 2000);
+                                                                }, 2500);
                                                 }
                                                 else{
                                                         _transport.request("Notify", json, function(result){
@@ -234,7 +234,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                                 sendInProgress = false;
                                                                 setTimeout(function(){
                                                                         $action("close");
-                                                                }, 2000);
+                                                                }, 2500);
                                                         });       
                                                 }
                                         });

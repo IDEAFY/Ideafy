@@ -999,6 +999,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 }
                 
                 if (type === "doc") {
+                        console.log(json.attachHeader, json.attachBody);
                         // set mail parameters
                         mailOptions.to = json.recipient;
                         mailOptions.cc = json.cc;

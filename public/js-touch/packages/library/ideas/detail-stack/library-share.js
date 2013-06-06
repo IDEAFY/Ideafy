@@ -54,7 +54,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _widget.getIdeaDetails = function getIdeaDetails(id){
                                 var cdb = new CouchDBDocument({});
                                 cdb.setTransport(_transport);
-                                cdb.sync(Config.get("db"), $id)
+                                cdb.sync(Config.get("db"), id)
                                 .then(function(){
                                         _share.set("docType", cdb.get("type"));
                                         _share.set("docTitle", cdb.get("title"));

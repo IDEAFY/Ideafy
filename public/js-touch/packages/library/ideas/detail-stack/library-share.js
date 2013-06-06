@@ -237,6 +237,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                 _error.set("errormsg", _labels.get("shareok"));
                                                 node.classList.remove("pressed");
                                                 // update sharedwith field of idea
+                                                console.log("before update shared with : ", json);
                                                 _widget.updateSharedWith(json.docId, json.dest)
                                                 .then(function(){
                                                         _error.set("errormsg", "");

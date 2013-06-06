@@ -260,17 +260,24 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 cdb.sync(Config.get("db"), id).then(function(){
                                         var sharedwith = cdb.get("sharedwith") || [], i, add = true;
                                         // if sharedwith is empty simply replace with user list
-                                        if (sharedwith === []) cdb.set("sharedwith", userlist)
+                                        if (sharedwith === []) {
+                                                cdb.set("sharedwith", userlist);
+                                        }
                                         else {
                                                 userlist.forEach(function(userid){
                                                         add = true;
                                                         for (i = sharedwith.length-1; i>=0; i--){
-                                                                if (sharedwith[i] === userid) add = false;
+                                                                if (sharedwith[i] === userid) {
+                                                                        add = false;
+                                                                }
                                                         }
-                                                        if (add) sharedwith.push(userid)
+                                                        if (add) {
+                                                                sharedwith.push(userid);
+                                                        }
                                                 });
                                                 cdb.set("sharedwith", sharedwith);
                                         }
+                                        console.log9cdb.get("sharedwith");
                                         return cdb.upload();
                                 })
                                 .then(function(){

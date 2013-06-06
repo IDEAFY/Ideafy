@@ -228,20 +228,26 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 if (!sendInProgress){
                                         sendInProgress = true;
                                         // build recipient list (json.dest)
-                                        shareContacts.loop(function(v, i){
-                                                json.dest.push(v.userid);                
-                                        });
-                                  
-                                        _transport.request("Notify", json, function(result){
-                                                _error.set("errormsg", _labels.get("shareok"));
-                                                node.classList.remove("pressed");
-                                                // update sharedwith field of idea
-                                                _widget.updateSharedWith(json.docId, json.dest)
-                                                .then(function(){
-                                                        _error.set("errormsg", "");
-                                                        sendInProgress = false;
-                                                        $action("close"); 
-                                                });
+                                        _widget.buildRecipientList(json.docId, json.dest)
+                                        .then(function(){
+                                                if (!json.dest.length){
+                                                       _error.set("errormsg", "intented recipients already have this idea");
+                                                       node.classList.remove("pressed");
+                                                       sendInProgress = false;
+                                                       setTimeout(function(){
+                                                                        $action("close");
+                                                                }, 2000);
+                                                }
+                                                else{
+                                                        _transport.request("Notify", json, function(result){
+                                                                _error.set("errormsg", _labels.get("shareok"));
+                                                                node.classList.remove("pressed");
+                                                                sendInProgress = false;
+                                                                setTimeout(function(){
+                                                                        $action("close");
+                                                                }, 2000);
+                                                        });       
+                                                }
                                         });
                                 }            
                         };
@@ -251,39 +257,39 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 $action("close");       
                         };
                         
-                        _widget.updateSharedWith = function updateSharedWith(id, userlist){
-                                var cdb = new CouchDBDocument(),
-                                    promise = new Promise();
+                        _widget.buildRecipientList = function buildRecipientList(docId, dest){
+                                var promise = new Promise(),
+                                    cdb = new CouchDBDocument();
+                                
                                 cdb.setTransport(_transport);
-                                cdb.sync(Config.get("db"), id)
+                                cdb.sync(Config.get("db"), docId)
                                 .then(function(){
-                                        var sharedwith = cdb.get("sharedwith") || [], i, add = true;
-                                        // if sharedwith is empty simply replace with user list
-                                        userlist.forEach(function(userid){
-                                                add = true;
-                                                if (cdb.get("authors").indexOf(userid) > -1){
-                                                        add = false;
-                                                }
-                                                else{
-                                                        if (sharedwith.length){
-                                                                for (i = sharedwith.length-1; i>=0; i--){
-                                                                        if (sharedwith[i] === userid) {
-                                                                                add = false;
-                                                                        }
+                                        var sharedwith = cdb.get("sharedwith") || [], authors =  cdb.get("authors"), i;
+                                        
+                                        shareContacts.loop(function(v,i){
+                                                // check if intended recipient is one of the authors
+                                                if (authors.indexOf(v.userid) < 0 ){
+                                                        if (!sharedwith.length){
+                                                                sharedwith.push(v.userid);
+                                                                dest.push(v.userid);
+                                                        }
+                                                        else{
+                                                                // check if idea has already been shared with intended recipient
+                                                                if (sharedwith.indexOf(v.userid) < 0){
+                                                                        sharewith.push(v.userid);
+                                                                        dest.push(v.userid);
                                                                 }
                                                         }
-                                                }
-                                                if (add) {
-                                                        sharedwith.push(userid);
-                                                }
+                                                }        
                                         });
+                                        
                                         cdb.set("sharedwith", sharedwith);
                                         return cdb.upload();
                                 })
                                 .then(function(){
                                         promise.fulfill();      
-                                }); 
-                                return promise;                 
+                                });
+                                return promise;
                         };
                         
                         _widget.place(Map.get("library-share"));

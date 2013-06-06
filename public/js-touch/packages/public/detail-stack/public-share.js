@@ -224,8 +224,10 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                        node.classList.remove("pressed");
                                                        sendInProgress = false;
                                                        setTimeout(function(){
-                                                                        $action("close");
-                                                                }, 2500);
+                                                               _widget.reset(json.docId);
+                                                               _wdiget.dom.querySelector("#sharelistauto").classList.add("invisible");
+                                                               $action("close");
+                                                      }, 2500);
                                                 }
                                                 else{
                                                         _transport.request("Notify", json, function(result){
@@ -233,12 +235,14 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                                 node.classList.remove("pressed");
                                                                 sendInProgress = false;
                                                                 setTimeout(function(){
+                                                                        _widget.reset(json.docId);
+                                                                        _wdiget.dom.querySelector("#sharelistauto").classList.add("invisible");
                                                                         $action("close");
                                                                 }, 2500);
                                                         });       
                                                 }
                                         });
-                                }            
+                                }           
                         };
                         
                         _widget.cancel = function(event, node){

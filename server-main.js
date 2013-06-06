@@ -37,12 +37,12 @@ var http = require("http"),
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
-        host: "localhost",
+        host: "smtp.gmail.com",
         secureConnection : true,
         port : 465,
         auth : {
-                user : "ideafy-taiaut",
-                pass : fs.readFileSync(".password", "utf8").trim()
+                user : "vincent.weyl@gmail.com",
+                pass : "$Nor&Vin2012"
         }
 });
 
@@ -1018,6 +1018,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 
                 smtpTransport.sendMail(mailOptions, function(error, response) {
                         if (error) {
+                                console.log(error, response);
                                 onEnd({
                                         sendmail : "error",
                                         reason : error,

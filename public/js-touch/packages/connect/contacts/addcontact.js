@@ -12,7 +12,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                    
              var addContactUI = new Widget(),
                  count = new CouchDBView(),
-                 search = new Store({"email":"", "firstname":"", "lastname":"", "result":"", "display": false, "sentok": false, "message":""}),
+                 search = new Store({"email":"", "firstname":"", "lastname":"", "result":"", "display": false, "sentok": false, "message":"", "invite":false}),
                  displayContacts = new Store([]),
                  selected = {},
                  user = Config.get("user"),
@@ -51,7 +51,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                                 cdb.sync(Config.get("db"), "users", "_view/searchbyid", {key: '"'+value+'"', descending: true})
                                 .then(function(){
                                         displayContacts.reset(JSON.parse(cdb.toJSON()));
-                                        (displayContacts.getNbItems()) ? search.set("display", true) : search.set("result", labels.get("noentryfound"));
+                                        (displayContacts.getNbItems()) ? search.set("display", true) : search.set("invite", true);
                                         cdb.unsync();
                                 });        
                          }
@@ -141,7 +141,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                      "searchdbevent" : new Event(addContactUI)
              });
              
-             addContactUI.template = '<div id="addcontact"><div class="header blue-dark"><span class="newcontactlbl" data-label="bind:innerHTML, newcontactlbl"></span></div><div class = "detail-contents"><div class="doctor-deedee"></div><div class="addcontactform"><p class="half"><span data-label="bind:innerHTML, beforecount"></span><strong><span data-count="bind:innerHTML, 0.value"></span></strong><span data-label="bind:innerHTML, aftercount"></span></p><p class="half" data-label="bind: innerHTML, addcontactrightintro"></p><legend data-label="bind:innerHTML, addcontactnow"></legend><input class="search" type="text" name="email" data-label="bind:placeholder, searchcontactplaceholder" data-search="bind: value, email" data-searchdbevent="listen: keypress, searchDB"><legend data-label="bind:innerHTML, lookup"></legend><div class="searchcontact"><input type="text" class="search half" name="fn" data-label="bind:placeholder, firstnameplaceholder" data-search="bind: value, firstname" data-searchdbevent="listen: keypress, searchDB"><input class="search half right" type="text" name="ln" data-label="bind: placeholder, lastnameplaceholder" data-search="bind: value, lastname" data-searchdbevent="listen: keypress, searchDB"></div><p class="searchresult" data-search="bind: innerHTML, result; bind:setStyle, sentok"></p></div><div class = "contactlist invisible" data-search="bind: setVisible, display"><legend data-label="bind:innerHTML, selectcontact"></legend><ul data-contacts="foreach"><li class = "contact list-item"><div data-contacts="bind:setAvatar, value.userid"></div><p class="contact-name" data-contacts="bind:innerHTML, value.username"></p><p class="contact-intro" data-contacts="bind:innerHTML, value.intro"></p><div class="select-contact" data-searchdbevent="listen:touchstart, check"></div></li></ul><textarea class="input" data-label="bind:placeholder, addamessage" data-search="bind:value, message"></textarea><div class="addcontactbtns"><div class="addct" data-searchdbevent="listen:touchstart, press; listen:touchend, add"></div><div class="cancelct" data-searchdbevent="listen:touchstart, press; listen:touchend, cancel"></div></div></div></div></div>';
+             addContactUI.template = '<div id="addcontact"><div class="header blue-dark"><span class="newcontactlbl" data-label="bind:innerHTML, newcontactlbl"></span></div><div class = "detail-contents"><div class="doctor-deedee"></div><div class="addcontactform"><p class="half"><span data-label="bind:innerHTML, beforecount"></span><strong><span data-count="bind:innerHTML, 0.value"></span></strong><span data-label="bind:innerHTML, aftercount"></span></p><p class="half" data-label="bind: innerHTML, addcontactrightintro"></p><legend data-label="bind:innerHTML, addcontactnow"></legend><input class="search" type="text" name="email" data-label="bind:placeholder, searchcontactplaceholder" data-search="bind: value, email" data-searchdbevent="listen: keypress, searchDB"><legend data-label="bind:innerHTML, lookup"></legend><div class="searchcontact"><input type="text" class="search half" name="fn" data-label="bind:placeholder, firstnameplaceholder" data-search="bind: value, firstname" data-searchdbevent="listen: keypress, searchDB"><input class="search half right" type="text" name="ln" data-label="bind: placeholder, lastnameplaceholder" data-search="bind: value, lastname" data-searchdbevent="listen: keypress, searchDB"></div><p class="searchresult" data-search="bind: innerHTML, result; bind:setStyle, sentok"></p></div><div class="contactinvite" data-search="bind: setVisible, invite"><p>The person you are looking for was not found in Ideafy. Would you like to send him/her an invitation ? You will receive 200 Ideafy Points if the person joins the community</p><p><span>Accept</span><span>Cancel</span></div><div class = "contactlist invisible" data-search="bind: setVisible, display"><legend data-label="bind:innerHTML, selectcontact"></legend><ul data-contacts="foreach"><li class = "contact list-item"><div data-contacts="bind:setAvatar, value.userid"></div><p class="contact-name" data-contacts="bind:innerHTML, value.username"></p><p class="contact-intro" data-contacts="bind:innerHTML, value.intro"></p><div class="select-contact" data-searchdbevent="listen:touchstart, check"></div></li></ul><textarea class="input" data-label="bind:placeholder, addamessage" data-search="bind:value, message"></textarea><div class="addcontactbtns"><div class="addct" data-searchdbevent="listen:touchstart, press; listen:touchend, add"></div><div class="cancelct" data-searchdbevent="listen:touchstart, press; listen:touchend, cancel"></div></div></div></div></div>';
              
              addContactUI.init = function init(){
                      var promise = new Promise();
@@ -176,7 +176,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
              };
              
              addContactUI.reset = function reset(){
-                search.reset({"email":"", "firstname":"", "lastname":"", "result":"", "display": false, "sentok": false, "message":""});
+                search.reset({"email":"", "firstname":"", "lastname":"", "result":"", "display": false, "sentok": false, "message":"", "invite":false});
                 displayContacts.reset([]);       
              };
              

@@ -43,7 +43,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _widget.template = '<div class="idea-share"><div class="header blue-dark"><span data-share="bind:setHeader, docTitle">Sharing idea</span></div><form class="form"><legend>Select contacts</legend><div class="selectall" data-labels="bind:innerHTML, selectall" data-shareevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div><input class="search" data-shareevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="sharelistauto" class="autocontact invisible"><div class="autoclose" data-shareevent="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-shareevent="listen:touchend, select"></li></ul></div><div class="sharecontactlist"><ul data-contacts="foreach"><li class = "contact list-item" data-shareevent="listen:touchstart, discardContact"><p class="contact-name" data-contacts="bind:innerHTML, username"></p><div class="remove-contact"></div><p class="contact-intro" data-contacts="bind:innerHTML, intro"></p></li></ul></div><p><legend>Add a message</legend><textarea class="input sharemessage" data-share="bind:value, body"></textarea></p><p><legend>Signature</legend><textarea class="signature" data-share="bind:value, signature"></textarea></p><div class="sendmail-footer"><p class="send"><label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-shareevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-labels="bind:innerHTML, sharelbl" data-shareevent="listen:touchstart, press; listen:touchend, share">Share</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></form></div>';
                         
                         _widget.reset = function reset($id){
-                                console.log($id);
                              _error.reset({"errormsg": ""});
                              _share.reset({"body": "", "docId":$id, "docType": "", "docTitle": "", "signature": _user.get("username")+" <"+_user.get("_id")+ ">"});
                              _widget.getIdeaDetails($id);
@@ -237,7 +236,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                 _error.set("errormsg", _labels.get("shareok"));
                                                 node.classList.remove("pressed");
                                                 // update sharedwith field of idea
-                                                console.log("before update shared with : ", json);
                                                 _widget.updateSharedWith(json.docId, json.dest)
                                                 .then(function(){
                                                         _error.set("errormsg", "");
@@ -257,27 +255,29 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 var cdb = new CouchDBDocument(),
                                     promise = new Promise();
                                 cdb.setTransport(_transport);
-                                cdb.sync(Config.get("db"), id).then(function(){
+                                cdb.sync(Config.get("db"), id)
+                                .then(function(){
                                         var sharedwith = cdb.get("sharedwith") || [], i, add = true;
                                         // if sharedwith is empty simply replace with user list
-                                        if (sharedwith === []) {
-                                                cdb.set("sharedwith", userlist);
-                                        }
-                                        else {
-                                                userlist.forEach(function(userid){
-                                                        add = true;
-                                                        for (i = sharedwith.length-1; i>=0; i--){
-                                                                if (sharedwith[i] === userid) {
-                                                                        add = false;
+                                        userlist.forEach(function(userid){
+                                                add = true;
+                                                if (cdb.get("authors").indexOf(userid) > -1){
+                                                        add = false;
+                                                }
+                                                else{
+                                                        if (sharedwith.length){
+                                                                for (i = sharedwith.length-1; i>=0; i--){
+                                                                        if (sharedwith[i] === userid) {
+                                                                                add = false;
+                                                                        }
                                                                 }
                                                         }
-                                                        if (add) {
-                                                                sharedwith.push(userid);
-                                                        }
-                                                });
-                                                cdb.set("sharedwith", sharedwith);
-                                        }
-                                        console.log(cdb.get("sharedwith"));
+                                                }
+                                                if (add) {
+                                                        sharedwith.push(userid);
+                                                }
+                                        });
+                                        cdb.set("sharedwith", sharedwith);
                                         return cdb.upload();
                                 })
                                 .then(function(){

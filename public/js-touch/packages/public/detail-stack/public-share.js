@@ -261,7 +261,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 })
                                 .then(function(){
                                         promise.resolve();       
-                                });                  
+                                }); 
+                                return promise;                 
                         };
                         
                         _widget.place(Map.get("public-share"));

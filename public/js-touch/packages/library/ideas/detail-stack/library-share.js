@@ -282,9 +282,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 })
                                 .then(function(){
                                         promise.fulfill();      
-                                }, function(err){
-                                        console.log(err);
-                                });                  
+                                }); 
+                                return promise;                 
                         };
                         
                         _widget.place(Map.get("library-share"));

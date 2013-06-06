@@ -191,7 +191,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.action = function(event, node){
                                 var name = node.getAttribute("href");
                                 if (name === "#library-2cents"){
-                                         _twocentWriteUI.reset(_store.get("id"));
+                                         _twocentWriteUI.reset(_store.get("_id"));
                                          _domWrite.classList.remove("invisible");
                                 }
                                 else $action(name);       

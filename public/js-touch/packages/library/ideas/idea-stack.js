@@ -54,7 +54,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-id
                                              break;
                                              
                                         case "#library-share":
-                                                _stack.getStack().get("#library-share").reset(_store.get(current).id);
+                                                console.log(_store.get(current));
+                                                _stack.getStack().get("#library-share").reset(_store.get(current).doc);
                                                 _stack.getStack().show("#library-share");
                                              break;
                                         case "close":

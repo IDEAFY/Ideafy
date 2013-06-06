@@ -42,14 +42,25 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         
                         _widget.template = '<div class="idea-share"><div class="header blue-dark"><span data-share="bind:setHeader, docTitle">Sharing idea</span></div><form class="form"><legend>Select contacts</legend><div class="selectall" data-labels="bind:innerHTML, selectall" data-shareevent="listen: touchstart, press; listen:touchend, selectAll">Select all</div><input class="search" data-shareevent="listen:touchstart, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="sharelistauto" class="autocontact invisible"><div class="autoclose" data-shareevent="listen:touchstart,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-shareevent="listen:touchend, select"></li></ul></div><div class="sharecontactlist"><ul data-contacts="foreach"><li class = "contact list-item" data-shareevent="listen:touchstart, discardContact"><p class="contact-name" data-contacts="bind:innerHTML, username"></p><div class="remove-contact"></div><p class="contact-intro" data-contacts="bind:innerHTML, intro"></p></li></ul></div><p><legend>Add a message</legend><textarea class="input sharemessage" data-share="bind:value, body"></textarea></p><p><legend>Signature</legend><textarea class="signature" data-share="bind:value, signature"></textarea></p><div class="sendmail-footer"><p class="send"><label class="cancelmail" data-labels="bind:innerHTML, cancellbl" data-shareevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-labels="bind:innerHTML, sharelbl" data-shareevent="listen:touchstart, press; listen:touchend, share">Share</label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></form></div>';
                         
-                        _widget.reset = function reset($id, $title){
-                                console.log($id, $title);
+                        _widget.reset = function reset($id){
                              _error.reset({"errormsg": ""});
-                             _share.reset({"body": "", "docId":$id, "docType": 6, "docTitle": $title, "signature": _user.get("username")+" <"+_user.get("_id")+ ">"});
+                             _share.reset({"body": "", "docId":$id, "docType": "", "docTitle": "", "signature": _user.get("username")+" <"+_user.get("_id")+ ">"});
+                             _widget.getIdeaDetails($id);
                              if (_user.get("signature")) _share.set("signature", _user.get("signature"));
                              shareContacts.reset([]);
                              contactList.reset(_user.get("connections"));
                         };
+                        
+                        _widget.getIdeaDetails = function getIdeaDetails(id){
+                                var cdb = new CouchDBDocument({});
+                                cdb.setTransport(_transport);
+                                cdb.sync(Config.get("db"), $id)
+                                .then(function(){
+                                        _share.set("docType", cdb.get("type"));
+                                        _share.set("docTitle", cdb.get("title"));
+                                        cdb.unsync();
+                                });        
+                        }
                         
                         _widget.updateAutoContact = function(event, node){
                                 var arr = JSON.parse(contactList.toJSON()), connections = _user.get("connections"), 

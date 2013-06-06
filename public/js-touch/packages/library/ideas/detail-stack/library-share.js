@@ -277,7 +277,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                 });
                                                 cdb.set("sharedwith", sharedwith);
                                         }
-                                        console.log9cdb.get("sharedwith");
+                                        console.log(cdb.get("sharedwith"));
                                         return cdb.upload();
                                 })
                                 .then(function(){

@@ -87,7 +87,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         };
                         
                         _widget.displayAutoContact = function(event, node){
-                                _wdiget.dom.querySelector("#sharelistauto").classList.remove('invisible');
+                                _widget.dom.querySelector("#sharelistauto").classList.remove('invisible');
                                 // reset contactList with all user connections
                                 contactList.reset(_user.get("connections"));       
                         };

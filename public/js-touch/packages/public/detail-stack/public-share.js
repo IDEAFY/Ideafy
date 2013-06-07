@@ -113,7 +113,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         _widget.removeContact(contactList.get(id));
                                         setTimeout(function(){
                                                 contactList.update(id, "selected", false);
-                                                document.getElementById("sharelistauto").classList.add("invisible");
+                                                _widget.dom.querySelector("#sharelistauto").classList.add("invisible");
                                         }, 200);
                                 }
                                 else {
@@ -121,7 +121,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         _widget.selectGroup();
                                         setTimeout(function(){
                                                 contactList.update(id, "selected", true);
-                                                document.getElementById("sharelistauto").classList.add("invisible");
+                                                _widget.dom.querySelector("#sharelistauto").classList.add("invisible");
                                                 }, 200);        
                                 }
                         };

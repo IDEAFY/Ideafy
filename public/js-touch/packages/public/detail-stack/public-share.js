@@ -232,6 +232,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         // build recipient list (json.dest)
                                         _widget.buildRecipientList(json.docId, json.dest)
                                         .then(function(){
+                                                console.log(json);
                                                 if (!json.dest.length){
                                                        _error.set("errormsg", "intented recipients already have this idea");
                                                        node.classList.remove("pressed");
@@ -288,7 +289,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                         }
                                                 }        
                                         });
-                                        
                                         cdb.set("sharedwith", sharedwith);
                                         return cdb.upload();
                                 })

@@ -225,6 +225,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                     };
                                     
                                     
+                                console.log(json, sendInProgress);
                                 
                                 if (!sendInProgress){
                                         sendInProgress = true;

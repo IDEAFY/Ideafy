@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "service/autocontact", "CouchDBDocument", "Promise"], 
-        function(Widget, Map, Config, Model, Event, Store, Avatar, Utils, AutoContact, CouchDBDocument, Promise){
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "service/autocontact", "CouchDBDocument", "Promise", "lib/spin.min"], 
+        function(Widget, Map, Config, Model, Event, Store, Avatar, Utils, AutoContact, CouchDBDocument, Promise, Spinner){
                 return function PublicShareConstructor($action){
                 //declaration
                         var _widget = new Widget(),
@@ -48,6 +48,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                              _widget.getIdeaDetails($id);
                              if (_user.get("signature")) _share.set("signature", _user.get("signature"));
                              shareContacts.reset([]);
+                             contactList.reset(_user.get("connections").concat());
                         };
                         
                         _widget.getIdeaDetails = function getIdeaDetails(id){
@@ -62,7 +63,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         }
                         
                         _widget.updateAutoContact = function(event, node){
-                                var arr = JSON.parse(contactList.toJSON()), connections = _user.get("connections"), 
+                                var arr = JSON.parse(contactList.toJSON()), connections = _user.get("connections").concat(), 
                                     clc, vlc = node.value.toLowerCase(); // lowercase conversion
                                 
                                 if (node.value === ""){
@@ -89,7 +90,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _widget.displayAutoContact = function(event, node){
                                 _widget.dom.querySelector("#sharelistauto").classList.remove('invisible');
                                 // reset contactList with all user connections
-                                contactList.reset(_user.get("connections"));       
+                                contactList.reset(_user.get("connections").concat());       
                         };
                         
                         _widget.discardContact = function(event,node){

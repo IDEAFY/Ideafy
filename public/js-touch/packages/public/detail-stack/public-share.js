@@ -78,7 +78,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 }
                                 // check if items are present in the group and set selected status accordingly
                                 contactList.loop(function(v,i){
-                                        if(shareContacts.toJSON().search(v.contact.userid) >-1) contactList.update(i, "selected", true);        
+                                        if(shareContacts.toJSON().search(v.userid) >-1) contactList.update(i, "selected", true);        
                                 });
                         };
                         
@@ -87,7 +87,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         };
                         
                         _widget.displayAutoContact = function(event, node){
-                                document.getElementById("sharelistauto").classList.remove('invisible');
+                                _wdiget.dom.querySelector("#sharelistauto").classList.remove('invisible');
                                 // reset contactList with all user connections
                                 contactList.reset(_user.get("connections"));       
                         };

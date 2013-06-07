@@ -225,7 +225,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                        sendInProgress = false;
                                                        setTimeout(function(){
                                                                _widget.reset(json.docId);
-                                                               _wdiget.dom.querySelector("#sharelistauto").classList.add("invisible");
+                                                               _widget.dom.querySelector("#sharelistauto").classList.add("invisible");
                                                                $action("close");
                                                       }, 2500);
                                                 }
@@ -236,7 +236,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                                 sendInProgress = false;
                                                                 setTimeout(function(){
                                                                         _widget.reset(json.docId);
-                                                                        _wdiget.dom.querySelector("#sharelistauto").classList.add("invisible");
+                                                                        _widget.dom.querySelector("#sharelistauto").classList.add("invisible");
                                                                         $action("close");
                                                                 }, 2500);
                                                         });       

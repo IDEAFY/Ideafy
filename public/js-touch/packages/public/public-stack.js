@@ -54,6 +54,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                                              break;
                                              
                                         case "#public-share":
+                                                console.log(_store.get(current).id);
                                                 _stack.getStack().get("#public-share").reset(_store.get(current).id);
                                                 _stack.getStack().show("#public-share");
                                              break;
@@ -77,8 +78,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 			};
 			
 			_widget.share = function share(idea){
-			_stack.getStack().get("#public-share").reset(idea._id);
-                                 _stack.getStack().show("#public-share");         
+			        _stack.getStack().get("#public-share").reset(idea._id);
+                                _stack.getStack().show("#public-share");         
 			};
 			
 			// init

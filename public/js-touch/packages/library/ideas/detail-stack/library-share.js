@@ -280,7 +280,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                         else{
                                                                 // check if idea has already been shared with intended recipient
                                                                 if (sharedwith.indexOf(v.userid) < 0){
-                                                                        sharewith.push(v.userid);
+                                                                        sharedwith.push(v.userid);
                                                                         dest.push(v.userid);
                                                                 }
                                                         }

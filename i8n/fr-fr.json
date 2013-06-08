@@ -488,5 +488,8 @@
 	"yeslbl": "Oui",
 	"nolbl": "Non",
 	"accepted": "ACCEPTÉ",
-	"rejected": "REJETÉ"
+	"rejected": "REJETÉ",
+	"post": "Poster",
+	"import": "Importer",
+	"draw": "Dessiner" 
 }

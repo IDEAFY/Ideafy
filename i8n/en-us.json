@@ -488,6 +488,8 @@
 	"yeslbl": "Yes",
 	"nolbl": "No",
 	"accepted": "ACCEPTED",
-	"rejected": "REJECTED"
-	
+	"rejected": "REJECTED",
+	"post": "Post",
+	"import": "Import",
+	"draw": "Draw"	
 }

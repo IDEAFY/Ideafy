@@ -17,7 +17,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             _share = new Store({"body": "", "docId":"", "docType": "", "attachment": "", "docTitle":"", "signature": _user.get("signature")}),
                             contactList = new Store([]),
                             shareContacts = new Store([]),
-                            sendInProgress = false;
+                            sendInProgress = false,
+                            spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 0, top: 0}).spin();
                 //setup
                         _widget.plugins.addAll({
                                 "labels": new Model(_labels),
@@ -227,6 +228,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 
                                 if (!sendInProgress){
                                         sendInProgress = true;
+                                        spinner.spin(node);
                                         // build recipient list (json.dest)
                                         _widget.buildRecipientList(json.docId, json.dest)
                                         .then(function(){
@@ -235,6 +237,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                        node.classList.remove("pressed");
                                                        sendInProgress = false;
                                                        setTimeout(function(){
+                                                               spinner.stop();
                                                                _widget.reset(json.docId);
                                                                _widget.dom.querySelector("#sharelistauto").classList.add("invisible");
                                                                $action("close");
@@ -246,6 +249,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                                 node.classList.remove("pressed");
                                                                 sendInProgress = false;
                                                                 setTimeout(function(){
+                                                                        spinner.stop();
                                                                         _widget.reset(json.docId);
                                                                         _widget.dom.querySelector("#sharelistauto").classList.add("invisible");
                                                                         $action("close");
@@ -297,6 +301,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         };
                         
                         _widget.place(Map.get("library-share"));
+                        
+                        SHARESPIN = spinner;
 
                 //return
                         return _widget;

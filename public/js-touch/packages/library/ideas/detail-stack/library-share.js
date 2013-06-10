@@ -18,7 +18,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             contactList = new Store([]),
                             shareContacts = new Store([]),
                             sendInProgress = false,
-                            spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 0, top: 0}).spin();
+                            spinner = new Spinner({color:"#5F8F28", lines:8, length: 8, width: 4, radius:8, left: 0, top: 0}).spin();
                 //setup
                         _widget.plugins.addAll({
                                 "labels": new Model(_labels),

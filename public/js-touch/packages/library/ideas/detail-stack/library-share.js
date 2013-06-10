@@ -240,6 +240,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                                spinner.stop();
                                                                _widget.reset(json.docId);
                                                                _widget.dom.querySelector("#sharelistauto").classList.add("invisible");
+                                                               // reset contactList with all user connections
+                                                                contactList.reset(_user.get("connections").concat()); 
                                                                $action("close");
                                                       }, 2500);
                                                 }
@@ -252,6 +254,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                                         spinner.stop();
                                                                         _widget.reset(json.docId);
                                                                         _widget.dom.querySelector("#sharelistauto").classList.add("invisible");
+                                                                        // reset contactList with all user connections
+                                                                        contactList.reset(_user.get("connections").concat()); 
                                                                         $action("close");
                                                                 }, 2500);
                                                         });       

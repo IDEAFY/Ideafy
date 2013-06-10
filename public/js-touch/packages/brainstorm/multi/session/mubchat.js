@@ -213,7 +213,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 
                                 // check if user has joined already - if not join provided chat session is opened (vs. replay/readonly)
                                 if (isNaN(position) && !chatCDB.get("readonly")){
-                                        console.log("join chat");
                                         mubChat.joinChat().then(function(){
                                                 spinner.stop();
                                                 promise.fulfill();       
@@ -221,7 +220,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 }
                                 
                                 else{
-                                        console.log("display chat");
                                         chat.reset(chatCDB.get("msg"));
                                         spinner.stop();
                                         promise.fulfill();
@@ -254,10 +252,18 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                 
                 mubChat.leave = function leave(){
                         var promise = new Promise(),
+                            idx = null, i,
                             users = chatCDB.get("users");
                         mubChat.setMessage("leave")
                         .then(function(){
-                                users.splice(position, 1);
+                                // get user position
+                                for (i=0; i<users.length; i++){
+                                        if (users[i].userid === user.get("_id")){
+                                                idx = i;
+                                                break;        
+                                        }
+                                }
+                                users.splice(idx, 1);
                                 chatCDB.set("users", users);
                                 return chatCDB.upload();
                         })

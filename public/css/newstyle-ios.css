@@ -6870,6 +6870,13 @@ li.my2q{
     display: hidden;
 }
 
+#muwrapup .exit-brainstorm{
+    position: absolute;
+    left: 930px;
+    margin-top: -40px;
+}
+
+
 .chatmessages li{
     margin-bottom: 5px;
     width: 610px;

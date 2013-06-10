@@ -91,6 +91,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 $next("muwrapup");
                         };
                         
+                        _widget.exit = function exit(){
+                                $progress(true);        
+                        };
+                        
                         _widget.prev = function(event, node){
                                 node.classList.remove("pressed");
                                 $prev("muwrapup");

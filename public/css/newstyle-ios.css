@@ -6389,13 +6389,6 @@ li.my2q{
     height: 70px;
 }
 
-#newmub .newmub-footer{
-    position: absolute;
-    bottom: 30px;
-    right: 40px;
-    width: 831px;  
-}
-
 #newmub label.clear, #newmub label.create{
     height: 26px;
     width: 92px;
@@ -6812,7 +6805,7 @@ li.my2q{
     height: 250px;
 }
 
-#muwrapup .chatread.replayed{
+#muwrapup .chatread.replayed, #muwrapup .chatread.extended{
     height: 287px;
 }
 
@@ -6876,6 +6869,13 @@ li.my2q{
 #muwrapup .sessionchat.folded .chatwrite{
     display: hidden;
 }
+
+#muwrapup .exit-brainstorm{
+    position: absolute;
+    left: 930px;
+    margin-top: -40px;
+}
+
 
 .chatmessages li{
     margin-bottom: 5px;

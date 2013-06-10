@@ -102,8 +102,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 // Main UI methods
                    
                 // show progress bar
-                _widget.toggleProgress = function toggleProgress(){
-                           _progress.dom.classList.toggle("invisible");      
+                _widget.toggleProgress = function toggleProgress(exit){
+                           (exit) ? _progress.exit() : _progress.dom.classList.toggle("invisible");      
                    };
                    
                 // initiator or a participant decides to leave the waiting room

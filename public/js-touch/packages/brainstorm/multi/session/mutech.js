@@ -296,7 +296,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                         drawStatus.set("count", newCount); 
                                                 });
                                                 _techDisplay.set("left", _techs.length);
-                                                // increment number of cards drwan and remove card from deck
+                                                // increment number of cards drawn and remove card from deck
                                                 _drawnCards++;
                                                 _techs.splice(idx, 1);
                                         });

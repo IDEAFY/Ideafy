@@ -175,7 +175,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                 };
                 
                 widget.updateAutoContact = function(event, node){
-                                var arr = JSON.parse(contactList.toJSON()), connections = user.get("connections"), 
+                                var arr = JSON.parse(contactList.toJSON()), connections = user.get("connections").concat(), 
                                     clc, vlc = node.value.toLowerCase(); // lowercase conversion
                                 
                                 if (node.value === ""){
@@ -200,7 +200,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                 };
                 
                 widget.discardContact = function(event,node){
-                        var id = node.getAttribute("data-contacts_id"),
+                        var id = node.getAttribute("data-invited_id"),
                             userid = invited.get(id).userid;
                         invited.alter("splice", id, 1);
                         contactList.loop(function(v,i){

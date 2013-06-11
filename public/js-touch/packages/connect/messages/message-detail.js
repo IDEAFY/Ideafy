@@ -62,6 +62,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 case "2C+":
                                                         this.innerHTML = message.get("username") + labels.get("senttc");
                                                         break;
+                                                case "REF":
+                                                        this.innerHTML = messages.get(id).username + labels.get("joinedideafy");
+                                                        break;
                                                 default :
                                                         this.innerHTML = message.get("object");
                                         }        
@@ -77,6 +80,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         break;
                                                 case "INV":
                                                         this.innerHTML = message.get("username") + labels.get("INVObject") + " : <b>" + message.get("docTitle")+"</b>";
+                                                        break;
+                                                case "REF":
+                                                        this.innerHTML = labels.get("referral");
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("body").replace(/\n/g, "<br>");

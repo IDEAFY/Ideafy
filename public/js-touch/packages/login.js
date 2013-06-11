@@ -123,7 +123,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                 else {
                                                 // NO MISTAKES -- PROCEED TO SIGNUP
                                                         loginSpinner.spin(_signupForm.dom);
-                                                        _transport.request("Signup", {name : userid, password : password}, function(result) {
+                                                        _transport.request("Signup", {name : userid, password : password, fn : fn, ln: ln}, function(result) {
                                                                 if (result.signup === "ok") {
                                                                         // create user
                                                                         user.reset(Config.get("userTemplate"));

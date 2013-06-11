@@ -65,22 +65,32 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                          }
                  },
                  validateContactRequest = function(contact){
-                         var res = false, sent = user.get("sentMessages"), sentCXR = false;
-                        // verify if it is an existing contact
-                        if (contact.userid === user.get("_id")) search.set("result", labels.get("cannotaddself"));
-                        else if (JSON.stringify(user.get("connections")).search(contact.userid) > -1){
-                                search.set("result", contact.username+labels.get("alreadyconnected"));        
+                         var res = false, sent = user.get("sentMessages"), cx = user.get("connections"), sentCXR = false, existing = false, i, j, k,l;
+                        // verify if it is an existing contact or if a request has been made in the last 30 days
+                        if (contact.userid === user.get("_id")) {
+                                search.set("result", labels.get("cannotaddself"));
                         }
-                        // or if a request has been made in the last 30 days
                         else {
-                                for(i=0;i<sent.length;i++){
-                                        console.log(sent[i]);
-                                        if (sent[i].type ==="CXR" && sent[i].toList.search(contact.username)>-1){
-                                                sentCXR = true;        
+                                for (j=0, k=cx.length;j<k; j++){
+                                        if (cx[j].userid === contact.userid){
+                                                existing = true;
+                                                break;
                                         }
                                 }
-                                (sentCXR) ? search.set("result", labels.get("alreadysentCXR")+contact.username) : res = true;
-                        }
+                                if (existing){
+                                        search.set("result", contact.username+labels.get("alreadyconnected"));         
+                                }
+                                else{
+                                        for(i=0, l=sent.length;i<l;i++){
+                                                if (sent[i].type ==="CXR" && sent[i].toList.search(contact.username)>-1){
+                                                        sentCXR = true;
+                                                        break;       
+                                                }
+                                        }
+                                        (sentCXR) ? search.set("result", labels.get("alreadysentCXR")+contact.username) : res = true;
+                                               
+                                }      
+                        }       
                         return res;     
                  },
                  addContact = function(contact){

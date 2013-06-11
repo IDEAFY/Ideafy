@@ -454,6 +454,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                                 
                                                 // check for referrals and update accordingly
                                                 checkInvited(json.name, function(result){
+                                                        console.log("check invited", result);
                                                         if (result){
                                                                 result.sender.forEach(function(id){
                                                                         var cdbDoc = new CouchDBDocument();
@@ -474,6 +475,19 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                                                                 cdbDoc.set("news", news);
                                                                                 return updateDocAsAdmin(id, cdbDoc);
                                                                         });       
+                                                                });
+                                                                // remove document from ideafy_invites
+                                                                transport.request("CouchDB", {
+                                                                        method : "DELETE",
+                                                                        path:"/ideafy_invites/json.name,
+                                                                        auth: cdbAdminCredentials,
+                                                                        agent:false,
+                                                                        headers: {
+                                                                                "Content-Type": "application/json",
+                                                                                "Connection": "close"
+                                                                        }
+                                                                }, function (res) {
+                                                                        console.log(res);
                                                                 });
                                                         }        
                                                 });

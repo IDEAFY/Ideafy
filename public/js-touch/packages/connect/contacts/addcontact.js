@@ -211,7 +211,13 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
              
              addContactUI.sendInvite = function(event, node){
                 var json = {id: search.get("email"), senderid: user.get("_id"), sendername: user.get("username"), subject:user.get("username")+labels.get("invitesyou"), body:labels.get("invitebody")};
-                transport.request("invite", json, function(result){
+                transport.request("Invite", json, function(result){
+                        if (result === "ok"){
+                                alert(labels.get("invitationsent"));
+                        }
+                        if (result === "alreadyinvited"){
+                                alert(labels.get("alreadyinvited"));
+                        }
                         console.log(result);
                         node.classList.remove("pressed");
                         addContactUI.reset();

@@ -5048,6 +5048,16 @@ li.color-item{
     line-height: 150%;    
 }
 
+#addcontact .contactinvite div{
+    height: 26px;
+    margin: 10px auto;
+    width: 200px;
+}
+
+#addcontact .contactinvite span{
+    margin: 0px 4px 0px 4px;
+}
+
 #addcontact .contactlist{
     padding: 0px 20px 0px 20px;
     margin-top: 0px;

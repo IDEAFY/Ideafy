@@ -108,9 +108,12 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                                                 break;
                                                         case "2C+":
                                                                 this.innerHTML = messages.get(id).username + labels.get("senttc");
-                                                        break;
-                                                default :
-                                                        this.innerHTML = messages.get(id).object;
+                                                                break;
+                                                        case "REF":
+                                                                this.innerHTML = messages.get(id).username + labels.get("joinedideafy");
+                                                                break;
+                                                        default :
+                                                                this.innerHTML = messages.get(id).object;
                                                 }
                                         }        
                                 },

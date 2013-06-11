@@ -317,6 +317,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         },
                         data: cdbDoc.toJSON()
                 }, function (res) {
+                        console.log(res);
                         var json = JSON.parse(res);
                         if (json.ok) {
                                 promise.fulfill();

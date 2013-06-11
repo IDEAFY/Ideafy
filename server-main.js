@@ -479,7 +479,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                                                 // remove document from ideafy_invites
                                                                 transport.request("CouchDB", {
                                                                         method : "DELETE",
-                                                                        path:"/ideafy_invites/json.name,
+                                                                        path:"/ideafy_invites/"+json.name,
                                                                         auth: cdbAdminCredentials,
                                                                         agent:false,
                                                                         headers: {

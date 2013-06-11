@@ -5041,7 +5041,11 @@ li.color-item{
 }
 
 #addcontact .contactinvite{
-    
+    padding: 10px;
+    border: 1px solid #657b99;
+    border-radius: 5px;
+    background: #fafafa;
+    line-height: 150%;    
 }
 
 #addcontact .contactlist{

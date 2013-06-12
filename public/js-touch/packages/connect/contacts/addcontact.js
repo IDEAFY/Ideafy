@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView", "Store", "service/avatar", "Promise"],
-        function(Widget, Config, Model, Event, CouchDBView, Store, Avatar, Promise){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView", "Store", "service/avatar", "Promise", "lib/spin.min"],
+        function(Widget, Config, Model, Event, CouchDBView, Store, Avatar, Promise, Spinner){
                 
            return function AddContactConstructor(){
                    
@@ -18,6 +18,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                  user = Config.get("user"),
                  transport = Config.get("transport"),
                  labels = Config.get("labels"),
+                 spinner = new Spinner({color:"#5F8F28", lines:8, length: 8, width: 4, radius:8, left: 30, top: -6}).spin(),
                  validateSearch = function(name, value){
                          var emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
                          if (name === "email"){
@@ -210,7 +211,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
              };
              
              addContactUI.sendInvite = function(event, node){
-                var json = {id: search.get("email"), senderid: user.get("_id"), sendername: user.get("username"), subject:user.get("username")+labels.get("invitesyou"), body:labels.get("invitebody")};
+                var json = {id: search.get("email").toLowerCase(), senderid: user.get("_id"), sendername: user.get("username"), subject:user.get("username")+labels.get("invitesyou"), body:labels.get("invitebody")};
+                spinner.spin(node);
                 transport.request("Invite", json, function(result){
                         if (result === "ok"){
                                 alert(labels.get("invitationsent"));
@@ -218,10 +220,10 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                         if (result === "alreadyinvited"){
                                 alert(labels.get("alreadyinvited"));
                         }
-                        console.log(result);
+                        spinner.stop();
                         node.classList.remove("pressed");
                         addContactUI.reset();
-                })        
+                });        
              };
              
              addContactUI.add = function(event, node){

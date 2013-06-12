@@ -236,7 +236,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
              };
              
              //addContactUI.init();
-             
+             ADDCTSPIN = spinner;
              return addContactUI;
                    
            };   

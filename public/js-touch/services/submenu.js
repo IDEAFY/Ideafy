@@ -53,6 +53,11 @@ define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
                                 setTimeout(function(){toggleActiveState(false);}, 200);
                         };
                         
+                        this.setWidget = function setWidget(name){
+                                $setWidget(name);
+                                _ctrl.init(this.dom.querySelector('li name="'+name+'"'));
+                        };
+                        
                         this.reset = function reset(){
                                 var parent = this.dom.querySelector(".menu-list");
                                 if (parent) {

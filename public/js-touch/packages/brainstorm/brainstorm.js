@@ -62,7 +62,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                                 }
                                 
                                 // if ui already exists - reset and show
-                                if (_stack.getStack().get(name)){
+                                if (name !== "tutorial" && _stack.getStack().get(name)){
                                       _stack.getStack().get(name).reset(sip);
                                       _stack.getStack().show(name);  
                                 }

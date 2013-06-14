@@ -52,6 +52,11 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                                 if (_stack.getStack().getCurrentName() !== "#about") _stack.getStack().show("#about");
                                 _stack.getStack().get("#about").show("#tutorials");       
                         });
+                        
+                        Config.get("observer").watch("show-about", function(){
+                                if (_stack.getStack().getCurrentName() !== "#about") _stack.getStack().show("#about");
+                                _stack.getStack().get("#about").show("#userguide");       
+                        });
                  
                 //return
 			return _widget;

@@ -44,7 +44,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         "notifevent" : new Event(notify)
                 });
                 
-                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, press; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div><div class = "info-bubble" data-notifevent="listen:touchstart, press; listen:touchend, showAbout">i</div></div>';
+                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, push; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div><div class = "info-bubble" data-notifevent="listen:touchstart, press; listen:touchend, showAbout">i</div></div>';
                 
                 notify.place(dom);
                 
@@ -57,9 +57,13 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         return unread;        
                 };
                 
-                notify.press = function(event, node){
+                notify.push = function(event, node){
                         node.classList.add("orange");
                         event.stopPropagation();        
+                };
+                
+                notify.press = function(event, node){
+                        node.classList.add("pressed");        
                 };
                 
                 notify.showPopup = function(event, node){

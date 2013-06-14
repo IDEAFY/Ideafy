@@ -148,8 +148,6 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 _stack.getStack().show("#connect");
                                 _control.radioClass(con, prev, "selected");
                                 _control.init(con);
-                                //document.querySelector(".dock-item.selected").classList.remove("selected");
-                                //document.querySelector(".dock-item[href='#connect']").classList.add("selected");
                         });
                         
                         // display tutorials (dashboard)
@@ -159,8 +157,6 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 _stack.getStack().show("#dashboard");
                                 _control.radioClass(dash, prev, "selected");
                                 _control.init(dash);
-                                //document.querySelector(".dock-item.selected").classList.remove("selected");
-                                //document.querySelector(".dock-item[href='#dashboard']").classList.add("selected");
                         });
                         
                         // display session waiting room (join)

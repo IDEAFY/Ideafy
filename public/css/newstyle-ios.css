@@ -432,6 +432,15 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     opacity: 0.5;
 }
 
+.info-bubble{
+    background: #4D4D4D;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 46px;
+    top: -85px;
+}
+
 #notify-popup{
     position:absolute;
     bottom:0;

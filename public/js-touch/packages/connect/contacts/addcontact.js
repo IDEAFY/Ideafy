@@ -18,7 +18,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                  user = Config.get("user"),
                  transport = Config.get("transport"),
                  labels = Config.get("labels"),
-                 spinner = new Spinner({color:"#5F8F28", lines:8, length: 8, width: 4, radius:8, left: 30, top: -6}).spin(),
+                 spinner = new Spinner({color:"#5F8F28", lines:8, length: 8, width: 4, radius:8, left: -20, top: -36}).spin(),
                  validateSearch = function(name, value){
                          var emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
                          if (name === "email"){

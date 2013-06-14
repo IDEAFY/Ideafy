@@ -54,8 +54,11 @@ define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
                         };
                         
                         this.setWidget = function setWidget(name){
+                                var node = this.dom.querySelector('li[name="'+name+'"]');
                                 $setWidget(name);
-                                _ctrl.init(this.dom.querySelector('li[name="'+name+'"]').firstChild);
+                                node.parentNode.querySelector(".selected").classList.remove("selected");
+                                node.classList.add("selected");
+                                _ctrl.init(this.dom.querySelector('li[name="'+name+'"]'));
                         };
                         
                         this.reset = function reset(){

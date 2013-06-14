@@ -44,7 +44,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         "notifevent" : new Event(notify)
                 });
                 
-                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, press; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div>';
+                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, press; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div><div class = "info-bubble" data-notifevent="listen:touchstart, press; listen:touchend, showAbout">i</div></div>';
                 
                 notify.place(dom);
                 
@@ -75,6 +75,13 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         document.getElementById("dock").querySelector(".selected").classList.remove("selected");
                         document.querySelector('a[href="#public"]').classList.add("selected");
                         Config.get("observer").notify("signout");        
+                };
+                
+                // info && help
+                notify.showAbout = function(event, node){
+                        node.classList.remove("pressed");
+                        Config.get("observer").notify("goto-screen", "#dashboard");
+                        Config.get("observer").notify("show-about");        
                 };
                 
                 // popup user interface

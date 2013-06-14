@@ -462,18 +462,18 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                                                         getDocAsAdmin(id, cdbDoc)
                                                                         .then(function(){
                                                                                 var ip = cdbDoc.get("ip"),
-                                                                                    news = cdbDoc.get("news") || [],
+                                                                                    notif = cdbDoc.get("notifications") || [],
                                                                                     now = new Date();
                                                                                 cdbDoc.set("ip", ip+200);
-                                                                                news.unshift({
+                                                                                notif.unshift({
                                                                                         type : "REF",
+                                                                                        status : "unread",
                                                                                         date : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
-                                                                                        content:{
-                                                                                                userid : json.name,
-                                                                                                username : json.fn + " " + json.ln
-                                                                                        }
+                                                                                        author: json.name,
+                                                                                        username : json.fn + " " + json.ln,
+                                                                                        firstname : json.fn
                                                                                 });
-                                                                                cdbDoc.set("news", news);
+                                                                                cdbDoc.set("notifications", notif);
                                                                                 return updateDocAsAdmin(id, cdbDoc);
                                                                         });       
                                                                 });

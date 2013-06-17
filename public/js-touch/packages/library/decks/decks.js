@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy/Delegate-plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview"],
-        function(Widget, Model, Stack, Control, Delegate, Config, Map, List, DeckView){
+define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview"],
+        function(Widget, Model, Stack, Control, Event, Place, Config, Map, List, DeckView){
                 
            return function MyDecksContructor(){
               
@@ -23,11 +23,12 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy
               widget.plugins.addAll({
                                 "label" : new Model(Config.get("labels")),
                                 "deckliststack" : stack,
-                                "decksevent" : new Delegate(widget),
+                                "decksevent" : new Event(widget),
+                                "deckplace" : new Place({"deckView": deckView}),
                                 "deckscontrol" : deckControl
               });
               
-              widget.template = '<div id="decks"><div id="decklist" class="list"><div class="header blue-light"><div class="option left" data-deckscontrol=""></div><span data-label="bind: innerHTML, decklistheadertitle"></span><div class="option right" data-decksevent="listen: touchstart, plus"></div></div><div class="overflow" data-deckliststack="destination" data-deckscontrol="radio:li,selected,touchstart,selectStart"></div></div><div id="deckview" class="details"></div></div>';
+              widget.template = '<div id="decks"><div id="decklist" class="list"><div class="header blue-light"><div class="option left" data-deckscontrol=""></div><span data-label="bind: innerHTML, decklistheadertitle"></span><div class="option right" data-decksevent="listen: touchstart, plus"></div></div><div class="overflow" data-deckliststack="destination" data-deckscontrol="radio:li,selected,touchstart,selectStart"></div></div><div id="deckview" data-deckplace="place:deckView" class="details"></div></div>';
               
               // setup
               

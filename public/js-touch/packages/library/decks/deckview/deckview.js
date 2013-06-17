@@ -68,8 +68,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                                 innerStack.getStack().add("techno", new CardList("techno"));
                         };
                         
-                        deckView.place(Map.get("deckview"));
-                        
                         return deckView;
                         
                 };

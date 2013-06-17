@@ -69,6 +69,11 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Amy
                         currentSelected = id;
               };
               
+              widget.plus = function(event, node){
+                        alert("deck addiction");
+                                
+              };
+              
               
               // init
               widget.init();

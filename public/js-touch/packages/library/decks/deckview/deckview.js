@@ -45,7 +45,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                         };
                         
                         deckView.reset = function reset(deck){
-                                alert("reset deck";)
+                                alert("reset deck");
                                 console.log("deck : ", deck);
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
                                         innerStack.getStack().get(value).reset(deck);        

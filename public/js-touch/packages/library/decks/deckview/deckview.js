@@ -12,10 +12,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                         
                         var deckView = new Widget(),
                             cardMenu = new Store([
-                                    {name: "characters", active: false},
-                                    {name: "contexts", active: false},
-                                    {name: "problems", active: false},
-                                    {name: "techno", active: false}
+                                    {name: "characters", active: false, count:0},
+                                    {name: "contexts", active: false, count:0},
+                                    {name: "problems", active: false, count:0},
+                                    {name: "techno", active: false, count:0}
                             ]),
                             innerStack = new Stack();
                         
@@ -33,7 +33,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                                 "deckviewevent" : new Event(deckView)
                         });
                         
-                        deckView.template = '<div><ul class="card-menu" data-cardmenu="foreach"><li data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: touchstart, viewCards"></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>';
+                        deckView.template = '<div><ul class="card-menu" data-cardmenu="foreach"><li><div data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: touchstart, viewCards"></div><div class="card-count" data-cardmenu="bind:innerHTML, count"></div></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>';
                         
                         deckView.viewCards = function(event, node){
                                 var id = node.getAttribute("data-cardmenu_id");
@@ -50,10 +50,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                                         innerStack.getStack().get(value).reset(deck);        
                                 });
                                 cardMenu.reset([
-                                    {name: "characters", active: false},
-                                    {name: "contexts", active: false},
-                                    {name: "problems", active: false},
-                                    {name: "techno", active: false}
+                                    {name: "characters", active: false, count: 0},
+                                    {name: "contexts", active: false, count: 0},
+                                    {name: "problems", active: false, count: 0},
+                                    {name: "techno", active: false, count: 0}
                             ]);
                                 innerStack.getStack().show("details");        
                         };

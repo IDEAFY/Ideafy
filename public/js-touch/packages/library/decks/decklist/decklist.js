@@ -51,9 +51,14 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         };
                         
                         deckList.getDecks = function getDecks(type, onEnd){
-                                var cdb = new CouchDBBulkDocuments();
+                                var cdb = new CouchDBBulkDocuments(), keys = [];
+                                switch(type){
+                                        default:
+                                                keys = user.get("taiaut_decks").concat(user.get("custom_decks"));
+                                                
+                                }
                                 cdb.setTransport(Config.get("transport"));
-                                cdb.sync(Config.get("db"), {keys : user.get(type)}).then(function(){
+                                cdb.sync(Config.get("db"), {keys : keys}).then(function(){
                                         var lang = user.get("lang");
                                         decks.reset([]);
                                         cdb.loop(function(v, i){

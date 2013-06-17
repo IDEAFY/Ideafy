@@ -49,6 +49,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
                                         innerStack.getStack().get(value).reset(deck);        
                                 });
+                                console.log(deck);
                                 cardMenu.reset([
                                     {name: "characters", active: false, count: 0},
                                     {name: "contexts", active: false, count: 0},

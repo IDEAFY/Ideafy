@@ -2391,6 +2391,8 @@ textarea.solution {
 #deckview .card-menu .card-count{
     height: 20px;
     line-height: 20px;
+    color: #4d4d4d;
+    font-size: 12px;
 }
 
 #deckview .card-menu .characters{

@@ -108,51 +108,40 @@
 							<div class="detail-stack" data-detailstack="destination"></div>
 						</div>
 					</div>
-					<div id = "decks">  		
-						<div id="decklist" class="list">
-							<div class="header blue-light">
-								<div class="option left" data-deckscontrol=""></div>
-								<span data-label="bind: innerHTML, decklistheadertitle"></span>
-								<div class="option right" data-decksevent="listen: touchstart, plus"></div>
-							</div>
-							<div class="overflow" data-deckliststack="destination" data-deckscontrol="radio:li,selected,touchstart,selectStart">
-						</div>
+					<div id = "decks"></div>
 				</div>
-				<div id="deckview" class="details"></div>
 			</div>
-		</div>
-	</div>
-	<div id="brainstorm">
-		<div id="brainstorm-menu"></div>
-		<div class="brainstorm-header header blue-light">
-			<div class="date" data-header="bind: setDate, date">jj/mm/aaaa</div>
-			<span class="headerTitle" data-header="bind: innerHTML, headertitle"></span>
-			<div class="clock" data-header="bind: setTime, date">hh:mm</div>
-		</div>
-		<div class="stack" data-brainstormstack="destination">
-			<div id="ideafy-menu">
-				<div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, brainstormchoosemode"></div>
-				<ul class="menu" data-ideafymenu = "foreach">
-					<li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, selected" data-ideafyevent="listen:touchstart, press; listen: touchend, start"></li>
-				</ul>
+			<div id="brainstorm">
+				<div id="brainstorm-menu"></div>
+				<div class="brainstorm-header header blue-light">
+					<div class="date" data-header="bind: setDate, date">jj/mm/aaaa</div>
+					<span class="headerTitle" data-header="bind: innerHTML, headertitle"></span>
+					<div class="clock" data-header="bind: setTime, date">hh:mm</div>
+				</div>
+				<div class="stack" data-brainstormstack="destination">
+					<div id="ideafy-menu">
+						<div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, brainstormchoosemode"></div>
+						<ul class="menu" data-ideafymenu = "foreach">
+							<li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, selected" data-ideafyevent="listen:touchstart, press; listen: touchend, start"></li>
+						</ul>
+					</div>
+					<div id="ideafy-quick">
+						<div class="stack" data-quickstack="destination"></div>
+					</div>
+				</div>
 			</div>
-			<div id="ideafy-quick">
-				<div class="stack" data-quickstack="destination"></div>
-			</div>
-		</div>
-	</div>
 
-	<div id="connect">
-		<div id="connect-menu"></div>
-		<div class="stack" data-connectstack="destination"></div>
-	</div>
+			<div id="connect">
+				<div id="connect-menu"></div>
+				<div class="stack" data-connectstack="destination"></div>
+			</div>
 
-	<div id="dashboard">
-		<div id="dashboard-menu"></div>
-		<div class="stack" data-dashboardstack="destination">	
+			<div id="dashboard">
+				<div id="dashboard-menu"></div>
+				<div class="stack" data-dashboardstack="destination">	
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
-</div>
 </body>
 </html>

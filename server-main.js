@@ -199,7 +199,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
-                        agent:false,
+                        agent: false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -221,7 +221,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         method : "GET",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
-                        agent:false,
+                        agent: false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -237,13 +237,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 
                 return promise;      
            },
-            createDocAsAdmin = function(docId, cdbStore){
+           createDocAsAdmin = function(docId, cdbStore){
                 var promise = new Promise();
                 transport.request("CouchDB", {
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
                         auth: cdbAdminCredentials,
-                        agent:false,
+                        agent: false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -261,14 +261,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 
                 return promise;         
            },
-            getViewAsAdmin = function(design, view, query, cdbStore){
+           getViewAsAdmin = function(design, view, query, cdbStore){
                 var promise = new Promise();
                 transport.request("CouchDB", {
                         method : "GET",
                         path:"/"+_db+"/_design/"+design+"/_view/"+view,
                         query: query,
                         auth: cdbAdminCredentials,
-                        agent:false,
+                        agent: false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"

@@ -1187,7 +1187,7 @@ ul.notify-list{
 }
 
 
-#public-list .option.right, #idea-list .option.right, #connect-messages .option.right, #connect-contacts .option.right, #mtc-list .option.right {
+#public-list .option.right, #idea-list .option.right, #decklist .option.right, #connect-messages .option.right, #connect-contacts .option.right, #mtc-list .option.right {
   background:url('../img/public/plus2.png') no-repeat center center;
   background-size:20px;
 }

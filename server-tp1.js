@@ -178,9 +178,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         usercdb.set("su_sessions_count", sus);
                                         break;
                                 case "mu_session_complete":
-                                        var mus = usercdb.get("su_sessions_count") || 0;
+                                        var mus = usercdb.get("mu_sessions_count") || 0;
                                         mus++;
-                                        usercdb.set("su_sessions_count", mus);
+                                        usercdb.set("mu_sessions_count", mus);
                                         break;
                                 default:
                                         break;        
@@ -284,7 +284,49 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 
                 return promise;      
            },
-            sendSignupEmail = function(login, pwd, lang){
+           checkInvited = function(id, onEnd){
+                transport.request("CouchDB", {
+                        method : "GET",
+                        path:"/ideafy_invites/"+id,
+                        auth: cdbAdminCredentials,
+                        agent:false,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        }
+                }, function (res) {
+                        var json = JSON.parse(res);
+                        if (json._id) {
+                                onEnd(json);
+                        }
+                        else {
+                                onEnd(false);
+                        }
+                });        
+           },
+           addInvited = function(id, cdbDoc){
+                var promise = new Promise();
+                transport.request("CouchDB", {
+                        method : "PUT",
+                        path:"/ideafy_invites/"+id,
+                        auth: cdbAdminCredentials,
+                        agent:false,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        },
+                        data: cdbDoc.toJSON()
+                }, function (res) {
+                        var json = JSON.parse(res);
+                        if (json.ok) {
+                                promise.fulfill();
+                        } else {
+                                promise.reject();
+                        }});
+                
+                return promise;        
+           },
+           sendSignupEmail = function(login, pwd, lang){
                 var mailOptions = {
                         from : "IDEAFY <ideafy@taiaut.com>", // sender address
                         to : login
@@ -408,6 +450,46 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                                         "type": 11
                                                 });
                                                 createDocAsAdmin(json.name+"_rewards", rewards);
+                                                
+                                                // check for referrals and update accordingly
+                                                checkInvited(json.name, function(result){
+                                                        console.log("check invited", result);
+                                                        if (result){
+                                                                result.sender.forEach(function(id){
+                                                                        var cdbDoc = new CouchDBDocument();
+                                                                        getDocAsAdmin(id, cdbDoc)
+                                                                        .then(function(){
+                                                                                var ip = cdbDoc.get("ip"),
+                                                                                    notif = cdbDoc.get("notifications") || [],
+                                                                                    now = new Date();
+                                                                                cdbDoc.set("ip", ip+200);
+                                                                                notif.unshift({
+                                                                                        type : "REF",
+                                                                                        status : "unread",
+                                                                                        date : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                                                                        author: json.name,
+                                                                                        username : json.fn + " " + json.ln,
+                                                                                        firstname : json.fn
+                                                                                });
+                                                                                cdbDoc.set("notifications", notif);
+                                                                                return updateDocAsAdmin(id, cdbDoc);
+                                                                        });       
+                                                                });
+                                                                // remove document from ideafy_invites
+                                                                transport.request("CouchDB", {
+                                                                        method : "DELETE",
+                                                                        path:"/ideafy_invites/"+json.name,
+                                                                        auth: cdbAdminCredentials,
+                                                                        agent:false,
+                                                                        headers: {
+                                                                                "Content-Type": "application/json",
+                                                                                "Connection": "close"
+                                                                        }
+                                                                }, function (res) {
+                                                                        console.log(res);
+                                                                });
+                                                        }        
+                                                });
                                         }
                                 });
                         }, function (json) {
@@ -1271,6 +1353,69 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                 });
         });
+        
+        // Invite a user to join Ideafy
+        olives.handlers.set("Invite", function(json, onEnd){
+                var mailOptions = {
+                        from : "IDEAFY <ideafy@taiaut.com>", // sender address
+                        to : json.id, // list of receivers
+                        cc : json.senderid, // automatic copy to sender
+                        replyTo : "", // recipient should reply to sender
+                        subject : json.sendername + " invites you to join the Ideafy community",
+                        html : json.body
+                };
+                
+                // check if user has already been invited
+                checkInvited(json.id, function(result){
+                        var cdb = new CouchDBDocument();
+                        // if not then create doc in database and send email
+                        if (!result){
+                                cdb.set("_id", json.id);
+                                cdb.set("sender", [json.senderid]);
+                                addInvited(json.id, cdb)
+                                .then(function(){
+                                        smtpTransport.sendMail(mailOptions, function(error, response) {
+                                                if (error) {
+                                                        console.log(error, response);
+                                                        onEnd({
+                                                                sendmail : "error",
+                                                                reason : error,
+                                                                response : response
+                                                        });
+                                                } 
+                                                else {
+                                                        onEnd("ok");
+                                                }
+                                        });        
+                                }); 
+                        }
+                        else{
+                                cdb.reset(result);
+                                // check if user has already been invited by this sender
+                                if (cdb.get("sender").indexOf(json.senderid)>-1){
+                                        onEnd("alreadyinvited");
+                                }
+                                else{
+                                        cdb.set("sender", cdb.get("sender").push(json.senderid));
+                                        addInvited(json.id, cdb)
+                                        .then(function(){
+                                                smtpTransport.sendMail(mailOptions, function(error, response) {
+                                                        if (error) {
+                                                                onEnd({
+                                                                        sendmail : "error",
+                                                                        reason : error,
+                                                                        response : response
+                                                                });
+                                                        } 
+                                                        else {
+                                                                onEnd("ok");
+                                                        }
+                                                });        
+                                        });
+                                }      
+                        }        
+                });  
+        });
 
         // Voting on ideas
         olives.handlers.set("Vote", function(json, onEnd) {
@@ -1294,8 +1439,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         return getDocAsAdmin(json.voter, votercdb);
                 })
                 .then(function(){
-                        var ri = votercdb.get("rated_ideas"),
-                            ip = votercdb.get("ip");
+                        var ri = votercdb.get("rated_ideas") || [],
+                            ip = votercdb.get("ip") || 0;
                         ri.unshift(json.id);
                         votercdb.set("rated_ideas", ri);
                         votercdb.set("ip", ip+2);
@@ -1464,7 +1609,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                     updateUserWithSessionScore = function(sessionCDB){
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
-                            idList = [],
+                            idList = [], i,l,
                             parts = sessionCDB.get("participants"),
                             reason;
                         
@@ -1476,20 +1621,24 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 });
                         }
                         
-                        // indicate session mode
+                        // indicate session mode (default is any of the multi-user types)
                         switch (sessionCDB.get("mode")){
                                 case "quick":
-                                        reason = "su_session_complete";
+                                        updateUserIP(idList[0], "su_session_complete", ip, promise.fulfill);
                                         break;
                                 default:
-                                        reason = "mu_session_complete";
+                                        for (i=0, l=idList.length; i<l; i++){
+                                                // update session leader
+                                                if (i === 0){
+                                                        updateUserIP(idList[i], "mu_session_complete", ip, promise.fulfill);        
+                                                }
+                                                // update participant
+                                                else{
+                                                        updateUserIP(idList[i], "mu_participant", ip, promise.fulfill);         
+                                                }
+                                        }
                                         break;        
                         }
-                        
-                        // for each user update IP with reason sessionComplete
-                        idList.forEach(function(id){
-                                updateUserIP(id, reason, ip, promise.fulfill);
-                        });
                         return promise;
                 };
                 
@@ -1590,7 +1739,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 increment += bonus;
                                 if (increment < min_score) {increment = min_score;}
                                 break;
-                        case "muscenario":
+                        case "muidea":
                                 min_score = 20;
                                 wbdata = JSON.parse(json.wbcontent);
                                 input = JSON.parse(json.idea);
@@ -1609,9 +1758,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 if ((json.wbcontent.search("import")>-1) && (json.wbcontent.search("drawing")>-1)) {bonus = 25;}
                                 else if ((json.wbcontent.search("import")>-1) || (json.wbcontent.search("drawing")>-1))  {bonus = 10;}
                                 
-                                if (json.visibility === "public") {bonus +=20;}
                                 increment = Math.floor((wbdata.length*12 + bonus)*coeff) + min_score;
-                                break;     
+                                
+                                
+                                if (json.visibility === "public") {increment *= 2;}
+                                if (json.sessionReplay){increment = Math.floor(increment*1.5);}
+                                break;   
                         default:
                                 increment = 0;
                                 break;

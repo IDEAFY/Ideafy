@@ -45,16 +45,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                         };
                         
                         deckView.reset = function reset(deck){
-                                alert("reset deck");
-                                console.log("deck : ", deck);
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
                                         innerStack.getStack().get(value).reset(deck);        
                                 });
                                 cardMenu.reset([
-                                    {name: "characters", active: false, count: 0},
-                                    {name: "contexts", active: false, count: 0},
-                                    {name: "problems", active: false, count: 0},
-                                    {name: "techno", active: false, count: 0}
+                                    {name: "characters", active: false, count: deck.content.characters.length},
+                                    {name: "contexts", active: false, count: deck.content.contexts.length},
+                                    {name: "problems", active: false, count: deck.content.problems.length},
+                                    {name: "techno", active: false, count: deck.content.techno.length}
                             ]);
                                 innerStack.getStack().show("details");        
                         };

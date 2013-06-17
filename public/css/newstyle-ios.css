@@ -2381,8 +2381,16 @@ textarea.solution {
     margin-left: 10px;
     margin-right: 10px;
     width: 100px;
+}
+
+#deckview .card-menu .card-type{
     height: 100px;
     border-radius: 50px;
+}
+
+#deckview .card-menu .card-count{
+    height: 20px;
+    line-height: 20px;
 }
 
 #deckview .card-menu .characters{

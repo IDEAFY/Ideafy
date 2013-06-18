@@ -62,16 +62,16 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                             tempname, // temp name after file upload
                             now,
                             dataurl,
-                            sid;
+                            dir;
                         if (type === 'postit'){
-                                sid = req.body.sid;
+                                dir = req.body.dir;
                                 now = new Date();
-                                filename = _path+sid+'/'+req.body.filename;
+                                filename = _path+dir+'/'+req.body.filename;
                                 dataurl = req.body.dataString;
                                 
-                                fs.exists(_path+sid, function(exists){
+                                fs.exists(_path+dir, function(exists){
                                         if (!exists) {
-                                                fs.mkdir(_path+sid, 0777, function(err){
+                                                fs.mkdir(_path+dir, 0777, function(err){
                                                         if (err) {throw(err);}
                                                         fs.writeFile(filename, dataurl, function(err){
                                                                 if (err) {throw(err);}

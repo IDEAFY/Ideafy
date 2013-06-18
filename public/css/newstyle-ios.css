@@ -677,14 +677,14 @@ ul.notify-list{
     width: 560px;
     height: 300px;
     left: 230px;
-    bottom: -320px
+    top: -320px
 }
 
 #new2c-popup{
     height: 320px;
     width: 650px;
     left: 185px;
-    bottom : -340px;
+    top : -340px;
 }
 
 #new2q-popup .form textarea, #new2c-popup .form textarea{
@@ -885,14 +885,9 @@ ul.notify-list{
     -webkit-transform:translateY(689px);
 }
 
-#new2q-popup.appear{
+#new2q-popup.appear, #new2c-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateY(-550px);
-}
-
-#new2c-popup.appear{
-    -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateY(-550px);
+    -webkit-transform:translateY(550px);
 }
 
 #help-popup.appear{

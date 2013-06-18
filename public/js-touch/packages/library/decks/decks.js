@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview"],
-        function(Widget, Model, Stack, Control, Event, Place, Config, Map, List, DeckView){
+define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview", "./newdeck"],
+        function(Widget, Model, Stack, Control, Event, Place, Config, Map, List, DeckView, NewDeck){
                 
            return function MyDecksContructor(){
               
@@ -17,18 +17,19 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   currentSelected,
                   stack = new Stack(),  // in the future will allow to display taiaut decks or custom decks or search decks
                   ideafyDecks, customDecks,
-                  deckView = new DeckView();
+                  deckView = new DeckView(),
+                  newDeck = new NewDeck();
               
               
               widget.plugins.addAll({
                                 "label" : new Model(Config.get("labels")),
                                 "deckliststack" : stack,
                                 "decksevent" : new Event(widget),
-                                "deckplace" : new Place({"deckView": deckView}),
+                                "deckplace" : new Place({"deckView": deckView, "newDeck": newDeck}),
                                 "deckscontrol" : deckControl
               });
               
-              widget.template = '<div id="decks"><div id="decklist" class="list"><div class="header blue-light"><div class="option left" data-deckscontrol=""></div><span data-label="bind: innerHTML, decklistheadertitle"></span><div class="option right" data-decksevent="listen: touchstart, plus"></div></div><div class="overflow" data-deckliststack="destination" data-deckscontrol="radio:li,selected,touchstart,selectStart"></div></div><div id="deckview" data-deckplace="place:deckView" class="details"></div></div>';
+              widget.template = '<div id="decks"><div id="decklist" class="list"><div class="header blue-light"><div class="option left" data-deckscontrol=""></div><span data-label="bind: innerHTML, decklistheadertitle"></span><div class="option right" data-decksevent="listen: touchstart, plus"></div></div><div class="overflow" data-deckliststack="destination" data-deckscontrol="radio:li,selected,touchstart,selectStart"></div></div><div id="deckview" data-deckplace="place:deckView" class="details"></div><div data-deckplace="place:newDeck"></div></div>';
               
               // setup
               

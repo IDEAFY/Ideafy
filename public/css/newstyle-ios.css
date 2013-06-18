@@ -702,6 +702,10 @@ ul.notify-list{
     height: 250px;
 }
 
+#newdeck-popup .deckicon{
+    
+}
+
 #newidea-popup .form textarea, #newidea-popup .form .newideatitle, #new2q-popup .form p, #new2c-popup .form p, #newdeck-popup .form textarea, #newdeck-popup .form .newideatitle{
     margin-bottom:  20px;
     font-size: 14px;

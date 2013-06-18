@@ -57,10 +57,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newdeckevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
-                        
-                        _widget.render();
-                        _widget.place(Map.get("newdeck-popup"));
+                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.reset = function reset(){
                                 _store.reset({
@@ -84,15 +81,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _widget.dom.classList.add("appear");        
                         };
                         
-                        _widget.toggleVisibility = function(event, node){
-                                if (node.value === "1"){
-                                        _store.set("visibility", "private");
-                                }
-                                else {
-                                        _store.set("visibility", "public");
-                                }
-                        };
-                        
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
                         };
@@ -103,11 +91,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 document.getElementById("cache").classList.remove("appear");
                                 // reset _store and _error
                                 _store.unsync();
-                                _store.reset(Config.get("ideaTemplate"));
-                                _error.reset({"error":""});
-                                
-                                //reset visibility slider
-                                _widget.dom.querySelector(".visibility-slider").value = 1;        
+                                _widget.reset();
+                                _error.reset({"error":""});       
                         };
                         
                         _widget.resetError = function(event, node){
@@ -136,8 +121,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.upload = function(event, node){
                                 var now = new Date(),
-                                    id = "D:"+now.getTime(),
-                                    timer;
+                                    id = "D:"+now.getTime();
                                     
                                 node.classList.remove("pressed");
                                 // check for errors (missing fields)
@@ -148,40 +132,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 if (!_error.get("error") && !_store.get("_id")){ 
                                         node.classList.add("invisible");
                                         spinner.spin(node.parentNode);
-                                        timer = setInterval(function(){
-                                                if (_error.get("error") === _labels.get("uploadinprogress")){
-                                                        _error.set("error", _labels.get("uploadinprogress")+"...");
-                                                }
-                                                else _error.set("error", _labels.get("uploadinprogress"));
-                                        }, 100);
                                                                    
                                         // fill cdb document
-                                        _store.set("authors", [_user.get("_id")]);
-                                        _store.set("authornames", _user.get("username"));
-                                        _store.set("creation_date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
-                                        // set language to the user's language by default
-                                        _store.set("lang", _user.get("lang"));
+                                        _store.set("date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
                                         // create document in couchdb and upload
                                         _store.sync(Config.get("db"), id)
                                         .then(function(){
                                                 return _store.upload();
                                         })
                                         .then(function(){
-                                                if (_store.get("visibility") === "public"){
-                                                        Config.get("transport").request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "docTitle": _store.get("title")}, function(result){
-                                                                if (result !== "ok") console.log(result);
-                                                                spinner.stop();
-                                                                node.classList.remove("invisible");
-                                                                _widget.closePopup();
-                                                                clearInterval(timer);
-                                                        });       
-                                                }
-                                                else{
-                                                        spinner.stop();
-                                                        node.classList.remove("invisible");
-                                                        _widget.closePopup();
-                                                        clearInterval(timer);
-                                                }
+                                                spinner.stop();
+                                                node.classList.remove("invisible");
+                                                _widget.closePopup();
                                         });
                                 }
                         };

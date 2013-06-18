@@ -21,8 +21,11 @@
 	"firstnameplaceholder": "Prénom",
 	"lastnameplaceholder": "Nom",
 	"createidealbl" : "Saisir une idée",
+	"createdecklbl" : "Créer un nouveau deck";
 	"ideatitleplaceholder": "Donnez un titre à votre idée",
+	"decktitleplaceholder": "Donnez un titre à votre deck",
 	"ideadescplaceholder": "Décrivez votre idée en termes non techniques",
+	"deckdescplaceholder": "Décrivez votre deck",
 	"ideasolplaceholder": "Décrivez votre solution et ses composantes techniques, produits et services mis en oeuvre",
 	"privatelbl": "Privée",
 	"publiclbl": "Publique",

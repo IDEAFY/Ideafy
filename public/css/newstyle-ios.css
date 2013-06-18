@@ -702,8 +702,13 @@ ul.notify-list{
     height: 250px;
 }
 
+#newdeck-popup .form legend{
+    margin-top: -10px;
+    font-size: 14px;
+}
+
 #newdeck-popup .deckicon{
-    
+    height: 100px;    
 }
 
 #newidea-popup .form textarea, #newidea-popup .form .newideatitle, #new2q-popup .form p, #new2c-popup .form p, #newdeck-popup .form textarea, #newdeck-popup .form .newideatitle{
@@ -747,8 +752,12 @@ ul.notify-list{
     border-radius: 15px;
 }
 
-#newidea-popup .newidea-footer, #newdeck-popup .newidea-footer{
+#newidea-popup .newidea-footer{
     margin-top: 70px;
+}
+
+#newdeck-popup .newidea-footer{
+    margin-top: 20px;
 }
 
 #newidea-popup .publicwarning{

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Store, Spinner){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils", "Promise"],
+        function(Widget, Map, Model, Event, Config, Store, Spinner, Utils, Promise){
                 
                 return function newConstructor(){
                 
@@ -15,24 +15,74 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _user = Config.get("user"),
                             _labels = Config.get("labels"),
                             _error = new Store({"error": ""}),
-                            spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
+                            spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin(),
+                            MIN_WIDTH = 60, MIN_HEIGHT = 60,
+                            clearCanvas = function(canvas){
+                                var ctx = canvas.getContext("2d");
+                                ctx.clearRect(0,0,canvas.width, canvas.height);
+                            },
+                            resizeImage = function(img){
+                                var _width, _height, canvas = document.createElement('canvas'), ctx = canvas.getContext("2d");
+                                
+                                // resize image if needed
+                                _width = img.width;
+                                _height = img.height;
+                                if (_width<_height){
+                                        _height *= MIN_WIDTH / _width;
+                                        _width = MIN_WIDTH;
+                                
+                                }
+                                else {
+                                        _width *= MIN_HEIGHT / _height;
+                                        _height = MIN_HEIGHT;
+                                }
+                            
+                                canvas.width = _width;
+                                canvas.height = _height;
+                                ctx.drawImage(img, 0, 0, _width, _height);
+                                return canvas.toDataURL("image/png");
+                            },
+                            cropImage = function(dataURL){
+                                var image = new Image(),
+                                    canvas = document.createElement('canvas'),
+                                    dest  = document.getElementById("decklogo"),
+                                    ctx = canvas.getContext('2d'),
+                                    dw = dest.scrollWidth,
+                                    dh = dest.scrollHeight,
+                                    sx, sy;
+                                image.src = dataURL;
+                                setTimeout(function(){
+                                        canvas.width = dw;
+                                        canvas.height = dh;
+                                        sx = Math.floor(Math.max(0, (image.width-dw)/2));
+                                        sy = Math.floor(Math.max(0, (image.height-dh)/2));
+                                        ctx.drawImage(image, sx, sy, dw, dh, 0, 0, dw, dh);
+                                }, 300);
+                            },
+                            uploadDeckIcon = function(){
+                                var _promise = new Promise(),
+                                    _url = '/upload',
+                                    _fd = new FormData(),
+                                    _type = "deckpic",
+                                    _canvas = document.getElementById("decklogo"),
+                                    _dataURL = _canvas.toDataURL("image/png"),
+                                    _now=new Date();
+                                _fd.append("type", _type);
+                                _fd.append("dir", _store.get("_id"));
+                                _fd.append("filename", "decklogo");
+                                _fd.append("dataString", _dataURL);
+                                Utils.uploadFile(_url, _fd, _progress, function(result){
+                                        _postit.set("content", _filename);
+                                        _promise.fulfill();
+                                });
+                                return _promise;
+                            };
                             
                         _store.setTransport(Config.get("transport"));
                         
                         _widget.plugins.addAll({
                                 "newdeck" : new Model(_store, {
-                                        setVisibility : function(visibility){
-                                                if (visibility === "public"){
-                                                        this.innerHTML = _labels.get("publicidealbl");
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/publicforslider.png'); background-position: 135px center; background-repeat:no-repeat; background-size: 30px;");
-                                                }
-                                                else{
-                                                        this.innerHTML = _labels.get("privateidealbl");
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/privateforslider.png'); background-position: 15px center; background-repeat:no-repeat; background-size: 20px;");       
-                                                }
-                                        },
-                                        setWarning : function(visibility){
-                                                (visibility === "public") ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                        setIcon : function(file){
                                         }
                                 }),
                                 "labels" : new Model(_labels),
@@ -45,9 +95,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         case "nodesc":
                                                              this.innerHTML = _labels.get("descriptionfield")+ _labels.get("emptyfielderror");
                                                              break;
-                                                        case "nosol":
-                                                             this.innerHTML = _labels.get("solutionfield")+ _labels.get("emptyfielderror");
-                                                             break;
                                                         default:
                                                              this.innerHTML = error;
                                                 }
@@ -57,9 +104,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newdeckevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend>Select a deck icon</legend><div class="deckicon"></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend>Select a deck icon</legend><div class="deckicon"><canvas id="decklogo" data-importmodel="bind:showPreview, content"></canvas></div><div class="importbutton" data-newdeckevent="listen: touchstart, press; listen:touchend, picturePreview" data-label="bind:innerHTML, importpiclbl"></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
-                        _widget.reset = function reset(){
+                        _widget.reset = function reset(edit){
                                 _store.reset({
                                         "_id": "",
                                         "type": 9,
@@ -84,6 +131,28 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
+                        };
+                        
+                        _widget.picturePreview = function(event, node){
+                                var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
+                                    _img = new Image(),
+                                    _options = {quality:50, correctOrientation: true, sourceType: source},
+                                    onSuccess, onFail;
+                        
+                                onSuccess = function(imageData){
+                                        _img.src = imageData;
+                                        setTimeout(function(){
+                                                cropImage(resizeImage(_img));
+                                                _store.set("picture_file", "decklogo");
+                                                node.classList.remove("pressed");
+                                        }, 750);
+                                };
+                        
+                                onFail = function(message){
+                                        alert("error: "+message);
+                                };
+                        
+                                navigator.camera.getPicture(onSuccess, onFail, _options);
                         };
                         
                         _widget.closePopup = function closePopup(){
@@ -128,7 +197,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // check for errors (missing fields)
                                 if (!_store.get("title")) {_error.set("error", "notitle");}
                                 else if (!_store.get("description")) {_error.set("error", "nodesc");}
-                                else if (!_store.get("solution")) {_error.set("error", "nosol");}
 
                                 if (!_error.get("error") && !_store.get("_id")){ 
                                         node.classList.add("invisible");
@@ -136,9 +204,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                    
                                         // fill cdb document
                                         _store.set("date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
+                                        
                                         // create document in couchdb and upload
                                         _store.sync(Config.get("db"), id)
                                         .then(function(){
+                                                console.log(_store.toJSON());
+                                                // upload deck logo if applicable
+                                                if (_store.get("picture_file")){
+                                                        uploadDeckIcon();
+                                                }
                                                 return _store.upload();
                                         })
                                         .then(function(){

@@ -47,7 +47,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 _now=new Date(),
                                 _filename = filename || Config.get("user").get("_id")+'_'+_now.getTime();
                             _fd.append("type", _type);
-                            _fd.append("sid", _sid);
+                            _fd.append("dir", _sid);
                             _fd.append("filename", _filename);
                             _fd.append("dataString", _dataURL);
                             Utils.uploadFile(_url, _fd, _progress, function(result){

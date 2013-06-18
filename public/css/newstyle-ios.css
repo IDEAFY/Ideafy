@@ -766,7 +766,8 @@ ul.notify-list{
 #newdeck-popup .importbutton{
     width:100px;
     height: 40px;
-    border: 1px solid #cccccc;
+    border: 1px solid #657b99;
+    background: #e5e5e5;
     border-radius: 5px;
     line-height: 40px;
     text-align: center;

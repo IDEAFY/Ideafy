@@ -55,7 +55,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                                  loadAvatar.fulfill();
                          }
                          else{
-                                _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
+                                _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                         if (!result.error) {
                                                 Config.set("avatar", result);
                                         }
@@ -107,7 +107,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                                  loadAvatar.fulfill();
                          }
                          else{
-                                _transport.request("GetFile", {sid: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
+                                _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                         if (!result.error) {
                                                 Config.set("avatar", result);
                                         }

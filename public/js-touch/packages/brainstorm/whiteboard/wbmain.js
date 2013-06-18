@@ -36,7 +36,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                                                         node.classList.add("photo");
                                                         node.classList.remove("drawing");
                                                         this.innerHTML="";
-                                                        json = {"sid":_sid, "filename":content};
+                                                        json = {"dir":_sid, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
                                                         });
@@ -45,7 +45,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                                                         node.classList.remove("photo");
                                                         node.classList.add("drawing");
                                                         this.innerHTML="";
-                                                        json = {"sid":_sid, "filename":content};
+                                                        json = {"dir":_sid, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
                                                         });

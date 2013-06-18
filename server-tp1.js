@@ -585,7 +585,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // retrieve an attachment document (e.g brainstorming session)
         olives.handlers.set("GetFile", function(json, onEnd){
-                var _filename =  '/shared/attachments/' + json.sid+'/'+json.filename;
+                var _filename =  '/shared/attachments/' + json.dir+'/'+json.filename;
                     
                 fs.readFile(_filename, 'utf8', function(error, data){
                         if (data){

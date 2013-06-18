@@ -71,8 +71,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               };
               
               widget.plus = function(event, node){
-                        alert("deck addiction");
-                                
+                        newDeck.show();
               };
               
               

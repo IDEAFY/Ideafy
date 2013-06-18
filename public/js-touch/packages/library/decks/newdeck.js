@@ -84,14 +84,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.plugins.addAll({
                                 "newdeck" : new Model(_store, {
                                         showPreview : function(file){
-                                                var json, node=this, _img = new Image(), _ctx = node.getContext('2d');
+                                                var json, node = this;
+                                                console.log(file);
                                                 if (!file) {
-                                                        node.setAttribute("style", "background: url('img/connect/graygroup.png) no-repeat center center;background-size=contain;" );        
+                                                        node.setAttribute("style", "background: url('img/connect/graygroup.png') no-repeat center center;background-size:contain;");        
                                                 }
                                                 else {
                                                         node.setAttribute("style", "background: none;");
-                                                        node.classList.remove("invisible");
-                                                        json = {"dir":_sid, "filename":content};
+                                                        json = {"dir":_store.get("_id"), "filename":file};
                                                         _transport.request("GetFile", json, function(data){
                                                                 var _img = new Image(),
                                                                     _ctx = node.getContext('2d');

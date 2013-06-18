@@ -660,7 +660,7 @@ ul.notify-list{
 }
 
 /* New idea / new Twoquestion popup */
-#newidea-popup, #new2q-popup, #new2c-popup{
+#newidea-popup, #new2q-popup, #new2c-popup, #newdeck-popup{
     position: absolute;
     width: 480px;
     height: 560px;
@@ -668,7 +668,7 @@ ul.notify-list{
     z-index: 2000;
     background: white;
     left: 270px;
-    bottom: -580px;
+    top: -580px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
@@ -698,12 +698,12 @@ ul.notify-list{
     height: 200px;
 }
 
-#newidea-popup .form textarea, #newidea-popup .form .newideatitle, #new2q-popup .form p, #new2c-popup .form p{
+#newidea-popup .form textarea, #newidea-popup .form .newideatitle, #new2q-popup .form p, #new2c-popup .form p, #newdeck-popup .form textarea, #newdeck-popup .form .newideatitle{
     margin-bottom:  20px;
     font-size: 14px;
 }
 
-#new2c-popup .close-popup, #new2q-popup .close-popup, #newidea-popup .close-popup{
+#new2c-popup .close-popup, #new2q-popup .close-popup, #newidea-popup .close-popup,  #newdeck-popup .close-popup{
     right: 0px;
     -webkit-box-shadow: 0px -3px 3px 0px rgba(0,0,0,0.6);
 }
@@ -739,7 +739,7 @@ ul.notify-list{
     border-radius: 15px;
 }
 
-#newidea-popup .newidea-footer{
+#newidea-popup .newidea-footer, #newdeck-popup .newidea-footer{
     margin-top: 70px;
 }
 
@@ -880,9 +880,9 @@ ul.notify-list{
     font-size: 16px;
 }
 
-#newidea-popup.appear{
+#newidea-popup.appear, #newdeck-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateY(-689px);
+    -webkit-transform:translateY(689px);
 }
 
 #new2q-popup.appear{
@@ -909,7 +909,7 @@ ul.notify-list{
     z-index: 1500;
 }
 
-#newidea-popup .option, .confirm .option, #new2q-popup .option{
+#newidea-popup .option, .confirm .option, #new2q-popup .option, #newdeck-popup .option{
     width: 60px;
     height: 24px;
     margin-top: 5px;
@@ -939,16 +939,16 @@ ul.notify-list{
     background: #4D4D4D;
 }
 
-#newidea-popup .option.pressed, .confirm .option.pressed, #new2q-popup .option.pressed{
+#newidea-popup .option.pressed, .confirm .option.pressed, #new2q-popup .option.pressed, #newdeck-popup .option.pressed{
     background: #94A3B8;
     border: 1px solid #657B99;
 }
 
-#newidea-popup .left, #new2q-popup .left{
+#newidea-popup .left, #new2q-popup .left, #newdeck-popup .left{
     left: 5px;
 }
 
-#newidea-popup .right, #new2q-popup .right{
+#newidea-popup .right, #new2q-popup .right, #newdeck-popup .right{
     right: 5px;
 }
 

@@ -57,7 +57,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newdeckevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newdeck="bind: value, solution" data-newdeckevent="listen: input, resetError"></textarea><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newdeckevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newdeck="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("newdeck-popup"));
@@ -79,6 +79,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 });        
                         };
                         
+                        _widget.show = function show(){
+                                _widget.reset();
+                                _widget.dom.classList.add("appear");        
+                        };
+                        
                         _widget.toggleVisibility = function(event, node){
                                 if (node.value === "1"){
                                         _store.set("visibility", "private");
@@ -90,7 +95,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
-                                _widget.dom.querySelector(".publicwarning").classList.add("invisible");
                         };
                         
                         _widget.closePopup = function closePopup(){

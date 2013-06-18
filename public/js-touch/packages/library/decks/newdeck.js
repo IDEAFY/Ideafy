@@ -13,6 +13,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _widget = new Widget(),
                             _store = new Store({}),
                             _user = Config.get("user"),
+                            _transport = Config.get("transport"),
                             _labels = Config.get("labels"),
                             _error = new Store({"error": ""}),
                             spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin(),
@@ -82,8 +83,25 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.plugins.addAll({
                                 "newdeck" : new Model(_store, {
-                                        setIcon : function(file){
-                                        }
+                                        showPreview : function(file){
+                                                var json, node=this, _img = new Image(), _ctx = node.getContext('2d');
+                                                if (!file) {
+                                                        node.setAttribute("style", "background: url('img/connect/graygroup.png) no-repeat center center;background-size=contain;" );        
+                                                }
+                                                else {
+                                                        node.setAttribute("style", "background: none;");
+                                                        node.classList.remove("invisible");
+                                                        json = {"dir":_sid, "filename":content};
+                                                        _transport.request("GetFile", json, function(data){
+                                                                var _img = new Image(),
+                                                                    _ctx = node.getContext('2d');
+                                                                _img.src = data;
+                                                                node.width=_img.width;
+                                                                node.height=_img.height;
+                                                                _ctx.drawImage(_img,0,0);   
+                                                        });
+                                                }
+                                        },
                                 }),
                                 "labels" : new Model(_labels),
                                 "errormsg" : new Model(_error, {
@@ -104,7 +122,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newdeckevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend>Select a deck icon</legend><div class="deckicon"><canvas id="decklogo" data-importmodel="bind:showPreview, content"></canvas><div class="importbutton" data-newdeckevent="listen: touchstart, press; listen:touchend, picturePreview" data-label="bind:innerHTML, importpiclbl"></div></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend>Select a deck icon</legend><div class="deckicon"><canvas id="decklogo" data-newdeck="bind:showPreview, picture_file"></canvas><div class="importbutton" data-newdeckevent="listen: touchstart, press; listen:touchend, picturePreview" data-labels="bind:innerHTML, importpiclbl"></div></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.reset = function reset(edit){
                                 _store.reset({

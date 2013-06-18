@@ -78,6 +78,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.show = function show(){
                                 _widget.reset();
+                                document.getElementById("cache").classList.add("appear");
                                 _widget.dom.classList.add("appear");        
                         };
                         
@@ -87,7 +88,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.closePopup = function closePopup(){
                                 // hide window
-                                document.getElementById("newdeck-popup").classList.remove("appear");
+                                _widget.dom.classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
                                 // reset _store and _error
                                 _store.unsync();

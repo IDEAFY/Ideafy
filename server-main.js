@@ -31,8 +31,9 @@ var http = require("http"),
     pwd = require("./pwd.js"),
     srvutils = require("./srvutils.js");
     
-    var changePassword = new pwd.ChangePassword();
-    var checkVersion = new srvutils.CheckVersion();
+    var changePassword = new pwd.ChangePassword(),
+        checkVersion = new srvutils.CheckVersion(),
+        getFile = new srvutils.GetFile();
   
 
 
@@ -388,6 +389,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         // utility handlers (no couchdb)
         checkVersion.setCurrentVersion(currentVersion);
         olives.handlers.set("CheckVersion", checkVersion.handler);
+        olives.handlers.set("GetFile", getFile.handler);
         
         // change password handler
         changePassword.setCouchDBDocument(CouchDBDocument);
@@ -593,7 +595,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         });
         
         // retrieve an attachment document (e.g brainstorming session)
-        olives.handlers.set("GetFile", function(json, onEnd){
+        /*olives.handlers.set("GetFile", function(json, onEnd){
                 var dir = json.dir || json.sid,
                     _filename =  __dirname+'/attachments/'+ dir+'/'+json.filename;
                     
@@ -606,7 +608,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 onEnd({"error": error});
                         }                
                 });
-        });
+        });*/
         
         // retrieve a given user's avatar
         olives.handlers.set("GetAvatar", function(json, onEnd){

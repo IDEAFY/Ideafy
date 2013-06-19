@@ -43,7 +43,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 ctx.drawImage(img, 0, 0, _width, _height);
                                 return canvas.toDataURL("image/png");
                             },
-                            cropImage = function(dataURL){
+                            cropImage = function(dataURL, onEnd){
                                 var image = new Image(),
                                     canvas = document.createElement('canvas'),
                                     dest  = document.getElementById("decklogo"),
@@ -58,6 +58,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         sx = Math.floor(Math.max(0, (image.width-dw)/2));
                                         sy = Math.floor(Math.max(0, (image.height-dh)/2));
                                         ctx.drawImage(image, sx, sy, dw, dh, 0, 0, dw, dh);
+                                        onEnd(canvas.toDataURL("image/png"));
                                 }, 300);
                             },
                             uploadDeckIcon = function(){
@@ -83,21 +84,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.plugins.addAll({
                                 "newdeck" : new Model(_store, {
-                                        showPreview : function(file){
+                                        showPreview : function(logo){
                                                 var json, node = this;
-                                                console.log(file);
-                                                if (!file) {
+                                                console.log(logo);
+                                                if (!logo) {
                                                         node.setAttribute("style", "background: url('img/connect/graygroup.png') no-repeat center center;background-size:contain;");        
                                                 }
                                                 else {
                                                         node.setAttribute("style", "background: none;");
-                                                        json = {"dir":_store.get("_id"), "filename":file};
+                                                        json = {"dir":_store.get("_id"), "filename":logo};
                                                         _transport.request("GetFile", json, function(data){
                                                                 var _img = new Image(),
                                                                     _ctx = node.getContext('2d');
                                                                 _img.src = data;
-                                                                node.width=_img.width;
-                                                                node.height=_img.height;
                                                                 _ctx.drawImage(_img,0,0);   
                                                         });
                                                 }
@@ -160,9 +159,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 onSuccess = function(imageData){
                                         _img.src = imageData;
                                         setTimeout(function(){
-                                                cropImage(resizeImage(_img));
-                                                _store.set("picture_file", "decklogo");
-                                                node.classList.remove("pressed");
+                                                cropImage(resizeImage(_img), function(result){
+                                                        document.getElementById("decklogo").getContext("2d").drawImage(result, 0, 0, MIN_WIDTH, MIN_HEIGHT);
+                                                        _store.set("picture_file", "decklogo");
+                                                        node.classList.remove("pressed");        
+                                                });
                                         }, 750);
                                 };
                         

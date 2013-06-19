@@ -761,6 +761,8 @@ ul.notify-list{
     height: 100px;
     border-radius: 50px;
     float: left;
+    background: url('../img/connect/graygroup.png') no-repeat center center;
+    background-size: 60px;
 }
 
 #newdeck-popup .importbutton{

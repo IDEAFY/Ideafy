@@ -46,10 +46,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             cropImage = function(dataURL, onEnd){
                                 var image = new Image(),
                                     canvas = document.createElement('canvas'),
-                                    dest  = document.getElementById("decklogo"),
                                     ctx = canvas.getContext('2d'),
-                                    dw = dest.scrollWidth,
-                                    dh = dest.scrollHeight,
+                                    dw = MIN_WIDTH,
+                                    dh = MIN_HEIGHT,
                                     sx, sy;
                                 image.src = dataURL;
                                 setTimeout(function(){
@@ -83,25 +82,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _store.setTransport(Config.get("transport"));
                         
                         _widget.plugins.addAll({
-                                "newdeck" : new Model(_store, {
-                                        showPreview : function(logo){
-                                                var json, node = this;
-                                                console.log(logo);
-                                                if (!logo) {
-                                                        node.setAttribute("style", "background: url('img/connect/graygroup.png') no-repeat center center;background-size:contain;");        
-                                                }
-                                                else {
-                                                        node.setAttribute("style", "background: none;");
-                                                        json = {"dir":_store.get("_id"), "filename":logo};
-                                                        _transport.request("GetFile", json, function(data){
-                                                                var _img = new Image(),
-                                                                    _ctx = node.getContext('2d');
-                                                                _img.src = data;
-                                                                _ctx.drawImage(_img,0,0);   
-                                                        });
-                                                }
-                                        },
-                                }),
+                                "newdeck" : new Model(_store),
                                 "labels" : new Model(_labels),
                                 "errormsg" : new Model(_error, {
                                         setError : function(error){
@@ -121,7 +102,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newdeckevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend>Select a deck icon</legend><div class="deckicon"><canvas id="decklogo" data-newdeck="bind:showPreview, picture_file"></canvas><div class="importbutton" data-newdeckevent="listen: touchstart, press; listen:touchend, picturePreview" data-labels="bind:innerHTML, importpiclbl"></div></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend>Select a deck icon</legend><div class="deckicon"><div class="decklogo"></div><div class="importbutton" data-newdeckevent="listen: touchstart, press; listen:touchend, picturePreview" data-labels="bind:innerHTML, importpiclbl"></div></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.reset = function reset(edit){
                                 _store.reset({
@@ -160,7 +141,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _img.src = imageData;
                                         setTimeout(function(){
                                                 cropImage(resizeImage(_img), function(result){
-                                                        document.getElementById("decklogo").getContext("2d").drawImage(result, 0, 0, MIN_WIDTH, MIN_HEIGHT);
+                                                        var el = _widget.dom.querySelector(".decklogo");
+                                                        el.setAttribute("style", "background-image: url('"+result+"')");
                                                         _store.set("picture_file", "decklogo");
                                                         node.classList.remove("pressed");        
                                                 });

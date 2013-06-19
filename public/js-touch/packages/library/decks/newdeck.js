@@ -113,8 +113,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "picture_file": "",
                                         "translations": {},
                                         "created_by": _user.get("_id"),
-                                        "author": _user.get("username")
-                                });        
+                                        "author": _user.get("username"),
+                                        "sharedwith": []
+                                });
+                                _currentDataURL = null;       
                         };
                         
                         _widget.show = function show(){

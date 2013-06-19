@@ -1,5 +1,6 @@
 {
 	"language": "en-us",
+	"outdated": "Your version is outdated and some features may not work properly. Please update Ideafy",
 	"emailplaceholder": "Email",
 	"passwordplaceholder": "Password",
 	"repeatpasswordplaceholder": "Confirm password",

@@ -27,10 +27,12 @@ var http = require("http"),
         hostname : "127.0.0.1",
         port : "6379"
     }),
-    wrap = require("./wrap");
-    pwd = require("./pwd.js");
+    wrap = require("./wrap"),
+    pwd = require("./pwd.js"),
+    srvutils = require("./srvutils.js");
     
     var changePassword = new pwd.ChangePassword();
+    var checkVersion = new srvutils.CheckVersion();
   
 
 
@@ -51,6 +53,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var transport = new Transport(olives.handlers),
             _db = "ideafy",
             cdbAdminCredentials = "admin:innovation4U",
+            currentVersion = "1.1.1",
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -381,6 +384,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                 })
         });
+        
+        // utility handlers (no couchdb)
+        checkVersion.setCurrentVersion(currentVersion);
+        olives.handlers.set("CheckVersion", checkVersion.handler);
         
         // change password handler
         changePassword.setCouchDBDocument(CouchDBDocument);

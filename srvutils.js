@@ -12,10 +12,10 @@ function CheckVersion() {
         };
         
         this.handler = function(json, onEnd){
-                if (json.version < currentVersion){
+                if (json.version < _currentVersion){
                         onEnd("outdated");
                 }
-                if (json.version > currentVersion){
+                if (json.version > _currentVersion){
                         console.log("test version");
                 }
         };

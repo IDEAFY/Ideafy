@@ -2,6 +2,8 @@
  * Utility handlers
  */
 
+var fs = require("fs");
+
 
 /*
  * CheckVersion handler : to test if client version is the most current one

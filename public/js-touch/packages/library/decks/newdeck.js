@@ -17,11 +17,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _labels = Config.get("labels"),
                             _error = new Store({"error": ""}),
                             spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin(),
+                            _currentDataURL,
                             MIN_WIDTH = 60, MIN_HEIGHT = 60,
-                            clearCanvas = function(canvas){
-                                var ctx = canvas.getContext("2d");
-                                ctx.clearRect(0,0,canvas.width, canvas.height);
-                            },
                             resizeImage = function(img){
                                 var _width, _height, canvas = document.createElement('canvas'), ctx = canvas.getContext("2d");
                                 
@@ -65,8 +62,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     _url = '/upload',
                                     _fd = new FormData(),
                                     _type = "deckpic",
-                                    _canvas = document.getElementById("decklogo"),
-                                    _dataURL = _canvas.toDataURL("image/png"),
+                                    _dataURL = _currentDataURL,
                                     _now=new Date();
                                 _fd.append("type", _type);
                                 _fd.append("dir", _store.get("_id"));
@@ -102,7 +98,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newdeckevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend>Select a deck icon</legend><div class="deckicon"><div class="decklogo"></div><div class="importbutton" data-newdeckevent="listen: touchstart, press; listen:touchend, picturePreview" data-labels="bind:innerHTML, importpiclbl"></div></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:touchstart, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend>Select a deck icon</legend><div class="deckicon"><div class="decklogo"></div><div class="importbutton" data-newdeckevent="listen: touchstart, press; listen:touchend, picturePreview" data-labels="bind:innerHTML, importpiclbl"></div></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></form></div>';
                         
                         _widget.reset = function reset(edit){
                                 _store.reset({
@@ -117,8 +113,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "picture_file": "",
                                         "translations": {},
                                         "created_by": _user.get("_id"),
-                                        "author": _user.get("username")
-                                });        
+                                        "author": _user.get("username"),
+                                        "sharedwith": []
+                                });
+                                _currentDataURL = null;       
                         };
                         
                         _widget.show = function show(){
@@ -143,6 +141,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 cropImage(resizeImage(_img), function(result){
                                                         var el = _widget.dom.querySelector(".decklogo");
                                                         el.setAttribute("style", "background-image: url('"+result+"')");
+                                                        _currentDataURL = result;
                                                         _store.set("picture_file", "decklogo");
                                                         node.classList.remove("pressed");        
                                                 });

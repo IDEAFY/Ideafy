@@ -13,8 +13,10 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         //declaration
         var _body = new Widget(), _login = null, _stack = new Stack({
                 "#login" : _login
-        }), _dock = new Dock(), _local = new LocalStore(), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user");
+        }), _dock = new Dock(), _local = new LocalStore(), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user"), _currentVersion;
 
+        _currentVersion = "1.1.2";
+        
         //setup
         _body.plugins.addAll({
                 "stack" : _stack
@@ -22,6 +24,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         //logic
         _body.init = function init(firstStart) {
+                
                 // add dock UI to the stack
                 _stack.getStack().add("#dock", _dock);
                 // check db
@@ -139,9 +142,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         _stack.getStack().setCurrentScreen(_login);
         _login.init();
         
-        STACK = _stack;
-        LOGIN = _login;
-        
         // check connection
         if (navigator.connection && navigator.connection.type === "none"){
                 // get labels or assign default ones
@@ -151,7 +151,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         }
         else {
                 checkServerStatus()
-                .then(function(result){
+                .then(function(){
         
                         // initialize labels to device language if available or US by default
                         if (_local.get("labels")) {
@@ -161,6 +161,14 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         else{
                                 updateLabels(navigator.language);
                         }
+                        
+                        // check client version
+                        _transport.request("CheckVersion", {version: _currentVersion}, function(result){
+                                var msg = _labels.get("outdated") || "Please update your application";
+                                if (result === "outdated"){
+                                        alert(msg);
+                                }        
+                        });
 
                         var current = _local.get("currentLogin") || "";
                 

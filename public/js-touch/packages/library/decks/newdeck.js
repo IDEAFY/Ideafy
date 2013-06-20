@@ -69,7 +69,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _fd.append("filename", "decklogo");
                                 _fd.append("dataString", _dataURL);
                                 Utils.uploadFile(_url, _fd, _progress, function(result){
-                                        _postit.set("content", _filename);
                                         _promise.fulfill();
                                 });
                                 return _promise;
@@ -203,6 +202,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         spinner.spin(node.parentNode);
                                                                    
                                         // fill cdb document
+                                        _store.set("_id", id);
                                         _store.set("date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
                                         
                                         // create document in couchdb and upload

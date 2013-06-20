@@ -47,3 +47,25 @@ function GetFile() {
 }
 
 exports.GetFile = GetFile;
+
+/*
+ * GetLabels : used to read a localization file on the server
+ */
+
+function GetLabels(){
+        this.handler = function(json, onEnd){
+                var _path = __dirname+'/i8n/'+json.lang+'.json';
+                fs.exists(_path, function(exists){
+                        if (exists){
+                                var labels=fs.readFile(_path, 'utf8', function(err, data){
+                                        onEnd(JSON.parse(data));        
+                                });
+                        }
+                        else{
+                                onEnd("nok");
+                        }    
+                });
+        };
+}
+        
+exports.GetLabels = GetLabels;

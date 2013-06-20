@@ -249,7 +249,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                                      }
                              };
                              req.upload.onprogress = function(e){
-                                     if(e.lengthComputable){
+                                     if(e.lengthComputable && progress){
                                              progress.set("status", Math.round(e.loaded/e.total*100));
                                      }
                              };

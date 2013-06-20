@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils", "Promise"],
-        function(Widget, Map, Model, Event, Config, Store, Spinner, Utils, Promise){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils"],
+        function(Widget, Map, Model, Event, Config, Store, Spinner, Utils){
                 
                 return function newConstructor(){
                 
@@ -58,21 +58,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }, 300);
                             },
                             uploadDeckIcon = function(){
-                                var _promise = new Promise(),
-                                    _url = '/upload',
+                                var _url = '/upload',
                                     _fd = new FormData(),
                                     _type = "deckpic",
-                                    _dataURL = _currentDataURL,
-                                    _now=new Date();
+                                    _dataURL = _currentDataURL;
                                 _fd.append("type", _type);
                                 _fd.append("dir", _store.get("_id"));
                                 _fd.append("filename", "decklogo");
                                 _fd.append("dataString", _dataURL);
-                                Utils.uploadFile(_url, _fd, _progress, function(result){
-                                        _postit.set("content", _filename);
-                                        _promise.fulfill();
+                                Utils.uploadFile(_url, _fd, null, function(result){
+                                        console.log(result);
                                 });
-                                return _promise;
                             };
                             
                         _store.setTransport(Config.get("transport"));
@@ -203,6 +199,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         spinner.spin(node.parentNode);
                                                                    
                                         // fill cdb document
+                                        _store.set("_id", id);
                                         _store.set("date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
                                         
                                         // create document in couchdb and upload

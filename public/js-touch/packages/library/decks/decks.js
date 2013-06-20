@@ -16,9 +16,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   user = Config.get("user"),
                   currentSelected,
                   stack = new Stack(),  // in the future will allow to display taiaut decks or custom decks or search decks
-                  ideafyDecks, customDecks,
-                  deckView = new DeckView(),
-                  newDeck = new NewDeck();
+                  ideafyDecks, customDecks, taiautDecks,
+                  deckView, newDeck;
               
               
               widget.plugins.addAll({
@@ -44,11 +43,36 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                       });
               };
               
+              widget.highlightNewDeck = function highlightNewDeck(type){
+                        // get deck id -- new 
+                        var deckId, list, position = null, node;
+                        (type === "custom") ? deckId = user.get("custom_decks")[0] : deckId = user.get("taiaut_decks")[0];
+                        
+                        // view all decks
+                        stack.getStack().show("ideafy");
+                        list = ideafyDecks.getModel();
+                        
+                        // check position of new deck in the list
+                        list.loop(function(v,i){
+                                if (v._id === deckId){
+                                        position = i;
+                                }        
+                        });
+                        
+                        if (position !== null){
+                                ideafyDecks.initSelected(deckControl.init, position);
+                                deckView.reset(ideafyDecks.getModel().get(position));
+                                currentSelected = position;
+                        }
+              };
+              
               widget.init = function init(){
                       
                       ideafyDecks = new List("all_decks");
-                          // taiautDecks = new List("taiaut_decks"); -- in App purchase of official decks
-                          // customDecks = new List("custom_decks"); -- feature not available in the first release
+                      // taiautDecks = new List("taiaut_decks"); -- in App purchase of official decks
+                      // customDecks = new List("custom_decks"); -- feature not available in the first release
+                      deckView = new DeckView();
+                      newDeck = new NewDeck(widget.highlightNewDeck);
                       
                       stack.getStack().add("ideafy", ideafyDecks);
                       

@@ -43,6 +43,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         deckList.template = '<ul id="deck-list" data-decks="foreach"><li class="list-item" data-decklistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, title"></h3><span class="version" data-decks="bind:setVersion, version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, author"></div><span class="date" data-decks="bind:date, date"></div></div></li></ul>';
                         
                         deckList.reset = function reset(onEnd){
+                                decks.reset([]);
                                 deckList.getDecks($type, onEnd);              
                         };
                         
@@ -60,7 +61,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), {keys : keys}).then(function(){
                                         var lang = user.get("lang"), arr = [];
-                                        decks.reset([]);
                                         cdb.loop(function(v, i){
                                                 if (!v.doc.default_lang || (v.doc.default_lang === lang)) {
                                                         arr.push(v.doc);
@@ -75,7 +75,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                                 if (a>b) return 1;
                                                 if (a===b) return 0;
                                                 });
-                                        console.log(arr);
                                         decks.reset(arr);
                                         if (onEnd) {onEnd("ok");}
                                         cdb.unsync();
@@ -96,8 +95,16 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         
                         
                         // watch for changes for this particular type of decks in user doc 
-                        user.watchValue($type, function(){
-                                deckList.getDecks($type);        
+                        user.watchValue("custom_decks", function(){
+                                if ($type === "custom_decks" || $type === "all_decks"){
+                                        deckList.getDecks($type);
+                                }
+                        });
+                        
+                        user.watchValue("taiaut_decks", function(){
+                                if ($type === "taiaut_decks" || $type === "all_decks"){
+                                        deckList.getDecks($type);
+                                }        
                         });
                         
                         // also watch for change of language

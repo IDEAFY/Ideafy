@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils"],
         function(Widget, Map, Model, Event, Config, Store, Spinner, Utils){
                 
-                return function newConstructor(){
+                return function newConstructor(onEnd){
                 
                         var _widget = new Widget(),
                             _store = new Store({}),
@@ -213,7 +213,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 return _store.upload();
                                         })
                                         .then(function(){
+                                                // add new deck to list of custom decks for this user
+                                                var _decks = _user.get("custom_decks") || [];
+                                                _decks.unshift(id);
+                                                _user.set("custom_decks", _decks);
+                                                return _user.upload();
+                                        })
+                                        .then(function(){
                                                 spinner.stop();
+                                                onEnd();
                                                 node.classList.remove("invisible");
                                                 _widget.closePopup();
                                         });

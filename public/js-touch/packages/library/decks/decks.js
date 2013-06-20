@@ -61,13 +61,14 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         
                         if (position !== null){
                                 ideafyDecks.initSelected(deckControl.init, position);
+                                node = widget.dom.querySelector("li[data-decks_id='"+position+"']");
+                                node.scrollIntoView();
                                 deckView.reset(ideafyDecks.getModel().get(position));
                                 currentSelected = position;
                         }
               };
               
               widget.init = function init(){
-                      
                       ideafyDecks = new List("all_decks");
                       // taiautDecks = new List("taiaut_decks"); -- in App purchase of official decks
                       // customDecks = new List("custom_decks"); -- feature not available in the first release

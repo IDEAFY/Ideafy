@@ -33,7 +33,8 @@ var http = require("http"),
     
     var changePassword = new pwd.ChangePassword(),
         checkVersion = new srvutils.CheckVersion(),
-        getFile = new srvutils.GetFile();
+        getFile = new srvutils.GetFile(),
+        getLabels = new srvutils.GetLabels;
   
 
 
@@ -359,7 +360,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         
         // Application handlers
-        olives.handlers.set("Lang", function(json, onEnd){
+        /*olives.handlers.set("Lang", function(json, onEnd){
                 var _path = __dirname+'/i8n/'+json.lang+'.json';
                 fs.exists(_path, function(exists){
                         if (exists){
@@ -371,7 +372,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 onEnd("nok");
                         }    
                 });
-        });
+        });*/
         
         olives.handlers.set("GetLanguages", function(json, onEnd){
                 fs.readdir(__dirname+'/i8n/', function(err, list){
@@ -390,6 +391,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         checkVersion.setCurrentVersion(currentVersion);
         olives.handlers.set("CheckVersion", checkVersion.handler);
         olives.handlers.set("GetFile", getFile.handler);
+        olives.handlers.set("Lang", getLabels.handler);
         
         // change password handler
         changePassword.setCouchDBDocument(CouchDBDocument);

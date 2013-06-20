@@ -521,10 +521,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }                
                 });
                    
-                SESSION = _session;
-                SDATA = _sessionData;
-                STEPS = _steps;
-                MSTACK = _stack;
                 // return
                 return _widget;
            };    

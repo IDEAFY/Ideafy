@@ -46,7 +46,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               widget.init = function init(){
                       
-                      ideafyDecks = new List("taiaut_decks");
+                      ideafyDecks = new List("all_decks");
+                          // taiautDecks = new List("taiaut_decks"); -- in App purchase of official decks
                           // customDecks = new List("custom_decks"); -- feature not available in the first release
                       
                       stack.getStack().add("ideafy", ideafyDecks);
@@ -83,11 +84,13 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               user.watchValue("lang", function(){
                               var name = stack.getStack().getCurrentName(), currentDeckList, deckListUI = stack.getStack().getCurrentScreen();
                               switch(name){
+                                    case "taiaut":
+                                          currentDeckList = "taiaut_decks";
                                     case "custom":
                                           currentDeckList = "custom_decks";
                                           break;
                                     default:
-                                          currentDeckList = "taiaut_decks";
+                                          currentDeckList = "all_decks";
                                           break;
                               }
                               deckListUI.getDecks(currentDeckList, function(sync){

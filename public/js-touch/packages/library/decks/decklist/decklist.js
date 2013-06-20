@@ -59,16 +59,24 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 }
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), {keys : keys}).then(function(){
-                                        var lang = user.get("lang");
+                                        var lang = user.get("lang"), arr = [];
                                         decks.reset([]);
                                         cdb.loop(function(v, i){
                                                 if (!v.doc.default_lang || (v.doc.default_lang === lang)) {
-                                                        decks.alter("push", v.doc);
+                                                        arr.push(v.doc);
                                                 }
                                                  else {
-                                                        (v.doc.translations && v.doc.translations[lang]) ? decks.alter("push", v.doc.translations[lang]) : decks.alter("push", v.doc);
+                                                        (v.doc.translations && v.doc.translations[lang]) ? arr.push(v.doc.translations[lang]) : arr.push(v.doc);
                                                 }                
                                         });
+                                        arr.sort(function(x,y){
+                                                var a = x.title, b = y.title;
+                                                if (a<b) return -1;
+                                                if (a>b) return 1;
+                                                if (a===b) return 0;
+                                                });
+                                        console.log(arr);
+                                        decks.reset(arr);
                                         if (onEnd) {onEnd("ok");}
                                         cdb.unsync();
                                 });             

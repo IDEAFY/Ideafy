@@ -17,7 +17,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   currentSelected,
                   stack = new Stack(),  // in the future will allow to display taiaut decks or custom decks or search decks
                   ideafyDecks, customDecks, taiautDecks,
-                  deckView, newDeck;
+                  deckView = new DeckView(), newDeck = new NewDeck();
               
               
               widget.plugins.addAll({
@@ -72,8 +72,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                       ideafyDecks = new List("all_decks");
                       // taiautDecks = new List("taiaut_decks"); -- in App purchase of official decks
                       // customDecks = new List("custom_decks"); -- feature not available in the first release
-                      deckView = new DeckView();
-                      newDeck = new NewDeck(widget.highlightNewDeck);
                       
                       stack.getStack().add("ideafy", ideafyDecks);
                       
@@ -129,6 +127,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               // return
               return widget;
                    
-           } ;    
+           };    
                 
         });

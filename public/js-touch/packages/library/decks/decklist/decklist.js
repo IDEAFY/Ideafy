@@ -25,7 +25,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                                 (version)?this.innerHTML=labels.get("version")+version: this.innerHTML="";        
                                         },
                                         setAuthor: function(author){
-                                                if (author === "Taïaut"){
+                                                if (author === "Taiaut"){
                                                         this.innerHTML = "";
                                                         this.setAttribute("style", "background-image:url('img/logo.png');")
                                                 }

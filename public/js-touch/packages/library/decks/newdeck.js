@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils"],
         function(Widget, Map, Model, Event, Config, Store, Spinner, Utils){
                 
-                return function newConstructor($onEnd){
+                return function newConstructor(){
                         
                         var _widget = new Widget(),
                             _store = new Store({}),
@@ -221,7 +221,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         })
                                         .then(function(){
                                                 spinner.stop();
-                                                $onEnd("custom");
                                                 node.classList.remove("invisible");
                                                 _widget.closePopup();
                                         });

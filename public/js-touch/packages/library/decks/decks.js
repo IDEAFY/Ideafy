@@ -172,8 +172,13 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                         return cdb.remove();
                                 })
                                 .then(function(){
+                                        var arr = user.get("custom_decks");
+                                        arr.splice(1, arr.indexOf(id));
+                                        user.set("custom_decks", arr);
                                         count++;
-                                        if (count === l) console.log("all custom decks removed");
+                                        if (count === l) {
+                                                console.log("all custom decks removed");
+                                        }
                                 });
                       });
                       

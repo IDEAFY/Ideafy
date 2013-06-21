@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview", "./newdeck"],
-        function(Widget, Model, Stack, Control, Event, Place, Config, Map, List, DeckView, NewDeck){
+define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview", "./newdeck", "CouchDBDocument"],
+        function(Widget, Model, Stack, Control, Event, Place, Config, Map, List, DeckView, NewDeck, CouchDBDocument){
                 
            return function MyDecksContructor(){
               
@@ -46,7 +46,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               widget.displayDeck = function displayDeck(deckId){
                         var listUI = stack.getStack().getCurrentScreen(),
                             list = listUI.getModel(),
-                            elem, position = null;
+                            current_elem, new_elem, position = null;
                         
                         // check position of deck in the list
                         list.loop(function(v,i){
@@ -55,12 +55,21 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 }        
                         });
                         
+                        console.log("display deck called", deckId, position);
                         
                         if (position !== null){
                                 listUI.initSelected(deckControl.init, position);
-                                elem = widget.dom.querySelector("li[data-decks_id='"+position+"']");
+                                current_elem = widget.dom.querySelector("li[data-decks_id='"+currentSelected+"']");
+                                new_elem = widget.dom.querySelector("li[data-decks_id='"+position+"']");
+                                console.log(currnet_elem, new_elem);
+                                // clear current selection
+                                current_elem.classList.remove("selected");
+                                // select new deck, display and re-init control plugin
+                                new_elem.classList.add("selected");
                                 elem.scrollIntoView();
                                 deckView.reset(list.get(position));
+                                
+                                deckControl.init(new_elem);
                                 currentSelected = position;
                         }
                                 
@@ -126,7 +135,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               user.watchValue("custom_decks", function(){
                       
                         console.log("change in user decks");
-                        var displayNew = function(){
+                        var _displayNew = function(){
                                 var c, t, all;
                                 // check if there is a new deck and if yes display it
                                 c = user.get("custom_decks").length;
@@ -137,7 +146,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         };
                         
                         ideafyDecks.reset(function(sync){
-                                if (sync) displayNew();        
+                                if (sync) _displayNew();        
                         });
                         
                         // customDecks.getDecks($type);
@@ -151,6 +160,24 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               USER = user;
               DECKSTACK = stack;
+              DELUSERDECKS = function(){
+                      var count = null, l = user.get("custom_decks").length;
+                      
+                      user.get("custom_decks").forEach(function(deck){
+                                var cdb = new CouchDBocument();
+                                cdb.setTransport(Config.get("transport"));
+                                
+                                cdb.sync(Config.get("db"), deck._id)
+                                .then(function(){
+                                        return cdb.remove();
+                                })
+                                .then(function(){
+                                        count++;
+                                        if (count === l) console.log("all custom decks removed");
+                                });
+                      });
+                      
+              }
               // return
               return widget;
                    

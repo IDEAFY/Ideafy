@@ -17,7 +17,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   currentSelected,
                   stack = new Stack(),  // in the future will allow to display taiaut decks or custom decks or search decks
                   ideafyDecks, customDecks, taiautDecks,
-                  deckView = new DeckView(), newDeck = new NewDeck();
+                  deckView = new DeckView(), newDeck;
               
               
               widget.plugins.addAll({
@@ -76,12 +76,14 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               };
               
               widget.init = function init(){
+                      // init UIs
                       ideafyDecks = new List("all_decks");
                       // taiautDecks = new List("taiaut_decks"); -- in App purchase of official decks
                       // customDecks = new List("custom_decks"); -- feature not available in the first release
                       
-                      stack.getStack().add("ideafy", ideafyDecks);
+                      newDeck = new NewDeck(widget.displayDeck)
                       
+                      stack.getStack().add("ideafy", ideafyDecks);
                       
                       // initial view should show active deck as highlighted and active deck content in the view
                       ideafyDecks.init(function(sync){
@@ -92,11 +94,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                       ideafyDecks.initSelected(deckControl.init,0);
                                       deckView.reset(ideafyDecks.getModel().get(0));
                                       currentSelected = 0;
-                              }
-                              ideafyDecks.getModel().watch("added", function(deckId){
-                                        console.log("added "+deckId);
-                                        widget.displayDeck(deckId);        
-                              });
+                              };
                       });
               };
               
@@ -139,7 +137,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               // watch for changes for this particular type of decks in user doc 
               user.watchValue("custom_decks", function(){
-                      
                         ideafyDecks.reset();
                         // customDecks.getDecks($type);
               });
@@ -150,10 +147,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               });
               
               
-              
-              USER = user;
-              TSTCDB = new CouchDBDocument();
-              DECKSTACK = stack;
               DELUSERDECKS = function(){
                       var count = null, l = user.get("custom_decks").length;
                       

@@ -169,10 +169,9 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                         }
                                         return user.upload();
                                 })
-                                .then(function({
+                                .then(function(){
                                         console.log("user uploaded");
                                 });
-                                
                       });
                       
               }

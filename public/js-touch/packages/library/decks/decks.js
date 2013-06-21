@@ -17,33 +17,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   currentSelected,
                   stack = new Stack(),  // in the future will allow to display taiaut decks or custom decks or search decks
                   ideafyDecks, customDecks, taiautDecks,
-                  deckView = new DeckView(), newDeck;
-              
-              
-              widget.plugins.addAll({
-                                "label" : new Model(Config.get("labels")),
-                                "deckliststack" : stack,
-                                "decksevent" : new Event(widget),
-                                "deckplace" : new Place({"deckView": deckView, "newDeck": newDeck}),
-                                "deckscontrol" : deckControl
-              });
-              
-              widget.template = '<div id="decks"><div id="decklist" class="list"><div class="header blue-light"><div class="option left" data-deckscontrol=""></div><span data-label="bind: innerHTML, decklistheadertitle"></span><div class="option right" data-decksevent="listen: touchstart, plus"></div></div><div class="overflow" data-deckliststack="destination" data-deckscontrol="radio:li,selected,touchstart,selectStart"></div></div><div id="deckview" data-deckplace="place:deckView" class="details"></div><div data-deckplace="place:newDeck"></div></div>';
-              
-              // setup
-              
-              widget.reset = function reset(){
-                      ideafyDecks.reset(function(sync){
-                              if (sync){
-                                      stack.getStack().show("ideafy");
-                                      ideafyDecks.initSelected(deckControl.init,0);
-                                      deckView.reset(ideafyDecks.getModel().get(0));
-                                      currentSelected = 0;
-                              }
-                      });
-              };
-              
-              widget.displayDeck = function displayDeck(deckId){
+                  displayDeck = function(deckId){
                         var listUI = stack.getStack().getCurrentScreen(),
                             list = listUI.getModel(),
                             current_elem, new_elem, position = null;
@@ -71,17 +45,41 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 
                                 deckControl.init(new_elem);
                                 currentSelected = position;
-                        }
-                                
+                        }        
+                  },
+                  deckView = new DeckView(), newDeck = new NewDeck(widget.displayDeck);;
+              
+              
+              widget.plugins.addAll({
+                                "label" : new Model(Config.get("labels")),
+                                "deckliststack" : stack,
+                                "decksevent" : new Event(widget),
+                                "deckplace" : new Place({"deckView": deckView, "newDeck": newDeck}),
+                                "deckscontrol" : deckControl
+              });
+              
+              widget.template = '<div id="decks"><div id="decklist" class="list"><div class="header blue-light"><div class="option left" data-deckscontrol=""></div><span data-label="bind: innerHTML, decklistheadertitle"></span><div class="option right" data-decksevent="listen: touchstart, plus"></div></div><div class="overflow" data-deckliststack="destination" data-deckscontrol="radio:li,selected,touchstart,selectStart"></div></div><div id="deckview" data-deckplace="place:deckView" class="details"></div><div data-deckplace="place:newDeck"></div></div>';
+              
+              // setup
+              
+              widget.reset = function reset(){
+                      ideafyDecks.reset(function(sync){
+                              if (sync){
+                                      stack.getStack().show("ideafy");
+                                      ideafyDecks.initSelected(deckControl.init,0);
+                                      deckView.reset(ideafyDecks.getModel().get(0));
+                                      currentSelected = 0;
+                              }
+                      });
               };
+              
+              widget.displayDeck = displayDeck;
               
               widget.init = function init(){
                       // init UIs
                       ideafyDecks = new List("all_decks");
                       // taiautDecks = new List("taiaut_decks"); -- in App purchase of official decks
                       // customDecks = new List("custom_decks"); -- feature not available in the first release
-                      
-                      newDeck = new NewDeck(widget.displayDeck)
                       
                       stack.getStack().add("ideafy", ideafyDecks);
                       

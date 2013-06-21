@@ -162,8 +162,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               ideafyDecks.watch("added", function(newDeck){console.log(newDeck);});
               
-              TSTCDB = CouchDBDocument;
               USER = user;
+              TSTCDB = new CouchDBDocument();
               DECKSTACK = stack;
               DELUSERDECKS = function(){
                       var count = null, l = user.get("custom_decks").length;

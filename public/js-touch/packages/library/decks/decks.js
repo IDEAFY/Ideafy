@@ -18,6 +18,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   stack = new Stack(),  // in the future will allow to display taiaut decks or custom decks or search decks
                   ideafyDecks, customDecks, taiautDecks,
                   displayDeck = function(deckId){
+                          console.log("function displayDeck called");
                         var listUI = stack.getStack().getCurrentScreen(),
                             list = listUI.getModel(),
                             current_elem, new_elem, position = null;
@@ -154,17 +155,24 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 
                                 cdb.sync(Config.get("db"), id)
                                 .then(function(){
-                                        return cdb.remove();
-                                })
-                                .then(function(){
                                         var arr = user.get("custom_decks");
                                         arr.splice(1, arr.indexOf(id));
                                         user.set("custom_decks", arr);
+                                })
+                                .then(function(){
+                                        return cdb.remove();
+                                })
+                                .then(function(){
                                         count++;
                                         if (count === l) {
                                                 console.log("all custom decks removed");
                                         }
+                                        return user.upload();
+                                })
+                                .then(function({
+                                        console.log("user uploaded");
                                 });
+                                
                       });
                       
               }

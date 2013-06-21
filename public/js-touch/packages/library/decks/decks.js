@@ -18,35 +18,27 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   stack = new Stack(),  // in the future will allow to display taiaut decks or custom decks or search decks
                   ideafyDecks, customDecks, taiautDecks,
                   displayDeck = function(deckId){
-                          console.log("function displayDeck called");
                         var listUI = stack.getStack().getCurrentScreen(),
                             list = listUI.getModel(),
                             current_elem, new_elem, position = null;
                         
-                        // how to make sure that the list is current????
-                        console.log(list.toJSON());
                         // check position of deck in the list
                         list.loop(function(v,i){
                                 if (v._id === deckId){
                                         position = i;
-                                }
-                                console.log(v._id, deckId, i, position);        
+                                }        
                         });
-                        
-                        console.log("display deck called", deckId, position);
                         
                         if (position !== null){
                                 listUI.initSelected(deckControl.init, position);
                                 current_elem = widget.dom.querySelector("li[data-decks_id='"+currentSelected+"']");
                                 new_elem = widget.dom.querySelector("li[data-decks_id='"+position+"']");
-                                console.log(current_elem, new_elem);
                                 // clear current selection
                                 current_elem.classList.remove("selected");
                                 // select new deck, display and re-init control plugin
                                 new_elem.classList.add("selected");
-                                elem.scrollIntoView();
+                                new_elem.scrollIntoView();
                                 deckView.reset(list.get(position));
-                                
                                 deckControl.init(new_elem);
                                 currentSelected = position;
                         }        

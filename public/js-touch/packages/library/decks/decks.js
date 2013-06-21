@@ -82,15 +82,20 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                       
                       stack.getStack().add("ideafy", ideafyDecks);
                       
+                      // show all decks
+                     stack.getStack().show("ideafy");
                       // initial view should show active deck as highlighted and active deck content in the view
                       ideafyDecks.init(function(sync){
                               if (sync){
-                                      stack.getStack().show("ideafy");
                                       deckView.init();
                                       ideafyDecks.initSelected(deckControl.init,0);
                                       deckView.reset(ideafyDecks.getModel().get(0));
                                       currentSelected = 0;
                               }
+                              ideafyDecks.getModel().watch("added", function(deckId){
+                                        console.log("added "+deckId);
+                                        widget.displayDeck(deckId);        
+                              });
                       });
               };
               
@@ -134,24 +139,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               // watch for changes for this particular type of decks in user doc 
               user.watchValue("custom_decks", function(){
                       
-                        /*
-                         var _displayNew = function(result){
-                                var c, t, all;
-                               if (result){
-                                        // check if there is a new deck and if yes display it
-                                        c = user.get("custom_decks").length;
-                                        t = user.get("taiaut_decks").length;
-                                        console.log(c,t, c+t, ideafyDecks.getModel().getNbItems());
-                                        if (c+t > ideafyDecks.getModel().getNbItems()){
-                                                console.log("displaying new deck");
-                                                widget.displayDeck(user.get("custom_decks")[0]);
-                                        }
-                                }
-                        };
-                        */
-                        
                         ideafyDecks.reset();
-                        
                         // customDecks.getDecks($type);
               });
                         
@@ -160,7 +148,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         // taiautDecks.getDecks($type);       
               });
               
-              ideafyDecks.getModel().watch("added", function(newId){console.log(newId);});
+              
               
               USER = user;
               TSTCDB = new CouchDBDocument();

@@ -62,6 +62,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                                 break;
                                                 
                                 }
+                                console.log(keys);
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), {keys : keys}).then(function(){
                                         var lang = user.get("lang"), arr = [];
@@ -79,6 +80,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                                 if (a>b) return 1;
                                                 if (a===b) return 0;
                                                 });
+                                        console.log(arr);        
                                         decks.reset(arr);
                                         if (onEnd) {onEnd("ok");}
                                         cdb.unsync();

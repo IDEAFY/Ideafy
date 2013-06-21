@@ -43,29 +43,27 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                       });
               };
               
-              widget.highlightNewDeck = function highlightNewDeck(type){
-                        // get deck id -- new 
-                        var deckId, list, position = null, node;
-                        (type === "custom") ? deckId = user.get("custom_decks")[0] : deckId = user.get("taiaut_decks")[0];
+              widget.displayDeck = function displayDeck(deckId){
+                        var listUI = stack.getStack().getCurrentScreen(),
+                            list = listUI.getModel(),
+                            elem, position = null;
                         
-                        // view all decks
-                        stack.getStack().show("ideafy");
-                        list = ideafyDecks.getModel();
-                        
-                        // check position of new deck in the list
+                        // check position of deck in the list
                         list.loop(function(v,i){
                                 if (v._id === deckId){
                                         position = i;
                                 }        
                         });
                         
+                        
                         if (position !== null){
-                                ideafyDecks.initSelected(deckControl.init, position);
-                                node = widget.dom.querySelector("li[data-decks_id='"+position+"']");
-                                node.scrollIntoView();
-                                deckView.reset(ideafyDecks.getModel().get(position));
+                                listUI.initSelected(deckControl.init, position);
+                                elem = widget.dom.querySelector("li[data-decks_id='"+position+"']");
+                                elem.scrollIntoView();
+                                deckView.reset(list.get(position));
                                 currentSelected = position;
                         }
+                                
               };
               
               widget.init = function init(){
@@ -122,6 +120,25 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                                   deckView.reset(deckListUI.getModel().get(currentSelected));
                                    }
                               });      
+              });
+              
+              // watch for changes for this particular type of decks in user doc 
+              user.watchValue("custom_decks", function(){
+                        var c, t, all;
+                        ideafyDecks.getDecks($type);
+                        // customDecks.getDecks($type);
+                        
+                        // check if there is a new deck and if yes display it
+                        c = user.get("custom_decks").length;
+                        t = user.get("taiaut_decks").length;
+                        if (c+t > ideafyDecks.getModel().getNbItems()){
+                                widget.displayDeck(user.get("custom_decks")[0]);
+                        }
+              });
+                        
+              user.watchValue("taiaut_decks", function(){
+                         ideafyDecks.getDecks($type);
+                        // taiautDecks.getDecks($type);       
               });
               
               // return

@@ -79,7 +79,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                                 if (a===b) return 0;
                                                 });
                                         decks.reset(arr);
-                                        if (onEnd) {onEnd("ok");console.log("onEnd ok");}
+                                        if (onEnd) {onEnd("ok");}
                                         cdb.unsync();
                                 });             
                         };
@@ -96,7 +96,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 deckList.reset(onEnd);
                         };
                         
-                        
+                        /* -- MOVED TO DECKS.JS
                         // watch for changes for this particular type of decks in user doc 
                         user.watchValue("custom_decks", function(){
                                 if ($type === "custom_decks" || $type === "all_decks"){
@@ -109,6 +109,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                         deckList.getDecks($type);
                                 }        
                         });
+                        */
                         
                         // also watch for change of language
                         user.watchValue("lang", function(){

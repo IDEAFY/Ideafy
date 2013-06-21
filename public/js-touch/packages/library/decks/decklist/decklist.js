@@ -62,7 +62,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                                 break;
                                                 
                                 }
-                                console.log(keys);
                                 cdb.setTransport(Config.get("transport"));
                                 cdb.sync(Config.get("db"), {keys : keys}).then(function(){
                                         var lang = user.get("lang"), arr = [];

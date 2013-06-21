@@ -141,6 +141,9 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         // taiautDecks.getDecks($type);       
               });
               
+              
+              USER = user;
+              DECKSTACK = stack;
               // return
               return widget;
                    

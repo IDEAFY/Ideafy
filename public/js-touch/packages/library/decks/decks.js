@@ -135,19 +135,21 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               user.watchValue("custom_decks", function(){
                       
                         console.log("change in user decks");
-                        var _displayNew = function(){
+                        var _displayNew = function(result){
                                 var c, t, all;
-                                // check if there is a new deck and if yes display it
-                                c = user.get("custom_decks").length;
-                                t = user.get("taiaut_decks").length;
-                                if (c+t > ideafyDecks.getModel().getNbItems()){
-                                        widget.displayDeck(user.get("custom_decks")[0]);
+                               if (result){
+                                        // check if there is a new deck and if yes display it
+                                        c = user.get("custom_decks").length;
+                                        t = user.get("taiaut_decks").length;
+                                        console.log(c,t, c+t, ideafyDecks.getModel().getNbItems());
+                                        if (c+t > ideafyDecks.getModel().getNbItems()){
+                                                console.log("displaying new deck");
+                                                widget.displayDeck(user.get("custom_decks")[0]);
+                                        }
                                 }
                         };
                         
-                        ideafyDecks.reset(function(sync){
-                                if (sync) _displayNew();        
-                        });
+                        ideafyDecks.reset(_displayNew);
                         
                         // customDecks.getDecks($type);
               });

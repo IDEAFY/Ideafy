@@ -82,11 +82,12 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                       
                       stack.getStack().add("ideafy", ideafyDecks);
                       
-                      // show all decks
-                     stack.getStack().show("ideafy");
+                      
                       // initial view should show active deck as highlighted and active deck content in the view
                       ideafyDecks.init(function(sync){
                               if (sync){
+                                      // show all decks
+                                      stack.getStack().show("ideafy");
                                       deckView.init();
                                       ideafyDecks.initSelected(deckControl.init,0);
                                       deckView.reset(ideafyDecks.getModel().get(0));

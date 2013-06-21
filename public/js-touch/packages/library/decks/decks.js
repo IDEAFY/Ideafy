@@ -36,7 +36,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 listUI.initSelected(deckControl.init, position);
                                 current_elem = widget.dom.querySelector("li[data-decks_id='"+currentSelected+"']");
                                 new_elem = widget.dom.querySelector("li[data-decks_id='"+position+"']");
-                                console.log(currnet_elem, new_elem);
+                                console.log(current_elem, new_elem);
                                 // clear current selection
                                 current_elem.classList.remove("selected");
                                 // select new deck, display and re-init control plugin
@@ -141,7 +141,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               });
                         
               user.watchValue("taiaut_decks", function(){
-                         ideafyDecks.getDecks($type);
+                         ideafyDecks.reset();
                         // taiautDecks.getDecks($type);       
               });
               

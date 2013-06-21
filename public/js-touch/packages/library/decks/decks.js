@@ -164,7 +164,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                       var count = null, l = user.get("custom_decks").length;
                       
                       user.get("custom_decks").forEach(function(deck){
-                                var cdb = new CouchDBocument();
+                                var cdb = new CouchDBDocument();
                                 cdb.setTransport(Config.get("transport"));
                                 
                                 cdb.sync(Config.get("db"), deck._id)

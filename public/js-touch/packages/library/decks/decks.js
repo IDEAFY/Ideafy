@@ -48,7 +48,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 currentSelected = position;
                         }        
                   },
-                  deckView = new DeckView(), newDeck = new NewDeck(widget.displayDeck);;
+                  deckView = new DeckView(), newDeck = new NewDeck(displayDeck);
               
               
               widget.plugins.addAll({

@@ -160,7 +160,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         // taiautDecks.getDecks($type);       
               });
               
-              ideafyDecks.getModel().watch("added", function(newDeck){console.log(newDeck);});
+              ideafyDecks.getModel().watch("added", function(newId){console.log(newId);});
               
               USER = user;
               TSTCDB = new CouchDBDocument();

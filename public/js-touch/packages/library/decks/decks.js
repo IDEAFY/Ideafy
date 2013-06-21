@@ -148,7 +148,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         ideafyDecks.reset(function(sync){
                                 if (sync && newdeck){
                                         displayDeck(currentId);
-                                }        
+                                }
+                                newdeck = false;       
                         });
                         // customDecks.getDecks($type);
                         

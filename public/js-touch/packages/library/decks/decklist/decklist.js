@@ -45,6 +45,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         deckList.reset = function reset(onEnd){
                                 console.log("reset function");
                                 decks.reset([]);
+                                console.log($type, onEnd);
                                 deckList.getDecks($type, onEnd);              
                         };
                         

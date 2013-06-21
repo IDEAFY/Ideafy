@@ -27,7 +27,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         list.loop(function(v,i){
                                 if (v._id === deckId){
                                         position = i;
-                                }        
+                                }
+                                console.log(v._id, deckId, i, position);        
                         });
                         
                         console.log("display deck called", deckId, position);

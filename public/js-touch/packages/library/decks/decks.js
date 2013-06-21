@@ -22,7 +22,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         var listUI = stack.getStack().getCurrentScreen(),
                             list = listUI.getModel(),
                             current_elem, new_elem, position = null;
-                        
+                        console.log(list.toJSON());
                         // check position of deck in the list
                         list.loop(function(v,i){
                                 if (v._id === deckId){

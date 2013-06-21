@@ -22,6 +22,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         var listUI = stack.getStack().getCurrentScreen(),
                             list = listUI.getModel(),
                             current_elem, new_elem, position = null;
+                        
+                        // how to make sure that the list is current????
                         console.log(list.toJSON());
                         // check position of deck in the list
                         list.loop(function(v,i){
@@ -49,7 +51,13 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 currentSelected = position;
                         }        
                   },
-                  deckView = new DeckView(), newDeck = new NewDeck(displayDeck);
+                  newdeck = false,
+                  currentId,
+                  deckUpdate = function(update, deckId){
+                        if (update === "new") newdeck = true;
+                        currentId = deckId;              
+                  },
+                  deckView = new DeckView(), newDeck = new NewDeck(deckUpdate);
               
               
               widget.plugins.addAll({
@@ -137,8 +145,14 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               // watch for changes for this particular type of decks in user doc 
               user.watchValue("custom_decks", function(){
-                        ideafyDecks.reset();
+                        ideafyDecks.reset(function(sync){
+                                if (sync && newdeck){
+                                        displayDeck(currentId);
+                                }
+                                newdeck = false;       
+                        });
                         // customDecks.getDecks($type);
+                        
               });
                         
               user.watchValue("taiaut_decks", function(){

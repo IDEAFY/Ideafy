@@ -213,6 +213,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 return _store.upload();
                                         })
                                         .then(function(){
+                                                console.log("store upload successful");
                                                 // add new deck to list of custom decks for this user
                                                 var _decks = _user.get("custom_decks") || [];
                                                 _decks.unshift(id);
@@ -220,6 +221,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 return _user.upload();
                                         })
                                         .then(function(){
+                                                console.log(_user.get("custom_decks"), $display);
                                                 spinner.stop();
                                                 node.classList.remove("invisible");
                                                 _widget.closePopup();

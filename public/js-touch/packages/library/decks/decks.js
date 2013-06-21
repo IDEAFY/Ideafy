@@ -145,7 +145,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         // taiautDecks.getDecks($type);       
               });
               
-              
+              USER = user;
+              DECKSTACK = stack;
               DELUSERDECKS = function(){
                       var count = null, l = user.get("custom_decks").length;
                       
@@ -174,7 +175,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 });
                       });
                       
-              }
+              };
+              
               // return
               return widget;
                    

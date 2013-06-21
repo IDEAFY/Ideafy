@@ -163,11 +163,11 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               DELUSERDECKS = function(){
                       var count = null, l = user.get("custom_decks").length;
                       
-                      user.get("custom_decks").forEach(function(deck){
+                      user.get("custom_decks").forEach(function(id){
                                 var cdb = new CouchDBDocument();
                                 cdb.setTransport(Config.get("transport"));
                                 
-                                cdb.sync(Config.get("db"), deck._id)
+                                cdb.sync(Config.get("db"), id)
                                 .then(function(){
                                         return cdb.remove();
                                 })

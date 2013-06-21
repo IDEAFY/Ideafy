@@ -134,8 +134,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               // watch for changes for this particular type of decks in user doc 
               user.watchValue("custom_decks", function(){
                       
-                        console.log("change in user decks");
-                        var _displayNew = function(result){
+                        /*
+                         var _displayNew = function(result){
                                 var c, t, all;
                                if (result){
                                         // check if there is a new deck and if yes display it
@@ -148,8 +148,9 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                         }
                                 }
                         };
+                        */
                         
-                        ideafyDecks.reset(_displayNew);
+                        ideafyDecks.reset();
                         
                         // customDecks.getDecks($type);
               });
@@ -159,7 +160,9 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         // taiautDecks.getDecks($type);       
               });
               
+              ideafyDecks.watch("added", function(newDeck){console.log(newDeck);});
               
+              TSTCDB = CouchDBDocument;
               USER = user;
               DECKSTACK = stack;
               DELUSERDECKS = function(){

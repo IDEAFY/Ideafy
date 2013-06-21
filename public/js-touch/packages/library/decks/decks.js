@@ -124,16 +124,23 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               // watch for changes for this particular type of decks in user doc 
               user.watchValue("custom_decks", function(){
-                        var c, t, all;
-                        ideafyDecks.getDecks($type);
-                        // customDecks.getDecks($type);
+                      
+                        console.log("change in user decks");
+                        var displayNew = function(){
+                                var c, t, all;
+                                // check if there is a new deck and if yes display it
+                                c = user.get("custom_decks").length;
+                                t = user.get("taiaut_decks").length;
+                                if (c+t > ideafyDecks.getModel().getNbItems()){
+                                        widget.displayDeck(user.get("custom_decks")[0]);
+                                }
+                        };
                         
-                        // check if there is a new deck and if yes display it
-                        c = user.get("custom_decks").length;
-                        t = user.get("taiaut_decks").length;
-                        if (c+t > ideafyDecks.getModel().getNbItems()){
-                                widget.displayDeck(user.get("custom_decks")[0]);
-                        }
+                        ideafyDecks.reset(function(sync){
+                                if (sync) displayNew();        
+                        });
+                        
+                        // customDecks.getDecks($type);
               });
                         
               user.watchValue("taiaut_decks", function(){

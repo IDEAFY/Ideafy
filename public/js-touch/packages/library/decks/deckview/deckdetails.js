@@ -63,10 +63,13 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         formatDate : function(date) {
                                                 (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                         },
-                                        setPic : function(author){
+                                        setPic : function(picture){
                                                 var ui, frag, node=this;
-                                                if (author === "Taiaut") {
-                                                        this.setAttribute("style", "background-image:url('img/logo.png');");
+                                                if (picture === "") {
+                                                        this.setAttribute("style", "background-image:url('img/connect/graygroup.png');");
+                                                }
+                                                else if (picture === "img/logo.png"){
+                                                        this.setAttribute("style", "background-image:url('img/logo.png');")        
                                                 }
                                                 else {
                                                         frag = document.createDocumentFragment();
@@ -79,7 +82,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 "carouselevent" : new Event(deckDetails)        
                         });
                         
-                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, author"></div><p><h2 data-deckdetails="bind:innerHTML, title"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, created_by"></span></p><span class="date" ></span></div><p class="deckdescription" data-deckdetails="bind: innerHTML, description"></p></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
+                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file"></div><p><h2 data-deckdetails="bind:innerHTML, title"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><p class="deckdescription" data-deckdetails="bind: innerHTML, description"></p></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
                         
                         deckDetails.displayCards = function displayCards(id){
                                 var i, arr = [];

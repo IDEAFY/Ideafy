@@ -8,7 +8,7 @@
 define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "service/map", "./deckdetails", "./cardlist", "service/config"],
         function(Widget, Model, Event, Stack, Store, Map, DeckDetails, CardList, Config){
                 
-                return function DeckViewConstructor(){
+                return function DeckViewConstructor($update){
                         
                         var deckView = new Widget(),
                             cardMenu = new Store([
@@ -60,11 +60,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                         deckView.init = function init(){
                         
                                 // initialize inner stack
-                                innerStack.getStack().add("details", new DeckDetails());
-                                innerStack.getStack().add("characters", new CardList("characters"));
-                                innerStack.getStack().add("contexts", new CardList("contexts"));
-                                innerStack.getStack().add("problems", new CardList("problems"));
-                                innerStack.getStack().add("techno", new CardList("techno"));
+                                innerStack.getStack().add("details", new DeckDetails($update));
+                                innerStack.getStack().add("characters", new CardList("characters", $update));
+                                innerStack.getStack().add("contexts", new CardList("contexts", $update));
+                                innerStack.getStack().add("problems", new CardList("problems", $update));
+                                innerStack.getStack().add("techno", new CardList("techno", $update));
                         };
                         
                         return deckView;

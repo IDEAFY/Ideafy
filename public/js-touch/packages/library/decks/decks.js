@@ -46,10 +46,16 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   newdeck = false,
                   currentId,
                   deckUpdate = function(update, deckId){
-                        if (update === "new") newdeck = true;
-                        currentId = deckId;              
+                        if (update === "new") {
+                                newdeck = true;
+                                currentId = deckId;
+                        }
+                        if (update === "updated"){
+                                ideafyDecks.reset();
+                                // customDecks.reset();        
+                        }             
                   },
-                  deckView = new DeckView(), newDeck = new NewDeck(deckUpdate);
+                  deckView = new DeckView(deckUpdate), newDeck = new NewDeck(deckUpdate);
               
               
               widget.plugins.addAll({

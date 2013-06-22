@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "CouchDBDocument", "CouchDBView", "lib/spin.min"],
         function(Widget, Config, Model, Event, Store, Avatar, Utils, CouchDBDocument, CouchDBView, Spinner){
                 
-                return function DeckDetailsConstructor(){
+                return function DeckDetailsConstructor($update){
                  
                         var deckDetails = new Widget(),
                             deckModel = new Store(),
@@ -223,8 +223,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                     title = deckDetails.dom.querySelector(".deckheader h2").innerHTML,
                                     description = deckDetails.dom.querySelector(".deckdescription").innerHTML,
                                     uploadSpinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -6, left: 30}).spin(node);
-                                
-                                console.log("title : ", title, "\ndescription : ", description);
+                                node.classList.add("invisible");
                                 deckCDB.setTransport(Config.get("transport"));
                                 
                                 deckCDB.sync(Config.get("db"), deckModel.get("_id"))
@@ -241,6 +240,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         return deckCDB.upload();       
                                 })
                                 .then(function(){
+                                        $update("updated", deckCDB.get("_id"));
                                         deckDetails.hideButtons();
                                         node.classList.remove("pressed");
                                         uploadSpinner.stop();                

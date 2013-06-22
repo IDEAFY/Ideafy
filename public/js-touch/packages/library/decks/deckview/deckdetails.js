@@ -185,8 +185,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 cropImage(resizeImage(_img), function(result){
                                                         var el = _widget.dom.querySelector(".decklogo");
                                                         el.setAttribute("style", "background-image: url('"+result+"')");
-                                                        _currentDataURL = result;
-                                                        node.classList.remove("pressed");        
+                                                        _currentDataURL = result;       
                                                 });
                                         }, 750);
                                 };

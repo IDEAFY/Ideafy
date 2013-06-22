@@ -16,7 +16,60 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                             deckCards = new Store([]),
                             allCards = new CouchDBView(),
                             user = Config.get("user"),
-                            labels = Config.get("labels");
+                            labels = Config.get("labels"),
+                            _currentDataURL,
+                            MIN_WIDTH = 60, MIN_HEIGHT = 60,
+                            resizeImage = function(img){
+                                var _width, _height, canvas = document.createElement('canvas'), ctx = canvas.getContext("2d");
+                                
+                                // resize image if needed
+                                _width = img.width;
+                                _height = img.height;
+                                if (_width<_height){
+                                        _height *= MIN_WIDTH / _width;
+                                        _width = MIN_WIDTH;
+                                
+                                }
+                                else {
+                                        _width *= MIN_HEIGHT / _height;
+                                        _height = MIN_HEIGHT;
+                                }
+                            
+                                canvas.width = _width;
+                                canvas.height = _height;
+                                ctx.drawImage(img, 0, 0, _width, _height);
+                                return canvas.toDataURL("image/png");
+                            },
+                            cropImage = function(dataURL, onEnd){
+                                var image = new Image(),
+                                    canvas = document.createElement('canvas'),
+                                    ctx = canvas.getContext('2d'),
+                                    dw = MIN_WIDTH,
+                                    dh = MIN_HEIGHT,
+                                    sx, sy;
+                                image.src = dataURL;
+                                setTimeout(function(){
+                                        canvas.width = dw;
+                                        canvas.height = dh;
+                                        sx = Math.floor(Math.max(0, (image.width-dw)/2));
+                                        sy = Math.floor(Math.max(0, (image.height-dh)/2));
+                                        ctx.drawImage(image, sx, sy, dw, dh, 0, 0, dw, dh);
+                                        onEnd(canvas.toDataURL("image/png"));
+                                }, 300);
+                            },
+                            uploadDeckIcon = function(){
+                                var _url = '/upload',
+                                    _fd = new FormData(),
+                                    _type = "deckpic",
+                                    _dataURL = _currentDataURL;
+                                _fd.append("type", _type);
+                                _fd.append("dir", deckModel.get("_id"));
+                                _fd.append("filename", "decklogo");
+                                _fd.append("dataString", _dataURL);
+                                Utils.uploadFile(_url, _fd, null, function(result){
+                                        console.log(result);
+                                });
+                            };
                         
                         
                         allCards.setTransport(Config.get("transport"));
@@ -94,7 +147,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 "editevent" : new Event(deckDetails)        
                         });
                         
-                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by" data-editevent="listen:input, displayButtons"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by" data-editevent="listen:input, displayButtons"></p><div class="cancelmail invisible" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
+                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file" data-editevent="listen: touchstart, editPic; listen: touchend, changePic"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by" data-editevent="listen:input, displayButtons"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by" data-editevent="listen:input, displayButtons"></p><div class="cancelmail invisible" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
                         
                         deckDetails.displayCards = function displayCards(id){
                                 var i, arr = [];
@@ -112,6 +165,12 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         deckDetails.displayButtons = function(event, node){
                                 deckDetails.dom.querySelector(".cancelmail").classList.remove("invisible");
                                 deckDetails.dom.querySelector(".sendmail").classList.remove("invisible");       
+                        };
+                        
+                        deckDetails.editPic = function(event, node){
+                                if (deckModel.get("created_by") === user.get("_id")){
+                                        node.setAttribute("style", "background-image: url('img/brainstorm/reload.png')");
+                                }        
                         };
                         
                         deckDetails.press = function(event, node){

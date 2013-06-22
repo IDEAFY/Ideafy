@@ -2539,9 +2539,17 @@ textarea.solution {
 }
 
 #deckview .deckinfo{
-    padding: 25px 40px 50px 20px;
+    padding: 25px 20px 50px 20px;
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
     background-image: -webkit-linear-gradient(top, white 74%, #e5e5e5);
+}
+
+#deckview .deckinfo .deckbody{
+    padding-right: 12px;
+}
+
+#deckview .cancelmail, #deckview .sendmail{
+    margin-top: 10px;
 }
 
 #deckview .deckheader{

@@ -94,7 +94,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 "editevent" : new Event(deckDetails)        
                         });
                         
-                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by"></p><div class="cancel" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
+                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by" data-editevent="listen:input, displayButtons"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by" data-editevent="listen:input, displayButtons"></p><div class="cancelmail invisible" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
                         
                         deckDetails.displayCards = function displayCards(id){
                                 var i, arr = [];
@@ -109,13 +109,21 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 deckDetails.displayCards(node.value);        
                         };
                         
+                        deckDetails.displayButtons = function(event, node){
+                                deckDetails.dom.querySelector(".cancelmail").classList.remove("invisible");
+                                deckDetails.dom.querySelector(".sendmail").classList.remove("invisible");       
+                        };
+                        
                         deckDetails.press = function(event, node){
                                 node.classList.add("pressed");        
                         };
                         
                         deckDetails.cancel = function(event, node){
                                 var deck = JSON.parse(deckModel.toJSON());
-                                deckModel.reset(deck);        
+                                deckModel.reset(deck);
+                                deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
+                                deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
+                                        
                         };
                         
                         deckDetails.upload = function(event, node){
@@ -123,6 +131,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         };
                         
                         deckDetails.reset = function reset(deck){
+                                deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
+                                deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
                                 deckModel.reset(deck);
                                 //reset card range
                                 range.set("max", 0);

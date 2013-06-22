@@ -46,12 +46,12 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   newdeck = false,
                   currentId,
                   deckUpdate = function(update, deckId){
+                        currentId = deckId;
                         if (update === "new") {
                                 newdeck = true;
-                                currentId = deckId;
                         }
                         if (update === "updated"){
-                                ideafyDecks.reset();
+                                ideafyDecks.reset(displayDeck);
                                 // customDecks.reset();        
                         }             
                   },

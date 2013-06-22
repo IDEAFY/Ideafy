@@ -183,7 +183,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         _img.src = imageData;
                                         setTimeout(function(){
                                                 cropImage(resizeImage(_img), function(result){
-                                                        var el = _widget.dom.querySelector(".decklogo");
+                                                        var el = deckDetails.dom.querySelector(".decklogo");
                                                         el.setAttribute("style", "background-image: url('"+result+"')");
                                                         _currentDataURL = result;       
                                                 });

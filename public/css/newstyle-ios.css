@@ -2566,6 +2566,7 @@ textarea.solution {
     height: 60px;
     border-radius: 30px;
     float: left;
+    background-repeat: no-repeat;
     background-size: contain;
     margin-right: 20px;    
 }

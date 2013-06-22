@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "CouchDBView"],
-        function(Widget, Config, Model, Event, Store, Avatar, Utils, CouchDBView){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "CouchDBDocument", "CouchDBView", "lib/spin.min"],
+        function(Widget, Config, Model, Event, Store, Avatar, Utils, CouchDBDocument, CouchDBView, Spinner){
                 
                 return function DeckDetailsConstructor(){
                  
@@ -171,6 +171,31 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 if (deckModel.get("created_by") === user.get("_id")){
                                         node.setAttribute("style", "background-image: url('img/brainstorm/reload.png')");
                                 }        
+                        };
+                        
+                        deckDetails.changePic = function(event, node){
+                                var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
+                                    _img = new Image(),
+                                    _options = {quality:50, correctOrientation: true, sourceType: source},
+                                    onSuccess, onFail;
+                        
+                                onSuccess = function(imageData){
+                                        _img.src = imageData;
+                                        setTimeout(function(){
+                                                cropImage(resizeImage(_img), function(result){
+                                                        var el = _widget.dom.querySelector(".decklogo");
+                                                        el.setAttribute("style", "background-image: url('"+result+"')");
+                                                        _currentDataURL = result;
+                                                        node.classList.remove("pressed");        
+                                                });
+                                        }, 750);
+                                };
+                        
+                                onFail = function(message){
+                                        alert("error: "+message);
+                                };
+                        
+                                navigator.camera.getPicture(onSuccess, onFail, _options);        
                         };
                         
                         deckDetails.press = function(event, node){

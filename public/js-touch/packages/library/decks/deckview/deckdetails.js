@@ -120,6 +120,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         
                         deckDetails.cancel = function(event, node){
                                 var deck = JSON.parse(deckModel.toJSON());
+                                deckModel.reset({});
                                 deckModel.reset(deck);
                                 deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
                                 deckDetails.dom.querySelector(".sendmail").classList.add("invisible");

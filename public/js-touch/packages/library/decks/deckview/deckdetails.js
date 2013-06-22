@@ -80,13 +80,20 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 }
                                         },
                                         edit : function(uid){
-                                                (uid === user.get("_id"))  ? this.setAttribute("contenteditable", true) : this.setAttribute("contenteditable", false);       
+                                                if (uid === user.get("_id")){
+                                                        this.setAttribute("contenteditable", true);
+                                                        this.classList.add("editable");
+                                                }
+                                                else{
+                                                        this.setAttribute("contenteditable", false);
+                                                        this.classList.remove("editable");
+                                                }       
                                         }
                                 }),
                                 "carouselevent" : new Event(deckDetails)        
                         });
                         
-                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><p class="deckdescription" data-deckdetails="bind: innerHTML, description"></p></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
+                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by"></p></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
                         
                         deckDetails.displayCards = function displayCards(id){
                                 var i, arr = [];

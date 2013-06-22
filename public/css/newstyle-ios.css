@@ -2531,6 +2531,12 @@ textarea.solution {
     -webkit-box-shadow: none;
 }
 
+.editable{
+    background-image: url('../img/wall/lastModified14-01.png');
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
 #deckview .deckinfo{
     padding: 25px 40px 50px 20px;
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);

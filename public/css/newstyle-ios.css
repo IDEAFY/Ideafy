@@ -2534,8 +2534,8 @@ textarea.solution {
 .editable{
     background-image: url('../img/wall/lastModified14-01.png');
     background-repeat: no-repeat;
-    background-position: right top;
-    background-size: 12px;
+    background-position: right 4px;
+    background-size: 14px;
 }
 
 #deckview .deckinfo{

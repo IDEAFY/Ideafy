@@ -187,11 +187,11 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         
                                 onSuccess = function(imageData){
                                         _img.src = imageData;
+                                        node.setAttribute("style", "background-image: none");
                                         picSpinner.spin(node);
                                         setTimeout(function(){
                                                 cropImage(resizeImage(_img), function(result){
-                                                        var el = deckDetails.dom.querySelector(".decklogo");
-                                                        el.setAttribute("style", "background-image: url('"+result+"')");
+                                                        node.setAttribute("style", "background-image: url('"+result+"')");
                                                         picSpinner.stop();
                                                         _currentDataURL = result;
                                                         deckDetails.displayButtons();       
@@ -215,19 +215,19 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 deckModel.reset({});
                                 deckModel.reset(deck);
                                 deckDetails.hideButtons();
-                                        
+                                node.classList.remove("pressed");
                         };
                         
                         deckDetails.upload = function(event, node){
                                 var deckCDB = new CouchDBDocument(),
                                     title = deckDetails.dom.querySelector(".deckheader h2").innerHTML,
-                                    description = deckDetails.dom.querySelector().innerHTML,
+                                    description = deckDetails.dom.querySelector(".deckdescription").innerHTML,
                                     uploadSpinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -6, left: 30}).spin(node);
                                 
                                 console.log("title : ", title, "\ndescription : ", description);
                                 deckCDB.setTransport(Config.get("transport"));
                                 
-                                deckDB.sync(Config.get("db"), deckModel.get("_id"))
+                                deckCDB.sync(Config.get("db"), deckModel.get("_id"))
                                 .then(function(){
                                         var now = new Date();
                                         // if there is a new logo upload it to the server
@@ -242,6 +242,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 })
                                 .then(function(){
                                         deckDetails.hideButtons();
+                                        node.classList.remove("pressed");
                                         uploadSpinner.stop();                
                                 });
                                 

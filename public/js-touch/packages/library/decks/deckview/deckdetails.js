@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "CouchDBDocument", "CouchDBView", "lib/spin.min"],
         function(Widget, Config, Model, Event, Store, Avatar, Utils, CouchDBDocument, CouchDBView, Spinner){
                 
-                return function DeckDetailsConstructor(){
+                return function DeckDetailsConstructor($update){
                  
                         var deckDetails = new Widget(),
                             deckModel = new Store(),
@@ -167,6 +167,11 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 deckDetails.dom.querySelector(".sendmail").classList.remove("invisible");       
                         };
                         
+                        deckDetails.hideButtons = function(){
+                                deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
+                                deckDetails.dom.querySelector(".sendmail").classList.add("invisible");        
+                        }
+                        
                         deckDetails.editPic = function(event, node){
                                 if (deckModel.get("created_by") === user.get("_id")){
                                         node.setAttribute("style", "background-image: url('img/brainstorm/reload.png')");
@@ -177,15 +182,19 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
                                     _img = new Image(),
                                     _options = {quality:50, correctOrientation: true, sourceType: source},
-                                    onSuccess, onFail;
+                                    onSuccess, onFail,
+                                    picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
                         
                                 onSuccess = function(imageData){
                                         _img.src = imageData;
+                                        node.setAttribute("style", "background-image: none");
+                                        picSpinner.spin(node);
                                         setTimeout(function(){
                                                 cropImage(resizeImage(_img), function(result){
-                                                        var el = _widget.dom.querySelector(".decklogo");
-                                                        el.setAttribute("style", "background-image: url('"+result+"')");
-                                                        _currentDataURL = result;       
+                                                        node.setAttribute("style", "background-image: url('"+result+"')");
+                                                        picSpinner.stop();
+                                                        _currentDataURL = result;
+                                                        deckDetails.displayButtons();       
                                                 });
                                         }, 750);
                                 };
@@ -205,18 +214,49 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 var deck = JSON.parse(deckModel.toJSON());
                                 deckModel.reset({});
                                 deckModel.reset(deck);
-                                deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
-                                deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
-                                        
+                                deckDetails.hideButtons();
+                                node.classList.remove("pressed");
                         };
                         
                         deckDetails.upload = function(event, node){
+                                var deckCDB = new CouchDBDocument(),
+                                    title = deckDetails.dom.querySelector(".deckheader h2").innerHTML,
+                                    description = deckDetails.dom.querySelector(".deckdescription").innerHTML,
+                                    uploadSpinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -6, left: 30}).spin(node);
+                                node.classList.add("invisible");
+                                deckCDB.setTransport(Config.get("transport"));
                                 
+                                deckCDB.sync(Config.get("db"), deckModel.get("_id"))
+                                .then(function(){
+                                        var now = new Date();
+                                        // if there is a new logo upload it to the server
+                                        if (_currentDataURL){
+                                                uploadDeckIcon();
+                                                deckCDB.set("picture_file", "decklogo");
+                                        } 
+                                        deckCDB.set("title", title);
+                                        deckCDB.set("description", description); 
+                                        deckCDB.set("last_updated", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        return deckCDB.upload();       
+                                })
+                                .then(function(){
+                                        $update("updated", deckCDB.get("_id"));
+                                        deckDetails.hideButtons();
+                                        node.classList.remove("pressed");
+                                        uploadSpinner.stop();                
+                                });
+                                
+                                // if there is a new logo upload it to the server
+                                if (_currentDataURL){
+                                        uploadDeckIcon();
+                                        
+                                }      
                         };
                         
                         deckDetails.reset = function reset(deck){
                                 deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
                                 deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
+                                _currentDataURL = null;
                                 deckModel.reset(deck);
                                 //reset card range
                                 range.set("max", 0);

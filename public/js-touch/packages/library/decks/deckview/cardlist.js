@@ -8,7 +8,7 @@
 define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "Store", "service/cardpopup"],
         function(Widget, Config, Model, Event, CouchDBBulkDocuments, Store, CardPopup){
                 
-                return function CardListConstructor($cardType){
+                return function CardListConstructor($cardType, $update){
                         
                 
                         var cardList = new Widget(),

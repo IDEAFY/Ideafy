@@ -167,6 +167,11 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 deckDetails.dom.querySelector(".sendmail").classList.remove("invisible");       
                         };
                         
+                        deckDetails.hideButtons = function(){
+                                deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
+                                deckDetails.dom.querySelector(".sendmail").classList.add("invisible");        
+                        }
+                        
                         deckDetails.editPic = function(event, node){
                                 if (deckModel.get("created_by") === user.get("_id")){
                                         node.setAttribute("style", "background-image: url('img/brainstorm/reload.png')");
@@ -177,15 +182,19 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
                                     _img = new Image(),
                                     _options = {quality:50, correctOrientation: true, sourceType: source},
-                                    onSuccess, onFail;
+                                    onSuccess, onFail,
+                                    picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
                         
                                 onSuccess = function(imageData){
                                         _img.src = imageData;
+                                        picSpinner.spin(node);
                                         setTimeout(function(){
                                                 cropImage(resizeImage(_img), function(result){
                                                         var el = deckDetails.dom.querySelector(".decklogo");
                                                         el.setAttribute("style", "background-image: url('"+result+"')");
-                                                        _currentDataURL = result;       
+                                                        picSpinner.stop();
+                                                        _currentDataURL = result;
+                                                        deckDetails.displayButtons();       
                                                 });
                                         }, 750);
                                 };
@@ -205,18 +214,48 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 var deck = JSON.parse(deckModel.toJSON());
                                 deckModel.reset({});
                                 deckModel.reset(deck);
-                                deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
-                                deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
+                                deckDetails.hideButtons();
                                         
                         };
                         
                         deckDetails.upload = function(event, node){
+                                var deckCDB = new CouchDBDocument(),
+                                    title = deckDetails.dom.querySelector(".deckheader h2").innerHTML,
+                                    description = deckDetails.dom.querySelector().innerHTML,
+                                    uploadSpinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -6, left: 30}).spin(node);
                                 
+                                console.log("title : ", title, "\ndescription : ", description);
+                                deckCDB.setTransport(Config.get("transport"));
+                                
+                                deckDB.sync(Config.get("db"), deckModel.get("_id"))
+                                .then(function(){
+                                        var now = new Date();
+                                        // if there is a new logo upload it to the server
+                                        if (_currentDataURL){
+                                                uploadDeckIcon();
+                                                deckCDB.set("picture_file", "decklogo");
+                                        } 
+                                        deckCDB.set("title", title);
+                                        deckCDB.set("description", description); 
+                                        deckCDB.set("last_updated", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        return deckCDB.upload();       
+                                })
+                                .then(function(){
+                                        deckDetails.hideButtons();
+                                        uploadSpinner.stop();                
+                                });
+                                
+                                // if there is a new logo upload it to the server
+                                if (_currentDataURL){
+                                        uploadDeckIcon();
+                                        
+                                }      
                         };
                         
                         deckDetails.reset = function reset(deck){
                                 deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
                                 deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
+                                _currentDataURL = null;
                                 deckModel.reset(deck);
                                 //reset card range
                                 range.set("max", 0);

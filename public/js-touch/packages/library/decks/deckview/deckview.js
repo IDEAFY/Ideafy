@@ -53,10 +53,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                                 
                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){
                                         if (deck.content[type][0] === "newcard"){
-                                                cardMenu.push({name: type, active: false, count: deck.content[type].length-1});
+                                                cardMenu.alter("push", {name: type, active: false, count: deck.content[type].length-1});
                                         }
                                         else{
-                                                cardMenu.push({name: type, active: false, count: deck.content[type].length});        
+                                                cardMenu.alter("push", {name: type, active: false, count: deck.content[type].length});        
                                         }               
                                 });
                                 innerStack.getStack().show("details");        

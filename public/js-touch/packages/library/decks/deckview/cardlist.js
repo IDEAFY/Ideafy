@@ -97,7 +97,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 if (query.length){
                                         cdb.setTransport(Config.get("transport"));
                                         cdb.sync(Config.get("db"), {keys:query}).then(function(){
-                                                (idlist[0] === "newcard") ? cards.reset(["newcard"]) : cards.reset([]);
+                                                (idlist[0] === "newcard") ? cards.reset([{_id:"newcard", title:"", picture_file:""}]) : cards.reset([]);
                                                 cdb.loop(function(v,i){
                                                         cards.alter("push", v.doc);        
                                                 });
@@ -110,7 +110,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         });
                                 }
                                 else{
-                                        cards.reset(["newcard"]);
+                                        cards.reset([{_id:"newcard", title:"", picture_file:""}]);
                                         pagination.set("nbPages", 1); 
                                         cardList.displayPage(0);       
                                 }
@@ -177,7 +177,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         cardList.zoom = function(event, node){
                                 var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
                                 console.log(id, cards.get(id), cards.toJSON());
-                                if (cards.get(id) === "newchar"){
+                                if (cards.get(id)._id === "newcard"){
                                         alert("new card creation !");
                                 }
                                 else{

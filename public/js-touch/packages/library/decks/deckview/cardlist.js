@@ -89,9 +89,11 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         
                         cardList.getCardList = function getCardList(idlist){
                                 var cdb = new CouchDBBulkDocuments(), query = [];
+                                console.log(idlist);
                                 if (idlist[0] === "newcard"){
                                         query = idlist.slice(1, idlist.length);
                                 }
+                                console.log(query);
                                 if (query.length){
                                         cdb.setTransport(Config.get("transport"));
                                         cdb.sync(Config.get("db"), {keys:query}).then(function(){
@@ -109,7 +111,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 }
                                 else{
                                         cards.reset(["newcard"]);
-                                        pagination.set("nbPages", Math.ceil(cards.getNbItems()/12)); 
+                                        pagination.set("nbPages", 1); 
                                         cardList.displayPage(0);       
                                 }
                         };
@@ -141,7 +143,9 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         
                         cardList.displayPrevious = function displayPrevious(){
                                 var nb = pagination.get("currentPage");
-                                if (nb>0) cardList.displayPage(nb-1)        
+                                if (nb>0) {
+                                        cardList.displayPage(nb-1);
+                                }       
                         };
                         
                         cardList.displayNext = function displayNext(){

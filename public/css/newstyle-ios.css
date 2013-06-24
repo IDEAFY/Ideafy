@@ -3900,6 +3900,7 @@ li.color-item{
 }
 
 .cardtitle.newcard{
+    height: 40px;
     background : url('../img/decks/plusActive50.png') no-repeat center center;
     background-size: contain;    
 }

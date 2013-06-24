@@ -2481,8 +2481,7 @@ textarea.solution {
 }
 
 #deckview .cardlist, #deckview .deckdetails{
-    width: 100%;
-    height: 608px;
+    height: 568px;
     background-image:url('../img/library/bgdeck.jpg');
     background-size: cover;
     padding: 20px;
@@ -3897,6 +3896,12 @@ li.color-item{
     font-family: Pacifico;
     color: #808080;
     word-wrap: break-word;
+    background: none;
+}
+
+.cardtitle.newcard{
+    background : url('../img/decks/plusActive50.png') no-repeat center center;
+    background-size: contain;    
 }
 
 .card.tech .cardpicture{

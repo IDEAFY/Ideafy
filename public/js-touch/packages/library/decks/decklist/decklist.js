@@ -110,6 +110,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                         });
                                         currentEl.classList.remove("selected");
                                         node = dom.querySelector(".list-item[data-decks_id='"+position+"']");
+                                        console.log(position, node);
                                 }
                                 init(node);
                                 node.classList.add("selected");

@@ -39,6 +39,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 "cards": new Model(cardPage, {
                                         formatTitle : function(title){
                                                 if (title){
+                                                        this.classList.remove("newcard");
                                                         if ($cardType !== "techno") {
                                                                 this.innerHTML = title.substring(0,1).toUpperCase()+title.substring(1).toLowerCase(); 
                                                         }
@@ -46,6 +47,9 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                                 this.innerHTML = title.toUpperCase();
                                                                 this.setAttribute("style", "font-family:Helvetica;");
                                                         }
+                                               }
+                                               else{
+                                                       this.classList.add("newcard");
                                                }
                                         },
                                         setPic : function(pic){

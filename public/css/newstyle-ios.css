@@ -3918,23 +3918,27 @@ li.color-item{
 /*default cards in case picture is missing */
 
 .cardpicture.newchar, .cardpicture.newctx, .cardpicture.newpb, .cardpicture.newtech{
-    background-size: contain;
+    background-size: cover;
 }
 
 .char.defaultcard, .cardpicture.newchar{
-    background: url('../img/decks/fullcards/activeCharacter.png') no-repeat;
+    background-image: url('../img/decks/fullcards/activeCharacter.png');
+    background-repeat: no-repeat;
 } 
 
 .context.defaultcard, .cardpicture.newctx{
-    background: url('../img/decks/fullcards/activeContext.png') no-repeat;
+    background-image: url('../img/decks/fullcards/activeContext.png');
+    background-repeat: no-repeat;
 }
 
 .problem.defaultcard, .cardpicture.newpb{
-    background: url('../img/decks/fullcards/activeProblem.png') no-repeat;
+    background-image: url('../img/decks/fullcards/activeProblem.png');
+    background-repeat: no-repeat;
 }
 
 .tech.defaultcard, .cardpicture.newtech{
-    background: url('../img/decks/fullcards/activeTechnology.png') no-repeat;
+    background-image: url('../img/decks/fullcards/activeTechnology.png');
+    background-repeat: no-repeat;
 }
 
 .defaultscenario .cardpicture{

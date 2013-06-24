@@ -48,12 +48,17 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
                                         innerStack.getStack().get(value).reset(deck);        
                                 });
-                                cardMenu.reset([
-                                    {name: "characters", active: false, count: deck.content.characters.length},
-                                    {name: "contexts", active: false, count: deck.content.contexts.length},
-                                    {name: "problems", active: false, count: deck.content.problems.length},
-                                    {name: "techno", active: false, count: deck.content.techno.length}
-                            ]);
+                                
+                                cardMenu.reset([]);
+                                
+                                ["characters", "contexts", "problems", "techno"].forEach(function(type){
+                                        if (deck.content[type][0] === "newcard"){
+                                                cardMenu.push({name: type, active: false, count: deck.content[type].length-1});
+                                        }
+                                        else{
+                                                cardMenu.push({name: type, active: false, count: deck.content[type].length});        
+                                        }               
+                                });
                                 innerStack.getStack().show("details");        
                         };
                         

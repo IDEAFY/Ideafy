@@ -102,7 +102,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "type": 9,
                                         "description": "",
                                         "default_lang": _user.get("lang"),
-                                        "content": {"characters": ["newchar"], "contexts": ["newctx"], "problems": ["newpb"], "techno": ["newtech"]},
+                                        "content": {"characters": ["newcard"], "contexts": ["newcard"], "problems": ["newcard"], "techno": ["newcard"]},
                                         "title": "",
                                         "version": 0,
                                         "date": [], // [YYYY, MM, DD]

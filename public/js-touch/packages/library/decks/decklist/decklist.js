@@ -92,6 +92,30 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 node.classList.add("selected");      
                         };
                         
+                        deckList.highlightDeck = function highlightDeck(init, deckId){
+                                var dom = deckList.dom,
+                                    currentEl = dom.querySelector(".list-item.selected"), node, position;
+                                
+                                if (deckId === 0){
+                                        node = dom.querySelector(".list-item[data-decks_id='0']");
+                                        position = 0;
+                                }
+                                
+                                else{
+                                        // check position of deck in the list
+                                        decks.loop(function(v,i){
+                                                if (v._id === deckId){
+                                                        position = i;
+                                                }        
+                                        });
+                                        currentEl.classList.remove("selected");
+                                        node = dom.querySelector(".list-item[data-deck_id='"+position+"']");
+                                }
+                                init(node);
+                                node.classList.add("selected");
+                                return position;
+                        };
+                        
                         deckList.init = function init(onEnd){
                                 deckList.reset(onEnd);
                         };

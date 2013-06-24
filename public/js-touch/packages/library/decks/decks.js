@@ -19,29 +19,10 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   ideafyDecks, customDecks, taiautDecks,
                   displayDeck = function(deckId){
                         var listUI = stack.getStack().getCurrentScreen(),
-                            list = listUI.getModel(),
-                            current_elem, new_elem, position = null;
+                            list = listUI.getModel();
                         
-                        // check position of deck in the list
-                        list.loop(function(v,i){
-                                if (v._id === deckId){
-                                        position = i;
-                                }        
-                        });
-                        
-                        if (position !== null){
-                                listUI.initSelected(deckControl.init, position);
-                                current_elem = widget.dom.querySelector("li[data-decks_id='"+currentSelected+"']");
-                                new_elem = widget.dom.querySelector("li[data-decks_id='"+position+"']");
-                                // clear current selection
-                                current_elem.classList.remove("selected");
-                                // select new deck, display and re-init control plugin
-                                new_elem.classList.add("selected");
-                                new_elem.scrollIntoView();
-                                deckView.reset(list.get(position));
-                                deckControl.init(new_elem);
-                                currentSelected = position;
-                        }        
+                        currentSelected = listUI.highlightDeck(deckControl.init, deckId);
+                        deckView.reset(list.get(currentSelected));
                   },
                   newdeck = false,
                   currentId,
@@ -49,10 +30,10 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         currentId = deckId;
                         if (update === "new") {
                                 newdeck = true;
+                                currentId = deckId;
                         }
                         if (update === "updated"){
-                                ideafyDecks.reset(displayDeck);
-                                // customDecks.reset();        
+                                ideafyDecks.reset();        
                         }             
                   },
                   deckView = new DeckView(deckUpdate), newDeck = new NewDeck(deckUpdate);
@@ -74,7 +55,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                       ideafyDecks.reset(function(sync){
                               if (sync){
                                       stack.getStack().show("ideafy");
-                                      ideafyDecks.initSelected(deckControl.init,0);
+                                      ideafyDecks.highlightDeck(deckControl.init,0);
                                       deckView.reset(ideafyDecks.getModel().get(0));
                                       currentSelected = 0;
                               }
@@ -97,7 +78,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                       // show all decks
                                       stack.getStack().show("ideafy");
                                       deckView.init();
-                                      ideafyDecks.initSelected(deckControl.init,0);
+                                      ideafyDecks.highlightDeck(deckControl.init,0);
                                       deckView.reset(ideafyDecks.getModel().get(0));
                                       currentSelected = 0;
                               };

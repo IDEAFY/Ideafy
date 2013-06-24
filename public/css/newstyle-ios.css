@@ -3919,6 +3919,7 @@ li.color-item{
 
 .cardpicture.newchar, .cardpicture.newctx, .cardpicture.newpb, .cardpicture.newtech{
     background-size: cover;
+    margin-top: 20px;
 }
 
 .char.defaultcard, .cardpicture.newchar{

@@ -24,7 +24,6 @@ html, body {
   width:1024px;
   height:748px;
   position:fixed;
-  -webkit-transform: translate3d(0,0,0);
 }
 
 ul{
@@ -33,6 +32,10 @@ ul{
 
 button{
     -webkit-appearance: none;
+}
+
+textarea{
+    -webkit-transform: translate3d(0,0,0);
 }
 
 .overflow {
@@ -2958,7 +2961,6 @@ textarea.solution {
 }
 
 #muscenario .inner-postit, #muidea .inner-postit{
-    height: 120px;
     margin-top: 5px;
 }
 
@@ -3241,6 +3243,7 @@ textarea.solution {
 }
 
 .inner-postit{
+    height: 120px;
     overflow-y:scroll;
     line-height:25px;
     padding: 5px 3px 10px 3px;
@@ -6417,8 +6420,7 @@ li.my2q{
     height: 532px;
     margin-top: 40px;
     -webkit-box-shadow: 1px 1px 5px black;
-    padding: 20px;
-    -webkit-transform: translate3d(0,0,0);
+    padding: 20px;   
 }
 
 #newmub-content, #mulist-content{

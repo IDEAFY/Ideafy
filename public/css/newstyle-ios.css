@@ -3917,10 +3917,12 @@ li.color-item{
 
 /*default cards in case picture is missing */
 
-.cardpicture.newchar, .cardpicture.newctx, .cardpicture.newpb, .cardpicture.newtech{
+.cardpicture.newchar, .cardpicture.newctx, .cardpicture.newtech{
+    background-size: cover;
+}
+
+.cardpicture.newpb{
     background-size: contain;
-    height: 87px;
-    width: 87px;
 }
 
 .char.defaultcard, .cardpicture.newchar{

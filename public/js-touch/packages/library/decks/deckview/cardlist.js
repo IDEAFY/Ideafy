@@ -88,20 +88,30 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.getCardList = function getCardList(idlist){
-                                var cdb = new CouchDBBulkDocuments();
-                                cdb.setTransport(Config.get("transport"));
-                                cdb.sync(Config.get("db"), {keys:idlist}).then(function(){
-                                        cards.reset([]);
-                                        cdb.loop(function(v,i){
-                                                cards.alter("push", v.doc);        
-                                        });
-                                        // 12 cards max per page
-                                        pagination.set("nbPages", Math.ceil(cards.getNbItems()/12)); 
+                                var cdb = new CouchDBBulkDocuments(), query = [];
+                                if (idlist[0] === "newcard"){
+                                        query = idlist.slice(1, idlist.length);
+                                }
+                                if (query.length){
+                                        cdb.setTransport(Config.get("transport"));
+                                        cdb.sync(Config.get("db"), {keys:query}).then(function(){
+                                                (idlist[0] === "newcard") ? cards.reset(["newcard"]) : cards.reset([]);
+                                                cdb.loop(function(v,i){
+                                                        cards.alter("push", v.doc);        
+                                                });
+                                                // 12 cards max per page
+                                                pagination.set("nbPages", Math.ceil(cards.getNbItems()/12)); 
                                         
-                                        // display first page
-                                        cardList.displayPage(0);
-                                        cdb.unsync();
-                                });
+                                                // display first page
+                                                cardList.displayPage(0);
+                                                cdb.unsync();
+                                        });
+                                }
+                                else{
+                                        cards.reset(["newcard"]);
+                                        pagination.set("nbPages", Math.ceil(cards.getNbItems()/12)); 
+                                        cardList.displayPage(0);       
+                                }
                         };
                         
                         cardList.displayPage = function displayPage(pageNB){
@@ -161,8 +171,14 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.zoom = function(event, node){
-                                var id = parseInt(node.getAttribute("data-cards_id"), 10)+12*pagination.get("currentPage");
-                                cardList.setPopup(id);        
+                                var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
+                                console.log(id, cards.get(id), cards.toJSON());
+                                if (cards.get(id) === "newchar"){
+                                        alert("new card creation !");
+                                }
+                                else{
+                                        cardList.setPopup(id);
+                                }       
                         };
                         
                         // Method called to initialize a card popup

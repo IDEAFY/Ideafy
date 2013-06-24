@@ -3918,8 +3918,9 @@ li.color-item{
 /*default cards in case picture is missing */
 
 .cardpicture.newchar, .cardpicture.newctx, .cardpicture.newpb, .cardpicture.newtech{
-    background-size: cover;
-    margin-top: 20px;
+    background-size: contain;
+    height: 87px;
+    width: 87px;
 }
 
 .char.defaultcard, .cardpicture.newchar{

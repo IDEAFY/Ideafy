@@ -3900,6 +3900,7 @@ li.color-item{
 }
 
 .cardtitle.newcard{
+    margin-top: -15px;
     height: 40px;
     background : url('../img/decks/plusActive50.png') no-repeat center center;
     background-size: contain;    
@@ -3915,6 +3916,10 @@ li.color-item{
 }
 
 /*default cards in case picture is missing */
+
+.cardpicture.newchar, .cardpicture.newctx, .cardpicture.newpb, .cardpicture.newtech{
+    background-size: contain;
+}
 
 .char.defaultcard, .cardpicture.newchar{
     background: url('../img/decks/fullcards/activeCharacter.png') no-repeat;

@@ -57,7 +57,19 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        switch($cardType){
+                                                                case "characters":
+                                                                        this.classList.add(".char.defaultcard");
+                                                                        break;
+                                                                case "contexts":
+                                                                        break;
+                                                                case "problems":
+                                                                        break;
+                                                                case "techno":
+                                                                        break;
+                                                                default:
+                                                                        this.setAttribute("style", "background-image: none;");        
+                                                        }
                                                 }
                                         }
                                 }),

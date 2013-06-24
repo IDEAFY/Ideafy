@@ -59,13 +59,16 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                 else {
                                                         switch($cardType){
                                                                 case "characters":
-                                                                        this.classList.add(".char.defaultcard");
+                                                                        this.classList.add("newchar");
                                                                         break;
                                                                 case "contexts":
+                                                                        this.classList.add("newctx");
                                                                         break;
                                                                 case "problems":
+                                                                        this.classList.add("newpb");
                                                                         break;
                                                                 case "techno":
+                                                                        this.classList.add("newtech");
                                                                         break;
                                                                 default:
                                                                         this.setAttribute("style", "background-image: none;");        

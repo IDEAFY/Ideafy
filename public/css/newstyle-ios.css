@@ -3916,19 +3916,19 @@ li.color-item{
 
 /*default cards in case picture is missing */
 
-.char.defaultcard{
+.char.defaultcard, .cardpicture.newchar{
     background: url('../img/decks/fullcards/activeCharacter.png') no-repeat;
 } 
 
-.context.defaultcard{
+.context.defaultcard, .cardpicture.newctx{
     background: url('../img/decks/fullcards/activeContext.png') no-repeat;
 }
 
-.problem.defaultcard{
+.problem.defaultcard, .cardpicture.newpb{
     background: url('../img/decks/fullcards/activeProblem.png') no-repeat;
 }
 
-.tech.defaultcard{
+.tech.defaultcard, .cardpicture.newtech{
     background: url('../img/decks/fullcards/activeTechnology.png') no-repeat;
 }
 

@@ -36,7 +36,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         if (update === "updated"){
                                 listUI.reset(function(sync){
                                         if (sync){
-                                                listUI.highlightDeck(deckId);        
+                                                listUI.highlightDeck(deckControl.init, deckId);        
                                         }
                                 });        
                         }             

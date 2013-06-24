@@ -94,8 +94,9 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         
                         deckList.highlightDeck = function highlightDeck(init, deckId){
                                 var dom = deckList.dom,
-                                    currentEl = dom.querySelector(".list-item.selected"), node, position;
+                                    currentEl = dom.querySelector(".list-item .selected"), node, position;
                                 
+                                console.log(currentEl);
                                 if (deckId === 0){
                                         node = dom.querySelector(".list-item[data-decks_id='0']");
                                         position = 0;

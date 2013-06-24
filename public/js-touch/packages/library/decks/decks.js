@@ -34,9 +34,9 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 currentId = deckId;
                         }
                         if (update === "updated"){
-                                console.log(deckId);
                                 listUI.reset(function(sync){
                                         if (sync){
+                                                console.log("sync ok calling highlight deck");
                                                 listUI.highlightDeck(deckControl.init, deckId);        
                                         }
                                 });        

@@ -115,6 +115,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 }
                                 init(node);
                                 node.classList.add("selected");
+                                node.scrollIntoView();
                                 return position;
                         };
                         

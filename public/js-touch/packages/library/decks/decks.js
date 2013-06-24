@@ -27,13 +27,18 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   newdeck = false,
                   currentId,
                   deckUpdate = function(update, deckId){
+                        var listUI = stack.getStack().getCurrentScreen();
                         currentId = deckId;
                         if (update === "new") {
                                 newdeck = true;
                                 currentId = deckId;
                         }
                         if (update === "updated"){
-                                ideafyDecks.reset();        
+                                listUI.reset(function(sync){
+                                        if (sync){
+                                                listUI.highlightDeck(deckId);        
+                                        }
+                                });        
                         }             
                   },
                   deckView = new DeckView(deckUpdate), newDeck = new NewDeck(deckUpdate);

@@ -84,7 +84,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                 innerStack.getStack().add("techno", new CardList("techno", $update, deckView.editCard));
                                 
                                 console.log("initializing new card ui");
-                                newCardUI = new NewCard();
+                                newCardUI = new NewCard(deckView.hideEditView);
                         };
                         
                         return deckView;

@@ -90,7 +90,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         
                         cardList.getCardList = function getCardList(idlist){
                                 var cdb = new CouchDBBulkDocuments(), query = idlist;
-                                console.log(idlist);
                                 if (idlist[0] === "newcard"){
                                         query = idlist.slice(1, idlist.length);
                                 }

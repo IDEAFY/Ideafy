@@ -2670,9 +2670,9 @@ textarea.solution {
 
 #card_creation{
     float: right;
-    width: 618px;
+    width: 630px;
     height: 748px;
-    background: blue;
+    background: white;
     z-index: 1000;
 }
 

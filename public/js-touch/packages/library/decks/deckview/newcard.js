@@ -25,11 +25,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         });
                         
                         newCard.close = function close(event, node){
-                                newCard.dom.querySelector("#card_creation").classList.add("invisible");
+                                document.getElementById("card_creation").classList.add("invisible");
                         };
                         
                         newCard.reset = function reset($deckId, $type){
-                                newCard.dom.querySelector("#card_creation").classList.remove("invisible");
+                                document.getElementById("card_creation").classList.remove("invisible");
                                 console.log($deckId, $type, newCard.dom);               
                         };
                         

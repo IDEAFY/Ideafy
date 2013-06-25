@@ -2676,6 +2676,23 @@ textarea.solution {
     z-index: 1000;
 }
 
+#card_creation .create_header{
+    display: inline-block;
+    height: 60px;
+    border-bottom: 2px double #cccccc;
+}
+
+#card_creation .importcard{
+    width: 120px;
+    height: 30px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #292929;
+}
+
 /*BRAINSTORM*/
 
 #brainstorm{
@@ -6070,7 +6087,7 @@ li.my2q{
     margin-bottom: 5px;
 }
 
-.edituserdetails .dob input, .edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select, #newmub select{
+.edituserdetails .dob input, .edituserdetails .dob select, .edituserdetails .family select, .edituserdetails .job select, #dashboard-settings select, #newmub select, #card_creation select{
     height: 30px;
     border-radius: 5px;
     line-height: 28px;

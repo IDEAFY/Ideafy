@@ -50,7 +50,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         
                         deckView.editCard = function editCard(id, type){
                                 console.log(id, type);
-                                newCardUI.reset(cardId, cardType, deckTitle, deckId);
+                                newCardUI.reset(id, type, deckTitle, deckId);
                         };
                         
                         deckView.hideEditView = function hideEditView(){

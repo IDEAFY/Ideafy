@@ -2713,7 +2713,8 @@ textarea.solution {
 }
 
 #card_creation .importcard.pressed{
-    background: -webkit-linear-gradient(top, #ffffff 0%,#e0e0e0 36%,#cccccc 100%);
+    background: -webkit-linear-gradient(top, #808080 0%,#cccccc 64%,#e5e5e5 100%);
+    color: white;
 }
 
 /*BRAINSTORM*/

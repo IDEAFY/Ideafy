@@ -93,7 +93,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 if (idlist[0] === "newcard"){
                                         query = idlist.slice(1, idlist.length);
                                 }
-                                console.log(query);
                                 if (query.length){
                                         cdb.setTransport(Config.get("transport"));
                                         cdb.sync(Config.get("db"), {keys:query}).then(function(){

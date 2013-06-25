@@ -55,7 +55,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                     "picture_file": ""
                             };
                         
-                        newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import">Import...</div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
+                        newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import" data-newcardevent="listen:touchstart, press; listen:touchend, import">Import...</div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
                             
                         // setup
                         newCard.plugins.addAll({
@@ -75,6 +75,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 cardSetup.reset({title: $deckTitle, type: ["character", "context", "problem", "techno"].indexOf($cardType)});
                                               
                         };
+                        
+                        newCard.press = function(event, node){
+                                node.classList.add("pressed");
+                        }
+                        
+                        newCard.import = function(event, node){
+                                node.classList.remove("pressed");
+                        }
                         
                         newCard.init = function(){
                                 // add UIs to innerStack        

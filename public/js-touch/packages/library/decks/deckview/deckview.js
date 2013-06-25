@@ -11,7 +11,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                 return function DeckViewConstructor($update){
                         
                         var deckView = new Widget(),
-                            newCardUI,
+                            newCardUI = new NewCard(),
                             cardMenu = new Store([
                                     {name: "characters", active: false, count:0},
                                     {name: "contexts", active: false, count:0},
@@ -35,7 +35,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                 "deckviewevent" : new Event(deckView)
                         });
                         
-                        deckView.template = '<div><div class="editcard invisible" data-place="place: newCard"></div><ul class="card-menu" data-cardmenu="foreach"><li><div class="card-type" data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: touchstart, viewCards"></div><div class="card-count" data-cardmenu="bind:innerHTML, count"></div></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>';
+                        deckView.template = '<div><div id="editcard" class="invisible" data-place="place: newCard"></div><ul class="card-menu" data-cardmenu="foreach"><li><div class="card-type" data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: touchstart, viewCards"></div><div class="card-count" data-cardmenu="bind:innerHTML, count"></div></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>';
                         
                         deckView.viewCards = function(event, node){
                                 var id = node.getAttribute("data-cardmenu_id");
@@ -48,11 +48,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         
                         deckView.editCard = function editCard(id, type){
                                 console.log(id, type);
-                                deckView.dom.querySelector(".editcard").classList.remove("invisible");
+                                newCardUI.reset(id, type);
                         };
                         
                         deckView.hideEditView = function hideEditView(){
-                                deckView.dom.querySelector(".editcard").classList.add("invisible");        
+                                newCardUI.close();        
                         };
                         
                         deckView.reset = function reset(deck){
@@ -84,7 +84,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                 innerStack.getStack().add("techno", new CardList("techno", $update, deckView.editCard));
                                 
                                 console.log("initializing new card ui");
-                                newCardUI = new NewCard(deckView.hideEditView);
                         };
                         
                         return deckView;

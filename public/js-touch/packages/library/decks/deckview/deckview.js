@@ -11,7 +11,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                 return function DeckViewConstructor($update){
                         
                         var deckView = new Widget(),
-                            newCardUI = new NewCard(),
+                            newCardUI,
                             cardMenu = new Store([
                                     {name: "characters", active: false, count:0},
                                     {name: "contexts", active: false, count:0},
@@ -82,6 +82,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                 innerStack.getStack().add("contexts", new CardList("contexts", $update, deckView.editCard));
                                 innerStack.getStack().add("problems", new CardList("problems", $update, deckView.editCard));
                                 innerStack.getStack().add("techno", new CardList("techno", $update, deckView.editCard));
+                                
+                                console.log("initializing new card ui");
+                                newCardUI = new NewCard();
                         };
                         
                         return deckView;

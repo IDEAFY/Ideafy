@@ -2709,6 +2709,11 @@ textarea.solution {
     text-align: center;
     font-size: 14px;
     color: #292929;
+    background: -webkit-linear-gradient(top, #cccccc 0%,#e0e0e0 36%,#ffffff 100%);
+}
+
+#card_creation .importcard.pressed{
+    background: -webkit-linear-gradient(top, #ffffff 0%,#e0e0e0 36%,#cccccc 100%);
 }
 
 /*BRAINSTORM*/

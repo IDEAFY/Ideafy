@@ -2688,6 +2688,14 @@ textarea.solution {
 #card_creation select{
     background: white;
 }
+#card_creation .create_header label{
+    margin-left:5px;
+    margin-right: 5px;
+    font-family: Pacifico;
+    font-size: 18px;
+    height: 60px;
+    line-height: 60px;
+}
 
 #card_creation .importcard{
     display: inline-block;

@@ -2668,6 +2668,14 @@ textarea.solution {
     left: 0;
 }
 
+#card_creation{
+    float: right;
+    width: 618px;
+    height: 748px;
+    background: blue;
+    z-index: 1000;
+}
+
 /*BRAINSTORM*/
 
 #brainstorm{

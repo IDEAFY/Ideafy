@@ -55,7 +55,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                     "picture_file": ""
                             };
                         
-                        newCard.template= '<div id="card_creation" class="invisible"><div class="create_header"><select class="changetype"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><div class="importcard"></div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
+                        newCard.template= '<div id="card_creation" class="invisible"><div class="create_header"><select class="changetype"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><div class="importcard" data-label="bind:innerHTML, import">Import...</div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
                             
                         // setup
                         newCard.plugins.addAll({

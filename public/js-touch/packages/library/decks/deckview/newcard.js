@@ -8,7 +8,7 @@
 define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store"],
         function(Widget, Model, Event, Stack, Config, Store){
                 
-                function NewCardConstructor($close){
+                return function NewCardConstructor($close){
 
                         var newCard = new Widget(),
                             _contentStack = new Stack(),

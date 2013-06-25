@@ -62,7 +62,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 "label" : new Model(labels),
                                 "setup" : new Model(cardSetup),
                                 "newcardcontentstack" : _contentStack,
-                                "newcardevent" : new Event(this)
+                                "newcardevent" : new Event(newCard)
                         });
                         
                         newCard.close = function close(event, node){

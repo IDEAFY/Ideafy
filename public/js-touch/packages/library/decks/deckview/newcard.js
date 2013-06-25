@@ -5,21 +5,61 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store"],
-        function(Widget, Model, Event, Stack, Config, Store){
+define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "CouchDBDocument"],
+        function(Widget, Model, Event, Stack, Config, CouchDBDocument){
                 
                 return function NewCardConstructor(){
 
                         var newCard = new Widget(),
                             _contentStack = new Stack(),
-                            cardDetails = new Store(),
-                            labels = Config.get("labels");
+                            cardCDB = new CouchDBDocument(),
+                            labels = Config.get("labels"),
+                            user = Config.get("user"),
+                            cardTemplate = {
+                                    "_id": "",
+                                    "default_lang": user.get("lang"),
+                                    "title": "",
+                                    "didYouKnow": "",
+                                    "deck": [],
+                                    "category": "",
+                                    "coefficient": 1,
+                                    "sources": [],
+                                    "created_by": user.get("_id"),
+                                    "created_on": [],
+                                    "picture_credit": "",
+                                    "type": null,
+                                    "picture_file": ""
+                            },
+                            charTemplate = {
+                                    "_id": "INT:aika",
+                                    "default_lang": user.get("lang"),
+                                    "title": "",
+                                    "gender": 0,
+                                    "age": 0,
+                                    "firstname": "",
+                                    "lastname": "",
+                                    "location": "",
+                                    "occupation": {
+                                        "description": "",
+                                        "details": [1,"",""]
+                                    },
+                                    "family": {"couple": 0, "children": 0},
+                                    "leisure_activities": [{"name": "", "comment": ""}, {"name": "", "comment": ""}, {"name": "", "comment": ""}],
+                                    "interests": [{"name": "", "comment": ""}, {"name": "", "comment": ""}, {"name": "", "comment": ""}],
+                                    "comments": null,
+                                    "type": 1,
+                                    "deck": [],
+                                    "created_by": user.get("_id"),
+                                    "created_on": [],
+                                    "picture_file": ""
+                            };
                         
-                        newCard.template= '<div id="card_creation" class="invisible"><div class="create_header"><div class="changetype"></div><div class="importcard"></div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
+                        newCard.template= '<div id="card_creation" class="invisible"><div class="create_header"><select class="changetype"><option>character</option><option>context</option><option>problem</option><option>techno</option></select><div class="importcard"></div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
                             
                         // setup
                         newCard.plugins.addAll({
                                 "label" : new Model(labels),
+                                "setup" : new Model(cardSetup),
                                 "newcardcontentstack" : _contentStack,
                                 "newcardevent" : new Event(this)
                         });
@@ -30,8 +70,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         
                         newCard.reset = function reset($deckId, $type){
                                 document.getElementById("card_creation").classList.remove("invisible");
-                                console.log($deckId, $type, newCard.dom);               
+                                console.log($deckId, $type, newCard.dom);
+                                              
                         };
+                        
+                        newCard.init = function(){
+                                // add UIs to innerStack        
+                        };
+                        
+                        // init
                         
                         return newCard;     
                 }

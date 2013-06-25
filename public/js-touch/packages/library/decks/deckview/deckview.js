@@ -82,6 +82,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                 innerStack.getStack().add("contexts", new CardList("contexts", $update, deckView.editCard));
                                 innerStack.getStack().add("problems", new CardList("problems", $update, deckView.editCard));
                                 innerStack.getStack().add("techno", new CardList("techno", $update, deckView.editCard));
+                                
+                                console.log("end of stack initialization");
                         };
                         
                         return deckView;

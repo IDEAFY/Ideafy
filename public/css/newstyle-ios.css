@@ -2685,6 +2685,10 @@ textarea.solution {
     text-align: center;
 }
 
+#card_creation select{
+    background: white;
+}
+
 #card_creation .importcard{
     display: inline-block;
     width: 120px;
@@ -2695,6 +2699,7 @@ textarea.solution {
     text-align: center;
     font-size: 14px;
     color: #292929;
+    margin-left: 30px;
 }
 
 /*BRAINSTORM*/

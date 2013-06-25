@@ -15,7 +15,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                             cardDetails = new Store(),
                             labels = Config.get("labels");
                         
-                        newCard.template= 'div <id="card_creation>"><div class="create_header"><div class="changetype"></div><div class="importcard"></div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
+                        newCard.template= '<div id="card_creation" class="invisible"><div class="create_header"><div class="changetype"></div><div class="importcard"></div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
                             
                         // setup
                         newCard.plugins.addAll({
@@ -25,11 +25,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         });
                         
                         newCard.close = function close(event, node){
-                                document.getElementById("editcard").classList.add("invisible");
+                                newCard.dom.classList.add("invisible");
                         };
                         
                         newCard.reset = function reset($deckId, $type){
-                                document.getElementById("editcard").classList.remove("invisible");
+                                newCard.dom.remove("invisible");
                                 console.log($deckId, $type);               
                         };
                         

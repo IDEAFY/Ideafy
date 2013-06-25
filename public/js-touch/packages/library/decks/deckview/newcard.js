@@ -72,7 +72,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         newCard.reset = function reset($cardId, $cardType, $deckId, $deckTitle){
                                 document.getElementById("card_creation").classList.remove("invisible");
                                 console.log($cardId, $cardType, $deckId, $deckTitle);
-                                cardSetup.reset({title: $deckTitle, type: ["character", "context", "problem", "techno"].indexOf($type)});
+                                cardSetup.reset({title: $deckTitle, type: ["character", "context", "problem", "techno"].indexOf($cardType)});
                                               
                         };
                         

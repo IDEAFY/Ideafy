@@ -12,7 +12,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
 
                         var newCard = new Widget(),
                             _contentStack = new Stack(),
-                            
                             cardDetails = new Store(),
                             labels = Config.get("labels");
                         

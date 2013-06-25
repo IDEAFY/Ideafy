@@ -75,6 +75,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         
                         deckView.init = function init(){
                         
+                                console.log("initializing deckview inner stack");
                                 // initialize inner stack
                                 innerStack.getStack().add("details", new DeckDetails($update));
                                 innerStack.getStack().add("characters", new CardList("characters", $update, deckView.editCard));

@@ -8,7 +8,7 @@
 define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store"],
         function(Widget, Model, Event, Stack, Config, Store){
                 
-                return function NewCardConstructor($close){
+                return function NewCardConstructor(){
 
                         var newCard = new Widget(),
                             _contentStack = new Stack(),
@@ -24,12 +24,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 "newcardevent" : new Event(this)
                         });
                         
-                        newCard.close = function(event, node){
-                                $close();
+                        newCard.close = function close(event, node){
+                                document.getElementById("editcard").classList.add("invisible");
                         };
                         
                         newCard.reset = function reset($deckId, $type){
-                                        
+                                document.getElementById("editcard").classList.remove("invisible");
+                                console.log($deckId, $type);               
                         };
                         
                         return newCard;     

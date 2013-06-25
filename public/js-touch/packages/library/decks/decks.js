@@ -104,6 +104,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               // init
               widget.init();
+              console.log("deck init");
               
               // event management
               

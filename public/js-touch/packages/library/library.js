@@ -43,10 +43,10 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 	               _menu.toggleActive(false);
 	               _ideas = new Ideas();
 	               _sessions = new Sessions();
-	               _decks = new Decks();
+	               // _decks = new Decks();
 	               _stack.getStack().add("#ideas", _ideas);
 	               _stack.getStack().add("#sessions", _sessions);
-	               _stack.getStack().add("#decks", _decks);
+	               // _stack.getStack().add("#decks", _decks);
 	               
 	               // set current view
 	               _stack.getStack().show("#ideas");

@@ -131,21 +131,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 deckList.reset(onEnd);
                         };
                         
-                        /* -- MOVED TO DECKS.JS
-                        // watch for changes for this particular type of decks in user doc 
-                        user.watchValue("custom_decks", function(){
-                                if ($type === "custom_decks" || $type === "all_decks"){
-                                        deckList.getDecks($type);
-                                }
-                        });
-                        
-                        user.watchValue("taiaut_decks", function(){
-                                if ($type === "taiaut_decks" || $type === "all_decks"){
-                                        deckList.getDecks($type);
-                                }        
-                        });
-                        */
-                        
                         // also watch for change of language
                         user.watchValue("lang", function(){
                                 // check selected deck

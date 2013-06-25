@@ -2680,10 +2680,10 @@ textarea.solution {
 
 #card_creation .create_header{
     display: inline-block;
-    height: 60px;
+    height: 80px;
     width: 630px;
     border-bottom: 2px double #cccccc;
-    line-height: 60px;
+    line-height: 80px;
     text-align: center;
 }
 
@@ -2695,8 +2695,8 @@ textarea.solution {
     margin-right: 10px;
     font-family: Pacifico;
     font-size: 18px;
-    height: 60px;
-    line-height: 60px;
+    height: 80px;
+    line-height: 80px;
 }
 
 #card_creation .importcard{

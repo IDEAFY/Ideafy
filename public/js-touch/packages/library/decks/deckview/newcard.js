@@ -5,13 +5,14 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "CouchDBDocument"],
-        function(Widget, Model, Event, Stack, Config, CouchDBDocument){
+define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "CouchDBDocument"],
+        function(Widget, Model, Event, Stack, Config, Store, CouchDBDocument){
                 
                 return function NewCardConstructor(){
 
                         var newCard = new Widget(),
                             _contentStack = new Stack(),
+                            cardSetup = new Store();
                             cardCDB = new CouchDBDocument(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),
@@ -54,7 +55,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                     "picture_file": ""
                             };
                         
-                        newCard.template= '<div id="card_creation" class="invisible"><div class="create_header"><select class="changetype"><option>character</option><option>context</option><option>problem</option><option>techno</option></select><div class="importcard"></div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
+                        newCard.template= '<div id="card_creation" class="invisible"><div class="create_header"><select class="changetype"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><div class="importcard"></div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
                             
                         // setup
                         newCard.plugins.addAll({
@@ -71,6 +72,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         newCard.reset = function reset($deckId, $type){
                                 document.getElementById("card_creation").classList.remove("invisible");
                                 console.log($deckId, $type, newCard.dom);
+                                cardSetup.reset();
                                               
                         };
                         

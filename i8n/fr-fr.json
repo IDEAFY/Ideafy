@@ -248,6 +248,7 @@
 	"char": "Personnage",
 	"context": "Contexte",
 	"problem": "Problème",
+	"techno": "Technologie",
 	"grpcontacts": "Groupes",
 	"addgrpcontacts": "Ajouter un contact",
 	"nogrpname": "Entrez le nom du groupe",

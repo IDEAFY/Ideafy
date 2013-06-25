@@ -8,7 +8,7 @@
 define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "Store", "service/cardpopup"],
         function(Widget, Config, Model, Event, CouchDBBulkDocuments, Store, CardPopup){
                 
-                return function CardListConstructor($cardType, $update){
+                return function CardListConstructor($cardType, $update, $editCard){
                         
                 
                         var cardList = new Widget(),
@@ -18,6 +18,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                             touchStart,
                             popupUI,
                             labels = Config.get("labels"),
+                            user = Config.get("user"),
                             currentHighlight = null; // used to keep track of current zoom
                         
                         cardList.plugins.addAll({
@@ -178,7 +179,10 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
                                 console.log(id, cards.get(id), cards.toJSON());
                                 if (cards.get(id)._id === "newcard"){
-                                        alert("new card creation !");
+                                        $editCard("newcard", $cardType);
+                                }
+                                else if (cards.get(id).created_by === user.get("_id")){
+                                        $editCard(cards.get(id)._id, $cardType);
                                 }
                                 else{
                                         cardList.setPopup(id);

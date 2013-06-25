@@ -105,6 +105,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               // init
               widget.init();
               
+              // event management
               
               // watch for language change
               user.watchValue("lang", function(){
@@ -142,6 +143,11 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               user.watchValue("taiaut_decks", function(){
                          ideafyDecks.reset();
                         // taiautDecks.getDecks($type);       
+              });
+              
+              // watch for import requests (importing cards from an existing deck)
+              Config.get("observer").watch("getImportableDecks", function(onEnd){
+                        onEnd(ideafyDecks.getImportableDecks());        
               });
               
               USER = user;

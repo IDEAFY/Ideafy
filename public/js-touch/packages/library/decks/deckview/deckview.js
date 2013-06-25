@@ -5,12 +5,13 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "service/map", "./deckdetails", "./cardlist", "service/config"],
-        function(Widget, Model, Event, Stack, Store, Map, DeckDetails, CardList, Config){
+define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plugin", "Store", "service/map", "./deckdetails", "./cardlist", "service/config", "./newcard"],
+        function(Widget, Model, Event, Place, Stack, Store, Map, DeckDetails, CardList, Config, NewCard){
                 
                 return function DeckViewConstructor($update){
                         
                         var deckView = new Widget(),
+                            newCardUI = new NewCard(),
                             cardMenu = new Store([
                                     {name: "characters", active: false, count:0},
                                     {name: "contexts", active: false, count:0},
@@ -29,11 +30,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                                                 (active)?this.classList.add("active"):this.classList.remove("active");
                                         }
                                 }),
+                                "place" : new Place({"newCard" : newCardUI}),
                                 "deckviewstack" : innerStack,
                                 "deckviewevent" : new Event(deckView)
                         });
                         
-                        deckView.template = '<div><ul class="card-menu" data-cardmenu="foreach"><li><div class="card-type" data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: touchstart, viewCards"></div><div class="card-count" data-cardmenu="bind:innerHTML, count"></div></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>';
+                        deckView.template = '<div><div class="editcard invisible" data-place="place: newCard"></div><ul class="card-menu" data-cardmenu="foreach"><li><div class="card-type" data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: touchstart, viewCards"></div><div class="card-count" data-cardmenu="bind:innerHTML, count"></div></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>';
                         
                         deckView.viewCards = function(event, node){
                                 var id = node.getAttribute("data-cardmenu_id");
@@ -42,6 +44,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                                         (i === parseInt(id)) ? cardMenu.update(i, "active", true):cardMenu.update(i, "active", false);        
                                 }); 
                                 innerStack.getStack().show(cardMenu.get(id).name);   
+                        };
+                        
+                        deckView.editCard = function editCard(id, type){
+                                console.log(id, type);
+                                deckView.dom.querySelector(".editcard").classList.remove("invisible");
+                        };
+                        
+                        deckView.hideEditView = function hideEditView(){
+                                deckView.dom.querySelector(".editcard").classList.add("invisible");        
                         };
                         
                         deckView.reset = function reset(deck){
@@ -66,10 +77,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "Store", "
                         
                                 // initialize inner stack
                                 innerStack.getStack().add("details", new DeckDetails($update));
-                                innerStack.getStack().add("characters", new CardList("characters", $update));
-                                innerStack.getStack().add("contexts", new CardList("contexts", $update));
-                                innerStack.getStack().add("problems", new CardList("problems", $update));
-                                innerStack.getStack().add("techno", new CardList("techno", $update));
+                                innerStack.getStack().add("characters", new CardList("characters", $update, deckView.editCard));
+                                innerStack.getStack().add("contexts", new CardList("contexts", $update, deckView.editCard));
+                                innerStack.getStack().add("problems", new CardList("problems", $update, deckView.editCard));
+                                innerStack.getStack().add("techno", new CardList("techno", $update, deckView.editCard));
                         };
                         
                         return deckView;

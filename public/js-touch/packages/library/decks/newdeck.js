@@ -110,6 +110,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "translations": {},
                                         "created_by": _user.get("_id"),
                                         "author": _user.get("username"),
+                                        "public": false,
                                         "sharedwith": []
                                 });
                                 _currentDataURL = null;       

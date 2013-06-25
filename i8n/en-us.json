@@ -503,5 +503,8 @@
 	"joinedideafy": " has joined Ideafy",
 	"referral": "You earned 200 Ideafy Points for referring this person. You can now add him/her to your contacts.",
 	"invitationsent": "Your invitation has been sent",
-	"alreadyinvited": "You already invited this person"
+	"alreadyinvited": "You already invited this person",
+	"cardeditor": "Card editor",
+	"createnew": "Create new",
+	"orlbl": "or"
 }

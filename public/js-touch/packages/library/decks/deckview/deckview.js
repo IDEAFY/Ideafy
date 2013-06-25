@@ -18,7 +18,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                     {name: "problems", active: false, count:0},
                                     {name: "techno", active: false, count:0}
                             ]),
-                            innerStack = new Stack();
+                            innerStack = new Stack(),
+                            deckTitle = "",
+                            deckId = "";
                         
                         
                         deckView.plugins.addAll({
@@ -48,7 +50,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         
                         deckView.editCard = function editCard(id, type){
                                 console.log(id, type);
-                                newCardUI.reset(id, type);
+                                newCardUI.reset(cardId, cardType, deckTitle, deckId);
                         };
                         
                         deckView.hideEditView = function hideEditView(){
@@ -59,6 +61,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
                                         innerStack.getStack().get(value).reset(deck);        
                                 });
+                                
+                                deckId = deck._id;
+                                deckTitle = deck.title;
                                 
                                 cardMenu.reset([]);
                                 
@@ -75,15 +80,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         
                         deckView.init = function init(){
                         
-                                console.log("initializing deckview inner stack");
                                 // initialize inner stack
                                 innerStack.getStack().add("details", new DeckDetails($update));
                                 innerStack.getStack().add("characters", new CardList("characters", $update, deckView.editCard));
                                 innerStack.getStack().add("contexts", new CardList("contexts", $update, deckView.editCard));
                                 innerStack.getStack().add("problems", new CardList("problems", $update, deckView.editCard));
                                 innerStack.getStack().add("techno", new CardList("techno", $update, deckView.editCard));
-                                
-                                console.log("end of stack initialization");
                         };
                         
                         return deckView;

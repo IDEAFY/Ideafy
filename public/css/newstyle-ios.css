@@ -24,6 +24,8 @@ html, body {
   width:1024px;
   height:748px;
   position:fixed;
+  overfloz-y: hidden;
+  overflow-x: hidden;
 }
 
 ul{

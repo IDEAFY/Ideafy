@@ -55,7 +55,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                     "picture_file": ""
                             };
                         
-                        newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark">Card editor</div><div class="create_header"><label>Create new</label><select class="changetype"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label>or</label><div class="importcard" data-label="bind:innerHTML, import">Import...</div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
+                        newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><h2 data-setup="bind:innerHTML, title"></h2><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import">Import...</div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
                             
                         // setup
                         newCard.plugins.addAll({
@@ -69,10 +69,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 document.getElementById("card_creation").classList.add("invisible");
                         };
                         
-                        newCard.reset = function reset($deckId, $type){
+                        newCard.reset = function reset($cardId, $cardType, $deckId, $deckTitle){
                                 document.getElementById("card_creation").classList.remove("invisible");
-                                console.log($deckId, $type, newCard.dom);
-                                cardSetup.reset();
+                                console.log($cardId, $cardType, $deckId, $deckTitle);
+                                cardSetup.reset({title: $deckTitle, type: ["character", "context", "problem", "techno"].indexOf($type)});
                                               
                         };
                         

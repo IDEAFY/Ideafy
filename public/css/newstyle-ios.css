@@ -2679,10 +2679,14 @@ textarea.solution {
 #card_creation .create_header{
     display: inline-block;
     height: 60px;
+    width: 630px;
     border-bottom: 2px double #cccccc;
+    line-height: 60px;
+    text-align: center;
 }
 
 #card_creation .importcard{
+    display: inline-block;
     width: 120px;
     height: 30px;
     border: 1px solid #CCCCCC;

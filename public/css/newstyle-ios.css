@@ -2734,7 +2734,10 @@ textarea.solution {
 }
 
 #card_creation .cardpopup .cd-header{
-    width: 590px;
+    width: 560px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
 }
 
 /*BRAINSTORM*/

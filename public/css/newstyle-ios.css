@@ -2740,6 +2740,15 @@ textarea.solution {
     text-align: center;
 }
 
+#card_creation .cardpopup .cd-picarea{
+    width: 400px;
+    margin: 20px auto;
+}
+
+#card_creation .cardpopup .cardpicture{
+    border: 10px solid whitesmoke;
+}
+
 /*BRAINSTORM*/
 
 #brainstorm{

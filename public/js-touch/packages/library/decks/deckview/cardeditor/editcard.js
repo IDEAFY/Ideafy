@@ -120,15 +120,15 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 model.set("deck", [deckId]);
                                 if (type === "contexts"){
                                         model.set("type", 2);
-                                        model.set("picture_file", "img/brainstorm/decks/context.png");
+                                        model.set("picture_file", "img/decks/context.png");
                                 }
                                 if (type === "problems"){
                                         model.set("type", 3);
-                                        model.set("picture_file", "img/brainstorm/decks/problem.png");
+                                        model.set("picture_file", "img/decks/problem.png");
                                 }  
                                 if (type === "techno"){
                                         model.set("type", 4);
-                                        model.set("picture_file", "img/brainstorm/decks/techno.png");
+                                        model.set("picture_file", "img/decks/techno.png");
                                 }        
                         }
                         else{

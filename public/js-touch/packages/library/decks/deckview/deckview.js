@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plugin", "Store", "service/map", "./deckdetails", "./cardlist", "service/config", "./newcard"],
+define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plugin", "Store", "service/map", "./deckdetails", "./cardlist", "service/config", "./cardeditor/newcard"],
         function(Widget, Model, Event, Place, Stack, Store, Map, DeckDetails, CardList, Config, NewCard){
                 
                 return function DeckViewConstructor($update){

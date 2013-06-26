@@ -1,0 +1,26 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
+define(["OObject", "service/config", "CouchDBView", "Bind.plugin", "Event.plugin", "Store"],
+        function(Widget, Config, CouchDBView, Model, Event, Store){
+           
+           return function EditCardConstructor(){
+                
+                var editCard = new Widget(),
+                    user = Config.get("user"),
+                    labels = Config.get("labels");
+                    
+                editCard.plugins.addAll({
+                        "label" : new Model(labels)
+                });
+                
+                editCard.template = '<div class="cardpopup"><div class="card-detail"><div class="cd-header blue-dark"> <span data-carddetails="bind: formatTitle, title"></span><div class="close-popup" data-popupevent="listen:touchstart, close"></div></div><div class="cd-picarea"><div class="cardpicture" data-carddetails="bind:setPic, picture_file"></div><div class="cardinfo"><p><span class="cd-creditslbl" data-label="bind:innerHTML, credits"></span><span class="cd-info" data-carddetails="bind:innerHTML, picture_credit">Picture credits</span><br/><span class="cd-sourcelbl" data-label="bind:innerHTML, source">Source : </span><span class="cd-info" data-carddetails="bind: setSources, sources"></span></div></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><p class = "dyknow" data-carddetails="bind:innerHTML,didYouKnow"></p></div></div><div class="leftcaret" data-carddetails="bind: setCaret, caret.left"></div><div class="rightcaret" data-carddetails="bind: setCaret, caret.right"></div></div>';
+                
+               return editCard;         
+           };   
+        });
+

@@ -2781,6 +2781,7 @@ textarea.solution {
 #card_creation .cd-contentarea{
     width: 550px;
     padding: 20px;
+    margin-top: 20px;
 }
 
 #card_creation .contentTitle{

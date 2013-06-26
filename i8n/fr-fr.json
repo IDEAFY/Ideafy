@@ -508,5 +508,7 @@
 	"createnew": "Créer une nouvelle carte",
 	"orlbl": "ou",
 	"cardtitle": "Choisissez un titre",
-	"enterdyknow": "Ajoutez des explications ou des informations complémentaires"
+	"picturecredit": "Origine de l'image",
+	"enterdyknow": "Ajoutez des explications ou des informations complémentaires",
+	"dyknowsources": "Indiquez vos sources s'il y a lieu"
 }

@@ -508,5 +508,7 @@
 	"createnew": "Create new",
 	"orlbl": "or",
 	"cardtitle": "Choose a title",
-	"enterdyknow": "Add explanations, facts and figures"
+	"picturecredit": "Picture origin",
+	"enterdyknow": "Add explanations, facts and figures",
+	"dyknowsources": "Provide sources if applicable"
 }

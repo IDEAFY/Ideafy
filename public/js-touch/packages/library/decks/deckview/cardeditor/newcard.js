@@ -68,6 +68,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         };
                         
                         // init
+                        newCard.init();
                         
                         return newCard;     
                 }

@@ -38,8 +38,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         },
                         model = new CouchDBDocument(charTemplate);
 
-                model.setTransport(Config.get("transport"));
-                    
                 editChar.plugins.addAll({
                         "label" : new Model(labels),
                         "model" : new Model(model)
@@ -55,6 +53,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 
                         } 
                };
+                
+               // init
+               model.setTransport(Config.get("transport"));
                 
                return editChar;         
            };   

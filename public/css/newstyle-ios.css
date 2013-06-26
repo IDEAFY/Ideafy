@@ -2766,6 +2766,10 @@ textarea.solution {
     background-size: 20px;
 }
 
+#card_creation button{
+    margin-top: 10px;
+}
+
 /*BRAINSTORM*/
 
 #brainstorm{

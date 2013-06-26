@@ -97,7 +97,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 },
                                 setPic : function(file){
                                         var json, node=this;
-                                        if (file.search("img/brainstorm/decks") > -1){
+                                        if (file.search("img/decks/") > -1){
                                                 node.setAttribute("style", "background-image: url('"+file+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");
                                         }
                                         else{

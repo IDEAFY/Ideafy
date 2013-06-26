@@ -2749,10 +2749,15 @@ textarea.solution {
     border: 10px solid whitesmoke;
 }
 
-#card_creation .cardpopup .picinfo{
-    width: 293px;
-    height: 107px;
+#card_creation .picinfo{
+    width: 273px;
+    height: 87px;
     float: left;
+    padding: 10px;
+}
+
+#card_creation .picinfo textarea{
+    margin-top: 10px;
 }
 
 /*BRAINSTORM*/

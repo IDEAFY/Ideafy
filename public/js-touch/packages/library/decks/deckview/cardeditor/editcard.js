@@ -142,30 +142,56 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                };
                
                editCard.picturePreview = function(event, node){
-                                var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
-                                    _img = new Image(),
-                                    _options = {quality:50, correctOrientation: true, sourceType: source},
-                                    onSuccess, onFail;
+                        var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
+                            _img = new Image(),
+                            _options = {quality:50, correctOrientation: true, sourceType: source},
+                            onSuccess, onFail;
                         
-                                onSuccess = function(imageData){
-                                        _img.src = imageData;
-                                        setTimeout(function(){
-                                                cropImage(resizeImage(_img), function(result){
-                                                        var el = editCard.dom.querySelector(".cardpicture");
-                                                        el.setAttribute("style", "background-image: url('"+result+"')");
-                                                        _currentDataURL = result;
-                                                        model.set("picture_file", model.get("_id"));
-                                                        node.classList.remove("pressed");        
-                                                });
-                                        }, 750);
-                                };
-                        
-                                onFail = function(message){
-                                        alert("error: "+message);
-                                };
-                        
-                                navigator.camera.getPicture(onSuccess, onFail, _options);
+                        onSuccess = function(imageData){
+                                _img.src = imageData;
+                                setTimeout(function(){
+                                        cropImage(resizeImage(_img), function(result){
+                                                var el = editCard.dom.querySelector(".cardpicture");
+                                                el.setAttribute("style", "background-image: url('"+result+"')");
+                                                _currentDataURL = result;
+                                                model.set("picture_file", model.get("_id"));
+                                                node.classList.remove("pressed");        
+                                        });
+                                }, 750);
                         };
+                        
+                        onFail = function(message){
+                                alert("error: "+message);
+                        };
+                        
+                        navigator.camera.getPicture(onSuccess, onFail, _options);
+               };
+               
+               editCard.cameraPreview = function(event, node){ 
+                        var _img = new Image(),
+                            _options = {quality:50, correctOrientation: true},
+                            onSuccess, onFail;;
+                        
+                        onSuccess = function(imageData){
+                               _img.src = imageData;
+                                setTimeout(function(){
+                                        cropImage(resizeImage(_img), function(result){
+                                                var el = editCard.dom.querySelector(".cardpicture");
+                                                el.setAttribute("style", "background-image: url('"+result+"')");
+                                                _currentDataURL = result;
+                                                model.set("picture_file", model.get("_id"));
+                                                node.classList.remove("pressed");        
+                                        });
+                                }, 750);
+                        }
+                        
+                        onFail = function(message){
+                                alert("error: "+message);
+                                node.classList.remove("pressed");
+                        }
+                        
+                        navigator.camera.getPicture(onSuccess, onFail, _options);       
+                };
                
                // init
                model.setTransport(Config.get("transport"));

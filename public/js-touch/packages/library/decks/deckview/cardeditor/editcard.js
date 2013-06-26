@@ -86,13 +86,13 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         "label" : new Model(labels),
                         "model" : new Model(model, {
                                 formatTitle : function(title){
-                                                if (title) {
+                                                if (title && title !== "") {
                                                         this.innerHTML = title.toUpperCase();
-                                                        this.setAttribute("style", "color: #292929;");
+                                                        this.setAttribute("style", "color: white;");
                                                 }
                                                 else{
                                                         this.innerHTML = labels.get("cardtitle");
-                                                        this.setAttribute("style", "color: #CCCCCC;");
+                                                        this.setAttribute("style", "color: whitesmoke;");
                                                 }
                                 },
                                 setPic : function(file){
@@ -169,6 +169,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                
                // init
                model.setTransport(Config.get("transport"));
+               
+               CARDMODEL = model;
                 
                return editCard;         
            };   

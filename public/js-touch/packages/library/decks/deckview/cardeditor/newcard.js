@@ -16,21 +16,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                             cardCDB = new CouchDBDocument(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),
-                            cardTemplate = {
-                                    "_id": "",
-                                    "default_lang": user.get("lang"),
-                                    "title": "",
-                                    "didYouKnow": "",
-                                    "deck": [],
-                                    "category": "",
-                                    "coefficient": 1,
-                                    "sources": [],
-                                    "created_by": user.get("_id"),
-                                    "created_on": [],
-                                    "picture_credit": "",
-                                    "type": null,
-                                    "picture_file": ""
-                            },
                             editCard = new EditCard(),
                             editChar = new EditChar(),
                             importCard = new ImportCard();

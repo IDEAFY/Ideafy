@@ -2742,11 +2742,12 @@ textarea.solution {
     height: 60px;
     line-height: 60px;
     text-align: center;
+    text-transform: uppercase;
 }
 
 #card_creation .cardpopup .cd-picarea{
     width: 400px;
-    margin: 20px auto;
+    margin: 0px auto;
 }
 
 #card_creation .cardpopup .cardpicture{
@@ -2775,6 +2776,15 @@ textarea.solution {
 
 #card_creation button{
     margin-top: 10px;
+}
+
+#card_creation .cd-contentarea{
+    width: 550px;
+    padding: 20px;
+}
+
+#card_creation .contentTitle{
+    font-size: 14px;
 }
 
 /*BRAINSTORM*/

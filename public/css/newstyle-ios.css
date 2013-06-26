@@ -2760,6 +2760,12 @@ textarea.solution {
     margin-top: 10px;
 }
 
+#card_creation .picinfo .cd-creditslbl{
+    padding-left: 40px;
+    font-size: 14px;
+    background-size: 20px;
+}
+
 /*BRAINSTORM*/
 
 #brainstorm{

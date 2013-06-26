@@ -2417,6 +2417,10 @@ textarea.solution {
     float: right;
 }
 
+#deckview{
+    overflow-y: hidden;
+}
+
 #deckview .card-menu{
     height: 100px;
     padding: 20px;
@@ -2715,6 +2719,18 @@ textarea.solution {
 #card_creation .importcard.pressed{
     background: -webkit-linear-gradient(top, #808080 0%,#cccccc 64%,#e5e5e5 100%);
     color: white;
+}
+
+#card_creation .cardpopup{
+    width: 590px;
+    height: 628px;
+    padding: 20px;
+}
+
+#card_creation .cardpopup .card-detail{
+    width: 590px;
+    height: 628px;
+    float: none;    
 }
 
 /*BRAINSTORM*/

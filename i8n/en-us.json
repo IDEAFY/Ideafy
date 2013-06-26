@@ -506,5 +506,6 @@
 	"alreadyinvited": "You already invited this person",
 	"cardeditor": "Card editor",
 	"createnew": "Create new",
-	"orlbl": "or"
+	"orlbl": "or",
+	"cardtitle": "Choose a title"
 }

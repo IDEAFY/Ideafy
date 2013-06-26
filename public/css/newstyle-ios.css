@@ -40,6 +40,10 @@ textarea{
     -webkit-transform: translate3d(0,0,0);
 }
 
+textarea, input{
+    font-family: Helvetica;
+}
+
 .overflow {
   overflow-x: hidden;
   overflow-y: scroll;
@@ -2757,7 +2761,10 @@ textarea.solution {
 }
 
 #card_creation .picinfo input{
-    margin-top: 10px;
+    margin-top: 5px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
 }
 
 #card_creation .picinfo .cd-creditslbl{

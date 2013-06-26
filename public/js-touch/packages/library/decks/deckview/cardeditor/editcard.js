@@ -39,7 +39,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                                         this.setAttribute("style", "color: #292929;");
                                                 }
                                                 else{
-                                                        this.innerHTML = labels.get("entertitle");
+                                                        this.innerHTML = labels.get("quickstarttitle");
                                                         this.setAttribute("style", "color: #CCCCCC;");
                                                 }
                                 }

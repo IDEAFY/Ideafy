@@ -2733,6 +2733,10 @@ textarea.solution {
     float: none;    
 }
 
+#card_creation .cardpopup .cd-header{
+    width: 590px;
+}
+
 /*BRAINSTORM*/
 
 #brainstorm{

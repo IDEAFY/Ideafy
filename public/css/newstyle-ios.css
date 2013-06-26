@@ -2749,6 +2749,12 @@ textarea.solution {
     border: 10px solid whitesmoke;
 }
 
+#card_creation .cardpopup .picinfo{
+    width: 293px;
+    height: 107px;
+    float: left;
+}
+
 /*BRAINSTORM*/
 
 #brainstorm{

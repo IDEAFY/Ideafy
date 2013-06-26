@@ -30,8 +30,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                     },
                     model = new CouchDBDocument(cardTemplate);
                 
-                model.setTransport(Config.get("transport"));
-                    
                 editCard.plugins.addAll({
                         "label" : new Model(labels),
                         "model" : new Model(model)
@@ -50,6 +48,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 
                         } 
                };
+               
+               // init
+               model.setTransport(Config.get("transport"));
                 
                return editCard;         
            };   

@@ -32,10 +32,22 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                 
                 editCard.plugins.addAll({
                         "label" : new Model(labels),
-                        "model" : new Model(model)
+                        "model" : new Model(model, {
+                                formatTitle : function(title){
+                                                if (title) {
+                                                        this.innerHTML = title.toUpperCase();
+                                                        this.setAttribute("style", "color: #292929;");
+                                                }
+                                                else{
+                                                        this.innerHTML = labels.get("entertitle");
+                                                        this.setAttribute("style", "color: #CCCCCC;");
+                                                }
+                                }
+                        }),
+                        "editevent" : new Event(editCard)
                 });
                 
-                editCard.template = '<div class="cardpopup"><div class="card-detail"><div class="cd-header blue-dark"> <textarea data-carddetails="bind: formatTitle, title"></textarea></div><div class="cd-picarea"><div class="cardpicture" data-carddetails="bind:setPic, picture_file"></div><div class="cardinfo"><p><span class="cd-creditslbl" data-label="bind:innerHTML, credits"></span><span class="cd-info" data-carddetails="bind:innerHTML, picture_credit">Picture credits</span><br/><span class="cd-sourcelbl" data-label="bind:innerHTML, source">Source : </span><span class="cd-info" data-carddetails="bind: setSources, sources"></span></div></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><p class = "dyknow" data-carddetails="bind:innerHTML,didYouKnow"></p></div></div><div class="leftcaret" data-carddetails="bind: setCaret, caret.left"></div><div class="rightcaret" data-carddetails="bind: setCaret, caret.right"></div></div>';
+                editCard.template = '<div class="cardpopup"><div class="card-detail"><div class="cd-header blue-dark"><div name="title" data-carddetails="bind: formatTitle, title" data-editevent="listen: touchstart, clearDefault" contenteditable=true></div></div><div class="cd-picarea"><div class="cardpicture" data-carddetails="bind:setPic, picture_file"></div><div class="cardinfo"><p><span class="cd-creditslbl" data-label="bind:innerHTML, credits"></span><span class="cd-info" data-carddetails="bind:innerHTML, picture_credit">Picture credits</span><br/><span class="cd-sourcelbl" data-label="bind:innerHTML, source">Source : </span><span class="cd-info" data-carddetails="bind: setSources, sources"></span></div></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><p class = "dyknow" data-carddetails="bind:innerHTML,didYouKnow"></p></div></div><div class="leftcaret" data-carddetails="bind: setCaret, caret.left"></div><div class="rightcaret" data-carddetails="bind: setCaret, caret.right"></div></div>';
                
                editCard.reset = function reset(id, type){
                         if (id === "new"){
@@ -47,6 +59,11 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         else{
                                 
                         } 
+               };
+               
+               editCard.clearDefault = function clearDefault(event, node){
+                        var field = node.getAttribute("name");
+                        if (model.get("field") === "") node.innerHTML = "";        
                };
                
                // init

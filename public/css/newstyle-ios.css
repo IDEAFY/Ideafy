@@ -2768,7 +2768,7 @@ textarea.solution {
     font-size: 12px;
 }
 
-#card_creation .picinfo .cd-creditslbl{
+#card_creation .cd-creditslbl, .cd-sourcelbl{
     padding-left: 25px;
     font-size: 14px;
     background-size: 20px;
@@ -2786,6 +2786,18 @@ textarea.solution {
 
 #card_creation .contentTitle{
     font-size: 14px;
+}
+
+#card_creation .enterdyknow{
+    padding: 20px;
+    text-align: justify;
+    line-height: 20px;
+    height: 180pxpx;
+}
+
+#card_creation .cancelmail{
+    margin-right: 20px;
+    margin-top: 20px;
 }
 
 /*BRAINSTORM*/

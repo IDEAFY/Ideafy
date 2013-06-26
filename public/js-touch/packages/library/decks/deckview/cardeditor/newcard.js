@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "CouchDBDocument"],
-        function(Widget, Model, Event, Stack, Config, Store, CouchDBDocument){
+define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "CouchDBDocument", "./editchar", "./editcard", "./importcard"],
+        function(Widget, Model, Event, Stack, Config, Store, CouchDBDocument, EditChar, EditCard, ImportCard){
                 
                 return function NewCardConstructor(){
 
@@ -31,29 +31,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                     "type": null,
                                     "picture_file": ""
                             },
-                            charTemplate = {
-                                    "_id": "INT:aika",
-                                    "default_lang": user.get("lang"),
-                                    "title": "",
-                                    "gender": 0,
-                                    "age": 0,
-                                    "firstname": "",
-                                    "lastname": "",
-                                    "location": "",
-                                    "occupation": {
-                                        "description": "",
-                                        "details": [1,"",""]
-                                    },
-                                    "family": {"couple": 0, "children": 0},
-                                    "leisure_activities": [{"name": "", "comment": ""}, {"name": "", "comment": ""}, {"name": "", "comment": ""}],
-                                    "interests": [{"name": "", "comment": ""}, {"name": "", "comment": ""}, {"name": "", "comment": ""}],
-                                    "comments": null,
-                                    "type": 1,
-                                    "deck": [],
-                                    "created_by": user.get("_id"),
-                                    "created_on": [],
-                                    "picture_file": ""
-                            };
+                            editCard = new EditCard(),
+                            editChar = new EditChar(),
+                            importCard = new ImportCard();
                         
                         newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import" data-newcardevent="listen:touchstart, press; listen:touchend, import">Import...</div><div class="createheaderstack invisible"</div></div><div class="createcontentstack"></div></div>';
                             
@@ -73,7 +53,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 document.getElementById("card_creation").classList.remove("invisible");
                                 console.log($cardId, $cardType, $deckId, $deckTitle);
                                 cardSetup.reset({title: $deckTitle, type: ["characters", "contexts", "problems", "techno"].indexOf($cardType)});
-                                              
+                                
+                                if ($cardType === "characters"){
+                                        editChar.reset("new");
+                                        _contentStack.getStack().show("editchar");
+                                }
+                                else{
+                                        editCard.reset("new", $cardType);
+                                        _contentStack.getStack().show("editcard");
+                                }
                         };
                         
                         newCard.press = function(event, node){
@@ -82,10 +70,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         
                         newCard.import = function(event, node){
                                 node.classList.remove("pressed");
+                                _contentStack.getStack().show("importcard");
                         }
                         
                         newCard.init = function(){
-                                // add UIs to innerStack        
+                                // add UIs to innerStack
+                                _contentStack.getStack().add("editchar", editChar);
+                                _contentStack.getStack().add("editcard", editCard); 
+                                _contentStack.getStack().add("importcard", importCard);
+                                
+                                _contentStack.getStack().show("editchar");      
                         };
                         
                         // init

@@ -96,8 +96,15 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                                 }
                                 },
                                 setPic : function(file){
+                                        var json, node=this;
                                         if (file.search("img/brainstorm/decks") > -1){
-                                                this.setAttribute("style", "background-image: url('"+file+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");
+                                                node.setAttribute("style", "background-image: url('"+file+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");
+                                        }
+                                        else{
+                                                json = {"dir":model.get("_id"), "filename":file};
+                                                Config.get("transport").request("GetFile", json, function(data){
+                                                        node.setAttribute("style", "background-image: url('"+data+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");   
+                                                });        
                                         }
                                 }
 

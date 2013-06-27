@@ -83,11 +83,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 cardSetup.reset({deckId: $deckId, title: $deckTitle, type: ["characters", "contexts", "problems", "techno"].indexOf($cardType)});
                                 
                                 if ($cardType === "characters"){
-                                        editChar.reset($deckId, "new");
+                                        editChar.reset($deckId, $cardId);
                                         _contentStack.getStack().show("editchar");
                                 }
                                 else{
-                                        editCard.reset($deckId, "new", $cardType);
+                                        editCard.reset($deckId, $cardId, $cardType);
                                         _contentStack.getStack().show("editcard");
                                 }
                         };

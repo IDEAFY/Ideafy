@@ -8,7 +8,7 @@
 define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "CouchDBDocument", "./editchar", "./editcard", "./importcard", "Promise"],
         function(Widget, Model, Event, Stack, Config, Store, CouchDBDocument, EditChar, EditCard, ImportCard, Promise){
                 
-                return function NewCardConstructor(){
+                return function NewCardConstructor($update){
 
                         var newCard = new Widget(),
                             _contentStack = new Stack(),
@@ -54,6 +54,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                         return deckCDB.upload(); 
                                 })
                                 .then(function(){
+                                        // update list and deckview
+                                        $update();
                                         promise.fulfill();
                                 });
                                 return promise;        

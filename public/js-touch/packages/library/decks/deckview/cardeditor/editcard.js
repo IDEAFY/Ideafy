@@ -114,8 +114,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         var json, node = this;
                                         console.log(pic);
                                         if (pic.search("img/decks/") > -1){
-                                                console.log("display this", pic, "background-image: url('" + pic + "');background-repeat: no-repeat; background-position: center center; background-size: cover;");
-                                                node.setAttribute("style", "background-image: url('" + pic + "');background-repeat: no-repeat; background-position: center center; background-size: cover;");
+                                                console.log("display this", pic, "background-image: url('../" + pic + "');background-repeat: no-repeat; background-position: center center; background-size: cover;");
+                                                node.setAttribute("style", "background-image: url('../" + pic + "');background-repeat: no-repeat; background-position: center center; background-size: cover;");
                                         }
                                         else{
                                                 json = {"dir":model.get("_id"), "filename":pic};

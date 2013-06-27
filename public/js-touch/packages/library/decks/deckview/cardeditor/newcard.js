@@ -58,9 +58,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 });
                                 return promise;        
                             },
-                            editCard = new EditCard(update, close),
-                            editChar = new EditChar(update, close),
-                            importCard = new ImportCard(update, close);
+                            editCard = new EditCard(updateDeck, close),
+                            editChar = new EditChar(updateDeck, close),
+                            importCard = new ImportCard(updateDeck, close);
                         
                         newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type" data-newcardevent="listen: change, changeType"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import" data-newcardevent="listen:touchstart, press; listen:touchend, import">Import...</div></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
                             

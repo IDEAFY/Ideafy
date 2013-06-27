@@ -152,6 +152,27 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         } 
                };
                
+               editCard.changeType = function changeType(idx){
+                        switch(idx){
+                                case 1:
+                                        model.set("type", 2);
+                                        model.set("picture_file", "img/decks/context.png");
+                                        break;
+                                case 2:
+                                        model.set("type", 3);
+                                        model.set("picture_file", "img/decks/problem.png");
+                                        break;
+                                case 3:
+                                        model.set("type", 4);
+                                        model.set("picture_file", "img/decks/techno.png");
+                                        break;
+                                default:
+                                        model.set("type", 2);
+                                        model.set("picture_file", "img/decks/context.png");
+                                        break;
+                        }        
+               };
+               
                editCard.clearDefault = function clearDefault(event, node){
                         var field = node.getAttribute("name");
                         if (model.get("field") === "") node.innerHTML = "";        

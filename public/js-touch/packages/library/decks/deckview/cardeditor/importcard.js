@@ -20,6 +20,10 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
                         "label" : new Model(labels)
                 });
                 
+                importCard.changeType = funciton changeType(type){
+                        console.log("importcard change type : ", type);        
+                };
+                
                 return importCard;
                    
            }

@@ -110,15 +110,15 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                                         break;        
                                         }        
                                 },
-                                setPic : function(file){
+                                setPic : function(pic){
                                         var json, node=this;
-                                        console.log(file);
-                                        if (file.search("img/decks/") > -1){
-                                                console.log("display this");
-                                                node.setAttribute("style", "background-image: url('"+file+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");
+                                        console.log(pic);
+                                        if (pic.search("img/decks/") > -1){
+                                                console.log("display this", pic);
+                                                node.setAttribute("style", "background-image: url('"+pic+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");
                                         }
                                         else{
-                                                json = {"dir":model.get("_id"), "filename":file};
+                                                json = {"dir":model.get("_id"), "filename":pic};
                                                 Config.get("transport").request("GetFile", json, function(data){
                                                         node.setAttribute("style", "background-image: url('"+data+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");   
                                                 });        

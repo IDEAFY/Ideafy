@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.plugin", "Store", "service/utils"],
         function(Widget, Config, CouchDBDocument, Model, Event, Store, Utils){
            
-           return function EditCardConstructor(){
+           return function EditCardConstructor($close){
                 
                 var editCard = new Widget(),
                     user = Config.get("user"),
@@ -215,7 +215,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                 
                editCard.cancel = function(event, node){
                         node.classList.remove("pressed");
-                        editCard.dom.classList.add("invisible");        
+                        model.reset({});
+                        $close();        
                };
                
                // init

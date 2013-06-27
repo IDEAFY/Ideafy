@@ -23,7 +23,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 var promise = new Promise(),
                                     deckCDB = new CouchDBDocument(),
                                     type = "characters"; // or contexts, problems, techno
-                                console.log("deck update function in newcard : ", cardType, cardId);
+                                console.log("deck update function in newcard : ", cardType, cardId, cardSetup.get("deckId"));
                                 switch(cardType){
                                         case 1:
                                                 type = "characters";

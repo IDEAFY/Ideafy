@@ -112,6 +112,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                                         break;        
                                         }        
                                 },
+                                setSources : function(sources){
+                                        if (sources && sources.length){
+                                                (sources instanceof Array) ? this.innerHTML = sources.join(", ") : this.innerHTML = sources;
+                                        }
+                                        else{
+                                                this.innerHTML = "";
+                                        }        
+                                },
                                 setPic : function(pic){
                                         var json, node = this, style;
                                         if (pic && pic.search("img/decks/") > -1){

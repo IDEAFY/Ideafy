@@ -258,7 +258,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 // editCard.checkValidity();
                                 model.sync(Config.get("db"), model.get("_id"))
                                 .then(function(){
-                                        console.log("new card created : ");
+                                        console.log("new card created : ", model.toJSON());
                                         editCard.uploadCard();        
                                 });
                         }

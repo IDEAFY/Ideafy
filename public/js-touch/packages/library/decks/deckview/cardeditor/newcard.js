@@ -23,7 +23,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                             editChar = new EditChar(close),
                             importCard = new ImportCard(close);
                         
-                        newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import" data-newcardevent="listen:touchstart, press; listen:touchend, import">Import...</div></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
+                        newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type" data-newcardevent="listen: change, changeType"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import" data-newcardevent="listen:touchstart, press; listen:touchend, import">Import...</div></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
                             
                         // setup
                         newCard.plugins.addAll({
@@ -52,12 +52,25 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         
                         newCard.press = function(event, node){
                                 node.classList.add("pressed");
-                        }
+                        };
                         
                         newCard.import = function(event, node){
                                 node.classList.remove("pressed");
                                 _contentStack.getStack().show("importcard");
-                        }
+                        };
+                        
+                        newCard.changeType = function(event, node){
+                                var idx = node.selectedIndex;
+                                if (_contentStack.getStack().getCurrentName() === "importcard"){
+                                        importCard.changeType(idx);
+                                }
+                                else if (node.selectedIndex === 0){
+                                        _contentStack.getStack().show("editchar");
+                                }
+                                else {
+                                        editCard.changeType(idx);
+                                }
+                        };
                         
                         newCard.init = function(){
                                 

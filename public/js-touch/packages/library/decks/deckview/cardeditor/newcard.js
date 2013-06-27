@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "CouchDBDocument", "./editchar", "./editcard", "./importcard"],
-        function(Widget, Model, Event, Stack, Config, Store, CouchDBDocument, EditChar, EditCard, ImportCard){
+define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "CouchDBDocument", "./editchar", "./editcard", "./importcard", "Promise"],
+        function(Widget, Model, Event, Stack, Config, Store, CouchDBDocument, EditChar, EditCard, ImportCard, Promise){
                 
                 return function NewCardConstructor(){
 
@@ -18,10 +18,49 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                             user = Config.get("user"),
                             close = function(){
                                 document.getElementById("card_creation").classList.add("invisible");        
-                            };
-                            editCard = new EditCard(close),
-                            editChar = new EditChar(close),
-                            importCard = new ImportCard(close);
+                            },
+                            updateDeck = function(cardType, cardId){
+                                var promise = new Promise(),
+                                    deckCDB = new CouchDBDocument(),
+                                    type = "characters"; // or contexts, problems, techno
+                                
+                                switch(cardType){
+                                        case 1:
+                                                type = "characters";
+                                                break;
+                                        case 2:
+                                                type = "contexts";
+                                                break;
+                                        case 3:
+                                                type = "problems";
+                                                break;
+                                        case 4:
+                                                type = "techno";
+                                                break;
+                                        default:
+                                                break;
+                                }
+                                deckCDB.setTransport(Config.get("transport"));
+                                deckCDB.sync(Config.get("db"), cardSetup.get("deckId"))
+                                .then(function(){
+                                        var now=new Date(),
+                                            content = deckCDB.get("content"),
+                                            arr = content[type];
+                                        
+                                        arr.push(cardId);
+                                        content[type] = arr;
+                                        deckCDB.set("content", content);
+                                        deckCDB.set("last_modified", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        return deckCDB.upload(); 
+                                })
+                                .then(function(){
+                                        promise.fulfill();
+                                });
+                                return promise;        
+                            },
+                            editCard = new EditCard(update, close),
+                            editChar = new EditChar(update, close),
+                            importCard = new ImportCard(update, close);
                         
                         newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type" data-newcardevent="listen: change, changeType"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import" data-newcardevent="listen:touchstart, press; listen:touchend, import">Import...</div></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
                             
@@ -38,7 +77,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         newCard.reset = function reset($cardId, $cardType, $deckId, $deckTitle){
                                 document.getElementById("card_creation").classList.remove("invisible");
                                 console.log($cardId, $cardType, $deckId, $deckTitle);
-                                cardSetup.reset({title: $deckTitle, type: ["characters", "contexts", "problems", "techno"].indexOf($cardType)});
+                                cardSetup.reset({deckId: $deckId, title: $deckTitle, type: ["characters", "contexts", "problems", "techno"].indexOf($cardType)});
                                 
                                 if ($cardType === "characters"){
                                         editChar.reset($deckId, "new");

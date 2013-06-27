@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.plugin", "Store"],
         function(Widget, Config, CouchDBDocument, Model, Event, Store){
            
-           return function EditCharConstructor($close){
+           return function EditCharConstructor($update, $close){
                 
                 var editChar = new Widget(),
                     user = Config.get("user"),

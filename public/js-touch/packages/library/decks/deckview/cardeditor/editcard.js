@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.plugin", "Store", "service/utils", "lib/spin.min"],
         function(Widget, Config, CouchDBDocument, Model, Event, Store, Utils, Spinner){
            
-           return function EditCardConstructor($close){
+           return function EditCardConstructor($update, $close){
                 
                 var editCard = new Widget(),
                     user = Config.get("user"),
@@ -264,6 +264,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         model.upload()
                         .then(function(){
                                 console.log("card upload successful :", model.get("_rev"));
+                                return $update(model.get("type"), model.get("_id"));
+                        })
+                        .then(function(){
                                 spinner.stop();
                                 $close();
                                 model.unsync();

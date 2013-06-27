@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
         function(Widget, Config, Model, Event, Store){
            
-           return function ImportCardConstructor($close){
+           return function ImportCardConstructor($update, $close){
                    
                 var importCard = new Widget(),
                     labels = Config.get("labels");

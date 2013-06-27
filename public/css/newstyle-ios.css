@@ -2776,19 +2776,27 @@ textarea.solution {
 
 #card_creation button{
     margin-top: 10px;
+    color: white;
+    background: #657b99;
 }
 
 #card_creation .cd-contentarea{
     width: 550px;
     padding: 20px;
     margin-top: 20px;
+    height: 270px;
 }
 
 #card_creation .contentTitle{
-    font-size: 14px;
+    font-size: 18px;
+    border-bottom: 1px solid #657b99;
+    padding-bottom: 3px;
+    display: block;
+    color: #657b99;
 }
 
 #card_creation .enterdyknow{
+    margin-top: 5px;
     padding: 20px;
     text-align: justify;
     line-height: 20px;

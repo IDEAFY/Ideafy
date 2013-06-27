@@ -179,9 +179,9 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 if (cards.get(id)._id === "newcard"){
                                         $editCard("newcard", $cardType);
                                 }
-                                else if (cards.get(id).created_by === user.get("_id")){
+                                /*else if (cards.get(id).created_by === user.get("_id")){
                                         $editCard(cards.get(id)._id, $cardType);
-                                }
+                                }*/
                                 else{
                                         cardList.setPopup(id);
                                 }       

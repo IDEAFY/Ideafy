@@ -16,7 +16,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                             cardCDB = new CouchDBDocument(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),
-                            editCard, editChar, importCard;
+                            close = function(){
+                                document.getElementById("card_creation").classList.add("invisible");        
+                            };
+                            editCard = new EditCard(close),
+                            editChar = new EditChar(close),
+                            importCard = new ImportCard(close);
                         
                         newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import" data-newcardevent="listen:touchstart, press; listen:touchend, import">Import...</div></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
                             
@@ -28,9 +33,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 "newcardevent" : new Event(newCard)
                         });
                         
-                        newCard.close = function close(event, node){
-                                document.getElementById("card_creation").classList.add("invisible");
-                        };
+                        newCard.close = close;
                         
                         newCard.reset = function reset($cardId, $cardType, $deckId, $deckTitle){
                                 document.getElementById("card_creation").classList.remove("invisible");
@@ -57,10 +60,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         }
                         
                         newCard.init = function(){
-                                
-                                editCard = new EditCard(newCard.close),
-                                editChar = new EditChar(newCard.close),
-                                importCard = new ImportCard(newCard.close);
                                 
                                 // add UIs to innerStack
                                 _contentStack.getStack().add("editchar", editChar);

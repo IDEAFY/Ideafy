@@ -112,7 +112,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 },
                                 setPic : function(file){
                                         var json, node=this;
+                                        console.log(file);
                                         if (file.search("img/decks/") > -1){
+                                                console.log("display this");
                                                 node.setAttribute("style", "background-image: url('"+file+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");
                                         }
                                         else{

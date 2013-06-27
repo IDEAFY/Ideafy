@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.plugin", "Store", "service/utils"],
-        function(Widget, Config, CouchDBDocument, Model, Event, Store, Utils){
+define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.plugin", "Store", "service/utils", "lib/spin.min"],
+        function(Widget, Config, CouchDBDocument, Model, Event, Store, Utils, Spinner){
            
            return function EditCardConstructor($close){
                 
@@ -80,7 +80,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 Utils.uploadFile(_url, _fd, null, function(result){
                                         console.log(result);
                                 });
-                      };
+                      },
+                      spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: 0, left: 0}).spin();
                 
                 editCard.plugins.addAll({
                         "label" : new Model(labels),
@@ -131,8 +132,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                 editCard.template = '<div class="cardpopup"><div class="card-detail"><div class="cd-header blue-dark" data-model="bind:formatTitle, type"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault" contenteditable=true></div></div><div class="cd-picarea"><div class ="cardpicture" data-model="bind:setPic, picture_file"></div><div class="picinfo"><span class="cd-creditslbl"data-label="bind:innerHTML, picturecredit"></span><input type="text" class="input editcredit" data-model="bind:value, picture_credit"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: touchstart, press; listen:touchend, picturePreview"></button><button class="takepic" data-importevent="listen: touchstart, press; listen:touchend, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><textarea class="input enterdyknow" data-label="bind: placeholder, enterdyknow" data-model="bind:value,didYouKnow"></textarea><span class="cd-sourcelbl" data-label="bind:innerHTML, source"></span><textarea class="input entersources" data-model="bind: value, sources"></textarea></div><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
                
                editCard.reset = function reset(deckId, id, type){
+                       var now = new Date();
+                        model.setTransport(Config.get("transport"));
                         if (id === "new"){
                                 model.reset(cardTemplate);
+                                model.set("_id", "C:"+now.getTime());
+                                model.set("created_on", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                 model.set("deck", [deckId]);
                                 if (type === "contexts"){
                                         model.set("type", 2);
@@ -148,7 +153,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 }        
                         }
                         else{
-                                
+                                model.sync(Config.get("db"), id);        
                         } 
                };
                
@@ -240,10 +245,34 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         $close();        
                };
                
-               // init
-               model.setTransport(Config.get("transport"));
+               editCard.upload = function(event, node){
+                       node.classList.remove("pressed");
+                       spinner.spin(node);
+                        if (!model.get("_rev")){
+                                model.sync(Config.get("db"), model.get("_id"))
+                                .then(function(){
+                                        console.log("new card created : ");
+                                        editCard.uploadCard();        
+                                });
+                        }
+                        else{
+                                editCard.uploadCard(node);
+                        }  
+               };
+               
+               editCard.uploadCard = function uploadCard(node){
+                        model.upload()
+                        .then(function(){
+                                console.log("card upload successful :", model.get("_rev"));
+                                spinner.stop();
+                                $close();
+                                model.unsync();
+                                model.reset({});
+                        });
+               };
                
                CARDMODEL = model;
+               UPLOADSPIN = spinner;
                 
                return editCard;         
            };   

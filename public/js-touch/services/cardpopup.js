@@ -42,7 +42,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store"],
                                         },
                                         setSources : function(sources){
                                                 if (sources && sources.length){
-                                                        this.innerHTML = sources.join(", ");
+                                                        (sources instanceof Array) ? this.innerHTML = sources.join(", ") : this.innerHTML = sources;
                                                 }
                                                 else{
                                                         this.innerHTML = "";

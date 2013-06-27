@@ -111,11 +111,11 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         }        
                                 },
                                 setPic : function(pic){
-                                        var json, node = this;
+                                        var json, node = this, style;
                                         console.log(pic);
                                         if (pic.search("img/decks/") > -1){
-                                                console.log("display this", pic, "background-image: url('" + pic + "');background-repeat: no-repeat; background-position: center center; background-size: cover;");
-                                                node.setAttribute("style", "background-image: url('" + pic + "');background-repeat: no-repeat; background-position: center center; background-size: cover;");
+                                                style =  "background-image: url('" + pic + "');background-repeat: no-repeat; background-position: center center; background-size: cover;";
+                                                node.setAttribute("style", style);
                                         }
                                         else{
                                                 json = {"dir":model.get("_id"), "filename":pic};

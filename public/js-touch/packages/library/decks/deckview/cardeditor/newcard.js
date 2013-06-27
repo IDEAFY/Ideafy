@@ -16,9 +16,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                             cardCDB = new CouchDBDocument(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),
-                            editCard = new EditCard(),
-                            editChar = new EditChar(),
-                            importCard = new ImportCard();
+                            editCard, editChar, importCard;
                         
                         newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import" data-newcardevent="listen:touchstart, press; listen:touchend, import">Import...</div></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
                             
@@ -59,6 +57,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         }
                         
                         newCard.init = function(){
+                                
+                                editCard = new EditCard(newCard.close),
+                                editChar = new EditChar(newCard.close),
+                                importCard = new ImportCard(newCard.close);
+                                
                                 // add UIs to innerStack
                                 _contentStack.getStack().add("editchar", editChar);
                                 _contentStack.getStack().add("editcard", editCard); 

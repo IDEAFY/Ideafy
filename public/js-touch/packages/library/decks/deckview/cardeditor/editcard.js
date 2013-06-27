@@ -112,12 +112,11 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 },
                                 setPic : function(pic){
                                         var json, node = this, style;
-                                        console.log(pic);
-                                        if (pic.search("img/decks/") > -1){
-                                                style =  "background-image:url('" + pic + '");background-repeat: no-repeat; background-position: center center; background-size: cover;";
+                                        if (pic && pic.search("img/decks/") > -1){
+                                                style = "background-image:url('" + pic + '");background-repeat: no-repeat; background-position: center center; background-size: cover;";
                                                 node.setAttribute("style", style);
                                         }
-                                        else{
+                                        else if (pic){
                                                 json = {"dir":model.get("_id"), "filename":pic};
                                                 Config.get("transport").request("GetFile", json, function(data){
                                                         node.setAttribute("style", "background-image: url('"+data+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");   

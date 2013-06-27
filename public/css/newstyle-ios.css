@@ -2768,7 +2768,7 @@ textarea.solution {
     font-size: 12px;
 }
 
-#card_creation .cd-creditslbl, .cd-sourcelbl{
+#card_creation .cd-creditslbl, span.cd-sourcelbl{
     padding-left: 25px;
     font-size: 14px;
     background-size: 20px;

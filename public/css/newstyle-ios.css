@@ -6423,6 +6423,7 @@ li.my2q{
     background: #f2f2f2;
     border: 1px dashed #cccccc;
     border-radius: 5px;
+    width: 811px;
 }
 
 #aboutstack{
@@ -6502,7 +6503,7 @@ li.my2q{
 .settingmodule li{
     padding: 10px 20px;
     display: inline-table;
-    width: 100%;
+    width: 771px;;
 }
 
 .settingmodule li > span{

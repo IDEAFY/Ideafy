@@ -268,6 +268,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                editCard.cancel = function(event, node){
                         node.classList.remove("pressed");
                         $close();
+                        model.unsync();
                         model.reset({});       
                };
                

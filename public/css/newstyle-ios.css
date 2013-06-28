@@ -2751,7 +2751,7 @@ textarea.solution {
 }
 
 #card_creation .cardpopup .cardpicture{
-    -webkit-box-shadow: 0px 0px 2px 8px #657b99;
+    -webkit-box-shadow: 0px 0px 1px 2px black;
     margin: 10px;
     border-radius: 0px;
 }

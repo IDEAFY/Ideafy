@@ -21,9 +21,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                             },
                             updateDeck = function(cardType, cardId){
                                 var promise = new Promise(),
+                                    deckId = cardSetup.get("deckId"),
                                     deckCDB = new CouchDBDocument(),
                                     type = "characters"; // or contexts, problems, techno
-                                console.log("deck update function in newcard : ", cardType, cardId, cardSetup.get("deckId"));
+                                console.log("deck update function in newcard : ", cardType, cardId, deckId);
                                 switch(cardType){
                                         case 1:
                                                 type = "characters";
@@ -42,7 +43,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                                 break;
                                 }
                                 deckCDB.setTransport(Config.get("transport"));
-                                deckCDB.sync(Config.get("db"), cardSetup.get("deckId"))
+                                deckCDB.sync(Config.get("db"), deckId)
                                 .then(function(){
                                         var now=new Date(),
                                             content = deckCDB.get("content"),
@@ -51,12 +52,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                         arr.push(cardId);
                                         content[type] = arr;
                                         deckCDB.set("content", content);
-                                        deckCDB.set("last_modified", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        deckCDB.set("last_updated", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                         return deckCDB.upload(); 
                                 })
                                 .then(function(){
                                         // update list and deckview
-                                        $update();
+                                        deckCDB.unsync();
+                                        $update("updated", deckId);
                                         promise.fulfill();
                                 });
                                 return promise;        

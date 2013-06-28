@@ -140,10 +140,11 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         "editevent" : new Event(editCard)
                 });
                 
-                editCard.template = '<div class="cardpopup"><div class="card-detail"><div class="cd-header blue-dark" data-model="bind:formatTitle, type"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class ="cardpicture" data-model="bind:setPic, picture_file"></div><div class="picinfo"><span class="cd-creditslbl"data-label="bind:innerHTML, picturecredit"></span><input type="text" class="input editcredit" data-model="bind:value, picture_credit"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: touchstart, press; listen:touchend, picturePreview"></button><button class="takepic" data-editevent="listen: touchstart, press; listen:touchend, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><textarea class="input enterdyknow" data-label="bind: placeholder, enterdyknow" data-model="bind:value,didYouKnow"></textarea><span class="cd-sourcelbl" data-label="bind:innerHTML, source"></span><textarea class="input entersources" data-model="bind: value, sources"></textarea></div><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
+                editCard.template = '<div class="cardpopup"><div class="card-detail"><div class="cd-header blue-dark" data-model="bind:formatTitle, type"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class ="cardpicture" data-model="bind:setPic, picture_file"></div><div class="picinfo"><span class="cd-creditslbl"data-label="bind:innerHTML, credits"></span><input type="text" class="input editcredit" data-label="bind: placeholder, picturecredit" data-model="bind:value, picture_credit"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: touchstart, press; listen:touchend, picturePreview"></button><button class="takepic" data-editevent="listen: touchstart, press; listen:touchend, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><textarea class="input enterdyknow" data-label="bind: placeholder, enterdyknow" data-model="bind:value,didYouKnow"></textarea><span class="cd-sourcelbl" data-label="bind:innerHTML, source"></span><textarea class="input entersources" data-label="bind: placeholder, dyknowsources" data-model="bind: value, sources"></textarea></div><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
                
                editCard.reset = function reset(deckId, id, type){
                        var now = new Date();
+                       _currentDataURL = null;
                         model.setTransport(Config.get("transport"));
                         if (id === "newcard"){
                                 model.reset(cardTemplate);
@@ -202,16 +203,19 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
                             _img = new Image(),
                             _options = {quality:50, correctOrientation: true, sourceType: source},
-                            onSuccess, onFail;
+                            onSuccess, onFail,
+                            picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin(),
+                            el = editCard.dom.querySelector(".cardpicture");
                         
                         onSuccess = function(imageData){
                                 _img.src = imageData;
+                                node.setAttribute("style", "background-image: none");
+                                picSpinner.spin(el);
                                 setTimeout(function(){
                                         cropImage(resizeImage(_img), function(result){
-                                                var el = editCard.dom.querySelector(".cardpicture");
                                                 el.setAttribute("style", "background-image: url('"+result+"')");
+                                                picSpinner.stop();
                                                 _currentDataURL = result;
-                                                model.set("picture_file", model.get("_id"));
                                                 node.classList.remove("pressed");        
                                         });
                                 }, 750);
@@ -227,16 +231,19 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                editCard.cameraPreview = function(event, node){ 
                         var _img = new Image(),
                             _options = {quality:50, correctOrientation: true},
-                            onSuccess, onFail;;
+                            onSuccess, onFail,
+                            picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin(),
+                            el = editCard.dom.querySelector(".cardpicture");
                         
                         onSuccess = function(imageData){
-                               _img.src = imageData;
+                                _img.src = imageData;
+                                node.setAttribute("style", "background-image: none");
+                                picSpinner.spin(el);
                                 setTimeout(function(){
                                         cropImage(resizeImage(_img), function(result){
-                                                var el = editCard.dom.querySelector(".cardpicture");
                                                 el.setAttribute("style", "background-image: url('"+result+"')");
                                                 _currentDataURL = result;
-                                                model.set("picture_file", model.get("_id"));
+                                                picSpinner.stop();
                                                 node.classList.remove("pressed");        
                                         });
                                 }, 750);
@@ -277,6 +284,13 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                };
                
                editCard.uploadCard = function uploadCard(node){
+                       
+                       // if a new picture has been added upload it to the server
+                       if (_currentDataURL){
+                               uploadCardPicture();
+                       }
+                       
+                       // upload card to database
                         model.upload()
                         .then(function(){
                                 console.log("card upload successful :", model.get("_rev"));

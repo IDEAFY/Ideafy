@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "Store", "service/cardpopup"],
-        function(Widget, Config, Model, Event, CouchDBBulkDocuments, Store, CardPopup){
+define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "CouchDBDocument", "Store", "service/cardpopup"],
+        function(Widget, Config, Model, Event, CouchDBBulkDocuments, CouchDBDocument, Store, CardPopup){
                 
                 return function CardListConstructor($cardType, $editCard){
                         
@@ -139,6 +139,10 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 }
                         };
                         
+                        cardList.removeCard = function removeCard(cardId){
+                                console.log(currentDeck, cardId);        
+                        };
+                        
                         cardList.push = function(event, node){
                                 node.classList.add("invisible");        
                         };
@@ -215,12 +219,15 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.deleteCard = function deleteCard(event, node){
+                                var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
                                 // delete card from deck -- if the card does not belong to anymore deck - remove from database
                                 event.stopPropagation();
                                 // close popup
                                 popupUI.close();
                                 // hide buttons
-                                node.parentNode.classList.add("invisible");      
+                                node.parentNode.classList.add("invisible");
+                                // display confirmation popup
+                                cardList.removeCard(cards.get(id)._id);      
                         };
                         
                         // Method called to initialize a card popup

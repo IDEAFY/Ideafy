@@ -61,9 +61,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 var _url = '/upload',
                                     _fd = new FormData(),
                                     _type = "deckpic",
+                                    _dir = "decks/"+ _store.get("_id"),
                                     _dataURL = _currentDataURL;
                                 _fd.append("type", _type);
-                                _fd.append("dir", _store.get("_id"));
+                                _fd.append("dir", _dir);
                                 _fd.append("filename", "decklogo");
                                 _fd.append("dataString", _dataURL);
                                 Utils.uploadFile(_url, _fd, null, function(result){

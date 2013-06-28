@@ -24,6 +24,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                                             content = $store.get(id).content,
                                             style = $store.get(id).style,
                                             bg = $store.get(id).background,
+                                            dir
                                             json;
                                         switch(type){
                                                 case "postit":
@@ -36,7 +37,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                                                         node.classList.add("photo");
                                                         node.classList.remove("drawing");
                                                         this.innerHTML="";
-                                                        json = {"dir":_sid, "filename":content};
+                                                        dir = "sessions/"+_sid;
+                                                        json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
                                                         });
@@ -45,7 +47,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                                                         node.classList.remove("photo");
                                                         node.classList.add("drawing");
                                                         this.innerHTML="";
-                                                        json = {"dir":_sid, "filename":content};
+                                                        dir = "sessions/"+_sid;
+                                                        json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
                                                         });

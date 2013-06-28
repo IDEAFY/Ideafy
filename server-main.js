@@ -68,7 +68,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                             now,
                             dataurl,
                             dir;
-                        if (type === 'postit' || type === 'deckpic'){
+                        if (type === 'postit' || type === 'deckpic' || type === 'cardpic'){
                                 dir = req.body.dir;
                                 now = new Date();
                                 filename = _path+dir+'/'+req.body.filename;

@@ -2565,7 +2565,8 @@ textarea.solution {
 }
 
 #deckview .cardlist .editcardbtn{
-    background-image: url('../img/wall/lastModified14-01.png');  
+    background-image: url('../img/wall/lastModified14-01.png');
+    background-size: 20px; 
 }
 
 #deckview .cardlist .deletecardbtn{

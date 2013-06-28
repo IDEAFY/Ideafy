@@ -146,6 +146,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        var now = new Date();
                        _currentDataURL = null;
                         model.setTransport(Config.get("transport"));
+                        console.log("editcard reset function :", deckId, id, type);
                         if (id === "newcard"){
                                 model.reset(cardTemplate);
                                 model.set("_id", "C:"+now.getTime());
@@ -165,7 +166,10 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 }        
                         }
                         else{
-                                model.sync(Config.get("db"), id);        
+                                model.sync(Config.get("db"), id)
+                                .then(function(){
+                                        console.log("card synchronized :", model.toJSON());
+                                });        
                         } 
                };
                
@@ -209,7 +213,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         
                         onSuccess = function(imageData){
                                 _img.src = imageData;
-                                node.setAttribute("style", "background-image: none");
+                                el.setAttribute("style", "background-image: none");
                                 picSpinner.spin(el);
                                 setTimeout(function(){
                                         cropImage(resizeImage(_img), function(result){
@@ -237,7 +241,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         
                         onSuccess = function(imageData){
                                 _img.src = imageData;
-                                node.setAttribute("style", "background-image: none");
+                                el.setAttribute("style", "background-image: none");
                                 picSpinner.spin(el);
                                 setTimeout(function(){
                                         cropImage(resizeImage(_img), function(result){
@@ -263,11 +267,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                 
                editCard.cancel = function(event, node){
                         node.classList.remove("pressed");
-                        model.reset({});
-                        $close();        
+                        $close();
+                        model.reset({});       
                };
                
                editCard.upload = function(event, node){
+                       var now = new Date();
                        node.classList.remove("pressed");
                        spinner.spin(node);
                         if (!model.get("_rev")){
@@ -279,6 +284,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 });
                         }
                         else{
+                                model.set("last_modified", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                 editCard.uploadCard(node);
                         }  
                };

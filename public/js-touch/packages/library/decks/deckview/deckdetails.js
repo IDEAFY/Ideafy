@@ -105,8 +105,15 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                }
                                         },
                                         setPic : function(pic){
-                                                if (pic){
+                                                var json;
+                                                if (pic && pic.search("img/decks/") > -1){
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
+                                                }
+                                                else if (pic){
+                                                        json = {"dir":"cards", "filename":pic};
+                                                        Config.get("transport").request("GetFile", json, function(data){
+                                                                node.setAttribute("style", "background-image: url('"+data+"');");   
+                                                        });        
                                                 }
                                                 else {
                                                         this.setAttribute("style", "background-image: none;")
@@ -125,9 +132,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 else if (picture === "img/logo.png"){
                                                         this.setAttribute("style", "background-image:url('img/logo.png');")        
                                                 }
-                                                else {
-                                                        dir = "decks/"+ deckModel._id;
-                                                        json = {"dir":dir, "filename":picture};
+                                                else if (picture === "decklogo"){
+                                                        dir = "decks";
+                                                        json = {"dir":dir, "filename":deckModel.get("_id")};
                                                         Config.get("transport").request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background-image: url('"+data+"');");   
                                                         });

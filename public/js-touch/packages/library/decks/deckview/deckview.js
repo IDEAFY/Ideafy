@@ -57,7 +57,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                 newCardUI.close();        
                         };
                         
-                        deckView.reset = function reset(deck){
+                        deckView.reset = function reset(deck, screen){
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
                                         innerStack.getStack().get(value).reset(deck);        
                                 });
@@ -75,7 +75,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                                 cardMenu.alter("push", {name: type, active: false, count: deck.content[type].length});        
                                         }               
                                 });
-                                innerStack.getStack().show("details");        
+                                (screen) ? innerStack.getStack().show(screen) : innerStack.getStack().show("details");        
                         };
                         
                         deckView.init = function init(){

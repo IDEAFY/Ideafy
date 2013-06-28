@@ -26,7 +26,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   },
                   newdeck = false,
                   currentId,
-                  deckUpdate = function(update, deckId){
+                  deckUpdate = function(update, deckId, cardType){
                         var listUI = stack.getStack().getCurrentScreen();
                         currentId = deckId;
                         if (update === "new") {
@@ -36,7 +36,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         if (update === "updated"){
                                 listUI.reset(function(sync){
                                         if (sync){
-                                                listUI.highlightDeck(deckControl.init, deckId);        
+                                                listUI.highlightDeck(deckControl.init, deckId);
+                                                deckView.reset(listUI.getModel().get(currentSelected), cardType);        
                                         }
                                 });        
                         }             

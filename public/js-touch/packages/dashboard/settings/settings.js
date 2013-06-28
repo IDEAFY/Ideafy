@@ -111,9 +111,15 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                         .then(function(){
                                 options.set("decks", []);
                                 cdb.loop(function(v,i){
-                                        decks.push({"id":v._id, "title":v.title});        
+                                        decks.push({"id":v.doc._id, "title":v.doc.title});        
                                 });
                                 cdb.unsync();
+                                decks.sort(function(x,y){
+                                        var a = x.title, b = y.title;
+                                        if (a<b) return -1;
+                                        if (a>b) return 1;
+                                        if (a===b) return 0;
+                                });
                                 options.set("decks", decks);        
                         });
                    };

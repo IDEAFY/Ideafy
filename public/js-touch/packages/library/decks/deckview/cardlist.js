@@ -196,21 +196,28 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                 // add edit & delete button on card
                                                 cardList.dom.querySelector(".editcardbtn").classList.remove("invisible");
                                                 cardList.dom.querySelector(".editcardbtn").classList.remove("invisible");
-                                                $editCard(cards.get(id)._id, $cardType);
                                         }
                                 }       
                         };
                         
                         cardList.editCard = function editCard(event, node){
                                 var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
-                                $editCard(cards.get(id)._id, $cardType);
+                                // close popup
+                                cardList.closePopup();
                                 // hide buttons
                                 cardList.dom.querySelector(".editcardbtn").classList.add("invisible");
-                                cardList.dom.querySelector(".editcardbtn").classList.add("invisible");       
+                                cardList.dom.querySelector(".editcardbtn").classList.add("invisible");
+                                // display edit screen
+                                $editCard(cards.get(id)._id, $cardType);     
                         };
                         
                         cardList.deleteCard = function deleteCard(event, node){
-                                // delete card from deck -- if the card does not belong to anymore deck - remove from database        
+                                // delete card from deck -- if the card does not belong to anymore deck - remove from database
+                                // close popup
+                                cardList.closePopup();
+                                // hide buttons
+                                cardList.dom.querySelector(".editcardbtn").classList.add("invisible");
+                                cardList.dom.querySelector(".editcardbtn").classList.add("invisible");       
                         };
                         
                         // Method called to initialize a card popup

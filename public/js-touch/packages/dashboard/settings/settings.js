@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/config", "Store", "service/utils"],
-        function(Widget, Map, Model, Event, Config, Store, Utils){
+define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/config", "Store", "service/utils", "CouchDBBulkDocuments"],
+        function(Widget, Map, Model, Event, Config, Store, Utils, CouchDBBulkDocuments){
                 
            return function SettingsConstructor(){
                    
@@ -46,7 +46,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                         var i,l, res="", selected, idx;
                                         for (i=0, l=screens.length;i<l;i++){
                                                 res+="<option>"+screens[i].name+"</option>";
-                                                if (screens[i].dest === user.get("settings").startupScreen) idx = i
+                                                if (screens[i].dest === user.get("settings").startupScreen) idx = i;
                                         }
                                         this.innerHTML=res;
                                         this.selectedIndex = idx;         
@@ -55,7 +55,16 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                            var i, l, res="", selected, idx;
                                            for (i=0, l=timers.length; i<l; i++){
                                                    res+="<option>"+timers[i].name+"</option>";
-                                                   if (timers[i].value === user.get("settings").polling_interval) idx = i
+                                                   if (timers[i].value === user.get("settings").polling_interval) idx = i;
+                                           }
+                                           this.innerHTML=res;
+                                           this.selectedIndex = idx;
+                                   },
+                                   setDecks: function(decks){
+                                           var i, l, res="", selected, idx;
+                                           for (i=0, l=decks.length; i<l; i++){
+                                                   res+="<option>"+decks[i].title+"</option>";
+                                                   if(decks[i].id === user.get("active_deck")) idx = i;
                                            }
                                            this.innerHTML=res;
                                            this.selectedIndex = idx;
@@ -65,7 +74,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                            "settingsevent" : new Event(settingsUI)
                    });
                    
-                   settingsUI.template = '<div id="dashboard-settings"><div class="header blue-dark"><span data-label="bind:innerHTML, settingslbl"></span></div><div class="settingscontent"><div class="settingmodule"><legend data-label="bind:innerHTML, userpref"></legend><ul><li><span data-label="bind:innerHTML, setlang"></span><select data-options="bind:setLang, lang" data-settingsevent="listen: change, updateLang"></select></li><li class="startupscreen"><span data-label="bind: innerHTML, choosestartup"></span><select data-options="bind:setStartupScreen, screens" data-settingsevent="listen: change, updateStartup"></select></li><li class="startupscreen"><span data-label="bind: innerHTML, choosepolling"></span><select data-options="bind:setPollingInterval, timers" data-settingsevent="listen: change, updatePollingInterval"></select></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, showTips" data-settingsevent="listen: change, showTips"><label data-label="bind:innerHTML, showtips"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, notifyPopup" data-settingsevent="listen: change, showNotif"><label data-label="bind:innerHTML, shownotif"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, useascharacter" data-settingsevent="listen: change, useAsChar"><label data-label="bind:innerHTML, usechar"></label></li><li><span data-label="bind: innerHTML, changepwd"></span><input class="input" type="password" data-label="bind:placeholder, passwordplaceholder" data-options="bind: value, pwd" data-settingsevent="listen: input, clearOK"><input class="input" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-options="bind: value, pwdbis" data-settingsevent="listen: input, clearOK"><span class="changeok" data-options="bind: innerHTML, pwdchange"></span><div class="next-button" data-label="bind:innerHTML, changelbl" data-settingsevent="listen: touchstart, press; listen:touchend, changePWD"></div></li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, brainstormsettings">Brainstorming preferences</legend><ul><li><span data-label="bind:innerHTML, setdeck">Set brainstorming deck</span><select data-options="bind:setDeck, deck" data-settingsevent="listen: change, updateDeck"></select></li><li class="invisible">Set timers</li><li class="invisible">Automatic card draws</li></ul></div></div></div>';
+                   settingsUI.template = '<div id="dashboard-settings"><div class="header blue-dark"><span data-label="bind:innerHTML, settingslbl"></span></div><div class="settingscontent"><div class="settingmodule"><legend data-label="bind:innerHTML, userpref"></legend><ul><li><span data-label="bind:innerHTML, setlang"></span><select data-options="bind:setLang, lang" data-settingsevent="listen: change, updateLang"></select></li><li class="startupscreen"><span data-label="bind: innerHTML, choosestartup"></span><select data-options="bind:setStartupScreen, screens" data-settingsevent="listen: change, updateStartup"></select></li><li class="startupscreen"><span data-label="bind: innerHTML, choosepolling"></span><select data-options="bind:setPollingInterval, timers" data-settingsevent="listen: change, updatePollingInterval"></select></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, showTips" data-settingsevent="listen: change, showTips"><label data-label="bind:innerHTML, showtips"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, notifyPopup" data-settingsevent="listen: change, showNotif"><label data-label="bind:innerHTML, shownotif"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, useascharacter" data-settingsevent="listen: change, useAsChar"><label data-label="bind:innerHTML, usechar"></label></li><li><span data-label="bind: innerHTML, changepwd"></span><input class="input" type="password" data-label="bind:placeholder, passwordplaceholder" data-options="bind: value, pwd" data-settingsevent="listen: input, clearOK"><input class="input" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-options="bind: value, pwdbis" data-settingsevent="listen: input, clearOK"><span class="changeok" data-options="bind: innerHTML, pwdchange"></span><div class="next-button" data-label="bind:innerHTML, changelbl" data-settingsevent="listen: touchstart, press; listen:touchend, changePWD"></div></li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, brainstormsettings">Brainstorming preferences</legend><ul><li><span data-label="bind:innerHTML, setdeck">Set brainstorming deck</span><select data-options="bind:setDecks, decks" data-settingsevent="listen: change, updateDeck"></select></li></ul></div></div></div>';
                    
                    settingsUI.place(Map.get("dashboard-settings"));
                    
@@ -91,6 +100,22 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                         ]);      
                                 });
                         }        
+                   };
+                   
+                   settingsUI.getDecks = function getDecks(){
+                        var cdb = new CouchDBBulkDocuments(),
+                            idList = user.get("taiaut_decks").concat(user.get("custom_decks")),
+                            decks = [];
+                        cdb.setTransport(Config.get("transport"));
+                        cdb.sync(Config.get("db"), {keys : idList})
+                        .then(function(){
+                                options.set("decks", []);
+                                cdb.loop(function(v,i){
+                                        decks.push({"id":v._id, "title":v.title});        
+                                });
+                                cdb.unsync();
+                                options.set("decks", decks);        
+                        });
                    };
                    
                    settingsUI.updateDeck = function updateDeck(event, node){
@@ -170,8 +195,8 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                 settings.reset(user.get("settings"));
                         });
                         
-                        // get current deck
-                        options.set("deck", user.get("active_deck"));
+                        // get available decks
+                        settingsUI.getDecks();
                    
                         // get available languages
                         transport.request("GetLanguages", {}, function(result){

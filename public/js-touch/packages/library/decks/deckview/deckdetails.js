@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "CouchDBDocument", "CouchDBView", "lib/spin.min"],
-        function(Widget, Config, Model, Event, Store, Avatar, Utils, CouchDBDocument, CouchDBView, Spinner){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/utils", "CouchDBDocument", "CouchDBView", "lib/spin.min"],
+        function(Widget, Config, Model, Event, Store, Utils, CouchDBDocument, CouchDBView, Spinner){
                 
                 return function DeckDetailsConstructor($update){
                  
@@ -126,10 +126,11 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                         this.setAttribute("style", "background-image:url('img/logo.png');")        
                                                 }
                                                 else {
-                                                        frag = document.createDocumentFragment();
-                                                        ui = new Avatar([author]);
-                                                        ui.place(frag);
-                                                        (!node.hasChildNodes())?node.appendChild(frag):node.replaceChild(frag, node.firstChild);
+                                                        dir = "decks/"+ deckModel._id;
+                                                        json = {"dir":dir, "filename":picture};
+                                                        Config.get("transport").request("GetFile", json, function(data){
+                                                                node.setAttribute("style", "background-image: url('"+data+"');");   
+                                                        });
                                                 }
                                         },
                                         edit : function(uid){

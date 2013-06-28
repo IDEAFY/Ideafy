@@ -72,10 +72,11 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                      uploadCardPicture = function(){
                                 var _url = '/upload',
                                     _fd = new FormData(),
-                                    _type = "deckpic",
+                                    _type = "cardpic",
+                                    _dir = "cards"+model.get("_id"),
                                     _dataURL = _currentDataURL;
                                 _fd.append("type", _type);
-                                _fd.append("dir", model.get("deck")[0]);
+                                _fd.append("dir", _dir);
                                 _fd.append("filename", model.get("_id"));
                                 _fd.append("dataString", _dataURL);
                                 Utils.uploadFile(_url, _fd, null, function(result){

@@ -58,7 +58,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 .then(function(){
                                         // update list and deckview
                                         deckCDB.unsync();
-                                        $update("updated", deckId);
+                                        $update("updated", deckId, cardType);
                                         promise.fulfill();
                                 });
                                 return promise;        

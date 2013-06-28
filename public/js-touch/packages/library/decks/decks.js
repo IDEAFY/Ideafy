@@ -161,22 +161,19 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 
                                 cdb.sync(Config.get("db"), id)
                                 .then(function(){
-                                        var arr = user.get("custom_decks");
-                                        arr.splice(1, arr.indexOf(id));
-                                        user.set("custom_decks", arr);
-                                })
-                                .then(function(){
                                         return cdb.remove();
                                 })
                                 .then(function(){
                                         count++;
                                         if (count === l) {
                                                 console.log("all custom decks removed");
+                                                user.set("custom_decks", []);
                                         }
                                         return user.upload();
                                 })
                                 .then(function(){
                                         console.log("user uploaded");
+                                        cdb.unsync();
                                 });
                       });
                       

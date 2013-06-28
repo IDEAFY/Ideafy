@@ -6543,7 +6543,7 @@ li.my2q{
     text-align: center;
 }
 
-#dashboard-settings .startupscreen select{
+#dashboard-settings .startupscreen select, #dashboard-settings .activedeck select{
     width: 250px;
 }
 

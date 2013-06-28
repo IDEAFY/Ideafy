@@ -89,7 +89,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 "cardlistevent": new Event(cardList)
                         });
                         
-                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:touchstart, setStart; listen:touchmove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:touchstart, press; listen:touchend, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:touchstart, press; listen:touchend, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:touchstart, highlight; listen:touchend, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div><div class="editcardbtn invisible" data-cardlistevent="listen:touchstart, editCard">edit</div><div class="deletecardbtn invisible" data-cardlistevent="listen:touchstart, deleteCard">delete</div></li></ul></div></div>';
+                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:touchstart, setStart; listen:touchmove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:touchstart, press; listen:touchend, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:touchstart, push; listen:touchend, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:touchstart, highlight; listen:touchend, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div><div class="cardbtnbar invisible"><div class="editcardbtn" data-cardlistevent="listen: touchstart, press; listen:touchend, editCard"></div><div class="deletecardbtn " data-cardlistevent="listen: touchstart, press; listen:touchend, deleteCard"></div></div></li></ul></div></div>';
                         
                         cardList.reset = function reset(deck){
                                 //reset highlight
@@ -139,8 +139,12 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 }
                         };
                         
-                        cardList.press = function(event, node){
+                        cardList.push = function(event, node){
                                 node.classList.add("invisible");        
+                        };
+                        
+                        cardList.press = function(event, node){
+                                node.classList.add("pressed");        
                         };
                         
                         cardList.previousPage = function(event, node){
@@ -194,30 +198,29 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         cardList.setPopup(id);
                                         if (cards.get(id).created_by === user.get("_id")){
                                                 // add edit & delete button on card
-                                                cardList.dom.querySelector(".editcardbtn").classList.remove("invisible");
-                                                cardList.dom.querySelector(".editcardbtn").classList.remove("invisible");
+                                                node.querySelector(".cardbtnbar").classList.remove("invisible");
                                         }
                                 }       
                         };
                         
                         cardList.editCard = function editCard(event, node){
                                 var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
+                                event.stopPropagation();
                                 // close popup
-                                cardList.closePopup();
+                                popupUI.close();
                                 // hide buttons
-                                cardList.dom.querySelector(".editcardbtn").classList.add("invisible");
-                                cardList.dom.querySelector(".editcardbtn").classList.add("invisible");
+                                node.parentNode.classList.add("invisible");
                                 // display edit screen
                                 $editCard(cards.get(id)._id, $cardType);     
                         };
                         
                         cardList.deleteCard = function deleteCard(event, node){
                                 // delete card from deck -- if the card does not belong to anymore deck - remove from database
+                                event.stopPropagation();
                                 // close popup
-                                cardList.closePopup();
+                                popupUI.close();
                                 // hide buttons
-                                cardList.dom.querySelector(".editcardbtn").classList.add("invisible");
-                                cardList.dom.querySelector(".editcardbtn").classList.add("invisible");       
+                                node.parentNode.classList.add("invisible");      
                         };
                         
                         // Method called to initialize a card popup

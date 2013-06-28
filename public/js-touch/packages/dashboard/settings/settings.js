@@ -111,7 +111,11 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                         .then(function(){
                                 options.set("decks", []);
                                 cdb.loop(function(v,i){
-                                        decks.push({"id":v.doc._id, "title":v.doc.title});        
+                                        var c = v.doc.content;
+                                        // keep only valid decks (enough cards to run a basic session)
+                                        if (c.characters.length>=2 && c.contexts.length >=2 && c.problems.length >= 2 && c.techno.length >= 4){
+                                                decks.push({"id":v.doc._id, "title":v.doc.title});
+                                        }       
                                 });
                                 cdb.unsync();
                                 decks.sort(function(x,y){

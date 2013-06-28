@@ -55,8 +55,16 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                }
                                         },
                                         setPic : function(pic){
-                                                if (pic){
+                                                var dir, json, id = node.getAttribute("data-cards_id");
+                                                if (pic && pic.search("img/decks/") > -1){
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
+                                                }
+                                                else if (pic){
+                                                        dir = "cards/"+ cardPage.get(id)._id;
+                                                        json = {"dir":dir, "filename":pic};
+                                                        Config.get("transport").request("GetFile", json, function(data){
+                                                                node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
+                                                        });
                                                 }
                                                 else {
                                                         switch($cardType){

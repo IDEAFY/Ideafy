@@ -8,7 +8,7 @@
 define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "CouchDBDocument", "Store", "service/cardpopup", "Promise"],
         function(Widget, Config, Model, Event, CouchDBBulkDocuments, CouchDBDocument, Store, CardPopup, Promise){
                 
-                return function CardListConstructor($cardType, $editCard){
+                return function CardListConstructor($cardType, $editCard, $update){
                         
                 
                         var cardList = new Widget(),
@@ -159,8 +159,9 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 .then(function(){
                                         console.log("card successfully removed from deck");
                                         // refresh card list
-                                        currentHighlight = null;
-                                        cardList.getCardList(deckCDB.get("content")[$cardType]);
+                                        // currentHighlight = null;
+                                        // cardList.getCardList(deckCDB.get("content")[$cardType]);
+                                        $update("updated", currentDeck, $cardType);
                                         deckCDB.unsync();
                                         
                                         // now process card update

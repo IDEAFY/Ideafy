@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "CouchDBDocument", "Store", "service/cardpopup"],
-        function(Widget, Config, Model, Event, CouchDBBulkDocuments, CouchDBDocument, Store, CardPopup){
+define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "CouchDBDocument", "Store", "service/cardpopup", "Promise"],
+        function(Widget, Config, Model, Event, CouchDBBulkDocuments, CouchDBDocument, Store, CardPopup, Promise){
                 
                 return function CardListConstructor($cardType, $editCard){
                         
@@ -140,7 +140,68 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.removeCard = function removeCard(cardId){
-                                console.log(currentDeck, cardId);        
+                                console.log(currentDeck, cardId, $cardType);
+                                var deckCDB = new CouchDBDocument(),
+                                    cardCDB = new CouchDBDocument();
+                                // start by removing the card from the current deck
+                                deckCDB.setTransport(Config.get("transport"));
+                                cardCDB.setTransport(Config.get("transport"));
+                                deckCDB.sync(Config.get("db"), currentDeck)
+                                .then(function(){
+                                        var content = deckCDB.get("content"),
+                                            arr = content[$cardType];
+                                        
+                                        arr.splice(arr.indexOf(cardId), 1);
+                                        content[$cardType] = arr;
+                                        deckCDB.set("content", content);
+                                        return deckCDB.upload();
+                                })
+                                .then(function(){
+                                        console.log("card successfully removed from deck");
+                                        // refresh card list
+                                        currentHighlight = null;
+                                        cardList.getCardList(deckCDB.get("content")[$cardType]);
+                                        deckCDB.unsync();
+                                        
+                                        // now process card update
+                                        return cardCDB.sync(Config.get("db"), cardId);
+                                })
+                                .then(function(){
+                                        var decks = cardCDB.get("deck"),
+                                            promise = new Promise(),
+                                            json, file = cardCDB.get("picture_file");
+                                        
+                                        decks.splice(currentDeck, 1);
+                                        
+                                        // if there are other decks this card belongs to simply udated it and finish removal
+                                        if (decks.length){
+                                                cardCDB.set("deck", decks);
+                                                cardCDB.upload()
+                                                .then(function(){
+                                                        promise.fulfill();
+                                                })
+                                        }
+                                        else{
+                                                console.log("removing card from database and attachment from server if applicable");
+                                                if (file.search("img/decks") === -1){
+                                                        json = {type: "card", file: file}
+                                                        Config.get("transport").request("DeleteAttachment", json, function(result){
+                                                                if (result !== "ok"){
+                                                                        console.log(result);
+                                                                }
+                                                        });
+                                                }
+                                                cardCDB.remove()
+                                                .then(function(){
+                                                        promise.fulfill();
+                                                });
+                                        }
+                                        return promise;
+                                })
+                                .then(function(){
+                                        console.log("card removal operation completed");
+                                });
+                                        
                         };
                         
                         cardList.push = function(event, node){

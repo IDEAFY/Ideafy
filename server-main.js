@@ -1825,6 +1825,31 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });        
         });
         
+        // Delete attachment from drive
+        olives.handlers.set("DeleteAttachment", function(json, onEnd){
+                var _path = __dirname+'/attachments/';
+                
+                switch(json.type){
+                        case "card":
+                                _path += "cards/";
+                                break;
+                        default:
+                                break
+                }
+                _path += json.file;
+                fs.exists(_path, function(exists){
+                        if (exists){
+                                // need to delete all files first
+                                fs.unlink(_path, function(err){
+                                        i(err) ? onEnd(err) : onEnd("ok");
+                                }) 
+                        }
+                        else onEnd("file not found");
+                });
+                
+                        
+        });
+        
         // Receive support requests -- send mail to contact@taiaut.com
         olives.handlers.set("Support", function(json, onEnd){
                 var     date = new Date(json.date),

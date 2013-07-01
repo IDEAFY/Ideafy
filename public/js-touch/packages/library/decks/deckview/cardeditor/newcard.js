@@ -123,11 +123,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 _contentStack.getStack().add("editcard", editCard); 
                                 _contentStack.getStack().add("importcard", importCard);
                                 
-                                _contentStack.getStack().show("editchar");      
+                                //_contentStack.getStack().show("editchar");      
                         };
                         
                         // init
                         newCard.init();
+                        
+                        CSTACK = _contentStack;
                         
                         return newCard;     
                 }

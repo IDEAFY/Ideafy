@@ -131,7 +131,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         var now = new Date();
                         _currentDataURL = null;
                         model.setTransport(Config.get("transport"));
-                        if (id === "new"){
+                        if (id === "newcard"){
                                 model.reset(charTemplate);
                                 model.set("_id", "C:"+now.getTime());
                                 model.set("created_on", [now.getFullYear(), now.getMonth(), now.getDate()]);

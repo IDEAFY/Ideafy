@@ -34,7 +34,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 "deck": [],
                                 "created_by": user.get("_id"),
                                 "created_on": [],
-                                "picture_file": "img/decks/character.png"
+                                "picture_file": "img/decks/characters.png"
                         },
                         model = new CouchDBDocument(),
                         error = new Store({error: ""}),

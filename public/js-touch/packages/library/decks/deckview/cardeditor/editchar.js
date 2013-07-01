@@ -36,7 +36,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 "created_on": [],
                                 "picture_file": ""
                         },
-                        model = new CouchDBDocument(charTemplate),
+                        model = new CouchDBDocument(),
                         error = new Store({error: ""}),
                         _currentDataURL,
                         MIN_WIDTH = 87, MIN_HEIGHT = 87,
@@ -118,14 +118,86 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                                         node.setAttribute("style", "background-image: url('"+data+"');background-repeat: no-repeat; background-position: center center; background-size: cover;");   
                                                 });        
                                         }
+                                },
+                                formatName : function(firstname){
+                                        if (firstname) {
+                                                this.innerHTML = firstname.substring(0,1).toUpperCase()+firstname.substring(1).toLowerCase()+"  "+cardDetails.get("lastname").toUpperCase(); 
+                                        }       
+                                },
+                                setFamily : function(family){
+                                        var couple = family.couple,
+                                            children = family.children,
+                                            res1, res2;
+                                                
+                                        if (couple === 0) {res1 = labels.get("singlelbl");}
+                                        else if (couple === 1) {res1 = labels.get("marriedlbl");}
+                                        else if (couple === 2) {res1 = labels.get("divorcedlbl");}
+                                        else if (couple === 3) {res1 = labels.get("widowlbl");}
+                                                
+                                        if (children === 0) {res2 = "";}
+                                        else{
+                                                if (cardDetails.get("age") < 20){
+                                                        (children === 1) ? res2 = children + labels.get("onesiblinglbl") : res2 = children + labels.get("siblingslbl");
+                                                }
+                                                else {
+                                                        (children === 1) ? res2 = children + labels.get("onechildlbl") : res2 = children + labels.get("childrenlbl");
+                                                }
+                                        res2=", "+res2;
+                                        }
+                                        this.innerHTML = res1 + res2;
+                                },
+                                setLeisure : function(hobbies){
+                                        var res = "<ul>", i;
+                                        if (hobbies && hobbies.length){
+                                                for (i=0; i<hobbies.length; i++){
+                                                        if (hobbies[i].comment){
+                                                                res+="<li>"+hobbies[i].name+" ("+hobbies[i].comment+")</li>";
+                                                        }
+                                                        else {
+                                                                res+="<li>"+hobbies[i].name+"</li>";        
+                                                        }
+                                                }
+                                                this.innerHTML = res+"</ul>";
+                                        }
+                                        else{
+                                                this.innerHTML = "";
+                                        } 
+                                },
+                                setInterests : function(interests){
+                                        var res = "<ul>", i;
+                                        if (interests && interests.length){
+                                                for (i=0; i<interests.length; i++){
+                                                        if (interests[i].comment){
+                                                                res+="<li>"+interests[i].name+" ("+interests[i].comment+")</li>";
+                                                        }
+                                                        else {
+                                                                res+="<li>"+interests[i].name+"</li>";
+                                                        }
+                                                }
+                                                this.innerHTML = res+"</ul>";
+                                        }
+                                        else{
+                                                this.innerHTML = "";
+                                        } 
+                                },
+                                setComments : function(comments){
+                                        var res = "<ul>", i;
+                                        if (comments && comments.length){
+                                                for (i=0; i<comments.length; i++){
+                                                        res+="<li>"+comments[i]+"</li>";
+                                                }
+                                                this.innerHTML = res+"</ul>";        
+                                        }
+                                        else {
+                                                this.innerHTML = "";
+                                        }        
                                 }
-
                         }),
                         "error" : new Model(error),
                         "editevent" : new Event(editCard)
                 });
                 
-                editChar.template = '<div class="cardpopup"><div class="card-detail"><div class="cd-header blue-dark"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class="cardpicture" data-model="bind:setPic, picture_file"></div><div class="cardinfo"><p><span class="cd-agelbl"></span><span data-carddetails="bind:innerHTML, age">age</span><span class="agesuffix" data-label="bind:innerHTML, agelbl"></span><br/><span class="cd-locationlbl"></span><span class="cd-info" data-carddetails="bind: innerHTML, location"></span><br/><span class="cd-joblbl"></span><span class="cd-info" data-carddetails="bind: innerHTML, occupation.description"></span><br/><span class="cd-familylbl"></span><span class="cd-info" data-carddetails="bind: setFamily, family"></span><br/><span class="cd-creditslbl" data-label="bind:innerHTML, credits"></span><span class="cd-info" data-carddetails="bind:innerHTML, picture_credit"></span></div></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, hobbieslbl">Hobbies</span><p class = "charinfo" data-carddetails="bind:setLeisure, leisure_activities">hobbies</p><span class="contentTitle" data-label="bind: innerHTML, interestslbl">Centers of interest</span><p class = "charinfo" data-carddetails="bind: setInterests, interests">Centers of interest</p><span class="contentTitle" data-label="bind: innerHTML, commentslbl">Comments</span><p class = "charinfo" data-carddetails="bind:setComments, comments"></p></div><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
+                editChar.template = '<div class="cardpopup"><div class="card-detail"><div class="cd-header blue-dark"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class="cardpicture" data-model="bind:setPic, picture_file"></div><div class="cardinfo"><p><span class="cd-agelbl"></span><span data-model="bind:innerHTML, age">age</span><span class="agesuffix" data-label="bind:innerHTML, agelbl"></span><br/><span class="cd-locationlbl"></span><span class="cd-info" data-model="bind: innerHTML, location"></span><br/><span class="cd-joblbl"></span><span class="cd-info" data-model="bind: innerHTML, occupation.description"></span><br/><span class="cd-familylbl"></span><span class="cd-info" data-model="bind: setFamily, family"></span><br/><span class="cd-creditslbl" data-label="bind:innerHTML, credits"></span><span class="cd-info" data-model="bind:innerHTML, picture_credit"></span></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: touchstart, press; listen:touchend, picturePreview"></button><button class="takepic" data-editevent="listen: touchstart, press; listen:touchend, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, hobbieslbl">Hobbies</span><p class = "charinfo" data-model="bind:setLeisure, leisure_activities">hobbies</p><span class="contentTitle" data-label="bind: innerHTML, interestslbl">Centers of interest</span><p class = "charinfo" data-model="bind: setInterests, interests">Centers of interest</p><span class="contentTitle" data-label="bind: innerHTML, commentslbl">Comments</span><p class = "charinfo" data-model="bind:setComments, comments"></p></div><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
                
                editChar.reset = function reset(deckId, id){
                         var now = new Date();

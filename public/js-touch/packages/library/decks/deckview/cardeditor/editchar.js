@@ -34,7 +34,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 "deck": [],
                                 "created_by": user.get("_id"),
                                 "created_on": [],
-                                "picture_file": ""
+                                "picture_file": "img/decks/character.png"
                         },
                         model = new CouchDBDocument(),
                         error = new Store({error: ""}),
@@ -207,8 +207,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 model.reset(charTemplate);
                                 model.set("_id", "C:"+now.getTime());
                                 model.set("created_on", [now.getFullYear(), now.getMonth(), now.getDate()]);
-                                model.set("deck", [deckId]);
-                                model.set("picture_file", "img/decks/character.png");       
+                                model.set("deck", [deckId]);       
                         }
                         else{
                                 model.sync(Config.get("db"), id)

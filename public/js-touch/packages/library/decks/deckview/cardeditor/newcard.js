@@ -108,10 +108,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 if (_contentStack.getStack().getCurrentName() === "importcard"){
                                         importCard.changeType(idx);
                                 }
-                                else if (node.selectedIndex === 0){
+                                else if (idx === 0){
                                         _contentStack.getStack().show("editchar");
                                 }
                                 else {
+                                        _contentStack.getStack().show("editcard");
                                         editCard.changeType(idx);
                                 }
                         };

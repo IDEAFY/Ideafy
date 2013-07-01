@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.plugin", "Store"],
-        function(Widget, Config, CouchDBDocument, Model, Event, Store){
+define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.plugin", "Store", "service/utils"],
+        function(Widget, Config, CouchDBDocument, Model, Event, Store, Utils){
            
            return function EditCharConstructor($update, $close){
                 
@@ -141,6 +141,15 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         else{
                                 
                         } 
+               };
+               
+               editChar.clearDefault = function clearDefault(event, node){
+                        var field = node.getAttribute("name");
+                        if (model.get(field) === "") node.innerHTML = "";        
+               };
+               
+               editChar.updateTitle = function updateTitle(event, node){
+                        model.set("title", node.innerHTML);        
                };
                
                editChar.cancel = function(event, node){

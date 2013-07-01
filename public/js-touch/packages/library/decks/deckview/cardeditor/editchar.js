@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.plugin", "Store", "service/utils"],
-        function(Widget, Config, CouchDBDocument, Model, Event, Store, Utils){
+define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.plugin", "Store", "service/utils", "lib/spin.min"],
+        function(Widget, Config, CouchDBDocument, Model, Event, Store, Utils, Spinner){
            
            return function EditCharConstructor($update, $close){
                 

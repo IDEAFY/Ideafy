@@ -146,7 +146,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        var now = new Date();
                        _currentDataURL = null;
                         model.setTransport(Config.get("transport"));
-                        console.log("editcard reset function :", deckId, id, type);
                         if (id === "newcard"){
                                 model.reset(cardTemplate);
                                 model.set("_id", "C:"+now.getTime());

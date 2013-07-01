@@ -34,7 +34,7 @@ var http = require("http"),
     var changePassword = new pwd.ChangePassword(),
         checkVersion = new srvutils.CheckVersion(),
         getFile = new srvutils.GetFile(),
-        getLabels = new srvutils.GetLabels;
+        getLabels = new srvutils.GetLabels();
   
 
 
@@ -1569,11 +1569,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         // updating user document and score following certain actions
         olives.handlers.set("UpdateUIP", function(json, onEnd){
                 var cdb = new CouchDBDocument(),
-                    userRewards = new CouchDBDocument();
+                    userRewards = new CouchDBDocument(),
+                    scored = [];
                 
                 getDocAsAdmin(json.userid+"_rewards", userRewards)
                 .then(function(){
-                        var scored = userRewards.get("scored") || [];
+                        if (userRewards.get("scored")) scored = userRewards.get("scored");
                         return getDocAsAdmin(json.userid, cdb);
                 })
                 .then(function(){

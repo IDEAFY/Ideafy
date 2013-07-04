@@ -42,7 +42,6 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                 date : function date(date) {
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                 },
-                                
                                 setDesc : function(desc){
                                         this.innerHTML = desc.replace(/\n/g, "<br>");        
                                 },

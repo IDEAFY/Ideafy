@@ -229,6 +229,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   color: #404040;
 }
 
+.idea-list .item-body{
+    text-align: justify;
+}
+
 .item-body p {
   margin-top:10px;
   margin-bottom: 10px;

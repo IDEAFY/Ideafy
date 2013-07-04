@@ -2859,6 +2859,24 @@ textarea.solution {
     line-height: 20px;
 }
 
+#card_creation .editchar .cd-picarea{
+    float: left;
+    width: 255px;
+}
+
+#card_creation .editchar .cardinfo{
+    width: 263px;
+    margin-left: 0px;
+    margin-top: 20px;
+    border: 1px solid #657b99;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#card_creation .editchar .cd-contentarea{
+    margin-top: 150px;
+}
+
 /*BRAINSTORM*/
 
 #brainstorm{

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBView", "Place.plugin"], 
-        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBView, Place){
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin"], 
+        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place){
                 return function PublicDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
@@ -16,17 +16,14 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,
                              user = Config.get("user"),
-                             ideaCDB = new CouchDBView(), // used to get idea details and synchronize with idea
-                             ideaCDBUpdate, // store observer handle
                              transport = Config.get("transport"),
-                             observer = Config.get("observer"),
-                             _store = new Store(),
+                             _store = new CouchDBDocument(),
                              _dom = Map.get("public-detail"),
                              _domWrite,
                              _obs = new Observable();
 
                 //setup
-                        ideaCDB.setTransport(transport);
+                        _store.setTransport(transport);
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
                                 "publicdetail" : new Model(_store, {
@@ -83,10 +80,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 }
                                         },
                                         setDescription : function setDescription(desc){
-                                                this.innerHTML = desc.replace("\n", "<br>");        
+                                                this.innerHTML = desc.replace(/\n/g, "<br>");        
                                         },
                                         setSolution : function setSolution(sol){
-                                                this.innerHTML = sol.replace("\n", "<br>");        
+                                                this.innerHTML = sol.replace(/\n/g, "<br>");        
                                         },
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){
@@ -156,25 +153,11 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.getIdea = function getIdea(id){
-                                
-                                var promise = new Promise();
-                                // reset store observer if needed
-                                if (ideaCDBUpdate){
-                                        ideaCDB.unwatch(ideaCDBUpdate);
-                                }
-                                
                                 // reinitialize couchdbstore
-                                ideaCDB.unsync();
-                                ideaCDB.reset([]);
+                                _store.unsync();
+                                _store.reset();
                                 
-                                ideaCDB.sync(Config.get("db"), "ideas", "_view/all", {key:'"'+id+'"', include_docs:true}).then(function(){
-                                        _store.reset(ideaCDB.get(0).doc);
-                                        ideaCDBUpdate = ideaCDB.watch("updated", function(){
-                                                _store.reset(ideaCDB.get(0).doc);        
-                                        });
-                                        promise.fulfill();      
-                                });
-                                return promise;       
+                                return _store.sync(Config.get("db"), id);       
                         };
                         
                         _widget.action = function(event, node){

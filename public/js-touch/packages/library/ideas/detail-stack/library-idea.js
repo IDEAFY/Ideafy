@@ -84,11 +84,11 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 }
                                         },
                                         setDescription : function setDescription(desc){
-                                                this.innerHTML = desc.replace("\n", "<br>");        
+                                                this.innerHTML = desc.replace(/\n/g, "<br>");        
                                         },
                                         setSolution : function setSolution(sol){
                                                 console.log(sol);
-                                                this.innerHTML = sol.replace("\n", "<br>");        
+                                                this.innerHTML = sol.replace(/\n/g, "<br>");        
                                         },
                                         // display a vote button or the number of votes on an idea
                                         toggleVoteButton : function(votes){

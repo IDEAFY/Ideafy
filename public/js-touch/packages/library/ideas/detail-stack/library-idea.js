@@ -15,9 +15,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                              _labels = Config.get("labels"),
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,
-                             user = Config.get("user"),ideaCDBUpdate, // store observer handle
+                             user = Config.get("user"),
                              transport = Config.get("transport"),
-                             observer = Config.get("observer"),
                              _store = new CouchDBDocument(),
                              _shareList = new Store([]),
                              _dom = Map.get("ideas-detail"),
@@ -88,6 +87,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 this.innerHTML = desc.replace("\n", "<br>");        
                                         },
                                         setSolution : function setSolution(sol){
+                                                console.log(sol);
                                                 this.innerHTML = sol.replace("\n", "<br>");        
                                         },
                                         // display a vote button or the number of votes on an idea
@@ -153,6 +153,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
+                                        console.log(_store.get("solution"));
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                         _voted = false;
                                         _twocentWriteUI.reset(_store.get("_id"));

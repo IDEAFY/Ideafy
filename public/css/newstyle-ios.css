@@ -2884,6 +2884,10 @@ textarea.solution {
     font-size: 12px;
 }
 
+#card_creation .editchar .cardinfo .input::-webkit-input-placeholder{
+    font-size: 10px;
+}
+
 #card_creation .editchar .cardinfo tr{
     height: 30px;
 }

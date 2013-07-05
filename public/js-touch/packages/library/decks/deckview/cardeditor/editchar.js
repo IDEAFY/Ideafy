@@ -18,7 +18,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 "default_lang": user.get("lang"),
                                 "title": "",
                                 "gender": 0,
-                                "age": 0,
+                                "age": null,
                                 "firstname": "",
                                 "lastname": "",
                                 "location": "",
@@ -120,7 +120,10 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         }
                                 },
                                 setAge : function(age){
-                                        if (!age && age !== 0) this.innerHTML = "";
+                                        if (!age && age !== 0) {
+                                                this.innerHTML = "";
+                                                this.setAttribute("placeholder", "age");
+                                        }
                                 },
                                 setFamilyStatus : function(couple){
                                         if (couple || couple === 0){

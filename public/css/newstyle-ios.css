@@ -190,6 +190,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     word-wrap: break-word;
 }
 
+#library .mosaic .list-item{
+    width: 170px;
+}
+
 .list-item.selected {
   /* background-image:-webkit-linear-gradient(top, #88A5CC 0%, #657B99 80%);*/
   background-image:-webkit-linear-gradient(top, #f2f2f2 0%, #d4d4d4 80%); 

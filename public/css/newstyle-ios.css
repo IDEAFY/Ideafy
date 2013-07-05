@@ -2885,7 +2885,7 @@ textarea.solution {
 }
 
 #card_creation .editchar .cardinfo .input::-webkit-input-placeholder{
-    font-size: 10px;
+    font-size: 11px;
 }
 
 #card_creation .editchar .cardinfo tr{
@@ -2903,7 +2903,7 @@ textarea.solution {
 #card_creation .editchar .cardinfo select{
     width: 120px;
     height: 20px;
-    font-size: 10px;
+    font-size: 11px;
 }
 
 #card_creation .editchar .cardinfo select.children{

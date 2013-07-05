@@ -510,5 +510,6 @@
 	"cardtitle": "Choose a title",
 	"picturecredit": "Picture origin",
 	"enterdyknow": "Add explanations, facts and figures",
-	"dyknowsources": "Provide sources if applicable"
+	"dyknowsources": "Provide sources if applicable",
+	"age": "Age"
 }

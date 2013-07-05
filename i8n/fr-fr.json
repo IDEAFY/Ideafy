@@ -510,5 +510,6 @@
 	"cardtitle": "Choisissez un titre",
 	"picturecredit": "Origine de l'image",
 	"enterdyknow": "Ajoutez des explications ou des informations complémentaires",
-	"dyknowsources": "Indiquez vos sources s'il y a lieu"
+	"dyknowsources": "Indiquez vos sources s'il y a lieu",
+	"age": "Âge"
 }

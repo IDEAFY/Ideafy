@@ -190,7 +190,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     word-wrap: break-word;
 }
 
-#library .mosaic .list-item{
+#library .mosaic .list-item p{
     width: 170px;
 }
 

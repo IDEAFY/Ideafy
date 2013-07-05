@@ -2865,7 +2865,7 @@ textarea.solution {
 
 #card_creation .editchar .cd-picarea{
     float: left;
-    width: 255px;
+    width: 235px;
 }
 
 #card_creation .editchar .cardinfo{
@@ -2890,6 +2890,10 @@ textarea.solution {
 
 #card_creation .editchar .cardinfo td{
     width: 60px;
+}
+
+#card_creation .editchar .cardinfo select{
+    width: 80px;
 }
 
 

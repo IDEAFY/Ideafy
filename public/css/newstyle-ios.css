@@ -2881,6 +2881,20 @@ textarea.solution {
     width: 60px;
 }
 
+#card_creation .editchar .cardinfo tr{
+}
+
+#card_creation .editchar .cardinfo th{
+    width: 40px;
+}
+
+#card_creation .editchar .cardinfo td{
+    width: 60px;
+}
+
+
+
+
 #card_creation .editchar .cd-contentarea{
     margin-top: 150px;
 }

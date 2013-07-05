@@ -2869,7 +2869,7 @@ textarea.solution {
 }
 
 #card_creation .editchar .cardinfo{
-    width: 263px;
+    width: 295px;
     margin-left: 0px;
     margin-top: 20px;
     border: 1px solid #657b99;
@@ -2878,7 +2878,7 @@ textarea.solution {
 }
 
 #card_creation .editchar .cardinfo .input{
-    width: 90px;
+    width: 120px;
     height: 20px;
     line-height: 20px;
     font-size: 12px;
@@ -2901,7 +2901,7 @@ textarea.solution {
 }
 
 #card_creation .editchar .cardinfo select{
-    width: 100px;
+    width: 120px;
     height: 20px;
     font-size: 10px;
 }
@@ -2925,6 +2925,10 @@ textarea.solution {
     background-image: url('../img/decks/creationDate14.png');
 }
 
+#card_creation .editchar .cardinfo .age .input{
+    width: 50px;
+}
+
 #card_creation .editchar .cardinfo .loc th{
     background-image: url('../img/decks/livesIn14.png');
 }
@@ -2935,6 +2939,12 @@ textarea.solution {
 
 #card_creation .editchar .cardinfo .occupation th{
     background-image: url('../img/decks/status14.png');
+}
+
+#card_creation .editchar .cardinfo .occupation textarea{
+    height: 40px;
+    line-height: 20px;
+    padding: 5px 0px;
 }
 
 #card_creation .editchar .cd-contentarea{

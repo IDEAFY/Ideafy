@@ -2879,13 +2879,16 @@ textarea.solution {
 
 #card_creation .editchar .cardinfo .input{
     width: 60px;
+    height: 20px;
+    line-height: 20px;
 }
 
 #card_creation .editchar .cardinfo tr{
+    height: 30px;
 }
 
 #card_creation .editchar .cardinfo th{
-    width: 40px;
+    width: 30px;
 }
 
 #card_creation .editchar .cardinfo td{

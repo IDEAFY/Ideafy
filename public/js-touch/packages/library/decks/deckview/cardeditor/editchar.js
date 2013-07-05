@@ -119,85 +119,54 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                                 });        
                                         }
                                 },
-                                formatName : function(firstname){
-                                        if (firstname) {
-                                                this.innerHTML = firstname.substring(0,1).toUpperCase()+firstname.substring(1).toLowerCase()+"  "+cardDetails.get("lastname").toUpperCase(); 
-                                        }       
+                                setAge : function(age){
+                                        if (!age && age !== 0) this.innerHTML = "";
                                 },
-                                setFamily : function(family){
-                                        var couple = family.couple,
-                                            children = family.children,
-                                            res1, res2;
-                                                
-                                        if (couple === 0) {res1 = labels.get("singlelbl");}
-                                        else if (couple === 1) {res1 = labels.get("marriedlbl");}
-                                        else if (couple === 2) {res1 = labels.get("divorcedlbl");}
-                                        else if (couple === 3) {res1 = labels.get("widowlbl");}
-                                                
-                                        if (children === 0) {res2 = "";}
-                                        else{
-                                                if (cardDetails.get("age") < 20){
-                                                        (children === 1) ? res2 = children + labels.get("onesiblinglbl") : res2 = children + labels.get("siblingslbl");
-                                                }
-                                                else {
-                                                        (children === 1) ? res2 = children + labels.get("onechildlbl") : res2 = children + labels.get("childrenlbl");
-                                                }
-                                        res2=", "+res2;
+                                setFamilyStatus : function(couple){
+                                        if (couple || couple === 0){
+                                                this.selectedIndex = couple;
                                         }
-                                        this.innerHTML = res1 + res2;
                                 },
-                                setLeisure : function(hobbies){
-                                        var res = "<ul>", i;
-                                        if (hobbies && hobbies.length){
-                                                for (i=0; i<hobbies.length; i++){
-                                                        if (hobbies[i].comment){
-                                                                res+="<li>"+hobbies[i].name+" ("+hobbies[i].comment+")</li>";
-                                                        }
-                                                        else {
-                                                                res+="<li>"+hobbies[i].name+"</li>";        
-                                                        }
-                                                }
-                                                this.innerHTML = res+"</ul>";
+                                setChildren : function(children){
+                                        if (children || children === 0){
+                                                this.selectedIndex = children;
                                         }
-                                        else{
-                                                this.innerHTML = "";
-                                        } 
                                 },
-                                setInterests : function(interests){
-                                        var res = "<ul>", i;
-                                        if (interests && interests.length){
-                                                for (i=0; i<interests.length; i++){
-                                                        if (interests[i].comment){
-                                                                res+="<li>"+interests[i].name+" ("+interests[i].comment+")</li>";
-                                                        }
-                                                        else {
-                                                                res+="<li>"+interests[i].name+"</li>";
-                                                        }
-                                                }
-                                                this.innerHTML = res+"</ul>";
+                                setSituation : function(situation){
+                                        if (situation || situation === 0){
+                                                this.selectedIndex = situation;
                                         }
-                                        else{
-                                                this.innerHTML = "";
-                                        } 
                                 },
-                                setComments : function(comments){
-                                        var res = "<ul>", i;
-                                        if (comments && comments.length){
-                                                for (i=0; i<comments.length; i++){
-                                                        res+="<li>"+comments[i]+"</li>";
-                                                }
-                                                this.innerHTML = res+"</ul>";        
-                                        }
-                                        else {
-                                                this.innerHTML = "";
-                                        }        
+                                setLeisureName : function(leisure){
+                                        var node = this, name = node.getAttribute("name");
+                                        [0,1,2].forEach(function(i){
+                                                if (leisure[i] && name.search(i)>0) node.value = leisure[i].name;
+                                        });       
+                                },
+                                setLeisureDesc : function(leisure){
+                                        var node = this, name = node.getAttribute("name");
+                                        [0,1,2].forEach(function(i){
+                                                if (leisure[i] && name.search(i)>0) node.value = leisure[i].comment;
+                                        });        
+                                },
+                                setInterestName : function(interests){
+                                        var node = this, name = node.getAttribute("name");
+                                        [0,1,2].forEach(function(i){
+                                                if (interests[i] && name.search(i)>0) node.value = interests[i].name;
+                                        });       
+                                },
+                                setInterestDesc : function(interests){
+                                        var node = this, name = node.getAttribute("name");
+                                        [0,1,2].forEach(function(i){
+                                                if (interests[i] && name.search(i)>0) node.value = interests[i].comment;
+                                        });        
                                 }
                         }),
                         "error" : new Model(error),
                         "editevent" : new Event(editCard)
                 });
                 
-                editChar.template = '<div class="cardpopup editchar"><div class="card-detail"><div class="cd-header blue-dark"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class="cardpicture" data-model="bind:setPic, picture_file"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: touchstart, press; listen:touchend, picturePreview"></button><button class="takepic" data-editevent="listen: touchstart, press; listen:touchend, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><table class="cardinfo"><tr class="charname"><th></th><td><input class="input" name="firstname" type="text" data-label="bind: placeholder,firstnameplaceholder" data-profile="bind: value, firstname" data-editprofileevent="listen: input, updateField"></td><td><input class="input" type="text" name="lastname" data-label="bind: placeholder,firstnameplaceholder" data-profile="bind: value, lastname" data-editprofileevent="listen: input, updateField"></td></tr><tr class="age"><th></th><td><input class="input" type="number" name="age" maxlength=3 size=4 data-profile="bind: value, age" data-editprofileevent="listen: input, updateField"></td></tr><tr class="loc"><th></th><td><input class="input city" name="city" type="text" data-profile="bind:value, address.city" data-editprofileevent="listen:input, updateAddress"></td><td><input class="input" name="country" type="text" data-profile="bind:value, address.country" data-editprofileevent="listen:input, updateAddress"></td></tr><tr class="family"><th></th><td><select class="status" name="couple" data-profile="bind: setFamilyStatus, family.couple" data-editprofileevent="listen:change, updateFamily"><option data-label="bind:innerHTML, single"></option><option data-label="bind:innerHTML, married"></option><option data-label="bind:innerHTML, divorced"></option><option data-label="bind:innerHTML, widow"></option><option data-label="bind:innerHTML, relation"></option></select></td><td><select class="children" name="children" data-profile="bind: setChildren, family.children" data-editprofileevent="listen:change, updateFamily"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option></select><span>enfants</span></td></tr><tr class="occupation"><th></th><td><select class="status" name="situation" data-profile="bind: setSituation, occupation.situation" data-editprofileevent="listen:change, updateJob"><option data-label="bind:innerHTML, student"></option><option data-label="bind:innerHTML, active"></option><option data-label="bind:innerHTML, retired"></option><option data-label="bind:innerHTML, unemployed"></option><option data-label="bind:innerHTML, stayathome"></option></select></td><td><input class="input" type="text" name="job" data-profile="bind:value, occupation.job" data-label="bind:placeholder, jobtitle" data-editprofileevent="listen:input, updateJob"></td></tr></table><div class="cd-contentarea"><legend data-label="bind:innerHTML, hobbieslbl"></legend><label data-label="bind:innerHTML, name"></label><label class="description" data-label="bind:innerHTML, comment"></label><input name="leisure0" class="input" type="text" data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure0" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><input name="leisure1" class="input" type="text"  data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure1" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><input class="input" name="leisure2" type="text" data-profile="bind: setLeisureName, leisure_activities" data-editprofileevent="listen: input, updateLeisureName"><input class="input description" name="leisure2" type="text" data-profile="bind: setLeisureDesc, leisure_activities" data-editprofileevent="listen: input, updateLeisureDesc"><legend data-label="bind:innerHTML, interestslbl"></legend><label data-label="bind:innerHTML, field"></label><label class="description" data-label="bind:innerHTML, comment"></label><input class="input" name="interest0" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest0" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"><input class="input" name="interest1" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest1" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"><input class="input" name="interest2" type="text" data-profile="bind: setInterestName, interests" data-editprofileevent="listen: input, updateInterestName"><input class="input description" name="interest2" type="text" data-profile="bind: setInterestDesc, interests" data-editprofileevent="listen: input, updateInterestDesc"></div><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
+                editChar.template = '<div class="cardpopup editchar"><div class="card-detail"><div class="cd-header blue-dark"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class="cardpicture" data-model="bind:setPic, picture_file"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: touchstart, press; listen:touchend, picturePreview"></button><button class="takepic" data-editevent="listen: touchstart, press; listen:touchend, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><table class="cardinfo"><tr class="charname"><th></th><td><input class="input" name="firstname" type="text" data-label="bind: placeholder,firstnameplaceholder" data-model="bind: value, firstname" data-editevent="listen: input, updateField"></td><td><input class="input" type="text" name="lastname" data-label="bind: placeholder,lastnameplaceholder" data-model="bind: value, lastname" data-editevent="listen: input, updateField"></td></tr><tr class="age"><th></th><td><input class="input" type="number" name="age" maxlength=3 size=4 data-model="bind: setAge, age; bind: value, age" data-editevent="listen: input, updateField"></td></tr><tr class="loc"><th></th><td><input class="input city" name="city" type="text" data-model="bind:value, address.city" data-editevent="listen:input, updateAddress"></td><td><input class="input" name="country" type="text" data-model="bind:value, address.country" data-editevent="listen:input, updateAddress"></td></tr><tr class="family"><th></th><td><select class="status" name="couple" data-model="bind: setFamilyStatus, family.couple" data-editevent="listen:change, updateFamily"><option data-label="bind:innerHTML, single"></option><option data-label="bind:innerHTML, married"></option><option data-label="bind:innerHTML, divorced"></option><option data-label="bind:innerHTML, widow"></option><option data-label="bind:innerHTML, relation"></option></select></td><td><select class="children" name="children" data-model="bind: setChildren, family.children" data-editevent="listen:change, updateFamily"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option></select><span>enfants</span></td></tr><tr class="occupation"><th></th><td><select class="status" name="situation" data-model="bind: setSituation, occupation.situation" data-editevent="listen:change, updateJob"><option data-label="bind:innerHTML, student"></option><option data-label="bind:innerHTML, active"></option><option data-label="bind:innerHTML, retired"></option><option data-label="bind:innerHTML, unemployed"></option><option data-label="bind:innerHTML, stayathome"></option></select></td><td><textarea class="input" type="text" name="job" data-model="bind:value, occupation.job" data-label="bind:placeholder, jobtitle" data-editevent="listen:input, updateJob"></textarea></td></tr></table><div class="cd-contentarea"><legend data-label="bind:innerHTML, hobbieslbl"></legend><label data-label="bind:innerHTML, name"></label><label class="description" data-label="bind:innerHTML, comment"></label><input name="leisure0" class="input" type="text" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure0" type="text" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><input name="leisure1" class="input" type="text"  data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure1" type="text" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><input class="input" name="leisure2" type="text" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure2" type="text" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><legend data-label="bind:innerHTML, interestslbl"></legend><label data-label="bind:innerHTML, field"></label><label class="description" data-label="bind:innerHTML, comment"></label><input class="input" name="interest0" type="text" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest0" type="text" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><input class="input" name="interest1" type="text" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest1" type="text" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><input class="input" name="interest2" type="text" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest2" type="text" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"></div><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
                
                editChar.reset = function reset(deckId, id){
                         var now = new Date();

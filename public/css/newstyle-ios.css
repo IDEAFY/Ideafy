@@ -2881,6 +2881,7 @@ textarea.solution {
     width: 90px;
     height: 20px;
     line-height: 20px;
+    font-size: 12px;
 }
 
 #card_creation .editchar .cardinfo tr{
@@ -2913,6 +2914,22 @@ textarea.solution {
 
 #card_creation .editchar .cardinfo .charname th{
     background-image: url('../img/profileDisable.png');
+}
+
+#card_creation .editchar .cardinfo .age th{
+    background-image: url('../img/decks/creationDate14.png');
+}
+
+#card_creation .editchar .cardinfo .loc th{
+    background-image: url('../img/decks/livesIn14.png');
+}
+
+#card_creation .editchar .cardinfo .family th{
+    background-image: url('../img/decks/children14.png');
+}
+
+#card_creation .editchar .cardinfo .occupation th{
+    background-image: url('../img/decks/status14.png');
 }
 
 #card_creation .editchar .cd-contentarea{

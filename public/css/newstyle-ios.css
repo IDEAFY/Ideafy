@@ -2877,6 +2877,10 @@ textarea.solution {
     padding: 5px;
 }
 
+#card_creation .editchar .cardinfo .input{
+    width: 60px;
+}
+
 #card_creation .editchar .cd-contentarea{
     margin-top: 150px;
 }

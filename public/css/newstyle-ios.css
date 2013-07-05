@@ -2909,11 +2909,12 @@ textarea.solution {
 #card_creation .editchar .cardinfo th{
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: contain;
+    background-size: 14px;
 }
 
 #card_creation .editchar .cardinfo .charname th{
     background-image: url('../img/profileDisable.png');
+    background-size: cover;
 }
 
 #card_creation .editchar .cardinfo .age th{

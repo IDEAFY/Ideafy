@@ -127,15 +127,21 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 },
                                 setCity : function(loc){
                                         var city = "";
-                                        if (loc){
+                                        if (loc && loc.length){
                                                 city = loc.split(",")[0].trim();
                                                 this.innerHTML = city;
-                                        }        
+                                        }
+                                        else{
+                                                this.innerHTML = "";
+                                        }       
                                 },
                                 setCountry: function(loc){
                                         var country = "";
-                                        if (loc){
-                                                country = loc.split(',').splice(0,1),join();
+                                        if (loc && loc.length){
+                                                country = loc.split(',').slice(1,loc.length).join().trim();
+                                        }
+                                        else{
+                                                this.innerHTML = "";
                                         }        
                                 },
                                 setFamilyStatus : function(couple){
@@ -215,6 +221,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         $close();        
                };
                                 
+               
+               MODEL = model;
                return editChar;         
            };   
         });

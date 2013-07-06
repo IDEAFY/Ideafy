@@ -129,19 +129,22 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         var city = "";
                                         if (loc && loc.length){
                                                 city = loc.split(",")[0].trim();
-                                                this.innerHTML = city;
+                                                this.value = city;
+                                                console.log(city);
                                         }
                                         else{
-                                                this.innerHTML = "";
+                                                this.value = "";
                                         }       
                                 },
                                 setCountry: function(loc){
                                         var country = "";
                                         if (loc && loc.length){
                                                 country = loc.split(',').slice(1,loc.length).join().trim();
+                                                this.value = country;
+                                                console.log(country);
                                         }
                                         else{
-                                                this.innerHTML = "";
+                                                this.value = "";
                                         }        
                                 },
                                 setFamilyStatus : function(couple){

@@ -511,5 +511,7 @@
 	"picturecredit": "Picture origin",
 	"enterdyknow": "Add explanations, facts and figures",
 	"dyknowsources": "Provide sources if applicable",
-	"age": "Age"
+	"age": "Age",
+	"countrystate": "Country or state",
+	"desc": "Description"
 }

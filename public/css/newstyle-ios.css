@@ -2953,17 +2953,21 @@ textarea.solution {
 }
 
 #card_creation .editchar .cd-contentarea legend{
-    padding-bottom: 0px;
+    width: 100%;
+    font-family: Pacifico;
+    color: #657b99;
+    border-bottom: 1px solid #cccccc;
+    margin-top: 5px;
 }
 
 #card_creation .editchar .cd-contentarea .input{
-    width: 240px;
+    width: 350px;
     height: 18px;
     margin-top: 3px;
 }
 
 #card_creation .editchar .cd-contentarea .input.inputleft{
-    width: 160px;
+    width: 190px;
     margin-right: 10px;
 }
 
@@ -5409,8 +5413,7 @@ li.color-item{
     margin-left: 100px;
 }
 
-#addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend, #groupdetails legend, .aboutcontent legend,
-#card_creation .editchar .cd-contentarea legend{
+#addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend, #groupdetails legend, .aboutcontent legend{
     width:100%;
     padding-bottom: 5px;
     font-family: Pacifico;

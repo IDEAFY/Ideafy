@@ -2954,6 +2954,7 @@ textarea.solution {
 
 #card_creation .editchar .cd-contentarea .input{
     width: 120px;
+    height: 20px;
 }
 
 /*BRAINSTORM*/
@@ -5398,7 +5399,8 @@ li.color-item{
     margin-left: 100px;
 }
 
-#addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend, #groupdetails legend, .aboutcontent legend{
+#addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend, #groupdetails legend, .aboutcontent legend,
+#card_creation .editchar .cd-contentarea legend{
     width:100%;
     padding-bottom: 5px;
     font-family: Pacifico;

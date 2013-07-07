@@ -21,7 +21,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 "age": null,
                                 "firstname": "",
                                 "lastname": "",
-                                "location": "Strasbourg, FRANCE",
+                                "location": "",
                                 "occupation": {
                                         "description": "",
                                         "details": [1,"",""]
@@ -130,7 +130,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         if (loc && loc.length){
                                                 city = loc.split(",")[0].trim();
                                                 this.value = city;
-                                                console.log(city);
                                         }
                                         else{
                                                 this.value = "";
@@ -141,7 +140,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         if (loc && loc.length){
                                                 country = loc.split(',').slice(1,loc.length).join().trim();
                                                 this.value = country;
-                                                console.log(country);
                                         }
                                         else{
                                                 this.value = "";
@@ -158,7 +156,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         }
                                 },
                                 setChildrenlbl : function(children){
-                                        (children && children === 1) ? this.innerHTML = labels.get("onechildlbl") : this.innerHTML = labels.get("childrenlbl");        
+                                        (children && children === "1") ? this.innerHTML = labels.get("onechildlbl") : this.innerHTML = labels.get("childrenlbl");        
                                 },
                                 setSituation : function(details){
                                         if (details && details.length){

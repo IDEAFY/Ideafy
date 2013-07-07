@@ -87,7 +87,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 this.innerHTML = desc.replace(/\n/g, "<br>");        
                                         },
                                         setSolution : function setSolution(sol){
-                                                console.log(sol);
                                                 this.innerHTML = sol.replace(/\n/g, "<br>");        
                                         },
                                         // display a vote button or the number of votes on an idea
@@ -153,7 +152,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
-                                        console.log(_store.get("solution"));
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                         _voted = false;
                                         _twocentWriteUI.reset(_store.get("_id"));

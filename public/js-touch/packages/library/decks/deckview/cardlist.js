@@ -95,7 +95,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 //reset highlight
                                 currentHighlight = null;
                                 currentDeck = deck._id;
-                                console.log("current deck :", currentDeck);
                                 cardList.getCardList(deck.content[$cardType]); // just do a one time fetch of the cards (as opposed to remaining sync'd)       
                         };
                         
@@ -140,7 +139,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.removeCard = function removeCard(cardId){
-                                console.log(currentDeck, cardId, $cardType);
                                 var deckCDB = new CouchDBDocument(),
                                     cardCDB = new CouchDBDocument();
                                 // start by removing the card from the current deck
@@ -157,7 +155,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         return deckCDB.upload();
                                 })
                                 .then(function(){
-                                        console.log("card successfully removed from deck");
                                         // refresh card list
                                         // currentHighlight = null;
                                         // cardList.getCardList(deckCDB.get("content")[$cardType]);
@@ -183,7 +180,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                 })
                                         }
                                         else{
-                                                console.log("removing card from database and attachment from server if applicable");
                                                 if (file.search("img/decks") === -1){
                                                         json = {type: "card", file: file}
                                                         Config.get("transport").request("DeleteAttachment", json, function(result){
@@ -256,7 +252,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         
                         cardList.zoom = function(event, node){
                                 var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
-                                console.log(id, cards.get(id), cards.toJSON());
                                 if (cards.get(id)._id === "newcard"){
                                         $editCard("newcard", $cardType);
                                 }

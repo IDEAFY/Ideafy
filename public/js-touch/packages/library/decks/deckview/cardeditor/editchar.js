@@ -156,6 +156,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         }
                                 },
                                 setChildrenlbl : function(children){
+                                        console.log(labels.get("onechildlbl"), labels.get("childrenlbl"));
                                         (children && children === "1") ? this.innerHTML = labels.get("onechildlbl") : this.innerHTML = labels.get("childrenlbl");        
                                 },
                                 setSituation : function(details){

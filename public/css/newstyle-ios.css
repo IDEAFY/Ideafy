@@ -2952,9 +2952,14 @@ textarea.solution {
     margin-top: 150px;
 }
 
+#card_creation .editchar .cd-contentarea legend{
+    padding: 0px;
+}
+
 #card_creation .editchar .cd-contentarea .input{
     width: 120px;
     height: 20px;
+    margin-top: 5px;
 }
 
 /*BRAINSTORM*/

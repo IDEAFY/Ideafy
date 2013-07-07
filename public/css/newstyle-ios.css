@@ -2953,13 +2953,18 @@ textarea.solution {
 }
 
 #card_creation .editchar .cd-contentarea legend{
-    padding: 0px;
+    padding-bottom: 0px;
 }
 
 #card_creation .editchar .cd-contentarea .input{
-    width: 120px;
-    height: 20px;
-    margin-top: 5px;
+    width: 240px;
+    height: 18px;
+    margin-top: 3px;
+}
+
+#card_creation .editchar .cd-contentarea .input.inputleft{
+    width: 160px;
+    margin-right: 10px;
 }
 
 /*BRAINSTORM*/

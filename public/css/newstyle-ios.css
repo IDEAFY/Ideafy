@@ -2965,6 +2965,11 @@ textarea.solution {
     width: 350px;
     height: 18px;
     margin-top: 3px;
+    line-height: 18px;
+}
+
+#card_creation .editchar .cd-contentarea .input::-webkit-input-placeholder{
+    font-size: 12px;
 }
 
 #card_creation .editchar .cd-contentarea .input.inputleft{

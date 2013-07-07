@@ -232,7 +232,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // init
                         _widget.reset();
-                        console.log("newdeck reset");
                         
                         return _widget;
                 };

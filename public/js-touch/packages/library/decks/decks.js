@@ -151,35 +151,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         onEnd(ideafyDecks.getImportableDecks());        
               });
               
-              USER = user;
-              DECKSTACK = stack;
-              DELUSERDECKS = function(){
-                      var count = null, l = user.get("custom_decks").length;
-                      
-                      user.get("custom_decks").forEach(function(id){
-                                var cdb = new CouchDBDocument();
-                                cdb.setTransport(Config.get("transport"));
-                                
-                                cdb.sync(Config.get("db"), id)
-                                .then(function(){
-                                        return cdb.remove();
-                                })
-                                .then(function(){
-                                        count++;
-                                        if (count === l) {
-                                                console.log("all custom decks removed");
-                                                user.set("custom_decks", []);
-                                        }
-                                        return user.upload();
-                                })
-                                .then(function(){
-                                        console.log("user uploaded");
-                                        cdb.unsync();
-                                });
-                      });
-                      
-              };
-              
               // return
               return widget;
                    

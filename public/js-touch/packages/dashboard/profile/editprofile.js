@@ -244,7 +244,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                             
                         img.src = profile.get("avatar");
                         setTimeout(function(){
-                                console.log(img.height, img.width);
                                 canvas.width = img.width;
                                 canvas.height = img.height;
                                 ctx.translate(canvas.width/2, canvas.height/2);
@@ -319,7 +318,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                                         occupation.organization = node.value;
                                         break;        
                         }
-                        console.log(occupation, profile.get("occupation"));
                         updates.occupation = occupation;      
                 };
                 

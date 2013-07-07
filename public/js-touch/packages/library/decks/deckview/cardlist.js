@@ -363,8 +363,9 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         
                         // Method called when closing a popup -- passed as a parameter to the popup constructor
                         cardList.closePopup = function closePopup(){
-                                document.querySelector("li[data-cards_id='"+currentHighlight+"']").classList.remove("highlighted");
-                                currentHighlight = null;    
+                                wdiget.dom.querySelector("li[data-cards_id='"+currentHighlight+"']").classList.remove("highlighted");
+                                wdiget.dom.querySelector("li[data-cards_id='"+currentHighlight+"']").querySelector(".cardbtnbar").classList.add("invisible");
+                                currentHighlight = null;   
                         };
                         
                         // init popup UI

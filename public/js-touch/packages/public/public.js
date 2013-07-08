@@ -20,6 +20,7 @@ define(["OObject", "Amy/Control-plugin" ,
 				_db = Config.get("db"),
 				_radio = new Control(_widget),
 				// _detail= new Detail(),
+				_detail = new Widget(),
                                 _menu = new Menu(),
 				_stack = new Stack();
 

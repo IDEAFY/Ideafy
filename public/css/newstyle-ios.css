@@ -2943,9 +2943,10 @@ textarea.solution {
 
 #card_creation .editchar .cardinfo .occupation textarea{
     height: 40px;
-    width: 110px;
-    line-height: 20px;
+    width: 120px;
+    line-height: 15px;
     padding: 5px;
+    font-size: 11px;
 }
 
 #card_creation .editchar .cd-contentarea{

@@ -282,23 +282,27 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                 };
                
                editChar.updateField = function(event, node){
+                       console.log('updatefield called');
                         var prop = node.getAttribute("name");
                         updates[prop] = node.value;
                 };
                 
                 editChar.updateLocation = function(event, node){
+                        console.log('updatelocation called');
                         var location = model.get("location"), city, country;
                         location[name] = node.value || "";
                         updates.location = location;        
                 };
                 
                 editChar.updateFamily = function(event, node){
+                        console.log('updatefamily called');
                         var name = node.getAttribute("name"), family = model.get("family");
                         family[name] = node.selectedIndex;
                         updates.family = family;
                 };
                 
                 editChar.updateJob = function(event, node){
+                        console.log('updatejob called');
                         var occupation = model.get("occupation"), name = node.getAttribute("name"), value;
                         switch(name){
                                 case "situation":
@@ -317,12 +321,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                 };
                 
                 editChar.updateLeisureName = function(event, node){
+                        console.log('updateleisurename called');
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = model.get("leisure_activities");
                         leisure[idx].name = node.value;
                         updates.leisure_activities = leisure;
                 };
                 
                 editChar.updateLeisureDesc = function(event, node){
+                        console.log('updateleisuredesc called');
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = model.get("leisure_activities");
                         leisure[idx].comment = node.value;
                         updates.leisure_activities = leisure;               

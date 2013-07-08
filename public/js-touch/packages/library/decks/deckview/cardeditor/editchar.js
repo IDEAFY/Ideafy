@@ -282,8 +282,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                 };
                
                editChar.updateField = function(event, node){
-                        var prop = node.getAttribute("name");
+                        var prop = node.getAttribute("name"), fn, ln;
                         charUpdates[prop] = node.value;
+                        // if firstname and/or last name are updated and title is still empty(default) set title to firstname+lastname
+                        if ((prop === "firstname" || prop === "lastname") && !model.get("title")){
+                                fn = model.get("firstname");
+                                ln = model.get("lastname")
+                                (fn && ln) ? model.set("title", fn+" "+ln) : model.set(title, fn+ln);
+                        }
                 };
                 
                 editChar.updateLocation = function(event, node){

@@ -83,7 +83,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 			
 			// init
 			_dom = _widget.dom;
-			console.log(_dom);
+			console.log("dom : "+_dom);
 			
 			_stack.getStack().add("#public-ideadetail", new IdeaDetail(_widget.action));
                         _stack.getStack().add("#public-edit", new Edit(_widget.action));
@@ -106,6 +106,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                                      _widget.share(idea);        
                         });
 			
+			WID = _widget;
 			
 		//return
 			return _widget;

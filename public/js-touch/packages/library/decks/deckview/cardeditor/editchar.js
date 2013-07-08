@@ -29,7 +29,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 "family": {"couple": 0, "children": 0},
                                 "leisure_activities": [{"name": "", "comment": ""}, {"name": "", "comment": ""}, {"name": "", "comment": ""}],
                                 "interests": [{"name": "", "comment": ""}, {"name": "", "comment": ""}, {"name": "", "comment": ""}],
-                                "comments": null,
+                                "comments": [],
                                 "type": 1,
                                 "deck": [],
                                 "created_by": user.get("_id"),
@@ -37,6 +37,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 "picture_file": "img/decks/characters.png"
                         },
                         model = new CouchDBDocument(),
+                        updates = {},
                         error = new Store({error: ""}),
                         _currentDataURL,
                         MIN_WIDTH = 87, MIN_HEIGHT = 87,
@@ -192,11 +193,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         "editevent" : new Event(editCard)
                 });
                 
-                editChar.template = '<div class="cardpopup editchar"><div class="card-detail"><div class="cd-header blue-dark"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class="cardpicture" data-model="bind:setPic, picture_file"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: touchstart, press; listen:touchend, picturePreview"></button><button class="takepic" data-editevent="listen: touchstart, press; listen:touchend, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><table class="cardinfo"><tr class="charname"><th></th><td><input class="input" name="firstname" type="text" data-label="bind: placeholder,firstnameplaceholder" data-model="bind: value, firstname" data-editevent="listen: input, updateField"></td><td><input class="input" type="text" name="lastname" data-label="bind: placeholder,lastnameplaceholder" data-model="bind: value, lastname" data-editevent="listen: input, updateField"></td></tr><tr class="age"><th></th><td><input class="input" type="number" name="age" maxlength=3 size=4 data-model="bind: setAge, age; bind: value, age" data-editevent="listen: input, updateField"></td></tr><tr class="loc"><th></th><td><input class="input city" name="city" type="text" data-label="bind:placeholder, city" data-model="bind:setCity, location" data-editevent="listen:input, updateLocation"></td><td><input class="input" name="country" type="text" data-label="bind:placeholder, countrystate" data-model="bind:setCountry, location" data-editevent="listen:input, updateLocation"></td></tr><tr class="family"><th></th><td><select class="status" name="couple" data-model="bind: setFamilyStatus, family.couple" data-editevent="listen:change, updateFamily"><option data-label="bind:innerHTML, single"></option><option data-label="bind:innerHTML, married"></option><option data-label="bind:innerHTML, divorced"></option><option data-label="bind:innerHTML, widow"></option><option data-label="bind:innerHTML, relation"></option></select></td><td><select class="children" name="children" data-model="bind: setChildren, family.children" data-editevent="listen:change, updateFamily"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option></select><span data-model="bind:setChildrenlbl, family.children"></span></td></tr><tr class="occupation"><th></th><td><select class="status" name="situation" data-model="bind: setSituation, occupation.details" data-editevent="listen:change, updateJob"><option data-label="bind:innerHTML, student"></option><option data-label="bind:innerHTML, active"></option><option data-label="bind:innerHTML, retired"></option><option data-label="bind:innerHTML, unemployed"></option><option data-label="bind:innerHTML, stayathome"></option></select></td><td><textarea class="input" type="text" name="job" data-label="bind: placeholder, desc" data-model="bind:value, occupation.description" data-label="bind:placeholder, jobtitle" data-editevent="listen:input, updateJob"></textarea></td></tr></table><div class="cd-contentarea"><legend data-label="bind:innerHTML, hobbieslbl"></legend><input name="leisure0" class="input inputleft" type="text" data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure0" type="text" data-label="bind:placeholder, desc" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><input name="leisure1" class="input inputleft" type="text"  data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure1" type="text" data-label="bind:placeholder, desc" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><input class="input inputleft" name="leisure2" type="text" data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure2" type="text" data-label="bind:placeholder, desc" data-label="bind:placeholder, name" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><legend data-label="bind:innerHTML, interestslbl"></legend><input class="input inputleft" name="interest0" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest0" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><input class="input inputleft" name="interest1" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest1" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><input class="input inputleft" name="interest2" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest2" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><legend data-label="bind:innerHTML, commentslbl"></legend><input class="input" name="comment0" type="text" data-model="bind: setComment, comments" data-editevent="listen: input, updateComments"><input class="input" name="comment1" type="text" data-model="bind: setComment, comments" data-editevent="listen: input, updateComments"></div><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
+                editChar.template = '<div class="cardpopup editchar"><div class="card-detail"><div class="cd-header blue-dark"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class="cardpicture" data-model="bind:setPic, picture_file"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: touchstart, press; listen:touchend, picturePreview"></button><button class="takepic" data-editevent="listen: touchstart, press; listen:touchend, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><table class="cardinfo"><tr class="charname"><th></th><td><input class="input" name="firstname" type="text" data-label="bind: placeholder,firstnameplaceholder" data-model="bind: value, firstname" data-editevent="listen: input, updateField"></td><td><input class="input" type="text" name="lastname" data-label="bind: placeholder,lastnameplaceholder" data-model="bind: value, lastname" data-editevent="listen: input, updateField"></td></tr><tr class="age"><th></th><td><input class="input" type="number" name="age" maxlength=3 size=4 data-model="bind: setAge, age; bind: value, age" data-editevent="listen: input, updateField"></td></tr><tr class="loc"><th></th><td><input class="input city" name="city" type="text" data-label="bind:placeholder, city" data-model="bind:setCity, location" data-editevent="listen:input, updateLocation"></td><td><input class="input" name="country" type="text" data-label="bind:placeholder, countrystate" data-model="bind:setCountry, location" data-editevent="listen:input, updateLocation"></td></tr><tr class="family"><th></th><td><select class="status" name="couple" data-model="bind: setFamilyStatus, family.couple" data-editevent="listen:change, updateFamily"><option data-label="bind:innerHTML, single"></option><option data-label="bind:innerHTML, married"></option><option data-label="bind:innerHTML, divorced"></option><option data-label="bind:innerHTML, widow"></option><option data-label="bind:innerHTML, relation"></option></select></td><td><select class="children" name="children" data-model="bind: setChildren, family.children" data-editevent="listen:change, updateFamily"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option></select><span data-model="bind:setChildrenlbl, family.children"></span></td></tr><tr class="occupation"><th></th><td><select class="status" name="situation" data-model="bind: setSituation, occupation.details" data-editevent="listen:change, updateJob"><option data-label="bind:innerHTML, student"></option><option data-label="bind:innerHTML, active"></option><option data-label="bind:innerHTML, retired"></option><option data-label="bind:innerHTML, unemployed"></option><option data-label="bind:innerHTML, stayathome"></option></select></td><td><textarea class="input" type="text" name="jobdesc" data-label="bind: placeholder, desc" data-model="bind:value, occupation.description" data-label="bind:placeholder, jobtitle" data-editevent="listen:input, updateJob"></textarea></td></tr></table><div class="cd-contentarea"><legend data-label="bind:innerHTML, hobbieslbl"></legend><input name="leisure0" class="input inputleft" type="text" data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure0" type="text" data-label="bind:placeholder, desc" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><input name="leisure1" class="input inputleft" type="text"  data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure1" type="text" data-label="bind:placeholder, desc" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><input class="input inputleft" name="leisure2" type="text" data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure2" type="text" data-label="bind:placeholder, desc" data-label="bind:placeholder, name" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><legend data-label="bind:innerHTML, interestslbl"></legend><input class="input inputleft" name="interest0" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest0" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><input class="input inputleft" name="interest1" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest1" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><input class="input inputleft" name="interest2" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest2" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><legend data-label="bind:innerHTML, commentslbl"></legend><input class="input" name="comment0" type="text" data-model="bind: setComment, comments" data-editevent="listen: input, updateComments"><input class="input" name="comment1" type="text" data-model="bind: setComment, comments" data-editevent="listen: input, updateComments"></div><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
                
                editChar.reset = function reset(deckId, id){
                         var now = new Date();
                         _currentDataURL = null;
+                        updates = {};
                         model.setTransport(Config.get("transport"));
                         if (id === "newcard"){
                                 model.reset(charTemplate);
@@ -221,12 +223,169 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         model.set("title", node.innerHTML);        
                };
                
+               editCard.picturePreview = function(event, node){
+                        var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
+                            _img = new Image(),
+                            _options = {quality:50, correctOrientation: true, sourceType: source},
+                            onSuccess, onFail,
+                            picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin(),
+                            el = editChar.dom.querySelector(".cardpicture");
+                        
+                        onSuccess = function(imageData){
+                                _img.src = imageData;
+                                el.setAttribute("style", "background-image: none");
+                                picSpinner.spin(el);
+                                setTimeout(function(){
+                                        cropImage(resizeImage(_img), function(result){
+                                                el.setAttribute("style", "background-image: url('"+result+"')");
+                                                picSpinner.stop();
+                                                _currentDataURL = result;
+                                                node.classList.remove("pressed");        
+                                        });
+                                }, 750);
+                        };
+                        
+                        onFail = function(message){
+                                alert("error: "+message);
+                        };
+                        
+                        navigator.camera.getPicture(onSuccess, onFail, _options);
+               };
+               
+               editCard.cameraPreview = function(event, node){ 
+                        var _img = new Image(),
+                            _options = {quality:50, correctOrientation: true},
+                            onSuccess, onFail,
+                            picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin(),
+                            el = editChar.dom.querySelector(".cardpicture");
+                        
+                        onSuccess = function(imageData){
+                                _img.src = imageData;
+                                el.setAttribute("style", "background-image: none");
+                                picSpinner.spin(el);
+                                setTimeout(function(){
+                                        cropImage(resizeImage(_img), function(result){
+                                                el.setAttribute("style", "background-image: url('"+result+"')");
+                                                _currentDataURL = result;
+                                                picSpinner.stop();
+                                                node.classList.remove("pressed");        
+                                        });
+                                }, 750);
+                        }
+                        
+                        onFail = function(message){
+                                alert("error: "+message);
+                                node.classList.remove("pressed");
+                        }
+                        
+                        navigator.camera.getPicture(onSuccess, onFail, _options);       
+                };
+               
+               editChar.updateField = function(event, node){
+                        var prop = node.getAttribute("name");
+                        updates[prop] = node.value;
+                };
+                
+                editChar.updateLocation = function(event, node){
+                        var location = model.get("location"), city, country;
+                        location[name] = node.value || "";
+                        updates.location = location;        
+                };
+                
+                editChar.updateFamily = function(event, node){
+                        var name = node.getAttribute("name"), family = model.get("family");
+                        family[name] = node.selectedIndex;
+                        updates.family = family;
+                };
+                
+                editChar.updateJob = function(event, node){
+                        var occupation = model.get("occupation"), name = node.getAttribute("name"), value;
+                        switch(name){
+                                case "situation":
+                                        occupation.details[0] = node.selectedIndex;
+                                        break;
+                                case "job":
+                                        occupation.details[1] = node.value;
+                                        break;
+                                case "organization":
+                                        occupation.details[2] = node.value;
+                                        break;
+                                default:
+                                        occupation.description = node.value;        
+                        }
+                        updates.occupation = occupation;      
+                };
+                
+                editChar.updateLeisureName = function(event, node){
+                        var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = model.get("leisure_activities");
+                        leisure[idx].name = node.value;
+                        updates.leisure_activities = leisure;
+                };
+                
+                editChar.updateLeisureDesc = function(event, node){
+                        var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = model.get("leisure_activities");
+                        leisure[idx].comment = node.value;
+                        updates.leisure_activities = leisure;               
+                };
+                
+                editChar.updateInterestName = function(event, node){
+                        var name = node.getAttribute("name"), idx = name.charAt(name.length-1), interests = model.get("interests");
+                        interests[idx].name = node.value;
+                        updates.interests = interests;               
+                };
+                
+                editChar.updateInterestDesc = function(event, node){
+                        var name = node.getAttribute("name"), idx = name.charAt(name.length-1), interests = model.get("interests");
+                        interests[idx].comment = node.value;
+                        updates.interests = interests;               
+                };
+               
                editChar.cancel = function(event, node){
                         $close();        
+               };
+               
+               editChar.upload = function(event, node){
+                       var now = new Date();
+                       node.classList.remove("pressed");
+                       spinner.spin(node);
+                        if (!model.get("_rev")){
+                                // editChar.checkValidity();
+                                model.sync(Config.get("db"), model.get("_id"))
+                                .then(function(){
+                                        console.log("new card created : ", model.toJSON());
+                                        editChar.uploadCard();        
+                                });
+                        }
+                        else{
+                                model.set("last_modified", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                editChar.uploadCard(node);
+                        }  
+               };
+               
+               editChar.uploadCard = function uploadCard(node){
+                       
+                       // if a new picture has been added upload it to the server
+                       if (_currentDataURL){
+                               uploadCardPicture();
+                       }
+                       
+                       // upload card to database
+                        model.upload()
+                        .then(function(){
+                                console.log("card upload successful :", model.get("_rev"));
+                                return $update(model.get("type"), model.get("_id"));
+                        })
+                        .then(function(){
+                                spinner.stop();
+                                $close();
+                                model.unsync();
+                                model.reset({});
+                        });
                };
                                 
                
                MODEL = model;
+               UPD = updates;
                return editChar;         
            };   
         });

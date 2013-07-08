@@ -69,7 +69,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 onEnd(canvas.toDataURL("image/png"));
                         }, 300);
                      },
-                     uploadCardPicture = function(){
+                    uploadCardPicture = function(){
                                 var _url = '/upload',
                                     _fd = new FormData(),
                                     _type = "cardpic",
@@ -83,7 +83,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         console.log(result);
                                 });
                       },
-                      spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -7, left: 28}).spin();
+                    spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -7, left: 28}).spin();
                 
                 editCard.plugins.addAll({
                         "label" : new Model(labels),

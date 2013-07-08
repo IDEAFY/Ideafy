@@ -1749,7 +1749,7 @@ textarea.solution {
     margin-top: 20px;
 }
 
-.send .editerror, .edituserdetails .update .editerror, #groupdetails .editerror, #addgroup .editerror{
+.send .editerror, .edituserdetails .update .editerror, #groupdetails .editerror, #addgroup .editerror, #card_creation .editerror{
     float: left;
     font-weight: bold;
     color: black;

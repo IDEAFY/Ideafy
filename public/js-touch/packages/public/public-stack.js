@@ -106,6 +106,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                                      _widget.share(idea);        
                         });
 			
+			WID = _widget;
 			
 		//return
 			return _widget;

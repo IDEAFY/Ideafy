@@ -145,6 +145,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                editCard.reset = function reset(deckId, id, type){
                        var now = new Date();
                        _currentDataURL = null;
+                       error.set("error", "");
                         model.setTransport(Config.get("transport"));
                         if (id === "newcard"){
                                 model.reset(cardTemplate);
@@ -274,6 +275,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                editCard.upload = function(event, node){
                        var now = new Date();
                        node.classList.remove("pressed");
+                       error.set("error", "");
                        spinner.spin(node);
                        
                        if (!model.get("title")) {

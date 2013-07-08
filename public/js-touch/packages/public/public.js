@@ -176,7 +176,6 @@ define(["OObject", "Amy/Control-plugin" ,
 		        });
 		        
 		        
-		        PUB = _widget;
                         //return
 			return _widget;
 		};

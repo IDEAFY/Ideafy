@@ -66,7 +66,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                          }
                  },
                  validateContactRequest = function(contact){
-                         var res = false, sent = user.get("sentMessages"), cx = user.get("connections"), sentCXR = false, existing = false, i, j, k,l;
+                         var res = false, sent = user.get("sentMessages") || [], cx = user.get("connections"), sentCXR = false, existing = false, i, j, k,l;
                         // verify if it is an existing contact or if a request has been made in the last 30 days
                         if (contact.userid === user.get("_id")) {
                                 search.set("result", labels.get("cannotaddself"));

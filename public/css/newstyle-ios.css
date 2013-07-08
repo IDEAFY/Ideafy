@@ -24,7 +24,7 @@ html, body {
   width:1024px;
   height:748px;
   position:fixed;
-  overfloz-y: hidden;
+  overflow-y: hidden;
   overflow-x: hidden;
 }
 
@@ -2821,8 +2821,15 @@ textarea.solution {
 
 #card_creation button{
     margin-top: 10px;
+    height: 25px;
+    border-radius: 5px;
+    width: 110px;
     color: white;
     background: #657b99;
+}
+
+#card_creation .editcard .takepic{
+    margin-left: 10px;
 }
 
 #card_creation .cd-contentarea{
@@ -2866,6 +2873,11 @@ textarea.solution {
 #card_creation .editchar .cd-picarea{
     float: left;
     width: 235px;
+    text-align: center;
+}
+
+#card_creation .editchar .cd-picarea .input{
+    width: 150px;
 }
 
 #card_creation .editchar .cardinfo{
@@ -2877,14 +2889,21 @@ textarea.solution {
     padding: 5px;
 }
 
-#card_creation .editchar .cardinfo .input{
-    width: 120px;
+#card_creation .editchar .cardinfo .input, #card_creation .editchar .cd-picarea .input{
     height: 20px;
     line-height: 20px;
     font-size: 12px;
 }
 
-#card_creation .editchar .cardinfo .input::-webkit-input-placeholder{
+#card_creation .editchar .cardinfo .input{
+    width: 120px;
+}
+
+#card_creation .editchar .cd-picarea .input{
+    width: 150px;
+}
+
+#card_creation .editchar .cardinfo .input::-webkit-input-placeholder, #card_creation .editchar .cd-picarea .input::-webkit-input-placeholder{
     font-size: 11px;
 }
 
@@ -4388,6 +4407,11 @@ li.color-item{
     font-family: Helvetica;
     font-size: 12px;
     height: 87px;
+}
+
+.cardinfo li{
+    height: 18px;
+    line-height: 18px;
 }
 
 .cardinfo span{

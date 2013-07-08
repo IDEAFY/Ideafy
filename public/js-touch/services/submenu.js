@@ -71,7 +71,7 @@ define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
                         };
                         
                         this.render();
-                        this.place($dom);  
+                        if ($dom) this.place($dom);  
                 }
                 
                 return function SubMenuFactory($dom, $setWidget){

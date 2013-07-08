@@ -11,7 +11,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 		//declaration
 			var  _widget = new Widget(),
 		             _stack = new Stack(),
-		             _dom,
 		             _observer = Config.get("observer"),
 		             _store = new Store(),
 		             current = 0,
@@ -34,7 +33,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 			        _stack.getStack().show("#public-ideadetail");
                                 cache = document.getElementById("idea-cache");
                                 cache.classList.remove("invisible");
-                                // spinner.spin(_dom);
+                                spinner.spin(_widget.dom);
 			        _stack.getStack().get("#public-ideadetail").reset(viewStore, index)
                                 .then(function(){
                                         spinner.stop();
@@ -82,9 +81,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 			};
 			
 			// init
-			_dom = _widget.dom;
-			console.log("dom : "+_dom);
-			
 			_stack.getStack().add("#public-ideadetail", new IdeaDetail(_widget.action));
                         _stack.getStack().add("#public-edit", new Edit(_widget.action));
                         _stack.getStack().add("#public-sendmail", new Sendmail(_widget.action));

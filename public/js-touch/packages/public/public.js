@@ -6,9 +6,9 @@
  */
 
 define(["OObject", "Amy/Control-plugin" ,
-	"Bind.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
+	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
 	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Promise"], 
-	function(Widget, Control, Model, Delegate, Map, 
+	function(Widget, Control, Model, Place, Delegate, Map, 
 		Config, Detail, Utils, List, Polling, Stack, Menu){
 		return function PublicConstructor(){
 		//declaration
@@ -29,6 +29,7 @@ define(["OObject", "Amy/Control-plugin" ,
 
 				/* mays be have event plugin in control*/
 				"publicevent" : new Delegate(this),
+				"publicplace" : new Place({"details": _detail}),
 				"publiccontrol" :_radio
 			});
 

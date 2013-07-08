@@ -351,18 +351,32 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        var now = new Date();
                        node.classList.remove("pressed");
                        spinner.spin(node);
-                        if (!model.get("_rev")){
-                                // editChar.checkValidity();
-                                model.sync(Config.get("db"), model.get("_id"))
-                                .then(function(){
-                                        console.log("new card created : ", model.toJSON());
-                                        editChar.uploadCard();        
-                                });
+                       
+                       // card needs a title -- if none set default, if not available display error
+                       if (!model.get("title")) {
+                               model.set("title", model.get("firstname")+model.get("lastname"));
+                       }
+                       if (!model.get("title")) {
+                               error.set("error", labels.get("titlerequired"));
+                       }
+                       
+                       if (!error.get("error")){
+                                if (!model.get("_rev")){
+                                        // editChar.checkValidity();
+                                        model.sync(Config.get("db"), model.get("_id"))
+                                        .then(function(){
+                                                console.log("new card created : ", model.toJSON());
+                                                editChar.uploadCard();        
+                                        });
+                                }
+                                else{
+                                        model.set("last_modified", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        editChar.uploadCard(node);
+                                }
                         }
                         else{
-                                model.set("last_modified", [now.getFullYear(), now.getMonth(), now.getDate()]);
-                                editChar.uploadCard(node);
-                        }  
+                                spinner.stop();
+                        } 
                };
                
                editChar.uploadCard = function uploadCard(node){
@@ -377,13 +391,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 for (prop in charUpdates){
                                         model.set(prop, charUpdates[prop]);
                                 }        
-                       }
-                       
-                       if (!model.get("title")) {
-                               model.set("title", model.get("firstname")+model.get("lastname"));
-                       }
-                       if (!model.get("title")) {
-                               error.set("error", labels.get("titlerequired"));
                        }
                        
                        // upload card to database

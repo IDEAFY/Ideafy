@@ -325,6 +325,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = model.get("leisure_activities");
                         leisure[idx].name = node.value;
                         charUpdates.leisure_activities = leisure;
+                        console.log(charUpdates, leisure, name);
                 };
                 
                 editChar.updateLeisureDesc = function(event, node){

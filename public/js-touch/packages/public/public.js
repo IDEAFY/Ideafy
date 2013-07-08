@@ -19,8 +19,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 byRating =  _dom.querySelector(".byrating"), */       // disabled if search is active
 				_db = Config.get("db"),
 				_radio = new Control(_widget),
-				// _detail= new Detail(),
-				_detail = new Widget(),
+				_detail= new Detail(),
                                 _menu = new Menu(),
 				_stack = new Stack();
 
@@ -176,6 +175,8 @@ define(["OObject", "Amy/Control-plugin" ,
 		              _widget.displayHighlightedIdea();      
 		        });
 		        
+		        
+		        PUB = _widget;
                         //return
 			return _widget;
 		};

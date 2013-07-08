@@ -6,37 +6,33 @@
  */
 
 define(["OObject", "Amy/Control-plugin" ,
-	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
+	"Bind.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
 	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Promise"], 
-	function(Widget, Control, Model, Place, Delegate, Map, 
+	function(Widget, Control, Model, Delegate, Map, 
 		Config, Detail, Utils, List, Polling, Stack, Menu){
 		return function PublicConstructor(){
 		//declaration
 			var _widget = new Widget(),
-			    _dom, byDate, byRating,
-				/*_dom = Map.get("public"),
+				_dom = Map.get("public"),
 				byDate = _dom.querySelector(".bydate"),             // header buttons need to be declared
-                                byRating =  _dom.querySelector(".byrating"), */       // disabled if search is active
+                                byRating =  _dom.querySelector(".byrating"),        // disabled if search is active
 				_db = Config.get("db"),
-				_radio = new Control(_widget),
+				_radio = new Control(this),
 				_detail= new Detail(),
-                                _menu = new Menu(),
+                                _menu = new Menu(Map.get("public-menu")),
 				_stack = new Stack();
 
 		//setup
-		      _widget.template='<div id="public"><div id = "public-menu" data-place="place:submenu"></div><div id="public-list" class="list"><div class="header blue-light"><div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, publicideasheadertitle"></span><div class="option right" data-publicevent="listen: touchstart, plus"></div></div><div data-liststack="destination" data-publiccontrol="radio:li,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search"><div name="#list-date" class="tools-button bydate pushed" data-publicevent="listen:touchstart,show"></div><div name="#list-rating" class="tools-button byrating" data-publicevent="listen:touchstart,show"></div></div></div></div><div id="public-detail" class="details" data-place="place:details"></div></div>';
-		
 		      _widget.plugins.addAll({
 				"liststack" : _stack,
 				"label" : new Model(Config.get("labels")),
 
 				/* mays be have event plugin in control*/
-				"publicevent" : new Delegate(_widget),
-				"place" : new Place({"details" : _detail, "submenu": Menu}),
+				"publicevent" : new Delegate(this),
 				"publiccontrol" :_radio
 			});
 
-			_widget.selectStart = function(event){
+			this.selectStart = function(event){
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
 				    _id = event.target.getAttribute("data-listideas_id");
 				_detail.reset(_ideaList, _id);
@@ -52,13 +48,12 @@ define(["OObject", "Amy/Control-plugin" ,
 			     ideaNode.classList.add("selected");
 			     ideaNode.scrollIntoView();
                              _radio.init(ideaNode);        
-			     _detail.reset(ideaList.getModel(), id);
-			     console.log(id, ideaNode, ideaList.getModel().get(id));            
+			     _detail.reset(ideaList.getModel(), id);            
 			};
 			
 			// this piece can be considerably simplified --> using stack & control plugins
 			
-			_widget.show = function(event, node){
+			this.show = function(event, node){
 			     var byDate = _dom.querySelector(".bydate"),
 			         byRating =  _dom.querySelector(".byrating"),
 			         name = node.getAttribute("name");
@@ -76,7 +71,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			     }    
 			};
 
-			_widget.mosaic = function(){
+			this.mosaic = function(){
 				var domDetail = document.getElementById("public-detail");
                                 _dom.classList.toggle("mosaic");
                                 if (domDetail.classList.contains("invisible")) {
@@ -85,12 +80,12 @@ define(["OObject", "Amy/Control-plugin" ,
                                 }
 			};
 			
-			_widget.plus = function(){
+			this.plus = function(){
 			        Map.get("newidea-popup").classList.add("appear");
 			        Map.get("cache").classList.add("appear");        
 			};
 			
-			_widget.search = function(event, node){
+			this.search = function(event, node){
 			        if (event.keyCode === 13){
 			             if (node.value === ""){
 			                     listDate.resetQuery().then(function(){
@@ -128,7 +123,7 @@ define(["OObject", "Amy/Control-plugin" ,
                         };
                         
                         //may be set the list dom (not the public dom)
-                        // _widget.alive(_dom);
+                        _widget.alive(_dom);
 
                         // reset function
                         _widget.reset = function reset(){
@@ -143,17 +138,12 @@ define(["OObject", "Amy/Control-plugin" ,
 			_widget.showMenu = function showMenu(){
 			        _menu.toggleActive(true);
 			};
-			
 			_widget.hideMenu = function hideMenu(){
 			        _menu.toggleActive(false);
 			};
 			
 			// init
-			console.log("init starting");
                        _menu.toggleActive(false);
-                       _dom = _widget.dom;
-                       byDate = _dom.querySelector(".bydate");             // header buttons need to be declared
-                       byRating =  _dom.querySelector(".byrating");
                        
 			
 			var listDate = new Polling(_db, "library", "_view/publicideas"),
@@ -161,12 +151,11 @@ define(["OObject", "Amy/Control-plugin" ,
 			    listRating = new List(_db, "ideas", "_view/ideasbyvotes"),
 			    listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:60, include_docs: true});
 			 
-			console.log("before placing lists in stack");    
+			    
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
 			_stack.getStack().add("#list-date", listDate);
 			
-			console.log("initializing lists");
 			// show public ideas sorted by most recent
 		        listRating.init();
 		        
@@ -175,9 +164,8 @@ define(["OObject", "Amy/Control-plugin" ,
 		              _widget.displayHighlightedIdea();      
 		        });
 		        
-		        
-		        PUB = _widget;
-                        //return
+
+			//return
 			return _widget;
 		};
 	});

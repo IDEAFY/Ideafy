@@ -460,7 +460,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                         console.log("failed to update idea", err);
                                                 });
                                         }
-                                }, 10000);        
+                                }, 8000);        
                         };
                         
                         // update session score

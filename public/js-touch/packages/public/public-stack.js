@@ -36,7 +36,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 			        _stack.getStack().show("#public-ideadetail");
                                 cache = document.getElementById("idea-cache");
                                 cache.classList.remove("invisible");
-                                //spinner.spin(_dom);
+                                spinner.spin(_widget.dom);
 			        _stack.getStack().get("#public-ideadetail").reset(viewStore, index)
                                 .then(function(){
                                         spinner.stop();

@@ -11,7 +11,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 		//declaration
 			var  _widget = new Widget(),
 		             _stack = new Stack(),
-		             _dom = Map.get("public-detail"),
+		             _dom,
 		             _observer = Config.get("observer"),
 		             _store = new Store(),
 		             current = 0,
@@ -19,12 +19,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 
 		//setup
 		        
+			_widget.template='<div class="detail-stack" data-detailstack="destination"></div>';
 			
 			_widget.plugins.addAll({
 			        "detailstack" : _stack
 			});
 			
-			_widget.alive(_dom);
 
 		//detail
 			_widget.reset = function reset(viewStore, index){
@@ -82,6 +82,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 			};
 			
 			// init
+			_dom = _widget.dom;
+			console.log(_dom);
+			
 			_stack.getStack().add("#public-ideadetail", new IdeaDetail(_widget.action));
                         _stack.getStack().add("#public-edit", new Edit(_widget.action));
                         _stack.getStack().add("#public-sendmail", new Sendmail(_widget.action));
@@ -104,7 +107,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                         });
 			
 			
-                        PDS = _stack;
 		//return
 			return _widget;
 		};

@@ -6,9 +6,9 @@
  */
 
 define(["OObject", "Amy/Control-plugin" ,
-	"Bind.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
+	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
 	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Promise"], 
-	function(Widget, Control, Model, Delegate, Map, 
+	function(Widget, Control, Model, Place, Delegate, Map, 
 		Config, Detail, Utils, List, Polling, Stack, Menu){
 		return function PublicConstructor(){
 		//declaration
@@ -18,13 +18,13 @@ define(["OObject", "Amy/Control-plugin" ,
 				byDate = _dom.querySelector(".bydate"),             // header buttons need to be declared
                                 byRating =  _dom.querySelector(".byrating"), */       // disabled if search is active
 				_db = Config.get("db"),
-				_radio = new Control(this),
+				_radio = new Control(_widget),
 				_detail= new Detail(),
                                 _menu = new Menu(Map.get("public-menu")),
 				_stack = new Stack();
 
 		//setup
-		      _widget.template='<div id="public"><div id = "public-menu"></div><div id="public-list" class="list"><div class="header blue-light"><div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, publicideasheadertitle"></span><div class="option right" data-publicevent="listen: touchstart, plus"></div></div><div data-liststack="destination" data-publiccontrol="radio:li,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search"><div name="#list-date" class="tools-button bydate pushed" data-publicevent="listen:touchstart,show"></div><div name="#list-rating" class="tools-button byrating" data-publicevent="listen:touchstart,show"></div></div></div></div><div id="public-detail" class="details"><div class="detail-stack" data-detailstack="destination"></div></div></div>';
+		      _widget.template='<div id="public"><div id = "public-menu"></div><div id="public-list" class="list"><div class="header blue-light"><div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, publicideasheadertitle"></span><div class="option right" data-publicevent="listen: touchstart, plus"></div></div><div data-liststack="destination" data-publiccontrol="radio:li,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search"><div name="#list-date" class="tools-button bydate pushed" data-publicevent="listen:touchstart,show"></div><div name="#list-rating" class="tools-button byrating" data-publicevent="listen:touchstart,show"></div></div></div></div><div id="public-detail" class="details" data-place="place:details"></div></div>';
 		
 		      _widget.plugins.addAll({
 				"liststack" : _stack,
@@ -32,6 +32,7 @@ define(["OObject", "Amy/Control-plugin" ,
 
 				/* mays be have event plugin in control*/
 				"publicevent" : new Delegate(_widget),
+				"place" : new Place({"details" : _detail}),
 				"publiccontrol" :_radio
 			});
 

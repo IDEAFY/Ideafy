@@ -87,6 +87,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                         _stack.getStack().add("#public-sendmail", new Sendmail(_widget.action));
                         _stack.getStack().add("#public-share", new Share(_widget.action));
                         
+                        _stack.getStack().show("#public-ideadetail");
+                        
                         _observer.watch("public-viewidea", function(id){
 			             _widget.viewIdea(id);       
 			});

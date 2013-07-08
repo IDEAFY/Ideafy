@@ -48,7 +48,8 @@ define(["OObject", "Amy/Control-plugin" ,
 			     ideaNode.classList.add("selected");
 			     ideaNode.scrollIntoView();
                              _radio.init(ideaNode);        
-			     _detail.reset(ideaList.getModel(), id);            
+			     _detail.reset(ideaList.getModel(), id);
+			     console.log(id, ideaNode, ideaList.getModel().get(id));            
 			};
 			
 			// this piece can be considerably simplified --> using stack & control plugins

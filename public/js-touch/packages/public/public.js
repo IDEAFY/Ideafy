@@ -13,9 +13,10 @@ define(["OObject", "Amy/Control-plugin" ,
 		return function PublicConstructor(){
 		//declaration
 			var _widget = new Widget(),
-				_dom = Map.get("public"),
+			    _dom, byDate, byRating,
+				/*_dom = Map.get("public"),
 				byDate = _dom.querySelector(".bydate"),             // header buttons need to be declared
-                                byRating =  _dom.querySelector(".byrating"),        // disabled if search is active
+                                byRating =  _dom.querySelector(".byrating"), */       // disabled if search is active
 				_db = Config.get("db"),
 				_radio = new Control(this),
 				_detail= new Detail(),
@@ -30,7 +31,7 @@ define(["OObject", "Amy/Control-plugin" ,
 				"label" : new Model(Config.get("labels")),
 
 				/* mays be have event plugin in control*/
-				"publicevent" : new Delegate(this),
+				"publicevent" : new Delegate(_widget),
 				"publiccontrol" :_radio
 			});
 
@@ -147,6 +148,9 @@ define(["OObject", "Amy/Control-plugin" ,
 			
 			// init
                        _menu.toggleActive(false);
+                       _dom = _widget.dom;
+                       byDate = _dom.querySelector(".bydate");             // header buttons need to be declared
+                       byRating =  _dom.querySelector(".byrating");
                        
 			
 			var listDate = new Polling(_db, "library", "_view/publicideas"),

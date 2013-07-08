@@ -148,6 +148,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			// init
+			console.log("init starting");
                        _menu.toggleActive(false);
                        _dom = _widget.dom;
                        byDate = _dom.querySelector(".bydate");             // header buttons need to be declared
@@ -159,11 +160,12 @@ define(["OObject", "Amy/Control-plugin" ,
 			    listRating = new List(_db, "ideas", "_view/ideasbyvotes"),
 			    listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:60, include_docs: true});
 			 
-			    
+			console.log("before placing lists in stack");    
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
 			_stack.getStack().add("#list-date", listDate);
 			
+			console.log("initializing lists");
 			// show public ideas sorted by most recent
 		        listRating.init();
 		        
@@ -172,8 +174,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		              _widget.displayHighlightedIdea();      
 		        });
 		        
-
-			//return
+                        //return
 			return _widget;
 		};
 	});

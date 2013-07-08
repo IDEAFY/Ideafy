@@ -37,7 +37,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 "picture_file": "img/decks/characters.png"
                         },
                         model = new CouchDBDocument(),
-                        updates = {},
+                        charUpdates = {},
                         error = new Store({error: ""}),
                         _currentDataURL,
                         MIN_WIDTH = 87, MIN_HEIGHT = 87,
@@ -198,7 +198,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                editChar.reset = function reset(deckId, id){
                         var now = new Date();
                         _currentDataURL = null;
-                        updates = {};
+                        charUpdates = {};
                         model.setTransport(Config.get("transport"));
                         if (id === "newcard"){
                                 model.reset(charTemplate);
@@ -284,21 +284,21 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                editChar.updateField = function(event, node){
                        console.log('updatefield called');
                         var prop = node.getAttribute("name");
-                        updates[prop] = node.value;
+                        charUpdates[prop] = node.value;
                 };
                 
                 editChar.updateLocation = function(event, node){
                         console.log('updatelocation called');
                         var location = model.get("location"), city, country;
                         location[name] = node.value || "";
-                        updates.location = location;        
+                        charUpdates.location = location;        
                 };
                 
                 editChar.updateFamily = function(event, node){
                         console.log('updatefamily called');
                         var name = node.getAttribute("name"), family = model.get("family");
                         family[name] = node.selectedIndex;
-                        updates.family = family;
+                        charUpdates.family = family;
                 };
                 
                 editChar.updateJob = function(event, node){
@@ -317,33 +317,33 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 default:
                                         occupation.description = node.value;        
                         }
-                        updates.occupation = occupation;      
+                        charUpdates.occupation = occupation;      
                 };
                 
                 editChar.updateLeisureName = function(event, node){
                         console.log('updateleisurename called');
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = model.get("leisure_activities");
                         leisure[idx].name = node.value;
-                        updates.leisure_activities = leisure;
+                        charUpdates.leisure_activities = leisure;
                 };
                 
                 editChar.updateLeisureDesc = function(event, node){
                         console.log('updateleisuredesc called');
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), leisure = model.get("leisure_activities");
                         leisure[idx].comment = node.value;
-                        updates.leisure_activities = leisure;               
+                        charUpdates.leisure_activities = leisure;               
                 };
                 
                 editChar.updateInterestName = function(event, node){
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), interests = model.get("interests");
                         interests[idx].name = node.value;
-                        updates.interests = interests;               
+                        charUpdates.interests = interests;               
                 };
                 
                 editChar.updateInterestDesc = function(event, node){
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), interests = model.get("interests");
                         interests[idx].comment = node.value;
-                        updates.interests = interests;               
+                        charUpdates.interests = interests;               
                 };
                
                editChar.cancel = function(event, node){
@@ -391,7 +391,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 
                
                MODEL = model;
-               UPD = updates;
+               UPD = charUpdates;
                return editChar;         
            };   
         });

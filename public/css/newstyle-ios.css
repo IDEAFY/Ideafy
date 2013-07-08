@@ -2978,6 +2978,10 @@ textarea.solution {
     margin-right: 10px;
 }
 
+#card_creation .editerror{
+    margin: 20px;
+}
+
 /*BRAINSTORM*/
 
 #brainstorm{

@@ -198,6 +198,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                editChar.reset = function reset(deckId, id){
                         var now = new Date();
                         _currentDataURL = null;
+                        error.set("error", "");
                         charUpdates = {};
                         model.setTransport(Config.get("transport"));
                         if (id === "newcard"){
@@ -350,6 +351,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                editChar.upload = function(event, node){
                        var now = new Date();
                        node.classList.remove("pressed");
+                       error.set("error", "");
                        spinner.spin(node);
                        
                        // card needs a title -- if none set default, if not available display error

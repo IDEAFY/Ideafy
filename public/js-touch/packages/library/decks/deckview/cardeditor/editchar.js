@@ -288,7 +288,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         if ((prop === "firstname" || prop === "lastname") && !model.get("title")){
                                 fn = model.get("firstname");
                                 ln = model.get("lastname");
-                                (fn && ln) ? model.set("title", fn+" "+ln) : model.set(title, fn+ln);
+                                (fn && ln) ? model.set("title", fn+" "+ln) : model.set("title", fn+ln);
                         }
                 };
                 

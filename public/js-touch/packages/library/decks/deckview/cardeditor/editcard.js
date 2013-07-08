@@ -279,7 +279,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        spinner.spin(node);
                        
                        console.log(model.get('title'));
-                       if (!model.get("title")) {
+                       if (!model.get("title") || model.get("title") === "<br>") {
                                error.set("error", labels.get("titlerequired"));
                        }
                        if (!error.get("error")){

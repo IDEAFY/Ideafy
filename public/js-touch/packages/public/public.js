@@ -19,7 +19,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 byRating =  _dom.querySelector(".byrating"), */       // disabled if search is active
 				_db = Config.get("db"),
 				_radio = new Control(_widget),
-				_detail= new Detail(),
+				// _detail= new Detail(),
                                 _menu = new Menu(),
 				_stack = new Stack();
 
@@ -143,6 +143,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			_widget.showMenu = function showMenu(){
 			        _menu.toggleActive(true);
 			};
+			
 			_widget.hideMenu = function hideMenu(){
 			        _menu.toggleActive(false);
 			};

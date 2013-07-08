@@ -49,9 +49,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                             content = deckCDB.get("content"),
                                             arr = content[type];
                                         
-                                        arr.push(cardId);
-                                        content[type] = arr;
-                                        deckCDB.set("content", content);
+                                        if (arr.indexOf(cardId)<0){
+                                                arr.push(cardId);
+                                                content[type] = arr;
+                                                deckCDB.set("content", content);
+                                        }
                                         deckCDB.set("last_updated", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                         return deckCDB.upload(); 
                                 })

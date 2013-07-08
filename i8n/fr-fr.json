@@ -513,5 +513,6 @@
 	"dyknowsources": "Indiquez vos sources s'il y a lieu",
 	"age": "Âge",
 	"countrystate": "Pays ou province",
-	"desc": "Description"
+	"desc": "Description",
+	"titlerequired": "Veuillez saisir un titre"
 }

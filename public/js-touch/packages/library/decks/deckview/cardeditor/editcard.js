@@ -140,7 +140,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         "editevent" : new Event(editCard)
                 });
                 
-                editCard.template = '<div class="cardpopup"><div class="card-detail"><div class="cd-header blue-dark" data-model="bind:formatTitle, type"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class ="cardpicture" data-model="bind:setPic, picture_file"></div><div class="picinfo"><span class="cd-creditslbl"data-label="bind:innerHTML, credits"></span><input type="text" class="input editcredit" data-label="bind: placeholder, picturecredit" data-model="bind:value, picture_credit"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: touchstart, press; listen:touchend, picturePreview"></button><button class="takepic" data-editevent="listen: touchstart, press; listen:touchend, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><textarea class="input enterdyknow" data-label="bind: placeholder, enterdyknow" data-model="bind:value,didYouKnow"></textarea><span class="cd-sourcelbl" data-label="bind:innerHTML, source"></span><textarea class="input entersources" data-label="bind: placeholder, dyknowsources" data-model="bind: value, sources"></textarea></div><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
+                editCard.template = '<div class="cardpopup"><div class="card-detail"><div class="cd-header blue-dark" data-model="bind:formatTitle, type"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: touchstart, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class ="cardpicture" data-model="bind:setPic, picture_file"></div><div class="picinfo"><span class="cd-creditslbl"data-label="bind:innerHTML, credits"></span><input type="text" class="input editcredit" data-label="bind: placeholder, picturecredit" data-model="bind:value, picture_credit"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: touchstart, press; listen:touchend, picturePreview"></button><button class="takepic" data-editevent="listen: touchstart, press; listen:touchend, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><textarea class="input enterdyknow" data-label="bind: placeholder, enterdyknow" data-model="bind:value,didYouKnow"></textarea><span class="cd-sourcelbl" data-label="bind:innerHTML, source"></span><textarea class="input entersources" data-label="bind: placeholder, dyknowsources" data-model="bind: value, sources"></textarea></div><label class="editerror" data-error="bind:innerHTML, error"></label><div class="cancelmail" data-editevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
                
                editCard.reset = function reset(deckId, id, type){
                        var now = new Date();
@@ -275,17 +275,26 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        var now = new Date();
                        node.classList.remove("pressed");
                        spinner.spin(node);
-                        if (!model.get("_rev")){
-                                // editCard.checkValidity();
-                                model.sync(Config.get("db"), model.get("_id"))
-                                .then(function(){
-                                        console.log("new card created : ", model.toJSON());
-                                        editCard.uploadCard();        
-                                });
+                       
+                       if (!model.get("title")) {
+                               error.set("error", labels.get("titlerequired"));
+                       }
+                       if (!error.get("error")){
+                                if (!model.get("_rev")){
+                                        // editCard.checkValidity();
+                                        model.sync(Config.get("db"), model.get("_id"))
+                                        .then(function(){
+                                                console.log("new card created : ", model.toJSON());
+                                                editCard.uploadCard();        
+                                        });
+                                }
+                                else{
+                                        model.set("last_modified", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        editCard.uploadCard(node);
+                                }
                         }
                         else{
-                                model.set("last_modified", [now.getFullYear(), now.getMonth(), now.getDate()]);
-                                editCard.uploadCard(node);
+                                spinner.stop();
                         }  
                };
                

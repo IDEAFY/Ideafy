@@ -513,5 +513,6 @@
 	"dyknowsources": "Provide sources if applicable",
 	"age": "Age",
 	"countrystate": "Country or state",
-	"desc": "Description"
+	"desc": "Description",
+	"titlerequired": "A title is required"
 }

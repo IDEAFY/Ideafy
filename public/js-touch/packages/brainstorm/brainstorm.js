@@ -91,7 +91,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                         };
                 
                 // init
-                       _submenu  = new Menu(_widget.don.querySelector("#brainstorm-menu"));
+                       _submenu  = new Menu(_widget.dom.querySelector("#brainstorm-menu"));
                        _submenu.toggleActive(false);
                        _store.set("headertitle", Config.get("labels").get("brainstormheadertitle"));
                        setInterval(function(){

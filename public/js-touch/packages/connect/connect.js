@@ -15,15 +15,17 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
 			    setView = function setView(name){
                                  _stack.getStack().show(name);       
                             },
-			    _menu = new Menu(Map.get("connect-menu"), setView),
+			    _menu,
 			    msgUI = new Messages(),
 			    contactsUI = new Contacts(),
 			    twocentsUI = new MyTwocents();
 			    
 			_widget.plugins.add("connectstack", _stack);
+			
+			_widget.template = '<div id="connect"><div id="connect-menu"></div><div class="stack" data-connectstack="destination"></div></div>';
 
 		//setup
-			_widget.alive(Map.get("connect"));
+			_widget.place(Map.get("connect"));
 			
 			_widget.showMenu = function showMenu(){
 			     _menu.toggleActive(true);        
@@ -41,6 +43,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
 			};
 			
                 // init
+                       _menu = new Menu(_widget.dom.querySelector("#connect-menu"), setView);
                        _menu.toggleActive(false);
                        
                        msgUI.init();

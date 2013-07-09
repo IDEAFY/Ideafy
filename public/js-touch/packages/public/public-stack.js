@@ -11,7 +11,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 		//declaration
 			var  _widget = new Widget(),
 		             _stack = new Stack(),
-		             _dom = Map.get("public-detail"),
 		             _observer = Config.get("observer"),
 		             _store = new Store(),
 		             current = 0,
@@ -25,8 +24,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 			});
 			
 			_widget.template = '<div class="detail-stack" data-detailstack="destination"></div>';
-			
-			// _widget.alive(_dom);
 
 		//detail
 			_widget.reset = function reset(viewStore, index){

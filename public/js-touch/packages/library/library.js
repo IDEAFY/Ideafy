@@ -16,11 +16,13 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 			    setView = function setView(name){
 			         _stack.getStack().show(name);       
 			    },
-			    _menu = new Menu(Map.get("library-menu"), setView);
+			    _menu;
 		//setup
 		        _widget.plugins.add("librarystack", _stack);
+		        
+		        _widget.template = '<div id="library"><div id="library-menu"></div><div class="stack" data-librarystack="destination"></div></div>';
 		      
-			_widget.alive(Map.get("library"));
+			_widget.place(Map.get("library"));
 			
 			_widget.showMenu = function showMenu(){
 			        _menu.toggleActive(true);
@@ -40,6 +42,7 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 			};
 			
 	        // init
+	               _menu = new Menu(_widget.dom.querySelector("#library-menu"), setView);
 	               _menu.toggleActive(false);
 	               _ideas = new Ideas();
 	               _sessions = new Sessions();
@@ -52,17 +55,17 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 	               _stack.getStack().show("#ideas");
 	               
 	        // library events
-	        _observer.watch("display-doc", function(id, type){
-	               switch(type){
-	                       case 6:
-	                               var ideasUI = _stack.getStack().get("#ideas");
-	                               ideasUI.searchIdea(id.substr(2));
-	                               if (_stack.getStack().getCurrentScreen() !== ideasUI) _stack.getStack().show("#ideas");  
-                                        break;
-	                       default:
-	                               break;
-	                }        
-	        });
+	               _observer.watch("display-doc", function(id, type){
+	                       switch(type){
+	                               case 6:
+	                                       var ideasUI = _stack.getStack().get("#ideas");
+	                                       ideasUI.searchIdea(id.substr(2));
+	                                       if (_stack.getStack().getCurrentScreen() !== ideasUI) _stack.getStack().show("#ideas");  
+                                                break;
+	                               default:
+	                                       break;
+	                       }        
+	               });
 
 		//return
 			return _widget;

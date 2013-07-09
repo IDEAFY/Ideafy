@@ -6,34 +6,38 @@
  */
 
 define(["OObject", "Amy/Control-plugin" ,
-	"Bind.plugin", "Amy/Delegate-plugin", "Store", "service/map", "service/config",
+	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Store", "service/map", "service/config",
 	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin"], 
-	function(Widget, Control, Model, Delegate, Store, Map, 
+	function(Widget, Control, Model, Place, Delegate, Store, Map, 
 		Config, Detail, List, Stack){
 		return function IdeasConstructor(){
 		//declaration
 			var _widget = new Widget(),
-				_dom = Map.get("ideas"),
-				byDate = _dom.querySelector(".bydate"),             // header buttons need to be declared
-                                byRating =  _dom.querySelector(".byrating"),        // disabled if search is active
+				_dom, byDate, byRating,        // disabled if search is active
 				_searchInput = new Store({"search": ""}),
 				_db = Config.get("db"),
 				_observer = Config.get("observer"),
 				_radio = new Control(this),
 				_detail = new Detail(),
+				listDate, listRating, listSearch,
 				_stack = new Stack();
 
 		//setup
+		       _widget.template='<div id = "ideas"><div id="idea-list" class="list"><div class="header blue-light"><div class="option left" data-ideascontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, idealistheadertitle">My Ideas</span><div class="option right" data-ideasevent="listen: touchstart, plus"></div></div><div class="overflow" data-idealiststack="destination" data-ideascontrol="radio:li,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-search="bind: value, search" data-label="bind: placeholder, searchprivateplaceholder" data-ideasevent="listen: keypress, search"><div name="#list-date" class="tools-button bydate pushed" data-ideasevent="listen:touchstart,show"></div><div name="#list-rating" class="tools-button byrating" data-ideasevent="listen:touchstart,show"></div></div></div></div><div id="ideas-detail" class="details" data-ideaplace="place:details"></div></div>';
+		       
 			_widget.plugins.addAll({
 				"idealiststack" : _stack,
 				"search" : new Model(_searchInput),
 
 				/* mays be have event plugin in control*/
-				"ideasevent" : new Delegate(this),
+				"ideasevent" : new Delegate(_widget),
+                                "ideaplace" : new Place({"details": _detail}),
 				"ideascontrol" :_radio
 			});
+			
+			_widget.place(Map.get("ideas"));
 
-			this.selectStart = function(event){
+			_widget.selectStart = function(event){
 				//_detail.reset(_ideas.get(event.target.getAttribute("data-publicideas_id")));
 				//please don't do that
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
@@ -57,7 +61,7 @@ define(["OObject", "Amy/Control-plugin" ,
                         };
 
 			// this piece can be considerably simplified --> using stack & control plugins
-			this.show = function(event, node){
+			_widget.show = function(event, node){
 			     var byDate = _dom.querySelector(".bydate"),
 			         byRating =  _dom.querySelector(".byrating"),
 			         name = node.getAttribute("name");
@@ -75,7 +79,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			     }    
 			};
 
-			this.mosaic = function(){
+			_widget.mosaic = function(){
 			        var domDetail = document.getElementById("ideas-detail");
 				_dom.classList.toggle("mosaic");
 				if (domDetail.classList.contains("invisible")) {
@@ -85,12 +89,12 @@ define(["OObject", "Amy/Control-plugin" ,
 				else domDetail.classList.add("invisible");
 			};
 			
-			this.plus = function(){
+			_widget.plus = function(){
 			        Map.get("newidea-popup").classList.add("appear");
 			        Map.get("cache").classList.add("appear");        
 			};
 			
-			this.search = function (event, node){
+			_widget.search = function (event, node){
 			        var usr;
 			        if (event.keyCode === 13){
 			             if (node.value === ""){
@@ -128,10 +132,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 });
                         };
 			
-			//may be set the list dom
-                        _widget.alive(_dom);
-                        
-                        // reset function
+			// reset function
                         _widget.reset = function reset(){
                                 _searchInput.set("search", "");
                                 listSearch.resetQuery({q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
@@ -143,13 +144,19 @@ define(["OObject", "Amy/Control-plugin" ,
                                 });       
                         };
                         
-			// init
+			// INIT
+			
+			// dom items
+                        _dom = _widget.dom;
+                        byDate = _dom.querySelector(".bydate");
+                        byRating =  _dom.querySelector(".byrating");
+			
 			// for library for the time being only propose list by date or search tool
 			// additional options (rating/favorites etc. may be offered in the future)
 			
-			var listDate = new List(_db, "library", "_view/ideas", {key: Config.get("uid"), descending: true}),
-			   listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true}),
-			   listRating = new List(_db, "ideas", "_view/privatebyvotes", {startkey: '["'+Config.get("user").get("_id")+'",{}]', endkey: '["'+Config.get("user").get("_id")+'"]', descending: true});
+			listDate = new List(_db, "library", "_view/ideas", {key: Config.get("uid"), descending: true});
+			listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
+			listRating = new List(_db, "ideas", "_view/privatebyvotes", {startkey: '["'+Config.get("user").get("_id")+'",{}]', endkey: '["'+Config.get("user").get("_id")+'"]', descending: true});
 			
 			_stack.getStack().add("#list-date", listDate);
 			_stack.getStack().add("#list-rating", listRating);

@@ -32,6 +32,9 @@ define(["OObject", "Amy/Control-plugin" ,
 				"publicplace" : new Place({"details": _detail}),
 				"publiccontrol" :_radio
 			});
+			
+			
+                        _widget.place(Map.get("public"));
 
 			_widget.selectStart = function(event){
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
@@ -122,10 +125,6 @@ define(["OObject", "Amy/Control-plugin" ,
                                         }      
                                 });
                         };
-                        
-                        // may be set the list dom (not the public dom)
-                        //_widget.alive(_dom);
-                        _widget.place(Map.get("public"));
 
                         // reset function
                         _widget.reset = function reset(){
@@ -145,13 +144,11 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			// INIT
-			WID = _widget;
+			
 			// menu UI
-			console.log("before menu");
-			console.log(_widget.dom.querySelector("#public-menu"));
 			_menu  = new Menu(_widget.dom.querySelector("#public-menu"));
                         _menu.toggleActive(false);
-                        console.log("after menu init");
+                        
                         // dom items
                         _dom = _widget.dom;
                         byDate = _dom.querySelector(".bydate");

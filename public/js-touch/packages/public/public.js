@@ -153,6 +153,8 @@ define(["OObject", "Amy/Control-plugin" ,
                         _dom = _widget.dom;
                         byDate = _dom.querySelector(".bydate");
                         byRating =  _dom.querySelector(".byrating");
+                        
+                        _widget.render();
                        
 			//initialize list UIs
 			listDate = new Polling(_db, "library", "_view/publicideas");

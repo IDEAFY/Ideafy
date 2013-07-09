@@ -16,11 +16,12 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                             setView = function setView(name){
                                   _stack.getStack().show(name);       
                             }, 
-			    _menu = new Menu(Map.get("dashboard-menu"), setView);
+			    _menu;
 
 		//setup
 		        _widget.plugins.add("dashboardstack", _stack);
-			_widget.alive(Map.get("dashboard"));
+		        _widget.template='<div id="dashboard"><div id="dashboard-menu"></div><div class="stack" data-dashboardstack="destination"></div></div>';
+			_widget.place(Map.get("dashboard"));
 			
 			_widget.showMenu = function showMenu(){
                              _menu.toggleActive(true);        
@@ -36,6 +37,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                         };
                 
                 // init
+                       _menu = new Menu(_widget.dom.querySelector("#dashboard-menu"), setView);
                        _menu.toggleActive(false);
                        _profile = new Profile();
                        _settings = new Settings();

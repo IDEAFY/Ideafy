@@ -36,9 +36,11 @@ define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "servi
                                 }),
                                 "labels" : new Model(_labels),
                                 "ideafyevent" : new Event(this)
-                        });       
+                        });
                         
-                        _widget.alive(Map.get("ideafy-menu"));
+                        _widget.template = '<div id="ideafy-menu"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, brainstormchoosemode"></div><ul class="menu" data-ideafymenu = "foreach"><li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, selected" data-ideafyevent="listen:touchstart, press; listen: touchend, start"></li></ul></div>';      
+                        
+                        _widget.place(Map.get("ideafy-menu"));
                         
                         this.press = function(event, node){
                                 var _id = node.getAttribute("data-ideafymenu_id");

@@ -124,7 +124,7 @@ define(["OObject", "Amy/Control-plugin" ,
                         };
                         
                         // may be set the list dom (not the public dom)
-                        _widget.alive(_dom);
+                        //_widget.alive(_dom);
 
                         // reset function
                         _widget.reset = function reset(){

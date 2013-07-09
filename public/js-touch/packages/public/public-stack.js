@@ -10,6 +10,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 		return function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
+			     _ideaDetail, _sendmail, _share, _edit,
 		             _stack = new Stack(),
 		             _observer = Config.get("observer"),
 		             _store = new Store(),
@@ -27,14 +28,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 
 		//detail
 			_widget.reset = function reset(viewStore, index){
-			        var cache;
 			        _store = viewStore;
 			        current = index;
 			        _stack.getStack().show("#public-ideadetail");
-                                cache = document.getElementById("idea-cache");
-                                cache.classList.remove("invisible");
+                                _ideaDetail.hideCache();
                                 spinner.spin(_widget.dom);
-			        _stack.getStack().get("#public-ideadetail").reset(viewStore, index)
+			        _ideaDetail.reset(viewStore, index)
                                 .then(function(){
                                         spinner.stop();
                                         cache.classList.add("invisible");
@@ -45,7 +44,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                                 switch(name){
                                         
                                         case "#public-edit":
-                                                _stack.getStack().get("#public-edit").reset(_store.get(current).id);
+                                                _edit.reset(_store.get(current).id);
                                                 _stack.getStack().show('#public-edit');
                                              break;
                                         
@@ -53,7 +52,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                                              break;
                                              
                                         case "#public-share":
-                                                _stack.getStack().get("#public-share").reset(_store.get(current).id);
+                                                _share.reset(_store.get(current).id);
                                                 _stack.getStack().show("#public-share");
                                              break;
                                         case "close":
@@ -66,25 +65,32 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                         };
 			
 			_widget.edit = function edit(id){
-			        _stack.getStack().get("#public-edit").reset(id);
+			        _edit.reset(id);
 			        _stack.getStack().show("#public-edit");     
 			};
 			
 			_widget.sendMail = function sendMail(idea){
-			         _stack.getStack().get("#public-sendmail").reset(idea);
+			         _sendmail.reset(idea);
                                  _stack.getStack().show("#public-sendmail");        
 			};
 			
 			_widget.share = function share(idea){
-			        _stack.getStack().get("#public-share").reset(idea._id);
+			        _share.reset(idea._id);
                                 _stack.getStack().show("#public-share");         
 			};
 			
 			// init
-			_stack.getStack().add("#public-ideadetail", new IdeaDetail(_widget.action));
-                        _stack.getStack().add("#public-edit", new Edit(_widget.action));
-                        _stack.getStack().add("#public-sendmail", new Sendmail(_widget.action));
-                        _stack.getStack().add("#public-share", new Share(_widget.action));
+			
+			// initialize UIs
+			_ideaDetail = new IdeaDetail(_widget.action);
+			_edit = new Edit(_widget.action);
+			_sendmail = new Sendmail(_widget.action);
+			_share = new Share(_widget.action);
+			// add to stacck
+			_stack.getStack().add("#public-ideadetail", _ideaDetail);
+                        _stack.getStack().add("#public-edit", _edit);
+                        _stack.getStack().add("#public-sendmail", _sendmail);
+                        _stack.getStack().add("#public-share", _share);
                         
                         _observer.watch("public-viewidea", function(id){
 			             _widget.viewIdea(id);       
@@ -103,7 +109,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                         });
 			
 			
-                        PDS = _stack;
 		//return
 			return _widget;
 		};

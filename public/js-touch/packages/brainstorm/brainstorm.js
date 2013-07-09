@@ -11,7 +11,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		return function BrainstormConstructor(){
 		//declaration
 			var _widget = new Widget(),
-			    _submenu = new Menu(Map.get("brainstorm-menu")),
+			    _submenu,
 			    _store = new Store(),
 			    _stack = new Stack(),
 			    _user = Config.get("user");
@@ -35,8 +35,10 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		                      } 
 		                })
 		        });
+		        
+		        _widget.template = '<div id="brainstorm"><div id="brainstorm-menu"></div><div class="brainstorm-header header blue-light"><div class="date" data-header="bind: setDate, date"></div><span class="headerTitle" data-header="bind: innerHTML, headertitle"></span><div class="clock" data-header="bind: setTime, date">hh:mm</div></div><div class="stack" data-brainstormstack="destination"></div></div>';
 		                
-                        _widget.alive(Map.get("brainstorm"));
+                        _widget.place(Map.get("brainstorm"));
                         
                         _widget.showMenu = function showMenu(){
                              _submenu.toggleActive(true);        
@@ -56,7 +58,6 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                         // start || continue the desired brainstorming type based on session in progress ({id:"", type:""}) parameter
                         _widget.selectScreen = function selectScreen(name, sip){
                                 
-                                console.log(name, sip);
                                 if (name === "continue"){
                                         name = sip.type;
                                 }
@@ -74,7 +75,6 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                                                         _stack.getStack().add("quick", new QuickB(sip, _widget.exitSession));
                                                         break;
                                                  case "musession":
-                                                        console.log("adding mustack");
                                                         _stack.getStack().add("musession", new MultiB(sip, _widget.exitSession));
                                                         break;
                                                 case "tutorial":
@@ -91,6 +91,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                         };
                 
                 // init
+                       _submenu  = new Menu(_widget.don.querySelector("#brainstorm-menu"));
                        _submenu.toggleActive(false);
                        _store.set("headertitle", Config.get("labels").get("brainstormheadertitle"));
                        setInterval(function(){
@@ -121,7 +122,6 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		              
 		              // need a default mode ??
 		      }
-		      console.log(_sip);
 		      _widget.selectScreen(_sip.type, _sip);
 		});
 		

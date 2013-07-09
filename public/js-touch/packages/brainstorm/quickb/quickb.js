@@ -14,7 +14,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    var _widget = new Widget(),
                        _progress = new Widget(),
                        _frag = document.createDocumentFragment(),
-                       _dom = Map.get("ideafy-quick"),
                        _stack = new Stack(),
                        _labels = Config.get("labels"),
                        _steps = new Store([
@@ -31,7 +30,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                        spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
                    _widget.plugins.add("quickstack", _stack);
-                   _widget.alive(_dom);
+                   
+                   _widget.template = '<div id="ideafy-quick"><div class="stack" data-quickstack="destination"></div></div>';
+                   
+                   _widget.place(Map.get("ideafy-quick"));
                    
                    _progress.plugins.addAll({
                            "labels" : new Model(_labels),

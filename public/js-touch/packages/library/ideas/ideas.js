@@ -42,7 +42,6 @@ define(["OObject", "Amy/Control-plugin" ,
 				//please don't do that
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
 				    _id = event.target.getAttribute("data-listideas_id");
-				    console.log(id);
 				_detail.reset(_ideaList, _id);
 				// clear search field
 				_searchInput.set("search", "");

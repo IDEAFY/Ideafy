@@ -146,17 +146,16 @@ define(["OObject", "Amy/Control-plugin" ,
 			// INIT
 			
 			// menu UI
+			console.log("before menu");
 			_menu  = new Menu(_widget.dom.querySelector("#public-menu"));
                         _menu.toggleActive(false);
-                        
+                        console.log("after menu init");
                         // dom items
                         _dom = _widget.dom;
                         byDate = _dom.querySelector(".bydate");
                         byRating =  _dom.querySelector(".byrating");
                         
-                        _widget.render();
-                       
-			//initialize list UIs
+                        //initialize list UIs
 			listDate = new Polling(_db, "library", "_view/publicideas");
 		        // list date needs to be in polling mode with a polling_interval defined in Config to avoid traffic overload
 		        listRating = new List(_db, "ideas", "_view/ideasbyvotes");

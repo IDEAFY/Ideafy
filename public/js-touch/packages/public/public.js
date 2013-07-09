@@ -146,7 +146,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			// INIT
 			
 			// menu UI
-			console.log("before menu");
+			console.log("before menu", _widget.dom.querySelector("#public-menu"));
 			_menu  = new Menu(_widget.dom.querySelector("#public-menu"));
                         _menu.toggleActive(false);
                         console.log("after menu init");

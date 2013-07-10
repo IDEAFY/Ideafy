@@ -27,6 +27,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 
                 // add dock UI to the stack
                 _stack.getStack().add("#dock", _dock);
+                console.log(Map.get("nave"));
                 Map.get("nav").classList.remove("invisible");
                 // check db
                 if (_local.get("db") && _local.get("db") !== _db){

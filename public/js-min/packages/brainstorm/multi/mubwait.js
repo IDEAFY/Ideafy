@@ -87,7 +87,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 mubwaitevent : new Event(widget)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:touchstart, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-labels="bind:innerHTML, startbutton" data-model="bind: showStartButton, participants" data-mubwaitevent="listen: touchstart, press; listen:touchend, start"></div></form><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></span></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:mousedown, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-labels="bind:innerHTML, startbutton" data-model="bind: showStartButton, participants" data-mubwaitevent="listen: mousedown, press; listen:mouseup, start"></div></form><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></span></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         
@@ -234,7 +234,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         confirmUI.hide();
                                         $exit();
                                         Config.get("observer").notify("goto-screen", "#connect");
-                                        document.removeEventListener("touchstart", exitListener.listener, true);   
+                                        document.removeEventListener("mousedown", exitListener.listener, true);   
                                         id = exitDest.getAttribute("data-notify_id");
                                         observer.notify("display-message", parseInt(id, 10));     
                                 }
@@ -245,7 +245,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                                         confirmUI.hide();
                                                         $exit();
                                                         Config.get("observer").notify("goto-screen", name);
-                                                        document.removeEventListener("touchstart", exitListener.listener, true);
+                                                        document.removeEventListener("mousedown", exitListener.listener, true);
                                                 }
                                         });
                                 }
@@ -302,7 +302,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 })
                                 .then(function(){
                                         // unsync session & remove exit listener
-                                        document.removeEventListener("touchstart", exitListener.listener, true);
+                                        document.removeEventListener("mousedown", exitListener.listener, true);
                                         session.unsync();
                                         spinner.stop();
                                         node.classList.remove("invisible");
@@ -342,13 +342,13 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         widget.displayInfo(labels.get("canceledbyleader"), 2000).then(function(){
                                                 session.unsync();
                                                 $exit();
-                                                document.removeEventListener("touchstart", exitListener.listener, true);      
+                                                document.removeEventListener("mousedown", exitListener.listener, true);      
                                         });
                                 }
                                 if (value === "in progress" && session.get("initiator").id !== user.get("_id")){
                                         console.log("session in progress -- starting any moment now");
                                         // unsync session & remove exit listener
-                                        document.removeEventListener("touchstart", exitListener.listener, true);
+                                        document.removeEventListener("mousedown", exitListener.listener, true);
                                         session.unsync();
                                         $start(session.get("_id"));
                                         session.reset({});

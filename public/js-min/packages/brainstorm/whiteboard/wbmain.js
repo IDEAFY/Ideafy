@@ -61,7 +61,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                         "wbevent" : new Event(_widget)
                 });
                 
-                _widget.template = '<div class="wbmain"><ul class="wblist" data-wbmain="foreach"><li class="wb-item postit" data-wbmain="bind: displayPost, type" data-wbevent="listen: touchend, edit; listen:touchmove, cancelEdit"></li><ul><div>';
+                _widget.template = '<div class="wbmain"><ul class="wblist" data-wbmain="foreach"><li class="wb-item postit" data-wbmain="bind: displayPost, type" data-wbevent="listen: mouseup, edit; listen:dblclick, cancelEdit"></li><ul><div>';
                 
                 
                 _widget.edit = function(event, node){
@@ -84,6 +84,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                 };
                 
                 _widget.cancelEdit = function(event,node){
+                        event.stopPropagation();
                         _edit = false;        
                 };
                 

@@ -515,5 +515,6 @@
 	"countrystate": "Pays ou province",
 	"desc": "Description",
 	"titlerequired": "Veuillez saisir un titre",
-	"addcomment" : "Informations complémentaires"
+	"addcomment" : "Informations complémentaires",
+	"setdeck" : "Sélectionner le deck actif"
 }

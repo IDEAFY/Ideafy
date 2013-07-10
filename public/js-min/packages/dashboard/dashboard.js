@@ -1,0 +1,66 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
+define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./profile/profile", "./settings/settings", "./about/about", "service/config"], 
+	function(Widget, Map, Menu, Stack, Profile, Settings, About, Config){
+		return function DashboardConstructor(){
+		//declaration
+			var _widget = new Widget(),
+                            _stack = new Stack(),
+                            _profile, _settings, _about,
+                            _observer = Config.get("observer"),
+                            setView = function setView(name){
+                                  _stack.getStack().show(name);       
+                            }, 
+			    _menu;
+
+		//setup
+		        _widget.plugins.add("dashboardstack", _stack);
+		        _widget.template='<div id="dashboard"><div id="dashboard-menu"></div><div class="stack" data-dashboardstack="destination"></div></div>';
+			_widget.place(Map.get("dashboard"));
+			
+			_widget.showMenu = function showMenu(){
+                             _menu.toggleActive(true);        
+                        };
+                        _widget.hideMenu = function hideMenu(){
+                             _menu.toggleActive(false);
+                        };
+                        
+                        _widget.reset = function reset(){
+                                _menu.reset();
+                                _profile.reset();
+                                _settings.reset();        
+                        };
+                
+                // init
+                       _menu = new Menu(_widget.dom.querySelector("#dashboard-menu"), setView);
+                       _menu.toggleActive(false);
+                       _profile = new Profile();
+                       _settings = new Settings();
+                       _about = new About();
+                       _stack.getStack().add("#profile", _profile);
+                       _stack.getStack().add("#settings", _settings);
+                       _stack.getStack().add("#about", _about);
+                       
+               // set current view
+                       _stack.getStack().show("#profile");
+                       
+               // watch for events
+                        Config.get("observer").watch("display-tutorials", function(){
+                                _menu.setWidget("#about");
+                                _stack.getStack().get("#about").show("#tutorials");       
+                        });
+                        
+                        Config.get("observer").watch("show-about", function(){
+                                _menu.setWidget("#about");
+                                _stack.getStack().get("#about").show("#userguide");       
+                        });
+                 
+                //return
+			return _widget;
+		};
+	});

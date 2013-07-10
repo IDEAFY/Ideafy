@@ -1,7 +1,9 @@
 #login{
     background-image: -webkit-gradient(radial, center center, 0, center center, 212, from(#aeb9bf), to(#4d5d72));
     background-image: -webkit-radial-gradient(center center, cover, #aeb9bf, #4d5d72);
-    min-height: 100%;
+    height: 100%;
+    width: 100%;
+    position: absolute;
     text-align:center;
 }
 

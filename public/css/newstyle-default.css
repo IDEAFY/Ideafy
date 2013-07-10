@@ -847,7 +847,7 @@ ul.notify-list{
     z-index: 2000;
     background: white;
     top: 50%;
-    margin-top: -200px;
+    margin-top: -240px;
     left: 100%;
 }
 
@@ -973,13 +973,13 @@ ul.notify-list{
 
 #help-popup.appear{
     left:50%;
-    margin-left: -240px;
+    margin-left: -280px;
     -webkit-transition:left 0.2s linear;   
 }
 
 #tip-popup.visible{
     left:50%;
-    margin-left: -240px;   
+    margin-left: -280px;   
 }
 
 #cache.visible{

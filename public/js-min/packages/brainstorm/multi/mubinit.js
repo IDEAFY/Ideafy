@@ -22,7 +22,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/c
                         "muinitevent": new Event(widget)
                 });
                 
-                widget.template = '<div id="mub-init"><div id="muinitsliderlbl"><label data-labels="bind:innerHTML, startnewmub"></label><label data-labels="bind:innerHTML, joinmub"></label></div><input id="muinitslider" type="range" min="0" max="1" value ="1" data-muinitevent="listen: touchend, toggleMode"><div class="exit-brainstorm" data-muinitevent="listen: touchstart, press; listen: touchend, exit"></div><div class="stack" data-muinitstack="destination"></div></div>';
+                widget.template = '<div id="mub-init"><div id="muinitsliderlbl"><label data-labels="bind:innerHTML, startnewmub"></label><label data-labels="bind:innerHTML, joinmub"></label></div><input id="muinitslider" type="range" min="0" max="1" value ="1" data-muinitevent="listen: mouseup, toggleMode"><div class="exit-brainstorm" data-muinitevent="listen: mousedown, press; listen: mouseup, exit"></div><div class="stack" data-muinitstack="destination"></div></div>';
                 
                 widget.place(document.getElementById("mub-init"));
                 

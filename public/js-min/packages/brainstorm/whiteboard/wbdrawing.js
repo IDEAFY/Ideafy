@@ -12,7 +12,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
              
                 var _widget = new Widget(),
                     _pos = null,
-                    _lines = [],
+                    _line = {},
                     _pencil = new Store({color: "#4D4D4D", size:"1", cap:"round", bg: "white", mode:"pencil"}),
                     _colors = new Store([
                             {color: "#4D4D4D", active: true},
@@ -58,7 +58,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             });
                             return _promise;
                     },
-                    _sid;
+                    _sid,
+                    _capture = false;
                 
                 _widget.plugins.addAll({
                         "labels": new Model(_labels),
@@ -122,7 +123,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         "drawingevent" : new Event(_widget)
                 });
                 
-                _widget.template = '<div class = "wbdrawing"><div class="drawingtools"><div class="pencil selected" data-pencil="bind:toggleselected, mode" data-drawingevent="listen:touchstart, drawactive"><span></span></div><div class="erase" data-drawingevent="listen:touchstart, erase" data-pencil="bind:toggleselected, mode"><span></span></div><div class="clear" data-drawingevent="listen:touchstart, select; listen:touchend,clear"><span data-labels="bind:innerHTML, cleardrawinglbl">Clear</span></div><p name="pencilsize" data-drawingevent="listen:touchstart, expand"><svg width="60" height="39"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle class="stroke" cx="30" cy="21" r="18" stroke-width="1" data-pencil="bind:togglebgfill,bg; bind:togglemode,mode"/><circle class="fill" cx="30" cy="21" r="18" data-pencil="bind:setSize,size; bind:togglepencil,color"/></svg><div class="drawinglabel" data-labels="bind:innerHTML, pencilsizelbl">size</div></p><input id="pencilsize" class="vertical invisible" type="range" min="1" max="36" data-pencil="bind:value,size" data-drawingevent="listen:touchstart, stop; listen:touchmove,stop; listen:touchend,hide"><div name="pencilcolors" id="pencilcolor" data-drawingevent="listen:touchstart, expand"><ul id="pencilcolors"  class="pencilcolors invisible" data-color="foreach"><li class="color-item" data-drawingevent="listen:touchstart, getColor"><div data-color="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="pencilpreview" data-pencil="bind:setColor, color"></div><div class="drawinglabel" data-labels="bind:innerHTML, pencilcolorlbl">Color</div></div><div name="pencilbgcolors" id="pencilbgcolor" data-drawingevent="listen:touchstart, expand"><ul id="pencilbgcolors"  class="pencilbgcolors invisible" data-bgcolor="foreach"><li class="color-item" data-drawingevent="listen:touchstart, getBgColor"><div data-bgcolor="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="bgpreview" data-pencil="bind:setColor, bg"></div><div class="drawinglabel" data-labels="bind:innerHTML, drawbgcolorlbl">Background</div></div><div class="canceldrawing" data-drawingevent="listen:touchstart, select; listen:touchend,cancel"></div><div class="deletedrawing" data-drawingevent="listen:touchstart,select;listen:touchend,deletedrawing"></div><div class="savedrawing" data-drawingevent="listen:touchstart, post" data-uploadprogress="bind:showProgress,status" ></div></div><canvas class="drawingcanvas" width=652 height=438 data-pencil="bind:setColor, bg" data-drawingevent="listen:touchstart,start;listen:touchmove,move;listen:touchend,end;" data-drawing="bind:draw, content"></canvas></div>';
+                _widget.template = '<div class = "wbdrawing"><div class="drawingtools"><div class="pencil selected" data-pencil="bind:toggleselected, mode" data-drawingevent="listen:mousedown, drawactive"><span></span></div><div class="erase" data-drawingevent="listen:mousedown, erase" data-pencil="bind:toggleselected, mode"><span></span></div><div class="clear" data-drawingevent="listen:mousedown, select; listen:mouseup,clear"><span data-labels="bind:innerHTML, cleardrawinglbl">Clear</span></div><p name="pencilsize" data-drawingevent="listen:mousedown, expand"><svg width="60" height="39"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle class="stroke" cx="30" cy="21" r="18" stroke-width="1" data-pencil="bind:togglebgfill,bg; bind:togglemode,mode"/><circle class="fill" cx="30" cy="21" r="18" data-pencil="bind:setSize,size; bind:togglepencil,color"/></svg><div class="drawinglabel" data-labels="bind:innerHTML, pencilsizelbl">size</div></p><input id="pencilsize" class="vertical invisible" type="range" min="1" max="36" data-pencil="bind:value,size" data-drawingevent="listen:mousedown, stop; listen:mousemove,stop; listen:mouseup,hide"><div name="pencilcolors" id="pencilcolor" data-drawingevent="listen:mousedown, expand"><ul id="pencilcolors"  class="pencilcolors invisible" data-color="foreach"><li class="color-item" data-drawingevent="listen:mousedown, getColor"><div data-color="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="pencilpreview" data-pencil="bind:setColor, color"></div><div class="drawinglabel" data-labels="bind:innerHTML, pencilcolorlbl">Color</div></div><div name="pencilbgcolors" id="pencilbgcolor" data-drawingevent="listen:mousedown, expand"><ul id="pencilbgcolors"  class="pencilbgcolors invisible" data-bgcolor="foreach"><li class="color-item" data-drawingevent="listen:mousedown, getBgColor"><div data-bgcolor="bind:setColor, color; bind:setActive, active"></div></li></ul><div class="bgpreview" data-pencil="bind:setColor, bg"></div><div class="drawinglabel" data-labels="bind:innerHTML, drawbgcolorlbl">Background</div></div><div class="canceldrawing" data-drawingevent="listen:mousedown, select; listen:mouseup,cancel"></div><div class="deletedrawing" data-drawingevent="listen:mousedown,select;listen:mouseup,deletedrawing"></div><div class="savedrawing" data-drawingevent="listen:mousedown, post" data-uploadprogress="bind:showProgress,status" ></div></div><canvas class="drawingcanvas" width=652 height=438 data-pencil="bind:setColor, bg" data-drawingevent="listen:mousedown,start;listen:mousemove,move;listen:mouseup,end;" data-drawing="bind:draw, content"></canvas></div>';
                 
                 
                 _widget.setSessionId = function(sid){
@@ -269,38 +270,32 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 _widget.start = function(event, node){
-                                var touches = event.touches;
-                                
-                                for(i = 0, l = touches.length; i < l; i++) {
-                                        var touch = touches[i];
-                                        _lines[touch.identifier] = {
-                                                x : touch.pageX - node.offsetLeft,
-                                                y : touch.pageY - node.offsetTop
-                                        };
-                                }
-                                event.preventDefault();
-                        };
+                        _line = {x : event.pageX - node.offsetLeft, y : event.pageY - node.offsetTop};
+                        _capture = true;
+                        event.preventDefault();
+                };
 
                 _widget.end = function(event, node){
+                        _capture = false;
                 };
 
                 _widget.move = function(event, node){
-                        var touches = event.touches;
-                        for(i = 0, l = touches.length; i < l; i++){
-                                var touch = touches[i],
-                                    id = touch.identifier,
-                                    moveX = touch.pageX - node.offsetLeft - _lines[id].x,
-                                    moveY = touch.pageY - node.offsetTop - _lines[id].y,
-                                    ret = _widget.draw(node, id, moveX, moveY);
-                                _lines[id] = {
+                        var moveX, moveY, ret;
+                        
+                        if (_capture){
+                                moveX = event.pageX - node.offsetLeft - _line.x;
+                                moveY = event.pageY - node.offsetTop - _line.y;
+                                ret = _widget.draw(node, moveX, moveY);
+                                _line= {
                                         x : ret.x,
                                         y : ret.y
                                 };
                         }
+                        
                         event.preventDefault();
                 };
 
-                _widget.draw = function(canvas, i, changeX, changeY){
+                _widget.draw = function(canvas, changeX, changeY){
                         var _ctx = canvas.getContext("2d");
                                 
                         _ctx.lineWidth = _pencil.get("size");
@@ -308,13 +303,13 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _ctx.lineCap = _pencil.get("cap");
                                 
                         _ctx.beginPath();
-                        _ctx.moveTo(_lines[i].x,_lines[i].y);
-                        _ctx.lineTo(_lines[i].x+changeX,_lines[i].y+changeY);
+                        _ctx.moveTo(_line.x,_line.y);
+                        _ctx.lineTo(_line.x+changeX,_line.y+changeY);
                         _ctx.stroke();
                         _ctx.closePath();
                         return{
-                                x:_lines[i].x+changeX,
-                                y:_lines[i].y+changeY
+                                x:_line.x+changeX,
+                                y:_line.y+changeY
                         };
                 };
                 

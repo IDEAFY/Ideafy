@@ -47,7 +47,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            }),
                            "progressevent" : new Event(_progress)
                    });
-                   _progress.template = '<div class = "progressbar invisible"><ul id = "quicksteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: touchstart, highlightStep; listen:touchend, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: touchstart, press; listen:touchend, exit"></div></div>';
+                   _progress.template = '<div class = "progressbar invisible"><ul id = "quicksteplist" class="steplist" data-step="foreach"><li class="step inactive" data-step="bind: innerHTML, label; bind:setCurrent, currentStep; bind:setActive, status" data-progressevent="listen: mousedown, highlightStep; listen:mouseup, changeStep"></li></ul><div class="exit-brainstorm" data-progressevent="listen: mousedown, press; listen:mouseup, exit"></div></div>';
                    
                    _progress.place(_widget.dom);
                    

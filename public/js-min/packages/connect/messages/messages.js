@@ -28,8 +28,6 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                             currentSort = 0,
                             msgList = new Store([]),
                             labels = Config.get("labels"),
-                            touchStart,
-                            touchPoint,
                             display = false,
                             user = Config.get("user"),
                             observer = Config.get("observer"),
@@ -155,7 +153,7 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                 "msgdetailstack" : detailStack
                         });
                         
-                        messageUI.template = '<div id="connect-messages"><div class="messages"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,touchend,selectMsg"><ul data-msg="foreach"><li class="msg list-item" data-msglistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date"></span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:setObject, type">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
+                        messageUI.template = '<div id="connect-messages"><div class="messages"><div class="header blue-light"><span data-label="bind: innerHTML, msglistheadertitle">My Messages</span><div class="option right" data-msglistevent="listen: mousedown, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-msglistevent="listen:mousedown, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-msglistevent="listen: keypress, search"><div class="msglist overflow" data-msglistcontrol="radio:li,selected,mouseup,selectMsg"><ul data-msg="foreach"><li class="msg list-item" data-msglistevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div data-msg="bind:setAvatar, author"></div><p class="msg-author unread" data-msg="bind:highlight, status; bind:innerHTML, username">Author</p><div class="select-msg"></div><span class="date" data-msg="bind: date, date"></span><p class="msg-subject unread" data-msg="bind:highlight, status; bind:setObject, type">Subject</p></li></ul></div></div><div id="msg-detail" class="details" data-msgdetailstack="destination"></div></div>';
                         
                         messageUI.place(Map.get("connect-messages"));
                         
@@ -275,21 +273,17 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                         
                         // Action bar
                         messageUI.setStart = function(event, node){
-                                touchStart = [event.pageX, event.pageY];
                                 if (document.querySelector(".actionbar")) messageUI.hideActionBar();  // hide previous action bar 
                         };
                 
                         messageUI.showActionBar = function(event, node){
-                                var id = node.getAttribute("data-msg_id");
-                                touchPoint = [event.pageX, event.pageY];
-                                if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        var actionBar = new ActionBar("message", node, msgList.get(id), messageUI.hideActionBar),
-                                           frag = document.createDocumentFragment();  
+                                var id = node.getAttribute("data-msg_id"),
+                                    actionBar = new ActionBar("message", node, msgList.get(id), messageUI.hideActionBar),
+                                    frag = document.createDocumentFragment();  
                                 
-                                        actionBar.place(frag); // render action bar
-                                        node.appendChild(frag); // display action bar
-                                        display = true; // prevent from showing it multiple times
-                                }
+                                actionBar.place(frag); // render action bar
+                                node.appendChild(frag); // display action bar
+                                display = true; // prevent from showing it multiple times
                         };
                 
                         messageUI.hideActionBar = function hideActionBar(){

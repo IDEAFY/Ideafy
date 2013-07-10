@@ -21,7 +21,6 @@ html, body {
   font-family:Helvetica;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   background:rgba(0,0,0,0.65) url('../img/bg.png') repeat;
-  -webkit-transform: translate3d(0,0,0);
 }
 
 ul{
@@ -53,6 +52,10 @@ textarea, input{
 
 textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     font-size: 14px;
+}
+
+body{
+  -webkit-transform: translate3d(0,0,0);
 }
 
 #wrapper{

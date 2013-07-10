@@ -15,7 +15,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                             cards = new Store([]),
                             cardPage = new Store([]),
                             pagination = new Store({currentPage:0, nbPages: 0}),
-                            touchStart,
                             popupUI,
                             labels = Config.get("labels"),
                             user = Config.get("user"),
@@ -89,7 +88,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 "cardlistevent": new Event(cardList)
                         });
                         
-                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:touchstart, setStart; listen:touchmove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:touchstart, press; listen:touchend, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:touchstart, push; listen:touchend, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:touchstart, highlight; listen:touchend, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div><div class="cardbtnbar invisible"><div class="editcardbtn" data-cardlistevent="listen: touchstart, press; listen:touchend, editCard"></div><div class="deletecardbtn " data-cardlistevent="listen: touchstart, press; listen:touchend, deleteCard"></div></div></li></ul></div></div>';
+                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:mousedown, setStart; listen:dblclick, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:mousedown, press; listen:mouseup, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:mousedown, push; listen:mouseup, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:mousedown, highlight; listen:mouseup, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div><div class="cardbtnbar invisible"><div class="editcardbtn" data-cardlistevent="listen: mousedown, press; listen:mouseup, editCard"></div><div class="deletecardbtn " data-cardlistevent="listen: mousedown, press; listen:mouseup, deleteCard"></div></div></li></ul></div></div>';
                         
                         cardList.reset = function reset(deck){
                                 //reset highlight
@@ -229,17 +228,13 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 if (nb<(pagination.get("nbPages")-1)) cardList.displayPage(nb+1);        
                         };
                         
-                        cardList.setStart = function(event, node){
-                                touchStart = [event.pageX, event.pageY];
-                        };
-                
                         cardList.changePage = function(event, node){
-                                touchPoint = [event.pageX, event.pageY];
+                                var touchPoint = [event.pageX, event.pageY];
                                 
-                                if ((touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                if (touchPoint[0] > (document.width+301)/2){
                                         cardList.displayNext();
                                 }
-                                else if ((touchStart[0]-touchPoint[0]) < 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                else{
                                         cardList.displayPrevious();
                                 }
                         };

@@ -14,7 +14,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
                     labels = Config.get("labels");
                     
                 
-                importCard.template = '<div class="importcard"><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
+                importCard.template = '<div class="importcard"><div class="cancelmail" data-importevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:mousedown, press; listen:mouseup, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
                 importCard.plugins.addAll({
                         "label" : new Model(labels),

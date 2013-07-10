@@ -28,7 +28,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 				"place" : new Place({"notify":_notify})
 			});
 			
-			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div id="notify" data-place="place:notify"></div></div>';
+			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,mousedown,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div id="notify" data-place="place:notify"></div></div>';
 			
 			_widget.place(Map.get("dock"));
 

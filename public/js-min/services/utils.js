@@ -504,7 +504,7 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                                         callback(e.target);        
                                 }       
                         };
-                        document.addEventListener("touchstart", listener, true);
+                        document.addEventListener("mousedown", listener, true);
                         return listener;      
                 }
 	}

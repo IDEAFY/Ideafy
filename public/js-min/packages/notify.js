@@ -43,7 +43,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                         "notifevent" : new Event(notify)
                 });
                 
-                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, push; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div><div class = "info-bubble" data-notifevent="listen:touchstart, press; listen:touchend, showAbout">i</div><div id="notify-popup" data-place="place:notifyPopup"></div></div>';
+                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: mousedown, push; listen:mouseup, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:mousedown, signout"></div><div class = "info-bubble" data-notifevent="listen:mousedown, press; listen:mouseup, showAbout">i</div><div id="notify-popup" data-place="place:notifyPopup"></div></div>';
                 
                 notify.getUnread = function getUnread(){
                         var msg = user.get("notifications"),
@@ -141,7 +141,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                         "notifyevent" : new Event(notifyPopup)
                 });
                 
-                notifyPopup.template = '<div class="invisible"><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:touchstart, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:touchstart, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
+                notifyPopup.template = '<div class="invisible"><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:mousedown, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:mousedown, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
                 
                 notifyPopup.closePopup = function closePopup(event, node){
                         notifyPopup.dom.classList.add("invisible");        

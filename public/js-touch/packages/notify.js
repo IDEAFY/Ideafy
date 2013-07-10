@@ -5,15 +5,13 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Event.plugin", "service/avatar"],
-        function(Widget, Config, Map, Store, Model, Event, Avatar){
+define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Place.plugin", "Event.plugin", "service/avatar"],
+        function(Widget, Config, Map, Store, Model, Place, Event, Avatar){
                 
                 return function NotifyConstructor(){
                 
                 var notify = new Widget(),
                     notifyPopup = new Widget(),
-                    dom = Map.get("notify"),
-                    popup = Map.get("notify-popup"),
                     user = Config.get("user"),
                     observer = Config.get("observer"),
                     labels = Config.get("labels"),
@@ -41,12 +39,11 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                         }
                                 }
                         }),
+                        "place" : new Place({"notifyPopup": notifyPopup}),
                         "notifevent" : new Event(notify)
                 });
                 
-                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, push; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div><div class = "info-bubble" data-notifevent="listen:touchstart, press; listen:touchend, showAbout">i</div></div>';
-                
-                notify.place(dom);
+                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, push; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div><div class = "info-bubble" data-notifevent="listen:touchstart, press; listen:touchend, showAbout">i</div><div id="notify-popup" data-place="place:notifyPopup"></div></div>';
                 
                 notify.getUnread = function getUnread(){
                         var msg = user.get("notifications"),
@@ -68,7 +65,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 
                 notify.showPopup = function(event, node){
                         node.classList.remove("orange");
-                        popup.classList.add("show-notify");
+                        notifyPopup.showPopup();
                 };
                 
                                 
@@ -144,10 +141,14 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         "notifyevent" : new Event(notifyPopup)
                 });
                 
-                notifyPopup.template = '<div><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:touchstart, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:touchstart, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
+                notifyPopup.template = '<div class="invisible"><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:touchstart, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:touchstart, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
                 
                 notifyPopup.closePopup = function closePopup(event, node){
-                        popup.classList.remove("show-notify");        
+                        notifyPopup.dom.classList.add("invisible");        
+                };
+                
+                notifyPopup.showPopup = function showPopup(event, node){
+                        notifyPopup.dom.classList.remove("invisible");        
                 };
                 
                 notifyPopup.displayComCenter = function displayComCenter(event, node){
@@ -163,7 +164,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 // init notifications engine
                  notify.init = function init(){
                         notify.reset();
-                        notifyPopup.place(popup);
+                        notifyPopup.dom.classList.add("invisible");
                 };
                 
                 // reset notify UI
@@ -194,8 +195,6 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                         messages.reset(user.get("notifications"));                      
                 });
                 
-                NOTIF = messages;
-                NOTIFPOPUP = notifyPopup;
                 return notify;
                 }
         })

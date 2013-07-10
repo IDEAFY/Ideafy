@@ -5,15 +5,15 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin", 
+define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"public/public", "library/library", "brainstorm/brainstorm", "connect/connect", "dashboard/dashboard",
 	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips"], 
-	function(Widget, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){
+	function(Widget, Place, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){
 		return function DockConstructor(){
 
 		//declaration
 			var _widget = new Widget(),
-			    _newIdea, _new2q, _tips, _notify,
+			    _newIdea, _new2q, _tips, _notify = new Notify(),
 			    _public, _library, _brainstorm, _connect, _dashboard,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),
@@ -24,15 +24,16 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 			//labels have to configurable
 			_widget.plugins.addAll({
 				"dockstack" : _stack,
-				"dockcontrol" : _control
+				"dockcontrol" : _control,
+				"place" : new Place({"notify":_notify})
 			});
 			
-			_widget.alive(Map.get("dock"));
+			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div id="notify" data-place="place:notify"></div></div>';
+			
+			_widget.place(Map.get("dock"));
 
 		//logic
 			_widget.init = function init(){
-			        _notify = new Notify();
-			        console.log("notify ok");
 			        _public = new Public();
 			        console.log("public ok");
 			        _library = new Library();

@@ -15,7 +15,7 @@ define(["Store"], function(Store){
 			"serverdown" : document.getElementById("serverdown"),
 			"nointernet" : document.getElementById("nointernet"),
 	        "dock" : document.getElementById("wrapper"),
-	        "nav": document.getElementById("dock"),
+	        "mainscreen": document.getElementById("mainscreen"),
 		"notify" : document.getElementById("notify"),
 		"notify-popup" : document.getElementById("notify-popup"),
 		"newidea-popup" : document.getElementById("newidea-popup"),

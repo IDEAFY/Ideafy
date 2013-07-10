@@ -47,6 +47,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         };
                         
                         this.press = function(event, node){
+                                event.stopPropagation();
                                 node.classList.add("pressed");
                                 spinner.el = document.getElementById("abspinner");
                         };

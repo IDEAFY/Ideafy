@@ -27,7 +27,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 
                 // add dock UI to the stack
                 _stack.getStack().add("#dock", _dock);
-                Map.get("dock").classList.remove("invisible");
+                Map.get("nav").classList.remove("invisible");
                 // check db
                 if (_local.get("db") && _local.get("db") !== _db){
                         _db = _local.get("db");
@@ -127,7 +127,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 .then(function(){
                         _dock.reset();
                         _login.stopSpinner();
-                        Map.get("dock").classList.remove("invisible");
+                        Map.get("nav").classList.remove("invisible");
                         _stack.getStack().show("#dock");
                         _dock.start(firstStart);        
                 });      
@@ -208,7 +208,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 _stack.getStack().setCurrentScreen(_login);
                 _login.setScreen("#login-screen");
                 document.getElementById("cache").classList.remove("appear");
-                Map.get("dock").classList.add("invisible");
+                Map.get("nav").classList.add("invisible");
         });
         
         /*

@@ -19,7 +19,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "helpevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class="help-doctor"></div><div class="close-help" data-helpevent="listen:touchstart, closeHelp"></div><div class="help-screen" data-help="bind:innerHTML,html"></div></div>';
+                        _widget.template = '<div><div class="help-doctor"></div><div class="close-help" data-helpevent="listen:mousedown, closeHelp"></div><div class="help-screen" data-help="bind:innerHTML,html"></div></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("help-popup"));

@@ -433,6 +433,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 .deedee.orange{
     background:url('../img/littleOrangeDeeDee.png') no-repeat center center;
+    background-size:40%;
 }
 
 

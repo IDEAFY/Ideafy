@@ -23,8 +23,6 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                             ]),
                             currentSort = 0,
                             contactList = new Store([]),
-                            touchStart,
-                            touchPoint,
                             display = false,
                             user = Config.get("user"),
                             labels = Config.get("labels"),
@@ -102,7 +100,7 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                 "contactlistevent": new Event(contactsUI)
                         });
                         
-                        contactsUI.template = '<div id="connect-contacts"><div class="contacts"><div class="header blue-light"><span data-label="bind: innerHTML, contactlistheadertitle">My Contacts</span><div class="option right" data-contactlistevent="listen: touchstart, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-contactlistevent="listen:touchstart, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-contactlistevent="listen: keypress, search"><div class="contactlist overflow" data-contactlistcontrol="radio:li,selected,touchstart,selectContact"><ul data-contact="foreach"><li class="contact list-item" data-contactlistevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div data-contact="bind:setAvatar, type"></div><p class="contact-name" data-contact="bind:innerHTML, username"></p><p class="contact-intro" data-contact="bind:setIntro, intro"></p><div class="select-contact"></div></li></ul></div></div><div id="toggleadd" class="group" data-contactlistevent="listen:touchstart, press; listen:touchend, toggleAddUI"></div><div id="contact-detail" class="details" data-contactdetailstack="destination"></div></div>';
+                        contactsUI.template = '<div id="connect-contacts"><div class="contacts"><div class="header blue-light"><span data-label="bind: innerHTML, contactlistheadertitle">My Contacts</span><div class="option right" data-contactlistevent="listen: mousedown, plus"></div></div><ul class="selectors" data-sort = "foreach"><li class="sort-button" data-sort="bind: setLabel, label; bind:setSelected, selected, bind: name, name" data-contactlistevent="listen:mousedown, displaySort"></li></ul><input class="search" type="text" data-label="bind: placeholder, searchmsgplaceholder" data-contactlistevent="listen: keypress, search"><div class="contactlist overflow" data-contactlistcontrol="radio:li,selected,mousedown,selectContact"><ul data-contact="foreach"><li class="contact list-item" data-contactlistevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div data-contact="bind:setAvatar, type"></div><p class="contact-name" data-contact="bind:innerHTML, username"></p><p class="contact-intro" data-contact="bind:setIntro, intro"></p><div class="select-contact"></div></li></ul></div></div><div id="toggleadd" class="group" data-contactlistevent="listen:mousedown, press; listen:mouseup, toggleAddUI"></div><div id="contact-detail" class="details" data-contactdetailstack="destination"></div></div>';
                         
                         contactsUI.place(Map.get("connect-contacts"));
                         
@@ -178,21 +176,17 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                         
                         // Action bar
                         contactsUI.setStart = function(event, node){
-                                touchStart = [event.pageX, event.pageY];
                                 if (document.querySelector(".actionbar")) contactsUI.hideActionBar();  // hide previous action bar 
                         };
                 
                         contactsUI.showActionBar = function(event, node){
-                                var id = node.getAttribute("data-contact_id");
-                                touchPoint = [event.pageX, event.pageY];
-                                if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        var actionBar = new ActionBar("contact", node, contactList.get(id), contactsUI.hideActionBar),
-                                           frag = document.createDocumentFragment();  
+                                var id = node.getAttribute("data-contact_id"),
+                                    actionBar = new ActionBar("contact", node, contactList.get(id), contactsUI.hideActionBar),
+                                    frag = document.createDocumentFragment();  
                                 
-                                        actionBar.place(frag); // render action bar    
-                                        node.appendChild(frag); // display action bar
-                                        display = true; // prevent from showing it multiple times
-                                }
+                                actionBar.place(frag); // render action bar    
+                                node.appendChild(frag); // display action bar
+                                display = true; // prevent from showing it multiple times
                         };
                 
                         contactsUI.hideActionBar = function hideActionBar(ui){

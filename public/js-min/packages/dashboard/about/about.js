@@ -34,7 +34,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plug
                            "aboutevent" : new Event(aboutUI)
                    });
                    
-                   aboutUI.template = '<div id="dashboard-about"><div class="header blue-dark"><span data-label="bind:innerHTML, aboutlbl"></span></div><div class = "progressbar"><ul id = "aboutmenu" class="steplist" data-aboutmenu="foreach"><li class="step" data-aboutmenu="bind: innerHTML, label; bind:setCurrent, currentUI" data-aboutevent="listen: touchstart, changeDisplay"></li></ul></div><div id="aboutstack" data-aboutstack="destination"></div></div>';
+                   aboutUI.template = '<div id="dashboard-about"><div class="header blue-dark"><span data-label="bind:innerHTML, aboutlbl"></span></div><div class = "progressbar"><ul id = "aboutmenu" class="steplist" data-aboutmenu="foreach"><li class="step" data-aboutmenu="bind: innerHTML, label; bind:setCurrent, currentUI" data-aboutevent="listen: mousedown, changeDisplay"></li></ul></div><div id="aboutstack" data-aboutstack="destination"></div></div>';
                    
                    aboutUI.place(Map.get("dashboard-about"));
                    

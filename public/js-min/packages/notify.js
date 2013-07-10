@@ -12,7 +12,6 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 
                 var notify = new Widget(),
                     notifyPopup = new Widget(),
-                    dom = Map.get("notify"),
                     popup = Map.get("notify-popup"),
                     user = Config.get("user"),
                     observer = Config.get("observer"),
@@ -45,8 +44,6 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                 });
                 
                 notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, push; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div><div class = "info-bubble" data-notifevent="listen:touchstart, press; listen:touchend, showAbout">i</div></div>';
-                
-                notify.place(dom);
                 
                 notify.getUnread = function getUnread(){
                         var msg = user.get("notifications"),

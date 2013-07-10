@@ -23,7 +23,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 },
                 widget = this;
 
-                this.template = "<ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:dblclick, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul>";
+                this.template = "<ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:mousedown, setStart; listen:dblclick, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul>";
 
                 this.plugins.addAll({
                         "listideas" : new Model(_store, {
@@ -87,8 +87,6 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 };
                 
                 this.setStart = function(event, node){
-                        touchStart = [event.pageX, event.pageY];
-                        
                         if (currentBar) {this.hideActionBar(currentBar);}  // hide previous action bar 
                 };
                 

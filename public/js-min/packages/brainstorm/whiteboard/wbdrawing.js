@@ -59,7 +59,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             return _promise;
                     },
                     _sid,
-                    _capture = false;
+                    _capture = false, deltaX = (document.width-1024)/2, deltaY = (document.height-748)/2;
                 
                 _widget.plugins.addAll({
                         "labels": new Model(_labels),
@@ -270,7 +270,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 _widget.start = function(event, node){
-                        _line = {x : event.pageX - node.offsetLeft, y : event.pageY - node.offsetTop};
+                        _line = {x : event.pageX - node.offsetLeft - deltaX, y : event.pageY - node.offsetTop - deltaY};
                         _capture = true;
                         event.preventDefault();
                 };
@@ -283,8 +283,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         var moveX, moveY, ret;
                         
                         if (_capture){
-                                moveX = event.pageX - node.offsetLeft - _line.x;
-                                moveY = event.pageY - node.offsetTop - _line.y;
+                                moveX = event.pageX - node.offsetLeft - deltaX - _line.x;
+                                moveY = event.pageY - node.offsetTop - deltaY - _line.y;
                                 ret = _widget.draw(node, moveX, moveY);
                                 _line= {
                                         x : ret.x,

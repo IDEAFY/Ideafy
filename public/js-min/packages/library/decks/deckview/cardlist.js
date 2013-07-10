@@ -201,7 +201,8 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.push = function(event, node){
-                                node.classList.add("invisible");        
+                                node.classList.add("invisible");
+                                event.stopPropagation();        
                         };
                         
                         cardList.press = function(event, node){

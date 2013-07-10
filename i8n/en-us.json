@@ -515,5 +515,6 @@
 	"countrystate": "Country or state",
 	"desc": "Description",
 	"titlerequired": "A title is required",
-	"addcomment" : "Additional information"
+	"addcomment" : "Additional information",
+	"setdeck" : "Set brainstorming deck"
 }

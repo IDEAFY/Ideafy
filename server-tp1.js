@@ -31,7 +31,10 @@ var http = require("http"),
     pwd = require("./pwd.js"),
     srvutils = require("./srvutils.js");
     
-    var changePassword = new pwd.ChangePassword();
+    var changePassword = new pwd.ChangePassword(),
+        checkVersion = new srvutils.CheckVersion(),
+        getFile = new srvutils.GetFile(),
+        getLabels = new srvutils.GetLabels();
   
 
 
@@ -59,13 +62,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 .use(connect.bodyParser({ uploadDir:__dirname+'/public/upload', keepExtensions: true }))
                 .use('/upload', function(req, res){
                         var type = req.body.type,
-                            _path = '/shared/attachments/',
+                            _path = __dirname+'/attachments/',
                             filename, // final name of the file on server
                             tempname, // temp name after file upload
                             now,
                             dataurl,
                             dir;
-                        if (type === 'postit' || type === 'deckpic'){
+                        if (type === 'postit' || type === 'deckpic' || type === 'cardpic'){
                                 dir = req.body.dir;
                                 now = new Date();
                                 filename = _path+dir+'/'+req.body.filename;
@@ -217,7 +220,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 
                 return promise;      
         },
-           getDocAsAdmin = function(docId, cdbStore){
+            getDocAsAdmin = function(docId, cdbStore){
                 var promise = new Promise();
                 transport.request("CouchDB", {
                         method : "GET",
@@ -319,6 +322,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         },
                         data: cdbDoc.toJSON()
                 }, function (res) {
+                        console.log(res);
                         var json = JSON.parse(res);
                         if (json.ok) {
                                 promise.fulfill();
@@ -352,11 +356,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 console.log(error, response, "it's right here");
                         }
                 });        
-            };
+           };
         
         
         // Application handlers
-        olives.handlers.set("Lang", function(json, onEnd){
+        /*olives.handlers.set("Lang", function(json, onEnd){
                 var _path = __dirname+'/i8n/'+json.lang+'.json';
                 fs.exists(_path, function(exists){
                         if (exists){
@@ -368,7 +372,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 onEnd("nok");
                         }    
                 });
-        });
+        });*/
         
         olives.handlers.set("GetLanguages", function(json, onEnd){
                 fs.readdir(__dirname+'/i8n/', function(err, list){
@@ -386,6 +390,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         // utility handlers (no couchdb)
         checkVersion.setCurrentVersion(currentVersion);
         olives.handlers.set("CheckVersion", checkVersion.handler);
+        olives.handlers.set("GetFile", getFile.handler);
+        olives.handlers.set("Lang", getLabels.handler);
         
         // change password handler
         changePassword.setCouchDBDocument(CouchDBDocument);
@@ -412,7 +418,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 sessionStore.get(sessionID, function(err, session) {
                                         if (err) {
                                                 throw new Error(err);
-                                        } else {
+                                        }
+                                        else {
                                                 session.auth = json.name + ":" + json.password;
                                                 sessionStore.set(sessionID, session);
                                                 onEnd({
@@ -590,9 +597,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         });
         
         // retrieve an attachment document (e.g brainstorming session)
-        olives.handlers.set("GetFile", function(json, onEnd){
+        /*olives.handlers.set("GetFile", function(json, onEnd){
                 var dir = json.dir || json.sid,
-                    _filename =  '/shared/attachments/' + json.dir+'/'+json.filename;
+                    _filename =  __dirname+'/attachments/'+ dir+'/'+json.filename;
                     
                 fs.readFile(_filename, 'utf8', function(error, data){
                         if (data){
@@ -603,7 +610,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 onEnd({"error": error});
                         }                
                 });
-        });
+        });*/
         
         // retrieve a given user's avatar
         olives.handlers.set("GetAvatar", function(json, onEnd){
@@ -619,7 +626,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                         // otherwise return file located in attachments directory (should already be base64)
                         else {
-                                _file = '/shared/attachments/avatars/'+_image;
+                                _file = __dirname+"/attachments/avatars/"+_image;
                                 fs.readFile(_file, 'utf8', function (error, data){
                                         if (data){
                                                 onEnd(data);  
@@ -773,8 +780,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         update = true;
                                 }
                                 result.push(achievements.playthegame);
-                        }
-                        //Check user ideas (public ones)
+                        }//Check user ideas (public ones)
                         return getViewAsAdmin("achievements", "publicideas", {key: '"'+json.userid+'"'}, userIdeasCDB);
                 })
                 .then(function(){
@@ -996,7 +1002,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         }
                                 }
                         }
-                        
                         if (update){
                                 // update user rewards documents
                                 updateDocAsAdmin(userRewards.get("_id"), userRewards)
@@ -1109,6 +1114,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 
                 smtpTransport.sendMail(mailOptions, function(error, response) {
                         if (error) {
+                                console.log(error, response);
                                 onEnd({
                                         sendmail : "error",
                                         reason : error,
@@ -1563,11 +1569,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         // updating user document and score following certain actions
         olives.handlers.set("UpdateUIP", function(json, onEnd){
                 var cdb = new CouchDBDocument(),
-                    userRewards = new CouchDBDocument();
+                    userRewards = new CouchDBDocument(),
+                    scored = [];
                 
                 getDocAsAdmin(json.userid+"_rewards", userRewards)
                 .then(function(){
-                        var scored = userRewards.get("scored") || [];
+                        if (userRewards.get("scored")) scored = userRewards.get("scored");
                         return getDocAsAdmin(json.userid, cdb);
                 })
                 .then(function(){
@@ -1616,8 +1623,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                     updateUserWithSessionScore = function(sessionCDB){
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
-                            idList = [], i,l,
+                            idList = [],
                             parts = sessionCDB.get("participants"),
+                            i,l,
                             reason;
                         
                         // gather list of users who should be credited
@@ -1770,7 +1778,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 
                                 if (json.visibility === "public") {increment *= 2;}
                                 if (json.sessionReplay){increment = Math.floor(increment*1.5);}
-                                break;   
+                                console.log("muidea increment : ", increment);
+                                break;     
                         default:
                                 increment = 0;
                                 break;
@@ -1803,7 +1812,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // Clean up attachments from drive when user deletes a session
         olives.handlers.set("cleanUpSession", function(id, onEnd){
-                var _path = '/shared/attachments/'+id;
+                var _path = __dirname+'/attachments/'+id;
                 
                 fs.exists(_path, function(exists){
                         if (exists){
@@ -1815,6 +1824,31 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                         onEnd("ok");
                 });        
+        });
+        
+        // Delete attachment from drive
+        olives.handlers.set("DeleteAttachment", function(json, onEnd){
+                var _path = __dirname+'/attachments/';
+                
+                switch(json.type){
+                        case "card":
+                                _path += "cards/";
+                                break;
+                        default:
+                                break
+                }
+                _path += json.file;
+                fs.exists(_path, function(exists){
+                        if (exists){
+                                // need to delete all files first
+                                fs.unlink(_path, function(err){
+                                        i(err) ? onEnd(err) : onEnd("ok");
+                                }) 
+                        }
+                        else onEnd("file not found");
+                });
+                
+                        
         });
         
         // Receive support requests -- send mail to contact@taiaut.com

@@ -1,0 +1,115 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
+define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-idea", "./detail-stack/public-edit", "./detail-stack/public-sendmail", "./detail-stack/public-share", "service/config", "Store", "lib/spin.min"], 
+	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store, Spinner){
+		return function IdeaStackConstructor(){
+		//declaration
+			var  _widget = new Widget(),
+			     _ideaDetail, _sendmail, _share, _edit,
+		             _stack = new Stack(),
+		             _observer = Config.get("observer"),
+		             _store = new Store(),
+		             current = 0,
+		             spinner = new Spinner({color:"#9AC9CD", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
+
+		//setup
+		        
+			
+			_widget.plugins.addAll({
+			        "detailstack" : _stack
+			});
+			
+			_widget.template = '<div class="detail-stack" data-detailstack="destination"></div>';
+
+		//detail
+			_widget.reset = function reset(viewStore, index){
+			        _store = viewStore;
+			        current = index;
+			        _stack.getStack().show("#public-ideadetail");
+                                _ideaDetail.hideCache();
+                                spinner.spin(_widget.dom);
+			        _ideaDetail.reset(viewStore, index)
+                                .then(function(){
+                                        spinner.stop();
+                                        cache.classList.add("invisible");
+                                });
+			};
+			
+			_widget.action = function action(name){
+                                switch(name){
+                                        
+                                        case "#public-edit":
+                                                _edit.reset(_store.get(current).id);
+                                                _stack.getStack().show('#public-edit');
+                                             break;
+                                        
+                                        case "#public-favorites":
+                                             break;
+                                             
+                                        case "#public-share":
+                                                _share.reset(_store.get(current).id);
+                                                _stack.getStack().show("#public-share");
+                                             break;
+                                        case "close":
+                                             _stack.getStack().show("#public-ideadetail");
+                                             break;
+                                        default:
+                                             _stack.getStack().show("#public-ideadetail");
+                                             break;
+                                }       
+                        };
+			
+			_widget.edit = function edit(id){
+			        _edit.reset(id);
+			        _stack.getStack().show("#public-edit");     
+			};
+			
+			_widget.sendMail = function sendMail(idea){
+			         _sendmail.reset(idea);
+                                 _stack.getStack().show("#public-sendmail");        
+			};
+			
+			_widget.share = function share(idea){
+			        _share.reset(idea._id);
+                                _stack.getStack().show("#public-share");         
+			};
+			
+			// init
+			
+			// initialize UIs
+			_ideaDetail = new IdeaDetail(_widget.action);
+			_edit = new Edit(_widget.action);
+			_sendmail = new Sendmail(_widget.action);
+			_share = new Share(_widget.action);
+			// add to stacck
+			_stack.getStack().add("#public-ideadetail", _ideaDetail);
+                        _stack.getStack().add("#public-edit", _edit);
+                        _stack.getStack().add("#public-sendmail", _sendmail);
+                        _stack.getStack().add("#public-share", _share);
+                        
+                        _observer.watch("public-viewidea", function(id){
+			             _widget.viewIdea(id);       
+			});
+			
+			_observer.watch("public-edit", function(id){
+			             _widget.edit(id);        
+                        });
+                        
+                        _observer.watch("public-sendmail", function(idea){
+                                     _widget.sendMail(idea);        
+                        });
+                        
+                        _observer.watch("public-share", function(idea){
+                                     _widget.share(idea);        
+                        });
+			
+			
+		//return
+			return _widget;
+		};
+	});

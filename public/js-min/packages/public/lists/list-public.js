@@ -8,11 +8,9 @@
 define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function ListPublicConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
-                touchStart,
-                touchPoint,
-                display = false,
-                currentBar = null,
-                _options = {
+                    display = false,
+                    currentBar = null,
+                    _options = {
                         db : $db,
                         view : $view,
                         design : $design,
@@ -20,7 +18,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                 descending : true,
                                 limit : 50
                         }
-                };
+                     };
 
                 //setup
                 _store.setTransport(Config.get("transport"));
@@ -88,8 +86,6 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 this.setStart = function(event, node){
-                        touchStart = [event.pageX, event.pageY];
-                        
                         if (currentBar) {this.hideActionBar(currentBar);}  // hide previous action bar 
                 };
                 
@@ -97,9 +93,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         var id = node.getAttribute("data-listideas_id"),
                             dom = document.getElementById("public");
                         
-                        touchPoint = [event.pageX, event.pageY];
-                        
-                        if (!dom.classList.contains("mosaic") && !display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                        if (!dom.classList.contains("mosaic")){
                                 var actionBar = new ActionBar("idea", node, _store.get(id).id, this.hideActionBar),
                                     frag = document.createDocumentFragment();  
                                 

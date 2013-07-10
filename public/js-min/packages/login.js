@@ -285,7 +285,6 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 spinner && spinner.stop();       
                         };
                 
-                LOGINSPIN = loginSpinner;        
                 //return
                 return _login;
                 };

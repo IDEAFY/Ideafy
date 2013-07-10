@@ -27,7 +27,7 @@ define(["OObject", "Amy/Stack-plugin", "Amy/Control-plugin",
 				"dockcontrol" : _control
 			});
 			
-			_widget.template = '<div><nav id="dock" class="invisible" data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div></div>';
+			_widget.template = '<div><nav id="dock" data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div></div>';
 			
 			_widget.place(Map.get("mainscreen"));
 

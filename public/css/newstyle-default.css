@@ -846,8 +846,9 @@ ul.notify-list{
     -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.6);
     z-index: 2000;
     background: white;
-    top: 134px;
-    right: -565px;
+    top: 50%;
+    margin-top: -200px;
+    left: 100%;
 }
 
 .help-doctor{
@@ -971,12 +972,14 @@ ul.notify-list{
 }
 
 #help-popup.appear{
-    -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateX(-797px);    
+    left:50%;
+    margin-left: -240px;
+    -webkit-transition:left 0.2s linear;   
 }
 
 #tip-popup.visible{
-    -webkit-transform:translateX(-797px);    
+    left:50%;
+    margin-left: -240px;   
 }
 
 #cache.visible{

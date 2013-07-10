@@ -8,8 +8,6 @@
 define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function ListPollingConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
-                touchStart,
-                touchPoint,
                 polling, // timer variable (to use clearInterval)
                 display = false,
                 currentBar = null,
@@ -25,7 +23,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 },
                 widget = this;
 
-                this.template = "<ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:mousedown, setStart; listen:dblclick, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul>";
+                this.template = "<ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:dblclick, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul>";
 
                 this.plugins.addAll({
                         "listideas" : new Model(_store, {
@@ -98,9 +96,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         var id = node.getAttribute("data-listideas_id"),
                             dom = document.getElementById("public");
                         
-                        touchPoint = [event.pageX, event.pageY];
-                        
-                        if (!dom.classList.contains("mosaic") && !display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                        if (!dom.classList.contains("mosaic")){
                                 var actionBar = new ActionBar("idea", node, _store.get(id).id, this.hideActionBar),
                                     frag = document.createDocumentFragment();  
                                 

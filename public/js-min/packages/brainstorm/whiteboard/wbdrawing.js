@@ -59,7 +59,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             return _promise;
                     },
                     _sid,
-                    _capture = false, deltaX = (document.width-1024)/2, deltaY = (document.height-748)/2;
+                    _capture = false, deltaX = (document.body.clientWidth-1024)/2, deltaY = (document.body.clientHeight-748)/2;
                 
                 _widget.plugins.addAll({
                         "labels": new Model(_labels),

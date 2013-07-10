@@ -26,6 +26,7 @@ html, body {
   position:fixed;
   overflow-y: hidden;
   overflow-x: hidden;
+  margin: 0 auto;
 }
 
 ul{

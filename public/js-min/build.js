@@ -5,4 +5,4 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-require.config({baseUrl:"js-min/packages",paths:{lib:"../libs",service:"../services","public":"public",connect:"connect",dashboard:"dashboard",library:"library",brainstorm:"brainstorm",twocents:"twocents"},deps:["lib/socket.io.min","lib/couchdbtools","lib/emily","lib/olives","lib/amy2","lib/spin.min"]}),require(["main"]);
+require.config({baseUrl:"js-min/packages",paths:{lib:"../libs",service:"../services","public":"public",connect:"connect",dashboard:"dashboard",library:"library",brainstorm:"brainstorm",twocents:"twocents"},deps:["main"]}),require(["main"]);

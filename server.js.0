@@ -27,14 +27,10 @@ var http = require("http"),
         hostname : "127.0.0.1",
         port : "6379"
     }),
-    wrap = require("./wrap"),
-    pwd = require("./pwd.js"),
-    srvutils = require("./srvutils.js");
+    wrap = require("./wrap");
+    pwd = require("./pwd.js");
     
-    var changePassword = new pwd.ChangePassword(),
-        checkVersion = new srvutils.CheckVersion(),
-        getFile = new srvutils.GetFile(),
-        getLabels = new srvutils.GetLabels();
+    var changePassword = new pwd.ChangePassword();
   
 
 
@@ -55,7 +51,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var transport = new Transport(olives.handlers),
             _db = "ideafy",
             cdbAdminCredentials = "admin:innovation4U",
-            currentVersion = "1.1.1",
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -67,16 +62,16 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                             tempname, // temp name after file upload
                             now,
                             dataurl,
-                            dir;
-                        if (type === 'postit' || type === 'deckpic' || type === 'cardpic'){
-                                dir = req.body.dir;
+                            sid;
+                        if (type === 'postit'){
+                                sid = req.body.sid;
                                 now = new Date();
-                                filename = _path+dir+'/'+req.body.filename;
+                                filename = _path+sid+'/'+req.body.filename;
                                 dataurl = req.body.dataString;
                                 
-                                fs.exists(_path+dir, function(exists){
+                                fs.exists(_path+sid, function(exists){
                                         if (!exists) {
-                                                fs.mkdir(_path+dir, 0777, function(err){
+                                                fs.mkdir(_path+sid, 0777, function(err){
                                                         if (err) {throw(err);}
                                                         fs.writeFile(filename, dataurl, function(err){
                                                                 if (err) {throw(err);}
@@ -220,7 +215,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 
                 return promise;      
         },
-            getDocAsAdmin = function(docId, cdbStore){
+           getDocAsAdmin = function(docId, cdbStore){
                 var promise = new Promise();
                 transport.request("CouchDB", {
                         method : "GET",
@@ -322,7 +317,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         },
                         data: cdbDoc.toJSON()
                 }, function (res) {
-                        console.log(res);
                         var json = JSON.parse(res);
                         if (json.ok) {
                                 promise.fulfill();
@@ -356,11 +350,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 console.log(error, response, "it's right here");
                         }
                 });        
-           };
+            };
         
         
         // Application handlers
-        /*olives.handlers.set("Lang", function(json, onEnd){
+        olives.handlers.set("Lang", function(json, onEnd){
                 var _path = __dirname+'/i8n/'+json.lang+'.json';
                 fs.exists(_path, function(exists){
                         if (exists){
@@ -372,7 +366,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 onEnd("nok");
                         }    
                 });
-        });*/
+        });
         
         olives.handlers.set("GetLanguages", function(json, onEnd){
                 fs.readdir(__dirname+'/i8n/', function(err, list){
@@ -386,12 +380,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                 })
         });
-        
-        // utility handlers (no couchdb)
-        checkVersion.setCurrentVersion(currentVersion);
-        olives.handlers.set("CheckVersion", checkVersion.handler);
-        olives.handlers.set("GetFile", getFile.handler);
-        olives.handlers.set("Lang", getLabels.handler);
         
         // change password handler
         changePassword.setCouchDBDocument(CouchDBDocument);
@@ -418,8 +406,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 sessionStore.get(sessionID, function(err, session) {
                                         if (err) {
                                                 throw new Error(err);
-                                        }
-                                        else {
+                                        } else {
                                                 session.auth = json.name + ":" + json.password;
                                                 sessionStore.set(sessionID, session);
                                                 onEnd({
@@ -596,6 +583,21 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });
         });
         
+        // retrieve an attachment document (e.g brainstorming session)
+        olives.handlers.set("GetFile", function(json, onEnd){
+                var _filename =  '/shared/attachments/' + json.sid+'/'+json.filename;
+                    
+                fs.readFile(_filename, 'utf8', function(error, data){
+                        if (data){
+                                onEnd(data);
+                        }
+                        else {
+                                console.log(error);
+                                onEnd({"error": error});
+                        }                
+                });
+        });
+        
         // retrieve a given user's avatar
         olives.handlers.set("GetAvatar", function(json, onEnd){
                 var _file, _cdb = new CouchDBView();
@@ -610,7 +612,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                         // otherwise return file located in attachments directory (should already be base64)
                         else {
-                                _file = "/shared/attachments/avatars/"+_image;
+                                _file = '/shared/attachments/avatars/'+_image;
                                 fs.readFile(_file, 'utf8', function (error, data){
                                         if (data){
                                                 onEnd(data);  
@@ -764,7 +766,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         update = true;
                                 }
                                 result.push(achievements.playthegame);
-                        }//Check user ideas (public ones)
+                        }
+                        //Check user ideas (public ones)
                         return getViewAsAdmin("achievements", "publicideas", {key: '"'+json.userid+'"'}, userIdeasCDB);
                 })
                 .then(function(){
@@ -986,6 +989,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         }
                                 }
                         }
+                        
                         if (update){
                                 // update user rewards documents
                                 updateDocAsAdmin(userRewards.get("_id"), userRewards)
@@ -1098,7 +1102,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 
                 smtpTransport.sendMail(mailOptions, function(error, response) {
                         if (error) {
-                                console.log(error, response);
                                 onEnd({
                                         sendmail : "error",
                                         reason : error,
@@ -1607,9 +1610,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                     updateUserWithSessionScore = function(sessionCDB){
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
-                            idList = [],
+                            idList = [], i,l,
                             parts = sessionCDB.get("participants"),
-                            i,l,
                             reason;
                         
                         // gather list of users who should be credited
@@ -1762,8 +1764,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 
                                 if (json.visibility === "public") {increment *= 2;}
                                 if (json.sessionReplay){increment = Math.floor(increment*1.5);}
-                                console.log("muidea increment : ", increment);
-                                break;     
+                                break;   
                         default:
                                 increment = 0;
                                 break;
@@ -1808,31 +1809,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                         onEnd("ok");
                 });        
-        });
-        
-        // Delete attachment from drive
-        olives.handlers.set("DeleteAttachment", function(json, onEnd){
-                var _path = '/shared/attachments/';
-                
-                switch(json.type){
-                        case "card":
-                                _path += "cards/";
-                                break;
-                        default:
-                                break
-                }
-                _path += json.file;
-                fs.exists(_path, function(exists){
-                        if (exists){
-                                // need to delete all files first
-                                fs.unlink(_path, function(err){
-                                        i(err) ? onEnd(err) : onEnd("ok");
-                                }) 
-                        }
-                        else onEnd("file not found");
-                });
-                
-                        
         });
         
         // Receive support requests -- send mail to contact@taiaut.com

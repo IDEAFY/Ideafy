@@ -1,0 +1,8 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
+define(["Olives/OObject","Olives/Model-plugin","Olives/Event-plugin","Amy/Stack-plugin","Store","service/map","./deckdetails","./cardlist","service/config"],function(e,t,n,r,i,s,o,u,a){return function(){var l=new e,c=new i([{name:"characters",active:!1},{name:"contexts",active:!1},{name:"problems",active:!1},{name:"techno",active:!1}]),h=new r;return l.plugins.addAll({cardmenu:new t(c,{setClass:function(e){this.classList.add(e)},setActive:function(e){e?this.classList.add("active"):this.classList.remove("active")}}),deckviewstack:h,deckviewevent:new n(l)}),l.template='<div><ul class="card-menu" data-cardmenu="foreach"><li data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: mousedown, viewCards"></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>',l.viewCards=function(e,t){var n=t.getAttribute("data-cardmenu_id");c.loop(function(e,t){t===parseInt(n)?c.update(t,"active",!0):c.update(t,"active",!1)}),h.getStack().show(c.get(n).name)},l.reset=function(t){var n=a.get("user").get("lang"),r;r=t,["details","characters","contexts","problems","techno"].forEach(function(e){h.getStack().get(e).reset(r)}),h.getStack().show("details")},l.init=function(){h.getStack().add("details",new o),h.getStack().add("characters",new u("characters")),h.getStack().add("contexts",new u("contexts")),h.getStack().add("problems",new u("problems")),h.getStack().add("techno",new u("techno"))},l.place(s.get("deckview")),l}});

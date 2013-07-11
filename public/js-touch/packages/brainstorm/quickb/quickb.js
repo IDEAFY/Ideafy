@@ -300,6 +300,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }        
                    });
                    
+                   QSESSION = _session;
                    // return
                    return _widget;
            };    

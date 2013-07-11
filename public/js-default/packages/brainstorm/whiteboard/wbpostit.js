@@ -107,6 +107,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                         $exit("postit");        
                 };
                 
+                
                 return _widget;      
                    
            };

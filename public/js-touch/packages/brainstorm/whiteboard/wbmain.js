@@ -24,7 +24,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                                             content = $store.get(id).content,
                                             style = $store.get(id).style,
                                             bg = $store.get(id).background,
-                                            dir
+                                            dir,
                                             json;
                                         switch(type){
                                                 case "postit":

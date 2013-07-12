@@ -18,11 +18,8 @@
 	<title>Ideafy</title>
 	<link rel="stylesheet" href="css/login-default-min.css">
   	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/newstyle-default.css">
-  	<script type="text/javascript" src="spin-min.js" charset="utf-8"></script>
   	<script type="text/javascript" src="cordova-2.8.1-min.js" charset="utf-8"></script>
   	<script type="text/javascript" charset="utf-8">
-        var spinner = new Spinner.spin();
-        
         function onLoad(){
         	// Wait for Cordova to load
         	//
@@ -39,14 +36,14 @@
             app.setAttribute("data-main", "js-default/build");
             app.setAttribute("src", "js-default/libs/require.js");
             document.head.appendChild(app);
-            spinner.stop();
+            document.querySelector(".spinner").classList.remove("spinner");
         }
 	</script>
 </head>
 <body onload="onLoad()" data-stack="destination" data-event="selector:.pressed-btn, touchstart, press; selector:.pressed-btn, touchend, release; listen: orientationchange, forceLandscape">
 	<iframe src="http://8.19.34.68:1664/blank.html" style="display:none" frameborder="0"></iframe>
 	<div id="login">
-		<img src="img/logoLogInPage.png">
+		<img src="img/logoLogInPage.png" class="spinner">
 		<div id="login-stack" data-loginstack="destination"></div>
   	</div>
 	<div id="newidea-popup"></div>

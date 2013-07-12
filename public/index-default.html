@@ -18,14 +18,19 @@
 	<title>Ideafy</title>
 	<link rel="stylesheet" href="css/login-default-min.css">
   	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/newstyle-default.css">
+  	<script type="text/javascript" src="spin-min.js" charset="utf-8"></script>
   	<script type="text/javascript" src="cordova-2.8.1-min.js" charset="utf-8"></script>
   	<script type="text/javascript" charset="utf-8">
+        var spinner = new Spinner.spin();
         
         function onLoad(){
         	// Wait for Cordova to load
         	//
         	document.addEventListener("deviceready", onDeviceReady, false);
-        	cordova.fireDocumentEvent("deviceready");	
+        	cordova.fireDocumentEvent("deviceready");
+        	
+        	// add spinner while waiting
+        	spinner.spin(document.getElementById("login"));
         }
         
         function onDeviceReady() {
@@ -34,6 +39,7 @@
             app.setAttribute("data-main", "js-default/build");
             app.setAttribute("src", "js-default/libs/require.js");
             document.head.appendChild(app);
+            spinner.stop();
         }
 	</script>
 </head>

@@ -17,7 +17,7 @@
 	<meta charset="utf-8">
 	<title>Ideafy</title>
 	<link rel="stylesheet" href="css/login-default-min.css">
-  	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/newstyle-default.css">
+  	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/newstyle-default-min.css">
   	<script type="text/javascript" src="cordova-2.8.1-min.js" charset="utf-8"></script>
   	<script type="text/javascript" charset="utf-8">
         
@@ -31,8 +31,8 @@
         function onDeviceReady() {
         	
         	var app = document.createElement('script');
-            app.setAttribute("data-main", "js-default/build");
-            app.setAttribute("src", "js-default/libs/require.js");
+            app.setAttribute("data-main", "js-min/build");
+            app.setAttribute("src", "js-min/libs/require.js");
             document.head.appendChild(app);
         }
 	</script>

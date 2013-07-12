@@ -25,9 +25,6 @@
         	//
         	document.addEventListener("deviceready", onDeviceReady, false);
         	cordova.fireDocumentEvent("deviceready");
-        	
-        	// add spinner while waiting
-        	spinner.spin(document.getElementById("login"));
         }
         
         function onDeviceReady() {
@@ -42,7 +39,8 @@
 <body onload="onLoad()" data-stack="destination" data-event="selector:.pressed-btn, touchstart, press; selector:.pressed-btn, touchend, release; listen: orientationchange, forceLandscape">
 	<iframe src="http://8.19.34.68:1664/blank.html" style="display:none" frameborder="0"></iframe>
 	<div id="login">
-		<img src="img/logoLogInPage.png" class="spinner">
+		<img src="img/logoLogInPage.png">
+		<div class = "spinner"></div>
 		<div id="login-stack" data-loginstack="destination"></div>
   	</div>
 	<div id="newidea-popup"></div>

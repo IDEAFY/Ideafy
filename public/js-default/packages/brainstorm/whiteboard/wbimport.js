@@ -70,11 +70,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             
                             _ctx.clearRect(0,0,_canvas.width, _canvas.height);
                     };
-                
-/*                _widget.template = '<div class="import"><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/\*" data-importevent="listen: touchstart, selectpress; listen:mouseup, check; listen: change, preview"><div data-labels="bind:innerHTML, importlbl"></div></span><div id="postpic" class="wbpostit invisible" data-importmodel="bind:setVisibility, content"><div class="postit-cancel postit-close" data-importevent="listen:touchstart,cancel"></div><div class="picframe"><canvas id="preview" data-importmodel="bind:showPreview, content"></canvas></div><div name="post" class = "postpostit" data-importevent="listen: touchstart, press; listen:mouseup, post"></div><div class = "delpostit" name="del" data-importevent="listen:mousedown, press;listen:mouseup, del"></div><div class="uploadprogress" data-importprogress="bind:showProgress, status"></div></div>'; */
-                // removed <div class="uploadprogress" data-importprogress="bind:innerHTML, status"></div> before the end
-                
-                _widget.template = '<div class="import"><ul id="importbuttons"><li><div class="importbutton choosepic" data-importevent="listen: mousedown, press; listen:mouseup, picturePreview"></div><label data-labels="bind:innerHTML, importpiclbl"></label></li><li><div class="importbutton takepic" data-importevent="listen: mousedown, press; listen:mouseup, cameraPreview"></div><label data-labels="bind:innerHTML, importcameralbl"></label></li></ul><div id="postpic" class="wbpostit invisible" data-importmodel="bind:setVisibility, content"><div class="postit-cancel postit-close" data-importevent="listen:mousedown,cancel"></div><div class="picframe"><canvas id="preview" data-importmodel="bind:showPreview, content"></canvas></div><div name="post" class = "postpostit" data-importevent="listen: mousedown, press; listen:mouseup, post"></div><div class = "delpostit" name="del" data-importevent="listen:mousedown, press;listen:mouseup, del"></div><div class="uploadprogress" data-importprogress="bind:showProgress, status"></div></div>';
+                                
+                _widget.template = '<div class="import"><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/\*" data-importevent="listen: touchstart, selectpress; listen:mouseup, check; listen: change, preview"><div data-labels="bind:innerHTML, importlbl"></div></span><div id="postpic" class="wbpostit invisible" data-importmodel="bind:setVisibility, content"><div class="postit-cancel postit-close" data-importevent="listen:mousedown,cancel"></div><div class="picframe"><canvas id="preview" data-importmodel="bind:showPreview, content"></canvas></div><div name="post" class = "postpostit" data-importevent="listen: mousedown, press; listen:mouseup, post"></div><div class = "delpostit" name="del" data-importevent="listen:mousedown, press;listen:mouseup, del"></div><div class="uploadprogress" data-importprogress="bind:showProgress, status"></div></div>';
                 
                 _widget.plugins.addAll({
                         "labels" : new Model(_labels),
@@ -115,56 +112,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         node.classList.remove("pressed");
                         if (node.files.length) _widget.preview('change', node);
                 };
-                
-                _widget.cameraPreview = function(event, node){ 
-                        var _img = new Image(),
-                            _options = {quality:50, correctOrientation: true},
-                            ul = document.getElementById("importbuttons");
-                        
-                        function onSuccess(imageData){
-                               _img.src = imageData;
-                                setTimeout(function(){
-                                        _drawImage(_img);
-                                        node.classList.remove("pressed");
-                                        ul.classList.add("invisible");
-                                        document.getElementById("postpic").classList.remove("invisible");
-                                }, 750);
-                        }
-                        
-                        function onFail(message){
-                                alert("error: "+message);
-                                node.classList.remove("pressed");
-                        }
-                        
-                        navigator.camera.getPicture(onSuccess, onFail, _options);       
-                };
-                
-                _widget.picturePreview = function(event, node){
-                        var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
-                            _img = new Image(),
-                            _options = {quality:50, correctOrientation: true, sourceType: source},
-                            ul = document.getElementById("importbuttons");
-                        
-                        function onSuccess(imageData){
-                               _img.src = imageData;
-                                setTimeout(function(){
-                                        _drawImage(_img);
-                                        node.classList.remove("pressed");
-                                        ul.classList.add("invisible");
-                                        document.getElementById("postpic").classList.remove("invisible");
-                                }, 1000);
-                        }
-                        
-                        function onFail(message){
-                                alert("error: "+message);
-                                node.classList.remove("pressed");
-                        }
-                        
-                        navigator.camera.getPicture(onSuccess, onFail, _options);
-                                
-                };
-                
-/*                _widget.preview = function(event, node){
+                               
+                _widget.preview = function(event, node){
                         
                         var _img = new Image(),
                             _reader = new FileReader();
@@ -179,7 +128,12 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         }, 300);
                         };
                         _reader.readAsDataURL(node.files[0]);
-                }; */
+                };
+                
+                _widget.selectpress = function(event, node){
+                        node.nextSibling.classList.add("pressed");
+                        node.value = "";       
+                };
                 
                 _widget.press = function(event, node){
                         node.classList.add("pressed");      

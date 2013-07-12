@@ -154,7 +154,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 _widget.reset();
                                 _progress.reset({"status": ""});
                                 _clearCanvas();
-                                document.getElementById("importbuttons").classList.remove("invisible");
+                                _widget.dom.querySelector(".importbutton").classList.remove("invisible");
                                 $exit("import");
                         });  
                 };

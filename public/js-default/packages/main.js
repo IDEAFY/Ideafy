@@ -139,7 +139,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         _local.sync("ideafy-data");
         _login = new Login(_body.init, _body.reload, _local);
         
-        document.querySelector(".spinner").classList.remove("spinner");
+        document.querySelector(".spinner").classList.add("invisible");
         
         _stack.getStack().show("#login");
         _stack.getStack().setCurrentScreen(_login);

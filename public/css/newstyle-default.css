@@ -78,6 +78,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     }
 
     .spinner {
+        display: inline-block;
+        font-size:4em;
+        height: 1em;
+        line-height: 1;
         font-family: Ideafy;
         -webkit-animation: myRotate 1s linear infinite;
     }

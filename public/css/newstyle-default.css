@@ -88,7 +88,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
         font-size:4em;
         height: 1em;
         line-height: 1;
-        font-family: Ideafy, sans-serif;
+        font-family: Ideafy;
         -webkit-animation: myRotate 1s linear infinite;
     }
     

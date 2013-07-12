@@ -83,7 +83,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     }
 
     
-    .spinner:before {
+    .spinner{
         display: inline-block;
         font-size:4em;
         height: 1em;
@@ -92,7 +92,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
         -webkit-animation: myRotate 1s linear infinite;;
     }
     
-    .waiting:before {content: "\e000";}
+    .waiting{content: "\e000";}
 
     @-webkit-keyframes myRotate {
         from {

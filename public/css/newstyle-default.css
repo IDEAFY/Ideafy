@@ -93,6 +93,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
         height: 1em;
         line-height: 1;
         font-family: Ideafy;
+        color: #657B99;
     }
 
     @-webkit-keyframes myRotate {

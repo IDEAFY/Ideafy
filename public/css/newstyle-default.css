@@ -72,7 +72,13 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 /* init */
+    @font-face {
+        font-family: Ideafy;
+        src: url('../fonts/ideafy-waiting.ttf') format("truetype");
+    }
+
     .spinner {
+        font-family: Ideafy;
         -webkit-animation: myRotate 1s linear infinite;
     }
 

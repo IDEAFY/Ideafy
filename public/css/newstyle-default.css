@@ -82,17 +82,18 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     font-style: normal;
     }
 
+    .spinner{
+        -webkit-animation: myRotate 1s linear infinite;
+    }
     
-    .spinner:before{
+    .waiting:before{
+        content: "\e000";
         display: inline-block;
         font-size:4em;
         height: 1em;
         line-height: 1;
         font-family: Ideafy;
-        -webkit-animation: myRotate 1s linear infinite;
     }
-    
-    .waiting:before{content: "\e000";}
 
     @-webkit-keyframes myRotate {
         from {

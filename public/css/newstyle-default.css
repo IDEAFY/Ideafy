@@ -74,17 +74,28 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 /* init */
     @font-face {
         font-family: Ideafy;
-        src: url('../fonts/ideafy-waiting.ttf') format("truetype");
+        src: url('../fonts/ideafy-waiting.woff') format('woff'),
+             url('../fonts/ideafy-waiting.svg#svgFontName') format('svg'),
+             url('../fonts/ideafy-waiting.eot?#iefix') format('embedded-opentype'),
+             url('../fonts/ideafy-waiting.ttf') format("truetype");
+    font-weight: normal;
+    font-style: normal;
     }
 
-    .spinner {
+    
+    .spinner:before {
         display: inline-block;
         font-size:4em;
         height: 1em;
         line-height: 1;
-        font-family: Ideafy;
+        font-family: Ideafy, sans-serif;
         -webkit-animation: myRotate 1s linear infinite;
+        -webkit-font-smoothing: antialiased;
+        -o-transform: scale(1);
+        text-rendering: optimizeLegibility;
     }
+    
+    .waiting:before {content: "\e000";}
 
     @-webkit-keyframes myRotate {
         from {

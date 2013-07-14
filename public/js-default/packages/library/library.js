@@ -20,7 +20,7 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 		//setup
 		        _widget.plugins.add("librarystack", _stack);
 		        
-		        _widget.template = '<div id="library"><div id="library-menu"></div><div class="stack" data-librarystack="destination"></div></div>';
+		        _widget.template = '<div id="library"><div class="cache"></div><div id="library-menu"></div><div class="stack" data-librarystack="destination"></div></div>';
 		      
 			_widget.place(Map.get("library"));
 			

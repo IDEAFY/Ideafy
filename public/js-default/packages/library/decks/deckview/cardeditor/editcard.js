@@ -142,7 +142,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         "editevent" : new Event(editCard)
                 });
                 
-                editCard.template = '<div class="cardpopup editcard"><div class="card-detail"><div class="cd-header blue-dark" data-model="bind:formatTitle, type"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: mousedown, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class ="cardpicture" data-model="bind:setPic, picture_file"></div><div class="picinfo"><span class="cd-creditslbl"data-label="bind:innerHTML, credits"></span><input type="text" class="input editcredit" data-label="bind: placeholder, picturecredit" data-model="bind:value, picture_credit"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: mousedown, press; listen:mouseup, picturePreview"></button><button class="takepic" data-editevent="listen: mousedown, press; listen:mouseup, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><textarea class="input enterdyknow" data-label="bind: placeholder, enterdyknow" data-model="bind:value,didYouKnow"></textarea><span class="cd-sourcelbl" data-label="bind:innerHTML, source"></span><textarea class="input entersources" data-label="bind: placeholder, dyknowsources" data-model="bind: value, sources"></textarea></div><label class="editerror" data-error="bind:innerHTML, error"></label><div class="cancelmail" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
+                editCard.template = '<div class="cardpopup editcard"><div class="card-detail"><div class="cd-header blue-dark" data-model="bind:formatTitle, type"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: mousedown, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class ="cardpicture" data-model="bind:setPic, picture_file"></div><div class="picinfo"><span class="cd-creditslbl"data-label="bind:innerHTML, credits"></span><input type="text" class="input editcredit" data-label="bind: placeholder, picturecredit" data-model="bind:value, picture_credit"></div><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editevent="listen: mousedown, selectpress; listen: change, uploadnDisplay"><div data-label="bind:innerHTML, importlbl"></div></span></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><textarea class="input enterdyknow" data-label="bind: placeholder, enterdyknow" data-model="bind:value,didYouKnow"></textarea><span class="cd-sourcelbl" data-label="bind:innerHTML, source"></span><textarea class="input entersources" data-label="bind: placeholder, dyknowsources" data-model="bind: value, sources"></textarea></div><label class="editerror" data-error="bind:innerHTML, error"></label><div class="cancelmail" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
                
                editCard.reset = function reset(deckId, id, type){
                         var now = new Date();
@@ -205,62 +205,33 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         model.set("title", node.innerHTML);        
                };
                
-               editCard.picturePreview = function(event, node){
-                        var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
+               editCard.selectpress = function(event, node){
+                        node.nextSibling.classList.add("pressed");
+                        node.value = "";       
+                };
+                        
+                editCard.uploadnDisplay = function(event, node){
+                        var _reader = new FileReader(),
                             _img = new Image(),
-                            _options = {quality:50, correctOrientation: true, sourceType: source},
-                            onSuccess, onFail,
-                            picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin(),
-                            el = editCard.dom.querySelector(".cardpicture");
-                        
-                        onSuccess = function(imageData){
-                                _img.src = imageData;
-                                el.setAttribute("style", "background-image: none");
-                                picSpinner.spin(el);
+                            el = editCard.dom.querySelector(".cardpicture"),
+                            picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
+                         
+                        el.setAttribute("style", "background-image: none");
+                        picSpinner.spin(el)        
+                        // first read the file to memory, once loaded resize and display upload button
+                        _reader.onload = function(e) {
+                                _img.src = e.target.result;
+                                // timeout is needed to render image and obtain its dimensions
                                 setTimeout(function(){
                                         cropImage(resizeImage(_img), function(result){
                                                 el.setAttribute("style", "background-image: url('"+result+"')");
                                                 picSpinner.stop();
-                                                _currentDataURL = result;
-                                                node.classList.remove("pressed");        
+                                                _currentDataURL = result;        
                                         });
-                                }, 750);
+                                        node.nextSibling.classList.remove("pressed");
+                                }, 300);
                         };
-                        
-                        onFail = function(message){
-                                alert("error: "+message);
-                        };
-                        
-                        navigator.camera.getPicture(onSuccess, onFail, _options);
-               };
-               
-               editCard.cameraPreview = function(event, node){ 
-                        var _img = new Image(),
-                            _options = {quality:50, correctOrientation: true},
-                            onSuccess, onFail,
-                            picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin(),
-                            el = editCard.dom.querySelector(".cardpicture");
-                        
-                        onSuccess = function(imageData){
-                                _img.src = imageData;
-                                el.setAttribute("style", "background-image: none");
-                                picSpinner.spin(el);
-                                setTimeout(function(){
-                                        cropImage(resizeImage(_img), function(result){
-                                                el.setAttribute("style", "background-image: url('"+result+"')");
-                                                _currentDataURL = result;
-                                                picSpinner.stop();
-                                                node.classList.remove("pressed");        
-                                        });
-                                }, 750);
-                        }
-                        
-                        onFail = function(message){
-                                alert("error: "+message);
-                                node.classList.remove("pressed");
-                        }
-                        
-                        navigator.camera.getPicture(onSuccess, onFail, _options);       
+                        _reader.readAsDataURL(node.files[0]);
                 };
                
                editCard.press = function(event, node){
@@ -324,9 +295,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         });
                };
                
-               CARDMODEL = model;
-               UPLOADSPIN = spinner;
-                
                return editCard;         
            };   
         });

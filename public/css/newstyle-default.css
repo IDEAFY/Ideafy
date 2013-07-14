@@ -377,6 +377,15 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
 }
 
+.cache{
+    position: absolute;
+    z-index: -1500;
+    opacity: 0;
+    background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
+    width: 100%;
+    height: 100%;   
+}
+
 #cache.appear, .cache.appear{
     opacity: 0.9;
     z-index: 1500;
@@ -997,12 +1006,6 @@ ul.notify-list{
 #newidea-popup.appear, #newdeck-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
     -webkit-transform:translateY(689px);
-}
-
-#newdeck-popup .cache{
-    z-index: -1500;
-    opacity: 0;
-    background-image: -webkit-repeating-radial-gradient(circle, #808080, black);    
 }
 
 #new2q-popup.appear, #new2c-popup.appear{
@@ -7278,9 +7281,6 @@ li.my2q{
 }
 
 #mupreview .cache{
-    width: 100%;
-    height: 100%;
-    background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
     opacity: 0.5;    
 }
 

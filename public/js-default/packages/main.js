@@ -212,32 +212,21 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 document.getElementById("cache").classList.remove("appear");
         });
         
-        /*
-         * Manage socket connectivity
-         */
-        document.addEventListener("pause", Utils.disconnectSocket);
-        document.addEventListener("resume", Utils.checkSocketStatus);
-                
         // attempt to reconnect socket if required in case of user actions
         Map.get("body").addEventListener("mousedown", Utils.checkSocketStatus);
         
         // resync user document upon socket reconnection
         Config.get("observer").watch("reconnect", function(){
                 _local.sync("ideafy-data");
-                if (navigator.connection && navigator.connection.type === "none"){
-                        _login.setScreen("#nointernet");
-                }
-                else {
-                        checkServerStatus
-                        .then(function(){
-                                _user.unsync();
-                                return _user.sync(_db, _local.get("currentLogin"));
-                        }, function(){
+                checkServerStatus
+                .then(function(){
+                        _user.unsync();
+                        return _user.sync(_db, _local.get("currentLogin"));
+                }, function(){
                                 _login.setScreen("#maintenance-screen");        
                         })
-                        .then(function(){
-                                console.log("user resynchronized");
-                        });          
-                }    
+                .then(function(){
+                        console.log("user resynchronized");
+                });              
         });
 }); 

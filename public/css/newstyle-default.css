@@ -3494,8 +3494,7 @@ textarea.solution {
     display: inline-block;
 }
 
-.importbutton input{
-    cursor: pointer;
+.import .importbutton input{
     position: absolute;
     left: 290px;
     top: 60px;
@@ -3503,6 +3502,7 @@ textarea.solution {
     height:40px;
     opacity: 0;    
 }
+
 
 .importbutton div{
     border-radius: 5px;

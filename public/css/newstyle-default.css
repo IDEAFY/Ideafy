@@ -3494,13 +3494,19 @@ textarea.solution {
     display: inline-block;
 }
 
+.importbutton input{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
 .import .importbutton input{
     position: absolute;
     left: 290px;
     top: 60px;
     width: 110px;
-    height:40px;
-    opacity: 0;    
+    height:40px;   
 }
 
 

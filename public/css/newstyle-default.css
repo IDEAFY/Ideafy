@@ -848,7 +848,7 @@ ul.notify-list{
     margin-top: 20px;
 }
 
-#newdeck-popup .importbutton, .import .importbutton{
+#newdeck-popup .importbutton{
     width: 150px;
     height: 30px;
     border: 1px solid #657b99;
@@ -3497,8 +3497,8 @@ textarea.solution {
 .importbutton input{
     cursor: pointer;
     position: absolute;
-    left: 290;
-    top: 60;
+    left: 290px;
+    top: 60px;
     width: 110px;
     height:40px;
     opacity: 0;    

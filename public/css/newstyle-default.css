@@ -377,7 +377,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
 }
 
-#cache.appear{
+#cache.appear, .cache.appear{
     opacity: 0.9;
     z-index: 1500;
     -webkit-transition: opacity 0.7s linear;
@@ -999,8 +999,10 @@ ul.notify-list{
     -webkit-transform:translateY(689px);
 }
 
-#newdeck-popup.appear{
-    -webkit-transform:translate3d(0,0,2000);
+#newdeck-popup .cache{
+    z-index: -1500;
+    opacity: 0;
+    background-image: -webkit-repeating-radial-gradient(circle, #808080, black);    
 }
 
 #new2q-popup.appear, #new2c-popup.appear{

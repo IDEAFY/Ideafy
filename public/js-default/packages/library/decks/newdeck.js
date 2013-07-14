@@ -95,7 +95,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newdeckevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:mousedown, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend>Select a deck icon</legend><div class="deckicon"><div class="decklogo"></div><div class="importbutton" data-newdeckevent="listen: mousedown, press; listen:mouseup, picturePreview" data-labels="bind:innerHTML, importpiclbl"></div></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></form></div>';
+                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:mousedown, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend>Select a deck icon</legend><div class="deckicon"><div class="decklogo"></div><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editprofileevent="listen: mousedown, selectpress; listen: change, uploadnDisplay"><div data-label="bind:innerHTML, importlbl"></div></span></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></form></div>';
                         
                         _widget.reset = function reset(edit){
                                 _store.reset({
@@ -127,30 +127,31 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 node.classList.add("pressed");
                         };
                         
-                        _widget.picturePreview = function(event, node){
-                                var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
-                                    _img = new Image(),
-                                    _options = {quality:50, correctOrientation: true, sourceType: source},
-                                    onSuccess, onFail;
+                        _widget.selectpress = function(event, node){
+                                node.nextSibling.classList.add("pressed");
+                                node.value = "";       
+                        };
                         
-                                onSuccess = function(imageData){
-                                        _img.src = imageData;
+                        _widget.uploadnDisplay = function(event, node){
+                                var _reader = new FileReader(),
+                                    _img = new Image();
+                                
+                                // first read the file to memory, once loaded resize and display upload button
+                                _reader.onload = function(e) {
+                                        _img.src = e.target.result;
+                                        // timeout is needed to render image and obtain its dimensions
                                         setTimeout(function(){
                                                 cropImage(resizeImage(_img), function(result){
                                                         var el = _widget.dom.querySelector(".decklogo");
                                                         el.setAttribute("style", "background-image: url('"+result+"')");
                                                         _currentDataURL = result;
                                                         _store.set("picture_file", "decklogo");
-                                                        node.classList.remove("pressed");        
+                                                        node.classList.remove("pressed");         
                                                 });
-                                        }, 750);
+                                                node.nextSibling.classList.remove("pressed");
+                                                }, 300);
                                 };
-                        
-                                onFail = function(message){
-                                        alert("error: "+message);
-                                };
-                        
-                                navigator.camera.getPicture(onSuccess, onFail, _options);
+                                _reader.readAsDataURL(node.files[0]);
                         };
                         
                         _widget.closePopup = function closePopup(){

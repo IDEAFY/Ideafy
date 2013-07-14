@@ -134,19 +134,21 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.uploadnDisplay = function(event, node){
                                 var _reader = new FileReader(),
-                                    _img = new Image();
+                                    _img = new Image(),
+                                    el = editCard.dom.querySelector(".decklogo"),
+                                    picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
                                 
+                                el.setAttribute("style", "background-image: none;");
+                                picSpinner.spin(el);
                                 // first read the file to memory, once loaded resize and display upload button
                                 _reader.onload = function(e) {
                                         _img.src = e.target.result;
                                         // timeout is needed to render image and obtain its dimensions
                                         setTimeout(function(){
                                                 cropImage(resizeImage(_img), function(result){
-                                                        var el = _widget.dom.querySelector(".decklogo");
                                                         el.setAttribute("style", "background-image: url('"+result+"')");
                                                         _currentDataURL = result;
-                                                        _store.set("picture_file", "decklogo");
-                                                        node.classList.remove("pressed");         
+                                                        _store.set("picture_file", "decklogo");         
                                                 });
                                                 node.nextSibling.classList.remove("pressed");
                                                 }, 300);

@@ -999,6 +999,10 @@ ul.notify-list{
     -webkit-transform:translateY(689px);
 }
 
+#newdeck-popup.appear{
+    -webkit-transform:translate3d(0,0,2000);
+}
+
 #new2q-popup.appear, #new2c-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
     -webkit-transform:translateY(550px);

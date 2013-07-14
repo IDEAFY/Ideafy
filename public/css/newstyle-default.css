@@ -848,8 +848,8 @@ ul.notify-list{
     margin-top: 20px;
 }
 
-#newdeck-popup .importbutton{
-    width: 120px;
+#newdeck-popup .importbutton, .import .importbutton{
+    width: 150px;
     height: 30px;
     border: 1px solid #657b99;
     background: #f5f5f5;
@@ -3510,7 +3510,6 @@ textarea.solution {
     padding-right: 5px;
     background: white;
     font-family: Helvetica;
-    font-size: 14px;
     color: #292929;
     text-align: center;
     border: 1px solid #E6E6E6;

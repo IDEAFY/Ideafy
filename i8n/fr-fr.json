@@ -516,5 +516,6 @@
 	"desc": "Description",
 	"titlerequired": "Veuillez saisir un titre",
 	"addcomment" : "Informations complémentaires",
-	"setdeck" : "Sélectionner le deck actif"
+	"setdeck" : "Sélectionner le deck actif",
+	"setdecklogo" : "Sélectionnez une icône"
 }

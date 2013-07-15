@@ -105,7 +105,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                }
                                         },
                                         setPic : function(pic){
-                                                var json;
+                                                var json, node=this;
                                                 if (pic && pic.search("img/decks/") > -1){
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
                                                 }

@@ -144,7 +144,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         "editevent" : new Event(editCard)
                 });
                 
-                editCard.template = '<div class="cardpopup editcard"><div class="card-detail"><div class="cd-header blue-dark" data-model="bind:formatTitle, type"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: mousedown, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class ="cardpicture" data-model="bind:setPic, picture_file"></div><div class="picinfo"><span class="cd-creditslbl"data-label="bind:innerHTML, credits"></span><input type="text" class="input editcredit" data-label="bind: placeholder, picturecredit" data-model="bind:value, picture_credit"></div><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editevent="listen: mousedown, selectpress; listen: change, uploadnDisplay"><div data-label="bind:innerHTML, importlbl"></div></span></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><textarea class="input enterdyknow" data-label="bind: placeholder, enterdyknow" data-model="bind:value,didYouKnow"></textarea><span class="cd-sourcelbl" data-label="bind:innerHTML, source"></span><textarea class="input entersources" data-label="bind: placeholder, dyknowsources" data-model="bind: value, sources"></textarea></div><label class="editerror" data-error="bind:innerHTML, error"></label><div class="cancelmail" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
+                editCard.template = '<div class="cardpopup editcard"><div class="card-detail"><div class="cd-header blue-dark" data-model="bind:formatTitle, type"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: mousedown, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class ="cardpicture" data-model="bind:setPic, picture_file"></div><div class="picinfo"><span class="cd-creditslbl"data-label="bind:innerHTML, credits"></span><input type="text" class="input editcredit" data-label="bind: placeholder, picturecredit" data-model="bind:value, picture_credit"></div><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editevent="listen: mousedown, selectpress; listen: change, uploadnDisplay"><div data-label="bind:innerHTML, importlbl" data-editevent="listen:mousedown, press; listen:mouseup, release"></div></span></div><div class="cd-contentarea"><span class="contentTitle" data-label="bind: innerHTML, dyknow"></span><textarea class="input enterdyknow" data-label="bind: placeholder, enterdyknow" data-model="bind:value,didYouKnow"></textarea><span class="cd-sourcelbl" data-label="bind:innerHTML, source"></span><textarea class="input entersources" data-label="bind: placeholder, dyknowsources" data-model="bind: value, sources"></textarea></div><label class="editerror" data-error="bind:innerHTML, error"></label><div class="cancelmail" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-label="bind:innerHTML, savelbl">Save</div></div></div>';
                
                editCard.reset = function reset(deckId, id, type){
                         var now = new Date();
@@ -208,8 +208,13 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                };
                
                editCard.selectpress = function(event, node){
-                        node.nextSibling.classList.add("pressed");
                         node.value = "";       
+                };
+                
+                editCard.release = function(event, node){
+                        setTimeout(function(){
+                                node.classList.remove("pressed");
+                        }, 300);        
                 };
                         
                 editCard.uploadnDisplay = function(event, node){
@@ -230,7 +235,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                                 picSpinner.stop();
                                                 _currentDataURL = result;        
                                         });
-                                        node.nextSibling.classList.remove("pressed");
                                 }, 300);
                         };
                         _reader.readAsDataURL(node.files[0]);

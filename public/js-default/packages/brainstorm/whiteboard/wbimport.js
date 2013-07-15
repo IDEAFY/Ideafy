@@ -139,7 +139,9 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 _widget.release = function(event, node){
-                        node.classList.remove("pressed");
+                        setTimeout(function(){
+                                node.classList.remove("pressed");
+                        }, 300);
                 };
                 
                 _widget.post = function(event, node){

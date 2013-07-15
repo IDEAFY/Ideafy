@@ -132,7 +132,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.release = function(event, node){
-                                node.classList.remove("pressed");       
+                                setTimeout(function(){
+                                        node.classList.remove("pressed");
+                                }, 300);
                         };
                         
                         _widget.uploadnDisplay = function(event, node){
@@ -155,7 +157,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         _currentDataURL = result;
                                                         _store.set("picture_file", "decklogo");         
                                                 });
-                                                node.nextSibling.classList.remove("pressed");
                                                 }, 300);
                                 };
                                 _reader.readAsDataURL(node.files[0]);

@@ -139,6 +139,10 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                                 node.setAttribute("style", "background-image: url('"+data+"');");   
                                                         });
                                                 }
+                                                // allow edition if user is author
+                                                if (deckModel.get("created_by") === user.get("_id")){
+                                                        node.querySelector("input").classList.remove("invisible");
+                                                }
                                         },
                                         edit : function(uid){
                                                 if (uid === user.get("_id")){
@@ -183,7 +187,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         deckDetails.editPic = function(event, node){
                                 if (deckModel.get("created_by") === user.get("_id")){
                                         node.setAttribute("style", "background-image: url('img/brainstorm/reload.png')");
-                                        node.querySelector("input").classList.remove("invisible");
                                 }        
                         };
                         
@@ -206,7 +209,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                         _currentDataURL = result;
                                                         deckDetails.displayButtons();        
                                                 });
-                                                node.querySelector("input").classList.add("invisible");
                                         }, 300);
                                 };
                                 _reader.readAsDataURL(node.files[0]);       

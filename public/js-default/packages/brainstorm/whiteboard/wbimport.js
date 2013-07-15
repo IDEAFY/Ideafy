@@ -71,7 +71,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             _ctx.clearRect(0,0,_canvas.width, _canvas.height);
                     };
                                 
-                _widget.template = '<div class="import"><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/\*" data-importevent="listen: mousedown, selectpress; listen:mouseup, check; listen: change, preview"><div data-labels="bind:innerHTML, importlbl"></div></span><div id="postpic" class="wbpostit invisible" data-importmodel="bind:setVisibility, content"><div class="postit-cancel postit-close" data-importevent="listen:mousedown,cancel"></div><div class="picframe"><canvas id="preview" data-importmodel="bind:showPreview, content"></canvas></div><div name="post" class = "postpostit" data-importevent="listen: mousedown, press; listen:mouseup, post"></div><div class = "delpostit" name="del" data-importevent="listen:mousedown, press;listen:mouseup, del"></div><div class="uploadprogress" data-importprogress="bind:showProgress, status"></div></div>';
+                _widget.template = '<div class="import"><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/\*" data-importevent="listen: mousedown, selectpress; listen:mouseup, check; listen: change, preview"><div data-labels="bind:innerHTML, importlbl" data-importevent="listen: mousedown, press; listen: mouseup, release"></div></span><div id="postpic" class="wbpostit invisible" data-importmodel="bind:setVisibility, content"><div class="postit-cancel postit-close" data-importevent="listen:mousedown,cancel"></div><div class="picframe"><canvas id="preview" data-importmodel="bind:showPreview, content"></canvas></div><div name="post" class = "postpostit" data-importevent="listen: mousedown, press; listen:mouseup, post"></div><div class = "delpostit" name="del" data-importevent="listen:mousedown, press;listen:mouseup, del"></div><div class="uploadprogress" data-importprogress="bind:showProgress, status"></div></div>';
                 
                 _widget.plugins.addAll({
                         "labels" : new Model(_labels),
@@ -131,12 +131,15 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 _widget.selectpress = function(event, node){
-                        node.nextSibling.classList.add("pressed");
                         node.value = "";       
                 };
                 
                 _widget.press = function(event, node){
                         node.classList.add("pressed");      
+                };
+                
+                _widget.release = function(event, node){
+                        node.classList.remove("pressed");
                 };
                 
                 _widget.post = function(event, node){

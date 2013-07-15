@@ -150,6 +150,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         setTimeout(function(){
                                                 cropImage(resizeImage(_img), function(result){
                                                         el.setAttribute("style", "background-image: url('"+result+"')");
+                                                        picSpinner.stop();
+                                                        
                                                         _currentDataURL = result;
                                                         _store.set("picture_file", "decklogo");         
                                                 });

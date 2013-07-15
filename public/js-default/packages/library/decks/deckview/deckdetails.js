@@ -155,7 +155,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 "editevent" : new Event(deckDetails)        
                         });
                         
-                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file" data-editevent="listen: mousedown, editPic; listen: mouseup, changePic"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by" data-editevent="listen:input, displayButtons"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by" data-editevent="listen:input, displayButtons"></p><div class="cancelmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
+                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file" data-editevent="listen: mousedown, editPic"><input class="invisible" type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editevent="listen: change, changePic"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by" data-editevent="listen:input, displayButtons"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by" data-editevent="listen:input, displayButtons"></p><div class="cancelmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
                         
                         deckDetails.displayCards = function displayCards(id){
                                 var i, arr = [];
@@ -183,35 +183,33 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         deckDetails.editPic = function(event, node){
                                 if (deckModel.get("created_by") === user.get("_id")){
                                         node.setAttribute("style", "background-image: url('img/brainstorm/reload.png')");
+                                        node.querySelector("input").classList.remove("invisible");
                                 }        
                         };
                         
                         deckDetails.changePic = function(event, node){
-                                var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
+                                var _reader = new FileReader(),
                                     _img = new Image(),
-                                    _options = {quality:50, correctOrientation: true, sourceType: source},
-                                    onSuccess, onFail,
-                                    picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
-                        
-                                onSuccess = function(imageData){
-                                        _img.src = imageData;
-                                        node.setAttribute("style", "background-image: none");
-                                        picSpinner.spin(node);
+                                     el = deckDetails.dom.querySelector(".decklogo"),
+                                     picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
+                         
+                                el.setAttribute("style", "background-image: none");
+                                picSpinner.spin(el)        
+                                // first read the file to memory, once loaded resize and display upload button
+                                _reader.onload = function(e) {
+                                        _img.src = e.target.result;
+                                        // timeout is needed to render image and obtain its dimensions
                                         setTimeout(function(){
                                                 cropImage(resizeImage(_img), function(result){
-                                                        node.setAttribute("style", "background-image: url('"+result+"')");
+                                                        el.setAttribute("style", "background-image: url('"+result+"')");
                                                         picSpinner.stop();
                                                         _currentDataURL = result;
-                                                        deckDetails.displayButtons();       
+                                                        deckDetails.displayButtons();        
                                                 });
-                                        }, 750);
+                                                node.querySelector("input").classList.add("invisible");
+                                        }, 300);
                                 };
-                        
-                                onFail = function(message){
-                                        alert("error: "+message);
-                                };
-                        
-                                navigator.camera.getPicture(onSuccess, onFail, _options);        
+                                _reader.readAsDataURL(node.files[0]);       
                         };
                         
                         deckDetails.press = function(event, node){

@@ -2675,6 +2675,13 @@ textarea.solution {
     background: transparent; 
 }
 
+.deckdetails .decklogo input{
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height:100%;
+}
+
 #deckview .deckheader span{
     font-size: 0px 20px;   
 }

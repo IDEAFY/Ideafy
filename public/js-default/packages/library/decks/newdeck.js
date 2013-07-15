@@ -132,7 +132,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.release = function(event, node){
-                                node.nextSibling.classList.remove("pressed");       
+                                node.classList.remove("pressed");       
                         };
                         
                         _widget.uploadnDisplay = function(event, node){

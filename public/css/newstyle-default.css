@@ -2978,6 +2978,11 @@ textarea.solution {
     width: 150px;
 }
 
+#card_creation .importbutton input{
+    width: 170px;
+    height:32px;
+}
+
 #card_creation .editchar .cardinfo .input::-webkit-input-placeholder, #card_creation .editchar .cd-picarea .input::-webkit-input-placeholder{
     font-size: 11px;
 }
@@ -3510,8 +3515,6 @@ textarea.solution {
 
 .importbutton input{
     position: absolute;
-    width: 100%;
-    height: 100%;
     opacity: 0;
 }
 

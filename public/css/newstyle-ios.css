@@ -2818,7 +2818,8 @@ textarea.solution {
 
 #card_creation button{
     margin-top: 10px;
-    height: 25px;
+    height: 30px;
+    line-height: 15px;
     border-radius: 5px;
     width: 110px;
     color: white;

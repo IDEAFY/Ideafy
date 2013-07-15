@@ -33,11 +33,18 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store"],
                                                 (caret) ? this.setAttribute("style", "display: inline-block; margin-top:"+top+"px;") : this.setAttribute("style", "display: none;");     
                                         },
                                         setPic : function(pic){
-                                                if (pic){
+                                                var json, node=this;
+                                                if (!pic){
+                                                        this.setAttribute("style", "background-image: none;");        
+                                                }
+                                                else if (pic.search("img/decks")>-1){
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;");
+                                                        json = {"dir":"cards", "filename":pic};
+                                                        Config.get("transport").request("GetFile", json, function(data){
+                                                                node.setAttribute("style", "background:white; background-image: url('"+data+"');");   
+                                                        });        
                                                 }
                                         },
                                         setSources : function(sources){

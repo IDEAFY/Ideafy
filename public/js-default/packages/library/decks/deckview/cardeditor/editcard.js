@@ -80,7 +80,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 _fd.append("filename", model.get("_id"));
                                 _fd.append("dataString", _dataURL);
                                 Utils.uploadFile(_url, _fd, null, function(result){
-                                        console.log(result);
+                                        if (result.response !== "ok"){
+                                                console.log(result);
+                                        }
                                 });
                       },
                     spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -7, left: 28}).spin();
@@ -251,7 +253,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        error.set("error", "");
                        spinner.spin(node);
                        
-                       console.log(model.get('title'));
                        if (!model.get("title") || model.get("title") === "<br>") {
                                error.set("error", labels.get("titlerequired"));
                        }
@@ -260,7 +261,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         // editCard.checkValidity();
                                         model.sync(Config.get("db"), model.get("_id"))
                                         .then(function(){
-                                                console.log("new card created : ", model.toJSON());
                                                 editCard.uploadCard();        
                                         });
                                 }
@@ -279,12 +279,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        // if a new picture has been added upload it to the server
                        if (_currentDataURL){
                                uploadCardPicture();
+                               model.set("picture_file", model.get("_id"));
                        }
                        
                        // upload card to database
                         model.upload()
                         .then(function(){
-                                console.log("card upload successful :", model.get("_rev"));
                                 return $update(model.get("type"), model.get("_id"));
                         })
                         .then(function(){

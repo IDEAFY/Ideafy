@@ -55,13 +55,12 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                }
                                         },
                                         setPic : function(pic){
-                                                var dir, json;
+                                                var json, node=this;
                                                 if (pic && pic.search("img/decks/") > -1){
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
                                                 }
                                                 else if (pic){
-                                                        dir = "cards";
-                                                        json = {"dir":dir, "filename":pic};
+                                                        json = {"dir":"cards", "filename":pic};
                                                         Config.get("transport").request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
                                                         });

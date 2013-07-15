@@ -63,8 +63,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                     _type = "deckpic",
                                     _dataURL = _currentDataURL;
                                 _fd.append("type", _type);
-                                _fd.append("dir", deckModel.get("_id"));
-                                _fd.append("filename", "decklogo");
+                                _fd.append("dir", "decks");
+                                _fd.append("filename", deckModel.get("_id"));
                                 _fd.append("dataString", _dataURL);
                                 Utils.uploadFile(_url, _fd, null, function(result){
                                         console.log(result);
@@ -105,7 +105,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                }
                                         },
                                         setPic : function(pic){
-                                                var json;
+                                                var json, node=this;
                                                 if (pic && pic.search("img/decks/") > -1){
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
                                                 }
@@ -125,7 +125,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                         },
                                         setPic : function(picture){
-                                                var ui, frag, node=this;
+                                                var json, node=this;
                                                 if (picture === "") {
                                                         this.setAttribute("style", "background-image:url('img/connect/graygroup.png');");
                                                 }
@@ -133,8 +133,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                         this.setAttribute("style", "background-image:url('img/logo.png');")        
                                                 }
                                                 else if (picture === "decklogo"){
-                                                        dir = "decks";
-                                                        json = {"dir":dir, "filename":deckModel.get("_id")};
+                                                        json = {"dir":"decks", "filename":deckModel.get("_id")};
                                                         Config.get("transport").request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background-image: url('"+data+"');");   
                                                         });

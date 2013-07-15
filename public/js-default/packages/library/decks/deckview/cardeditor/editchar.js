@@ -192,6 +192,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         [0,1,2].forEach(function(i){
                                                 if (interests[i] && name.search(i)>0) node.value = interests[i].comment;
                                         });        
+                                },
+                                setComment: function(comments){
+                                        var node = this, name = node.getAttribute("name");
+                                        [0,1].forEach(function(i){
+                                                if (comments && comments[i] && name.search(i)>0) node.value = comments[i];
+                                        });        
                                 }
                         }),
                         "error" : new Model(error),
@@ -347,6 +353,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         var name = node.getAttribute("name"), idx = name.charAt(name.length-1), interests = model.get("interests");
                         interests[idx].comment = node.value;
                         charUpdates.interests = interests;               
+                };
+               
+               editChar.updateComments = function(event, node){
+                        var name = node.getAttribute("name"), idx = name.charAt(name.length-1), comments = model.get("comments");
+                        comments[idx] = node.value;
+                        charUpdates.comments = comments;        
                 };
                
                editChar.press = function(event, node){

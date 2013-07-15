@@ -177,8 +177,10 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                         node.classList.add("pressed");
                 };
                 
-                editProfile.release = function(event,node){
-                        node.classList.remove("pressed");
+                editProfile.release = function(event, node){
+                        setTimeout(function(){
+                                node.classList.remove("pressed");
+                        }, 300);
                 };
                 
                 editProfile.uploadnDisplay = function(event, node){
@@ -196,7 +198,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                                         updates.picture_file = user.get("_id")+"_@v@t@r";
                                         //document.getElementById("rotate").classList.remove("invisible");
                                         document.getElementById("changeavatar").classList.add("invisible");
-                                        node.nextSibling.classList.remove("pressed");
                                         }, 300);
                         };
                         _reader.readAsDataURL(node.files[0]);

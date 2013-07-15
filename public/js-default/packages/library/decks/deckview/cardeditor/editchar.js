@@ -204,7 +204,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         "editevent" : new Event(editChar)
                 });
                 
-                editChar.template = '<div class="cardpopup editchar"><div class="card-detail"><div class="cd-header blue-dark"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: mousedown, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class="cardpicture" data-model="bind:setPic, picture_file"></div><button class="choosepic" data-label="bind:innerHTML, importpiclbl" data-editevent="listen: mousedown, press; listen:mouseup, picturePreview"></button><button class="takepic" data-editevent="listen: mousedown, press; listen:mouseup, cameraPreview" data-label="bind:innerHTML, importcameralbl"></button><input class="input" type="text" name="picture_credit" data-label="bind: placeholder,picturecredit" data-model="bind: value, picture_credit" data-editevent="listen: input, updateField"></div><table class="cardinfo"><tr class="charname"><th></th><td><input class="input" name="firstname" type="text" data-label="bind: placeholder,firstnameplaceholder" data-model="bind: value, firstname" data-editevent="listen: input, updateField"></td><td><input class="input" type="text" name="lastname" data-label="bind: placeholder,lastnameplaceholder" data-model="bind: value, lastname" data-editevent="listen: input, updateField"></td></tr><tr class="age"><th></th><td><input class="input" type="number" name="age" maxlength=3 size=4 data-model="bind: setAge, age; bind: value, age"></td></tr><tr class="loc"><th></th><td><input class="input city" name="city" type="text" data-label="bind:placeholder, city" data-model="bind:setCity, location" data-editevent="listen:input, updateLocation"></td><td><input class="input" name="country" type="text" data-label="bind:placeholder, countrystate" data-model="bind:setCountry, location" data-editevent="listen:input, updateLocation"></td></tr><tr class="family"><th></th><td><select class="status" name="couple" data-model="bind: setFamilyStatus, family.couple" data-editevent="listen:change, updateFamily"><option data-label="bind:innerHTML, single"></option><option data-label="bind:innerHTML, married"></option><option data-label="bind:innerHTML, divorced"></option><option data-label="bind:innerHTML, widow"></option><option data-label="bind:innerHTML, relation"></option></select></td><td><select class="children" name="children" data-model="bind: setChildren, family.children" data-editevent="listen:change, updateFamily"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option></select><span data-model="bind:setChildrenlbl, family.children"></span></td></tr><tr class="occupation"><th></th><td><select class="status" name="situation" data-model="bind: setSituation, occupation.details" data-editevent="listen:change, updateJob"><option data-label="bind:innerHTML, student"></option><option data-label="bind:innerHTML, active"></option><option data-label="bind:innerHTML, retired"></option><option data-label="bind:innerHTML, unemployed"></option><option data-label="bind:innerHTML, stayathome"></option></select></td><td><textarea class="input" type="text" name="jobdesc" data-label="bind: placeholder, desc" data-model="bind:value, occupation.description" data-label="bind:placeholder, jobtitle" data-editevent="listen:input, updateJob"></textarea></td></tr></table><div class="cd-contentarea"><legend data-label="bind:innerHTML, hobbieslbl"></legend><input name="leisure0" class="input inputleft" type="text" data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure0" type="text" data-label="bind:placeholder, desc" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><input name="leisure1" class="input inputleft" type="text"  data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure1" type="text" data-label="bind:placeholder, desc" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><input class="input inputleft" name="leisure2" type="text" data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure2" type="text" data-label="bind:placeholder, desc" data-label="bind:placeholder, name" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><legend data-label="bind:innerHTML, interestslbl"></legend><input class="input inputleft" name="interest0" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest0" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><input class="input inputleft" name="interest1" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest1" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><input class="input inputleft" name="interest2" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest2" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><legend data-label="bind:innerHTML, commentslbl"></legend><input class="input" name="comment0" type="text" data-label="bind:placeholder, addcomment" data-model="bind: setComment, comments" data-editevent="listen: input, updateComments"><input class="input" name="comment1" type="text" data-label="bind:placeholder, addcomment" data-model="bind: setComment, comments" data-editevent="listen: input, updateComments"></div><label class="editerror" data-error="bind:innerHTML, error"></label><div class="cancelmail" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-label="bind:innerHTML, savelbl"></div></div></div>';
+                editChar.template = '<div class="cardpopup editchar"><div class="card-detail"><div class="cd-header blue-dark"><div name="title" data-model="bind: setTitle, title" data-editevent="listen: mousedown, clearDefault; listen: blur, updateTitle" contenteditable=true></div></div><div class="cd-picarea"><div class="cardpicture" data-model="bind:setPic, picture_file"></div><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editevent="listen: mousedown, selectpress; listen: change, uploadnDisplay"><div data-label="bind:innerHTML, importlbl"></div></span><input class="input" type="text" name="picture_credit" data-label="bind: placeholder,picturecredit" data-model="bind: value, picture_credit" data-editevent="listen: input, updateField"></div><table class="cardinfo"><tr class="charname"><th></th><td><input class="input" name="firstname" type="text" data-label="bind: placeholder,firstnameplaceholder" data-model="bind: value, firstname" data-editevent="listen: input, updateField"></td><td><input class="input" type="text" name="lastname" data-label="bind: placeholder,lastnameplaceholder" data-model="bind: value, lastname" data-editevent="listen: input, updateField"></td></tr><tr class="age"><th></th><td><input class="input" type="number" name="age" maxlength=3 size=4 data-model="bind: setAge, age; bind: value, age"></td></tr><tr class="loc"><th></th><td><input class="input city" name="city" type="text" data-label="bind:placeholder, city" data-model="bind:setCity, location" data-editevent="listen:input, updateLocation"></td><td><input class="input" name="country" type="text" data-label="bind:placeholder, countrystate" data-model="bind:setCountry, location" data-editevent="listen:input, updateLocation"></td></tr><tr class="family"><th></th><td><select class="status" name="couple" data-model="bind: setFamilyStatus, family.couple" data-editevent="listen:change, updateFamily"><option data-label="bind:innerHTML, single"></option><option data-label="bind:innerHTML, married"></option><option data-label="bind:innerHTML, divorced"></option><option data-label="bind:innerHTML, widow"></option><option data-label="bind:innerHTML, relation"></option></select></td><td><select class="children" name="children" data-model="bind: setChildren, family.children" data-editevent="listen:change, updateFamily"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8+</option></select><span data-model="bind:setChildrenlbl, family.children"></span></td></tr><tr class="occupation"><th></th><td><select class="status" name="situation" data-model="bind: setSituation, occupation.details" data-editevent="listen:change, updateJob"><option data-label="bind:innerHTML, student"></option><option data-label="bind:innerHTML, active"></option><option data-label="bind:innerHTML, retired"></option><option data-label="bind:innerHTML, unemployed"></option><option data-label="bind:innerHTML, stayathome"></option></select></td><td><textarea class="input" type="text" name="jobdesc" data-label="bind: placeholder, desc" data-model="bind:value, occupation.description" data-label="bind:placeholder, jobtitle" data-editevent="listen:input, updateJob"></textarea></td></tr></table><div class="cd-contentarea"><legend data-label="bind:innerHTML, hobbieslbl"></legend><input name="leisure0" class="input inputleft" type="text" data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure0" type="text" data-label="bind:placeholder, desc" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><input name="leisure1" class="input inputleft" type="text"  data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure1" type="text" data-label="bind:placeholder, desc" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><input class="input inputleft" name="leisure2" type="text" data-label="bind:placeholder, name" data-model="bind: setLeisureName, leisure_activities" data-editevent="listen: input, updateLeisureName"><input class="input description" name="leisure2" type="text" data-label="bind:placeholder, desc" data-label="bind:placeholder, name" data-model="bind: setLeisureDesc, leisure_activities" data-editevent="listen: input, updateLeisureDesc"><legend data-label="bind:innerHTML, interestslbl"></legend><input class="input inputleft" name="interest0" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest0" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><input class="input inputleft" name="interest1" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest1" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><input class="input inputleft" name="interest2" type="text" data-label="bind:placeholder, name" data-model="bind: setInterestName, interests" data-editevent="listen: input, updateInterestName"><input class="input description" name="interest2" type="text" data-label="bind:placeholder, desc" data-model="bind: setInterestDesc, interests" data-editevent="listen: input, updateInterestDesc"><legend data-label="bind:innerHTML, commentslbl"></legend><input class="input" name="comment0" type="text" data-label="bind:placeholder, addcomment" data-model="bind: setComment, comments" data-editevent="listen: input, updateComments"><input class="input" name="comment1" type="text" data-label="bind:placeholder, addcomment" data-model="bind: setComment, comments" data-editevent="listen: input, updateComments"></div><label class="editerror" data-error="bind:innerHTML, error"></label><div class="cancelmail" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-label="bind:innerHTML, savelbl"></div></div></div>';
                
                editChar.reset = function reset(deckId, id){
                         var now = new Date();
@@ -235,62 +235,37 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         model.set("title", node.innerHTML);        
                };
                
-               editChar.picturePreview = function(event, node){
-                        var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
-                            _img = new Image(),
-                            _options = {quality:50, correctOrientation: true, sourceType: source},
-                            onSuccess, onFail,
-                            picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin(),
-                            el = editChar.dom.querySelector(".cardpicture");
-                        
-                        onSuccess = function(imageData){
-                                _img.src = imageData;
-                                el.setAttribute("style", "background-image: none");
-                                picSpinner.spin(el);
-                                setTimeout(function(){
-                                        cropImage(resizeImage(_img), function(result){
-                                                el.setAttribute("style", "background-image: url('"+result+"')");
-                                                picSpinner.stop();
-                                                _currentDataURL = result;
-                                                node.classList.remove("pressed");        
-                                        });
-                                }, 750);
-                        };
-                        
-                        onFail = function(message){
-                                alert("error: "+message);
-                        };
-                        
-                        navigator.camera.getPicture(onSuccess, onFail, _options);
-               };
-               
-               editChar.cameraPreview = function(event, node){ 
-                        var _img = new Image(),
-                            _options = {quality:50, correctOrientation: true},
-                            onSuccess, onFail,
-                            picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin(),
-                            el = editChar.dom.querySelector(".cardpicture");
-                        
-                        onSuccess = function(imageData){
-                                _img.src = imageData;
-                                el.setAttribute("style", "background-image: none");
-                                picSpinner.spin(el);
-                                setTimeout(function(){
-                                        cropImage(resizeImage(_img), function(result){
-                                                el.setAttribute("style", "background-image: url('"+result+"')");
-                                                _currentDataURL = result;
-                                                picSpinner.stop();
-                                                node.classList.remove("pressed");        
-                                        });
-                                }, 750);
-                        }
-                        
-                        onFail = function(message){
-                                alert("error: "+message);
+               editChar.selectpress = function(event, node){
+                        node.value = "";       
+                };
+                
+                editChar.release = function(event, node){
+                        setTimeout(function(){
                                 node.classList.remove("pressed");
-                        }
+                        }, 300);        
+                };
                         
-                        navigator.camera.getPicture(onSuccess, onFail, _options);       
+                editChar.uploadnDisplay = function(event, node){
+                        var _reader = new FileReader(),
+                            _img = new Image(),
+                            el = editCard.dom.querySelector(".cardpicture"),
+                            picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
+                         
+                        el.setAttribute("style", "background-image: none");
+                        picSpinner.spin(el)        
+                        // first read the file to memory, once loaded resize and display upload button
+                        _reader.onload = function(e) {
+                                _img.src = e.target.result;
+                                // timeout is needed to render image and obtain its dimensions
+                                setTimeout(function(){
+                                        cropImage(resizeImage(_img), function(result){
+                                                el.setAttribute("style", "background-image: url('"+result+"')");
+                                                picSpinner.stop();
+                                                _currentDataURL = result;        
+                                        });
+                                }, 300);
+                        };
+                        _reader.readAsDataURL(node.files[0]);
                 };
                
                editChar.updateField = function(event, node){

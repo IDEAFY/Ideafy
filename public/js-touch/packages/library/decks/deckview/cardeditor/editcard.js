@@ -80,7 +80,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 _fd.append("filename", model.get("_id"));
                                 _fd.append("dataString", _dataURL);
                                 Utils.uploadFile(_url, _fd, null, function(result){
-                                        console.log(result);
+                                        if (result.response !== "ok"){
+                                                console.log(result);
+                                        }
                                 });
                       },
                     spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -7, left: 28}).spin();
@@ -308,6 +310,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        // if a new picture has been added upload it to the server
                        if (_currentDataURL){
                                uploadCardPicture();
+                               model.set("picture_file", model.get("_id"));
                        }
                        
                        // upload card to database

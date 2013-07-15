@@ -2978,6 +2978,10 @@ textarea.solution {
     width: 150px;
 }
 
+#card_creation .editchar .cd-picarea .cardpicture{
+    float: none;
+}
+
 #card_creation .importbutton{
     text-align: left;
 }

@@ -2978,7 +2978,11 @@ textarea.solution {
     width: 150px;
 }
 
-#card_creation .editchar .importbutton input{
+#card_creation .importbutton{
+    text-align: left;
+}
+
+#card_creation .importbutton input{
     width: 170px;
     height:32px;
 }

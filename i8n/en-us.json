@@ -516,5 +516,6 @@
 	"desc": "Description",
 	"titlerequired": "A title is required",
 	"addcomment" : "Additional information",
-	"setdeck" : "Set brainstorming deck"
+	"setdeck" : "Set brainstorming deck",
+	"setdecklogo" : "Select an icon"
 }

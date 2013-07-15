@@ -248,7 +248,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                 editChar.uploadnDisplay = function(event, node){
                         var _reader = new FileReader(),
                             _img = new Image(),
-                            el = editCard.dom.querySelector(".cardpicture"),
+                            el = editChar.dom.querySelector(".cardpicture"),
                             picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
                          
                         el.setAttribute("style", "background-image: none");

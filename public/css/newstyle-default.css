@@ -1332,7 +1332,7 @@ ul.notify-list{
 #public-list .tools-button, #idea-list .tools-button{
     display: inline-block;
     float: left;
-    width: 32px;
+    width: 30px;
     height: 23px;
     border: 1px solid #CCCCCC;
     background: white;
@@ -3555,7 +3555,6 @@ textarea.solution {
     width: 152px;
     height: 202px;
     text-align: center;
-    cursor: pointer;
 }
 
 #importbuttons label{
@@ -3567,7 +3566,6 @@ textarea.solution {
 .importbutton{
     margin: 5px;
     overflow: hidden;
-    cursor: pointer;
     display: inline-block;
 }
 

@@ -98,6 +98,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 
 			this.setCurrentWidget = function(event){
 				var href = event.target.getAttribute("href"), timeout= 3000;
+				event.preventDefault(); // browser only
 				if(href !== _stack.getStack().getCurrentName()){
 				        //hide current submenu if present
                                         _stack.getStack().getCurrentScreen().hideMenu();

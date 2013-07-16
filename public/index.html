@@ -8,11 +8,20 @@
  <body>
  	<script>
  		var touchDevice = false,
- 		    agent = navigator.userAgent.toLowerCase();
+ 		    agent = navigator.userAgent.toLowerCase(),
+ 		    isChrome = /chrome/.test(agent) && /Google Inc/.test(navigator.vendor),
+			isSafari = /safari/.test(agent) && /Apple Computer/.test(navigator.vendor);
+
  		
  		if (agent.search("ipad")>-1 || agent.search("android")>-1) touchDevice = true;
  		
- 		(touchDevice) ? window.open ('index-touch.html','_self',false) : window.open ('index-default.html','_self',false)
+ 		if (touchDevice) {
+ 			window.open ('index-touch.html','_self',false);
+ 		}
+ 		else{
+ 			(isChrome || isSafari) ? window.open ('index-default.html','_self',false) : window.open ('index-denied.html','_self',false)
+ 		}
+ 		
  	</script>
  </body>
  </html>

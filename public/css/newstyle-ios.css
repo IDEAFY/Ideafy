@@ -2761,6 +2761,9 @@ textarea.solution {
 
 #card_creation .importcard .importfrom select{
     width: 250px;
+    font-size: 12px;
+    margin-left: 5px;
+    text-transform: uppercase;
 }
 
 #card_creation .cardpopup{

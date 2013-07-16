@@ -102,36 +102,28 @@ input::-webkit-file-upload-button{
  
 /* Turn on custom 8px wide scrollbar */
 ::-webkit-scrollbar {
-  width: 8px; /* 1px wider than Lion. */
-  /* This is more usable for users trying to click it. */
-  background-color: rgba(0,0,0,0);
-  -webkit-border-radius: 100px;
+    width: 8px;
+    background-color: rgba(0,0,0,0);
+    -webkit-border-radius: 100px;
 }
-/* hover effect for both scrollbar area, and scrollbar 'thumb' */
+
 ::-webkit-scrollbar:hover {
-  background-color: rgba(0, 0, 0, 0.09);
+    background-color: rgba(0, 0, 0, 0.09);
 }
  
-/* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
 ::-webkit-scrollbar-thumb:vertical {
-  /* This is the EXACT color of Mac OS scrollbars. 
-     Yes, I pulled out digital color meter */
-  background: rgba(0,0,0,0.5);
-  -webkit-border-radius: 100px;
+    background: rgba(0,0,0,0.5);
+    -webkit-border-radius: 100px;
 }
 ::-webkit-scrollbar-thumb:vertical:active {
-  background: rgba(0,0,0,0.61); /* Some darker color when you click it */
-  -webkit-border-radius: 100px;
+    background: rgba(0,0,0,0.61);
+    -webkit-border-radius: 100px;
 }
- */
 
 /* init */
     @font-face {
         font-family: Ideafy;
-        src: url('../fonts/ideafy-waiting.woff') format('woff'),
-             url('../fonts/ideafy-waiting.svg#svgFontName') format('svg'),
-             url('../fonts/ideafy-waiting.eot?#iefix') format('embedded-opentype'),
-             url('../fonts/ideafy-waiting.ttf') format("truetype");
+        src: url('../fonts/ideafy-waiting.ttf') format("truetype");
     font-weight: normal;
     font-style: normal;
     }
@@ -3943,10 +3935,6 @@ textarea.solution {
     height: 50px;
 }
 
-circle.stroke {
-    stroke:rgba(145,145,145,0.7);
-}
-
 .pencilpreview, .bgpreview{
     display: inline-block;
     margin-top: 4px;
@@ -5930,7 +5918,7 @@ li.color-item{
 
 #mtc-list .entercontact{
     width: 200px;
-    hight: 30px;
+    height: 30px;
     line-height: 30px;
     font-size: 12px;
 }

@@ -88,9 +88,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         deckList.getImportableDecks = function getImportableDecks(){
                                 var importOk = [];
                                 
-                                console.log("function called");
                                 decks.loop(function(v,i){
-                                        console.log(decks.toJSON());
                                         // if deck is public, if deck has been shared with user or if user is the deck's author import, add to list
                                         if (v.public || v.created_by === user.get("_id") || v.sharedwith.indexOf(user.get("_id"))){
                                                 importOk.push(v);

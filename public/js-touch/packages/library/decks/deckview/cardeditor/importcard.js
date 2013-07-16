@@ -22,11 +22,13 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
                         "label" : new Model(labels),
                         "model" : new Model(model,{
                                 setDecks: function(decks){
-                                           var i, l, res="", selected, idx;
-                                           for (i=0, l=decks.length; i<l; i++){
-                                                   res+="<option>"+decks[i].title+"</option>";
-                                           }
-                                           this.innerHTML=res;
+                                        var i, l, res="", selected, idx;
+                                        if (decks){
+                                                for (i=0, l=decks.length; i<l; i++){
+                                                        res+="<option>"+decks[i].title+"</option>";
+                                                }
+                                        }
+                                        this.innerHTML=res;
                                    }        
                         }),
                         "importevent" : new Event(importCard)

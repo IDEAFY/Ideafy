@@ -5,4 +5,22 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-require.config({baseUrl:"js-min/packages",paths:{lib:"../libs",service:"../services","public":"public",connect:"connect",dashboard:"dashboard",library:"library",brainstorm:"brainstorm",twocents:"twocents"},deps:["main"]}),require(["main"]);
+/* deps load before main script??*/
+require.config({
+        waitSeconds: 45,
+	baseUrl : "js-min/packages",
+        paths: {
+                lib : "../libs",
+                service : "../services",
+                public : "public",
+                connect : "connect",
+                dashboard : "dashboard",
+                library : "library",
+                brainstorm : "brainstorm",
+                twocents : "twocents"
+        },
+        deps: ["main"]
+        
+});
+
+require(["main"]);

@@ -84,19 +84,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 });             
                         };
                         
-                        // get the list of decks from which a user can duplicate/import cards
-                        deckList.getImportableDecks = function getImportableDecks(){
-                                var importOk = [];
-                                
-                                decks.loop(function(v,i){
-                                        // if deck is public, if deck has been shared with user or if user is the deck's author import, add to list
-                                        if (v.public || v.created_by === user.get("_id") || v.sharedwith.indexOf(user.get("_id"))){
-                                                importOk.push(v);
-                                        }                                            
-                                });
-                                return importOk;  
-                        };
-                        
                         // initialize selection (could be first item or active item)
                         deckList.initSelected = function initSelected(init, id){
                                 var dom = deckList.dom,

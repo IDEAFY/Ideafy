@@ -14,16 +14,12 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
                     labels = Config.get("labels");
                     
                 
-                importCard.template = '<div class="importcard"><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
+                importCard.template = '<div class="importcard"><div>Select deck</div><div>Deck card list</div><div>Transfer buttons<button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div>Current deck card list</div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
                 importCard.plugins.addAll({
                         "label" : new Model(labels),
                         "importevent" : new Event(importCard)
                 });
-                
-                importCard.changeType = function changeType(type){
-                        console.log("importcard change type : ", type);        
-                };
                 
                 importCard.cancel = function(event, node){
                         $close();        

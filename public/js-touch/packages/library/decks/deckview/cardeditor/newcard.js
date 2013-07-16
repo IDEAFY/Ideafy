@@ -24,7 +24,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                     deckId = cardSetup.get("deckId"),
                                     deckCDB = new CouchDBDocument(),
                                     type = "characters"; // or contexts, problems, techno
-                                console.log("deck update function in newcard : ", cardType, cardId, deckId);
                                 switch(cardType){
                                         case 1:
                                                 type = "characters";
@@ -65,13 +64,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 });
                                 return promise;        
                             },
+                            updateImport = function(cardList){
+                                //when done call
+                                $update("updated", deckId, null);        
+                            },
                             editCard = new EditCard(updateDeck, close),
                             editChar = new EditChar(updateDeck, close),
-                            importCard = new ImportCard(updateDeck, close);
+                            importCard = new ImportCard(updateImport, close);
                         
-                        newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type" data-newcardevent="listen: change, changeType"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
-                        
-                        // newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type" data-newcardevent="listen: change, changeType"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select><label data-label="bind:innerHTML, orlbl"></label><div class="importcard" data-label="bind:innerHTML, import" data-newcardevent="listen:touchstart, press; listen:touchend, import">Import...</div></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
+                        newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type" data-newcardevent="listen: change, changeType"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option><option data-label="bind:innerHTML, importcard"></option></select></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
                             
                         // setup
                         newCard.plugins.addAll({
@@ -102,15 +103,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 node.classList.add("pressed");
                         };
                         
-                        newCard.import = function(event, node){
-                                node.classList.remove("pressed");
-                                _contentStack.getStack().show("importcard");
-                        };
-                        
                         newCard.changeType = function(event, node){
                                 var idx = node.selectedIndex;
-                                if (_contentStack.getStack().getCurrentName() === "importcard"){
-                                        importCard.changeType(idx);
+                                if (idx === 4){
+                                        importCard.reset(cardSetup.get("deckId"));
+                                        _contentStack.getStack().show("importcard");
                                 }
                                 else if (idx === 0){
                                         editChar.reset(cardSetup.get("deckId"), "newcard");
@@ -135,8 +132,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         
                         // init
                         newCard.init();
-                        
-                        CSTACK = _contentStack;
                         
                         return newCard;     
                 }

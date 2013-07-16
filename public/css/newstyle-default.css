@@ -58,6 +58,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     font-size: 14px;
 }
 
+input::-webkit-file-upload-button{
+    cursor:pointer;
+}
+
 #wrapper{
     width:1024px;
     height:748px;

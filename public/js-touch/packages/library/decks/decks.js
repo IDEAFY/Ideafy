@@ -152,12 +152,10 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                       
                         d.loop(function(v,i){
                                         // if deck is public, if deck has been shared with user or if user is the deck's author import, add to list
-                                console.log(v.public, v.public || v.created_by === user.get("_id") || (v.sharedwith && v.sharedwith.indexOf(user.get("_id"))));
                                 if (v.public || (v.created_by === user.get("_id")) || (v.sharedwith && v.sharedwith.indexOf(user.get("_id")))){
                                         res.push(v);
                                 } 
                         });
-                        console.log(res);
                         onEnd(res);        
               });
               

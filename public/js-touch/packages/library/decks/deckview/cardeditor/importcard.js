@@ -23,10 +23,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
                         "model" : new Model(model,{
                                 setDecks: function(decks){
                                         var i, l, res="", selected, idx;
-                                        console.log(decks);
                                         if (decks){
                                                 for (i=0, l=decks.length; i<l; i++){
-                                                        res+="<option>"+decks[i].title+"</option>";
+                                                        if (decks[i]._id !== deckId) res+="<option>"+decks[i].title+"</option>";
                                                 }
                                         }
                                         this.innerHTML=res;
@@ -46,8 +45,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
                         console.log(deckId);
                         
                         Config.get("observer").notify("getImportableDecks", function(result){
-                                console.log(result);
                                 if (result && result.length){
+                                        // remove currently edited deck
                                         result.sort(function(x,y){
                                                 var a = x.title, b = y.title;
                                                 if (a<b) return -1;

@@ -40,6 +40,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
                         model.reset();
                         
                         deckId = $deckId;
+                        console.log(deckId);
                         
                         Config.get("observer").notify("getImportableDecks", function(result){
                                 console.log(result);

@@ -518,5 +518,6 @@
 	"titlerequired": "A title is required",
 	"addcomment" : "Additional information",
 	"setdeck" : "Set brainstorming deck",
-	"setdecklogo" : "Select an icon"
+	"setdecklogo" : "Select an icon",
+	"importfrom" : "Select deck to import from"
 }

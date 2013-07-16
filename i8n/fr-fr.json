@@ -518,5 +518,6 @@
 	"titlerequired": "Veuillez saisir un titre",
 	"addcomment" : "Informations complémentaires",
 	"setdeck" : "Sélectionner le deck actif",
-	"setdecklogo" : "Sélectionnez une icône"
+	"setdecklogo" : "Sélectionnez une icône",
+	"importfrom" : "Sélectionnez le jeu d'origine"
 }

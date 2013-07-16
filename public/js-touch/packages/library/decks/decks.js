@@ -148,6 +148,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               // watch for import requests (importing cards from an existing deck)
               Config.get("observer").watch("getImportableDecks", function(onEnd){
+                      console.log(onEnd);
                         onEnd(ideafyDecks.getImportableDecks());        
               });
               

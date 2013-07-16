@@ -16,7 +16,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
                     model = new Store();
                     
                 
-                importCard.template = '<div class="importcard"><div>Select deck<select data-model="bind:setDecks, decks" data-settingsevent="listen: change, updateDeck"></select></div><div>Deck card list</div><div>Transfer buttons<button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div>Current deck card list</div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
+                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-settingsevent="listen: change, updateDeck"></select></div><div>Deck card list</div><div>Transfer buttons<button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div>Current deck card list</div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
                 importCard.plugins.addAll({
                         "label" : new Model(labels),

@@ -27,7 +27,7 @@ html, body {
   position: absolute;
 }
 
-a{
+::-webkit-any-link:hover, ::-webkit-any-link:active {
     cursor: pointer;
 }
 

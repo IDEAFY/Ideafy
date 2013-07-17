@@ -2926,6 +2926,10 @@ textarea.solution {
     border-bottom: 1px solid #e5e5e5;
 }
 
+#card_creation .importcard .importlist li:nth-child(odd){
+    background-color: #e5e5e5;
+}
+
 #card_creation .cardpopup{
     width: 590px;
     height: 628px;

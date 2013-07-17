@@ -2798,8 +2798,13 @@ textarea.solution {
     border-bottom: 1px solid #e5e5e5;
 }
 
-#card_creation .importcard .importlist li:nth-child(odd){
+#card_creation .importcard .importlist li:nth-child(even){
     background-color: #e5e5e5;
+}
+
+#card_creation .importcard .importlist li.selected{
+    font-weight: bold;
+    background-color: #9ac9cd;
 }
 
 #card_creation .cardpopup{

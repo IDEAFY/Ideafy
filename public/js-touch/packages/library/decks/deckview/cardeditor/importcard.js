@@ -14,7 +14,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     labels = Config.get("labels"),
                     user = Config.get("user"),
                     transport = Config.get("transport"),
-                    deckId, importableDecks,
+                    deckId, importableDecks = [],
                     model = new Store();
                     
                 
@@ -65,8 +65,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         if (a>b) return 1;
                                         if (a===b) return 0;
                                 });
-                                importableDecks = result.concat();
-                                model.set("decks", result); 
+                                importableDecks = arr.concat();
+                                model.set("decks", arr); 
                                 cdb.unsync();
                         });       
                 };

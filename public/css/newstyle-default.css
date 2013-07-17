@@ -2880,7 +2880,7 @@ textarea.solution {
     width: 100%;
     height: 50px;
     border: 1px solid #CCCCCC;
-    line-height: 35px;
+    line-height: 50px;
     text-align: center;
     font-size: 14px;
     color: #292929;
@@ -2889,6 +2889,9 @@ textarea.solution {
 
 #card_creation .importcard .importfrom select{
     width: 250px;
+    font-size: 12px;
+    margin-left: 5px;
+    text-transform: uppercase;
 }
 
 #card_creation .cardpopup{

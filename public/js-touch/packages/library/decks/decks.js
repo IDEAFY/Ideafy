@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview", "./newdeck", "CouchDBDocument"],
-        function(Widget, Model, Stack, Control, Event, Place, Config, Map, List, DeckView, NewDeck, CouchDBDocument){
+define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview", "./newdeck"],
+        function(Widget, Model, Stack, Control, Event, Place, Config, Map, List, DeckView, NewDeck){
                 
            return function MyDecksContructor(){
               
@@ -144,19 +144,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               user.watchValue("taiaut_decks", function(){
                          ideafyDecks.reset();
                         // taiautDecks.getDecks($type);       
-              });
-              
-              // watch for import requests (importing cards from an existing deck)
-              Config.get("observer").watch("getImportableDecks", function(onEnd){
-                        var d = ideafyDecks.getModel(), res=[];
-                      
-                        d.loop(function(v,i){
-                                        // if deck is public, if deck has been shared with user or if user is the deck's author import, add to list
-                                if (v.public || (v.created_by === user.get("_id")) || (v.sharedwith && v.sharedwith.indexOf(user.get("_id")))){
-                                        res.push(v);
-                                } 
-                        });
-                        onEnd(res);        
               });
               
               // return

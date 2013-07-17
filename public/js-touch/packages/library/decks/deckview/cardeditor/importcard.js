@@ -76,7 +76,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 };
                 
                 importCard.getDeckCards = function getDeckCards($deckId, store){
-                        var cdb = new CouchdbView(),
+                        var cdb = new CouchDBView(),
                             promise = new Promise();
                         cdb .setTransport(transport);
                         

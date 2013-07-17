@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBBulkDocuments", "CouchDBView", "Promise"],
-        function(Widget, Config, Model, Event, Store, CouchDBBulkDocuments, CouchDBView, Promise){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBBulkDocuments", "CouchDBView", "Promise", "lib/spin.min"],
+        function(Widget, Config, Model, Event, Store, CouchDBBulkDocuments, CouchDBView, Promise, Spinner){
            
            return function ImportCardConstructor($update, $close){
                    
@@ -198,7 +198,10 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 
                 importCard.getDeckCards = function getDeckCards($deckId, store){
                         var cdb = new CouchDBView(),
-                            promise = new Promise();
+                            promise = new Promise(),
+                            el = importCard.dom.querySelector(".importfrom ul"),
+                            spinner = new Spinner.spin(el);
+                            
                         cdb .setTransport(transport);
                         
                         cdb.sync(db, "library", "_view/cards", {key: '"'+$deckId+'"'})
@@ -213,6 +216,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         if (a>b) return 1;
                                         if (a===b) return 0;
                                 });
+                                spinner.stop();
                                 store.reset(arr);
                                 promise.fulfill();        
                         });

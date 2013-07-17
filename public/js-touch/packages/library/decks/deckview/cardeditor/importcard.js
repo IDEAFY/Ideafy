@@ -45,7 +45,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         
                         var cdb = new CouchDBBulkDocuments(),
                             keys = user.get("taiaut_decks").concat(user.get("custom_decks"));
-                        
+                        console.log("function called");
                         cdb.setTransport(transport);
                         cdb.sync(Config.get("db"), {keys : keys}).then(function(){
                               var lang = user.get("lang"), arr = [];
@@ -78,12 +78,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         deckId = $deckId;
                         console.log(deckId, importableDecks);
                         
-                        if (importableDecks){
-                                model.set("decks", importableDecks);
-                        }
-                        else{
-                                importCard.getDecks();
-                        }
+                        (importableDecks) ? model.set("decks", importableDecks) : importCard.getDecks();
                 };
                 
                 // if user decks are updated update the list of decks as well

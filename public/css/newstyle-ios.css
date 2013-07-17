@@ -2808,6 +2808,11 @@ textarea.solution {
     background-color: #9ac9cd;
 }
 
+#card_creation .importcard button.addremove{
+    height: 40px;
+    margin-top: 150px;
+}
+
 #card_creation .cardpopup{
     width: 590px;
     height: 628px;

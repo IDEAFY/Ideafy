@@ -221,7 +221,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 };
                 
                 importCard.reset = function reset($deckId){
-                        model.reset();
+                        model.reset({});
                         currentDeck.reset([]);
                         selectedDeck.reset([]);
                         importCard.dom.querySelector("select").selectedIndex = 0;

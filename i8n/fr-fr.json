@@ -521,5 +521,7 @@
 	"setdecklogo" : "Sélectionnez une icône",
 	"importfrom" : "Sélectionnez le jeu d'origine",
 	"remsel": "Supprimer<br><<<",
-	"impsel": "Importer<br>>>>"
+	"impsel": "Importer<br>>>>",
+	"seldeck" : "Jeu d'origine",
+	"workdeck" : "Jeu en cours d'édition"
 }

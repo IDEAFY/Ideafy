@@ -521,5 +521,7 @@
 	"setdecklogo" : "Select an icon",
 	"importfrom" : "Select deck to import from",
 	"remsel": "Remove selection<br><<<",
-	"impsel": "Import selection<br>>>>"
+	"impsel": "Import selection<br>>>>",
+	"seldeck" : "Selected deck",
+	"workdeck" : "Working deck"
 }

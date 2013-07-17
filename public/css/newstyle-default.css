@@ -2909,6 +2909,13 @@ textarea.solution {
     height: 480px;
 }
 
+#card_creation .importcard .importlist legend{
+    margin: 0 auto;
+    font-family: helvetica;
+    font-size: 12px;
+    color: #a0a0a0;
+}
+
 #card_creation .importcard .importlist ul{
     border: 1px solid #657b99;
     height: 478px;

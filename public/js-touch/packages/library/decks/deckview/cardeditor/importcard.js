@@ -21,7 +21,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     model = new Store();
                     
                 
-                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-settingsevent="listen: change, updateDeck"></select></div><div class="importlist"><legend>Selected deck</legend><ul data-selected="foreach"><li name="selected"></li></ul></div><div class="importarea"><button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div class="importlist"><legend>Working deck</legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: mousedown, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
+                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-importevent="listen: change, updateSelect"></select></div><div class="importlist"><legend>Selected deck</legend><ul data-selected="foreach"><li name="selected"></li></ul></div><div class="importarea"><button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div class="importlist"><legend>Working deck</legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: mousedown, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
                 importCard.plugins.addAll({
                         "label" : new Model(labels),
@@ -87,6 +87,12 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 
                 importCard.cancel = function(event, node){
                         $close();        
+                };
+                
+                importCard.updateSelect = function(event, node){
+                        var id = node.selectedIndex;
+                        selectedDeck.reset([]);
+                        importCard.getDeckCards(importableDecks[id]._id, selectedDeck);
                 };
                 
                 importCard.toggleSelect = function(event, node){
@@ -157,7 +163,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         cdb.sync(db, "library", "_view/cards", {key: '"'+$deckId+'"'})
                         .then(function(){
                                 var arr = [];
-                                console.log(cdb.toJSON());
                                 cdb.loop(function(v,i){
                                         arr.push({"id": v.value._id, "type": v.value.type, "title": v.value.title});                
                                 });

@@ -2877,7 +2877,7 @@ textarea.solution {
 
 #card_creation .importcard .importfrom{
     display: inline-block;
-    width: 100%;
+    width: 628px;
     height: 50px;
     border: 1px solid #CCCCCC;
     line-height: 50px;
@@ -2893,8 +2893,6 @@ textarea.solution {
     margin-left: 5px;
     text-transform: uppercase;
 }
-
-
 
 #card_creation .importcard .importarea{
     width: 140px;
@@ -2914,7 +2912,7 @@ textarea.solution {
 #card_creation .importcard .importlist ul{
     border: 1px solid #657b99;
     height: 478px;
-    width: 198px;
+    width: 218px;
     overflow-y: scroll;
 }
 

@@ -40,16 +40,16 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 setType : function(type){
                                         switch(type){
                                                 case 1:
-                                                        this.setAttribute("style", "background-image:url('../img/decks/characters.png);");
+                                                        this.setAttribute("style", "background-image:url('../img/decks/characters.png');");
                                                         break;
                                                 case 2: 
-                                                        this.setAttribute("style", "background-image:url('../img/decks/context.png);");
+                                                        this.setAttribute("style", "background-image:url('../img/decks/context.png');");
                                                         break;
                                                 case 3:
-                                                        this.setAttribute("style", "background-image:url('../img/decks/problem.png);");
+                                                        this.setAttribute("style", "background-image:url('../img/decks/problem.png');");
                                                         break;
                                                 case 4:
-                                                        this.setAttribute("style", "background-image:url('../img/decks/technology.png);");
+                                                        this.setAttribute("style", "background-image:url('../img/decks/technology.png');");
                                                         break;
                                                 default:
                                                         break;

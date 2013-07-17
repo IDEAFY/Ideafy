@@ -2771,15 +2771,17 @@ textarea.solution {
     margin: 10px 5px;
     float: left;
     height: 480px;
+    text-align: center;
 }
 
-#card_creation .importcard .importarea.importlist{
+#card_creation .importcard .importlist{
     width: 220px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 10px 10px;
+    float: left;
+    height: 480px;
 }
 
-#card_creation .importcard .importarea ul{
+#card_creation .importcard .importlist ul{
     border: 1px solid #657b99;
     height: 478px;
     width: 198px;

@@ -2895,8 +2895,8 @@ textarea.solution {
 }
 
 #card_creation .importcard .importarea{
-    width: 140px;
-    margin: 10px 5px;
+    width: 110px;
+    margin: 10px 0px;
     float: left;
     height: 480px;
     text-align: center;
@@ -2904,7 +2904,7 @@ textarea.solution {
 
 #card_creation .importcard .importlist{
     width: 220px;
-    margin: 10px 10px;
+    margin: 10px 20px;
     float: left;
     height: 480px;
 }
@@ -2924,6 +2924,7 @@ textarea.solution {
     height: 30px;
     line-height: 30px;
     border-bottom: 1px solid #e5e5e5;
+    font-size: 14px;
 }
 
 #card_creation .importcard .importlist li:nth-child(even){

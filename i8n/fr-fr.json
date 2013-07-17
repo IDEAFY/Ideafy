@@ -523,5 +523,7 @@
 	"remsel": "Supprimer<br><<<",
 	"impsel": "Importer<br>>>>",
 	"seldeck" : "Jeu d'origine",
-	"workdeck" : "Jeu en cours d'édition"
+	"workdeck" : "Jeu en cours d'édition",
+	"selall" : "Tout sélectionner",
+	"clearsel" : "Tout désélectionner"
 }

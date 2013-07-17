@@ -523,5 +523,7 @@
 	"remsel": "Remove selection<br><<<",
 	"impsel": "Import selection<br>>>>",
 	"seldeck" : "Selected deck",
-	"workdeck" : "Working deck"
+	"workdeck" : "Working deck",
+	"selall" : "Select all",
+	"clearsel" : "Clear selection"
 }

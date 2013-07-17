@@ -2789,7 +2789,7 @@ textarea.solution {
 }
 
 #card_creation .importcard .importlist ul{
-    margin-top: 3px
+    margin-top: 3px;
     border: 1px solid #657b99;
     height: 480px;
     width: 218px;

@@ -519,5 +519,7 @@
 	"addcomment" : "Informations complémentaires",
 	"setdeck" : "Sélectionner le deck actif",
 	"setdecklogo" : "Sélectionnez une icône",
-	"importfrom" : "Sélectionnez le jeu d'origine"
+	"importfrom" : "Sélectionnez le jeu d'origine",
+	"remsel": "Supprimer<br><<<",
+	"impsel": "Importer<br>>>>"
 }

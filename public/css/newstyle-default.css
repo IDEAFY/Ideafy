@@ -2898,7 +2898,7 @@ textarea.solution {
     width: 110px;
     margin: 10px 0px;
     float: left;
-    height: 480px;
+    height: 485px;
     text-align: center;
 }
 
@@ -2906,7 +2906,7 @@ textarea.solution {
     width: 220px;
     margin: 10px 20px;
     float: left;
-    height: 480px;
+    height: 485px;
 }
 
 #card_creation .importcard .importlist legend{
@@ -2918,7 +2918,8 @@ textarea.solution {
 
 #card_creation .importcard .importlist ul{
     border: 1px solid #657b99;
-    height: 478px;
+    margin-top: 3x;
+    height: 480px;
     width: 218px;
     overflow-y: scroll;
 }

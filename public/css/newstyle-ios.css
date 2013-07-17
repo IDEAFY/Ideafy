@@ -2767,15 +2767,21 @@ textarea.solution {
 }
 
 #card_creation .importcard .importarea{
-    width: 200px;
+    width: 140px;
     margin: 10px 5px;
     float: left;
-    height: 350px;
+    height: 480px;
+}
+
+#card_creation .importcard .importarea.importlist{
+    width: 220px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 #card_creation .importcard .importarea ul{
     border: 1px solid #657b99;
-    height: 348px;
+    height: 478px;
     width: 198px;
     overflow-y: scroll;
 }

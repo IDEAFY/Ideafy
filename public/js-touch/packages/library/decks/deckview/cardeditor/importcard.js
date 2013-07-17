@@ -21,7 +21,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     model = new Store();
                     
                 
-                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-settingsevent="listen: change, updateDeck"></select></div><div class="importlist"><ul>Deck card list</ul></div><div class="importarea"><button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div class="importlist"><ul>Current deck card list</ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
+                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-settingsevent="listen: change, updateDeck"></select></div><div class="importlist"><legend>Selected deck</legend><ul data-selected="foreach"></ul></div><div class="importarea"><button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div class="importlist"><legend>Working deck</legend><ul data-current="foreach"><li data-current="bind: setType, type; bind: innerHTML, title"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
                 importCard.plugins.addAll({
                         "label" : new Model(labels),
@@ -36,7 +36,26 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         this.innerHTML=res;
                                    }        
                         }),
-                        "current" : new Model(currentDeck),
+                        "current" : new Model(currentDeck, {
+                                setType : function(type){
+                                        switch(type){
+                                                case 1:
+                                                        this.setAttribute("style", "background-image:url('../img/decks/characters.png);");
+                                                        break;
+                                                case 2: 
+                                                        this.setAttribute("style", "background-image:url('../img/decks/context.png);");
+                                                        break;
+                                                case 3:
+                                                        this.setAttribute("style", "background-image:url('../img/decks/problem.png);");
+                                                        break;
+                                                case 4:
+                                                        this.setAttribute("style", "background-image:url('../img/decks/technology.png);");
+                                                        break;
+                                                default:
+                                                        break;
+                                        }
+                                }
+                        }),
                         "selected" : new Model(selectedDeck),
                         "importevent" : new Event(importCard)
                 });
@@ -82,7 +101,18 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         
                         cdb.sync(db, "library", "_view/cards", {key: '"'+$deckId+'"'})
                         .then(function(){
+                                var arr = [];
                                 console.log(cdb.toJSON());
+                                cdb.loop(function(v,i){
+                                        arr.push({"id": v._id, "type": v.type, "title": v.title});                
+                                });
+                                arr.sort(function(x,y){
+                                        var a = x.title, b = y.title;
+                                        if (a<b) return -1;
+                                        if (a>b) return 1;
+                                        if (a===b) return 0;
+                                });
+                                store.reset(arr);
                                 promise.fulfill();        
                         });
                         

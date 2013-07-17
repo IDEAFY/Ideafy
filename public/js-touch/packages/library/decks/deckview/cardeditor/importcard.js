@@ -59,7 +59,29 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         (selected) ? this.classList.add("selected") : this.classList.remove("selected");
                                 }
                         }),
-                        "selected" : new Model(selectedDeck),
+                        "selected" : new Model(selectedDeck, {
+                                setType : function(type){
+                                        switch(type){
+                                                case 1:
+                                                        this.setAttribute("style", "background-image:url('../img/decks/characters.png'); color: #657b99;");
+                                                        break;
+                                                case 2: 
+                                                        this.setAttribute("style", "background-image:url('../img/decks/context.png');color:#5f8f28;");
+                                                        break;
+                                                case 3:
+                                                        this.setAttribute("style", "background-image:url('../img/decks/problem.png');color: #bd262c");
+                                                        break;
+                                                case 4:
+                                                        this.setAttribute("style", "background-image:url('../img/decks/technology.png');color: #f27b3d;");
+                                                        break;
+                                                default:
+                                                        break;
+                                        }
+                                },
+                                setSelected : function(selected){
+                                        (selected) ? this.classList.add("selected") : this.classList.remove("selected");
+                                }
+                        }),
                         "importevent" : new Event(importCard)
                 });
                 
@@ -98,7 +120,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 importCard.getDecks = function getDecks(){
                         
                         var cdb = new CouchDBBulkDocuments(),
-                            keys = user.get("taiaut_decks").concat(user.get("custom_decks"));
+                            keys = user.get("taiaut_decks").concat(user.get("custom_decks")),
+                            promise = new Promise();
                         cdb.setTransport(transport);
                         cdb.sync(db, {keys : keys}).then(function(){
                               var lang = user.get("lang"), arr = [];
@@ -120,8 +143,10 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 });
                                 importableDecks = arr.concat();
                                 model.set("decks", arr); 
+                                promise.fulfill();
                                 cdb.unsync();
-                        });       
+                        });
+                        return promise;       
                 };
                 
                 importCard.getDeckCards = function getDeckCards($deckId, store){
@@ -151,12 +176,24 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 
                 importCard.reset = function reset($deckId){
                         model.reset();
+                        currentDeck.reset([]);
+                        selectedDeck.reset([]);
+                        importCard.dom.querySelector("select").selectedIndex = 0;
                         
                         deckId = $deckId;
                         
-                        (importableDecks) ? model.set("decks", importableDecks) : importCard.getDecks();
-                        
-                        importCard.getDeckCards(deckId, currentDeck);
+                        if (importableDecks){
+                                model.set("decks", importableDecks);
+                                importCard.getDeckCards(deckId, currentDeck);
+                                importCard.getDeckCards(importableDecks[0]._id, selectedDeck);
+                        }
+                        else{
+                                importCard.getDecks()
+                                .then(function(){
+                                        importCard.getDeckCards(deckId, currentDeck);
+                                        importCard.getDeckCards(importableDecks[0]._id, selectedDeck);       
+                                });
+                        }
                 };
                 
                 // if user decks are updated update the list of decks as well

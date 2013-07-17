@@ -80,7 +80,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                             promise = new Promise();
                         cdb .setTransport(transport);
                         
-                        cdb.sync(db, "library", "_view/cards", {key: $deckId})
+                        cdb.sync(db, "library", "_view/cards", {key: '"'+$deckId+'"'})
                         .then(function(){
                                 console.log(cdb.toJSON());
                                 promise.fulfill();        

@@ -157,6 +157,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         store.update(i, "selected", false);
                                 }        
                         });
+                        model.set("sel", 0);
                 };
                 
                 // retrieve decks from which cards can be imported and store result

@@ -253,7 +253,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         
                         cardList.zoom = function(event, node){
                                 var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
-                                console.log(pagination.get("currentPage"), id);
                                 if (cards.get(id)._id === "newcard"){
                                         $editCard("newcard", $cardType);
                                 }
@@ -290,11 +289,12 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         // Method called to initialize a card popup
-                        cardList.setPopup = function setPopup(id){
-                                var pos = {x:0, y:0}, // the position of the popup
+                        cardList.setPopup = function setPopup($id){
+                                var id,
+                                    pos = {x:0, y:0}, // the position of the popup
                                     caret = ""; // the position of the caret
                                 
-                                id = id%12;
+                                id = $id%12;
                                 // determine popup position and caret orientation based on id
                                 switch(id){
                                         case 1:
@@ -360,7 +360,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         
                                 }
                                 
-                                popupUI.reset(cards.get(id), pos, caret, document.getElementById("cardlist-popup"));      
+                                popupUI.reset(cards.get($id), pos, caret, document.getElementById("cardlist-popup"));      
                         };
                         
                         // Method called when closing a popup -- passed as a parameter to the popup constructor

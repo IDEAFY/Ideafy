@@ -14,7 +14,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     labels = Config.get("labels"),
                     user = Config.get("user"),
                     transport = Config.get("transport"),
-                    deckId, importableDecks = [],
+                    deckId, importableDecks,
                     model = new Store();
                     
                 
@@ -75,7 +75,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         model.reset();
                         
                         deckId = $deckId;
-                        console.log(deckId);
+                        console.log(deckId, importableDecks);
                         
                         if (importableDecks){
                                 model.set("decks", importableDecks);

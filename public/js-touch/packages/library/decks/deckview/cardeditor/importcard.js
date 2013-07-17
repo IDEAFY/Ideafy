@@ -37,7 +37,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 },
                                 setDirection: function(direction){
                                         (direction) ? node.classList.remove("invisible") : node.classList.add("invisible");
-                                        (direction === "remove") ? this.innerHTML = "<<< Remove selection" : this.innerHTML = "Import selection >>>";           
+                                        (direction === "remove") ? this.innerHTML = labels.get("remsel") : this.innerHTML = labels.get("impsel");           
                                 },
                                 setVisible : function(sel){
                                         (sel) ? this.classList.remove("invisible") : this.classList.add("invisible");

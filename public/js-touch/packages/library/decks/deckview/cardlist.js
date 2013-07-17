@@ -220,12 +220,14 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 var nb = pagination.get("currentPage");
                                 if (nb>0) {
                                         cardList.displayPage(nb-1);
-                                }       
+                                }      
                         };
                         
                         cardList.displayNext = function displayNext(){
                                 var nb = pagination.get("currentPage");
-                                if (nb<(pagination.get("nbPages")-1)) cardList.displayPage(nb+1);        
+                                if (nb<(pagination.get("nbPages")-1)) {
+                                        cardList.displayPage(nb+1);
+                                } 
                         };
                         
                         cardList.setStart = function(event, node){
@@ -251,6 +253,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         
                         cardList.zoom = function(event, node){
                                 var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
+                                console.log(pagination.get("currentPage"), id);
                                 if (cards.get(id)._id === "newcard"){
                                         $editCard("newcard", $cardType);
                                 }

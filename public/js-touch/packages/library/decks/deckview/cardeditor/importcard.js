@@ -21,7 +21,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     model = new Store();
                     
                 
-                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-settingsevent="listen: change, updateDeck"></select></div><div class="importlist"><legend>Selected deck</legend><ul data-selected="foreach"><li name="selected"></li></ul></div><div class="importarea"><button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div class="importlist"><legend>Working deck</legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: mousedown, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
+                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-importevent="listen: change, updateSelect"></select></div><div class="importlist"><legend>Selected deck</legend><ul data-selected="foreach"><li name="selected"></li></ul></div><div class="importarea"><button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div class="importlist"><legend>Working deck</legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: mousedown, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
                 importCard.plugins.addAll({
                         "label" : new Model(labels),
@@ -59,12 +59,40 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         (selected) ? this.classList.add("selected") : this.classList.remove("selected");
                                 }
                         }),
-                        "selected" : new Model(selectedDeck),
+                        "selected" : new Model(selectedDeck, {
+                                setType : function(type){
+                                        switch(type){
+                                                case 1:
+                                                        this.setAttribute("style", "background-image:url('../img/decks/characters.png'); color: #657b99;");
+                                                        break;
+                                                case 2: 
+                                                        this.setAttribute("style", "background-image:url('../img/decks/context.png');color:#5f8f28;");
+                                                        break;
+                                                case 3:
+                                                        this.setAttribute("style", "background-image:url('../img/decks/problem.png');color: #bd262c");
+                                                        break;
+                                                case 4:
+                                                        this.setAttribute("style", "background-image:url('../img/decks/technology.png');color: #f27b3d;");
+                                                        break;
+                                                default:
+                                                        break;
+                                        }
+                                },
+                                setSelected : function(selected){
+                                        (selected) ? this.classList.add("selected") : this.classList.remove("selected");
+                                }
+                        }),
                         "importevent" : new Event(importCard)
                 });
                 
                 importCard.cancel = function(event, node){
                         $close();        
+                };
+                
+                importCard.updateSelect = function(event, node){
+                        var id = node.selectedIndex;
+                        selectedDeck.reset([]);
+                        importCard.getDeckCards(importableDecks[id]._id, selectedDeck);
                 };
                 
                 importCard.toggleSelect = function(event, node){
@@ -98,7 +126,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 importCard.getDecks = function getDecks(){
                         
                         var cdb = new CouchDBBulkDocuments(),
-                            keys = user.get("taiaut_decks").concat(user.get("custom_decks"));
+                            keys = user.get("taiaut_decks").concat(user.get("custom_decks")),
+                            promise = new Promise();
                         cdb.setTransport(transport);
                         cdb.sync(db, {keys : keys}).then(function(){
                               var lang = user.get("lang"), arr = [];
@@ -120,8 +149,10 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 });
                                 importableDecks = arr.concat();
                                 model.set("decks", arr); 
+                                promise.fulfill();
                                 cdb.unsync();
-                        });       
+                        });
+                        return promise;       
                 };
                 
                 importCard.getDeckCards = function getDeckCards($deckId, store){
@@ -132,7 +163,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         cdb.sync(db, "library", "_view/cards", {key: '"'+$deckId+'"'})
                         .then(function(){
                                 var arr = [];
-                                console.log(cdb.toJSON());
                                 cdb.loop(function(v,i){
                                         arr.push({"id": v.value._id, "type": v.value.type, "title": v.value.title});                
                                 });
@@ -151,12 +181,24 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 
                 importCard.reset = function reset($deckId){
                         model.reset();
+                        currentDeck.reset([]);
+                        selectedDeck.reset([]);
+                        importCard.dom.querySelector("select").selectedIndex = 0;
                         
                         deckId = $deckId;
                         
-                        (importableDecks) ? model.set("decks", importableDecks) : importCard.getDecks();
-                        
-                        importCard.getDeckCards(deckId, currentDeck);
+                        if (importableDecks){
+                                model.set("decks", importableDecks);
+                                importCard.getDeckCards(deckId, currentDeck);
+                                importCard.getDeckCards(importableDecks[0]._id, selectedDeck);
+                        }
+                        else{
+                                importCard.getDecks()
+                                .then(function(){
+                                        importCard.getDeckCards(deckId, currentDeck);
+                                        importCard.getDeckCards(importableDecks[0]._id, selectedDeck);       
+                                });
+                        }
                 };
                 
                 // if user decks are updated update the list of decks as well

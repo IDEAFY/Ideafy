@@ -200,9 +200,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         var cdb = new CouchDBView(),
                             promise = new Promise(),
                             el = importCard.dom.querySelector(".importfrom ul"),
-                            spinner = new Spinner.spin(el);
+                            spinner = new Spinner().spin(el);
                             
-                        cdb .setTransport(transport);
+                        cdb.setTransport(transport);
                         
                         cdb.sync(db, "library", "_view/cards", {key: '"'+$deckId+'"'})
                         .then(function(){

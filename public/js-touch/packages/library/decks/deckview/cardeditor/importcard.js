@@ -38,6 +38,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         }),
                         "current" : new Model(currentDeck, {
                                 setType : function(type){
+                                        (parseInt(this.getAttribute("data_current_id"),10) %2 == 0) ? this.setAttribute("style", "background: #e5e5e5;") : this.setAttribute("style", "background: white;")
                                         switch(type){
                                                 case 1:
                                                         this.setAttribute("style", "background-image:url('../img/decks/characters.png'); color: #657b99;");

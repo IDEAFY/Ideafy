@@ -5,14 +5,16 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
-        function(Widget, Config, Model, Event, Store){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBBulkDocuments"],
+        function(Widget, Config, Model, Event, Store, CouchDBBulkDocuments){
            
            return function ImportCardConstructor($update, $close){
                    
                 var importCard = new Widget(),
                     labels = Config.get("labels"),
-                    deckId,
+                    user = Config.get("user"),
+                    transport = Config.get("transport"),
+                    deckId, importableDecks,
                     model = new Store();
                     
                 
@@ -38,25 +40,63 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store"],
                         $close();        
                 };
                 
+                // retrieve decks from which cards can be imported and store result
+                importCard.getDecks = function getDecks(){
+                        
+                        var cdb = new CouchDBBulkDocuments(),
+                            keys = user.get("taiaut_decks").concat(user.get("custom_decks"));
+                        
+                        cdb.setTransport(transport);
+                        cdb.sync(Config.get("db"), {keys : keys}).then(function(){
+                              var lang = user.get("lang"), arr = [];
+                              cdb.loop(function(v, i){
+                                        if (v.public || (v.created_by === user.get("_id")) || (v.sharedwith && v.sharedwith.indexOf(user.get("_id")))){
+                                                if (!v.doc.default_lang || (v.doc.default_lang === lang)) {
+                                                        arr.push(v.doc);
+                                                }
+                                                else {
+                                                (v.doc.translations && v.doc.translations[lang]) ? arr.push(v.doc.translations[lang]) : arr.push(v.doc);
+                                                }
+                                        }
+                                });
+                                arr.sort(function(x,y){
+                                        var a = x.title, b = y.title;
+                                        if (a<b) return -1;
+                                        if (a>b) return 1;
+                                        if (a===b) return 0;
+                                });
+                                importableDecks = result.concat();
+                                model.set("decks", result); 
+                                cdb.unsync();
+                        });       
+                };
+                
                 importCard.reset = function reset($deckId){
                         model.reset();
                         
                         deckId = $deckId;
                         console.log(deckId);
                         
-                        Config.get("observer").notify("getImportableDecks", function(result){
-                                if (result && result.length){
-                                        // remove currently edited deck
-                                        result.sort(function(x,y){
-                                                var a = x.title, b = y.title;
-                                                if (a<b) return -1;
-                                                if (a>b) return 1;
-                                                if (a===b) return 0;
-                                        });
-                                }
-                                model.set("decks", result);
-                        });
+                        if (importableDecks){
+                                model.set("decks", importableDecks);
+                        }
+                        else{
+                                importCard.getDecks();
+                        }
                 };
+                
+                // if user decks are updated update the list of decks as well
+                user.watchValue("taiaut_decks", function(){
+                        importCard.getDecks();        
+                });
+                
+                user.watchValue("custom_decks", function(){
+                        importCard.getDecks();
+                });
+                
+                user.watchValue("lang", function(){
+                        importCard.getDecks();        
+                });
                 
                 IMPORTMODEL = model;
                 

@@ -125,7 +125,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 deckList.getDecks($type);         
                         });
                         
-                        
                         return deckList;
                         
                 };

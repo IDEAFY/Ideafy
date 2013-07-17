@@ -108,14 +108,20 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                             store, sel = model.get("sel") || 0;
                         
                         if (type === "current"){
-                                importCard.clearSelection("selected");
                                 store = currentDeck;
-                                model.set("direction", "remove");                
+                                if (model.get("direction") !== "remove"){
+                                        importCard.clearSelection("selected");
+                                        model.set("direction", "remove"); 
+                                        sel = 0;
+                                }               
                         }
                         else{
-                                importCard.clearSelection("current");
                                 store = selectedDeck;
-                                model.set("direction", "add");      
+                                if (model.get("direction") !== "add"){
+                                        importCard.clearSelection("current");
+                                        model.set("direction", "add"); 
+                                        sel = 0;
+                                }
                         }
                         
                         if (store.get(id).selected) {
@@ -157,7 +163,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         store.update(i, "selected", false);
                                 }        
                         });
-                        model.set("sel", 0);
                 };
                 
                 // retrieve decks from which cards can be imported and store result

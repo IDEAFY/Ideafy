@@ -21,7 +21,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     model = new Store();
                     
                 
-                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-settingsevent="listen: change, updateDeck"></select></div><div class="importlist"><legend>Selected deck</legend><ul data-selected="foreach"></ul></div><div class="importarea"><button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div class="importlist"><legend>Working deck</legend><ul data-current="foreach"><li data-current="bind: setType, type; bind: innerHTML, title"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
+                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-settingsevent="listen: change, updateDeck"></select></div><div class="importlist"><legend>Selected deck</legend><ul data-selected="foreach"><li name="selected"></li></ul></div><div class="importarea"><button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div class="importlist"><legend>Working deck</legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: mousedown, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
                 importCard.plugins.addAll({
                         "label" : new Model(labels),
@@ -54,6 +54,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                                 default:
                                                         break;
                                         }
+                                },
+                                setSelected : function(selected){
+                                        (selected) ? this.classList.add("selected") : this.classList.remove("selected");
                                 }
                         }),
                         "selected" : new Model(selectedDeck),
@@ -62,6 +65,33 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 
                 importCard.cancel = function(event, node){
                         $close();        
+                };
+                
+                importCard.toggleSelect = function(event, node){
+                        var type = node.getAttribute("name"),
+                            id = node.getAttribute("data-"+type+"_id"),
+                            store, sel;
+                        
+                        if (type === "current"){
+                                importCard.clearSelection("selected");
+                                store = currentDeck;                
+                        }
+                        else{
+                                importCard.clearSelection("current");
+                                store = selectedDeck;        
+                        }
+                        
+                        (store.get(id).selected) ? store.update(id, "selected", false) : store.update(id, "selected", true);
+                };
+                
+                importCard.clearSelection = function(type){
+                        var store;
+                        (type === "current") ? store = currentDeck : store = selectedDeck;
+                        store.loop(function(v,i){
+                                if (v.selected && v.selected === true){
+                                        store.update(i, "selected", false);
+                                }        
+                        });
                 };
                 
                 // retrieve decks from which cards can be imported and store result
@@ -143,6 +173,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 });
                 
                 IMPORTMODEL = model;
+                CD = currentDeck;
+                SD = selectedDeck;
                 
                 return importCard;
                    

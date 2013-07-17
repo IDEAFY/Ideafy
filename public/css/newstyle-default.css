@@ -2894,6 +2894,22 @@ textarea.solution {
     text-transform: uppercase;
 }
 
+
+
+#card_creation .importcard .importarea{
+    width: 200px;
+    margin: 10px 5px;
+    float: left;
+    height: 350px;
+}
+
+#card_creation .importcard .importarea ul{
+    border: 1px solid #657b99;
+    height: 348px;
+    width: 198px;
+    overflow-y: scroll;
+}
+
 #card_creation .cardpopup{
     width: 590px;
     height: 628px;

@@ -45,11 +45,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         
                         var cdb = new CouchDBBulkDocuments(),
                             keys = user.get("taiaut_decks").concat(user.get("custom_decks"));
-                        console.log("function called");
                         cdb.setTransport(transport);
                         cdb.sync(Config.get("db"), {keys : keys}).then(function(){
                               var lang = user.get("lang"), arr = [];
-                              console.log(cdb.toJSON());
                               cdb.loop(function(v, i){
                                         if (v.doc.public || (v.doc.created_by === user.get("_id")) || (v.doc.sharedwith && v.doc.sharedwith.indexOf(user.get("_id")))){
                                                 if (!v.doc.default_lang || (v.doc.default_lang === lang)) {
@@ -76,7 +74,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         model.reset();
                         
                         deckId = $deckId;
-                        console.log(deckId, importableDecks);
                         
                         (importableDecks) ? model.set("decks", importableDecks) : importCard.getDecks();
                 };

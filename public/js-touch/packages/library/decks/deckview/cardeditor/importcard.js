@@ -21,7 +21,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     model = new Store();
                     
                 
-                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-importevent="listen: change, updateSelect"></select></div><div class="importlist"><legend>Selected deck</legend><ul data-selected="foreach"><li name="selected" data-selected="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: mousedown, toggleSelect"></li></ul></div><div class="importarea"><button>Add/remove</button><button>Add all/remove all</button><button>Clear selection</button></div><div class="importlist"><legend>Working deck</legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: mousedown, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
+                importCard.template = '<div class="importcard"><div class="importfrom"><label data-labels="bind:innerHTML, importfrom">Select deck to import from</label><select data-model="bind:setDecks, decks" data-importevent="listen: change, updateSelect"></select></div><div class="importlist"><legend>Selected deck</legend><ul data-selected="foreach"><li name="selected" data-selected="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchend, toggleSelect"></li></ul></div><div class="importarea"><button data-model="bind: setVisible, sel; bind: setDirection, direction" data-importevent="listen: touchend, addRemoveSelected">Add/remove</button><button>Select all</button><button>Clear selection</button></div><div class="importlist"><legend>Working deck</legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchend, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
                 importCard.plugins.addAll({
                         "label" : new Model(labels),
@@ -34,7 +34,14 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                                 }
                                         }
                                         this.innerHTML=res;
-                                   }        
+                                },
+                                setDirection: function(direction){
+                                        (direction) ? node.classList.remove("invisible") : node.classList.add("invisible");
+                                        (direction === "remove") ? this.innerHTML = "<<< Remove selection" : this.innerHTML = "Import selection >>>";           
+                                },
+                                setVisible : function(sel){
+                                        (sel) ? this.classList.remove("invisible"):this.classList.add("invisible");
+                                }        
                         }),
                         "current" : new Model(currentDeck, {
                                 setType : function(type){
@@ -98,18 +105,48 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 importCard.toggleSelect = function(event, node){
                         var type = node.getAttribute("name"),
                             id = node.getAttribute("data-"+type+"_id"),
-                            store, sel;
+                            store, sel = model.get("sel") || 0;
                         
                         if (type === "current"){
                                 importCard.clearSelection("selected");
-                                store = currentDeck;                
+                                store = currentDeck;
+                                model.set("direction", "remove");                
                         }
                         else{
                                 importCard.clearSelection("current");
-                                store = selectedDeck;        
+                                store = selectedDeck;
+                                model.set("direction", "add");      
                         }
                         
-                        (store.get(id).selected) ? store.update(id, "selected", false) : store.update(id, "selected", true);
+                        if (store.get(id).selected) {
+                                store.update(id, "selected", false);
+                                model.set("sel", sel-1);
+                        }
+                        else{
+                                store.update(id, "selected", true);
+                                model.set("sel", sel+1);
+                        }
+                };
+                
+                importCard.selectAll = function selectAll(){
+                        var store;
+                        (model.get("direction") === "add") ? store = selectedDeck : store = currentDeck;
+                        store.loop(function(v,i){
+                                store.update(i, "selected", true);
+                        });
+                };
+                
+                importCard.addRemoveSelected = function(event, node){
+                        var dir = model.get("direction");
+                        (dir === "add") ? importCard.addSelected() : importCard.removeSelected(); 
+                };
+                
+                importCard.addSelected = function addSelected(){
+                        
+                };
+                
+                importCard.removeSelected = function removeSelected(){
+                        
                 };
                 
                 importCard.clearSelection = function(type){

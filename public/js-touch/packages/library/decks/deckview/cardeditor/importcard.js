@@ -157,9 +157,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 };
                 
                 importCard.addSelected = function addSelected(){
-                        var res = JSON.parse(currentDeck.toJSON());
+                        var dump = currentDeck.toJSON(), res = JSON.parse(dump);
                         selectedDeck.loop(function(v,i){
-                                if (v.selected) res.push(v);        
+                                if (v.selected && dump.search(v.id) === -1) res.push(v);        
                         });
                         res.sort(function(x,y){
                                 var a = x.title, b = y.title;

@@ -159,7 +159,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Place.plugi
                 };
                 
                 importCard.addSelected = function addSelected(){
-                        var dump = currentDeck.toJSON(), res = JSON.parse(dump);
+                        var dump = currentDeck.toJSON(), res = JSON.parse(dump),
+                            el = importCard.dom.querySelector("ul[name='current']"),
+                            spinner = new Spinner().spin(el);
                         selectedDeck.loop(function(v,i){
                                 if (v.selected && dump.search(v.id) === -1) res.push(v);        
                         });
@@ -170,6 +172,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Place.plugi
                                 if (a===b) return 0;
                         });
                         currentDeck.reset(res);
+                        spinner.stop();
                         importCard.clearSelection("selected");
                         model.set("direction", "remove");
                 };

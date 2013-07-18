@@ -168,7 +168,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                             promise = new Promise(),
                                             json, file = cardCDB.get("picture_file");
                                         
-                                        decks.splice(currentDeck, 1);
+                                        decks.splice(decks.indexOf(currentDeck), 1);
                                         
                                         // if there are other decks this card belongs to simply udated it and finish removal
                                         if (decks.length){

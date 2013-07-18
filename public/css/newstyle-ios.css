@@ -2817,8 +2817,11 @@ textarea.solution {
     background-color: #9ac9cd;
 }
 
-#card_creation .importcard button.addremove{
+#card_creation .importcard .importarea button{
     height: 40px;
+}
+
+#card_creation .importcard button.addremove{
     margin-top: 150px;
 }
 

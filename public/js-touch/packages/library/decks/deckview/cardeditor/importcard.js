@@ -157,7 +157,18 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 };
                 
                 importCard.addSelected = function addSelected(){
-                        
+                        var res = JSON.parse(currentDeck.toJSON());
+                        selectedDeck.loop(function(v,i){
+                                if (v.selected) res.push(v);        
+                        });
+                        res.sort(function(x,y){
+                                var a = x.title, b = y.title;
+                                if (a<b) return -1;
+                                if (a>b) return 1;
+                                if (a===b) return 0;
+                        });
+                        currentDeck.reset(res);
+                        importCard.clearSelection("selected");
                 };
                 
                 importCard.removeSelected = function removeSelected(){

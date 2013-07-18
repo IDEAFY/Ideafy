@@ -188,7 +188,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 
                         if (warning.length){
                                 Map.get("cache").classList.add("appear");
-                                confirmUI = new Confirm(document.body, "Removing the following cards from your deck will delete them from the database :<br>"+toRemove.join(", "), function(decision){
+                                confirmUI = new Confirm(document.body, "Removing the following cards from your deck will delete them from the database :<br>"+warning.join(", "), function(decision){
                                         if (decision){
                                                 toRemove.forEach(function(idx){currentDeck.del(idx)});
                                         }

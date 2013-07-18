@@ -168,7 +168,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                             promise = new Promise(),
                                             json, file = cardCDB.get("picture_file");
                                         
-                                        decks.splice(currentDeck, 1);
+                                        decks.splice(decks.indexOf(currentDeck), 1);
                                         
                                         // if there are other decks this card belongs to simply udated it and finish removal
                                         if (decks.length){
@@ -277,7 +277,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.deleteCard = function deleteCard(event, node){
-                                var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
+                                var id = parseInt(node.getAttribute("data-cards_id"), 10);
                                 // delete card from deck -- if the card does not belong to anymore deck - remove from database
                                 event.stopPropagation();
                                 // close popup
@@ -285,7 +285,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 // hide buttons
                                 node.parentNode.classList.add("invisible");
                                 // display confirmation popup
-                                cardList.removeCard(cards.get(id)._id);      
+                                cardList.removeCard(cardPage.get(id)._id);      
                         };
                         
                         // Method called to initialize a card popup

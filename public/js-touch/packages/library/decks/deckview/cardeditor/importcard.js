@@ -18,6 +18,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     currentDeck = new Store([]),
                     selectedDeck = new Store([]),
                     deckId,
+                    updates = false,
                     model = new Store(),
                     confirmUI;
                     
@@ -94,7 +95,47 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 });
                 
                 importCard.cancel = function(event, node){
+                        node.classList.remove("pressed");
                         $close();        
+                };
+                
+                importCard.upload = function(event, node){
+                        var spin = new Spinner().spin(node),
+                            chr = ["newcard"],
+                            ctx = ["newcard"],
+                            pb = ["newcard"],
+                            tch = ["newcard"];
+                        
+                        currentDeck.loop(function(v,i){
+                                switch(v.type){
+                                        case 1:
+                                                chr.push(v.id);
+                                                break;
+                                        case 2:
+                                                ctx.push(v.id);
+                                                break;
+                                        case 3:
+                                                pb.push(v.id);
+                                                break;
+                                        case 4:
+                                                tch.push(v.id);
+                                                break;
+                                        default:
+                                                chr.push(v.id);
+                                                break;
+                                }        
+                        }); 
+                        
+                        $update({characters:chr, contexts:ctx, problem:pb, techno:tch})
+                        .then(function(){
+                                spin.stop();
+                                node.classList.remove("pressed");
+                                $close();
+                        });
+                };
+                
+                importCard.press = function(event, node){
+                        node.classList.add("pressed");        
                 };
                 
                 importCard.updateSelect = function(event, node){
@@ -283,6 +324,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         model.reset({});
                         currentDeck.reset([]);
                         selectedDeck.reset([]);
+                        updates = false;
                         importCard.dom.querySelector("select").selectedIndex = 0;
                         
                         deckId = $deckId;
@@ -306,6 +348,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 user.watchValue("lang", function(){
                         importCard.getDecks();        
                 });
+                
+                
                 
                 IMPORTMODEL = model;
                 CD = currentDeck;

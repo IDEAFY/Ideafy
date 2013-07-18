@@ -1068,7 +1068,8 @@ ul.notify-list{
     margin-left: -280px;
     margin-top: -160px;
     padding: 40px;
-    background: white;  
+    background: white;
+    text-align: center; 
 }
 
 .confirm.importcard-confirm p{
@@ -1078,6 +1079,8 @@ ul.notify-list{
     padding: 10px;
     border-radius: 5px;
     overflow-y: scroll;
+    font-family: helvetica;
+    text-align: justify;
 }
 
 #newidea-popup.appear, #newdeck-popup.appear{

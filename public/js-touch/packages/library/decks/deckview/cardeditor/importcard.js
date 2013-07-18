@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBBulkDocuments", "CouchDBView", "Promise", "lib/spin.min", "service/confirm"],
-        function(Widget, Config, Model, Event, Store, CouchDBBulkDocuments, CouchDBView, Promise, Spinner, Confirm){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBBulkDocuments", "CouchDBView", "Promise", "lib/spin.min", "service/confirm", "service/map"],
+        function(Widget, Config, Model, Event, Store, CouchDBBulkDocuments, CouchDBView, Promise, Spinner, Confirm, Map){
            
            return function ImportCardConstructor($update, $close){
                    
@@ -187,11 +187,13 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         });
                 
                         if (warning.length){
+                                Map.get("cache").classList.add("appear");
                                 confirmUI = new Confirm(document.body, "Removing the following cards from your deck will delete them from the database :<br>"+toRemove.join(", "), function(decision){
                                         if (decision){
                                                 toRemove.forEach(function(idx){currentDeck.del(idx)});
                                         }
                                         document.body.removeChild(document.querySelector(".confirm"));
+                                        Map.get("cache").classList.remove("appear");
                                 });
                         }
                         else{

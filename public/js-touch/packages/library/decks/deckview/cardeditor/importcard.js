@@ -182,7 +182,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         currentDeck.loop(function(v,i){
                                 if (v.selected){
                                         toRemove.push(i);
-                                        if (v.deck.length === 1 && v.deck[0] === deckId) warning.push(v.title);
+                                        if (v.deck.length === 1 && v.deck[0] === deckId) warning.push(v.title.toUpperCase());
                                 }                
                         });
                 

@@ -177,11 +177,26 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 };
                 
                 importCard.removeSelected = function removeSelected(){
+                        var toRemove = [], warning = [];
+                        
+                        currentDeck.loop(function(v,i){
+                                if (v.selected){
+                                        toRemove.push(i);
+                                        if (v.deck.length === 1 && v.deck[0] === deckId) warning.push(v.title);
+                                }                
+                        });
                 
-                        confirmUI = new Confirm(document.body, "Are you sure", function(decision){
-                                if (decision) console.log(ok);
-                                document.body.removeChild(document.querySelector(".confirm"));     
-                        });  
+                        if (warning.length){
+                                confirmUI = new Confirm(document.body, "Removing the following cards from your deck will delete them from the database :<br>"+toRemove.join(", "), function(decision){
+                                        if (decision){
+                                                toRemove.forEach(function(idx){currentDeck.del(idx)});
+                                        }
+                                        document.body.removeChild(document.querySelector(".confirm"));
+                                });
+                        }
+                        else{
+                                toRemove.forEach(function(idx){currentDeck.del(idx)});          
+                        }  
                 };
                 
                 importCard.clearSelection = function(type){

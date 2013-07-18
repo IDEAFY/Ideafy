@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBBulkDocuments", "CouchDBView", "Promise", "lib/spin.min", "service/confirm"],
-        function(Widget, Config, Model, Event, Store, CouchDBBulkDocuments, CouchDBView, Promise, Spinner, Confirm){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Place.plugin", "Store", "CouchDBBulkDocuments", "CouchDBView", "Promise", "lib/spin.min", "service/confirm"],
+        function(Widget, Config, Model, Event, Place, Store, CouchDBBulkDocuments, CouchDBView, Promise, Spinner, Confirm){
            
            return function ImportCardConstructor($update, $close){
                    
@@ -18,10 +18,11 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     currentDeck = new Store([]),
                     selectedDeck = new Store([]),
                     deckId,
-                    model = new Store();
+                    model = new Store(),
+                    confirmUI = new Confirm();
                     
                 
-                importCard.template = '<div class="importcard"><div class="importfrom"><label data-label="bind:innerHTML, importfrom"></label><select data-model="bind:setDecks, decks" data-importevent="listen: change, updateSelect"></select></div><div class="importlist"><legend data-label="bind:innerHTML, seldeck"></legend><ul name="selected" data-selected="foreach"><li name="selected" data-selected="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchend, toggleSelect"></li></ul></div><div class="importarea"><button class="addremove invisible" data-model="bind: setVisible, sel; bind: setDirection, direction" data-importevent="listen: touchend, addRemoveSelected">Add/remove</button><button class="invisible" data-label="bind:innerHTML, selall" data-model="bind:setVisible, sel" data-importevent="listen: touchend, selectAll"></button><button class="invisible" data-label="bind:innerHTML, clearsel" data-model="bind: setVisible, sel" data-importevent="listen: touchend, clearSelected">Clear selection</button></div><div class="importlist"><legend data-label="bind:innerHTML, workdeck"></legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchend, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
+                importCard.template = '<div class="importcard"><div data-place="place:confirmUI"></div><div class="importfrom"><label data-label="bind:innerHTML, importfrom"></label><select data-model="bind:setDecks, decks" data-importevent="listen: change, updateSelect"></select></div><div class="importlist"><legend data-label="bind:innerHTML, seldeck"></legend><ul name="selected" data-selected="foreach"><li name="selected" data-selected="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchend, toggleSelect"></li></ul></div><div class="importarea"><button class="addremove invisible" data-model="bind: setVisible, sel; bind: setDirection, direction" data-importevent="listen: touchend, addRemoveSelected">Add/remove</button><button class="invisible" data-label="bind:innerHTML, selall" data-model="bind:setVisible, sel" data-importevent="listen: touchend, selectAll"></button><button class="invisible" data-label="bind:innerHTML, clearsel" data-model="bind: setVisible, sel" data-importevent="listen: touchend, clearSelected">Clear selection</button></div><div class="importlist"><legend data-label="bind:innerHTML, workdeck"></legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchend, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
                 importCard.plugins.addAll({
                         "label" : new Model(labels),
@@ -89,6 +90,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         (selected) ? this.classList.add("selected") : this.classList.remove("selected");
                                 }
                         }),
+                        "place" : new Place({"confirmUI" : confirmUI}),
                         "importevent" : new Event(importCard)
                 });
                 

@@ -42,7 +42,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.close = function close(){
                                 Map.get("cache").classList.remove("appear");
-                                $parent.removeChild($parent.lastChild);       
+                                $parent && $parent.removeChild($parent.lastChild);       
                         };
                         
                         _widget.hide = function hide(){
@@ -61,7 +61,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.render();
-                        _widget.place($parent);
+                        $parent && _widget.place($parent);
                         
                         if ($question){
                                 _content.set("question", $question);

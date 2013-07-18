@@ -2945,10 +2945,6 @@ textarea.solution {
     background-color: #9ac9cd;
 }
 
-#card_creation .importcard .importarea button{
-    height: 40px;
-}
-
 #card_creation .importcard button.addremove{
     margin-top: 150px;
 }
@@ -3006,7 +3002,8 @@ textarea.solution {
 
 #card_creation button{
     margin-top: 10px;
-    height: 25px;
+    height: 40px;
+    line-height: 15px;
     border-radius: 5px;
     width: 110px;
     color: white;

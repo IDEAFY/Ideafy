@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBBulkDocuments", "CouchDBView", "Promise", "lib/spin.min"],
-        function(Widget, Config, Model, Event, Store, CouchDBBulkDocuments, CouchDBView, Promise, Spinner){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBBulkDocuments", "CouchDBView", "Promise", "lib/spin.min", "service/confirm"],
+        function(Widget, Config, Model, Event, Store, CouchDBBulkDocuments, CouchDBView, Promise, Spinner, Confirm){
            
            return function ImportCardConstructor($update, $close){
                    
@@ -169,6 +169,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         });
                         currentDeck.reset(res);
                         importCard.clearSelection("selected");
+                        model.set("direction", "remove");
                 };
                 
                 importCard.removeSelected = function removeSelected(){
@@ -233,7 +234,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         .then(function(){
                                 var arr = [];
                                 cdb.loop(function(v,i){
-                                        arr.push({"id": v.value._id, "type": v.value.type, "title": v.value.title});                
+                                        arr.push({"id": v.value._id, "type": v.value.type, "title": v.value.title, "deck": v.value.deck});                
                                 });
                                 arr.sort(function(x,y){
                                         var a = x.title, b = y.title;

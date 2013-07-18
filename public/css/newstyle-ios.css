@@ -59,6 +59,37 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     font-size: 14px;
 }
 
+/* init */
+    @font-face {
+        font-family: Ideafy;
+        src: url('../fonts/ideafy-waiting.ttf') format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    }
+
+    .spinner{
+        -webkit-animation: myRotate 1s linear infinite;
+    }
+    
+    .waiting:before{
+        content: "\e000";
+        display: inline-block;
+        font-size:4em;
+        height: 1em;
+        line-height: 1;
+        font-family: Ideafy;
+        color: whitesmoke;
+    }
+
+    @-webkit-keyframes myRotate {
+        from {
+            -webkit-transform:rotate(0);
+        }
+        to {
+            -webkit-transform:rotate(360deg);
+        }
+    }
+
 /* utils */
 .blue-light {
   background:#9ac9cd;

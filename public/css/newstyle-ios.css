@@ -1044,6 +1044,11 @@ ul.notify-list{
     border-color: #CCCCCC;
 }
 
+.confirm.importcard-confirm .option{
+    margin-top: 10px;
+    font-family: Helvetica;
+}
+
 .confirm .option.pressed{
     color: white;
     background: #4D4D4D;

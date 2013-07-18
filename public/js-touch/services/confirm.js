@@ -21,7 +21,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "confirmevent" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "confirm"><div class="help-doctor"></div><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-confirmevent="listen:touchstart, press; listen:touchend, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-confirmevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl">Cancel</div></div>';
+                        _widget.template = '<div class = "confirm"><div class="cache"></div><div class="help-doctor"></div><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-confirmevent="listen:touchstart, press; listen:touchend, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-confirmevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl">Cancel</div></div>';
                         
                         _widget.press = function(event, node){
                                 event.stopPropagation();
@@ -41,7 +41,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.close = function close(){
-                                Map.get("cache").classList.remove("appear");
+                                _widget.dom.querySelector(".cache").classList.remove("appear");
                                 $parent && $parent.removeChild($parent.lastChild);       
                         };
                         
@@ -51,7 +51,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.show = function show(){
-                                Map.get("cache").classList.add("appear");
+                                _widget.dom.querySelector(".cache").classList.add("appear");
                                 _widget.dom.classList.remove("invisible");        
                         };
                         

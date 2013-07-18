@@ -318,7 +318,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 /* Main Stack */
-#cache{
+#cache, .confirm .cache{
     height: 748px;
     width: 1024px;
     position: absolute;
@@ -327,7 +327,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
 }
 
-#cache.appear{
+#cache.appear, .confirm .ache.appear{
     opacity: 0.9;
     z-index: 1500;
     -webkit-transition: opacity 0.7s linear;

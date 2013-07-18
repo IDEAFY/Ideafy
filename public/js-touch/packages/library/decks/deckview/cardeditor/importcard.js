@@ -191,13 +191,17 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 confirmUI = new Confirm(document.body, "Removing the following cards from your deck will delete them from the database :<br>"+warning.join(", "), function(decision){
                                         if (decision){
                                                 toRemove.forEach(function(idx){currentDeck.del(idx)});
+                                                importCard.clearSelection("current");
+                                                model.set("sel", 0);
                                         }
                                         document.body.removeChild(document.querySelector(".confirm"));
                                         Map.get("cache").classList.remove("appear");
                                 });
                         }
                         else{
-                                toRemove.forEach(function(idx){currentDeck.del(idx)});          
+                                toRemove.forEach(function(idx){currentDeck.del(idx)});
+                                importCard.clearSelection("current");
+                                model.set("sel", 0);         
                         }  
                 };
                 

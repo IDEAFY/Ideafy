@@ -1060,6 +1060,26 @@ ul.notify-list{
     font-size: 16px;
 }
 
+.confirm.importcard-confirm{
+    left: 50%;
+    width: 560px;
+    height: 240px;
+    top: 50%;
+    margin-left: -280px;
+    margin-top: -160px;
+    padding: 40px;
+    background: white;  
+}
+
+.confirm.importcard-confirm p{
+    color: #657b99;
+    height: 180px;
+    border: 1px solid #657b99;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-y: scroll;
+}
+
 #newidea-popup.appear, #newdeck-popup.appear{
     -webkit-transition:-webkit-transform 0.2s linear;
     -webkit-transform:translateY(689px);
@@ -1106,7 +1126,7 @@ ul.notify-list{
     margin: 5px;
 }
 
-.idea-edit .confirm .option{
+.idea-edit .confirm .option, .confirm.importcard-confirm .option{
     background: #E6E6E6;
     border-color: #CCCCCC;
 }
@@ -1116,7 +1136,7 @@ ul.notify-list{
     background: #4D4D4D;
 }
 
-#newidea-popup .option.pressed, .confirm .option.pressed, #new2q-popup .option.pressed, #newdeck-popup .option.pressed{
+#newidea-popup .option.pressed, .confirm .option.pressed, #new2q-popup .option.pressed, #newdeck-popup .option.pressed, .confirm.importcard-confirm .option.pressed{
     background: #94A3B8;
     border: 1px solid #657B99;
 }

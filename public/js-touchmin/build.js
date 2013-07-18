@@ -8,7 +8,7 @@
 /* deps load before main script??*/
 require.config({
         waitSeconds: 45,
-	baseUrl : "js-min/packages",
+	baseUrl : "js-touchmin/packages",
         paths: {
                 lib : "../libs",
                 service : "../services",

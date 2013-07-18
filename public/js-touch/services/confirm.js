@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
         function(Widget, Map, Model, Event, Config, Store){
                 
-                function ConfirmConstructor($parent, $question, $onDecision){
+                function ConfirmConstructor($parent, $question, $onDecision, $class){
                 
                         var _labels = Config.get("labels"),
                                 _widget = this,
@@ -62,6 +62,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.render();
                         $parent && _widget.place($parent);
+                        $class && _widget.dom.classList.add($class);
                         
                         if ($question){
                                 _content.set("question", $question);
@@ -74,8 +75,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                 }
                         
-                return function ConfirmFactory($parent, $question, $onDecision){
+                return function ConfirmFactory($parent, $question, $onDecision, $class){
                         ConfirmConstructor.prototype = new Widget();
-                        return new ConfirmConstructor($parent, $question, $onDecision);
+                        return new ConfirmConstructor($parent, $question, $onDecision, $class);
                 };
         });

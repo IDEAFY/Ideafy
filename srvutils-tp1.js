@@ -9,12 +9,12 @@ var fs = require("fs");
  * CheckVersion handler : to test if client version is the most current one
  */
 function CheckVersion() {
-        var _currentVersion = null;
         this.setCurrentVersion = function (currentVersion) {
                 _currentVersion = currentVersion;
         };
         
         this.handler = function(json, onEnd){
+                console.log(json.version, _currentVersion);
                 if (json.version < _currentVersion){
                         onEnd("outdated");
                 }

@@ -283,6 +283,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Place.plugi
                 IMPORTMODEL = model;
                 CD = currentDeck;
                 SD = selectedDeck;
+                CF = confirmUI;
                 
                 return importCard;
                    

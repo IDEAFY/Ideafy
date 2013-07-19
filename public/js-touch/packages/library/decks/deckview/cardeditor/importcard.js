@@ -347,8 +347,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         importCard.getDecks();        
                 });
                 
-                
-                
                 IMPORTMODEL = model;
                 CD = currentDeck;
                 SD = selectedDeck;

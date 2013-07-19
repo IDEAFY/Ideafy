@@ -109,8 +109,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 cdb.setTransport(transport);
                                 cdb.sync(Config.get("db"), cardId)
                                 .then(function(){
-                                        var deck = cdb.get("deck") || [];
-                                        deck.push(cardSetup.get("deckId"));
+                                        var deck = cdb.get("deck") || [], id = cardSetup.get("deckId");
+                                        if (!deck.indexOf(id)) deck.push(id);
                                         cdb.set("deck", deck);
                                         return cdb.upload();
                                 })

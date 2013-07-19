@@ -230,7 +230,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 Map.get("cache").classList.add("appear");
                                 confirmUI = new Confirm(document.body, "Removing the following cards from your deck will delete them from the database :<br>"+warning.join(", "), function(decision){
                                         if (decision){
-                                                toRemove.forEach(function(idx){currentDeck.del(idx)});
+                                                currentDeck.delAll(toRemove);
                                                 importCard.clearSelection("current");
                                                 model.set("sel", 0);
                                         }
@@ -239,7 +239,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 }, "importcard-confirm");
                         }
                         else{
-                                toRemove.forEach(function(idx){currentDeck.del(idx)});
+                                currentDeck.delAll(toRemove);
                                 importCard.clearSelection("current");
                                 model.set("sel", 0);         
                         }  

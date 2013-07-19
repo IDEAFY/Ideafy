@@ -131,9 +131,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 cdb.sync(Config.get("db"), deckId)
                                 .then(function(){
                                         console.log("deck :", cdb.toJSON());
-                                        var oldContent ={}, trans = cdb.get("translations") || {}, isTranslation = false;
+                                        var oldContent ={}, trans, isTranslation = false;
+                                        (cdb.get("translations")) ? trans = cdb.get("translsations") : trans = {};
                                         // check if updated deck is a translation or not
                                         if (trans[user.get("lang")]) isTranslation = true;
+                                        console.log("is translation ?", isTranslation);
                                         // update deck content
                                         if (isTranslation){
                                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){

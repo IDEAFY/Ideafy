@@ -23,7 +23,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     confirmUI;
                     
                 
-                importCard.template = '<div class="importcard"><div data-place="place:confirmUI"></div><div class="importfrom"><label data-label="bind:innerHTML, importfrom"></label><select data-model="bind:setDecks, decks" data-importevent="listen: change, updateSelect"></select></div><div class="importlist"><legend data-label="bind:innerHTML, seldeck"></legend><ul name="selected" data-selected="foreach"><li name="selected" data-selected="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchend, toggleSelect"></li></ul></div><div class="importarea"><button class="addremove invisible" data-model="bind: setVisible, sel; bind: setDirection, direction" data-importevent="listen: touchend, addRemoveSelected">Add/remove</button><button class="invisible" data-label="bind:innerHTML, selall" data-model="bind:setVisible, sel" data-importevent="listen: touchend, selectAll"></button><button class="invisible" data-label="bind:innerHTML, clearsel" data-model="bind: setVisible, sel" data-importevent="listen: touchend, clearSelected">Clear selection</button></div><div class="importlist"><legend data-label="bind:innerHTML, workdeck"></legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchend, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
+                importCard.template = '<div class="importcard"><div data-place="place:confirmUI"></div><div class="importfrom"><label data-label="bind:innerHTML, importfrom"></label><select data-model="bind:setDecks, decks" data-importevent="listen: change, updateSelect"></select></div><div class="importlist"><legend data-label="bind:innerHTML, seldeck"></legend><ul name="selected" data-selected="foreach"><li name="selected" data-selected="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchstart, setDirection; listen: touchend, toggleSelect"></li></ul></div><div class="importarea"><button class="addremove invisible" data-model="bind: setVisible, sel; bind: setDirection, direction" data-importevent="listen: touchend, addRemoveSelected">Add/remove</button><button class="invisible" data-label="bind:innerHTML, selall" data-model="bind:setVisible, sel" data-importevent="listen: touchend, selectAll"></button><button class="invisible" data-label="bind:innerHTML, clearsel" data-model="bind: setVisible, sel" data-importevent="listen: touchend, clearSelected">Clear selection</button></div><div class="importlist"><legend data-label="bind:innerHTML, workdeck"></legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchstart, setDirection;listen: touchend, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
                 importCard.plugins.addAll({
                         "label" : new Model(labels),
@@ -148,22 +148,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                             id = node.getAttribute("data-"+type+"_id"),
                             store, sel = model.get("sel") || 0;
                         
-                        if (type === "current"){
-                                store = currentDeck;
-                                if (model.get("direction") !== "remove"){
-                                        importCard.clearSelection("selected");
-                                        model.set("direction", "remove"); 
-                                        sel = 0;
-                                }               
-                        }
-                        else{
-                                store = selectedDeck;
-                                if (model.get("direction") !== "add"){
-                                        importCard.clearSelection("current");
-                                        model.set("direction", "add"); 
-                                        sel = 0;
-                                }
-                        }
+                        (type === "current") ? store = currentDeck :store = selectedDeck;
                         
                         if (store.get(id).selected) {
                                 store.update(id, "selected", false);
@@ -181,6 +166,28 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         store.loop(function(v,i){
                                 store.update(i, "selected", true);
                         });
+                };
+                
+                importCard.setDirection = function(event, node){
+                        var type = node.getAttribute("name"),
+                            store, sel = model.get("sel") || 0;
+                        
+                        if (type === "current"){
+                                store = currentDeck;
+                                if (model.get("direction") !== "remove"){
+                                        importCard.clearSelection("selected");
+                                        model.set("direction", "remove"); 
+                                        sel = 0;
+                                }               
+                        }
+                        else{
+                                store = selectedDeck;
+                                if (model.get("direction") !== "add"){
+                                        importCard.clearSelection("current");
+                                        model.set("direction", "add"); 
+                                        sel = 0;
+                                }
+                        }        
                 };
                 
                 importCard.clearSelected = function(event, node){

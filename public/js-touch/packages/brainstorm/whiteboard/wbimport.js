@@ -93,7 +93,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                         _img.src = data;
                                                         node.width=_img.width;
                                                         node.height=_img.height;
-                                                        _ctx.drawImage(_img,0,0);   
+                                                        _ctx.drawImage(_img,0,0);
+                                                        node.scrollIntoView();  
                                                 });
                                         }       
                                 }
@@ -196,7 +197,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         }
                         else{
                                _postit.reset($store.get($pos));
-                               document.getElementById("postpic").scrollIntoView();
                         }
                 };
                 

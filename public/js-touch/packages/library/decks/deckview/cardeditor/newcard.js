@@ -137,7 +137,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 cdb.sync(Config.get("db"), deckId)
                                 .then(function(){
                                         console.log("deck :", cdb.toJSON());
-                                        var oldContent ={},
+                                        var oldContent ={"characters":null, "contexts":null, "problems":null, "techno":null},
                                             trans,
                                             isTranslation = false;
                                             

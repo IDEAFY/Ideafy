@@ -125,11 +125,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                     cdb = new CouchDBDocument(),
                                     toAdd = [], toRemove = [];
                                 
-                                console.log(content);
+                                console.log(JSON.stringify(content));
                                 cdb.setTransport(transport);
                                 
                                 cdb.sync(Config.get("db"), deckId)
                                 .then(function(){
+                                        console.log("deck :", cdb.toJSON());
                                         var oldContent ={}, trans = cdb.get("translations") || {}, isTranslation = false;
                                         // check if updated deck is a translation or not
                                         if (trans[user.get("lang")]) isTranslation = true;
@@ -147,6 +148,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                                 });
                                                 cdb.set("content", content);
                                         }
+                                        console.log("updated content : ", cdb.get("content"), "\noldcontent : ", JSON.strongify(oldContent));
                                         // modify added or removed cards (e.g. deck reference, deletion etc.)
                                         ["characters", "contexts", "problems", "techno"].forEach(function(type){
                                                 var old = oldContent[type],
@@ -164,7 +166,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                                 }
                                         });
                                         
-                                        console.log(toAdd, toRemove);
+                                        console.log("results : toAdd --> ", toAdd.join(", "), " \n toRemove --> ", toRemove.join(", "));
                                         toAdd.forEach(function(cardId){
                                                 addToDeck(cardId);        
                                         });

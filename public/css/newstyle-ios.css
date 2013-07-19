@@ -158,10 +158,6 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   height:748px;
 }
 
-#wrapper{
-    -webkit-transform: translate3d(0,0,0);
-}
-
 .list ul{
     height: 652px;
     overflow-y: scroll;
@@ -189,6 +185,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   width:630px;
   left:394px;
   z-index: -10;
+  -webkit-transform: translate3d(0,0,0);
 }
 
 /* utils list */

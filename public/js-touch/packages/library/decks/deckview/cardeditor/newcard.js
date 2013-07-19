@@ -134,7 +134,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                         var oldContent ={}, trans, isTranslation = false;
                                         (cdb.get("translations")) ? trans = cdb.get("translsations") : trans = {};
                                         // check if updated deck is a translation or not
-                                        if (trans[user.get("lang")]) isTranslation = true;
+                                        if (trans.hasOwnProperty(user.get("lang"))) isTranslation = true;
                                         console.log("is translation ?", isTranslation);
                                         // update deck content
                                         if (isTranslation){

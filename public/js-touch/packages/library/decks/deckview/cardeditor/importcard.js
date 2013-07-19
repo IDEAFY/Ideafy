@@ -125,7 +125,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                                 break;
                                 }        
                         }); 
-                        console.log("calling function :", $update);
                         $update({characters:chr, contexts:ctx, problem:pb, techno:tch})
                         .then(function(){
                                 spin.stop();

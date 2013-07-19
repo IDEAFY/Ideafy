@@ -147,6 +147,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                         }
                                         else{
                                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){
+                                                        console.log(type, cdb.get("content")[type]);
                                                         oldContent[type] = cdb.get("content")[type].concat();
                                                 });
                                                 cdb.set("content", content);

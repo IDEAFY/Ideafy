@@ -191,12 +191,11 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 _widget.reset = function reset($pos){
                         _pos = $pos;
                         
-                        if (!_pos && _pos !== 0){
-                                _postit.reset({"type": "import", "content":""});
-                        }
-                        else{
-                               _postit.reset($store.get($pos));
-                               _widget.dom.querySelector(".picframe").scrollIntoView();
+                        _postit.reset({"type": "import", "content":""});
+                        
+                        if (_pos || _pos === 0){
+                                _widget.dom.querySelector(".picframe").scrollIntoView();
+                                _postit.reset($store.get($pos));
                         }
                 };
                 

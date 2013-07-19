@@ -164,23 +164,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 
                 };
                 
-/*                _widget.preview = function(event, node){
-                        
-                        var _img = new Image(),
-                            _reader = new FileReader();
-                        
-                        // first read the file to memory, once loaded resize and display upload button
-                        _reader.onloadend = function(e) {
-                                _img.src = e.target.result;
-                                // timeout is needed to render image and obtain its dimensions
-                                setTimeout(function(){
-                                        _drawImage(_img);
-                                        document.getElementById("postpic").classList.remove("invisible");
-                                        }, 300);
-                        };
-                        _reader.readAsDataURL(node.files[0]);
-                }; */
-                
                 _widget.press = function(event, node){
                         node.classList.add("pressed");      
                 };
@@ -213,6 +196,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         }
                         else{
                                _postit.reset($store.get($pos));
+                               console.log(_postit.get("content"));
                                _widget.dom.querySelector("#postpic").scrollIntoView(true);
                         }
                 };

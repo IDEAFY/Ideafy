@@ -94,6 +94,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                         node.width=_img.width;
                                                         node.height=_img.height;
                                                         _ctx.drawImage(_img,0,0);
+                                                        _widget.dom.querySelector("#postpic").scrollIntoView();
                                                 });
                                         }       
                                 }
@@ -195,7 +196,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         
                         if (_pos || _pos === 0){
                                 _postit.reset($store.get($pos));
-                                _widget.dom.querySelector(".wbpostit").scrollIntoView();
+                                _widget.dom.querySelector("#postpic").scrollIntoView();
                         }
                 };
                 

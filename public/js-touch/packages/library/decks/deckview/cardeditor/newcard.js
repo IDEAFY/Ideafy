@@ -123,6 +123,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 var promise = new Promise(),
                                     deckId = cardSetup.get("deckId"),
                                     cdb = new CouchDBDocument(),
+                                    newContent ={
+                                        characters: content.characters.concat(),
+                                        contexts: content.contexts.concat(),
+                                        problems: content.problems.concat(),
+                                        techno: content.techno.concat()
+                                    },
                                     toAdd = [], toRemove = [];
                                 
                                 console.log(JSON.stringify(content));
@@ -131,18 +137,21 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 cdb.sync(Config.get("db"), deckId)
                                 .then(function(){
                                         console.log("deck :", cdb.toJSON());
-                                        var oldContent ={}, trans, isTranslation = false;
+                                        var oldContent ={},
+                                            trans,
+                                            isTranslation = false;
+                                            
                                         (cdb.get("translations")) ? trans = cdb.get("translations") : trans = {};
-                                        console.log(JSON.stringify(trans), user.get("lang"));
+                                        
                                         // check if updated deck is a translation or not
                                         if (trans.hasOwnProperty(user.get("lang"))) isTranslation = true;
-                                        console.log("is translation ?", isTranslation);
+                                        
                                         // update deck content
                                         if (isTranslation){
                                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){
                                                         oldContent[type] = trans[user.get("lang")].content[type].concat();
                                                 });
-                                                trans[user.get("lang")].content = content;
+                                                trans[user.get("lang")].content = newContent;
                                                 cdb.set("translations", trans);
                                         }
                                         else{
@@ -150,7 +159,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                                         console.log(type, cdb.get("content")[type]);
                                                         oldContent[type] = cdb.get("content")[type].concat();
                                                 });
-                                                cdb.set("content", content);
+                                                cdb.set("content", newContent);
                                         }
                                         console.log("updated content : ", cdb.get("content"), "\noldcontent : ", JSON.strongify(oldContent));
                                         // modify added or removed cards (e.g. deck reference, deletion etc.)

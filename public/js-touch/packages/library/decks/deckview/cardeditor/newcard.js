@@ -71,7 +71,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 cdb.setTransport(transport); 
                                 cdb.sync(Config.get("db"), cardId)
                                 .then(function(){
-                                        var deck = cdb.get("deck") | [], p = new Promise();
+                                        var deck = cdb.get("deck") || [], p = new Promise();
                                         deck.splice(deck.indexOf(cardSetup.get("deckId")), 1);
                                         
                                         // if there are other decks this card belongs to simply udated it and finish removal

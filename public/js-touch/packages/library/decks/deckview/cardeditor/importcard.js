@@ -125,7 +125,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                                 break;
                                 }        
                         }); 
-                        $update({characters:chr, contexts:ctx, problem:pb, techno:tch})
+                        $update({characters:chr, contexts:ctx, problems:pb, techno:tch})
                         .then(function(){
                                 spin.stop();
                                 node.classList.remove("pressed");

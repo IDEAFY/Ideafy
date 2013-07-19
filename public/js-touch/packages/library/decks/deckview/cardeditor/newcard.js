@@ -123,29 +123,29 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 var promise = new Promise(),
                                     deckId = cardSetup.get("deckId"),
                                     cdb = new CouchDBDocument(),
-                                    newContent ={},
                                     toAdd = [], toRemove = [];
                                 
                                 console.log(JSON.stringify(content));
-                                newContent.characters = content.characters.concat();
-                                newContent.contexts = content.contexts.concat();
-                                newContent.problems = content.problems.concat();
-                                newContent.techno = content.techno.concat();
-                                
                                 cdb.setTransport(transport);
                                 
                                 cdb.sync(Config.get("db"), deckId)
                                 .then(function(){
                                         console.log("deck :", cdb.toJSON());
-                                        var oldContent ={"characters":null, "contexts":null, "problems":null, "techno":null},
+                                        var oldContent ={},
+                                            newContent ={
+                                                    characters: content.characters.concat(),
+                                                    contexts: content.contexts.concat(),
+                                                    problems: content.problems.concat(),
+                                                    techno: content.techno.concat()
+                                            },
                                             trans,
                                             isTranslation = false;
                                             
                                         (cdb.get("translations")) ? trans = cdb.get("translations") : trans = {};
-                                        
+                                        console.log(JSON.stringify(trans), user.get("lang"));
                                         // check if updated deck is a translation or not
                                         if (trans.hasOwnProperty(user.get("lang"))) isTranslation = true;
-                                        
+                                        console.log("is translation ?", isTranslation);
                                         // update deck content
                                         if (isTranslation){
                                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){
@@ -156,12 +156,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                         }
                                         else{
                                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){
-                                                        console.log(type, cdb.get("content")[type]);
                                                         oldContent[type] = cdb.get("content")[type].concat();
                                                 });
                                                 cdb.set("content", newContent);
                                         }
-                                        console.log("updated content : ", cdb.get("content"), "\noldcontent : ", JSON.strongify(oldContent));
+                                        console.log("updated content : ", cdb.get("content"), "\noldcontent : ", JSON.stringify(oldContent));
                                         // modify added or removed cards (e.g. deck reference, deletion etc.)
                                         ["characters", "contexts", "problems", "techno"].forEach(function(type){
                                                 var old = oldContent[type],

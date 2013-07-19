@@ -202,7 +202,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                             el = importCard.dom.querySelector("ul[name='current']"),
                             spinner = new Spinner().spin(el);
                         selectedDeck.loop(function(v,i){
-                                if (v.selected && dump.search(v.id) === -1) res.push(v);        
+                                if (v.selected && dump.search(v.id) === -1) res.push({id:v.id,type:v.type,title:v.title, deck:v.deck.concat()});        
                         });
                         res.sort(function(x,y){
                                 var a = x.title, b = y.title;

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise"],
-        function(Widget, Map, Config, Model, Event, Utils, Store, Promise){
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise", "lib/spin.min"],
+        function(Widget, Map, Config, Model, Event, Utils, Store, Promise, Spinner){
                 
            return function ImportConstructor($store, $exit){
              
@@ -83,10 +83,11 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         (content) ? this.classList.remove("invisible") : this.classList.add("invisible");        
                                 },
                                 "showPreview" : function(content){
-                                        var json, node=this, _transport = Config.get("transport");
+                                        var json, node=this, _transport = Config.get("transport"), spinner;
                                         if (!content) this.innerHTML = ""
                                         else {
-                                                node.parentNode.scrollIntoView(); 
+                                                document.querySelector(".picframe").scrollIntoView();
+                                                spinner = new Spinner().spin(node);
                                                 json = {"dir":"sessions/"+_sid, "filename":content};
                                                 _transport.request("GetFile", json, function(data){
                                                         var _img = new Image(),
@@ -94,7 +95,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                         _img.src = data;
                                                         node.width=_img.width;
                                                         node.height=_img.height;
-                                                        _ctx.drawImage(_img,0,0); 
+                                                        _ctx.drawImage(_img,0,0);
+                                                        spinner.stop();
                                                 });
                                         }       
                                 }

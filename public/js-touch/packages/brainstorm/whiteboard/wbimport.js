@@ -196,7 +196,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         }
                         else{
                                _postit.reset($store.get($pos));
-                               _widget.dom.querySelector("#postpic").scrollIntoView();
+                               document.getElementById("postpic").scrollIntoView();
                         }
                 };
                 

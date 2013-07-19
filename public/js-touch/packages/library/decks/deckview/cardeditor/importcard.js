@@ -201,6 +201,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         var dump = currentDeck.toJSON(), res = JSON.parse(dump),
                             el = importCard.dom.querySelector("ul[name='current']"),
                             spinner = new Spinner().spin(el);
+                        
+                        currentDeck.reset([]);
+                        
                         selectedDeck.loop(function(v,i){
                                 if (v.selected && dump.search(v.id) === -1) res.push({id:v.id,type:v.type,title:v.title, deck:v.deck.concat(), selected:v.selected});        
                         });

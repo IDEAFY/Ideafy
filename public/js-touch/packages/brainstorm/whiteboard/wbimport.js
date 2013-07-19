@@ -83,10 +83,10 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         (content) ? this.classList.remove("invisible") : this.classList.add("invisible");        
                                 },
                                 "showPreview" : function(content){
-                                        var json, node=this, _transport=Config.get("transport");
+                                        var json, node=this, _transport = Config.get("transport");
                                         if (!content) this.innerHTML = ""
                                         else {
-                                                json = {"dir":_sid, "filename":content};
+                                                json = {"dir":"sessions/"+_sid, "filename":content};
                                                 _transport.request("GetFile", json, function(data){
                                                         var _img = new Image(),
                                                             _ctx = node.getContext('2d');
@@ -196,7 +196,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         }
                         else{
                                _postit.reset($store.get($pos));
-                               console.log(_postit.get("content"));
                                _widget.dom.querySelector("#postpic").scrollIntoView(true);
                         }
                 };

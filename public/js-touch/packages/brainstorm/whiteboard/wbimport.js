@@ -86,7 +86,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         var json, node=this, _transport = Config.get("transport");
                                         if (!content) this.innerHTML = ""
                                         else {
-                                                node.scrollIntoView(); 
+                                                document.getElementByI().scrollIntoView(); 
                                                 json = {"dir":"sessions/"+_sid, "filename":content};
                                                 _transport.request("GetFile", json, function(data){
                                                         var _img = new Image(),

@@ -83,14 +83,15 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         var json, node=this, _transport=Config.get("transport");
                                         if (!content) this.innerHTML = ""
                                         else {
-                                                json = {"dir":_sid, "filename":content};
+                                                json = {"dir":"sessions/"+_sid, "filename":content};
                                                 _transport.request("GetFile", json, function(data){
                                                         var _img = new Image(),
                                                             _ctx = node.getContext('2d');
                                                         _img.src = data;
                                                         node.width=_img.width;
                                                         node.height=_img.height;
-                                                        _ctx.drawImage(_img,0,0);   
+                                                        _ctx.drawImage(_img,0,0);
+                                                        _widget.dom.querySelector("#postpic").scrollIntoView();  
                                                 });
                                         }       
                                 }
@@ -167,12 +168,11 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 _widget.reset = function reset($pos){
                         _pos = $pos;
                         
-                        if (!_pos && _pos !== 0){
-                                _postit.reset({"type": "import", "content":""});
-                        }
-                        else{
-                               _postit.reset($store.get($pos));
-                               _widget.dom.querySelector("#postpic").scrollIntoView();
+                        _postit.reset({"type": "import", "content":""});
+                        
+                        if (_pos || _pos === 0){
+                                _postit.reset($store.get($pos));
+                                _widget.dom.querySelector("#postpic").scrollIntoView();
                         }
                 };
                 

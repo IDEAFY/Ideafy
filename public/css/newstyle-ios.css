@@ -158,6 +158,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   height:748px;
 }
 
+#wrapper{
+    -webkit-transform: translate3d(0,0,0);
+}
+
 .list ul{
     height: 652px;
     overflow-y: scroll;
@@ -3498,12 +3502,14 @@ textarea.solution {
 #musession .import{
     height: 380px;
     overflow-y: scroll;
+    -webkit-transform: translate3d(0,0,0);
 }
 
 #ideafy-quick .import{
     height: 400px;
     overflow-y: scroll;
     margin-top: 15px;
+    -webkit-transform: translate3d(0,0,0);
 }
 
 .import .wbpostit{

@@ -123,15 +123,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 var promise = new Promise(),
                                     deckId = cardSetup.get("deckId"),
                                     cdb = new CouchDBDocument(),
-                                    newContent ={
-                                        characters: content.characters.concat(),
-                                        contexts: content.contexts.concat(),
-                                        problems: content.problems.concat(),
-                                        techno: content.techno.concat()
-                                    },
+                                    newContent ={},
                                     toAdd = [], toRemove = [];
                                 
                                 console.log(JSON.stringify(content));
+                                newContent.characters = content.characters.concat();
+                                newContent.contexts = content.contexts.concat();
+                                newContent.problems = content.problems.concat();
+                                newContent.techno = content.techno.concat();
+                                
                                 cdb.setTransport(transport);
                                 
                                 cdb.sync(Config.get("db"), deckId)

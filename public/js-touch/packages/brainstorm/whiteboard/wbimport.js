@@ -194,8 +194,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _postit.reset({"type": "import", "content":""});
                         
                         if (_pos || _pos === 0){
-                                _widget.dom.querySelector(".picframe").scrollIntoView();
                                 _postit.reset($store.get($pos));
+                                _widget.dom.querySelector(".wbpostit").scrollIntoView();
                         }
                 };
                 

@@ -3610,6 +3610,12 @@ textarea.solution {
     overflow-y: scroll;
 }
 
+#ideafy-quick .import{
+    height: 400px;
+    overflow-y: scroll;
+    margin-top: 15px;
+}
+
 .import .wbpostit{
     width: 480px;
     height: 340px;

@@ -86,6 +86,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         var json, node=this, _transport = Config.get("transport");
                                         if (!content) this.innerHTML = ""
                                         else {
+                                                node.scrollIntoView(); 
                                                 json = {"dir":"sessions/"+_sid, "filename":content};
                                                 _transport.request("GetFile", json, function(data){
                                                         var _img = new Image(),
@@ -93,8 +94,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                         _img.src = data;
                                                         node.width=_img.width;
                                                         node.height=_img.height;
-                                                        _ctx.drawImage(_img,0,0);
-                                                        node.scrollIntoView();  
+                                                        _ctx.drawImage(_img,0,0); 
                                                 });
                                         }       
                                 }

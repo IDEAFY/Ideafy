@@ -76,6 +76,9 @@ input::-webkit-file-upload-button{
     position: absolute;
     margin-top: -374px;
     margin-left: -512px;
+}
+
+#brainstorm{
     -webkit-transform: translate3d(0,0,0);
 }
 /*  

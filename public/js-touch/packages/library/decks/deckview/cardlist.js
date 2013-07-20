@@ -20,6 +20,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                             labels = Config.get("labels"),
                             user = Config.get("user"),
                             currentDeck = null,
+                            deckAuthor = null,
                             currentHighlight = null; // used to keep track of current zoom
                         
                         cardList.plugins.addAll({
@@ -88,12 +89,13 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 "cardlistevent": new Event(cardList)
                         });
                         
-                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:touchstart, setStart; listen:touchmove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:touchstart, push; listen:touchend, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:touchstart, push; listen:touchend, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:touchstart, highlight; listen:touchend, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div><div class="cardbtnbar invisible"><div class="editcardbtn" data-cardlistevent="listen: touchstart, press; listen:touchend, editCard"></div><div class="deletecardbtn " data-cardlistevent="listen: touchstart, press; listen:touchend, deleteCard"></div></div></li></ul></div></div>';
+                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:touchstart, setStart; listen:touchmove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:touchstart, push; listen:touchend, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:touchstart, push; listen:touchend, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:touchstart, highlight; listen:touchend, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div><div class="cardbtnbar invisible"><div class="editcardbtn invisible" data-cardlistevent="listen: touchstart, press; listen:touchend, editCard"></div><div class="deletecardbtn " data-cardlistevent="listen: touchstart, press; listen:touchend, deleteCard"></div></div></li></ul></div></div>';
                         
                         cardList.reset = function reset(deck){
                                 //reset highlight
                                 currentHighlight = null;
                                 currentDeck = deck._id;
+                                deckAuthor = deck.created_by;
                                 cardList.getCardList(deck.content[$cardType]); // just do a one time fetch of the cards (as opposed to remaining sync'd)       
                         };
                         
@@ -170,7 +172,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         
                                         decks.splice(decks.indexOf(currentDeck), 1);
                                         
-                                        // if there are other decks this card belongs to simply udated it and finish removal
+                                        // if there are other decks this card belongs to simply update it and finish removal
                                         if (decks.length){
                                                 cardCDB.set("deck", decks);
                                                 cardCDB.upload()
@@ -258,9 +260,16 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 }
                                 else{
                                         cardList.setPopup(id);
-                                        if (cards.get(id).created_by === user.get("_id")){
-                                                // add edit & delete button on card
+                                        // check if user can  edit deck (edit and/or remove card from deck)
+                                        if (user.get("_id") === deckAuthor){
                                                 node.querySelector(".cardbtnbar").classList.remove("invisible");
+                                                if (cards.get(id).created_by === user.get("_id")){
+                                                        // add edit button on card
+                                                        node.querySelector(".editcardbtnbar").classList.remove("invisible");
+                                                }
+                                                else{
+                                                        node.querySelector(".editcardbtnbar").classList.add("invisible");        
+                                                }       
                                         }
                                 }       
                         };

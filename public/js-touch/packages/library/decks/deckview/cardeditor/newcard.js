@@ -110,12 +110,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 cdb.sync(Config.get("db"), cardId)
                                 .then(function(){
                                         var deck = cdb.get("deck") || [], id = cardSetup.get("deckId");
-                                        if (!deck.indexOf(id)) deck.push(id);
+                                        if (deck.indexOf(id)<0) deck.push(id);
                                         cdb.set("deck", deck);
                                         return cdb.upload();
                                 })
                                 .then(function(){
                                         promise.fulfill();
+                                        cdb.unsync();
                                 });
                                 return promise;      
                             },
@@ -188,8 +189,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                         if (toAdd.length || toRemove.length){
                                                 cdb.set("last_updated", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                         }
-                                        
-                                        console.log(toAdd.join(), toRemove.join());
                                         
                                         // upload deck document
                                         return cdb.upload();

@@ -123,14 +123,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                 var promise = new Promise(),
                                     deckId = cardSetup.get("deckId"),
                                     cdb = new CouchDBDocument(),
-                                    toAdd = [], toRemove = [];
+                                    toAdd = [], toRemove = [],
+                                    now = new Date();
                                 
-                                console.log(JSON.stringify(content));
                                 cdb.setTransport(transport);
                                 
                                 cdb.sync(Config.get("db"), deckId)
                                 .then(function(){
-                                        console.log("deck :", cdb.toJSON());
                                         var oldContent ={},
                                             newContent ={
                                                     characters: content.characters.concat(),
@@ -142,10 +141,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                             isTranslation = false;
                                             
                                         (cdb.get("translations")) ? trans = cdb.get("translations") : trans = {};
-                                        console.log(JSON.stringify(trans), user.get("lang"));
+                                        
                                         // check if updated deck is a translation or not
                                         if (trans.hasOwnProperty(user.get("lang"))) isTranslation = true;
-                                        console.log("is translation ?", isTranslation);
+                                        
                                         // update deck content
                                         if (isTranslation){
                                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){
@@ -160,11 +159,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                                 });
                                                 cdb.set("content", newContent);
                                         }
-                                        console.log("updated content : ", cdb.get("content"), "\noldcontent : ", JSON.stringify(oldContent));
+                                        
                                         // modify added or removed cards (e.g. deck reference, deletion etc.)
                                         ["characters", "contexts", "problems", "techno"].forEach(function(type){
                                                 var old = oldContent[type],
-                                                    upd = content[type],
+                                                    upd = newContent[type],
                                                     i,j,k,l;
                                                 
                                                 // first check removed
@@ -178,13 +177,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                                 }
                                         });
                                         
-                                        console.log("results : toAdd --> ", toAdd.join(", "), " \n toRemove --> ", toRemove.join(", "));
                                         toAdd.forEach(function(cardId){
                                                 addToDeck(cardId);        
                                         });
+                                        
                                         toRemove.forEach(function(cardId){
                                                 removeCard(cardId);        
                                         });
+                                        
+                                        if (toAdd.length || toRemove.length){
+                                                cdb.set("last_updated", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        }
+                                        
+                                        console.log(toAdd.join(), toRemove.join());
                                         
                                         // upload deck document
                                         return cdb.upload();
@@ -214,7 +219,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         
                         newCard.reset = function reset($cardId, $cardType, $deckId, $deckTitle){
                                 document.getElementById("card_creation").classList.remove("invisible");
-                                console.log($cardId, $cardType, $deckId, $deckTitle);
+                                
                                 cardSetup.reset({deckId: $deckId, title: $deckTitle, type: ["characters", "contexts", "problems", "techno"].indexOf($cardType)});
                                 
                                 if ($cardType === "characters"){

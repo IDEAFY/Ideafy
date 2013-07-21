@@ -34,9 +34,6 @@ var http = require("http"),
     
     var changePassword = new pwd.ChangePassword(),
         srvUtils = new srvutils.SrvUtils(),
-        // checkVersion = new srvutils.CheckVersion(),
-        // getFile = new srvutils.GetFile(),
-        // getLabels = new srvutils.GetLabels(),
         appUtils = new apputils.AppUtils();
   
 
@@ -362,22 +359,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
            };
         
         
-        // Application handlers
-        /*olives.handlers.set("Lang", function(json, onEnd){
-                var _path = __dirname+'/i8n/'+json.lang+'.json';
-                fs.exists(_path, function(exists){
-                        if (exists){
-                                var labels=fs.readFile(_path, 'utf8', function(err, data){
-                                        onEnd(JSON.parse(data));        
-                                });
-                        }
-                        else{
-                                onEnd("nok");
-                        }    
-                });
-        });*/
+        /*
+         * APPLICATION HANDLERS
+         */
         
-        olives.handlers.set("GetLanguages", function(json, onEnd){
+        /*olives.handlers.set("GetLanguages", function(json, onEnd){
                 fs.readdir(__dirname+'/i8n/', function(err, list){
                         var res = [];
                         if (err) {onEnd(err);}
@@ -388,13 +374,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 onEnd(res);
                         }
                 })
-        });
+        }); */
         
         // utility handlers (no couchdb)
         srvUtils.setCurrentVersion(currentVersion);
         olives.handlers.set("CheckVersion", srvUtils.checkVersion);
         olives.handlers.set("GetFile", srvUtils.getFile);
         olives.handlers.set("Lang", srvUtils.getLabels);
+        olives.handlers.set("GetLanguages", srvUtils.getLanguages);
         
         // change password handler
         changePassword.setCouchDBDocument(CouchDBDocument);

@@ -58,6 +58,23 @@ function SrvUtils(){
                         }    
                 });
         };
+        
+        /*
+         * GetLanguages : check all available languages
+         */
+        
+        this.getLanguages = function(json, onEnd){
+                fs.readdir(__dirname+'/i8n/', function(err, list){
+                        var res = [];
+                        if (err) {onEnd(err);}
+                        else {
+                                list.forEach(function(file){
+                                        res.push(file.substr(0,5));        
+                                });
+                                onEnd(res);
+                        }
+                });
+        };
 }
         
 exports.SrvUtils = SrvUtils;

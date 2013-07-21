@@ -29,12 +29,12 @@ var http = require("http"),
     }),
     wrap = require("./wrap"),
     pwd = require("./pwd.js"),
-    srvutils = require("./srvutils.js");
+    srvutils = require("./srvutils.js"),
+    apputils = require("./apputils.js");
     
     var changePassword = new pwd.ChangePassword(),
-        checkVersion = new srvutils.CheckVersion(),
-        getFile = new srvutils.GetFile(),
-        getLabels = new srvutils.GetLabels();
+        srvUtils = new srvutils.SrvUtils(),
+        appUtils = new apputils.AppUtils();
   
 
 
@@ -359,39 +359,16 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
            };
         
         
-        // Application handlers
-        /*olives.handlers.set("Lang", function(json, onEnd){
-                var _path = __dirname+'/i8n/'+json.lang+'.json';
-                fs.exists(_path, function(exists){
-                        if (exists){
-                                var labels=fs.readFile(_path, 'utf8', function(err, data){
-                                        onEnd(JSON.parse(data));        
-                                });
-                        }
-                        else{
-                                onEnd("nok");
-                        }    
-                });
-        });*/
-        
-        olives.handlers.set("GetLanguages", function(json, onEnd){
-                fs.readdir(__dirname+'/i8n/', function(err, list){
-                        var res = [];
-                        if (err) {onEnd(err);}
-                        else {
-                                list.forEach(function(file){
-                                        res.push(file.substr(0,5));        
-                                });
-                                onEnd(res);
-                        }
-                })
-        });
+        /*
+         * APPLICATION HANDLERS
+         */
         
         // utility handlers (no couchdb)
-        checkVersion.setCurrentVersion(currentVersion);
-        olives.handlers.set("CheckVersion", checkVersion.handler);
-        olives.handlers.set("GetFile", getFile.handler);
-        olives.handlers.set("Lang", getLabels.handler);
+        srvUtils.setCurrentVersion(currentVersion);
+        olives.handlers.set("CheckVersion", srvUtils.checkVersion);
+        olives.handlers.set("GetFile", srvUtils.getFile);
+        olives.handlers.set("Lang", srvUtils.getLabels);
+        olives.handlers.set("GetLanguages", srvUtils.getLanguages);
         
         // change password handler
         changePassword.setCouchDBDocument(CouchDBDocument);

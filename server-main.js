@@ -378,7 +378,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 })
         }); */
         
-        CDBAdmin.updateUserIp();
+        CDBAdmin.updateUserIP();
         
         // utility handlers (no couchdb)
         srvUtils.setCurrentVersion(currentVersion);

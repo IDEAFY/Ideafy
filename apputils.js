@@ -23,6 +23,10 @@ function AppUtils(){
                 _removeDocAsAdmin = _cdbAdmin.removeDoc;      
         };
         
+        
+        /*
+         * Update a card after one of its deck container was removed form database
+         */
         this.updateCard = function(cardId, deckId){
                 var cardCDB = new _CouchDBDocument(),
                     promise = new _Promise();
@@ -58,6 +62,9 @@ function AppUtils(){
                 return promise;        
         };
         
+        /*
+         * Delete an attachment file from the server (/shared directory)
+         */
         this.deleteAttachment = function(type, filename, onEnd){
                 var _path;
                 switch(type){
@@ -82,6 +89,9 @@ function AppUtils(){
                 });        
         };
         
+        /*
+         * Remove a deleted deck from a user document
+         */
         this.removeDeckFromUserDoc = function(deckid, userid){
                 var userCDB = new _CouchDBDocument(),
                     promise = new _Promise();
@@ -99,7 +109,14 @@ function AppUtils(){
                 
                 return promise;       
         };
-
+        
+        /*
+         * HANDLERS
+         */
+        
+        /*
+         * Delete a user deck from user's library (and/or remove entirely as applicable)
+         */
         this.deleteDeck = function(json, onEnd){
                 var deckId = json.id,
                     userId = json.userid,
@@ -153,8 +170,7 @@ function AppUtils(){
                                         onEnd("ok");        
                                 }, this);
                         }
-                }, this)
-                        
+                }, this);
         };
 }
 

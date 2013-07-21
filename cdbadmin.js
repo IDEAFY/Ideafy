@@ -106,7 +106,7 @@ function CDBAdmin(){
         /*
          * getDoc retrieves a document in the database
          * @param {String} docId : the id of the document
-         * @param {CouchDBDocument} cdbStore : the reason why the score should be changed
+         * @param {CouchDBDocument} cdbStore : the store to contain the retrieved document
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
         this.getDoc = function(docId, cdbStore){
@@ -135,7 +135,7 @@ function CDBAdmin(){
         /*
          * createDoc creates a document in the database
          * @param {String} docId : the id of the document
-         * @param {CouchDBDocument} cdbStore : the reason why the score should be changed
+         * @param {CouchDBDocument} cdbStore : the store containing the doc to be created
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
         this.createDoc = function(docId, cdbStore){
@@ -194,6 +194,35 @@ function CDBAdmin(){
                 
                 return promise;
         };
+        
+        /*
+         * Remove doc from database
+         * @param {String} docId : the id of the document
+         * @param {CouchDBDocument} cdbStore : the store containing the doc to be deleted
+         * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
+         */
+        this.removeDoc = function(docId, cdbStore){
+                var promise = new _Promise();
+                _transport.request("CouchDB", {
+                        method : "DELETE",
+                        path:"/"+_db+"/"+docId,
+                        auth: _cdbAdminCredentials,
+                        query: cdbStore.get("_rev"),
+                        agent: false,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        }
+                }, function (res) {
+                        var json = JSON.parse(res);
+                        if (json.ok) {
+                                promise.fulfill(json);
+                        } else {
+                                promise.reject(json);
+                        }});
+                
+                return promise;        
+        }
         
 }
 

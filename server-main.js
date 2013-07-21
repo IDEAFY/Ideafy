@@ -169,6 +169,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
             getDocAsAdmin = CDBAdmin.getDoc,
             createDocAsAdmin = CDBAdmin.getDoc,
             getViewAsAdmin = CDBAdmin.getView,
+            removeDocAsAdmin = CDBAdmin.removeDoc,
            checkInvited = function(id, onEnd){
                 transport.request("CouchDB", {
                         method : "GET",

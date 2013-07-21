@@ -203,7 +203,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         alert(labels.get("cannotdelactivedeck"));
                                                 }
                                                 else{
-                                                        confirmUI = new Confirm(document.body, labels.get("deldeckwarning")+warning.join(", "), function(decision){
+                                                        confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
                                                                 if (decision){
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
                                                                         if (user.get("taiaut_decks").indexOf($data) > -1){

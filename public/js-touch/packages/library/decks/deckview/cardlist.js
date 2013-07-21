@@ -92,8 +92,9 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:touchstart, setStart; listen:touchmove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:touchstart, push; listen:touchend, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:touchstart, push; listen:touchend, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:touchstart, highlight; listen:touchend, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div><div class="cardbtnbar invisible"><div class="editcardbtn invisible" data-cardlistevent="listen: touchstart, press; listen:touchend, editCard"></div><div class="deletecardbtn " data-cardlistevent="listen: touchstart, press; listen:touchend, deleteCard"></div></div></li></ul></div></div>';
                         
                         cardList.reset = function reset(deck){
-                                //reset highlight
+                                //reset highlight and hide popup
                                 currentHighlight = null;
+                                cardList.dom.querySelector("#cardlist-popup").classList.add("invisible");
                                 currentDeck = deck._id;
                                 deckAuthor = deck.created_by;
                                 cardList.getCardList(deck.content[$cardType]); // just do a one time fetch of the cards (as opposed to remaining sync'd)       
@@ -195,9 +196,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                 });
                                         }
                                         return promise;
-                                })
-                                .then(function(){
-                                        console.log("card removal operation completed");
                                 });
                                         
                         };
@@ -254,35 +252,36 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.zoom = function(event, node){
-                                var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
-                                if (cards.get(id)._id === "newcard"){
+                                var id = node.getAttribute("data-cards_id");
+                                if (cardPage.get(id)._id === "newcard"){
                                         $editCard("newcard", $cardType);
+                                        node.classList.remove("highlighted");
                                 }
                                 else{
                                         cardList.setPopup(id);
                                         // check if user can  edit deck (edit and/or remove card from deck)
                                         if (user.get("_id") === deckAuthor){
                                                 node.querySelector(".cardbtnbar").classList.remove("invisible");
-                                                if (cards.get(id).created_by === user.get("_id")){
+                                                if (cardPage.get(id).created_by === user.get("_id")){
                                                         // add edit button on card
-                                                        node.querySelector(".editcardbtnbar").classList.remove("invisible");
+                                                        node.querySelector(".editcardbtn").classList.remove("invisible");
                                                 }
                                                 else{
-                                                        node.querySelector(".editcardbtnbar").classList.add("invisible");        
+                                                        node.querySelector(".editcardbtn").classList.add("invisible");        
                                                 }       
                                         }
                                 }       
                         };
                         
                         cardList.editCard = function editCard(event, node){
-                                var id = parseInt(node.getAttribute("data-cards_id"), 10) + 12*pagination.get("currentPage");
+                                var id = node.getAttribute("data-cards_id");
                                 event.stopPropagation();
                                 // close popup
                                 popupUI.close();
                                 // hide buttons
                                 node.parentNode.classList.add("invisible");
                                 // display edit screen
-                                $editCard(cards.get(id)._id, $cardType);     
+                                $editCard(cardPage.get(id)._id, $cardType);     
                         };
                         
                         cardList.deleteCard = function deleteCard(event, node){
@@ -369,7 +368,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         
                                 }
                                 
-                                popupUI.reset(cards.get($id), pos, caret, document.getElementById("cardlist-popup"));      
+                                popupUI.reset(cardPage.get($id), pos, caret, document.getElementById("cardlist-popup"));      
                         };
                         
                         // Method called when closing a popup -- passed as a parameter to the popup constructor

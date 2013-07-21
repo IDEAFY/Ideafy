@@ -170,10 +170,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 }        
                         }
                         else{
-                                model.sync(Config.get("db"), id)
-                                .then(function(){
-                                        console.log("card synchronized :", model.toJSON());
-                                });        
+                                model.sync(Config.get("db"), id);        
                         } 
                };
                

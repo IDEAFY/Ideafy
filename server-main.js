@@ -29,12 +29,15 @@ var http = require("http"),
     }),
     wrap = require("./wrap"),
     pwd = require("./pwd.js"),
-    srvutils = require("./srvutils.js");
+    srvutils = require("./srvutils.js"),
+    apputils = require("./apputils.js");
     
     var changePassword = new pwd.ChangePassword(),
-        checkVersion = new srvutils.CheckVersion(),
-        getFile = new srvutils.GetFile(),
-        getLabels = new srvutils.GetLabels();
+        srvUtils = new srvutils.SrvUtils(),
+        // checkVersion = new srvutils.CheckVersion(),
+        // getFile = new srvutils.GetFile(),
+        // getLabels = new srvutils.GetLabels(),
+        appUtils = new AppUtils();
   
 
 
@@ -388,10 +391,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         });
         
         // utility handlers (no couchdb)
-        checkVersion.setCurrentVersion(currentVersion);
-        olives.handlers.set("CheckVersion", checkVersion.handler);
-        olives.handlers.set("GetFile", getFile.handler);
-        olives.handlers.set("Lang", getLabels.handler);
+        srvUtils.setCurrentVersion(currentVersion);
+        olives.handlers.set("CheckVersion", srvUtils.checkVersion);
+        olives.handlers.set("GetFile", srvUtils.getFile);
+        olives.handlers.set("Lang", srvUtils.getLabels);
         
         // change password handler
         changePassword.setCouchDBDocument(CouchDBDocument);

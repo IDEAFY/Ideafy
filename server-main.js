@@ -37,7 +37,7 @@ var http = require("http"),
         // checkVersion = new srvutils.CheckVersion(),
         // getFile = new srvutils.GetFile(),
         // getLabels = new srvutils.GetLabels(),
-        appUtils = new AppUtils();
+        appUtils = new apputils.AppUtils();
   
 
 

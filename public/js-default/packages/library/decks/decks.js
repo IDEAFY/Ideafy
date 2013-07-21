@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview", "./newdeck", "CouchDBDocument"],
-        function(Widget, Model, Stack, Control, Event, Place, Config, Map, List, DeckView, NewDeck, CouchDBDocument){
+define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview", "./newdeck"],
+        function(Widget, Model, Stack, Control, Event, Place, Config, Map, List, DeckView, NewDeck){
                 
            return function MyDecksContructor(){
               
@@ -94,6 +94,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               widget.selectStart = function(event){
                         var list = stack.getStack().getCurrentScreen().getModel(),
                             id = event.target.getAttribute("data-decks_id");
+                        deckView.hideEditView();
                         deckView.reset(list.get(id));
                         currentSelected = id;
               };
@@ -142,13 +143,13 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               });
                         
               user.watchValue("taiaut_decks", function(){
-                         ideafyDecks.reset();
+                         ideafyDecks.reset(function(sync){
+                                 if (sync){
+                                         ideafyDecks.initSelected(deckControl.init,0);
+                                         deckView.reset(deckListUI.getModel().get(0));
+                                 }
+                         });
                         // taiautDecks.getDecks($type);       
-              });
-              
-              // watch for import requests (importing cards from an existing deck)
-              Config.get("observer").watch("getImportableDecks", function(onEnd){
-                        onEnd(ideafyDecks.getImportableDecks());        
               });
               
               // return

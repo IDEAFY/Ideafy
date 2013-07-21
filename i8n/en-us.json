@@ -528,5 +528,6 @@
 	"clearsel" : "Clear selection",
 	"delcardwarning" : "Removing the following cards from your deck will delete them from the database :<br>",
 	"deldeckwarning" : "Deleting this deck will definitively remove it from your library. If you are its author, it will also be removed from the database as well as any card you created that is only attached to this deck. Are you sure you want to proceed ?",
-	"cannotdelactivedeck" : "You cannot remove your active deck.  Please review your settings."
+	"cannotdelactivedeck" : "You cannot remove your active deck.  Please review your settings.",
+	"cannotremovecard" : "You cannot remove this card from your active deck.  An active deck requires at leat one character card, one context card, one problem card and three technology cards."
 }

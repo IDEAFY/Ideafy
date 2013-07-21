@@ -20,7 +20,6 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                             labels = Config.get("labels"),
                             user = Config.get("user"),
                             currentDeck = null,
-                            deckAuthor = null,
                             currentHighlight = null; // used to keep track of current zoom
                         
                         cardList.plugins.addAll({
@@ -95,8 +94,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 //reset highlight and hide popup
                                 currentHighlight = null;
                                 cardList.dom.querySelector("#cardlist-popup").classList.add("invisible");
-                                currentDeck = deck._id;
-                                deckAuthor = deck.created_by;
+                                currentDeck = deck;
                                 cardList.getCardList(deck.content[$cardType]); // just do a one time fetch of the cards (as opposed to remaining sync'd)       
                         };
                         
@@ -142,62 +140,77 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         
                         cardList.removeCard = function removeCard(cardId){
                                 var deckCDB = new CouchDBDocument(),
-                                    cardCDB = new CouchDBDocument();
-                                // start by removing the card from the current deck
-                                deckCDB.setTransport(Config.get("transport"));
-                                cardCDB.setTransport(Config.get("transport"));
-                                deckCDB.sync(Config.get("db"), currentDeck)
-                                .then(function(){
-                                        var content = deckCDB.get("content"),
-                                            arr = content[$cardType];
+                                    cardCDB = new CouchDBDocument(),
+                                    chcount, ctcount, pbcount, tecount, checkRemove = true;
+                                
+                                // check if current deck is active deck and if card removal is authorized
+                                if (user.get("active_deck") === currentDeck._id){
+                                        chcount = currentDeck.content.characters.length;
+                                        ctcount = currentDeck.content.contexts.length;
+                                        pbcount = currentDeck.content.problems.length;
+                                        tecount = currentDeck.content.techno.length;
                                         
-                                        arr.splice(arr.indexOf(cardId), 1);
-                                        content[$cardType] = arr;
-                                        deckCDB.set("content", content);
-                                        return deckCDB.upload();
-                                })
-                                .then(function(){
-                                        // refresh card list
-                                        // currentHighlight = null;
-                                        // cardList.getCardList(deckCDB.get("content")[$cardType]);
-                                        $update("updated", currentDeck, $cardType);
-                                        deckCDB.unsync();
-                                        
-                                        // now process card update
-                                        return cardCDB.sync(Config.get("db"), cardId);
-                                })
-                                .then(function(){
-                                        var decks = cardCDB.get("deck"),
-                                            promise = new Promise(),
-                                            json, file = cardCDB.get("picture_file");
-                                        
-                                        decks.splice(decks.indexOf(currentDeck), 1);
-                                        
-                                        // if there are other decks this card belongs to simply update it and finish removal
-                                        if (decks.length){
-                                                cardCDB.set("deck", decks);
-                                                cardCDB.upload()
-                                                .then(function(){
-                                                        promise.fulfill();
-                                                })
+                                        if (chcount<2 || ctcount<2 || pbcount<2 || tecount<4){
+                                                checkRemove = false;
+                                                alert(labels.get("cannotremovecard"));
                                         }
-                                        else{
-                                                if (file.search("img/decks") === -1){
-                                                        json = {type: "card", file: file}
-                                                        Config.get("transport").request("DeleteAttachment", json, function(result){
-                                                                if (result !== "ok"){
-                                                                        console.log(result);
-                                                                }
+                                }
+                                if (checkRemove){
+                                        // start by removing the card from the current deck
+                                        deckCDB.setTransport(Config.get("transport"));
+                                        cardCDB.setTransport(Config.get("transport"));
+                                        deckCDB.sync(Config.get("db"), currentDeck._id)
+                                        .then(function(){
+                                                var content = deckCDB.get("content"),
+                                                    arr = content[$cardType];
+                                        
+                                                arr.splice(arr.indexOf(cardId), 1);
+                                                content[$cardType] = arr;
+                                                deckCDB.set("content", content);
+                                                return deckCDB.upload();
+                                        })
+                                        .then(function(){
+                                                // refresh card list
+                                                // currentHighlight = null;
+                                                // cardList.getCardList(deckCDB.get("content")[$cardType]);
+                                                $update("updated", currentDeck._id, $cardType);
+                                                deckCDB.unsync();
+                                        
+                                                // now process card update
+                                                return cardCDB.sync(Config.get("db"), cardId);
+                                        })
+                                        .then(function(){
+                                                var decks = cardCDB.get("deck"),
+                                                    promise = new Promise(),
+                                                    json, file = cardCDB.get("picture_file");
+                                        
+                                                decks.splice(decks.indexOf(currentDeck._id), 1);
+                                        
+                                                // if there are other decks this card belongs to simply update it and finish removal
+                                                if (decks.length){
+                                                        cardCDB.set("deck", decks);
+                                                        cardCDB.upload()
+                                                        .then(function(){
+                                                                promise.fulfill();
+                                                        })
+                                                }
+                                                else{
+                                                        if (file.search("img/decks") === -1){
+                                                                json = {type: "card", file: file}
+                                                                Config.get("transport").request("DeleteAttachment", json, function(result){
+                                                                        if (result !== "ok"){
+                                                                                console.log(result);
+                                                                        }
+                                                                });
+                                                        }
+                                                        cardCDB.remove()
+                                                        .then(function(){
+                                                                promise.fulfill();
                                                         });
                                                 }
-                                                cardCDB.remove()
-                                                .then(function(){
-                                                        promise.fulfill();
-                                                });
-                                        }
-                                        return promise;
-                                });
-                                        
+                                                return promise;
+                                        });
+                                }
                         };
                         
                         cardList.push = function(event, node){
@@ -260,7 +273,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 else{
                                         cardList.setPopup(id);
                                         // check if user can  edit deck (edit and/or remove card from deck)
-                                        if (user.get("_id") === deckAuthor){
+                                        if (user.get("_id") === currentDeck.created_by){
                                                 node.querySelector(".cardbtnbar").classList.remove("invisible");
                                                 if (cardPage.get(id).created_by === user.get("_id")){
                                                         // add edit button on card

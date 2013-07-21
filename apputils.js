@@ -139,13 +139,18 @@ function AppUtils(){
                                 
                                 // first get all cards (including translations if any...)
                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){
-                                        allCards = allCards.concat(content[type]);        
+                                        content[type].forEach(function(id){
+                                                if (id !== "newcard") allCards.push(id);        
+                                        }); 
                                 });
                                 
                                 for (i in trans){
                                         if (trans[i] && trans[i].content){
                                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){
-                                                        allCards = allCards.concat(trans[i].content[type]);        
+                                                        var arr = trans[i].content[type];
+                                                        arr.forEach(function(id){
+                                                                if (id !== "newcard") allCards.push(id);        
+                                                        });        
                                                 });
                                         }          
                                 }

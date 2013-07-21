@@ -254,7 +254,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                         }
                                                                 }
                                                                 document.body.removeChild(document.querySelector(".confirm"));
-                                                                Map.get("cache").classList.remove("appear");
+                                                                document.getElementById("cache").classList.remove("appear");
                                                         }, "importcard-confirm");
                                                 }
                                                 break;

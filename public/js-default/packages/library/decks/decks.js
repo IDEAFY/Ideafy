@@ -146,7 +146,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                          ideafyDecks.reset(function(sync){
                                  if (sync){
                                          ideafyDecks.initSelected(deckControl.init,0);
-                                         deckView.reset(deckListUI.getModel().get(0));
+                                         deckView.reset(ideafyDecks.getModel().get(0));
                                  }
                          });
                         // taiautDecks.getDecks($type);       

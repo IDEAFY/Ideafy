@@ -7,7 +7,6 @@ function ChangePassword() {
         
         this.setCouchDBDocument = function (CouchDBDocument) {
                 _CouchDBDocument = CouchDBDocument;
-                
         };
         
         this.setCookie = function (cookie) {

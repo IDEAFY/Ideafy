@@ -127,7 +127,7 @@ function AppUtils(){
                 .then(function(){
                         var allCards = [], content = deckCDB.get("content"), trans = deckCDB.get("translations") || {}, i;
                         // check if deck has been shared with at least an other user
-                        if (deckCDB.get("sharedwith").length){
+                        if (deckCDB.get("sharedwith") && deckCDB.get("sharedwith").length){
                                 // simply remove deck from user document
                                 scope.removeDeckFromUserDoc(deckId, userId)
                                 .then(function(){

@@ -150,7 +150,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         pbcount = currentDeck.content.problems.length;
                                         tecount = currentDeck.content.techno.length;
                                         
-                                        if (chcount<2 || ctcount<2 || pbcount<2 || tecount<4){
+                                        if (chcount<=2 || ctcount<=2 || pbcount<=2 || tecount<=4){
                                                 checkRemove = false;
                                                 alert(labels.get("cannotremovecard"));
                                         }

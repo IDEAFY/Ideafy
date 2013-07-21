@@ -11,7 +11,7 @@ function CDBAdmin(){
         }
 
         this.updateUserIP = function(userid, reason, increment, onEnd){
-                console.log(this.getDocAsAdmin());
+                this.getDocAsAdmin();
         };
         
         this.updateDocAsAdmin = function(docId, cdbStore){

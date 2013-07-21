@@ -378,8 +378,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 })
         }); */
         
-        var testfn = CDBAdmin.updateUserIp;
-        testfn();
+        CDBAdmin.updateUserIp();
         
         // utility handlers (no couchdb)
         srvUtils.setCurrentVersion(currentVersion);

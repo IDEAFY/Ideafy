@@ -3,6 +3,7 @@
  */
 
 function ChangePassword() {
+        var _CouchDBDocument, _cookie, _transport;
         
         this.setCouchDBDocument = function (CouchDBDocument) {
                 _CouchDBDocument = CouchDBDocument;

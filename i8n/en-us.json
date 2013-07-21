@@ -527,5 +527,6 @@
 	"selall" : "Select all",
 	"clearsel" : "Clear selection",
 	"delcardwarning" : "Removing the following cards from your deck will delete them from the database :<br>",
-	"deldeckwarning" : "Deleting this deck will definitively remove it from your library. If you are its author, it will also be removed from the database as well as any card you created that is only attached to this deck. Are you sure you want to proceed ?"
+	"deldeckwarning" : "Deleting this deck will definitively remove it from your library. If you are its author, it will also be removed from the database as well as any card you created that is only attached to this deck. Are you sure you want to proceed ?",
+	"cannotdelactivedeck" : "You cannot remove your active deck.  Please review your settings."
 }

@@ -6,6 +6,8 @@ var fs = require("fs");
 
 function CDBAdmin(){
         
+        var _Promise, _CouchDBDocument, _transport, _db;
+        
         this.setAdminCredentials = function(credentials){
                 _cdbAdminCredentials = credentials;
         };

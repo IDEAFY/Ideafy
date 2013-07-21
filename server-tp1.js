@@ -30,14 +30,14 @@ var http = require("http"),
     wrap = require("./wrap"),
     pwd = require("./pwd.js"),
     srvutils = require("./srvutils.js"),
-    apputils = require("./apputils.js");
+    apputils = require("./apputils.js"),
+    cdbadmin = require("./cdbadmin.js");
     
     var changePassword = new pwd.ChangePassword(),
         srvUtils = new srvutils.SrvUtils(),
-        appUtils = new apputils.AppUtils();
+        appUtils = new apputils.AppUtils(),
+        CDBAdmin = new cdbadmin.CDBAdmin();
   
-
-
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
@@ -162,134 +162,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("CouchDB", CouchDBTools.handler);
         
         // Application utility functions
-        var updateUserIP = function(userid, reason, increment, onEnd){
-                var usercdb = new CouchDBDocument(),
-                    currentIP;
-                getDocAsAdmin(userid, usercdb).then(function(){
-                        switch(reason){
-                                case "newtc":
-                                        var tc_count = usercdb.get("twocents_count") || 0;
-                                        tc_count++;
-                                        usercdb.set("twocents_count", tc_count);
-                                        break;
-                                case "deltc":
-                                        var tc_count = usercdb.get("twocents_count");
-                                        tc_count--;
-                                        usercdb.set("twocents_count", tc_count);
-                                        break;
-                                case "su_session_complete":
-                                        var sus = usercdb.get("su_sessions_count") || 0;
-                                        sus++;
-                                        usercdb.set("su_sessions_count", sus);
-                                        break;
-                                case "mu_session_complete":
-                                        var mus = usercdb.get("mu_sessions_count") || 0;
-                                        mus++;
-                                        usercdb.set("mu_sessions_count", mus);
-                                        break;
-                                default:
-                                        break;        
-                        }
-                        currentIP = usercdb.get("ip");
-                        
-                        usercdb.set("ip", currentIP+increment);
-                        updateDocAsAdmin(userid, usercdb).then(function(){
-                                onEnd("score_updated");
-                        });       
-                });        
-        },
-            updateDocAsAdmin = function(docId, cdbStore){
-                var promise = new Promise();
-                transport.request("CouchDB", {
-                        method : "PUT",
-                        path:"/"+_db+"/"+docId,
-                        auth: cdbAdminCredentials,
-                        agent: false,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
-                        },
-                        data: cdbStore.toJSON()
-                }, function (res) {
-                        var json = JSON.parse(res);
-                        if (json.ok) {
-                                promise.fulfill();
-                        } else {
-                                promise.reject();
-                        }});
-                
-                return promise;      
-        },
-            getDocAsAdmin = function(docId, cdbStore){
-                var promise = new Promise();
-                transport.request("CouchDB", {
-                        method : "GET",
-                        path:"/"+_db+"/"+docId,
-                        auth: cdbAdminCredentials,
-                        agent: false,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
-                        }
-                }, function (res) {
-                        var json = JSON.parse(res);
-                        if (json._id) {
-                                cdbStore.reset(json);
-                                promise.fulfill();
-                        } else {
-                                promise.reject();
-                        }});
-                
-                return promise;      
-           },
-           createDocAsAdmin = function(docId, cdbStore){
-                var promise = new Promise();
-                transport.request("CouchDB", {
-                        method : "PUT",
-                        path:"/"+_db+"/"+docId,
-                        auth: cdbAdminCredentials,
-                        agent: false,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
-                        },
-                        data: cdbStore.toJSON()
-                }, function (res) {
-                        var json = JSON.parse(res);
-                        if (json.ok) {
-                                promise.fulfill();
-                        }
-                        else {
-                                promise.reject();
-                        }
-                        });
-                
-                return promise;         
-           },
-           getViewAsAdmin = function(design, view, query, cdbStore){
-                var promise = new Promise();
-                transport.request("CouchDB", {
-                        method : "GET",
-                        path:"/"+_db+"/_design/"+design+"/_view/"+view,
-                        query: query,
-                        auth: cdbAdminCredentials,
-                        agent: false,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
-                        }
-                }, function (res) {
-                        var json = JSON.parse(res);
-                        if (json.rows) {
-                                cdbStore.reset(json.rows);
-                                promise.fulfill();
-                        } else {
-                                promise.reject();
-                        }});
-                
-                return promise;      
-           },
-           checkInvited = function(id, onEnd){
+        var updateUserIP = CDBAdmin.updateUserIP,
+            updateDocAsAdmin = CDBAdmin.updateDoc,
+            getDocAsAdmin = CDBAdmin.getDoc,
+            createDocAsAdmin = CDBAdmin.getDoc,
+            getViewAsAdmin = CDBAdmin.getView, 
+            checkInvited = function(id, onEnd){
                 transport.request("CouchDB", {
                         method : "GET",
                         path:"/ideafy_invites/"+id,
@@ -309,7 +187,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                 });        
            },
-           addInvited = function(id, cdbDoc){
+            addInvited = function(id, cdbDoc){
                 var promise = new Promise();
                 transport.request("CouchDB", {
                         method : "PUT",
@@ -332,7 +210,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 
                 return promise;        
            },
-           sendSignupEmail = function(login, pwd, lang){
+            sendSignupEmail = function(login, pwd, lang){
                 var mailOptions = {
                         from : "IDEAFY <ideafy@taiaut.com>", // sender address
                         to : login
@@ -362,6 +240,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         /*
          * APPLICATION HANDLERS
          */
+        
+        // cdbadmin utilities
+       CDBAdmin.setAdminCredentials(cdbAdminCredentials);
+       CDBAdmin.setCouchDBDocument(CouchDBDocument);
+       CDBAdmin.setTransport(transport);
+       CDBAdmin.setPromise(Promise);
+       CDBAdmin.setDB(_db);
         
         // utility handlers (no couchdb)
         srvUtils.setCurrentVersion(currentVersion);

@@ -30,11 +30,13 @@ var http = require("http"),
     wrap = require("./wrap"),
     pwd = require("./pwd.js"),
     srvutils = require("./srvutils.js"),
-    apputils = require("./apputils.js");
+    apputils = require("./apputils.js"),
+    cdbadmin = require("./cdbadmin.js");
     
     var changePassword = new pwd.ChangePassword(),
         srvUtils = new srvutils.SrvUtils(),
-        appUtils = new apputils.AppUtils();
+        appUtils = new apputils.AppUtils(),
+        CDBAdmin = new cdbadmin.CDBAdmin();
   
 
 
@@ -375,6 +377,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                 })
         }); */
+        
+        var testfn = CDBAdmin.updateUserIp;
+        testfn();
         
         // utility handlers (no couchdb)
         srvUtils.setCurrentVersion(currentVersion);

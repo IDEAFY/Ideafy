@@ -58,7 +58,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 touchPoint = [event.pageX, event.pageY];
                         
                                 if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        actionBar = new ActionBar("deck", node, decks.get(id).id, this.hideActionBar);
+                                        actionBar = new ActionBar("deck", node, decks.get(id)._id, this.hideActionBar);
                                         frag = document.createDocumentFragment();  
                                 
                                         actionBar.place(frag); // render action bar    

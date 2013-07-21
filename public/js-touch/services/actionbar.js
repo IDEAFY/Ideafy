@@ -141,6 +141,25 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         }
                                                 });
                                                 break;
+                                        case "deck":
+                                                var cdb = new CouchDBDocument();
+                                                cdb.setTransport(transport);
+                                                cdb.sync(cdb, data)
+                                                .then(function(){
+                                                        console.log(cdb.toJSON());
+                                                        if (cdb.get("created_by") === user.get("_id")){
+                                                                if(user.get("connections") && user.get("connections").length){
+                                                                        buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
+                                                                }
+                                                                else if (user.get("facebook") || user.get("twitter") || user.get("gplus") || user.get("linkedin")){
+                                                                        buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
+                                                                }        
+                                                        }
+                                                        if (user.get("taiaut_decks").length || user.get("custom_decks").length){
+                                                                buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
+                                                        }        
+                                                });
+                                                break;
                                         case "message":
                                                 // export vi email -- if you can see it you can email it
                                                 buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});

@@ -525,5 +525,7 @@
 	"seldeck" : "Jeu d'origine",
 	"workdeck" : "Jeu en cours d'édition",
 	"selall" : "Tout sélectionner",
-	"clearsel" : "Tout désélectionner"
+	"clearsel" : "Tout désélectionner",
+	"delcardwarning" : "Retirer les cartes suivantes de votre jeu les effacera définitevement de la base de données :<br>",
+	"deldeckwarning" : "Supprimer ce jeu le retirera définitivement de votre bibliothèque.  Si vous en êtes l'auteur, il sera également supprimé de la base de données, ainsi que toute carte qui n'était rattachée qu'à ce seul jeu.  Êtes-vous sûr de vouloir continuer ?"
 }

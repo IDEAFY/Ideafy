@@ -236,11 +236,6 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                    // update labels do it once per session in case some new labels have been added on the server side
                    Utils.updateLabels(user.get("lang"));
                    
-                   // watch for value changes
-                   user.watchValue("taiaut_decks", settingsUI.getDecks);
-                   user.watchValue("custom_decks", settingsUI.getDecks);
-                   user.watchValue("active_deck", settingsUI.getDecks);
-                   
                    return settingsUI;
            };    
         });

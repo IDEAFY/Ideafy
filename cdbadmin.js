@@ -108,7 +108,7 @@ function CDBAdmin(){
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
         this.getDoc = function(docId, cdbStore){
-                var promise = new Promise();
+                var promise = new _Promise();
                 _transport.request("CouchDB", {
                         method : "GET",
                         path:"/"+_db+"/"+docId,
@@ -137,7 +137,7 @@ function CDBAdmin(){
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
         this.createDoc = function(docId, cdbStore){
-                var promise = new Promise();
+                var promise = new _Promise();
                 _transport.request("CouchDB", {
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
@@ -170,7 +170,7 @@ function CDBAdmin(){
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
         this.getView = function(design, view, query, cdbStore){
-                var promise = new Promise();
+                var promise = new _Promise();
                 _transport.request("CouchDB", {
                         method : "GET",
                         path:"/"+_db+"/_design/"+design+"/_view/"+view,

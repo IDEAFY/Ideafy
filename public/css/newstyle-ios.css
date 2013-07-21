@@ -2641,6 +2641,10 @@ textarea.solution {
     background-image: url('../img/library/25delete.png');    
 }
 
+#deckview .cardlist .editcardbtn.invisible, #deckview .cardlist .deletecardbtn.invisible{
+    display: none;    
+}
+
 #deckview .deckdetails{
     background: none;
     padding: 0;

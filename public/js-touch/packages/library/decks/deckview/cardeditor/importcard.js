@@ -18,7 +18,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     currentDeck = new Store([]),
                     selectedDeck = new Store([]),
                     deckId,
-                    updates = false,
                     model = new Store(),
                     confirmUI;
                     
@@ -325,7 +324,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         model.reset({});
                         currentDeck.reset([]);
                         selectedDeck.reset([]);
-                        updates = false;
                         importCard.dom.querySelector("select").selectedIndex = 0;
                         
                         deckId = $deckId;
@@ -349,11 +347,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 user.watchValue("lang", function(){
                         importCard.getDecks();        
                 });
-                
-                IMPORTMODEL = model;
-                CD = currentDeck;
-                SD = selectedDeck;
-                CF = confirmUI;
                 
                 return importCard;
                    

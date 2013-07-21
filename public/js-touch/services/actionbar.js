@@ -139,7 +139,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         if (data.authors.indexOf(user.get("_id")) === -1 && data.sharedwith.indexOf(user.get("_id")) >-1 && document.getElementById("library")){
                                                                 buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                         }
-                                                });
+                                                }, this);
                                                 break;
                                         case "deck":
                                                 var cdb = new CouchDBDocument();
@@ -157,7 +157,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         if (user.get("taiaut_decks").length || user.get("custom_decks").length){
                                                                 buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                         }        
-                                                });
+                                                }, this);
                                                 break;
                                         case "message":
                                                 // export vi email -- if you can see it you can email it
@@ -177,7 +177,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         this.deleteItem = function deleteItem(){
                                 var promise = new Promise(),
-                                    cdb = new CouchDBDocument();
+                                    cdb = new CouchDBDocument(),
+                                    scope = this;
                                 
                                 cdb.setTransport(transport);
                                 
@@ -201,6 +202,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                         case "deck":
                                                 if (user.get("active_deck") === $data){
                                                         alert(labels.get("cannotdelactivedeck"));
+                                                        scope.hide();
                                                 }
                                                 else{
                                                         confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
@@ -213,7 +215,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 user.upload()
                                                                                 .then(function(){
                                                                                         promise.fulfill();
-                                                                                });
+                                                                                }, this);
                                                                         }
                                                                         else{
                                                                                 cdb.sync(db, $data)

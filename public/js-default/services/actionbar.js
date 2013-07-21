@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */ 
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min"],
-        function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner){
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min", "service/confirm"],
+        function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner, Confirm){
                 function ActionBarConstructor($type, $parent, $data, $hide){
                 
                         var buttons = new Store([]),
@@ -199,56 +199,66 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 }
                                                 break;
                                         case "deck":
-                                                // if deck is an ideafy deck simply remove from taiaut_decks field
-                                                if (user.get("taiaut_decks").indexOf($data) > -1){
-                                                        var arr = user.get("taiaut_decks");
-                                                        arr.splice(arr.indexOf($data), 1);
-                                                        user.set("taiaut_decks", arr);
-                                                        user.upload()
-                                                        .then(function(){
-                                                                promise.fulfill();
-                                                        });
+                                                if (user.get("active_deck") === $data){
+                                                        alert(labels.get("cannotdelactivedeck"));
                                                 }
                                                 else{
-                                                        cdb.sync(db, $data)
-                                                        .then(function(){
-                                                                // if deck has been shared with user simply remove user id from sharedwith field
-                                                                var sw = cdb.get("sharedwith") || [], cd = user.get("custom_decks");
+                                                        confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
+                                                                if (decision){
+                                                                        // if deck is an ideafy deck simply remove from taiaut_decks field
+                                                                        if (user.get("taiaut_decks").indexOf($data) > -1){
+                                                                                var arr = user.get("taiaut_decks");
+                                                                                arr.splice(arr.indexOf($data), 1);
+                                                                                user.set("taiaut_decks", arr);
+                                                                                user.upload()
+                                                                                .then(function(){
+                                                                                        promise.fulfill();
+                                                                                });
+                                                                        }
+                                                                        else{
+                                                                                cdb.sync(db, $data)
+                                                                                .then(function(){
+                                                                                        // if deck has been shared with user simply remove user id from sharedwith field
+                                                                                        var sw = cdb.get("sharedwith") || [], cd = user.get("custom_decks");
                                                                 
-                                                                // if deck has been shared with user simply remove user id from sharedwith field
-                                                                if (sw.length && sw.indexOf(user.get("_id")) > -1){
-                                                                        sw.splice(sw.indexOf(user.get("_id")), 1);
-                                                                        cdb.set("sharedwith", sw);
-                                                                        cdb.upload
-                                                                        .then(function(){
-                                                                                cd.splice(cd.indexOf($data), 1);
-                                                                                user.set("custom_decks", cd);
-                                                                                return user.upload();
-                                                                        })
-                                                                        .then(function(){
-                                                                                promise.fulfill();
-                                                                        });
+                                                                                        // if deck has been shared with user simply remove user id from sharedwith field
+                                                                                        if (sw.length && sw.indexOf(user.get("_id")) > -1){
+                                                                                                sw.splice(sw.indexOf(user.get("_id")), 1);
+                                                                                                cdb.set("sharedwith", sw);
+                                                                                                cdb.upload
+                                                                                                .then(function(){
+                                                                                                        cd.splice(cd.indexOf($data), 1);
+                                                                                                        user.set("custom_decks", cd);
+                                                                                                        return user.upload();
+                                                                                                })
+                                                                                                .then(function(){
+                                                                                                        promise.fulfill();
+                                                                                                });
+                                                                                        }
+                                                                
+                                                                                        // if user if author of deck then delete deck and as appropriate its contents from database
+                                                                                        else if (cdb.get("created_by") === user.get("_id")){
+                                                                                                transport.request("DeleteDeck", {"id": $data, "userid": user.get("_id")}, function(result){
+                                                                                                        if (result === "ok"){
+                                                                                                                cd.splice(cd.indexOf($data), 1);
+                                                                                                                user.set("custom_decks", cd);
+                                                                                                                user.upload()
+                                                                                                                .then (function(){
+                                                                                                                        promise.fulfill();        
+                                                                                                                });        
+                                                                                                        }
+                                                                                                        else{
+                                                                                                                console.log(result);
+                                                                                                        }
+                                                                                                });        
+                                                                                        }       
+                                                                                })
+                                                                        }
                                                                 }
-                                                                
-                                                                // if user if author of deck then delete deck and as appropriate its contents from database
-                                                                else if (cdb.get("created_by") === user.get("_id")){
-                                                                        transport.request("DeleteDeck", {"id": $data, "userid": user.get("_id")}, function(result){
-                                                                                if (result === "ok"){
-                                                                                        cd.splice(cd.indexOf($data), 1);
-                                                                                        user.set("custom_decks", cd);
-                                                                                        user.upload()
-                                                                                        .then (function(){
-                                                                                                promise.fulfill();        
-                                                                                        });        
-                                                                                }
-                                                                                else{
-                                                                                        console.log(result);
-                                                                                }
-                                                                        });        
-                                                                }       
-                                                        })
+                                                                document.body.removeChild(document.querySelector(".confirm"));
+                                                                Map.get("cache").classList.remove("appear");
+                                                        }, "importcard-confirm");
                                                 }
-                                                
                                                 break;
                                         case "message":
                                                  var arr = user.get("notifications"), i,

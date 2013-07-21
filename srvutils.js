@@ -14,7 +14,6 @@ function SrvUtils(){
         * CheckVersion handler : to test if client version is the most current one
         */
         this.checkVersion = function(json, onEnd){
-                console.log(json.version, _currentVersion);
                 if (json.version < _currentVersion){
                         onEnd("outdated");
                 }
@@ -57,6 +56,23 @@ function SrvUtils(){
                         else{
                                 onEnd("nok");
                         }    
+                });
+        };
+        
+        /*
+         * GetLanguages : check all available languages
+         */
+        
+        this.getLanguages = function(json, onEnd){
+                fs.readdir(__dirname+'/i8n/', function(err, list){
+                        var res = [];
+                        if (err) {onEnd(err);}
+                        else {
+                                list.forEach(function(file){
+                                        res.push(file.substr(0,5));        
+                                });
+                                onEnd(res);
+                        }
                 });
         };
 

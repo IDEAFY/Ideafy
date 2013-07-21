@@ -267,6 +267,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("ChangePWD", changePassword.handler);
         
         // application utilities and handlers
+        appUtils.setConstructors(CouchDBDocument, Promise);
         appUtils.setCDBAdmin(CDBAdmin);
         olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
         

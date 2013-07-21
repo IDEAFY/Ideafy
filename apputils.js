@@ -8,9 +8,13 @@ function AppUtils(){
         var _Promise, _CouchDBDocument,
             _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin;
         
+        this.setConstructors = function(CouchDBDocument, Promise){
+                _CouchDBDocument = CouchDBDocument;
+                _Promise = Promise;
+        }
+        
         this.setCDBAdmin = function(cdbAdmin){
                 _cdbAdmin = cdbAdmin;
-                _CouchDBDocument = _cdbAdmin._CouchDBDocument;
                 _updateUserIP = _cdbAdmin.updateUserIP,
                 _updateDocAsAdmin = _cdbAdmin.updateDoc,
                 _getDocAsAdmin = _cdbAdmin.getDoc,

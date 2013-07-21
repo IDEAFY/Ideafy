@@ -143,7 +143,12 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               });
                         
               user.watchValue("taiaut_decks", function(){
-                         ideafyDecks.reset();
+                         ideafyDecks.reset(function(sync){
+                                 if (sync){
+                                         ideafyDecks.initSelected(deckControl.init,0);
+                                         deckView.reset(deckListUI.getModel().get(0));
+                                 }
+                         });
                         // taiautDecks.getDecks($type);       
               });
               

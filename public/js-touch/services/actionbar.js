@@ -240,14 +240,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                 
                                                                                         // if user if author of deck then delete deck and as appropriate its contents from database
                                                                                         else if (cdb.get("created_by") === user.get("_id")){
+                                                                                                console.log("calling remote handler");
                                                                                                 transport.request("DeleteDeck", {"id": $data, "userid": user.get("_id")}, function(result){
                                                                                                         if (result === "ok"){
-                                                                                                                cd.splice(cd.indexOf($data), 1);
-                                                                                                                user.set("custom_decks", cd);
-                                                                                                                user.upload()
-                                                                                                                .then (function(){
-                                                                                                                        promise.fulfill();        
-                                                                                                                });        
+                                                                                                                promise.fulfill();        
                                                                                                         }
                                                                                                         else{
                                                                                                                 console.log(result);

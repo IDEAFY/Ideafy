@@ -120,18 +120,19 @@ function AppUtils(){
         this.deleteDeck = function(json, onEnd){
                 var deckId = json.id,
                     userId = json.userid,
-                    deckCDB = new _CouchDBDocument();
+                    deckCDB = new _CouchDBDocument(),
+                    scope = this;
                 
                 _getDocAsAdmin(deckId, deckCDB)
                 .then(function(){
-                        var allCards = [], content = deckCDB.get("content"), trans = deckCDB.get("translations"), i;
+                        var allCards = [], content = deckCDB.get("content"), trans = deckCDB.get("translations") || {}, i;
                         // check if deck has been shared with at least an other user
-                        if (deckCDB.get("sharedwith").length){
+                        if (deckCDB.get("sharedwith") && deckCDB.get("sharedwith").length){
                                 // simply remove deck from user document
-                                this.removeDeckFromUserDoc(deckId, userId)
+                                scope.removeDeckFromUserDoc(deckId, userId)
                                 .then(function(){
                                         onEnd("ok");
-                                }, this)
+                                })
                         }
                         else{
                                 // remove deck from database and all cards attached only to this deck
@@ -142,19 +143,23 @@ function AppUtils(){
                                 });
                                 
                                 for (i in trans){
-                                        ["characters", "contexts", "problems", "techno"].forEach(function(type){
-                                                allCards = allCards.concat(trans[i].content[type]);        
-                                        }, this);          
+                                        if (trans[i] && trans[i].content){
+                                                ["characters", "contexts", "problems", "techno"].forEach(function(type){
+                                                        allCards = allCards.concat(trans[i].content[type]);        
+                                                });
+                                        }          
                                 }
+                                
+                                console.log(allCards.join());
                                 
                                 // remove deck reference in card document or card document altogether
                                 allCards.forEach(function(cardId){
-                                        this.updateCard(cardId, deckId);
-                                }, this);
+                                        scope.updateCard(cardId, deckId);
+                                });
                                 
                                 // before removing deck, also remove its logo from the server
                                 if (deckCDB.get("picture_file") && deckCDB.get("picture_file") === "decklogo"){
-                                        this.deleteAttachment("deck", deckCDB.get("_id"), function(result){
+                                        scope.deleteAttachment("deck", deckCDB.get("_id"), function(result){
                                                 if (result !== "ok"){
                                                         console.log("result");
                                                 }
@@ -162,15 +167,15 @@ function AppUtils(){
                                 }
                                 
                                 // finally update the user document and remove the deck document from the database
-                                this.removeDeckFromUserDoc(deckId, userId)
+                                scope.removeDeckFromUserDoc(deckId, userId)
                                 .then(function(){
                                         return _removeDocAsAdmin(deckId, deckCDB)
-                                }, this)
+                                })
                                 .then(function(){
                                         onEnd("ok");        
-                                }, this);
+                                });
                         }
-                }, this);
+                });
         };
 }
 

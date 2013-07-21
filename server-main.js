@@ -164,7 +164,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("CouchDB", CouchDBTools.handler);
         
         // Application utility functions
-        var updateUserIP = function(userid, reason, increment, onEnd){
+        var updateUserIP = CDBAdmin.updateUserIP,
+            updateDocAsAdmin = CDBAdmin.updateDoc,
+            getDocAsAdmin = CDBAdmin.getDoc,
+            createDocAsAdmin = CDBAdmin.getDoc,
+            getViewAsAdmin = CDBAdmin.getView,
+            /* updateUserIP = function(userid, reason, increment, onEnd){
                 var usercdb = new CouchDBDocument(),
                     currentIP;
                 getDocAsAdmin(userid, usercdb).then(function(){
@@ -290,7 +295,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }});
                 
                 return promise;      
-           },
+           },*/
            checkInvited = function(id, onEnd){
                 transport.request("CouchDB", {
                         method : "GET",
@@ -377,8 +382,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                 })
         }); */
-        
-        CDBAdmin.updateUserIP();
+       
+       // cdbadmin utilities
+       CDBAdmin.setAdminCredentials(cdbAdminCredentials);
+       CDBAdmin.setCouchDBDocument(CouchDBDocument);
+       CDBAdmin.setTransport(transport);
+       CDBAdmin.setPromise(Promise);
+       CDBAdmin.setDB(_db);
         
         // utility handlers (no couchdb)
         srvUtils.setCurrentVersion(currentVersion);

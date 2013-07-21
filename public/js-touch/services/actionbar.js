@@ -144,7 +144,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                         case "deck":
                                                 var cdb = new CouchDBDocument();
                                                 cdb.setTransport(transport);
-                                                cdb.sync(cdb, data)
+                                                cdb.sync(cdb, $data)
                                                 .then(function(){
                                                         console.log(cdb.toJSON());
                                                         if (cdb.get("created_by") === user.get("_id")){

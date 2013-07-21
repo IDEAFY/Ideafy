@@ -243,12 +243,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                 console.log("calling remote handler");
                                                                                                 transport.request("DeleteDeck", {"id": $data, "userid": user.get("_id")}, function(result){
                                                                                                         if (result === "ok"){
-                                                                                                                cd.splice(cd.indexOf($data), 1);
-                                                                                                                user.set("custom_decks", cd);
-                                                                                                                user.upload()
-                                                                                                                .then (function(){
-                                                                                                                        promise.fulfill();        
-                                                                                                                });        
+                                                                                                                promise.fulfill();        
                                                                                                         }
                                                                                                         else{
                                                                                                                 console.log(result);

@@ -207,7 +207,7 @@ function CDBAdmin(){
                         method : "DELETE",
                         path:"/"+_db+"/"+docId,
                         auth: _cdbAdminCredentials,
-                        query: cdbStore.get("_rev"),
+                        query: {rev: cdbStore.get("_rev")},
                         agent: false,
                         headers: {
                                 "Content-Type": "application/json",

@@ -229,7 +229,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                };
                
                editChar.updateTitle = function updateTitle(event, node){
-                        model.set("title", node.innerHTML);        
+                       var title = node.innerHTML;
+                       title = title.charAt(0).toUpperCase() + title.slice(1);
+                        model.set("title", title);        
                };
                
                editChar.picturePreview = function(event, node){

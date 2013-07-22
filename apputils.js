@@ -32,7 +32,6 @@ function AppUtils(){
                 var cardCDB = new _CouchDBDocument(),
                     promise = new _Promise();
                 
-                console.log("updating card : ", cardId);
                 _getDocAsAdmin(cardId, cardCDB)
                 .then(function(){
                         var decks = cardCDB.get("deck");
@@ -97,7 +96,6 @@ function AppUtils(){
                 var userCDB = new _CouchDBDocument(),
                     promise = new _Promise();
                 
-                console.log("removing deck from user doc");
                 _getDocAsAdmin(userid, userCDB)
                 .then(function(){
                         var custom = userCDB.get("custom_decks");
@@ -128,7 +126,6 @@ function AppUtils(){
                     userId = json.userid,
                     deckCDB = new _CouchDBDocument();
                 
-                console.log(this.updateCard);
                 _getDocAsAdmin(deckId, deckCDB)
                 .then(function(){
                         var allCards = [], content = deckCDB.get("content"), trans = deckCDB.get("translations") || {}, i;
@@ -160,8 +157,6 @@ function AppUtils(){
                                                 });
                                         }          
                                 }
-                                
-                                console.log(allCards.join());
                                 
                                 // remove deck reference in card document or card document altogether
                                 allCards.forEach(function(cardId){

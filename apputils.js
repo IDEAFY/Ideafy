@@ -131,7 +131,7 @@ function AppUtils(){
                 _getViewAsAdmin("library", "decksinuse", {key: '"'+deckId+'"'}, deckView)
                 .then(function(){
                         console.log(deckView.toJSON());
-                        if (deckView.get(0).value){
+                        if (deckView.getNbItems()){
                                 // simply remove deck from user document
                                 _removeDeckFromUserDoc(deckId, userId)
                                 .then(function(){

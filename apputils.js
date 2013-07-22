@@ -6,7 +6,8 @@ var fs = require("fs");
 
 function AppUtils(){
         var _Promise, _CouchDBDocument,
-            _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin;
+            _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin,
+            _updateCard, _deleteAttachment, removeDeckFromUserDoc;
         
         this.setConstructors = function(CouchDBDocument, Promise){
                 _CouchDBDocument = CouchDBDocument;
@@ -27,10 +28,9 @@ function AppUtils(){
         /*
          * Update a card after one of its deck container was removed form database
          */
-        this.updateCard = function updateCard(cardId, deckId){
+        _updateCard = function(cardId, deckId){
                 var cardCDB = new _CouchDBDocument(),
-                    promise = new _Promise(),
-                    scope = this;
+                    promise = new _Promise();
                 
                 console.log("updating card : ", cardId);
                 _getDocAsAdmin(cardId, cardCDB)
@@ -51,7 +51,7 @@ function AppUtils(){
                         else {
                               // delete card and attachment
                               if (cardCDB.get("picture_file") === cardCDB.get("_id")){
-                                      scope.deleteAttachment("card", cardCDB.get("_id"));
+                                      _deleteAttachment("card", cardCDB.get("_id"));
                               }
                               
                               _removeDocAsAdmin(cardId, cardCDB)
@@ -66,7 +66,7 @@ function AppUtils(){
         /*
          * Delete an attachment file from the server (/shared directory)
          */
-        this.deleteAttachment = function deleteAttachment(type, filename, onEnd){
+        _deleteAttachment = function(type, filename, onEnd){
                 var _path;
                 switch(type){
                         case "deck":
@@ -93,7 +93,7 @@ function AppUtils(){
         /*
          * Remove a deleted deck from a user document
          */
-        this.removeDeckFromUserDoc = function removeDeckFromUserDoc(deckid, userid){
+        _removeDeckFromUserDoc = function(deckid, userid){
                 var userCDB = new _CouchDBDocument(),
                     promise = new _Promise();
                 
@@ -116,14 +116,17 @@ function AppUtils(){
          * HANDLERS
          */
         
+        this.updateCard = _updateCard;
+        this.removeDeckFromUserDoc = _removeDeckFromUserDoc;
+        this.deleteAttachment = _deleteAttachment;
+        
         /*
          * Delete a user deck from user's library (and/or remove entirely as applicable)
          */
         this.deleteDeck = function deleteDeck(json, onEnd){
                 var deckId = json.id,
                     userId = json.userid,
-                    deckCDB = new _CouchDBDocument(),
-                    scope = this;
+                    deckCDB = new _CouchDBDocument();
                 
                 console.log(this.updateCard);
                 _getDocAsAdmin(deckId, deckCDB)
@@ -132,7 +135,7 @@ function AppUtils(){
                         // check if deck has been shared with at least an other user
                         if (deckCDB.get("sharedwith") && deckCDB.get("sharedwith").length){
                                 // simply remove deck from user document
-                                scope.removeDeckFromUserDoc(deckId, userId)
+                                _removeDeckFromUserDoc(deckId, userId)
                                 .then(function(){
                                         onEnd("ok");
                                 })
@@ -158,16 +161,16 @@ function AppUtils(){
                                         }          
                                 }
                                 
-                                console.log(allCards.join(), scope.updateCard);
+                                console.log(allCards.join());
                                 
                                 // remove deck reference in card document or card document altogether
                                 allCards.forEach(function(cardId){
-                                        scope.updateCard(cardId, deckId);
+                                        _updateCard(cardId, deckId);
                                 });
                                 
                                 // before removing deck, also remove its logo from the server
                                 if (deckCDB.get("picture_file") === "decklogo"){
-                                        scope.deleteAttachment("deck", deckCDB.get("_id"), function(result){
+                                        _deleteAttachment("deck", deckCDB.get("_id"), function(result){
                                                 if (result !== "ok"){
                                                         console.log("result");
                                                 }
@@ -175,7 +178,7 @@ function AppUtils(){
                                 }
                                 
                                 // finally update the user document and remove the deck document from the database
-                                scope.removeDeckFromUserDoc(deckId, userId)
+                                _removeDeckFromUserDoc(deckId, userId)
                                 .then(function(){
                                         return _removeDocAsAdmin(deckId, deckCDB)
                                 })

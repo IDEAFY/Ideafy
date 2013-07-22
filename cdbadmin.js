@@ -6,7 +6,8 @@ var fs = require("fs");
 
 function CDBAdmin(){
         
-        var _Promise, _CouchDBDocument, _transport, _db;
+        var _Promise, _CouchDBDocument, _transport, _db,
+            updateUserIP, updateDoc, getDoc, createDoc, getView, removeDoc;
         
         this.setAdminCredentials = function(credentials){
                 _cdbAdminCredentials = credentials;
@@ -37,11 +38,10 @@ function CDBAdmin(){
          * @param {Function} onEnd : the callback fired when the promise is fulfilled
          */
         
-        this.updateUserIP = function(userid, reason, increment, onEnd){
+        updateUserIP = function(userid, reason, increment, onEnd){
                 var usercdb = new _CouchDBDocument(),
-                    currentIP, scope = this;
-                console.log("this.updateUserIP called...", scope.getDoc, scope.updateDoc);
-                scope.getDoc(userid, usercdb).then(function(){
+                    currentIP;
+                getDoc(userid, usercdb).then(function(){
                         switch(reason){
                                 case "newtc":
                                         var tc_count = usercdb.get("twocents_count") || 0;
@@ -69,7 +69,7 @@ function CDBAdmin(){
                         currentIP = usercdb.get("ip");
                         
                         usercdb.set("ip", currentIP+increment);
-                        scope.updateDoc(userid, usercdb).then(function(){
+                        updateDoc(userid, usercdb).then(function(){
                                 onEnd("score_updated");
                         });       
                 });
@@ -81,7 +81,7 @@ function CDBAdmin(){
          * @param {CouchDBDocument} cdbStore : the reason why the score should be changed
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
-        this.updateDoc = function(docId, cdbStore){
+        updateDoc = function(docId, cdbStore){
                 var promise = new _Promise();
                 _transport.request("CouchDB", {
                         method : "PUT",
@@ -110,7 +110,7 @@ function CDBAdmin(){
          * @param {CouchDBDocument} cdbStore : the store to contain the retrieved document
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
-        this.getDoc = function(docId, cdbStore){
+        getDoc = function(docId, cdbStore){
                 var promise = new _Promise();
                 _transport.request("CouchDB", {
                         method : "GET",
@@ -139,7 +139,7 @@ function CDBAdmin(){
          * @param {CouchDBDocument} cdbStore : the store containing the doc to be created
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
-        this.createDoc = function(docId, cdbStore){
+        createDoc = function(docId, cdbStore){
                 var promise = new _Promise();
                 _transport.request("CouchDB", {
                         method : "PUT",
@@ -172,7 +172,7 @@ function CDBAdmin(){
          * @param {CouchDBView} cdbStore : the store containing the view
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
-        this.getView = function(design, view, query, cdbStore){
+        getView = function(design, view, query, cdbStore){
                 var promise = new _Promise();
                 _transport.request("CouchDB", {
                         method : "GET",
@@ -202,7 +202,7 @@ function CDBAdmin(){
          * @param {CouchDBDocument} cdbStore : the store containing the doc to be deleted
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
-        this.removeDoc = function(docId, cdbStore){
+        removeDoc = function(docId, cdbStore){
                 var promise = new _Promise();
                 _transport.request("CouchDB", {
                         method : "DELETE",
@@ -228,6 +228,14 @@ function CDBAdmin(){
                 
                 return promise;        
         }
+        
+        
+        this.updateUserIP = updateUserIP;
+        this.getDoc = getDoc;
+        this.getView = getView;
+        this.updateDoc = updateDoc;
+        this.removeDoc = removeDoc;
+        this.createDoc = createDoc;
         
 }
 

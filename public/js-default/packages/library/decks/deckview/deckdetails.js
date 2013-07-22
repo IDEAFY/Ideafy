@@ -15,6 +15,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                             range = new Store({"max": 0}),
                             deckCards = new Store([]),
                             allCards = new CouchDBView(),
+                            carouselSpinner = new Spinner().spin(),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
                             _currentDataURL,
@@ -168,6 +169,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         (allCards.get(id-2+i))?arr[i]=allCards.get(id-2+i).value : arr[i] = {style: "null"};
                                 }
                                 deckCards.reset(arr);
+                                carouselSpinner.stop();
                         };
                         
                         deckDetails.updateCards = function(event, node){
@@ -266,6 +268,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
                                 _currentDataURL = null;
                                 deckModel.reset(deck);
+                                // launch carousel spinner
+                                carouselSpinner.spin(deckDetails.dom.querySelector(".deckcarousel"));
+                                
                                 //reset card range
                                 range.set("max", 0);
                                 // get all cards.

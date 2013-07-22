@@ -9,8 +9,9 @@ function AppUtils(){
             _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin,
             _updateCard, _deleteAttachment, removeDeckFromUserDoc;
         
-        this.setConstructors = function(CouchDBDocument, Promise){
+        this.setConstructors = function(CouchDBDocument, CouchDBView, Promise){
                 _CouchDBDocument = CouchDBDocument;
+                _CouchDBView = CouchDBView;
                 _Promise = Promise;
         }
         
@@ -124,63 +125,77 @@ function AppUtils(){
         this.deleteDeck = function deleteDeck(json, onEnd){
                 var deckId = json.id,
                     userId = json.userid,
+                    deckView = new _CouchDBView(),
                     deckCDB = new _CouchDBDocument();
                 
-                _getDocAsAdmin(deckId, deckCDB)
+                _getViewAsAdmin("library", "decksinuse", {key: '"'+deckId+'"'}, deckView)
                 .then(function(){
-                        var allCards = [], content = deckCDB.get("content"), trans = deckCDB.get("translations") || {}, i;
-                        // check if deck has been shared with at least an other user
-                        if (deckCDB.get("sharedwith") && deckCDB.get("sharedwith").length){
+                        console.log(deckView.toJSON());
+                        if (deckView.get(0).value){
                                 // simply remove deck from user document
                                 _removeDeckFromUserDoc(deckId, userId)
                                 .then(function(){
                                         onEnd("ok");
-                                })
+                                })       
                         }
                         else{
-                                // remove deck from database and all cards attached only to this deck
-                                
-                                // first get all cards (including translations if any...)
-                                ["characters", "contexts", "problems", "techno"].forEach(function(type){
-                                        content[type].forEach(function(id){
-                                                if (id !== "newcard") allCards.push(id);        
-                                        }); 
-                                });
-                                
-                                for (i in trans){
-                                        if (trans[i] && trans[i].content){
-                                                ["characters", "contexts", "problems", "techno"].forEach(function(type){
-                                                        var arr = trans[i].content[type];
-                                                        arr.forEach(function(id){
-                                                                if (id !== "newcard") allCards.push(id);        
-                                                        });        
+                                _getDocAsAdmin(deckId, deckCDB)
+                                .then(function(){
+                                        var allCards = [], content = deckCDB.get("content"), trans = deckCDB.get("translations") || {}, i;
+                                        // check if deck has been shared with at least an other user
+                                        if (deckCDB.get("sharedwith") && deckCDB.get("sharedwith").length){
+                                                // simply remove deck from user document
+                                                _removeDeckFromUserDoc(deckId, userId)
+                                                .then(function(){
+                                                onEnd("ok");
                                                 });
-                                        }          
-                                }
+                                        }               
+                                        else{
+                                                // remove deck from database and all cards attached only to this deck
                                 
-                                // remove deck reference in card document or card document altogether
-                                allCards.forEach(function(cardId){
-                                        _updateCard(cardId, deckId);
-                                });
+                                                // first get all cards (including translations if any...)
+                                                ["characters", "contexts", "problems", "techno"].forEach(function(type){
+                                                        content[type].forEach(function(id){
+                                                                if (id !== "newcard") allCards.push(id);        
+                                                        }); 
+                                                });
                                 
-                                // before removing deck, also remove its logo from the server
-                                if (deckCDB.get("picture_file") === "decklogo"){
-                                        _deleteAttachment("deck", deckCDB.get("_id"), function(result){
-                                                if (result !== "ok"){
-                                                        console.log("result");
+                                                for (i in trans){
+                                                        if (trans[i] && trans[i].content){
+                                                                ["characters", "contexts", "problems", "techno"].forEach(function(type){
+                                                                        var arr = trans[i].content[type];
+                                                                        arr.forEach(function(id){
+                                                                                if (id !== "newcard") allCards.push(id);        
+                                                                        });        
+                                                                });
+                                                        }          
                                                 }
-                                        });
-                                }
                                 
-                                // finally update the user document and remove the deck document from the database
-                                _removeDeckFromUserDoc(deckId, userId)
-                                .then(function(){
-                                        return _removeDocAsAdmin(deckId, deckCDB)
-                                })
-                                .then(function(){
-                                        onEnd("ok");        
-                                });
-                        }
+                                                // remove deck reference in card document or card document altogether
+                                                allCards.forEach(function(cardId){
+                                                        _updateCard(cardId, deckId);
+                                                });
+                                
+                                                // before removing deck, also remove its logo from the server
+                                                if (deckCDB.get("picture_file") === "decklogo"){
+                                                        _deleteAttachment("deck", deckCDB.get("_id"), function(result){
+                                                                if (result !== "ok"){
+                                                                        console.log("result");
+                                                                }
+                                                        });
+                                                }
+                                
+                                                // finally update the user document and remove the deck document from the database
+                                                _removeDeckFromUserDoc(deckId, userId)
+                                                .then(function(){
+                                                        return _removeDocAsAdmin(deckId, deckCDB)
+                                                })
+                                                .then(function(){
+                                                        onEnd("ok");        
+                                                });
+                                        }
+                                });        
+                        }       
                 });
         };
 }

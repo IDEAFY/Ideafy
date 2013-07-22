@@ -203,7 +203,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         },
                         data: cdbDoc.toJSON()
                 }, function (res) {
-                        console.log(res);
                         var json = JSON.parse(res);
                         if (json.ok) {
                                 promise.fulfill();
@@ -268,7 +267,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("ChangePWD", changePassword.handler);
         
         // application utilities and handlers
-        appUtils.setConstructors(CouchDBDocument, Promise);
+        appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
         appUtils.setCDBAdmin(CDBAdmin);
         olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
         
@@ -336,7 +335,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                                 
                                                 // check for referrals and update accordingly
                                                 checkInvited(json.name, function(result){
-                                                        console.log("check invited", result);
                                                         if (result){
                                                                 result.sender.forEach(function(id){
                                                                         var cdbDoc = new CouchDBDocument();

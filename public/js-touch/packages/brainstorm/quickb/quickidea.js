@@ -136,7 +136,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 if (_next === "step"){
                                         _next = "screen";
                                         
-                                        console.log("entering next");
                                         // stop timer and update display
                                         clearInterval(_qiTimer);
                                         _timer.set("display", true);
@@ -150,18 +149,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         // create separate idea document in couchdb
                                         _widget.createIdeaDoc()
                                         .then(function(){
-                                                console.log("after idea creation")
                                                 // update session score
                                                 return _widget.updateSessionScore(_timer.get("timer"));
                                         })
                                         .then(function(){
-                                                console.log("after score update");
                                                 // resync with db
                                                 $session.unsync();
                                                 return $session.sync(Config.get("db"), $session.get("_id"));
                                         })
                                         .then(function(){
-                                                console.log("resync ok: ", $session.toJSON());
                                                 var timers = $session.get("elapsedTimers");
                                                 timers.quickidea = _timer.get("timer");
                                                 // update session document
@@ -175,7 +171,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 return $next("quickidea");
                                         })
                                         .then(function(){
-                                                console.log("after calling $next");
                                                 // remove session in progress
                                                 _user.set("sessionInProgress", {});
                                                 user.upload();
@@ -340,9 +335,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "wbcontent": _wbContent.toJSON(),
                                         "idea": _idea.toJSON()
                                 };
-                                console.log(JSON.stringify(json));
                                 _transport.request("UpdateSessionScore", json, function(result){
-                                        console.log("update score result : ", result);
                                         if (result.res === "ok"){
                                                 promise.fulfill();
                                         }

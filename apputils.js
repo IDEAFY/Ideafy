@@ -125,6 +125,7 @@ function AppUtils(){
                     deckCDB = new _CouchDBDocument(),
                     scope = this;
                 
+                console.log(this.updateCard);
                 _getDocAsAdmin(deckId, deckCDB)
                 .then(function(){
                         var allCards = [], content = deckCDB.get("content"), trans = deckCDB.get("translations") || {}, i;

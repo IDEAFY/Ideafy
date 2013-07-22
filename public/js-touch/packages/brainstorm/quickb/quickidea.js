@@ -341,6 +341,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "idea": _idea.toJSON()
                                 };
                                 _transport.request("UpdateSessionScore", json, function(result){
+                                        console.log("update score result : ", result);
                                         if (result.res === "ok"){
                                                 promise.fulfill();
                                         }

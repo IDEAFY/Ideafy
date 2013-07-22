@@ -214,7 +214,7 @@ function CDBAdmin(){
                                 "Connection": "close"
                         }
                 }, function (res) {
-                        console.log(res);
+                        console.log(docId, res);
                         var json = JSON.parse(res);
                         if (json.ok) {
                                 console.log(docId + "removed");

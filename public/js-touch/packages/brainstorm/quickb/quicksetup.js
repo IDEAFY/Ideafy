@@ -382,6 +382,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         deck.context = result.content.contexts;
                                         deck.problem = result.content.problems;
                                         deck.techno = result.content.techno; // even though it is not for this step so there is only one request to read the deck going out to the database
+                                        ["char", "context", "problem", "techno"].forEach(function(type){
+                                                if (deck[type][0] === "newcard") deck[type].shift();        
+                                        });
                                         $data.set("deck", deck);
                                         promise.fulfill();
                                         setTimeout(function(){cdb.unsync();}, 2000);

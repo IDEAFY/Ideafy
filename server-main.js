@@ -1494,7 +1494,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
                             idList = [],
-                            parts = sessionCDB.get("participants"),
+                            parts = sessionCDB.get("participants") || [],
                             i,l,
                             reason;
                         

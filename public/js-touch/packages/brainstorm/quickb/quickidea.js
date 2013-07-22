@@ -340,6 +340,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "wbcontent": _wbContent.toJSON(),
                                         "idea": _idea.toJSON()
                                 };
+                                console.log(JSON.stringify(json));
                                 _transport.request("UpdateSessionScore", json, function(result){
                                         console.log("update score result : ", result);
                                         if (result.res === "ok"){

@@ -106,14 +106,16 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                }
                                         },
                                         setPic : function(pic){
-                                                var json, node=this;
+                                                var json, node=this, picSpinner = new Spinner().spin();
                                                 if (pic && pic.search("img/decks/") > -1){
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
                                                 }
                                                 else if (pic){
+                                                        picSpinner.spin(node);
                                                         json = {"dir":"cards", "filename":pic};
                                                         Config.get("transport").request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background-image: url('"+data+"');");   
+                                                                node.setAttribute("style", "background-image: url('"+data+"');");
+                                                                picSpinner.stop();   
                                                         });        
                                                 }
                                                 else {

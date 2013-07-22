@@ -265,6 +265,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         olives.handlers.set("ChangePWD", changePassword.handler);
         
+        // application utilities and handlers
+        appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
+        appUtils.setCDBAdmin(CDBAdmin);
+        olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
+        
         olives.handlers.set("Signup", function (json, onEnd) {
                         var user = new CouchDBUser();
                         

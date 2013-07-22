@@ -205,6 +205,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         scope.hide();
                                                 }
                                                 else{
+                                                        var spinner = new Spinner().spin(document.body);
                                                         confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
                                                                 if (decision){
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
@@ -240,7 +241,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                 
                                                                                         // if user if author of deck then delete deck and as appropriate its contents from database
                                                                                         else if (cdb.get("created_by") === user.get("_id")){
-                                                                                                console.log("calling remote handler");
                                                                                                 transport.request("DeleteDeck", {"id": $data, "userid": user.get("_id")}, function(result){
                                                                                                         if (result === "ok"){
                                                                                                                 promise.fulfill();        
@@ -257,6 +257,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                 document.getElementById("cache").classList.remove("appear");
                                                         }, "importcard-confirm");
                                                 }
+                                                promise
+                                                .then(function(){
+                                                        spinner.stop();
+                                                });
                                                 break;
                                         case "message":
                                                  var arr = user.get("notifications"), i,

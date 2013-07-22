@@ -205,14 +205,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         scope.hide();
                                                 }
                                                 else{
+                                                       document.getElementById("cache").classList.add("appear"); 
                                                         confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
                                                                 var spinner = new Spinner().spin();
                                                                 if (!decision) {
                                                                         scope.hide();
+                                                                        document.getElementById("cache").classList.remove("appear"); 
                                                                 }
                                                                 else{
                                                                         spinner.spin(document.body);
-                                                                        document.getElementById("cache").classList.add("appear");
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
                                                                         if (user.get("taiaut_decks").indexOf($data) > -1){
                                                                                 var arr = user.get("taiaut_decks");

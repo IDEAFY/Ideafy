@@ -207,13 +207,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 else{
                                                        document.getElementById("cache").classList.add("appear"); 
                                                         confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
-                                                                var spinner = new Spinner().spin();
+                                                                var spinner = new Spinner({lines:10, length: 20, width: 8, radius:10}).spin();
                                                                 if (!decision) {
                                                                         scope.hide();
                                                                         document.getElementById("cache").classList.remove("appear"); 
                                                                 }
                                                                 else{
                                                                         spinner.spin(document.body);
+                                                                        document.getElementById("cache").classList.add("appear");
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
                                                                         if (user.get("taiaut_decks").indexOf($data) > -1){
                                                                                 var arr = user.get("taiaut_decks");
@@ -221,6 +222,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 user.set("taiaut_decks", arr);
                                                                                 user.upload()
                                                                                 .then(function(){
+                                                                                        spinner.stop();
+                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                         promise.fulfill();
                                                                                 }, this);
                                                                         }
@@ -241,6 +244,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                         return user.upload();
                                                                                                 })
                                                                                                 .then(function(){
+                                                                                                        spinner.stop();
+                                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                                         promise.fulfill();
                                                                                                 });
                                                                                         }
@@ -249,6 +254,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                         else if (cdb.get("created_by") === user.get("_id")){
                                                                                                 transport.request("DeleteDeck", {"id": $data, "userid": user.get("_id")}, function(result){
                                                                                                         if (result === "ok"){
+                                                                                                                spinner.stop();
+                                                                                                                document.getElementById("cache").classList.remove("appear");
                                                                                                                 promise.fulfill();        
                                                                                                         }
                                                                                                         else{
@@ -263,11 +270,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                 document.getElementById("cache").classList.remove("appear");
                                                         }, "importcard-confirm");
                                                 }
-                                                promise
-                                                .then(function(){
-                                                        spinner.stop();
-                                                        document.getElementById("cache").classList.remove("appear");
-                                                });
                                                 break;
                                         case "message":
                                                  var arr = user.get("notifications"), i,

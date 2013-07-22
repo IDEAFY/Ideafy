@@ -157,7 +157,7 @@ function AppUtils(){
                                         }          
                                 }
                                 
-                                console.log(allCards.join());
+                                console.log(allCards.join(), scope.updateCard);
                                 
                                 // remove deck reference in card document or card document altogether
                                 allCards.forEach(function(cardId){

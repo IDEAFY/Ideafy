@@ -136,7 +136,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 if (sync && newdeck){
                                         displayDeck(currentId);
                                 }
-                                else if (sync && newValue.length < oldValue.length){
+                                else if (sync && (newValue.length < oldValue.length)){
                                         ideafyDecks.highlightDeck(deckControl.init,0);
                                         deckView.reset(ideafyDecks.getModel().get(0));
                                         currentSelected = 0;

@@ -210,10 +210,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                 var spinner = new Spinner({lines:10, length: 20, width: 8, radius:10}).spin();
                                                                 if (!decision) {
                                                                         scope.hide();
-                                                                        document.getElementById("cache").classList.remove("appear"); 
                                                                 }
                                                                 else{
-                                                                        spinner.spin(document.body);
+                                                                        spinner.spin(document.getElementById("deckview"));
                                                                         document.getElementById("cache").classList.add("appear");
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
                                                                         if (user.get("taiaut_decks").indexOf($data) > -1){
@@ -223,7 +222,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 user.upload()
                                                                                 .then(function(){
                                                                                         spinner.stop();
-                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                         promise.fulfill();
                                                                                 }, this);
                                                                         }
@@ -245,7 +243,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                 })
                                                                                                 .then(function(){
                                                                                                         spinner.stop();
-                                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                                         promise.fulfill();
                                                                                                 });
                                                                                         }
@@ -255,7 +252,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                 transport.request("DeleteDeck", {"id": $data, "userid": user.get("_id")}, function(result){
                                                                                                         if (result === "ok"){
                                                                                                                 spinner.stop();
-                                                                                                                document.getElementById("cache").classList.remove("appear");
                                                                                                                 promise.fulfill();        
                                                                                                         }
                                                                                                         else{
@@ -267,7 +263,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                         }
                                                                 }
                                                                 document.body.removeChild(document.querySelector(".confirm"));
-                                                                document.getElementById("cache").classList.remove("appear");
                                                         }, "importcard-confirm");
                                                 }
                                                 break;

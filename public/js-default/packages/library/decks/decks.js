@@ -131,10 +131,15 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               });
               
               // watch for changes for this particular type of decks in user doc 
-              user.watchValue("custom_decks", function(){
+              user.watchValue("custom_decks", function(newValue, action, oldValue){
                         ideafyDecks.reset(function(sync){
                                 if (sync && newdeck){
                                         displayDeck(currentId);
+                                }
+                                else if (sync && newValue.length < oldValue.length){
+                                        ideafyDecks.highlightDeck(deckControl.init,0);
+                                        deckView.reset(ideafyDecks.getModel().get(0));
+                                        currentSelected = 0;
                                 }
                                 newdeck = false;       
                         });
@@ -142,7 +147,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         
               });
                         
-              user.watchValue("taiaut_decks", function(){
+              user.watchValue("taiaut_decks", function(newValue, action, oldValue){
                          ideafyDecks.reset(function(sync){
                                  if (sync){
                                          ideafyDecks.initSelected(deckControl.init,0);

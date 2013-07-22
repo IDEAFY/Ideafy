@@ -39,8 +39,9 @@ function CDBAdmin(){
         
         this.updateUserIP = function(userid, reason, increment, onEnd){
                 var usercdb = new _CouchDBDocument(),
-                    currentIP;
-                this.getDoc(userid, usercdb).then(function(){
+                    currentIP, scope = this;
+                console.log("this.updateUserIP called...", scope.getDoc, scope.updateDoc);
+                scope.getDoc(userid, usercdb).then(function(){
                         switch(reason){
                                 case "newtc":
                                         var tc_count = usercdb.get("twocents_count") || 0;
@@ -68,10 +69,10 @@ function CDBAdmin(){
                         currentIP = usercdb.get("ip");
                         
                         usercdb.set("ip", currentIP+increment);
-                        this.updateDoc(userid, usercdb).then(function(){
+                        scope.updateDoc(userid, usercdb).then(function(){
                                 onEnd("score_updated");
                         });       
-                }, this);
+                });
         };
         
         /*

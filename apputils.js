@@ -96,16 +96,17 @@ function AppUtils(){
                 var userCDB = new _CouchDBDocument(),
                     promise = new _Promise();
                 
+                console.log("removing deck from user doc");
                 _getDocAsAdmin(userid, userCDB)
                 .then(function(){
                         var custom = userCDB.get("custom_decks");
                         custom.splice(custom.indexOf(deckid), 1);
                         userCDB.set("custom_decks", custom);
                         return _updateDocAsAdmin(userid, userCDB);
-                }, this)
+                })
                 .then(function(){
                         promise.fulfill();
-                }, this)
+                });
                 
                 return promise;       
         };
@@ -163,7 +164,7 @@ function AppUtils(){
                                 });
                                 
                                 // before removing deck, also remove its logo from the server
-                                if (deckCDB.get("picture_file") && deckCDB.get("picture_file") === "decklogo"){
+                                if (deckCDB.get("picture_file") === "decklogo"){
                                         scope.deleteAttachment("deck", deckCDB.get("_id"), function(result){
                                                 if (result !== "ok"){
                                                         console.log("result");

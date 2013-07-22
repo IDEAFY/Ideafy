@@ -7,7 +7,7 @@ var fs = require("fs");
 function AppUtils(){
         var _Promise, _CouchDBDocument,
             _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin,
-            _updateCard, _deleteAttachment, removeDeckFromUserDoc;
+            _updateCard, _deleteAttachment;
         
         this.setConstructors = function(CouchDBDocument, CouchDBView, Promise){
                 _CouchDBDocument = CouchDBDocument;
@@ -91,32 +91,10 @@ function AppUtils(){
         };
         
         /*
-         * Remove a deleted deck from a user document
-         */
-        _removeDeckFromUserDoc = function(deckid, userid){
-                var userCDB = new _CouchDBDocument(),
-                    promise = new _Promise();
-                
-                _getDocAsAdmin(userid, userCDB)
-                .then(function(){
-                        var custom = userCDB.get("custom_decks");
-                        custom.splice(custom.indexOf(deckid), 1);
-                        userCDB.set("custom_decks", custom);
-                        return _updateDocAsAdmin(userid, userCDB);
-                })
-                .then(function(){
-                        promise.fulfill();
-                });
-                
-                return promise;       
-        };
-        
-        /*
          * HANDLERS
          */
         
         this.updateCard = _updateCard;
-        this.removeDeckFromUserDoc = _removeDeckFromUserDoc;
         this.deleteAttachment = _deleteAttachment;
         
         /*
@@ -130,13 +108,9 @@ function AppUtils(){
                 
                 _getViewAsAdmin("library", "decksinuse", {key: '"'+deckId+'"'}, deckView)
                 .then(function(){
-                        console.log(deckView.toJSON());
                         if (deckView.getNbItems()){
                                 // simply remove deck from user document
-                                _removeDeckFromUserDoc(deckId, userId)
-                                .then(function(){
-                                        onEnd("ok");
-                                })       
+                                onEnd("ok");     
                         }
                         else{
                                 _getDocAsAdmin(deckId, deckCDB)
@@ -145,10 +119,7 @@ function AppUtils(){
                                         // check if deck has been shared with at least an other user
                                         if (deckCDB.get("sharedwith") && deckCDB.get("sharedwith").length){
                                                 // simply remove deck from user document
-                                                _removeDeckFromUserDoc(deckId, userId)
-                                                .then(function(){
                                                 onEnd("ok");
-                                                });
                                         }               
                                         else{
                                                 // remove deck from database and all cards attached only to this deck
@@ -186,10 +157,7 @@ function AppUtils(){
                                                 }
                                 
                                                 // finally update the user document and remove the deck document from the database
-                                                _removeDeckFromUserDoc(deckId, userId)
-                                                .then(function(){
-                                                        return _removeDocAsAdmin(deckId, deckCDB)
-                                                })
+                                                _removeDocAsAdmin(deckId, deckCDB)
                                                 .then(function(){
                                                         onEnd("ok");        
                                                 });

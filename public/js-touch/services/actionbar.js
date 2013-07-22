@@ -252,10 +252,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                         // if user if author of deck then delete deck and as appropriate its contents from database
                                                                                         else if (cdb.get("created_by") === user.get("_id")){
                                                                                                 transport.request("DeleteDeck", {"id": $data, "userid": user.get("_id")}, function(result){
+                                                                                                        
                                                                                                         if (result === "ok"){
-                                                                                                                spinner.stop();
-                                                                                                                document.getElementById("cache").classList.remove("appear");
-                                                                                                                promise.fulfill();        
+                                                                                                                cd.splice(cd.indexOf($data), 1);
+                                                                                                                user.set("custom_decks", cd);
+                                                                                                                user.upload()
+                                                                                                                .then(function(){
+                                                                                                                        spinner.stop();
+                                                                                                                        document.getElementById("cache").classList.remove("appear");
+                                                                                                                        promise.fulfill();
+                                                                                                                });        
                                                                                                         }
                                                                                                         else{
                                                                                                                 console.log(result);

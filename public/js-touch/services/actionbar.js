@@ -207,7 +207,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 else{
                                                         confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
                                                                 var spinner = new Spinner().spin();
-                                                                if (decision){
+                                                                if (!decision) {
+                                                                        scope.hide();
+                                                                }
+                                                                else{
                                                                         spinner.spin(document.body);
                                                                         document.getElementById("cache").classList.add("appear");
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field

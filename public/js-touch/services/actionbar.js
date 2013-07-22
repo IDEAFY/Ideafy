@@ -222,6 +222,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 user.upload()
                                                                                 .then(function(){
                                                                                         spinner.stop();
+                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                         promise.fulfill();
                                                                                 }, this);
                                                                         }
@@ -243,6 +244,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                 })
                                                                                                 .then(function(){
                                                                                                         spinner.stop();
+                                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                                         promise.fulfill();
                                                                                                 });
                                                                                         }
@@ -252,6 +254,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                 transport.request("DeleteDeck", {"id": $data, "userid": user.get("_id")}, function(result){
                                                                                                         if (result === "ok"){
                                                                                                                 spinner.stop();
+                                                                                                                document.getElementById("cache").classList.remove("appear");
                                                                                                                 promise.fulfill();        
                                                                                                         }
                                                                                                         else{

@@ -201,7 +201,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                };
                
                editCard.updateTitle = function updateTitle(event, node){
-                        model.set("title", node.innerHTML);        
+                       var title = node.innerHTML;
+                       (model.get("type") === 4) ? title = title.toUpperCase() : title = title.charAt(0).toUpperCase() + title.slice(1);
+                        model.set("title", title);        
                };
                
                editCard.picturePreview = function(event, node){
@@ -279,7 +281,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        error.set("error", "");
                        spinner.spin(node);
                        
-                       console.log(model.get('title'));
                        if (!model.get("title") || model.get("title") === "<br>") {
                                error.set("error", labels.get("titlerequired"));
                        }
@@ -288,7 +289,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         // editCard.checkValidity();
                                         model.sync(Config.get("db"), model.get("_id"))
                                         .then(function(){
-                                                console.log("new card created : ", model.toJSON());
                                                 editCard.uploadCard();        
                                         });
                                 }

@@ -27,7 +27,7 @@ function AppUtils(){
         /*
          * Update a card after one of its deck container was removed form database
          */
-        this.updateCard = function(cardId, deckId){
+        this.updateCard = function updateCard(cardId, deckId){
                 var cardCDB = new _CouchDBDocument(),
                     promise = new _Promise(),
                     scope = this;
@@ -66,7 +66,7 @@ function AppUtils(){
         /*
          * Delete an attachment file from the server (/shared directory)
          */
-        this.deleteAttachment = function(type, filename, onEnd){
+        this.deleteAttachment = function deleteAttachment(type, filename, onEnd){
                 var _path;
                 switch(type){
                         case "deck":
@@ -93,7 +93,7 @@ function AppUtils(){
         /*
          * Remove a deleted deck from a user document
          */
-        this.removeDeckFromUserDoc = function(deckid, userid){
+        this.removeDeckFromUserDoc = function removeDeckFromUserDoc(deckid, userid){
                 var userCDB = new _CouchDBDocument(),
                     promise = new _Promise();
                 
@@ -119,7 +119,7 @@ function AppUtils(){
         /*
          * Delete a user deck from user's library (and/or remove entirely as applicable)
          */
-        this.deleteDeck = function(json, onEnd){
+        this.deleteDeck = function deleteDeck(json, onEnd){
                 var deckId = json.id,
                     userId = json.userid,
                     deckCDB = new _CouchDBDocument(),

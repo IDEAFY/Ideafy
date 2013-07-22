@@ -29,8 +29,10 @@ function AppUtils(){
          */
         this.updateCard = function(cardId, deckId){
                 var cardCDB = new _CouchDBDocument(),
-                    promise = new _Promise();
+                    promise = new _Promise(),
+                    scope = this;
                 
+                console.log("updating card : ", cardId);
                 _getDocAsAdmin(cardId, cardCDB)
                 .then(function(){
                         var decks = cardCDB.get("deck");
@@ -43,23 +45,22 @@ function AppUtils(){
                                 _updateDocAsAdmin(cardId, cardCDB)
                                 .then(function(){
                                         promise.fulfill();
-                                }, this);
+                                });
                         }
                         
                         else {
                               // delete card and attachment
                               if (cardCDB.get("picture_file") === cardCDB.get("_id")){
-                                      this.deleteAttachment("card", cardCDB.get("_id"));
+                                      scope.deleteAttachment("card", cardCDB.get("_id"));
                               }
                               
                               _removeDocAsAdmin(cardId, cardCDB)
                               .then(function(){
                                         promise.fulfill();        
-                              }, this)
+                              })
                         }
-               }, this);
-                
-                return promise;        
+               });
+               return promise;        
         };
         
         /*

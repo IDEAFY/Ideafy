@@ -15,6 +15,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                             range = new Store({"max": 0}),
                             deckCards = new Store([]),
                             allCards = new CouchDBView(),
+                            carouselSpinner = new Spinner().spin(),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
                             _currentDataURL,
@@ -105,14 +106,16 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                }
                                         },
                                         setPic : function(pic){
-                                                var json, node=this;
+                                                var json, node=this, picSpinner;
                                                 if (pic && pic.search("img/decks/") > -1){
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
                                                 }
                                                 else if (pic){
+                                                        picSpinner = new Spinner({color: "#657b99"}).spin(node);
                                                         json = {"dir":"cards", "filename":pic};
                                                         Config.get("transport").request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background-image: url('"+data+"');");   
+                                                                node.setAttribute("style", "background-image: url('"+data+"');");
+                                                                picSpinner.stop();  
                                                         });        
                                                 }
                                                 else {
@@ -163,6 +166,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         (allCards.get(id-2+i))?arr[i]=allCards.get(id-2+i).value : arr[i] = {style: "null"};
                                 }
                                 deckCards.reset(arr);
+                                carouselSpinner.stop();
                         };
                         
                         deckDetails.updateCards = function(event, node){
@@ -267,6 +271,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 deckModel.reset(deck);
                                 //reset card range
                                 range.set("max", 0);
+                                // launch carousel spinner
+                                carouselSpinner.spin(deckDetails.dom.querySelector(".deckcarousel"));
                                 // get all cards.
                                 allCards.unsync();
                                 allCards.sync(Config.get("db"), "library", "_view/cards", {key: '"'+ deckModel.get("_id")+'"'}).then(function(){

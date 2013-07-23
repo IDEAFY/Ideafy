@@ -27,13 +27,14 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   newdeck = false,
                   currentId,
                   deckUpdate = function(update, deckId, cardType){
-                        var listUI = stack.getStack().getCurrentScreen();
+                        var listUI;
                         currentId = deckId;
                         if (update === "new") {
                                 newdeck = true;
                                 currentId = deckId;
                         }
                         if (update === "updated"){
+                                listUI = stack.getStack().getCurrentScreen();
                                 listUI.reset(function(sync){
                                         if (sync){
                                                 listUI.highlightDeck(deckControl.init, deckId);
@@ -136,13 +137,14 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         ideafyDecks.reset(function(sync){
                                 var list;
                                 if (sync && newdeck){
+                                        console.log(currentId);
                                         displayDeck(currentId);
                                 }
                                 else if (sync && (newValue.length < oldValue.length)){
                                         list = ideafyDecks.getModel();
                                         console.log(list.get(0));
                                         if (list.getNbItems()){
-                                                ideafyDecks.highlightDeck(deckControl.init,0);
+                                                ideafyDecks.initSelected(deckControl.init,0);
                                                 console.log("calling deckView reset");
                                                 deckView.reset(list.get(0));
                                                 currentSelected = 0;

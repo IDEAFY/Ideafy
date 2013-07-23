@@ -241,7 +241,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 warning.forEach(function(card){
                                         warningMSG += card.title+", ";
                                 });
-                                warningMSG.trim(", ");
+                                warningMSG = warningMSG.slice(0, -2);
                                 confirmUI = new Confirm(document.body, labels.get("delcardwarning")+warningMSG, function(decision){
                                         if (decision){
                                                 currentDeck.delAll(toRemove);

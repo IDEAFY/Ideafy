@@ -11,6 +11,7 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                 return function MessagesConstructor(){
                         
                         var messageUI = new Widget(),
+                            msgControl = new Control(messageUI),
                             detailStack = new Stack(),
                             close = function (screen){
                                     detailStack.getStack().show(screen);
@@ -151,7 +152,7 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                         }
                                 }),
                                 "msglistevent" : new Event(messageUI),
-                                "msglistcontrol" : new Control(messageUI),
+                                "msglistcontrol" : msgControl,
                                 "msgdetailstack" : detailStack
                         });
                         

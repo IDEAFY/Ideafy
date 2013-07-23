@@ -57,7 +57,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         };
                         
                         deckView.reset = function reset(deck, screen){
-                                console.log("deckview reset called with : ", deck, screen);
+                                console.log("deckview reset called with : ", JSON.stringify(deck), screen);
                                 deckView.hideEditView();
                                 
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){

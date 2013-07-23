@@ -281,5 +281,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         deckDetails.displayCards(0);   
                                 });
                         };
+                        
+                        return deckDetails;
                 };
         });

@@ -45,10 +45,12 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         
                         _widget.show = function show(){
                                 _widget.dom.classList.remove("invisible");
+                                _widget.dom.parentNode.setAttribute("style", "overflow-y: scroll;")
                         };
                         
                         _widget.hide = function hide(){
-                                _wdiget.dom.classList.add("invisible");        
+                                _widget.dom.classList.add("invisible");
+                                _widget.dom.parentNode.setAttribute("style", "overflow-y: none;")       
                         };
                         
                         _widget.reset = function reset($id){

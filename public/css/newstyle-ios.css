@@ -2721,6 +2721,7 @@ textarea.solution {
 #deckview .deckcarousel ul{
     margin-top: 55px;
     display: inline-block;
+    height: 155px;
 }
 
 #deckview .deckcarousel li{
@@ -2757,15 +2758,13 @@ textarea.solution {
 
 #deckview .deckcarousel input{
     -webkit-appearance: none;
-    bottom: 20px;
-    left: 70px;
     width: 490px;
     height: 5px;
     border: 1px solid #999999;
     background: transparent;
     border-radius: 5px;
     /* z-index: 10; */
-    position: absolute;
+    margin-top: 60px;
 }
 
 #deckview .deckcarousel input::-webkit-slider-thumb{

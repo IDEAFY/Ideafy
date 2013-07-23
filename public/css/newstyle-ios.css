@@ -2770,7 +2770,7 @@ textarea.solution {
 
 #deckview .deckcarousel input::-webkit-slider-thumb{
     -webkit-appearance: none;
-    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 40%,#404040 50%,rgba(255,255,255,0) 60%);
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 40%,#cccccc 50%,rgba(255,255,255,0) 60%);
     height: 25px;
     border-radius: 5px;
     width: 50px;

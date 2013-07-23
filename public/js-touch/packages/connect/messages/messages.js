@@ -353,6 +353,7 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                 document.querySelector('li[data-msg_id="0"]').classList.add("selected");
                                 msgControl.init(document.querySelector('li[data-msg_id="0"]'));
                                 
+                                console.log("before displaying message");
                                 // display message detail
                                 detailStack.getStack().show("#msgdetail");
                                 messageDetail.reset(arr[id]);

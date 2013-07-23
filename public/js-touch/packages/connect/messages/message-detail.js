@@ -349,7 +349,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 
                 //init
                 msgDetailUI.reset = function reset(msg){
-                        console.log("message detail reset with value :", JSON.stringify(msg));
                         message.reset({});
                         cxrConfirm.reset({"response":""});
                         message.reset(msg);

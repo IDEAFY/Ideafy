@@ -154,10 +154,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                         buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
                                                                 }        
                                                         }
-                                                        if (user.get("taiaut_decks").length || user.get("custom_decks").length){
+                                                        if ((user.get("taiaut_decks").length + user.get("custom_decks").length) >1){
                                                                 buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                         }        
-                                                }, this);
+                                                });
                                                 break;
                                         case "message":
                                                 // export vi email -- if you can see it you can email it

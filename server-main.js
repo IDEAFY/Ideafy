@@ -271,6 +271,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         appUtils.setCDBAdmin(CDBAdmin);
         olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
         olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
+        olives.handlers.set("ShareDeck", appUtils.shareDeck);
         
         olives.handlers.set("Signup", function (json, onEnd) {
                         var user = new CouchDBUser();

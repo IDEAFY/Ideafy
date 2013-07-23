@@ -59,6 +59,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         
                         deckView.reset = function reset(deck, screen){
                                 deckView.hideEditView();
+                                deckShareUI.hide();
                                 
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
                                         innerStack.getStack().get(value).reset(deck);        

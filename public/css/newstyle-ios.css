@@ -1823,7 +1823,7 @@ textarea.solution {
     position: relative;
 }
 
-.idea-share .selectall, #newmub .selectall{
+.idea-share .selectall, #newmub .selectall, .deck-share .selectall{
     float: right;
     background: #657B99;
     color: white;
@@ -1835,11 +1835,11 @@ textarea.solution {
     text-align: center;
 }
 
-.idea-share .form{
+.idea-share .form, deck-share .form{
     padding-bottom: 20px;
 }
 
-.idea-share .form legend{
+.idea-share .form legend, .deck-share .form legend{
     width: 100%;
     color: #657b99;
     font-size: 16px;
@@ -1847,11 +1847,11 @@ textarea.solution {
     margin-top: 10px;
 }
 
-.idea-share .search{
+.idea-share .search, .deck-share .search{
     width: 300px;
 }
 
-.idea-share textarea.sharemessage{
+.idea-share textarea.sharemessage, .deck-share textarea.sharemessage{
     height: 200px;
     line-height: 20px;
 }

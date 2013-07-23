@@ -166,7 +166,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 }  
                                 if (type === "techno"){
                                         model.set("type", 4);
-                                        model.set("picture_file", "img/decks/techno.png");
+                                        model.set("picture_file", "img/decks/technology.png");
                                 }        
                         }
                         else{

@@ -132,7 +132,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               // watch for changes for this particular type of decks in user doc 
               user.watchValue("custom_decks", function(newValue, action, oldValue){
-                        console.log("newValue : ", newValue.join(), "action:", action, "oldValue :", oldValue.join());
                         ideafyDecks.reset(function(sync){
                                 var list;
                                 if (sync && newdeck){
@@ -141,10 +140,8 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 }
                                 else if (sync && (newValue.length < oldValue.length)){
                                         list = ideafyDecks.getModel();
-                                        console.log(list.get(0));
                                         if (list.getNbItems()){
                                                 ideafyDecks.initSelected(deckControl.init,0);
-                                                console.log("calling deckView reset");
                                                 deckView.reset(list.get(0));
                                                 currentSelected = 0;
                                         }

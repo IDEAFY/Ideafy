@@ -379,6 +379,8 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                 sortButtons.update(current, "selected", true);
                         });
                         
+                        DS = detailStack;
+                        
                         return messageUI;
                 };
         });

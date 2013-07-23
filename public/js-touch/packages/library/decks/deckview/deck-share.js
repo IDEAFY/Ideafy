@@ -243,7 +243,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         _widget.buildRecipientList(json.docId, json.dest)
                                         .then(function(){
                                                 if (!json.dest.length){
-                                                       _error.set("errormsg", "intented recipients already have this idea");
+                                                       _error.set("errormsg", _labels.get("alreadyshared"));
                                                        node.classList.remove("pressed");
                                                        sendInProgress = false;
                                                        setTimeout(function(){
@@ -286,21 +286,18 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 cdb.setTransport(_transport);
                                 cdb.sync(Config.get("db"), docId)
                                 .then(function(){
-                                        var sharedwith = cdb.get("sharedwith") || [], authors =  cdb.get("authors"), i;
+                                        var sharedwith = cdb.get("sharedwith") || [], i;
                                         
                                         shareContacts.loop(function(v,i){
-                                                // check if intended recipient is one of the authors
-                                                if (authors.indexOf(v.userid) < 0 ){
-                                                        if (!sharedwith.length){
+                                                if (!sharedwith.length){
+                                                        sharedwith.push(v.userid);
+                                                        dest.push(v.userid);
+                                                }
+                                                else{
+                                                        // check if idea has already been shared with intended recipient
+                                                        if (sharedwith.indexOf(v.userid) < 0){
                                                                 sharedwith.push(v.userid);
                                                                 dest.push(v.userid);
-                                                        }
-                                                        else{
-                                                                // check if idea has already been shared with intended recipient
-                                                                if (sharedwith.indexOf(v.userid) < 0){
-                                                                        sharedwith.push(v.userid);
-                                                                        dest.push(v.userid);
-                                                                }
                                                         }
                                                 }        
                                         });

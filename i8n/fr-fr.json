@@ -529,5 +529,6 @@
 	"delcardwarning" : "Retirer les cartes suivantes de votre jeu les effacera définitivement de la base de données :<br>",
 	"deldeckwarning" : "Supprimer ce jeu le retirera définitivement de votre bibliothèque.  Si vous en êtes l'auteur, il sera également supprimé de la base de données, ainsi que toute carte qui n'était rattachée qu'à ce seul jeu.  Êtes-vous sûr de vouloir continuer ?",
 	"cannotdelactivedeck" : "Vous ne pouvez pas supprimer le jeu actif.  Veuillez vérifier les paramètres.",
-	"cannotremovecard" : "Vous ne pouvez pas supprimer cette carte de votre jeu actif.  Un jeu actif doit toujours contenir au moins une carte personnage, une carte contexte, une carte problème et trois cartes technologie."
+	"cannotremovecard" : "Vous ne pouvez pas supprimer cette carte de votre jeu actif.  Un jeu actif doit toujours contenir au moins une carte personnage, une carte contexte, une carte problème et trois cartes technologie.",
+	"alreadyshared" : "Ce document a déjà été partagé avec les destinataires choisis"
 }

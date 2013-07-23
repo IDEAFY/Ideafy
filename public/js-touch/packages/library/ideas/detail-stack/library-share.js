@@ -91,7 +91,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _widget.displayAutoContact = function(event, node){
                                 _widget.dom.querySelector("#sharelistauto").classList.remove('invisible');
                                 // reset contactList with all user connections
-                                contactList.reset(_user.get("connections").concat());       
+                                contactList.reset(_user.get("connections".concat()).concat());       
                         };
                         
                         _widget.discardContact = function(event,node){
@@ -129,7 +129,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _widget.selectAll = function(event, node){
                                 node.classList.remove("pressed");
                                 shareContacts.reset([]); // to avoid duplicates
-                                contactList.reset(_user.get("connections"));
+                                contactList.reset(_user.get("connections").concat());
                                 contactList.loop(function(v, i){
                                         contactList.update(i, "selected", true);
                                         if (v.type === "user") shareContacts.alter("push", v)        

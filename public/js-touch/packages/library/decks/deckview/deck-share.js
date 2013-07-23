@@ -46,15 +46,15 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _widget.show = function show(){
                                 _widget.dom.classList.remove("invisible");
                                 document.getElementById("deckview").setAttribute("style", "overflow-y: scroll;");
-                                _share.reset({"body": "", "docId": "", "docType": "", "docTitle": "", "signature": _user.get("username")+" <"+_user.get("_id")+ ">"});
-                                _error.reset({"errormsg": ""});
-                                shareContacts.reset([]);
-                                contactList.reset(_user.get("connections").concat());
                         };
                         
                         _widget.hide = function hide(){
                                 _widget.dom.classList.add("invisible");
-                                document.getElementById("deckview").setAttribute("style", "overflow-y: none;")       
+                                document.getElementById("deckview").setAttribute("style", "overflow-y: none;");
+                                _share.reset({"body": "", "docId": "", "docType": "", "docTitle": "", "signature": _user.get("username")+" <"+_user.get("_id")+ ">"});
+                                _error.reset({"errormsg": ""});
+                                shareContacts.reset([]);
+                                contactList.reset(_user.get("connections").concat());      
                         };
                         
                         _widget.reset = function reset($id){
@@ -143,7 +143,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _widget.selectAll = function(event, node){
                                 node.classList.remove("pressed");
                                 shareContacts.reset([]); // to avoid duplicates
-                                contactList.reset(_user.get("connections"));
+                                contactList.reset(_user.get("connections").concat());
                                 contactList.loop(function(v, i){
                                         contactList.update(i, "selected", true);
                                         if (v.type === "user") shareContacts.alter("push", v)        

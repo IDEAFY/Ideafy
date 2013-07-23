@@ -282,7 +282,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         // try to sort by title...
                                         allCards.unsync();
                                         allCards.alter("sort", function(x,y){
-                                                var a = x.title, b = y.title;
+                                                var a = x.value.title, b = y.value.title;
                                                 if (a<b) return -1;
                                                 if (a>b) return 1;
                                                 if (a===b) return 0;

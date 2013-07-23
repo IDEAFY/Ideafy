@@ -218,6 +218,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         
                         _widget.share = function(event, node){
                                 var now = new Date(),
+                                    promise = new Promise(),
                                     json = {
                                         "type" : "DOC",
                                         "status" : "unread",
@@ -256,19 +257,27 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                       }, 2500);
                                                 }
                                                 else{
-                                                        _transport.request("Notify", json, function(result){
-                                                                _error.set("errormsg", _labels.get("shareok"));
-                                                                node.classList.remove("pressed");
-                                                                sendInProgress = false;
-                                                                setTimeout(function(){
-                                                                        spinner.stop();
-                                                                        _widget.reset(json.docId);
+                                                       _transport.request("ShareDeck", {idList: json.dest, docId: json.docId}, function(result){
+                                                                if (result === "ok"){
+                                                                        promise.fulfill();
+                                                                }        
+                                                       });
+                                                       promise
+                                                       .then(function(){
+                                                                _transport.request("Notify", json, function(result){
+                                                                        _error.set("errormsg", _labels.get("shareok"));
+                                                                        node.classList.remove("pressed");
+                                                                        sendInProgress = false;
+                                                                        setTimeout(function(){
+                                                                                spinner.stop();
+                                                                                _widget.reset(json.docId);
                                                                         _widget.dom.querySelector("#sharelistauto").classList.add("invisible");
-                                                                        // reset contactList with all user connections
-                                                                        contactList.reset(_user.get("connections").concat()); 
-                                                                        _widget.hide();
-                                                                }, 2500);
-                                                        });       
+                                                                                // reset contactList with all user connections
+                                                                                contactList.reset(_user.get("connections").concat()); 
+                                                                                _widget.hide();
+                                                                        }, 2500);
+                                                                });
+                                                        )};       
                                                 }
                                         });
                                 }            

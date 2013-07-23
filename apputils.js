@@ -121,11 +121,47 @@ function AppUtils(){
          */
         this.removeCardsFromDatabase = function removeCardsFromDatabase(json, onEnd){
                 var idList = json.idList || [],
-                    res, details = [],
+                    details = [],
                     promise = new _Promise();
                 
                 idList.forEach(function(id){
                         _deleteCard(id)
+                        .then(function(){
+                                details.push(id);
+                                if (details.length === idList.length){
+                                        promise.fulfill();
+                                }
+                        },
+                        function(){
+                                promise.reject(id);
+                        });      
+                });
+                
+                promise.then(function(){
+                        onEnd("ok");
+                }, function(failed){
+                        onEnd(failed);
+                });
+        };
+        
+        /*
+         * Share a deck with a list of users
+         */
+        this.shareDeck = function shareDeck(json, onEnd){
+                var idList = json.idList || [],
+                    deckId = json.docId,
+                    details = [],
+                    promise = new _Promise();
+                
+                idList.forEach(function(id){
+                        var cdb = new _CouchDBDocument();
+                        _getDocAsAdmin(id, cdb)
+                        .then(function(){
+                                var decks = cdb.get("custom_decks").concat();
+                                decks.push(deckId);
+                                cdb.set("custom_decks", decks);
+                                return _updateDocAsAdmin(id, cdb);
+                        })
                         .then(function(){
                                 details.push(id);
                                 if (details.length === idList.length){

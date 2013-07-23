@@ -230,7 +230,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 cdb.sync(db, $data)
                                                                                 .then(function(){
                                                                                         // if deck has been shared with user simply remove user id from sharedwith field
-                                                                                        var sw = cdb.get("sharedwith") || [], cd = user.get("custom_decks");
+                                                                                        var sw = cdb.get("sharedwith") || [], cd = user.get("custom_decks").concat();
                                                                 
                                                                                         // if deck has been shared with user simply remove user id from sharedwith field
                                                                                         if (sw.length && sw.indexOf(user.get("_id")) > -1){

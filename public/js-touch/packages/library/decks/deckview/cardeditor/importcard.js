@@ -15,8 +15,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     user = Config.get("user"),
                     transport = Config.get("transport"),
                     db = Config.get("db"), 
-                    currentDeck = new Store([]),
-                    selectedDeck = new Store([]),
+                    currentDeck = new Store([]), // working deck
+                    selectedDeck = new Store([]), // deck to import cards from
+                    deletedCards = [], // cards that will be removed from database
                     deckId,
                     model = new Store(),
                     confirmUI;
@@ -104,6 +105,13 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                             ctx = ["newcard"],
                             pb = ["newcard"],
                             tch = ["newcard"];
+                        
+                        // if there are cards to be removed from database do so now
+                        if (deletedCards.length){
+                                transport.request("DeleteCards", {idList: deletedCards}, function(result){
+                                        console.log("card deletion result : ", result);
+                                });
+                        }
                         
                         currentDeck.loop(function(v,i){
                                 switch(v.type){
@@ -219,22 +227,29 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 };
                 
                 importCard.removeSelected = function removeSelected(){
-                        var toRemove = [], warning = [];
+                        var toRemove = [], warning = [], warningMSG;
                         
                         currentDeck.loop(function(v,i){
                                 if (v.selected){
                                         toRemove.push(i);
-                                        if (v.deck.length === 1 && v.deck[0] === deckId) warning.push(v.title.toUpperCase());
+                                        if (v.deck.length === 1 && v.deck[0] === deckId) warning.push({title: v.title.toUpperCase(), id: v.id});
                                 }                
                         });
                 
                         if (warning.length){
                                 Map.get("cache").classList.add("appear");
-                                confirmUI = new Confirm(document.body, labels.get("delcardwarning")+warning.join(", "), function(decision){
+                                warning.forEach(function(card){
+                                        warningMSG += card.title+", ";
+                                });
+                                warningMSG.trim(", ");
+                                confirmUI = new Confirm(document.body, labels.get("delcardwarning")+warningMSG, function(decision){
                                         if (decision){
                                                 currentDeck.delAll(toRemove);
                                                 importCard.clearSelection("current");
                                                 model.set("sel", 0);
+                                                warning.forEach(function(card){
+                                                        deletedCards.push(card.id);
+                                                });
                                         }
                                         document.body.removeChild(document.querySelector(".confirm"));
                                         Map.get("cache").classList.remove("appear");
@@ -324,6 +339,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         model.reset({});
                         currentDeck.reset([]);
                         selectedDeck.reset([]);
+                        deletedCards = [];
                         importCard.dom.querySelector("select").selectedIndex = 0;
                         
                         deckId = $deckId;

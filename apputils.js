@@ -7,7 +7,7 @@ var fs = require("fs");
 function AppUtils(){
         var _Promise, _CouchDBDocument,
             _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin,
-            _updateCard, _deleteAttachment;
+            _updateCard, _deleteAttachment, _deleteCard;
         
         this.setConstructors = function(CouchDBDocument, CouchDBView, Promise){
                 _CouchDBDocument = CouchDBDocument;
@@ -49,18 +49,36 @@ function AppUtils(){
                         }
                         
                         else {
-                              // delete card and attachment
-                              if (cardCDB.get("picture_file") === cardCDB.get("_id")){
-                                      _deleteAttachment("card", cardCDB.get("_id"));
-                              }
-                              
-                              _removeDocAsAdmin(cardId, cardCDB)
+                              _deleteCard(cardId)
                               .then(function(){
                                         promise.fulfill();        
                               })
                         }
                });
                return promise;        
+        };
+        
+        /*
+         * Delete a card document from database
+         */
+        _deleteCard = function(cardId){
+                var cardCDB = new _CouchDBDocument(),
+                    promise = new _Promise();
+                
+                _getDocAsAdmin(cardId, cardCDB)
+                .then(function(){
+                        // delete attachment if applicable
+                        if (cardCDB.get("picture_file") === cardCDB.get("_id")){
+                                _deleteAttachment("card", cardCDB.get("_id"));
+                        }
+                              
+                        return _removeDocAsAdmin(cardId, cardCDB);        
+                })
+                .then(function(){
+                        promise.fulfill();        
+                });
+                
+                return promise;        
         };
         
         /*
@@ -96,6 +114,35 @@ function AppUtils(){
         
         this.updateCard = _updateCard;
         this.deleteAttachment = _deleteAttachment;
+        
+        
+        /*
+         * Delete a card from database
+         */
+        this.removeCardsFromDatabase = function removeCardsFromDatabase(json, onEnd){
+                var idList = json.idList || [],
+                    res, details = [],
+                    promise = new _Promise();
+                
+                idList.forEach(function(id){
+                        _deleteCard(id)
+                        .then(function(){
+                                details.push(id);
+                                if (details.length === idList.length){
+                                        promise.fulfill();
+                                }
+                        },
+                        function(){
+                                promise.reject(id);
+                        });      
+                });
+                
+                promise.then(function(){
+                        onEnd("ok");
+                }, function(failed){
+                        onEnd(failed);
+                });
+        };
         
         /*
          * Delete a user deck from user's library (and/or remove entirely as applicable)

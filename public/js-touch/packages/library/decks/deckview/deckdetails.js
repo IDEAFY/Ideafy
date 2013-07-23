@@ -282,15 +282,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         range.set("max", allCards.getNbItems()-1);
                                         // init card set with three cards
                                         deckDetails.displayCards(0);
-                                        
-                                        ["added", "deleted", "updated"].forEach(function(change){
-                                                allCards.watch(change, function(){
-                                                        var value = deckDetails.dom.querySelector(".deckslider").value;
-                                                        // launch carousel spinner
-                                                        carouselSpinner.spin(deckDetails.dom.querySelector(".deckcarousel"));
-                                                        deckDetails.displayCards(value);
-                                                });
-                                        });
                                 });
                         };
                         

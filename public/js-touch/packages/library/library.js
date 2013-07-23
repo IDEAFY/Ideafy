@@ -56,13 +56,14 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 	               
 	        // library events
 	               _observer.watch("display-doc", function(id, type){
+	                       console.log(id, type);
 	                       switch(type){
 	                               case 6:
 	                                       var ideasUI = _stack.getStack().get("#ideas");
 	                                       ideasUI.searchIdea(id.substr(2));
 	                                       if (_stack.getStack().getCurrentScreen() !== ideasUI) _stack.getStack().show("#ideas");  
                                                 break;
-                                       case 7:
+                                       case 5:
                                                 _stack.getStack().show("#decks");
 	                               default:
 	                                       break;

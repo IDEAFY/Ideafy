@@ -266,7 +266,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                                         _widget.dom.querySelector("#sharelistauto").classList.add("invisible");
                                                                         // reset contactList with all user connections
                                                                         contactList.reset(_user.get("connections").concat()); 
-                                                                        _wdiget.hide();
+                                                                        _widget.hide();
                                                                 }, 2500);
                                                         });       
                                                 }

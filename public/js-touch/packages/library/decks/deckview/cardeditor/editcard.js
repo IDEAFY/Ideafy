@@ -324,9 +324,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         });
                };
                
-               CARDMODEL = model;
-               UPLOADSPIN = spinner;
-                
                return editCard;         
            };   
         });

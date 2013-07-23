@@ -128,7 +128,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                         },
                                         setPic : function(picture){
-                                                var json, node=this;
+                                                var json, node=this, picSpinner;
                                                 if (picture === "") {
                                                         this.setAttribute("style", "background-image:url('img/connect/graygroup.png');");
                                                 }
@@ -136,9 +136,11 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                         this.setAttribute("style", "background-image:url('img/logo.png');")        
                                                 }
                                                 else if (picture === "decklogo"){
+                                                        picSpinner = new Spinner({color: "#657b99"}).spin(node);
                                                         json = {"dir":"decks", "filename":deckModel.get("_id")};
                                                         Config.get("transport").request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background-image: url('"+data+"');");   
+                                                                node.setAttribute("style", "background-image: url('"+data+"');");
+                                                                picSpinner.stop();   
                                                         });
                                                 }
                                         },

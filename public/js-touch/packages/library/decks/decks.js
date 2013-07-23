@@ -132,6 +132,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               // watch for changes for this particular type of decks in user doc 
               user.watchValue("custom_decks", function(newValue, action, oldValue){
+                      console.log(newValue, action);
                       console.log("newValue : ", newValue.join(), "action:", action, "oldValue :", oldValue.join());
                         ideafyDecks.reset(function(sync){
                                 var list;
@@ -155,6 +156,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               });
                         
               user.watchValue("taiaut_decks", function(newValue, action, oldValue){
+                      console.log(newValue, action);
                       console.log("newValue : ", newValue.join(), "action:", action, "oldValue :", oldValue.join());
                          ideafyDecks.reset(function(sync){
                                  if (sync){

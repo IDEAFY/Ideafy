@@ -45,7 +45,11 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         
                         _widget.show = function show(){
                                 _widget.dom.classList.remove("invisible");
-                                document.getElementById("deckview").setAttribute("style", "overflow-y: scroll;")
+                                document.getElementById("deckview").setAttribute("style", "overflow-y: scroll;");
+                                _share.reset({"body": "", "docId": "", "docType": "", "docTitle": "", "signature": _user.get("username")+" <"+_user.get("_id")+ ">"});
+                                _error.reset({"errormsg": ""});
+                                shareContacts.reset([]);
+                                contactList.reset(_user.get("connections").concat());
                         };
                         
                         _widget.hide = function hide(){

@@ -277,7 +277,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                                                 _widget.hide();
                                                                         }, 2500);
                                                                 });
-                                                        )};       
+                                                        });       
                                                 }
                                         });
                                 }            

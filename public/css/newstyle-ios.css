@@ -2764,7 +2764,7 @@ textarea.solution {
     border: 1px solid #999999;
     background: transparent;
     border-radius: 5px;
-    z-index: 5000;
+    /* z-index: 10; */
     position: absolute;
 }
 

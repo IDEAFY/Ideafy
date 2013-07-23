@@ -62,6 +62,8 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 	                                       ideasUI.searchIdea(id.substr(2));
 	                                       if (_stack.getStack().getCurrentScreen() !== ideasUI) _stack.getStack().show("#ideas");  
                                                 break;
+                                       case 7:
+                                                _stack.getStack().show("#decks");
 	                               default:
 	                                       break;
 	                       }        

@@ -286,8 +286,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 if (a<b) return -1;
                                                 if (a>b) return 1;
                                                 if (a===b) return 0;
-                                        });
-                                        console.log(allCards.toJSON());     
+                                        });    
                                         
                                         // init card set with three cards
                                         deckDetails.displayCards(0);

@@ -18,7 +18,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                             user = Config.get("user"),
                             transport = Config.get("transport"),
                             close = function(){
-                                document.getElementById("card_creation").classList.add("invisible");        
+                                newCard.dom.classList.add("invisible");        
                             },
                             updateDeck = function(cardType, cardId){
                                 var promise = new Promise(),

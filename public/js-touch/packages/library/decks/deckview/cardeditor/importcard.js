@@ -99,7 +99,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 };
                 
                 importCard.upload = function(event, node){
-                        var spin = new Spinner().spin(node),
+                        var spin = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -7, left: 28}).spin(node),
                             chr = ["newcard"],
                             ctx = ["newcard"],
                             pb = ["newcard"],

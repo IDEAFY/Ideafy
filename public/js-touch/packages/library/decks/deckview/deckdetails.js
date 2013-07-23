@@ -15,7 +15,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                             range = new Store({"max": 0}),
                             deckCards = new Store([]),
                             allCards = new CouchDBView(),
-                            carouselSpinner = new Spinner({top:255, lines: 8, radius: 6}).spin(),
+                            carouselSpinner = new Spinner({top:255, lines: 8, radius: 6, color: "#404040"}).spin(),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
                             _currentDataURL,

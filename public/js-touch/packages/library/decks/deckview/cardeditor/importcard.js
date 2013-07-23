@@ -227,7 +227,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 };
                 
                 importCard.removeSelected = function removeSelected(){
-                        var toRemove = [], warning = [], warningMSG;
+                        var toRemove = [], warning = [], warningMSG = "";
                         
                         currentDeck.loop(function(v,i){
                                 if (v.selected){
@@ -237,7 +237,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         });
                 
                         if (warning.length){
-                                console.log(warning.join());
                                 Map.get("cache").classList.add("appear");
                                 warning.forEach(function(card){
                                         warningMSG += card.title+", ";

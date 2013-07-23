@@ -276,10 +276,19 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 // launch carousel spinner
                                 carouselSpinner.spin(deckDetails.dom.querySelector(".deckcarousel"));
                                 // get all cards.
-                                allCards.unsync();
                                 allCards.reset([]);
                                 allCards.sync(Config.get("db"), "library", "_view/cards", {key: '"'+ deckModel.get("_id")+'"'}).then(function(){
                                         range.set("max", allCards.getNbItems()-1);
+                                        // try to sort by title...
+                                        allCards.unsync();
+                                        allCards.alter("sort", function(x,y){
+                                                var a = x.title, b = y.title;
+                                                if (a<b) return -1;
+                                                if (a>b) return 1;
+                                                if (a===b) return 0;
+                                        });
+                                        console.log(allCards.toJSON());     
+                                        
                                         // init card set with three cards
                                         deckDetails.displayCards(0);
                                 });

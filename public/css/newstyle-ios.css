@@ -2760,7 +2760,7 @@ textarea.solution {
     bottom: 20px;
     left: 70px;
     width: 490px;
-    height: 10px;
+    height: 5px;
     border: 1px solid #999999;
     background: transparent;
     border-radius: 5px;
@@ -2770,8 +2770,8 @@ textarea.solution {
 
 #deckview .deckcarousel input::-webkit-slider-thumb{
     -webkit-appearance: none;
-    background: rgba(204,204,204, 0.3);
-    height: 10px;
+    background: -webkit-linear-gradient(top, #ffffff 0%,#ffffff 40%,#404040 50%,#ffffff 60%);
+    height: 25px;
     border-radius: 5px;
     width: 50px;
     border: none;

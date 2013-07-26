@@ -27,13 +27,14 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   newdeck = false,
                   currentId,
                   deckUpdate = function(update, deckId, cardType){
-                        var listUI = stack.getStack().getCurrentScreen();
+                        var listUI;
                         currentId = deckId;
                         if (update === "new") {
                                 newdeck = true;
                                 currentId = deckId;
                         }
                         if (update === "updated"){
+                                listUI = stack.getStack().getCurrentScreen();
                                 listUI.reset(function(sync){
                                         if (sync){
                                                 listUI.highlightDeck(deckControl.init, deckId);
@@ -136,10 +137,13 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                 if (sync && newdeck){
                                         displayDeck(currentId);
                                 }
-                                else if (sync && newValue.length < oldValue.length){
-                                        ideafyDecks.highlightDeck(deckControl.init,0);
-                                        deckView.reset(ideafyDecks.getModel().get(0));
-                                        currentSelected = 0;
+                                else if (sync && (newValue.length < oldValue.length)){
+                                        list = ideafyDecks.getModel();
+                                        if (list.getNbItems()){
+                                                ideafyDecks.initSelected(deckControl.init,0);
+                                                deckView.reset(list.get(0));
+                                                currentSelected = 0;
+                                        }
                                 }
                                 newdeck = false;       
                         });

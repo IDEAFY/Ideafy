@@ -14,8 +14,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                             labels = Config.get("labels"),
                             user = Config.get("user"),
                             decks = new Store([]),
-                            currentBar = null,
-                            touchStart, touchPoint;
+                            currentBar = null;
                         
                         deckList.plugins.addAll({
                                 "labels" : new Model(labels),
@@ -45,7 +44,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         deckList.template = '<ul id="deck-list" data-decks="foreach"><li class="list-item" data-decksevent="listen: mousedown, setStart; listen: dblclick, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, title"></h3><span class="version" data-decks="bind:setVersion, version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, author"></div><span class="date" data-decks="bind:date, date"></div></div></li></ul>';
                         
                         deckList.setStart = function(event, node){
-                                touchsStart = [event.pageX, event.pageY];
                                 if (currentBar) {deckList.hideActionBar(currentBar);} // hide previous action bar
                         };
                         
@@ -54,17 +52,13 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                     dom = document.getElementById("ideas"),
                                     actionBar, frag;
                         
-                                touchPoint = [event.pageX, event.pageY];
-                        
-                                if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        actionBar = new ActionBar("deck", node, decks.get(id)._id, this.hideActionBar);
-                                        frag = document.createDocumentFragment();  
+                                actionBar = new ActionBar("deck", node, decks.get(id)._id, this.hideActionBar);
+                                frag = document.createDocumentFragment();  
                                 
-                                        actionBar.place(frag); // render action bar    
-                                        node.appendChild(frag); // display action bar
-                                        currentBar = actionBar; // store current action bar
-                                        display = true; // prevent from showing it multiple times
-                                }
+                                actionBar.place(frag); // render action bar    
+                                node.appendChild(frag); // display action bar
+                                currentBar = actionBar; // store current action bar
+                                display = true; // prevent from showing it multiple times
                         };
                         
                         deckList.hideActionBar = function hideActionBar(ui){

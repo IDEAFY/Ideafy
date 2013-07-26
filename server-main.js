@@ -38,8 +38,6 @@ var http = require("http"),
         appUtils = new apputils.AppUtils(),
         CDBAdmin = new cdbadmin.CDBAdmin();
   
-
-
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,

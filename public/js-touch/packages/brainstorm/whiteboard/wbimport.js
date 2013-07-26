@@ -128,7 +128,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         _drawImage(_img);
                                         node.classList.remove("pressed");
                                         ul.classList.add("invisible");
-                                        document.getElementById("postpic").classList.remove("invisible");
+                                        _widget.dom.querySelector("#postpic").classList.remove("invisible");
                                 }, 750);
                         }
                         
@@ -152,7 +152,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         _drawImage(_img);
                                         node.classList.remove("pressed");
                                         ul.classList.add("invisible");
-                                        document.getElementById("postpic").classList.remove("invisible");
+                                        _widget.dom.querySelector("#postpic").classList.remove("invisible");
                                 }, 1000);
                         }
                         

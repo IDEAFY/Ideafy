@@ -166,8 +166,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
             updateDocAsAdmin = CDBAdmin.updateDoc,
             getDocAsAdmin = CDBAdmin.getDoc,
             createDocAsAdmin = CDBAdmin.getDoc,
-            getViewAsAdmin = CDBAdmin.getView,
-            removeDocAsAdmin = CDBAdmin.removeDoc,
+            getViewAsAdmin = CDBAdmin.getView, 
             checkInvited = function(id, onEnd){
                 transport.request("CouchDB", {
                         method : "GET",
@@ -264,13 +263,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         changePassword.setSessionStore(sessionStore);
         
         olives.handlers.set("ChangePWD", changePassword.handler);
-        
-        // application utilities and handlers
-        appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
-        appUtils.setCDBAdmin(CDBAdmin);
-        olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
-        olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
-        olives.handlers.set("ShareDeck", appUtils.shareDeck);
         
         olives.handlers.set("Signup", function (json, onEnd) {
                         var user = new CouchDBUser();

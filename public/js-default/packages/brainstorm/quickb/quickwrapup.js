@@ -109,22 +109,26 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         
                         // watch $data store for cards
-                        ["added", "updated"].forEach(function(change){
-                                $data.watch(change, function(){
-                                        var cards;
-                                        
-                                        if ($data.get("characters") && $data.get("contexts") && $data.get("problems") && ($data.get("techno").getNbItems() === 3)){
-                                                cards = [
-                                                        $data.get("characters"),
-                                                        $data.get("contexts"),
-                                                        $data.get("problems"),
-                                                        $data.get("techno").get(0),
-                                                        $data.get("techno").get(1),
-                                                        $data.get("techno").get(2)
-                                                        ];
-                                                _cards.reset(cards);
-                                        }                
-                                });
+                        
+                        ["characters", "contexts", "problems", "techno"].forEach(function(topic){
+                                $data.watchValue(topic, function(value){
+                                        switch(topic){
+                                                case "characters":
+                                                        _cards.set(0,value);
+                                                        break;
+                                                case "contexts":
+                                                        _cards.set(1,value);
+                                                        break;
+                                                case "problems":
+                                                        _cards.set(2,value);
+                                                        break;
+                                                case "techno":
+                                                        value.loop(function(v,i){
+                                                                _cards.set(i+3,v);        
+                                                        });
+                                                        break;         
+                                        }        
+                                });  
                         });
                         
                         

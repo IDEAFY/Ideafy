@@ -15,7 +15,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                             range = new Store({"max": 0}),
                             deckCards = new Store([]),
                             allCards = new CouchDBView(),
-                            carouselSpinner = new Spinner().spin(),
+                            carouselSpinner = new Spinner({top:255, left: 297, lines: 8, radius: 6, color: "#cccccc"}).spin(),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
                             _currentDataURL,
@@ -64,11 +64,11 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                     _type = "deckpic",
                                     _dataURL = _currentDataURL;
                                 _fd.append("type", _type);
-                                _fd.append("dir", deckModel.get("_id"));
-                                _fd.append("filename", "decklogo");
+                                _fd.append("dir", "decks");
+                                _fd.append("filename", deckModel.get("_id"));
                                 _fd.append("dataString", _dataURL);
                                 Utils.uploadFile(_url, _fd, null, function(result){
-                                        console.log(result);
+                                        return result;
                                 });
                             };
                         
@@ -106,12 +106,12 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                }
                                         },
                                         setPic : function(pic){
-                                                var json, node=this, picSpinner = new Spinner().spin();
+                                                var json, node=this, picSpinner;
                                                 if (pic && pic.search("img/decks/") > -1){
                                                         this.setAttribute("style", "background-image:url('"+pic+"');");
                                                 }
                                                 else if (pic){
-                                                        picSpinner.spin(node);
+                                                        picSpinner = new Spinner({color:"#657b99"}).spin(node);
                                                         json = {"dir":"cards", "filename":pic};
                                                         Config.get("transport").request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background-image: url('"+data+"');");
@@ -128,7 +128,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                         },
                                         setPic : function(picture){
-                                                var ui, frag, node=this;
+                                                var json, node=this, picSpinner;
                                                 if (picture === "") {
                                                         this.setAttribute("style", "background-image:url('img/connect/graygroup.png');");
                                                 }
@@ -136,10 +136,12 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                         this.setAttribute("style", "background-image:url('img/logo.png');")        
                                                 }
                                                 else if (picture === "decklogo"){
+                                                        picSpinner = new Spinner({color:"#657b99"}).spin(node);
                                                         dir = "decks";
                                                         json = {"dir":dir, "filename":deckModel.get("_id")};
                                                         Config.get("transport").request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background-image: url('"+data+"');");   
+                                                                node.setAttribute("style", "background-image: url('"+data+"');");
+                                                                picSpinner.stop();  
                                                         });
                                                 }
                                                 // allow edition if user is author
@@ -162,7 +164,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 "editevent" : new Event(deckDetails)        
                         });
                         
-                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file" data-editevent="listen: mousedown, editPic"><input class="invisible" type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editevent="listen: change, changePic"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by" data-editevent="listen:input, displayButtons"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by" data-editevent="listen:input, displayButtons"></p><div class="cancelmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
+                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file" data-editevent="listen: mousedown, editPic"><input class="invisible" type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editevent="listen: change, changePic"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by" data-editevent="listen:input, displayButtons"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by" data-editevent="listen:input, displayButtons"></p><div class="cancelmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"></div><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider invisible" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div>';
                         
                         deckDetails.displayCards = function displayCards(id){
                                 var i, arr = [];
@@ -266,6 +268,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         };
                         
                         deckDetails.reset = function reset(deck){
+                                var slider = deckDetails.dom.querySelector(".deckslider");
+                                
                                 deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
                                 deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
                                 _currentDataURL = null;
@@ -276,9 +280,19 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 //reset card range
                                 range.set("max", 0);
                                 // get all cards.
-                                allCards.unsync();
+                                allCards.reset([]);
                                 allCards.sync(Config.get("db"), "library", "_view/cards", {key: '"'+ deckModel.get("_id")+'"'}).then(function(){
-                                        range.set("max", allCards.getNbItems()-1);
+                                        (allCards.getNbItems()) ? slider.classList.remove("invisible") : slider.classList.add("invisible");
+                                        if (allCards.getNbItems()) range.set("max", allCards.getNbItems()-1);
+                                        // try to sort by title...
+                                        allCards.unsync();
+                                        allCards.alter("sort", function(x,y){
+                                                var a = x.value.title, b = y.value.title;
+                                                if (a<b) return -1;
+                                                if (a>b) return 1;
+                                                if (a===b) return 0;
+                                        });    
+                                        
                                         // init card set with three cards
                                         deckDetails.displayCards(0);   
                                 });

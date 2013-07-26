@@ -5,13 +5,14 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plugin", "Store", "service/map", "./deckdetails", "./cardlist", "service/config", "./cardeditor/newcard"],
-        function(Widget, Model, Event, Place, Stack, Store, Map, DeckDetails, CardList, Config, NewCard){
+define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plugin", "Store", "service/map", "./deckdetails", "./cardlist", "service/config", "./cardeditor/newcard", "./deck-share"],
+        function(Widget, Model, Event, Place, Stack, Store, Map, DeckDetails, CardList, Config, NewCard, DeckShare){
                 
                 return function DeckViewConstructor($update){
                         
                         var deckView = new Widget(),
                             newCardUI = new NewCard($update),
+                            deckShareUI = new DeckShare(),
                             cardMenu = new Store([
                                     {name: "characters", active: false, count:0},
                                     {name: "contexts", active: false, count:0},
@@ -32,12 +33,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                                 (active)?this.classList.add("active"):this.classList.remove("active");
                                         }
                                 }),
-                                "place" : new Place({"newCard" : newCardUI}),
+                                "place" : new Place({"newCard" : newCardUI, "sharedeck": deckShareUI}),
                                 "deckviewstack" : innerStack,
                                 "deckviewevent" : new Event(deckView)
                         });
                         
-                        deckView.template = '<div><div data-place="place: newCard"></div><ul class="card-menu" data-cardmenu="foreach"><li><div class="card-type" data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: mousedown, viewCards"></div><div class="card-count" data-cardmenu="bind:innerHTML, count"></div></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>';
+                        deckView.template = '<div><div data-place="place: newCard"></div><div data-place="place: shareDeck"></div><ul class="card-menu" data-cardmenu="foreach"><li><div class="card-type" data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: mousedown, viewCards"></div><div class="card-count" data-cardmenu="bind:innerHTML, count"></div></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>';
                         
                         deckView.viewCards = function(event, node){
                                 var id = node.getAttribute("data-cardmenu_id");
@@ -58,8 +59,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         
                         deckView.reset = function reset(deck, screen){
                                 
-                                console.log("deckview reset called with : ", deck, screen);
                                 deckView.hideEditView();
+                                deckShareUI.hide();
                         
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
                                         innerStack.getStack().get(value).reset(deck);        
@@ -90,6 +91,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                 innerStack.getStack().add("problems", new CardList("problems", deckView.editCard, $update));
                                 innerStack.getStack().add("techno", new CardList("techno", deckView.editCard, $update));
                         };
+                        
+                        Config.get("observer").watch("deck-share", function(deckId){
+                                deckShareUI.reset(deckId);
+                                deckShareUI.show();
+                        })
                         
                         return deckView;
                         

@@ -284,7 +284,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 });
                         };
                         
-                        CSPIN = carouselSpinner;
                         return deckDetails;
                 };
         });

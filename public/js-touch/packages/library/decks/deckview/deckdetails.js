@@ -68,7 +68,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 _fd.append("filename", deckModel.get("_id"));
                                 _fd.append("dataString", _dataURL);
                                 Utils.uploadFile(_url, _fd, null, function(result){
-                                        console.log(result);
+                                        return result;
                                 });
                             };
                         

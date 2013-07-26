@@ -139,7 +139,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         if (data.authors.indexOf(user.get("_id")) === -1 && data.sharedwith.indexOf(user.get("_id")) >-1 && document.getElementById("library")){
                                                                 buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                         }
-                                                }, this);
+                                                });
                                                 break;
                                         case "deck":
                                                 var cdb = new CouchDBDocument();

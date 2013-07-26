@@ -5,15 +5,17 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin', 'Store', 'CouchDBBulkDocuments', "Promise", "service/utils"],
-        function(Widget, Map, Config, Model, Event, Store, CouchDBBulkDocuments, Promise, Utils){
+define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin', 'Store', 'CouchDBBulkDocuments', "Promise", "service/utils", "service/actionbar"],
+        function(Widget, Map, Config, Model, Event, Store, CouchDBBulkDocuments, Promise, Utils, ActionBar){
                 
                 return function DeckListConstructor($type){
                         
                         var deckList = new Widget(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),
-                            decks = new Store([]);
+                            decks = new Store([]),
+                            currentBar = null,
+                            touchStart, touchPoint;
                         
                         deckList.plugins.addAll({
                                 "labels" : new Model(labels),
@@ -40,7 +42,39 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 "decksevent" : new Event(deckList)
                         });
                         
-                        deckList.template = '<ul id="deck-list" data-decks="foreach"><li class="list-item"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, title"></h3><span class="version" data-decks="bind:setVersion, version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, author"></div><span class="date" data-decks="bind:date, date"></div></div></li></ul>';
+                        deckList.template = '<ul id="deck-list" data-decks="foreach"><li class="list-item" data-decksevent="listen: mousedown, setStart; listen: dblclick, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, title"></h3><span class="version" data-decks="bind:setVersion, version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, author"></div><span class="date" data-decks="bind:date, date"></div></div></li></ul>';
+                        
+                        deckList.setStart = function(event, node){
+                                touchsStart = [event.pageX, event.pageY];
+                                if (currentBar) {deckList.hideActionBar(currentBar);} // hide previous action bar
+                        };
+                        
+                        deckList.showActionBar = function(event, node){
+                                var id = node.getAttribute("data-decks_id"),
+                                    dom = document.getElementById("ideas"),
+                                    actionBar, frag;
+                        
+                                touchPoint = [event.pageX, event.pageY];
+                        
+                                if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                        actionBar = new ActionBar("deck", node, decks.get(id)._id, this.hideActionBar);
+                                        frag = document.createDocumentFragment();  
+                                
+                                        actionBar.place(frag); // render action bar    
+                                        node.appendChild(frag); // display action bar
+                                        currentBar = actionBar; // store current action bar
+                                        display = true; // prevent from showing it multiple times
+                                }
+                        };
+                        
+                        deckList.hideActionBar = function hideActionBar(ui){
+                        
+                                var parent = ui.dom.parentElement;
+                        
+                                parent.removeChild(parent.lastChild);
+                                display = false;
+                                currentBar = null;
+                        };
                         
                         deckList.reset = function reset(onEnd){
                                 var callback = onEnd || null;
@@ -82,18 +116,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                         onEnd && onEnd("ok");
                                         cdb.unsync();
                                 });             
-                        };
-                        
-                        // get the list of decks from which a user can duplicate/import cards
-                        deckList.getImportableDecks = function getImportableDecks(){
-                                var importOk = [];
-                                decks.loop(function(v,i){
-                                        // if deck is public, if deck has been shared with user or if user is the deck's author import, add to list
-                                        if (v.public || v.created_by === user.get("_id") || v.sharedwith.indexOf(user.get("_id"))){
-                                                importOk.push(v);
-                                        }                                            
-                                });
-                                return importOk;  
                         };
                         
                         // initialize selection (could be first item or active item)

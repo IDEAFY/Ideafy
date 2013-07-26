@@ -40,7 +40,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 "action" : new Event(this)
                         });
                         
-                        this.template = '<div class="actionbar" data-style="bind:setPosition, height" data-action="listen:touchend, hide"><ul class="buttonlist" data-style="bind:setButtons, height" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:mousedown, press; listen:mouseup, action"></li></ul><div id="abspinner"></div></div>';
+                        this.template = '<div class="actionbar" data-style="bind:setPosition, height" data-action="listen:mouseup, hide"><ul class="buttonlist" data-style="bind:setButtons, height" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:mousedown, press; listen:mouseup, action"></li></ul><div id="abspinner"></div></div>';
                         
                         this.hide = function(event, node){
                                 $hide(this);        
@@ -154,7 +154,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                         buttons.alter("push", {name:"share", icon:"img/wall/35share.png"});
                                                                 }        
                                                         }
-                                                        if (user.get("taiaut_decks").length || user.get("custom_decks").length){
+                                                        if ((user.get("taiaut_decks").length + user.get("custom_decks").length) >1){
                                                                 buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                         }        
                                                 });
@@ -177,7 +177,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         this.deleteItem = function deleteItem(){
                                 var promise = new Promise(),
-                                    cdb = new CouchDBDocument();
+                                    cdb = new CouchDBDocument(),
+                                    scope = this;
                                 
                                 cdb.setTransport(transport);
                                 
@@ -201,10 +202,18 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                         case "deck":
                                                 if (user.get("active_deck") === $data){
                                                         alert(labels.get("cannotdelactivedeck"));
+                                                        scope.hide();
                                                 }
                                                 else{
+                                                        document.getElementById("cache").classList.add("appear"); 
                                                         confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
-                                                                if (decision){
+                                                                var spinner = new Spinner({lines:10, length: 20, width: 8, radius:10}).spin();
+                                                                if (!decision) {
+                                                                        scope.hide();
+                                                                }
+                                                                else{
+                                                                        spinner.spin(document.getElementById("deckview"));
+                                                                        document.getElementById("cache").classList.add("appear");
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
                                                                         if (user.get("taiaut_decks").indexOf($data) > -1){
                                                                                 var arr = user.get("taiaut_decks");
@@ -212,14 +221,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 user.set("taiaut_decks", arr);
                                                                                 user.upload()
                                                                                 .then(function(){
+                                                                                        spinner.stop();
+                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                         promise.fulfill();
-                                                                                });
+                                                                                }, this);
                                                                         }
                                                                         else{
                                                                                 cdb.sync(db, $data)
                                                                                 .then(function(){
                                                                                         // if deck has been shared with user simply remove user id from sharedwith field
-                                                                                        var sw = cdb.get("sharedwith") || [], cd = user.get("custom_decks");
+                                                                                        var sw = cdb.get("sharedwith") || [], cd = user.get("custom_decks").concat();
                                                                 
                                                                                         // if deck has been shared with user simply remove user id from sharedwith field
                                                                                         if (sw.length && sw.indexOf(user.get("_id")) > -1){
@@ -232,6 +243,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                         return user.upload();
                                                                                                 })
                                                                                                 .then(function(){
+                                                                                                        spinner.stop();
+                                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                                         promise.fulfill();
                                                                                                 });
                                                                                         }
@@ -243,8 +256,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                                 cd.splice(cd.indexOf($data), 1);
                                                                                                                 user.set("custom_decks", cd);
                                                                                                                 user.upload()
-                                                                                                                .then (function(){
-                                                                                                                        promise.fulfill();        
+                                                                                                                .then(function(){
+                                                                                                                        spinner.stop();
+                                                                                                                        document.getElementById("cache").classList.remove("appear");
+                                                                                                                        promise.fulfill();
                                                                                                                 });        
                                                                                                         }
                                                                                                         else{
@@ -256,7 +271,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                         }
                                                                 }
                                                                 document.body.removeChild(document.querySelector(".confirm"));
-                                                                Map.get("cache").classList.remove("appear");
                                                         }, "importcard-confirm");
                                                 }
                                                 break;

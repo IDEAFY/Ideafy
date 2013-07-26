@@ -333,11 +333,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "tech3":{"popup": false, "selected": false}
                                 });
                                 
-                                _techCards.reset([
-                                                {"id":"", "title":"", "pic":""},
-                                                {"id":"", "title":"", "pic":""},
-                                                {"id":"", "title":"", "pic":""}
-                                        ]);
+                                _techCards.reset([]);
                                 _next = "step";
                                 
                                 // check if session is in progress and if techs have been defined already

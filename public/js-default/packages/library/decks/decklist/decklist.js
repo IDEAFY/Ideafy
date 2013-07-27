@@ -49,10 +49,9 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         
                         deckList.showActionBar = function(event, node){
                                 var id = node.getAttribute("data-decks_id"),
-                                    dom = document.getElementById("ideas"),
                                     actionBar, frag;
                         
-                                actionBar = new ActionBar("deck", node, decks.get(id)._id, this.hideActionBar);
+                                actionBar = new ActionBar("deck", node, decks.get(id)._id, deckList.hideActionBar);
                                 frag = document.createDocumentFragment();  
                                 
                                 actionBar.place(frag); // render action bar    

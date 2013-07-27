@@ -137,8 +137,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 }
                                                 else if (picture === "decklogo"){
                                                         picSpinner = new Spinner({color:"#657b99"}).spin(node);
-                                                        dir = "decks";
-                                                        json = {"dir":dir, "filename":deckModel.get("_id")};
+                                                        json = {"dir":"decks", "filename":deckModel.get("_id")};
                                                         Config.get("transport").request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background-image: url('"+data+"');");
                                                                 picSpinner.stop();  

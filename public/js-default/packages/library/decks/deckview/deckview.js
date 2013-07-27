@@ -83,14 +83,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         };
                         
                         deckView.init = function init(){
-                        
-                                console.log("deckview init");
                                 // initialize inner stack
-                                innerStack.getStack().add("details", new DeckDetails($update));
-                                innerStack.getStack().add("characters", new CardList("characters", deckView.editCard, $update));
-                                innerStack.getStack().add("contexts", new CardList("contexts", deckView.editCard, $update));
-                                innerStack.getStack().add("problems", new CardList("problems", deckView.editCard, $update));
-                                innerStack.getStack().add("techno", new CardList("techno", deckView.editCard, $update));
+                                var dd = new DeckDetails($update);
+                                console.log("deck details ok");
+                                innerStack.getStack().add("details", dd);
+                                
+                                ["characters", "contexts", "problems", "techno"].forEach(function(type){
+                                        var ui =  new CardList(type, deckView.editCard, $update);
+                                        console.log(type, "ui init ok");
+                                        innerStack.getStack().add(type, ui);      
+                                });
                         };
                         
                         Config.get("observer").watch("deck-share", function(deckId){

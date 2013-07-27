@@ -88,8 +88,10 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                       // show all decks
                                       stack.getStack().show("ideafy");
                                       deckView.init();
+                                      consle.log("after deckview init");
                                       ideafyDecks.highlightDeck(deckControl.init,0);
                                       deckView.reset(ideafyDecks.getModel().get(0));
+                                      console.log("after deckview reset call");
                                       currentSelected = 0;
                               };
                       });

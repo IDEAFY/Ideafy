@@ -72,11 +72,13 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               widget.displayDeck = displayDeck;
               
               widget.init = function init(){
+                      console.log("deck init");
                       // init UIs
                       ideafyDecks = new List("all_decks");
                       // taiautDecks = new List("taiaut_decks"); -- in App purchase of official decks
                       // customDecks = new List("custom_decks"); -- feature not available in the first release
                       
+                      console.log("ideafy decks ok");
                       stack.getStack().add("ideafy", ideafyDecks);
                       
                       // initial view should show active deck as highlighted and active deck content in the view

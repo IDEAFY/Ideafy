@@ -134,6 +134,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               // watch for changes for this particular type of decks in user doc 
               user.watchValue("custom_decks", function(newValue, action, oldValue){
                         ideafyDecks.reset(function(sync){
+                                var list;
                                 if (sync && newdeck){
                                         displayDeck(currentId);
                                 }

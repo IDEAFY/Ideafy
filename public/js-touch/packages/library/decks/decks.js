@@ -135,7 +135,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         ideafyDecks.reset(function(sync){
                                 var list;
                                 if (sync && newdeck){
-                                        console.log(currentId);
                                         displayDeck(currentId);
                                 }
                                 else if (sync && (newValue.length < oldValue.length)){

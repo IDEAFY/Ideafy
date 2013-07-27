@@ -166,14 +166,11 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 }  
                                 if (type === "techno"){
                                         model.set("type", 4);
-                                        model.set("picture_file", "img/decks/techno.png");
+                                        model.set("picture_file", "img/decks/technology.png");
                                 }        
                         }
                         else{
-                                model.sync(Config.get("db"), id)
-                                .then(function(){
-                                        console.log("card synchronized :", model.toJSON());
-                                });        
+                                model.sync(Config.get("db"), id);       
                         } 
                };
                
@@ -204,7 +201,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                };
                
                editCard.updateTitle = function updateTitle(event, node){
-                        model.set("title", node.innerHTML);        
+                        var title = node.innerHTML;
+                        (model.get("type") === 4) ? title = title.toUpperCase() : title = title.charAt(0).toUpperCase() + title.slice(1);
+                        model.set("title", title);        
                };
                
                editCard.selectpress = function(event, node){

@@ -64,6 +64,7 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
                                                 break;
                                        case 9:
                                                 _stack.getStack().show("#decks");
+                                                break;
 	                               default:
 	                                       break;
 	                       }        

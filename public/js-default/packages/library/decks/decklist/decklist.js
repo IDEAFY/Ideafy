@@ -14,6 +14,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                             labels = Config.get("labels"),
                             user = Config.get("user"),
                             decks = new Store([]),
+                            display = false,
                             currentBar = null;
                         
                         deckList.plugins.addAll({
@@ -50,14 +51,15 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         deckList.showActionBar = function(event, node){
                                 var id = node.getAttribute("data-decks_id"),
                                     actionBar, frag;
-                        
-                                actionBar = new ActionBar("deck", node, decks.get(id)._id, deckList.hideActionBar);
-                                frag = document.createDocumentFragment();  
+                                if (!display){
+                                        actionBar = new ActionBar("deck", node, decks.get(id)._id, deckList.hideActionBar);
+                                        frag = document.createDocumentFragment();  
                                 
-                                actionBar.place(frag); // render action bar    
-                                node.appendChild(frag); // display action bar
-                                currentBar = actionBar; // store current action bar
-                                display = true; // prevent from showing it multiple times
+                                        actionBar.place(frag); // render action bar    
+                                        node.appendChild(frag); // display action bar
+                                        currentBar = actionBar; // store current action bar
+                                        display = true; // prevent from showing it multiple times
+                                }
                         };
                         
                         deckList.hideActionBar = function hideActionBar(ui){

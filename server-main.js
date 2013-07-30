@@ -116,6 +116,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         });
                                 });
                         }
+                })      
+                .use(function(req, res, next) {
+                        res.setHeader("Ideady Server", "node.js/" + process.versions.node);
+                        res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
+                        next();
                 })
                 .use(connect.cookieParser())
                 .use(connect.session({
@@ -128,11 +133,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 path : "/"
                         }
                 }))
-                .use(function(req, res, next) {
-                        res.setHeader("Ideady Server", "node.js/" + process.versions.node);
-                        res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
-                        next();
-                })
                 .use(connect.static(__dirname + "/public"))).listen(1664),
                 io = socketIO.listen(app, {
                         log : true

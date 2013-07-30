@@ -7,7 +7,7 @@
 
 define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min", "service/confirm"],
         function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner, Confirm){
-                function ActionBarConstructor($type, $parent, $data, $hide){
+                function ActionBarConstructor($type, $parent, $data){
                 
                         var buttons = new Store([]),
                             parentHeight = $parent.offsetHeight,
@@ -42,8 +42,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         this.template = '<div class="actionbar" data-style="bind:setPosition, height" data-action="listen:touchend, hide"><ul class="buttonlist" data-style="bind:setButtons, height" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:touchstart, press; listen:touchend, action"></li></ul><div id="abspinner"></div></div>';
                         
-                        this.hide = function(event, node){
-                                $hide(this);        
+                        this.hide = function(){
+                                var parent = ui.dom.parentElement;
+                                parent && parent.removeChild(parent.lastChild);        
+                        };
+                        
+                        this.getParent = function(){
+                                return $parent;
                         };
                         
                         this.press = function(event, node){
@@ -63,7 +68,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 switch(action){
                                         case "delete":
                                                 this.deleteItem().then(function(){
-                                                        $hide(ui);
+                                                        ui.hide();
                                                 });
                                                 break;
                                         case "edit":
@@ -139,7 +144,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         if (data.authors.indexOf(user.get("_id")) === -1 && data.sharedwith.indexOf(user.get("_id")) >-1 && document.getElementById("library")){
                                                                 buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                         }
-                                                });
+                                                }, this);
                                                 break;
                                         case "deck":
                                                 var cdb = new CouchDBDocument();
@@ -252,7 +257,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                         // if user if author of deck then delete deck and as appropriate its contents from database
                                                                                         else if (cdb.get("created_by") === user.get("_id")){
                                                                                                 transport.request("DeleteDeck", {"id": $data, "userid": user.get("_id")}, function(result){
-                                                                                                        console.log("deletedeck handler result :", result, cd);                                                                                                       
                                                                                                         if (result === "ok"){
                                                                                                                 cd.splice(cd.indexOf($data), 1);
                                                                                                                 user.set("custom_decks", cd);
@@ -413,8 +417,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                 
                 }
                 
-                return function ActionBarFactory($type, $parent, $data, $hide){
+                return function ActionBarFactory($type, $parent, $data){
                         ActionBarConstructor.prototype = new Widget();
-                        return new ActionBarConstructor($type, $parent, $data, $hide);
+                        return new ActionBarConstructor($type, $parent, $data);
                 };
         });

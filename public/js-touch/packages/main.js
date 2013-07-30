@@ -15,7 +15,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 "#login" : _login
         }), _dock = new Dock(), _local = new LocalStore(), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user"), _currentVersion;
 
-        _currentVersion = "1.1.3";
+        _currentVersion = "1.1.2";
         
         //setup
         _body.plugins.addAll({
@@ -138,9 +138,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         // retrieve local data
         _local.sync("ideafy-data");
         _login = new Login(_body.init, _body.reload, _local);
-        
-        document.querySelector(".spinner").classList.add("invisible");
-        
         _stack.getStack().show("#login");
         _stack.getStack().setCurrentScreen(_login);
         _login.init();

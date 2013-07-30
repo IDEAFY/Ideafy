@@ -286,9 +286,9 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 sel.popup = true;
                                 _selection.set(type, sel);
                                 _currentPopup = type;
-                                if (type === "char") pos.x = 475;
-                                if (type === "context") {pos.x=195; caret="right";}
-                                if (type === "problem") {pos.x=342; caret="right";}
+                                if (type === "char") pos.x = 382;
+                                if (type === "context") {pos.x=102; caret="right";}
+                                if (type === "problem") {pos.x=249; caret="right";}
                                 
                                 // only display popup if a card is present
                                 if (_currentCards[type].getNbItems()){
@@ -486,9 +486,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         "cards": _drawnCards.char + _drawnCards.context + _drawnCards.problem
                                 };
                                 
-                                console.log("before transport request : ", json);
                                 _transport.request("UpdateSessionScore", json, function(result){
-                                        console.log(result);
                                         if (result.res === "ok"){
                                                 promise.fulfill();
                                         }
@@ -586,7 +584,6 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         _timer.set("display", true);
                                 }        
                         });
-                        
                         
                         // Return
                         return _widget;

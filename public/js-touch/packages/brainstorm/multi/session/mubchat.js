@@ -256,15 +256,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                             users = chatCDB.get("users");
                         mubChat.setMessage("leave")
                         .then(function(){
-                                // get user position
-                                for (i=0; i<users.length; i++){
-                                        if (users[i].userid === user.get("_id")){
-                                                idx = i;
-                                                break;        
-                                        }
-                                }
-                                users.splice(idx, 1);
-                                chatCDB.set("users", users);
                                 return chatCDB.upload();
                         })
                         .then(function(){

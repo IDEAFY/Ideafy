@@ -186,7 +186,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Method called to initialize a card popup
                         _widget.setPopup = function setPopup(type){
-                                var pos = {x:240, y: 130}, // the position of the popup
+                                var pos = {x:147, y: 130}, // the position of the popup
                                     caret = "left", // the position of the caret
                                     card = _cards.get(type),
                                     popup = _tools.get("cardpopup"),

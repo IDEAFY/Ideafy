@@ -77,7 +77,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                       // taiautDecks = new List("taiaut_decks"); -- in App purchase of official decks
                       // customDecks = new List("custom_decks"); -- feature not available in the first release
                       
-                      console.log("ideafyDecks ok");
                       stack.getStack().add("ideafy", ideafyDecks);
                       
                       // initial view should show active deck as highlighted and active deck content in the view
@@ -153,7 +152,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               });
                         
               user.watchValue("taiaut_decks", function(newValue, action, oldValue){
-                        console.log("newValue : ", newValue.join(), "action:", action, "oldValue :", oldValue.join());
                          ideafyDecks.reset(function(sync){
                                  if (sync){
                                          ideafyDecks.initSelected(deckControl.init,0);

@@ -151,7 +151,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         }]);
                                                                         
                                                                         // add welcome contents
-                                                                        _transport.request("Welcome", {userid:userid, language:user.get("lang")}, function(result){console.log(result);});
+                                                                        _transport.request("Welcome", {userid:userid, language:user.get("lang")}, function(result){return result;});
 
                                                                         // get database info
                                                                         if (result.db){
@@ -285,7 +285,6 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 spinner && spinner.stop();       
                         };
                 
-                LOGINSPIN = loginSpinner;        
                 //return
                 return _login;
                 };

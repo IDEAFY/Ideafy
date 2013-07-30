@@ -210,16 +210,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _techDisplay.set(type, sel);
                                 _currentPopup = type;
                                 if (type === "scenario") {
-                                        pos.x = 240;
+                                        pos.x = 147;
                                         pos.y= 275;
                                         story.reset($session.get("scenario")[0]);
                                         story.set("type", 5);
                                         details = story.toJSON();
                                 }
                                 else{
-                                        if (type === "tech1") { pos.x=560;}
-                                        if (type === "tech2") { pos.x=279; caret="right";}
-                                        if (type === "tech3") { pos.x=426; caret="right";}
+                                        if (type === "tech1") { pos.x=467;}
+                                        if (type === "tech2") { pos.x=186; caret="right";}
+                                        if (type === "tech3") { pos.x=333; caret="right";}
                                         if (_draw[type].get("_id")) details = _draw[type].toJSON();
                                 }
                                 // only display popup if a card is present
@@ -333,7 +333,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         "tech3":{"popup": false, "selected": false}
                                 });
                                 
-                                _techCards.reset([]);
+                                _techCards.reset([
+                                                {"id":"", "title":"", "pic":""},
+                                                {"id":"", "title":"", "pic":""},
+                                                {"id":"", "title":"", "pic":""}
+                                        ]);
                                 _next = "step";
                                 
                                 // check if session is in progress and if techs have been defined already

@@ -165,7 +165,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var updateUserIP = CDBAdmin.updateUserIP,
             updateDocAsAdmin = CDBAdmin.updateDoc,
             getDocAsAdmin = CDBAdmin.getDoc,
-            createDocAsAdmin = CDBAdmin.getDoc,
+            createDocAsAdmin = CDBAdmin.createDoc,
             getViewAsAdmin = CDBAdmin.getView,
             removeDocAsAdmin = CDBAdmin.removeDoc,
            checkInvited = function(id, onEnd){

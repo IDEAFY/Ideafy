@@ -286,9 +286,9 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 sel.popup = true;
                                 _selection.set(type, sel);
                                 _currentPopup = type;
-                                if (type === "char") pos.x = 475;
-                                if (type === "context") {pos.x=195; caret="right";}
-                                if (type === "problem") {pos.x=342; caret="right";}
+                                if (type === "char") pos.x = 382;
+                                if (type === "context") {pos.x=102; caret="right";}
+                                if (type === "problem") {pos.x=249; caret="right";}
                                 
                                 // only display popup if a card is present
                                 if (_currentCards[type].getNbItems()){

@@ -54,7 +54,6 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/c
                 stack.getStack().add("list", muList);
                 stack.getStack().show("new");
                 
-                
                 return widget;
                    
            };

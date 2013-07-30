@@ -108,20 +108,13 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		      
 		      var _sip = {}; // need to create session in progress object (with id and type of session)
 		      _sip.id = sid;
-		      if (mode) {
-		              _sip.type = mode;
+		      //attempt to detect mode from session name
+		      if (sid.toLowerCase().search("quick") > -1) {
+		              _sip.type = "quick";
 		      }
-		      else{
-		              //attempt to detect mode from session name
-		              if (sid.toLowerCase().search("quick") > -1) {
-		                      _sip.type = "quick";
-		              }
-		              if (sid.toLowerCase().search("s:mu") > -1) {
-                                      _sip.type = "musession";
-                              } 
-		              
-		              // need a default mode ??
-		      }
+		      if (sid.toLowerCase().search("s:mu") > -1) {
+                                _sip.type = "musession";
+                      }
 		      _widget.selectScreen(_sip.type, _sip);
 		});
 		

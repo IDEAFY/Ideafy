@@ -86,6 +86,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         var json, node=this, _transport = Config.get("transport"), spinner;
                                         if (!content) this.innerHTML = ""
                                         else {
+                                                spinner = new Spinner().spin(node);
                                                 json = {"dir":"sessions/"+_sid, "filename":content};
                                                 _transport.request("GetFile", json, function(data){
                                                         var _img = new Image(),
@@ -94,6 +95,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                         node.width=_img.width;
                                                         node.height=_img.height;
                                                         _ctx.drawImage(_img,0,0);
+                                                        spinner.stop();
+                                                        _widget.dom.querySelector("#importbuttons").classList.remove("invisible");
                                                         _widget.dom.querySelector("#postpic").scrollIntoView();
                                                 });
                                         }       
@@ -193,8 +196,10 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _pos = $pos;
                         
                         _postit.reset({"type": "import", "content":""});
+                        _widget.dom.querySelector("#importbuttons").classList.remove("invisible");
                         
                         if (_pos || _pos === 0){
+                                _widget.dom.querySelector("#importbuttons").classList.add("invisible");
                                 _postit.reset($store.get($pos));
                                 _widget.dom.querySelector("#postpic").scrollIntoView();
                         }

@@ -31,7 +31,7 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                             labels = Config.get("labels"),
                             touchStart,
                             touchPoint,
-                            display = false,
+                            currentBar,
                             user = Config.get("user"),
                             observer = Config.get("observer"),
                             sortMessages = function(id){
@@ -229,7 +229,9 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                 ]);
                                 messageUI.init();
                                 // show default page
-                                detailStack.getStack().show("#defaultPage");      
+                                detailStack.getStack().show("#defaultPage");
+                                // reset action bar display status
+                                currentBar && currentBar.hide();    
                         };
                         
                         messageUI.getSelectedmsg = function(){
@@ -277,27 +279,26 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                         // Action bar
                         messageUI.setStart = function(event, node){
                                 touchStart = [event.pageX, event.pageY];
-                                if (document.querySelector(".actionbar")) messageUI.hideActionBar();  // hide previous action bar 
+                                currentBar && currentBar.hide();  // hide previous action bar 
                         };
                 
                         messageUI.showActionBar = function(event, node){
-                                var id = node.getAttribute("data-msg_id");
+                                var id = node.getAttribute("data-msg_id"),
+                                    frag, display = false;
+                        
                                 touchPoint = [event.pageX, event.pageY];
-                                if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        var actionBar = new ActionBar("message", node, msgList.get(id), messageUI.hideActionBar),
-                                           frag = document.createDocumentFragment();  
                                 
-                                        actionBar.place(frag); // render action bar
-                                        node.appendChild(frag); // display action bar
-                                        display = true; // prevent from showing it multiple times
+                                // check if actionbar exists for this element
+                                if (currentBar && currentBar.getParent() === node){
+                                        display = true;
                                 }
-                        };
-                
-                        messageUI.hideActionBar = function hideActionBar(){
-                                var ui = document.querySelector(".actionbar"),
-                                    parent = ui.parentNode;
-                                parent.removeChild(parent.lastChild);
-                                display = false;
+                        
+                                if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                        currentBar = new ActionBar("message", node, msgList.get(id)._id);
+                                        frag = document.createDocumentFragment();  
+                                        currentBar.place(frag); // render action bar    
+                                        node.appendChild(frag); // display action bar
+                                }
                         };
                         
                         defaultPage.template = '<div class="msgsplash"><div class="header blue-dark"><span>'+Config.get("labels").get("messageview")+'</span></div><div class="innersplash" data-labels="bind: innerHTML, messagecenter"></div></div>';

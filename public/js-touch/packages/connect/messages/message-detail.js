@@ -96,8 +96,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         }
                                         else {this.classList.add("invisible");}
                                 },
-                                showOptions : function(_type){
-                                        var type = _type || "";
+                                showOptions : function(type){
                                         ((type.search("CX")>-1) || (type === "2Q+") || (type === "INV")) ? this.classList.add("invisible") : this.classList.remove("invisible");        
                                 },
                                 setToList : function(toList){
@@ -106,7 +105,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 showCcList : function(ccList){
                                         (ccList)?this.classList.remove("invisible"):this.classList.add("invisible");
                                 },
-                                showCXRbtn : function(_type){
+                                showCXRbtn : function(type){
                                         (type === "CXR")?this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 showDocBtn : function(type){
@@ -134,13 +133,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         (type === "2Q+" || type === "2C+") ? this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 setAvatar : function setAvatar(author){
-                                                var _frag, _ui;
-                                                if(author){ 
-                                                        _frag = document.createDocumentFragment();
-                                                        _ui = new Avatar([author]);
-                                                        _ui.place(_frag);
-                                                        (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
-                                                }
+                                                var _frag = document.createDocumentFragment(),
+                                                    _ui = new Avatar([author]);
+                                                _ui.place(_frag);
+                                                (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                 }
                         }),
                         "cxr": new Model(cxrConfirm,{
@@ -156,7 +152,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 
                 msgDetailUI.showDoc = function showDoc(event, node){
                         node.classList.remove("pushed");
-                        if (message.get("type") === "DOC") observer.notify("display-doc", message.get("docId"), message.get("docType"));
+                        if (message.get("type") === "DOC") {
+                                observer.notify("display-doc", message.get("docId"), message.get("docType"));
+                        }
                 };
                 
                 msgDetailUI.showTwoQ = function showTwoQ(event, node){
@@ -321,7 +319,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         var cdb = new CouchDBDocument();
                         cdb.setTransport(transport);
                         cdb.sync(Config.get("db"), sid).then(function(){
-                                console.log(cdb.get("status"));
                                 if (cdb.get("status") === "waiting"){
                                         message.set("sessionStatus", "waiting");
                                 }
@@ -332,7 +329,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 
                 msgDetailUI.gotoSession = function(event, node){
                         var arr = user.get("notifications");
-                        node.classList.remove("pressed");
+                        node.classList.remove("pushed");
                         message.set("joined", true);
                         Config.get("observer").notify("join-musession", message.get("docId"));
                         

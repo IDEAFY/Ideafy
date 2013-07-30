@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
-        function(Widget, Model, Event, Config){
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.min" ],
+        function(Widget, Model, Event, Config, Spinner){
                 
            return function WBMainConstructor($store, $tools, $select){
              
@@ -24,8 +24,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                                             content = $store.get(id).content,
                                             style = $store.get(id).style,
                                             bg = $store.get(id).background,
-                                            dir,
-                                            json;
+                                            dir, json,
+                                            spinner;
                                         switch(type){
                                                 case "postit":
                                                         node.classList.remove("photo");
@@ -36,21 +36,25 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
                                                 case "import":
                                                         node.classList.add("photo");
                                                         node.classList.remove("drawing");
+                                                        spinner = new Spinner().spin(node);
                                                         this.innerHTML="";
                                                         dir = "sessions/"+_sid;
                                                         json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
+                                                                node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;"); 
+                                                                spinner.stop();  
                                                         });
                                                         break;
                                                 case "drawing":
                                                         node.classList.remove("photo");
                                                         node.classList.add("drawing");
+                                                        spinner = new Spinner().spin(node);
                                                         this.innerHTML="";
                                                         dir = "sessions/"+_sid;
                                                         json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
+                                                                node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");
+                                                                spinner.stop();   
                                                         });
                                                         break;
                                                 default:

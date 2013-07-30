@@ -313,7 +313,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        // upload card to database
                         model.upload()
                         .then(function(){
-                                console.log("card upload successful :", model.get("_rev"));
                                 return $update(model.get("type"), model.get("_id"));
                         })
                         .then(function(){

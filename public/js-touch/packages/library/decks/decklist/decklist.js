@@ -15,7 +15,6 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                             user = Config.get("user"),
                             decks = new Store([]),
                             currentBar = null,
-                            display = false,
                             touchStart, touchPoint;
                         
                         deckList.plugins.addAll({
@@ -47,33 +46,26 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         
                         deckList.setStart = function(event, node){
                                 touchStart = [event.pageX, event.pageY];
-                                if (currentBar) {deckList.hideActionBar(currentBar);}  // hide previous action bar 
+                                currentBar && currentBar.hide(); 
                         };
                         
                         deckList.showActionBar = function(event, node){
                                 var id = node.getAttribute("data-decks_id"),
-                                    actionBar, frag;
+                                    frag, display = false;
                         
                                 touchPoint = [event.pageX, event.pageY];
+                                
+                                // check if actionbar exists for this element
+                                if (currentBar && currentBar.getParent() === node){
+                                        display = true;
+                                }
                         
                                 if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        actionBar = new ActionBar("deck", node, decks.get(id)._id, deckList.hideActionBar);
+                                        currentBar = new ActionBar("deck", node, decks.get(id)._id);
                                         frag = document.createDocumentFragment();  
-                                
-                                        actionBar.place(frag); // render action bar    
+                                        currentBar.place(frag); // render action bar    
                                         node.appendChild(frag); // display action bar
-                                        currentBar = actionBar; // store current action bar
-                                        display = true; // prevent from showing it multiple times
                                 }
-                        };
-                
-                        deckList.hideActionBar = function hideActionBar(ui){
-                        
-                                var parent = ui.dom.parentElement;
-                        
-                                parent.removeChild(parent.lastChild);
-                                display = false;
-                                currentBar = null;
                         };
                         
                         deckList.reset = function reset(onEnd){

@@ -25,7 +25,7 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                             contactList = new Store([]),
                             touchStart,
                             touchPoint,
-                            display = false,
+                            currentBar,
                             user = Config.get("user"),
                             labels = Config.get("labels"),
                             sortContacts = function(id){
@@ -129,7 +129,9 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                         contactsUI.reset = function reset(){
                                 contactList.reset(user.get("connections"));
                                 addContact.reset();
-                                detailStack.getStack().show("#addcontact");        
+                                detailStack.getStack().show("#addcontact");
+                                // reset action bar display status
+                                currentBar && currentBar.hide();      
                         };
                         
                         contactsUI.getSelectedContact = function(){
@@ -179,29 +181,28 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                         // Action bar
                         contactsUI.setStart = function(event, node){
                                 touchStart = [event.pageX, event.pageY];
-                                if (document.querySelector(".actionbar")) contactsUI.hideActionBar();  // hide previous action bar 
+                                currentBar && currentBar.hide();  // hide previous action bar 
                         };
                 
                         contactsUI.showActionBar = function(event, node){
-                                var id = node.getAttribute("data-contact_id");
+                                var id = node.getAttribute("data-contact_id"),
+                                    frag, display = false;
+                        
                                 touchPoint = [event.pageX, event.pageY];
-                                if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                        var actionBar = new ActionBar("contact", node, contactList.get(id), contactsUI.hideActionBar),
-                                           frag = document.createDocumentFragment();  
                                 
-                                        actionBar.place(frag); // render action bar    
+                                // check if actionbar exists for this element
+                                if (currentBar && currentBar.getParent() === node){
+                                        display = true;
+                                }
+                        
+                                if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                        currentBar = new ActionBar("contact", node, contactList.get(id));
+                                        frag = document.createDocumentFragment();  
+                                        currentBar.place(frag); // render action bar    
                                         node.appendChild(frag); // display action bar
-                                        display = true; // prevent from showing it multiple times
                                 }
                         };
                 
-                        contactsUI.hideActionBar = function hideActionBar(ui){
-                                var ui = document.querySelector(".actionbar"),
-                                    parent = ui.parentNode;
-                                parent.removeChild(parent.lastChild);
-                                display = false;
-                        };
-                        
                         contactsUI.press = function(event, node){
                                 node.classList.add("pressed");
                         };

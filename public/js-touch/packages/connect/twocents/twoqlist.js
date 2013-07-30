@@ -11,7 +11,6 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                     _searchList = new Store([]),
                     touchStart,
                     touchPoint,
-                    display = false,
                     className = "",
                     currentBar = null,
                     _options = {
@@ -116,6 +115,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                         _store.reset([]);
                         widget.hideSearch();
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                currentBar && currentBar.hide();
                                 promise.fulfill();
                         });
                         return promise;
@@ -123,34 +123,27 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
 
                 this.setStart = function(event, node){
                         touchStart = [event.pageX, event.pageY];
-                        
-                        if (currentBar) {this.hideActionBar(currentBar);}  // hide previous action bar 
+                        currentBar && currentBar.hide();
                 };
                 
                 this.showActionBar = function(event, node){
                         var id = node.getAttribute("data-twoqlist_id"),
                             dom = document.getElementById("mtc-list"),
-                            actionbar, frag;
+                            frag, display = false;
                         
                         touchPoint = [event.pageX, event.pageY];
-                        
-                        if (!dom.classList.contains("mosaic") && !display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                                actionBar = new ActionBar("2Q", node, _store.get(id).value, this.hideActionBar);
-                                frag = document.createDocumentFragment();  
                                 
-                                actionBar.place(frag); // render action bar    
-                                node.appendChild(frag); // display action bar
-                                currentBar = actionBar; // store current action bar
-                                display = true; // prevent from showing it multiple times
+                        // check if actionbar exists for this element
+                        if (currentBar && currentBar.getParent() === node){
+                                display = true;
                         }
-                };
-                
-                this.hideActionBar = function hideActionBar(ui){
                         
-                        var parent = ui.dom.parentElement;
-                        parent.removeChild(parent.lastChild);
-                        display = false;
-                        currentBar = null;
+                        if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                currentBar = new ActionBar("2Q", node, _store.get(id)._id);
+                                frag = document.createDocumentFragment();  
+                                currentBar.place(frag); // render action bar    
+                                node.appendChild(frag); // display action bar
+                        }
                 };
                 
                 // toggle search list

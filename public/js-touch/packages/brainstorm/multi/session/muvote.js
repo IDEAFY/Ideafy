@@ -155,7 +155,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _session.set("vote", vote);
                                         _session.upload()
                                         .then(function(){
-                                                console.log("upload ok");
                                                 _uploadInProgress = false;
                                          }, function(conflict){
                                                  console.log(conflict);
@@ -191,7 +190,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _session.set("vote", vote);
                                 _session.upload()
                                 .then(function(){
-                                        console.log("VOTE : leader upload successful");
+                                        return true;
                                 }, function(err){
                                         console.log(err);
                                         //probably need some conflict handling here
@@ -292,8 +291,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                 });    
                         };
-                        VOTE = _vote;
-                        VOTEUI = _widget;
+                        
                         return _widget;       
                 }
         })

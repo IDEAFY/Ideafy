@@ -165,7 +165,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var updateUserIP = CDBAdmin.updateUserIP,
             updateDocAsAdmin = CDBAdmin.updateDoc,
             getDocAsAdmin = CDBAdmin.getDoc,
-            createDocAsAdmin = CDBAdmin.getDoc,
+            createDocAsAdmin = CDBAdmin.createtDoc,
             getViewAsAdmin = CDBAdmin.getView,
             removeDocAsAdmin = CDBAdmin.removeDoc,
             checkInvited = function(id, onEnd){
@@ -994,7 +994,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                  */
 
                 // manually build the http request to couchDB
-                options.hostname = "127.0.0.1";
+                options.hostname = "10.224.7.243";
                 options.port = 5984;
                 options.method = "POST";
                 options.auth = cdbAdminCredentials;

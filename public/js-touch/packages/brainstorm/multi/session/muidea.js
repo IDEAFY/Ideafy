@@ -268,7 +268,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // Method called to initialize a card popup
                         _widget.setPopup = function setPopup(type, id){
-                                var pos = {x:240, y: 30}, // the position of the popup
+                                var pos = {x:147, y: 30}, // the position of the popup
                                     caret = "left", // the position of the caret
                                     popup = _tools.get("cardpopup"),
                                     story = new Store(),
@@ -466,7 +466,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 $session.set("idea", [cdbId]);
                                                 $session.upload()
                                                 .then(function(success){
-                                                        console.log("idea updated in CouchDB");
                                                         return true;
                                                 }, function(err){
                                                         console.log("failed to update idea", err);
@@ -685,7 +684,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                         $session.set("ideaWB", JSON.parse(_wbContent.toJSON()));
                                                         $session.upload()
                                                         .then(function(response){
-                                                                console.log("success : ", response);
+                                                                return "success";
                                                         }, function(response){
                                                                 console.log("failure : ", response);
                                                         });

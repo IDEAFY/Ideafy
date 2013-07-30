@@ -231,7 +231,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Method called to initialize a card popup
                         _widget.setPopup = function setPopup(type, id){
-                                var pos = {x:240, y: 30}, // the position of the popup
+                                var pos = {x:147, y: 30}, // the position of the popup
                                     caret = "left", // the position of the caret
                                     popup = _tools.get("cardpopup"),
                                     story = new Store(),
@@ -386,14 +386,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         if (cdb.get("visibility") === "public"){
                                                 _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": cdb.get("type"), "docId": cdb.get("_id"), "docTitle": cdb.get("title")}, function(result){
                                                         if (result !== "ok") {console.log(result);}
-                                                        promise.fulfill();
-                                                        cdb.unsync();
                                                 });
                                         }
-                                        else{
-                                                promise.fulfill();
-                                                cdb.unsync();
-                                        }
+                                        promise.fulfill();
+                                        cdb.unsync();
                                 });
                                 return promise;      
                         };

@@ -142,7 +142,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _wrapup.set("duration", duration);     
                         });
                         
-                        
                         // Return
                         return _widget;
                 };     

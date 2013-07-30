@@ -58,7 +58,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             });
                             return _promise;
                     },
-                    _sid;
+                    _sid,
+                    _LEFT = 93; // the absolute position of the brainstorm screen (=== dock width)
                 
                 _widget.plugins.addAll({
                         "labels": new Model(_labels),
@@ -107,7 +108,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 "draw" : function(content){
                                         var _transport = Config.get("transport"), node=this, json;
                                         if (content){
-                                                json = {"dir":_sid, "filename":content};
+                                                json = {"dir":"sessions/"+_sid, "filename":content};
                                                 _transport.request("GetFile", json, function(data){
                                                         var _img = new Image(),
                                                             _ctx = node.getContext('2d');
@@ -269,12 +270,13 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 _widget.start = function(event, node){
-                                var touches = event.touches;
+                                var touches = event.touches,
+                                    offsetLeft = node.offsetLeft + _LEFT;
                                 
                                 for(i = 0, l = touches.length; i < l; i++) {
                                         var touch = touches[i];
                                         _lines[touch.identifier] = {
-                                                x : touch.pageX - node.offsetLeft,
+                                                x : touch.pageX - offsetLeft,
                                                 y : touch.pageY - node.offsetTop
                                         };
                                 }
@@ -285,11 +287,12 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 };
 
                 _widget.move = function(event, node){
-                        var touches = event.touches;
+                        var touches = event.touches,
+                            offsetLeft = node.offsetLeft + _LEFT;
                         for(i = 0, l = touches.length; i < l; i++){
                                 var touch = touches[i],
                                     id = touch.identifier,
-                                    moveX = touch.pageX - node.offsetLeft - _lines[id].x,
+                                    moveX = touch.pageX - offsetLeft - _lines[id].x,
                                     moveY = touch.pageY - node.offsetTop - _lines[id].y,
                                     ret = _widget.draw(node, id, moveX, moveY);
                                 _lines[id] = {

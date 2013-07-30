@@ -85,8 +85,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    _widget.retrieveSession = function retrieveSession(sip){
                            
-                           console.log(sip);
-                           
                            spinner.spin(document.getElementById("brainstorm"));
                            
                            // reset local session data
@@ -100,7 +98,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 return _session.sync(Config.get("db"), sip.id);
                            })
                            .then(function(){
-                                   console.log(_session.toJSON());
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
                                 // reset step UIs
@@ -300,7 +297,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }        
                    });
                    
-                   QSESSION = _session;
                    // return
                    return _widget;
            };    

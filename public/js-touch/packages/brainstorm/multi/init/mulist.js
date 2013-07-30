@@ -131,21 +131,17 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 widget.buildList = function buildList(listId, query){
-                        console.log("building list :", listId, query);
                         var arr = [], promise = new Promise();
                         if (listId === "mulistall"){
                                 muListAll.reset([]);
                                 widget.addSessions(arr, "roulette")
                                 .then(function(){
-                                        console.log("roulette ok");
                                         return widget.addSessions(arr, "campfire");
                                 })
                                 .then(function(){
-                                        console.log("campfire ok");
                                         return widget.addSessions(arr, "boardroom");
                                 })
                                 .then(function(){
-                                        console.log("after last query", arr, widget.dom.querySelector("#noresult"));
                                         if (arr.length){
                                                 widget.dom.querySelector("#noresult").classList.add("invisible");
                                         }
@@ -214,7 +210,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 query={key: Config.get("uid"),descending:false};      
                         }
                         cdb.sync(db, "library", view, query).then(function(){
-                                console.log("query result for : ", mode, cdb.toJSON());
                                 cdb.loop(function(v,i){
                                         arr.unshift(v);
                                 });

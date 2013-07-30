@@ -236,7 +236,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // Method called to initialize a card popup
                         _widget.setPopup = function setPopup(type){
-                                var pos = {x:240, y: 130}, // the position of the popup
+                                var pos = {x:147, y: 130}, // the position of the popup
                                     caret = "left", // the position of the caret
                                     card = _cards.get(type),
                                     popup = _tools.get("cardpopup"),
@@ -435,7 +435,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 $session.set("scenario", [cdbScen]);
                                                 $session.upload()
                                                 .then(function(success){
-                                                        console.log("scenario updated in CouchDB");
                                                         return true;
                                                 }, function(err){
                                                         console.log("failed to update scenario", err);
@@ -455,7 +454,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         "scenario": _scenario.toJSON()
                                 };
                                 _transport.request("UpdateSessionScore", json, function(result){
-                                        console.log(result);
                                         if (result.res === "ok"){
                                                 $session.unsync();
                                                 $session.sync(_db, $session.get("_id"))
@@ -598,7 +596,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                         $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
                                                         $session.upload()
                                                         .then(function(response){
-                                                                console.log("success : ", response);
+                                                                return "success";
                                                         }, function(response){
                                                                 console.log("failure : ", response);
                                                         });
@@ -645,10 +643,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _scenario.watch("updated", function(){
                                         (_widget.isLeader() && _scenario.get("title") && _scenario.get("story") && _scenario.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
-                        
-                        SCWHITEB = _wb;
-                        SCCONTENT = _wbContent;
-                        SC = _scenario;
                         
                         // Return
                         return _widget;

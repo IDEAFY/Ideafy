@@ -227,7 +227,9 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                 ]);
                                 messageUI.init();
                                 // show default page
-                                detailStack.getStack().show("#defaultPage");      
+                                detailStack.getStack().show("#defaultPage");
+                                // set actionbar display to false;
+                                display = false;      
                         };
                         
                         messageUI.getSelectedmsg = function(){
@@ -288,7 +290,7 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                         };
                 
                         messageUI.hideActionBar = function hideActionBar(){
-                                var ui = document.querySelector(".actionbar"),
+                                var ui = messageUI.dom.querySelector(".actionbar"),
                                     parent = ui.parentNode;
                                 parent.removeChild(parent.lastChild);
                                 display = false;

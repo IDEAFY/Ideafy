@@ -66,8 +66,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plug
                    aboutStack.getStack().show("#about");
                    aboutMenu.update(0, "currentUI", true);
                    
-                   
-                   
                    return aboutUI;
            };    
         });

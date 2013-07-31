@@ -100,7 +100,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               widget.selectStart = function(event){
                         var list = stack.getStack().getCurrentScreen().getModel(),
                             id = event.target.getAttribute("data-decks_id");
-                        deckView.hideEditView();
                         deckView.reset(list.get(id));
                         currentSelected = id;
               };

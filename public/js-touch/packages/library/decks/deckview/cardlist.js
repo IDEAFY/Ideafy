@@ -298,7 +298,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.deleteCard = function deleteCard(event, node){
-                                var id = parseInt(node.getAttribute("data-cards_id"), 10);
+                                var id = node.getAttribute("data-cards_id");
                                 // delete card from deck -- if the card does not belong to anymore deck - remove from database
                                 event.stopPropagation();
                                 // close popup

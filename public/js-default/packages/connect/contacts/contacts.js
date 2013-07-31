@@ -23,7 +23,7 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                             ]),
                             currentSort = 0,
                             contactList = new Store([]),
-                            display = false,
+                            currentBar = null,
                             user = Config.get("user"),
                             labels = Config.get("labels"),
                             sortContacts = function(id){
@@ -176,26 +176,27 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                         
                         // Action bar
                         contactsUI.setStart = function(event, node){
-                                if (document.querySelector(".actionbar")) contactsUI.hideActionBar();  // hide previous action bar 
+                                currentBar && currentBar.hide();  // hide previous action bar 
                         };
                 
                         contactsUI.showActionBar = function(event, node){
                                 var id = node.getAttribute("data-contact_id"),
-                                    actionBar = new ActionBar("contact", node, contactList.get(id), contactsUI.hideActionBar),
-                                    frag = document.createDocumentFragment();  
+                                    display = false, frag;  
                                 
-                                actionBar.place(frag); // render action bar    
-                                node.appendChild(frag); // display action bar
-                                display = true; // prevent from showing it multiple times
+                                // check if actionbar exists for this element
+                                if (currentBar && currentBar.getParent() === node){
+                                        display = true;
+                                }
+                                
+                                if (!display){
+                                        currentBar = new ActionBar("contact", node, contactList.get(id));
+                                        frag = document.createDocumentFragment(); 
+                                        currentBar.place(frag); // render action bar    
+                                        node.appendChild(frag); // display action bar
+                                        display = true; // prevent from showing it multiple times
+                                }
                         };
                 
-                        contactsUI.hideActionBar = function hideActionBar(ui){
-                                var ui = document.querySelector(".actionbar"),
-                                    parent = ui.parentNode;
-                                parent.removeChild(parent.lastChild);
-                                display = false;
-                        };
-                        
                         contactsUI.press = function(event, node){
                                 node.classList.add("pressed");
                         };

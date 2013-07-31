@@ -7,7 +7,7 @@
 
 define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min", "service/confirm"],
         function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner, Confirm){
-                function ActionBarConstructor($type, $parent, $data, $hide){
+                function ActionBarConstructor($type, $parent, $data){
                 
                         var buttons = new Store([]),
                             parentHeight = $parent.offsetHeight,
@@ -42,8 +42,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         this.template = '<div class="actionbar" data-style="bind:setPosition, height" data-action="listen:mouseup, hide"><ul class="buttonlist" data-style="bind:setButtons, height" data-buttons="foreach"><li class="actionbutton" data-buttons ="bind:setIcon,icon" data-action="listen:mousedown, press; listen:mouseup, action"></li></ul><div id="abspinner"></div></div>';
                         
-                        this.hide = function(event, node){
-                                $hide(this);        
+                        this.hide = function(){
+                                var parent = ui.dom.parentElement;
+                                parent && parent.removeChild(parent.lastChild);        
+                        };
+                        
+                        this.getParent = function(){
+                                return $parent;
                         };
                         
                         this.press = function(event, node){
@@ -63,7 +68,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 switch(action){
                                         case "delete":
                                                 this.deleteItem().then(function(){
-                                                        $hide(ui);
+                                                        ui.hide();
                                                 });
                                                 break;
                                         case "edit":
@@ -205,7 +210,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         scope.hide();
                                                 }
                                                 else{
-                                                        document.getElementById("cache").classList.add("appear"); 
+							document.getElementById("cache").classList.add("appear");
                                                         confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
                                                                 var spinner = new Spinner({lines:10, length: 20, width: 8, radius:10}).spin();
                                                                 if (!decision) {
@@ -224,7 +229,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                         spinner.stop();
                                                                                         document.getElementById("cache").classList.remove("appear");
                                                                                         promise.fulfill();
-                                                                                }, this);
+                                                                                });
                                                                         }
                                                                         else{
                                                                                 cdb.sync(db, $data)
@@ -412,8 +417,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                 
                 }
                 
-                return function ActionBarFactory($type, $parent, $data, $hide){
+                return function ActionBarFactory($type, $parent, $data){
                         ActionBarConstructor.prototype = new Widget();
-                        return new ActionBarConstructor($type, $parent, $data, $hide);
+                        return new ActionBarConstructor($type, $parent, $data);
                 };
         });

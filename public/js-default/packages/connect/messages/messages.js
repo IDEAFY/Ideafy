@@ -29,7 +29,7 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                             currentSort = 0,
                             msgList = new Store([]),
                             labels = Config.get("labels"),
-                            display = false,
+                            currentBar = null,
                             user = Config.get("user"),
                             observer = Config.get("observer"),
                             sortMessages = function(id){
@@ -276,26 +276,27 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                         
                         // Action bar
                         messageUI.setStart = function(event, node){
-                                if (document.querySelector(".actionbar")) messageUI.hideActionBar();  // hide previous action bar 
+                                currentBar && currentBar.hide();  // hide previous action bar  
                         };
                 
                         messageUI.showActionBar = function(event, node){
                                 var id = node.getAttribute("data-msg_id"),
-                                    actionBar = new ActionBar("message", node, msgList.get(id), messageUI.hideActionBar),
-                                    frag = document.createDocumentFragment();  
+                                    frag, display = false;  
                                 
-                                actionBar.place(frag); // render action bar
-                                node.appendChild(frag); // display action bar
-                                display = true; // prevent from showing it multiple times
+                                // check if actionbar exists for this element
+                                if (currentBar && currentBar.getParent() === node){
+                                        display = true;
+                                }
+                                
+                                if (!display){
+                                        currentBar = new ActionBar("message", node, msgList.get(id));
+                                        frag = document.createDocumentFragment(); 
+                                        currentBar.place(frag); // render action bar    
+                                        node.appendChild(frag); // display action bar
+                                        display = true; // prevent from showing it multiple times
+                                }
                         };
                 
-                        messageUI.hideActionBar = function hideActionBar(){
-                                var ui = messageUI.dom.querySelector(".actionbar"),
-                                    parent = ui.parentNode;
-                                parent.removeChild(parent.lastChild);
-                                display = false;
-                        };
-                        
                         defaultPage.template = '<div class="msgsplash"><div class="header blue-dark"><span>'+Config.get("labels").get("messageview")+'</span></div><div class="innersplash" data-labels="bind: innerHTML, messagecenter"></div></div>';
                         
                         defaultPage.plugins.add("labels", new Model(labels));

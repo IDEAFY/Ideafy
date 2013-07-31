@@ -25,7 +25,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                     deckId = cardSetup.get("deckId"),
                                     deckCDB = new CouchDBDocument(),
                                     type = "characters"; // or contexts, problems, techno
-                                console.log("deck update function in newcard : ", cardType, cardId, deckId);
                                 switch(cardType){
                                         case 1:
                                                 type = "characters";
@@ -205,7 +204,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                             editChar = new EditChar(updateDeck, close),
                             importCard = new ImportCard(updateImport, close);
                         
-                        newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type" data-newcardevent="listen: change, changeType"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option></select></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
+                        newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type" data-newcardevent="listen: change, changeType"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option><option data-label="bind:innerHTML, importcard"></option></select></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
                             
                         // setup
                         newCard.plugins.addAll({
@@ -219,7 +218,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         
                         newCard.reset = function reset($cardId, $cardType, $deckId, $deckTitle){
                                 document.getElementById("card_creation").classList.remove("invisible");
-                                console.log($cardId, $cardType, $deckId, $deckTitle);
+                                
                                 cardSetup.reset({deckId: $deckId, title: $deckTitle, type: ["characters", "contexts", "problems", "techno"].indexOf($cardType)});
                                 
                                 if ($cardType === "characters"){
@@ -265,8 +264,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         
                         // init
                         newCard.init();
-                        
-                        CSTACK = _contentStack;
                         
                         return newCard;     
                 }

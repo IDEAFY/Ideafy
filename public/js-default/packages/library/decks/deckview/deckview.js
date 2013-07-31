@@ -33,7 +33,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                                 (active)?this.classList.add("active"):this.classList.remove("active");
                                         }
                                 }),
-                                "place" : new Place({"newCard" : newCardUI, "sharedeck": deckShareUI}),
+                                "place" : new Place({"newCard" : newCardUI, "shareDeck": deckShareUI}),
                                 "deckviewstack" : innerStack,
                                 "deckviewevent" : new Event(deckView)
                         });

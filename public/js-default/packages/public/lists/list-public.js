@@ -86,33 +86,28 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 this.setStart = function(event, node){
-                        if (currentBar) {this.hideActionBar(currentBar);}  // hide previous action bar 
+                        currentBar && currentBar.hide();  // hide previous action bar 
                 };
                 
                 this.showActionBar = function(event, node){
                         var id = node.getAttribute("data-listideas_id"),
+                            display = false, frag,
                             dom = document.getElementById("public");
                         
-                        if (!dom.classList.contains("mosaic")){
-                                var actionBar = new ActionBar("idea", node, _store.get(id).id, this.hideActionBar),
-                                    frag = document.createDocumentFragment();  
+                        // check if actionbar exists for this element
+                        if (currentBar && currentBar.getParent() === node){
+                                display = true;
+                        }
                                 
-                                actionBar.place(frag); // render action bar    
+                        if (!dom.classList.contains("mosaic") && !display){
+                                currentBar = new ActionBar("idea", node, _store.get(id).id);
+                                frag = document.createDocumentFragment(); 
+                                currentBar.place(frag); // render action bar    
                                 node.appendChild(frag); // display action bar
-                                currentBar = actionBar; // store current action bar
                                 display = true; // prevent from showing it multiple times
                         }
                 };
-                
-                this.hideActionBar = function hideActionBar(ui){
-                        
-                        var parent = ui.dom.parentElement;
-                        
-                        parent.removeChild(parent.lastChild);
-                        display = false;
-                        currentBar = null;
-                };
-                
+                                
                 this.init = function init(){
                         var promise = new Promise();
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){

@@ -144,7 +144,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         if (data.authors.indexOf(user.get("_id")) === -1 && data.sharedwith.indexOf(user.get("_id")) >-1 && document.getElementById("library")){
                                                                 buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                         }
-                                                }, this);
+                                                });
                                                 break;
                                         case "deck":
                                                 var cdb = new CouchDBDocument();
@@ -210,7 +210,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         scope.hide();
                                                 }
                                                 else{
-                                                       document.getElementById("cache").classList.add("appear"); 
+							document.getElementById("cache").classList.add("appear");
                                                         confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
                                                                 var spinner = new Spinner({lines:10, length: 20, width: 8, radius:10}).spin();
                                                                 if (!decision) {
@@ -229,7 +229,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                         spinner.stop();
                                                                                         document.getElementById("cache").classList.remove("appear");
                                                                                         promise.fulfill();
-                                                                                }, this);
+                                                                                });
                                                                         }
                                                                         else{
                                                                                 cdb.sync(db, $data)

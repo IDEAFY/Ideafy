@@ -119,35 +119,30 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                 };
 
                 this.setStart = function(event, node){
-                        if (currentBar) {this.hideActionBar(currentBar);}  // hide previous action bar 
+                        currentBar && currentBar.hide();  // hide previous action bar 
                 };
                 
                 this.showActionBar = function(event, node){
                         var id = node.getAttribute("data-twoqlist_id"),
-                            dom = document.getElementById("mtc-list"),
-                            actionbar, frag;
+                            display = false, frag,
+                            dom = document.getElementById("mtc-list");
                         
-                        if (!dom.classList.contains("mosaic")){
-                                actionBar = new ActionBar("2Q", node, _store.get(id).value, this.hideActionBar);
-                                frag = document.createDocumentFragment();  
+                        // check if actionbar exists for this element
+                        if (currentBar && currentBar.getParent() === node){
+                                display = true;
+                        }
                                 
-                                actionBar.place(frag); // render action bar    
+                        if (!dom.classList.contains("mosaic") && !display){
+                                currentBar = new ActionBar("2Q", node, _store.get(id).value);
+                                frag = document.createDocumentFragment(); 
+                                currentBar.place(frag); // render action bar    
                                 node.appendChild(frag); // display action bar
-                                currentBar = actionBar; // store current action bar
                                 display = true; // prevent from showing it multiple times
                         }
                 };
                 
-                this.hideActionBar = function hideActionBar(ui){
-                        
-                        var parent = ui.dom.parentElement;
-                        parent.removeChild(parent.lastChild);
-                        display = false;
-                        currentBar = null;
-                };
-                
                 // toggle search list
-               this.showSearch = function showSearch(){
+                this.showSearch = function showSearch(){
                        var search = document.querySelector(".twoq-searchlist"),
                            list = document.querySelector(".twoq-list");
                         

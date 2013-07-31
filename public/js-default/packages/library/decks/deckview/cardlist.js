@@ -261,7 +261,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         
                         cardList.zoom = function(event, node){
                                 var id = node.getAttribute("data-cards_id");
-                                if (cards.get(id)._id === "newcard"){
+                                if (cardPage.get(id)._id === "newcard"){
                                         $editCard("newcard", $cardType);
                                         node.classList.remove("highlighted");
                                 }

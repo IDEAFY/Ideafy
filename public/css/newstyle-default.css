@@ -227,6 +227,10 @@ input::-webkit-file-upload-button{
   height:748px;
 }
 
+#brainstorm{
+    -webkit-transform: translate3d(0,0,0);
+}
+
 .list ul{
     height: 652px;
     overflow-y: scroll;
@@ -1073,7 +1077,7 @@ ul.notify-list{
     margin-top: -160px;
     padding: 40px;
     background: white;
-    text-align: center; 
+    text-align: center;
 }
 
 .confirm.importcard-confirm p{
@@ -1913,7 +1917,7 @@ textarea.solution {
     position: relative;
 }
 
-.idea-share .selectall, #newmub .selectall{
+.idea-share .selectall, #newmub .selectall, .deck-share .selectall{
     float: right;
     background: #657B99;
     color: white;
@@ -1925,11 +1929,11 @@ textarea.solution {
     text-align: center;
 }
 
-.idea-share .form{
+.idea-share .form, deck-share .form{
     padding-bottom: 20px;
 }
 
-.idea-share .form legend{
+.idea-share .form legend, .deck-share .form legend{
     width: 100%;
     color: #657b99;
     font-size: 16px;
@@ -1937,11 +1941,11 @@ textarea.solution {
     margin-top: 10px;
 }
 
-.idea-share .search{
+.idea-share .search, .deck-share .search{
     width: 300px;
 }
 
-.idea-share textarea.sharemessage{
+.idea-share textarea.sharemessage, .deck-share textarea.sharemessage{
     height: 200px;
     line-height: 20px;
 }
@@ -2428,7 +2432,6 @@ textarea.solution {
 
 .list .actionbar .buttonlist, .msglist .actionbar .buttonlist, .contact .actionbar .buttonlist{
     height:40px;
-    padding:5px;
     display: inline-block;
     text-align: center;
 }
@@ -2731,6 +2734,10 @@ textarea.solution {
     background-image: url('../img/library/25delete.png');    
 }
 
+#deckview .cardlist .editcardbtn.invisible, #deckview .cardlist .deletecardbtn.invisible{
+    display: none;    
+}
+
 #deckview .deckdetails{
     background: none;
     padding: 0;
@@ -2949,8 +2956,8 @@ textarea.solution {
 }
 
 #card_creation .importcard .importlist ul{
-    border: 1px solid #657b99;
     margin-top: 3x;
+    border: 1px solid #657b99;
     height: 480px;
     width: 218px;
     overflow-y: scroll;
@@ -3231,7 +3238,8 @@ textarea.solution {
 /*BRAINSTORM*/
 
 #brainstorm{
-    float: left;
+    fposition: absolute;
+    left: 93px;;
     height: 748px;
 /*    background:#F2F2F2 url('../img/bg.png') no-repeat center center;*/
     background: #CCCCCC;
@@ -3612,18 +3620,20 @@ textarea.solution {
 #musession .import{
     height: 380px;
     overflow-y: scroll;
+    -webkit-transform: translate3d(0,0,0);
 }
 
 #ideafy-quick .import{
     height: 400px;
     overflow-y: scroll;
     margin-top: 15px;
+    -webkit-transform: translate3d(0,0,0);
 }
 
 .import .wbpostit{
     width: 480px;
     height: 340px;
-    margin-top: 5px;
+    margin-top: 25px;
     padding: 20px 40px;
 }
 
@@ -4016,7 +4026,7 @@ textarea.solution {
     height:50px;
     position:absolute;
     top:180px;
-    left: 289px;
+    left: 196px;
     -webkit-transform:rotate(270deg);
 
 }
@@ -4055,7 +4065,7 @@ textarea.solution {
 
 .pencilcolors, .pencilbgcolors{
     position:absolute;
-    left: 346px;
+    left: 258px;
     padding: 15px 15px 15px 0px;
     height: 30px;
     background: #333333;
@@ -4066,7 +4076,7 @@ textarea.solution {
 }
 
 .pencilcolors{
-    top: 253px;
+    top: 248px;
 }
 
 #muscenario .pencilcolors, #muidea .pencilcolors{
@@ -4074,7 +4084,7 @@ textarea.solution {
 }
 
 .pencilbgcolors{
-    top: 315px;
+    top: 310px;
 }
 
 #muscenario .pencilbgcolors, #muidea .pencilbgcolors{
@@ -4248,12 +4258,19 @@ li.color-item{
     padding: 10px;
     position: absolute;
     top: 356px;
-    left: 321px;
+    left: 228px;
     z-index: 2000;
+    background: white;
 }
 
 #musession .confirm .option.votebutton{
     margin-top: 15px;
+    border-color: #4D4D4D;
+    float: right;
+    font-family: Helvetica;
+    font-size: 14px;
+    width: 70px;
+    margin-right: 15px;
 }
 
 #muidea .sessionvote legend{
@@ -4425,11 +4442,11 @@ li.color-item{
 }
 
 #musetup .next-button{
-    left: 820px;
+    left: 727px;
 }
 
 #mutech .next-button{
-    left: 895px
+    left: 802px
 }
 
 #muscenario .next-button, #muidea .next-button{
@@ -5053,7 +5070,7 @@ li.color-item{
     height: 40px;
     border-radius: 20px;
     position: absolute;
-    left: 930px;
+    left: 837px;
     background: #e5e5e5;
     -webkit-box-shadow: 0px 0px 1px #cccccc;
     background-repeat: no-repeat;
@@ -7177,10 +7194,14 @@ li.my2q{
     top: 0;
 }
 
-#mubwait .confirm, #musession .confirm{
+.musession-confirm{
+    position: absolute;
     width: 600px;
     height: 150px;
-    left: 167px;
+    left: 50%;
+    margin-left: -300px;
+    top: 50%;
+    margin-top: -120px;
     top: 240px;
     background: white;
 }
@@ -7188,18 +7209,11 @@ li.my2q{
 #mubwait .sessionmsg, #musession .sessionmsg{
     width: 400px;
     height: 150px;
-    left: 267px;
+    left: 50%;
+    margin-left:-200px;
     top: 240px;
     background: #9ac9cd;
     text-align: center;
-}
-
-#musession .sessionmsg{
-    left: 359px;
-}
-
-#musession .confirm{
-    left: 260px;
 }
 
 #mubwait .sessionmsg span, #musession .sessionmsg span{
@@ -7214,19 +7228,19 @@ li.my2q{
     vertical-align: middle;
 }
 
-#mubwait .confirm .help-doctor, #musession .confirm .help-doctor{
+.musession-confirm .help-doctor{
     width: 40px;
     height: 40px;
 }
 
-#mubwait .confirm p, #session-list .confirm p, #musession .confirm p{
+.musession-confirm p, #session-list .confirm p{
     color: #4D4D4D;
     margin: 50px;
     font-family: Helvetica;
     font-size: 18px;
 }
 
-#mubwait .confirm .option,  #session-list .confirm .option, #musession .confirm .option{
+.musession-confirm .option,  #session-list .confirm .option{
     border-color: #4D4D4D;
     float: right;
     font-family: Helvetica;
@@ -7439,19 +7453,22 @@ li.my2q{
     position: absolute;
     width: 931px;
     height: 748px;
+    z-index: 500;
     top: 0;
-    left: 93px;
-    z-index: 500; 
+    left: 0;
 }
 
 #mupreview .cache{
+    width: 100%;
+    height: 100%;
+    background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
     opacity: 0.5;    
 }
 
 #mupreview .contentarea{
     position: absolute;
     top: 189px;
-    left: 139px;
+    left: 46px;
     background: white;
     border-radius: 5px;
 }
@@ -7488,17 +7505,17 @@ li.my2q{
 }
 
 #musetup .mubchat, #mustart .mubchat{
-    left: 225px;
+    left: 132px;
 }
 
 #muscenario .mubchat, #muidea .mubchat, #mutech .mubchat{
-    left: 301px;
+    left: 208px;
 }
 
 #muwrapup .mubchat{
     height:302px;
     top:224px;
-    left:231px;
+    left:138px;
     width: 615px;
 }
 
@@ -7517,7 +7534,7 @@ li.my2q{
 #muwrapup .togglechat{
     position: absolute;
     top: 350px;
-    left: 144px;
+    left: 51px;
     width: 40px;
     height: 40px;
     border-radius: 5px;

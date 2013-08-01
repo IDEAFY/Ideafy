@@ -57,7 +57,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                 }
                                     
                                 if (!display){
-                                        currentBar = new ActionBar("deck", node, decks.get(id)._id, deckList.hideActionBar);
+                                        currentBar = new ActionBar("deck", node, decks.get(id)._id);
                                         frag = document.createDocumentFragment();  
                                 
                                         currentBar.place(frag); // render action bar    

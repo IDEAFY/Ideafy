@@ -411,7 +411,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 var cookieJSON = cookie.parse(json.handshake.headers.cookie),
                     sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
                     cdb = new CouchDBDocument();
-                    
+                
+                console.log(json);
+                   
                 // return false if document does not exist in database
                 getDocAsAdmin(json.id, cdb).then(function(){
                         sessionStore.get(sessionID, function(err, session){

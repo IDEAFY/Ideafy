@@ -8,8 +8,8 @@
       compile : {
         options : {
           appDir : "public",
-          baseUrl : "js-touch/packages",
-          mainConfigFile : 'public/js-touch/build.js',
+          baseUrl : "js-default/packages",
+          mainConfigFile : 'public/js-default/build.js',
           dir : "www-build",
           modules : [
             //setup a layer for each package

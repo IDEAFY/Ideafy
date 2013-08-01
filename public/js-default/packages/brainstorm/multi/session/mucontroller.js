@@ -280,7 +280,12 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 // retrieve session and start brainstorming   
                 _widget.retrieveSession = function retrieveSession(sid, replay){
-                        var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
+                        spinner.spin(document.getElementById("brainstorm"));
+                           
+                        // connect to couchdb and retrieve session
+                        _session.reset({});
+                        _session.sync(_db, sid).then(function(){
+                                var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
                                 if (!replay){
                                         // init exit confirmation UI

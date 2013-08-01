@@ -3238,7 +3238,7 @@ textarea.solution {
 /*BRAINSTORM*/
 
 #brainstorm{
-    fposition: absolute;
+    position: absolute;
     left: 93px;;
     height: 748px;
 /*    background:#F2F2F2 url('../img/bg.png') no-repeat center center;*/

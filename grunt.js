@@ -7,7 +7,7 @@
     requirejs : {
       compile : {
         options : {
-          appDir : "public",
+          appDir : "public/",
           baseUrl : "js-default/packages",
           mainConfigFile : 'public/js-default/build.js',
           dir : "www-build",

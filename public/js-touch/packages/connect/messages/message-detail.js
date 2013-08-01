@@ -207,7 +207,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 };
                 
                 msgDetailUI.deletemsg = function deletemsg(msg){
-                        var arr = user.get("notifications"),
+                        var arr = user.get("notifications").concat(),
                             index;
                         
                         for (i=0, l=arr.length; i<l; i++){

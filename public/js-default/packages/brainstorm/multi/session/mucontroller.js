@@ -71,22 +71,28 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    };
                    
                 _progress.exit = function(event, node){
-                           node.classList.remove("pressed");
-                           if (_session.get("step") === "muwrapup"){
-                                muWrapup.getChatUI().leave();
-                                if (_session.get("initiator").id === _user.get("_id")){
-                                        muWrapup.getChatUI().setReadonly();
+                        node.classList.remove("pressed");
+                        // handle session replay cases
+                        if (_user.get("sessionInProgress").id !== _session.get("_id")){
+                                $exit();
+                        }
+                        else{
+                                if (_session.get("step") === "muwrapup"){
+                                        muWrapup.getChatUI().leave();
+                                        if (_session.get("initiator").id === _user.get("_id")){
+                                                muWrapup.getChatUI().setReadonly();
+                                        }
+                                        // reset sessionInProgress in user doc
+                                        _user.set("sessionInProgress", "");
+                                        _user.upload().then(function(){
+                                                $exit();        
+                                        });        
                                 }
-                                // reset sessionInProgress in user doc
-                                _user.set("sessionInProgress", "");
-                                _user.upload().then(function(){
-                                        $exit();        
-                                });        
-                           }
-                           else {
-                                   confirmUI.show();
-                           }
-                   };
+                                else {
+                                        confirmUI.show();
+                                }
+                        }
+               	};
                    
                 // Main UI setup
                 _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></div><div class="stack" data-musessionstack="destination"></div></div>';
@@ -123,6 +129,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 currentUI.getChatUI().leave();
                                 _session.unsync();
                                 confirmUI.hide();
+                                document.body.removeChild(document.querySelector(".confirm"));
                         }); 
                        // reset sessionInProgress in user doc
                         _user.set("sessionInProgress", "");
@@ -151,6 +158,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                             };
                                 
                         confirmUI.hide();
+                        document.body.removeChild(document.querySelector(".confirm"));
                         infoUI.classList.remove("invisible");
                         timer = setInterval(function(){
                                 switch(message){
@@ -272,34 +280,31 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 // retrieve session and start brainstorming   
                 _widget.retrieveSession = function retrieveSession(sid, replay){
-                        spinner.spin(document.getElementById("brainstorm"));
-                           
-                        // connect to couchdb and retrieve session
-                        _session.reset({});
-                        _session.sync(_db, sid).then(function(){
-                                var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
+                        var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
                                 
-                                // init exit confirmation UI
-                                confirmUI = new Confirm(_widget.dom);
-                                confirmCallBack = function(decision){
-                                        if (!decision){
-                                                confirmUI.hide();
-                                        }
-                                        else{
-                                                if (_session.get("initiator").id === _user.get("_id")){
-                                                        _widget.cancelSession();
+                                if (!replay){
+                                        // init exit confirmation UI
+                                        confirmUI = new Confirm(document.body, null, null, "musession-confirm");
+                                        confirmCallBack = function(decision){
+                                                if (!decision){
+                                                        confirmUI.hide();
                                                 }
-                                                else {
-                                                        _widget.leaveSession();
+                                                else{
+                                                        if (_session.get("initiator").id === _user.get("_id")){
+                                                                _widget.cancelSession();
+                                                        }
+                                                        else {
+                                                                _widget.leaveSession();
+                                                        }
                                                 }
+                                        };
+                                        // init confirmation UI
+                                        if (_session.get("initiator").id === _user.get("_id")){
+                                                confirmUI.reset(_labels.get("leaderleave"), confirmCallBack);        
                                         }
-                                };
-                                // init confirmation UI
-                                if (_session.get("initiator").id === _user.get("_id")){
-                                        confirmUI.reset(_labels.get("leaderleave"), confirmCallBack);        
-                                }
-                                else {
-                                        confirmUI.reset(_labels.get("participantleave"), confirmCallBack);        
+                                        else {
+                                                confirmUI.reset(_labels.get("participantleave"), confirmCallBack);        
+                                        }
                                 }
                                 
                                 // check session's current step and set as active
@@ -333,7 +338,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         _session.unsync();
                         
                         // reset local session data
-                        _sessionData.reset(); 
+                        _sessionData.reset();
+                        
+                        // remove confirm UI if present
+                        document.querySelector(".confirm") && document.body.removeChild(document.querySelector(".confirm")); 
                            
                         // reset progress bar
                         _steps.reset([
@@ -517,6 +525,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 })
                                 .then(function(){
                                         $exit();
+                                        document.body.removeChild(document.querySelector(".confirm"));
                                 });
                         }                
                 });

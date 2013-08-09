@@ -6456,7 +6456,6 @@ li.my2q{
 
 .infoslider::-webkit-slider-thumb {
      -webkit-appearance: none;
-     position: absolute;
      z-index:500;
      width:26px;
      height:26px;

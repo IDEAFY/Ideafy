@@ -250,6 +250,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    profileUI.place(Map.get("dashboard-profile"));
                    
                    profileUI.switchLeaderboard = function(event, node){
+                           
+                        console.log("switch leaderboard called ", node.value);
                         var lb = document.getElementById("leaderboard"), pc = document.getElementById("profile-content");
                         
                         // init Leaderboard

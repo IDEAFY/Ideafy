@@ -2874,7 +2874,6 @@ textarea.solution {
     border-radius: 5px;
     width: 50px;
     border: none;
-    z-index: 500;
 }
 
 #cardlist-popup{
@@ -6457,7 +6456,6 @@ li.my2q{
 
 .infoslider::-webkit-slider-thumb {
      -webkit-appearance: none;
-     z-index:500;
      width:26px;
      height:26px;
      border-radius:13px;

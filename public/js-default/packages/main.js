@@ -213,7 +213,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         });
         
         // attempt to reconnect socket if required in case of user actions
-        Map.get("body").addEventListener("mousedown", Utils.checkSocketStatus, true);
+        Map.get("body").addEventListener("mousedown", Utils.checkSocketStatus);
         
         // resync user document upon socket reconnection
         Config.get("observer").watch("reconnect", function(){

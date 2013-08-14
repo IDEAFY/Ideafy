@@ -2811,7 +2811,7 @@ textarea.solution {
 
 #deckview .innercarousel{
     height: 303px;
-    width: 100%;
+    width: 630px;
     z-index: 200;
     background: -webkit-linear-gradient(left, #333333 0%,transparent 25%,transparent 75%,#333333 100%);
     position: absolute;
@@ -2874,6 +2874,7 @@ textarea.solution {
     border-radius: 5px;
     width: 50px;
     border: none;
+    z-index: 500;
 }
 
 #cardlist-popup{

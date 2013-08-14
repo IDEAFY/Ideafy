@@ -271,7 +271,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 _widget.start = function(event, node){
-                        var offsetLeft = node.offsetLeft - _LEFT;
+                        var offsetLeft = node.offsetLeft + _LEFT;
                         _line = {x : event.pageX - offsetLeft - deltaX, y : event.pageY - node.offsetTop - deltaY};
                         _capture = true;
                         event.preventDefault();
@@ -283,7 +283,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
 
                 _widget.move = function(event, node){
                         var moveX, moveY, ret,
-                            offsetLeft = node.offsetLeft - _LEFT;;
+                            offsetLeft = node.offsetLeft + _LEFT;;
                         
                         if (_capture){
                                 moveX = event.pageX - offsetLeft - deltaX - _line.x;

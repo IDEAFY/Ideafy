@@ -279,7 +279,6 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                  */
                 checkSocketStatus : function(){
                         var sock = Config.get("socket");
-                        console.log("socket check");
                         if (!sock.socket.connected){
                                 sock.socket.connect(Config.get("location"));
                                 Config.get("observer").notify("reconnect");

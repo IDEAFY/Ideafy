@@ -6137,7 +6137,7 @@ li.color-item{
 #dashboard-profile, #dashboard-settings, #dashboard-about{
     background: white;
     margin-left:93px;
-    width: 100%;
+    width: 931px;
     height: 748px;
 }
 
@@ -6544,7 +6544,7 @@ li.my2q{
 
 #leaderboard ul{
     margin-top: 75px;
-    width: 891px;
+    width: 911px;
     height: 600px;
     overflow-y: scroll;
 }

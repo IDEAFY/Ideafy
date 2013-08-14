@@ -6450,8 +6450,8 @@ li.my2q{
     width: 140px;
     height: 30px;
     border-radius: 15px;
-    background: #9AC9CD;
-    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);   
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+    z-index: 100;   
 }
 
 .infoslider::-webkit-slider-thumb {
@@ -6466,6 +6466,8 @@ li.my2q{
 .slidertext{
     position: absolute;
     width: 140px;
+    height: 30px;
+    border-radius: 15px;
     top: 56px;
     line-height: 30px;
     right: 97px;

@@ -31,7 +31,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                            "label" : new Model(labels),
                            "stats" : new Model(stats,{
                                    setViewLbl : function(view){
-                                        this.innerHTML = labels.get(view);             
+                                        this.innerHTML = labels.get(view);
+                                        (view === "info") ? this.setAttribute("style", "background: #9ac9cd;"):this.setAttribute("style", "background: #5F8F28;");           
                                    },
                                    toggleInformation : function(view){
                                         (view === "info") ? this.classList.remove("invisible"):this.classList.add("invisible");        
@@ -257,15 +258,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 LB = new Leaderboard();
                                 LB.init(lb);
                         }
-                        
-                        if (node.value == 1){
-                                node.setAttribute("style", "background: #5F8F28;");
-                                stats.set("view", "leaderboard");
-                        }
-                        else{
-                                node.setAttribute("style", "background: #9AC9CD;");
-                                stats.set("view", "info");        
-                        }
+                        (node.value == 1) ? stats.set("view", "leaderboard"):stats.set("view", "info");
                    };
                    
                    profileUI.edit = function(event, node){

@@ -2451,16 +2451,15 @@ textarea.solution {
     display: inline-block;
     width: 70px;
     height: 61px;
+    background-size: 40px 40px;
 }
 
 .actionbar .replaysession{
-    background: url('../img/library/25goToSession.png') no-repeat center center; 
-    background-size: 40px 40px;   
+    background: url('../img/library/25goToSession.png') no-repeat center center;    
 }
 
 .actionbar .deletesession{
-    background: url('../img/library/25delete.png') no-repeat center center;
-    background-size: 40px 40px; 
+    background: url('../img/library/25delete.png') no-repeat center center;    
 }
 
 /* -- removed - doesn't look good as outline shows

@@ -22,7 +22,7 @@ define(["OObject", "service/config", "Bind.plugin", "CouchDBDocument", "Store"],
                         eula.fetch = function fetch(lang){
                                 var cdb = new CouchDBDocument();
                                 cdb.setTransport(Config.get("transport"));
-                                cdb.sync(Config.get("db"), "EULA").then(function(){
+                                cdb.sync(Config.get("db"), "EULA-PC").then(function(){
                                         if (cdb.get("default_lang") === lang || !cdb.get("translations")[lang]){
                                                 model.set("title", cdb.get("title"));
                                                 model.set("body", cdb.get("body"));

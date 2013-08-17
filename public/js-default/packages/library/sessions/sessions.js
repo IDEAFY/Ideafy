@@ -194,7 +194,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         if (_sid.participants.length>1 || _sid.participants[0] != _user.get("_id") || _sid.id === _user.get("sessionInProgress").id){
                                 node.querySelector(".deletesession").setAttribute("style", "display: none;");        
                         }
-                        else node.querySelector(".deletesession").setAttribute("style", "display: inline-block;"); 
+                        else node.querySelector(".deletesession").setAttribute("style", "display: inline-block; background-size: 40px 40px;"); 
                         // Automatically hide bar after 2s
                         setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
               };

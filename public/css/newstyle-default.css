@@ -257,7 +257,6 @@ input::-webkit-file-upload-button{
   position:absolute;
   width:630px;
   left:394px;
-  z-index: -10;
 }
 
 /* utils list */
@@ -268,6 +267,7 @@ input::-webkit-file-upload-button{
   width:301px;
   /*factorize with every box-shadow */
   -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
+  z-index: 10;
 
 }
 
@@ -5130,6 +5130,7 @@ li.color-item{
     -webkit-box-shadow: 0 0 5px 1px rgba(0,0,0,0.3);
     background: white;
     float: left;
+    z-index: 10;
 }
 
 #connect-messages .selectors, #connect-contacts .selectors{

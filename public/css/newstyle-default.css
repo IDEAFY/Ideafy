@@ -4176,7 +4176,7 @@ li.color-item{
 }
 
 #muscenario .toolbox, #muidea .toolbox{
-    float:left;
+    margin-left: 30px;
     width: 137px;
 }
 

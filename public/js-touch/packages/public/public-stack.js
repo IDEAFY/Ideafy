@@ -41,18 +41,19 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 			};
 			
 			_widget.action = function action(name){
+			        var id = _store.get(current).id;
                                 switch(name){
                                         
                                         case "#public-edit":
-                                                _edit.reset(_store.get(current).id);
+                                                _edit.reset(id);
                                                 _stack.getStack().show('#public-edit');
                                              break;
                                         
-                                        case "#public-favorites":
+                                        case "#public-favorites":  
                                              break;
                                              
                                         case "#public-share":
-                                                _share.reset(_store.get(current).id);
+                                                _share.reset(id);
                                                 _stack.getStack().show("#public-share");
                                              break;
                                         case "close":

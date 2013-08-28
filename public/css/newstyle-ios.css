@@ -1416,6 +1416,11 @@ ul.notify-list{
     background-size: 15px;
 }
 
+#public-detail .option.right[href="#public-favorites"].unfav, #ideas-detail .option.right[href="#library-favorites"].unfav{
+    background:url('../img/public/unfav.png') no-repeat center center;
+    background-size: 15px;    
+}
+
 #public-detail .option.right[href="#public-edit"], #ideas-detail .option.right[href="#library-edit"] {
     background:url('../img/wall/headerModifyYourIdea.png') no-repeat center center;
     background-size: 20px;

@@ -29,7 +29,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "publicdetail" : new Model(_store, {
                                         // toggle header buttons right
                                         toggleFavEdit : function(authors){
-                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#public-edit") : this.setAttribute("href", "#public-favorites");       
+                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#public-edit") : this.setAttribute("href", "#public-favorites");
+                                            // check if idea is already a user's favorite
+                                            (user.get("favorites") && (user.get("favorites").indexOf(_store.get("_id"))>-1)) ? this.classList.add("unfav") : this.classList.remove("unfav");     
                                         },
                                         // toggle header buttons left
                                         toggleTwocentShare : function(authors){
@@ -169,12 +171,37 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.action = function(event, node){
-                                var name = node.getAttribute("href");
-                                if (name === "#public-2cents"){
-                                        _twocentWriteUI.reset(_store.get("_id"));
-                                        _domWrite.classList.remove("invisible");
-                                }
-                                else $action(name);       
+                                var name = node.getAttribute("href"),
+                                    id = _store.get("_id"),
+                                    fav, idx;
+                                switch(name){
+                                        case "#public-2cents":
+                                                _twocentWriteUI.reset(id);
+                                                _domWrite.classList.remove("invisible");
+                                                break;
+                                        case "#public-favorites":
+                                                (user.get("favorites")) ? fav = user.get("favorites").concat() : fav = [];
+                                                
+                                                idx = fav.indexOf(id);
+                                                (idx > -1) ? fav.splice(fav.indexOf(id), 1) : fav.push(id);
+                                                
+                                                if (fav.length < 100){
+                                                        user.set("favorites", fav);
+                                                        user.upload()
+                                                        .then(function(){
+                                                                (idx>-1)?alert(_labels.get("removedfav")):alert(_labels.get("addedfav"));
+                                                                node.classList.toggle("unfav");
+                                                        });
+                                                }
+                                                else {
+                                                        alert(_labels.get("maxfavsize"));
+                                                }
+                                                
+                                                break;
+                                        default:
+                                                $action(name);
+                                                break;
+                                }       
                         };
                         
                         _widget.edit = function(){

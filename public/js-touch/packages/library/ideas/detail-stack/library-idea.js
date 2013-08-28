@@ -29,8 +29,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "label" : new Model(_labels),
                                 "ideadetail" : new Model(_store, {
                                         // toggle header buttons right
-                                        toggleRateEdit : function(authors){
-                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#library-edit") : this.setAttribute("href", "#library-favorites");       
+                                        toggleFavEdit : function(authors){
+                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#library-edit") : this.setAttribute("href", "#library-favorites");
+                                            // check if idea is already a user's favorite
+                                            (user.get("favorites") && (user.get("favorites").indexOf(_store.get("_id"))>-1)) ? this.classList.add("unfav") : this.classList.remove("unfav");       
                                         },
                                         // toggle header buttons left
                                         toggleTwocentShare : function(authors){
@@ -140,7 +142,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "ideadetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="library-idea"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleRateEdit, authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache" class="invisible"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, authors"></div><h2 data-ideadetail="bind:innerHTML,title"></h2><span class="date" data-ideadetail="bind:date, creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-ideadetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><p data-ideadetail="bind:setDescription,description"></p><p data-ideadetail="bind:setSolution,solution"></p></div><div class="detail-footer"><div class="sharedwith invisible" data-ideadetail="bind: setSharedWith, sharedwith" data-ideadetailevent="listen:touchstart, displayList"></div><div id="sharelist" class="autocontact invisible"><div class="autoclose" data-ideadetailevent="listen:touchstart,close"></div><ul data-share="foreach"><li data-share="bind:innerHTML, value.username"></li></ul></div><div class ="rateIdea" data-ideadetail="bind:hideRating, id"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,votes"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, twocents" data-place="place: LibraryTwocentUI"></div></div>';
+                        _widget.template='<div class="library-idea"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleFavEdit, authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache" class="invisible"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, authors"></div><h2 data-ideadetail="bind:innerHTML,title"></h2><span class="date" data-ideadetail="bind:date, creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-ideadetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><p data-ideadetail="bind:setDescription,description"></p><p data-ideadetail="bind:setSolution,solution"></p></div><div class="detail-footer"><div class="sharedwith invisible" data-ideadetail="bind: setSharedWith, sharedwith" data-ideadetailevent="listen:touchstart, displayList"></div><div id="sharelist" class="autocontact invisible"><div class="autoclose" data-ideadetailevent="listen:touchstart,close"></div><ul data-share="foreach"><li data-share="bind:innerHTML, value.username"></li></ul></div><div class ="rateIdea" data-ideadetail="bind:hideRating, id"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,votes"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, twocents" data-place="place: LibraryTwocentUI"></div></div>';
                 
                 //library
                         _widget.showCache = function showCache(){
@@ -181,12 +183,37 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.action = function(event, node){
-                                var name = node.getAttribute("href");
-                                if (name === "#library-2cents"){
-                                         _twocentWriteUI.reset(_store.get("_id"));
-                                         _domWrite.classList.remove("invisible");
-                                }
-                                else $action(name);       
+                                var name = node.getAttribute("href"),
+                                    id = _store.get("_id"),
+                                    fav, idx;
+                                switch(name){
+                                        case "#library-2cents":
+                                                _twocentWriteUI.reset(id);
+                                                _domWrite.classList.remove("invisible");
+                                                break;
+                                        case "#library-favorites":
+                                                (user.get("favorites")) ? fav = user.get("favorites").concat() : fav = [];
+                                                
+                                                idx = fav.indexOf(id);
+                                                (idx > -1) ? fav.splice(fav.indexOf(id), 1) : fav.push(id);
+                                                
+                                                if (fav.length < 100){
+                                                        user.set("favorites", fav);
+                                                        user.upload()
+                                                        .then(function(){
+                                                                (idx>-1)?alert(_labels.get("removedfav")):alert(_labels.get("addedfav"));
+                                                                node.classList.toggle("unfav");
+                                                        });
+                                                }
+                                                else {
+                                                        alert(_labels.get("maxfavsize"));
+                                                }
+                                                
+                                                break;
+                                        default:
+                                                $action(name);
+                                                break;
+                                }       
                         };
                         
                         _widget.edit = function(){

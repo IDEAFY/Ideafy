@@ -651,6 +651,18 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
         "rejected": "REJECTED"        
 },
                 lang: "en-us",
+                userLanguages:[
+                        {name:"en"},
+                        {name: "zh"},
+                        {name: "es"},
+                        {name: "ja"},
+                        {name: "pt"},
+                        {name: "de"},
+                        {name: "ar"},
+                        {name: "fr"},
+                        {name: "ru"}
+                ],
+
                 labels : new Store({})        
                         });
                 };

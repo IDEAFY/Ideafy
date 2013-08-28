@@ -215,7 +215,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         document.addEventListener("resume", Utils.checkSocketStatus);
                 
         // attempt to reconnect socket if required in case of user actions
-        Map.get("body").addEventListener("touchstart", Utils.checkSocketStatus);
+        Map.get("body").addEventListener("touchstart", Utils.checkSocketStatus, false);
         
         // resync user document upon socket reconnection
         Config.get("observer").watch("reconnect", function(){

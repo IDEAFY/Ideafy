@@ -12,7 +12,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                 
                         var _widget = new Widget(),
                             _store = new Store(Config.get("TQTemplate")),
+                            _languages = new Store(Config.get("userLanguages")),
                             _user = Config.get("user"),
+                            _resetLang = function(){
+                                // set language to the user's language by default
+                                _store.set("lang", _user.get("lang"));
+                                _languages.loop(function(v,i){
+                                        (v.name === _user.get("lang").substring(0,2)) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
+                                });        
+                            },
                             _labels = Config.get("labels"),
                             _maxLength = 140,
                             _error = new Store({"error": ""}),
@@ -22,9 +30,22 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.plugins.addAll({
                                 "new2q" : new Model(_store, {
+                                        displayLang : function(lang){
+                                                var l=lang.substring(0,2);
+                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png');")        
+                                        },
                                         setLength : function(type){
                                                 if (type === 10) this.setAttribute("maxlength", _maxLength);
                                         }
+                                }),
+                                "select" : new Model (_languages, {
+                                        setBg : function(name){
+                                                this.setAttribute("style", "background-image:url('img/flags/"+name+".png');");
+                                                //(name === _user.get("lang").substring(0,2)) ? this.classList.add("selected") : this.classList.remove("selected");
+                                        },
+                                        setSelected : function(selected){
+                                                (selected) ? this.classList.add("selected") : this.classList.remove("selected");        
+                                        } 
                                 }),
                                 "labels" : new Model(_labels),
                                 "errormsg" : new Model(_error, {
@@ -44,10 +65,31 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "new2qevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createquestion"></span><div class="close-popup" data-new2qevent="listen:touchstart, cancel"></div></div><form class="form"><p><textarea class="description input" data-labels="bind:placeholder, questionplaceholder" data-new2q="bind: value, question; bind: setLength, type" data-new2qevent="listen:input, checkLength"></textarea></p><div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-new2qevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createquestion"></span><div class="close-popup" data-new2qevent="listen:touchstart, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-new2q="bind: displayLang, lang" data-new2qevent="listen: touchstart, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-new2qevent="listen: touchstart, selectFlag; listen: touchend, setLang"></li></ul></div><p><textarea class="description input" data-labels="bind:placeholder, questionplaceholder" data-new2q="bind: value, question; bind: setLength, type" data-new2qevent="listen:input, checkLength"></textarea></p><div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-new2qevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("new2q-popup"));
+                        
+                        _widget.showLang = function(event, node){
+                                _widget.dom.querySelector(".idealang ul").classList.remove("invisible");        
+                        };
+                        
+                        _widget.selectFlag = function(event, node){
+                                var id;
+                                event.stopPropagation();
+                                id = parseInt(node.getAttribute("data-select_id"), 10);
+                                _languages.loop(function(v,i){
+                                        (id === i) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);
+                                })                
+                        };
+                        
+                        _widget.setLang = function(event, node){
+                                var id;
+                                event.stopPropagation();
+                                id = node.getAttribute("data-select_id");
+                                _store.set("lang", _languages.get(id).name);
+                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");        
+                        };
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
@@ -60,7 +102,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // reset _store and _error
                                 _store.unsync();
                                 _store.reset(Config.get("TQTemplate"));
-                                _error.reset({"error":""});      
+                                _resetLang();
+                                _error.reset({"error":""});
+                                // hide flag list
+                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");     
                         };
                         
                         _widget.cancel = function(event, node){

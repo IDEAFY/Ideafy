@@ -725,9 +725,9 @@ ul.notify-list{
 
 #new2q-popup{
     width: 560px;
-    height: 300px;
+    height: 320px;
     left: 230px;
-    top: -320px
+    top: -330px;
 }
 
 #new2c-popup{
@@ -1073,7 +1073,73 @@ ul.notify-list{
 
 #newidea-popup .form, #new2q-popup .form{
     font-size: 16px;
-    padding: 20px;
+    padding: 40px 20px 20px 20px;
+}
+
+#newidea-popup .form{
+    height: 464px;
+}
+
+.idealang{
+    margin-top: -35px;
+    margin-bottom: 5px;
+    height: 30px;
+    width: 440px;
+    text-align: right;
+}
+
+.idea-edit .idealang{
+    margin-top: -15px;
+    width: 590px;
+}
+
+#new2q-popup .idealang{
+    width: 520px;
+}
+
+.currentlang{
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    margin-top: 5px;
+    background-size: contain;
+    border: 1px solid #657b99;
+}
+
+.idealang ul{
+    margin-top: -28px;
+    width: 440px;
+    height: 30px;
+    /*background:-webkit-linear-gradient(left,#657b99 0,rgba(101,123,153,0.7) 25%,rgba(101,123,153,0.7)75%,#657b99 100%);*/
+    background: white;
+    line-height: 30px;
+    position: absolute;
+}
+
+.idea-edit .idealang ul{
+    width: 590px;
+    margin-top: -31px;
+}
+
+#new2q-popup .idealang ul{
+    width: 520px;
+}
+
+.idealang li{
+    margin: 3px 6px;
+    width: 36px;
+    height: 24px;
+    border-radius: 5px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    -webkit-box-shadow: inset 0px 0px 1px #CCCCCC;
+}
+
+.idealang li.selected{
+    -webkit-box-shadow: inset 0px 0px 5px #657b99;
+    border-radius: 0px;
 }
 
 .newideatitle{
@@ -1164,11 +1230,6 @@ ul.notify-list{
 
 
 /* public */
-
-#public .list, #ideas .list {
-   /*-webkit-transition: width 100ms ease-in;*/
-   z-index:1000;
-}
 
 .mosaic .list{
   /*-webkit-transition: width 100ms ease-in-out;*/
@@ -1633,7 +1694,7 @@ textarea.solution {
 
 .edit-visibility, .current-visibility{
     display: inline-block;
-    font-size: 12px;
+    font-size: 16px;
     height: 30px;
 }
 
@@ -1646,7 +1707,7 @@ textarea.solution {
 .current-visibility{
     padding-left: 25px;
     background-position: left center;
-    background-size: 15px 15px;
+    background-size: 16px 16px;
     background-repeat: no-repeat;
     color: #F27B3D;
     width: 30%;
@@ -1668,6 +1729,7 @@ textarea.solution {
 
 .edit-visibility span, .current-visibility span{
     font-family: Helvetica;
+    margin-right: 5px;
 }
 /* may be create a class button ...they are label to stay in p*/
 
@@ -6724,6 +6786,10 @@ li.my2q{
     overflow-y: scroll;
 }
 
+.aboutcontent li{
+    margin-bottom: 10px;
+}
+
 .aboutcontent textarea{
     height: 300px;
     margin-bottom: 15px;   
@@ -6734,7 +6800,6 @@ li.my2q{
 }
 
 .aboutcontent legend{
-    padding: 0px;
     font-size: 20px;
 }
 

@@ -4732,6 +4732,7 @@ li.color-item{
     padding-top: 93px;
     height: 619px;
     text-align: center;
+    overflow: hidden;
 }
 
 #muidea .idea-cards{

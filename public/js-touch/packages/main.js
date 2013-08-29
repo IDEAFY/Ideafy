@@ -221,24 +221,28 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         Map.get("body").addEventListener("touchstart", Utils.checkSocketStatus, false);
         
         // resync user document upon socket reconnection
-        Config.get("observer").watch("reconnect", function(){
+        Config.get("observer").watch("reconnect", function(option){
                 _local.sync("ideafy-data");
                 if (navigator.connection && navigator.connection.type === "none"){
                         _login.setScreen("#nointernet");
                 }
                 else {
-                        checkServerStatus
-                        .then(function(){
-                                _user.unsync();
-                                return _user.sync(_db, _local.get("currentLogin"));
-                        }, function(){
-                                _login.setScreen("#maintenance-screen");        
-                        })
-                        .then(function(){
+                        if (option === "all"){
+                                checkServerStatus
+                                .then(function(){
+                                        _user.unsync();
+                                        return _user.sync(_db, _local.get("currentLogin"));
+                                }, function(){
+                                        _login.setScreen("#maintenance-screen");        
+                                })
+                                .then(function(){
+                                        console.log("user resynchronized");
+                                });
+                        }
+                        else{
                                 _user.set("online", true);
-                                console.log("user resynchronized");
-                                return _user.upload();
-                        });          
+                                _user.upload();
+                        }        
                 }    
         });
 }); 

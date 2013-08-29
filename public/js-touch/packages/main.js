@@ -195,6 +195,9 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
          * Watch for signout events
          */       
         Config.get("observer").watch("signout", function(){
+                // change user status
+                _user.set("online", false);
+                
                 // clear local store
                 _local.set("currentLogin", "");
                 _local.set("userAvatar", "");
@@ -211,8 +214,8 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         /*
          * Manage socket connectivity
          */
-        document.addEventListener("pause", Utils.disconnectSocket);
-        document.addEventListener("resume", Utils.checkSocketStatus);
+        document.addEventListener("pause", Utils.disconnectSocket, false);
+        document.addEventListener("resume", Utils.checkSocketStatus, false);
                 
         // attempt to reconnect socket if required in case of user actions
         Map.get("body").addEventListener("touchstart", Utils.checkSocketStatus, false);
@@ -232,7 +235,9 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                                 _login.setScreen("#maintenance-screen");        
                         })
                         .then(function(){
+                                _user.set("online", true);
                                 console.log("user resynchronized");
+                                return _user.upload();
                         });          
                 }    
         });

@@ -3435,11 +3435,13 @@ textarea.solution {
     margin-left: 58px;
     margin-right: 58px;
     background-size: contain;
-    background: url('../img/brainstorm/lockdraw.png') no-repeat center center;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url('../img/brainstorm/lockdraw.png');
 }
 
 .drawok.pushed{
-    background: url('../img/brainstorm/drawaccepted.png') no-repeat center center;
+    background-image: url('../img/brainstorm/drawaccepted.png');
 }
 
 .leftarea{
@@ -7142,7 +7144,7 @@ li.my2q{
 .musession-confirm{
     position: absolute;
     width: 600px;
-    height: 150px;
+    height: 170px;
     left: 50%;
     margin-left: -300px;
     top: 50%;
@@ -7413,7 +7415,7 @@ li.my2q{
 #mupreview .contentarea{
     position: absolute;
     top: 189px;
-    left: 46px;
+    left: 139px;
     background: white;
     border-radius: 5px;
 }

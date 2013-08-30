@@ -7,9 +7,9 @@
 
 define(["OObject", "Amy/Control-plugin" ,
 	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
-	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Promise"], 
+	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Store"], 
 	function(Widget, Control, Model, Place, Delegate, Map, 
-		Config, Detail, Utils, List, Polling, Stack, Menu){
+		Config, Detail, Utils, List, Polling, Stack, Menu, Store){
 		return function PublicConstructor(){
 		//declaration
 			var _widget = new Widget(),
@@ -18,13 +18,41 @@ define(["OObject", "Amy/Control-plugin" ,
 				_radio = new Control(_widget),
 				_detail= new Detail(),
                                 _menu, listDate, listRating, listSearch,
+                                _user = Config.get("user"),
+                                _btns = new Store([
+                                        {name:"#list-date", css:"bydate", pushed: true, lang:null},
+                                        {name:"#list-rating", css:"byrating", pushed: false, lang:null},
+                                        {name:"#list-fav", css:"byfav", pushed: false, lang:null},
+                                        {name:"#lang", css:"bylang", pushed: false, lang: "*"}
+                                ]),
 				_stack = new Stack();
 
 		//setup
-		      _widget.template='<div id="public"><div id = "public-menu"></div><div id="public-list" class="list"><div class="header blue-light"><div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, publicideasheadertitle"></span><div class="option right" data-publicevent="listen: touchstart, plus"></div></div><div data-liststack="destination" data-publiccontrol="radio:li,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search"><div name="#list-date" class="tools-button bydate pushed" data-publicevent="listen:touchstart,show"></div><div name="#list-rating" class="tools-button byrating" data-publicevent="listen:touchstart,show"></div></div></div></div><div id="public-detail" class="details" data-publicplace="place:details"></div></div>';
+		      _widget.template='<div id="public"><div id = "public-menu"></div><div id="public-list" class="list"><div class="header blue-light"><div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, publicideasheadertitle"></span><div class="option right" data-publicevent="listen: touchstart, plus"></div></div><div data-liststack="destination" data-publiccontrol="radio:li,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search"><ul class="listbtns" data-listbtns="foreach"><li class="tools-button" data-listbtns="bind:setName, name; bind:setClass, css; bind:setPushed, pushed; bind:setLang, lang" data-publicevent="listen:touchstart,show"></li></ul></div></div></div><div id="public-detail" class="details" data-publicplace="place:details"></div></div>';
 		
 		      _widget.plugins.addAll({
 				"liststack" : _stack,
+				"listbtns" : new Model(_btns,{
+				        setPushed : function(pushed){
+				                (pushed)?this.classList.add("pushed"):this.classList.remove("pushed");
+				        },
+				        setLang : function(lang){
+				                if (lang && lang !=="*") {
+				                        this.setAttribute("style", "background-image:url('img/flags/"+lang+"');");
+				                        this.innerHTML = "";
+				                }
+				                if (lang === "*") {
+				                        this.setAttribute("style","background-image: none;");
+				                        this.innerHTML = "*";
+				                }
+				        },
+				        setClass : function(css){
+				                css && this.classList.add(css);
+				        },
+				        setName : function(name){
+				                name && this.setAttribute("name", name);
+				        }
+				}),
 				"label" : new Model(Config.get("labels")),
 
 				/* mays be have event plugin in control*/
@@ -148,6 +176,13 @@ define(["OObject", "Amy/Control-plugin" ,
 			// menu UI
 			_menu  = new Menu(_widget.dom.querySelector("#public-menu"));
                         _menu.toggleActive(false);
+                        
+                        // language
+                        _user.watchValue("lang", function(lang){
+                                _btns.loop(function(v,i){
+                                        if (v.name==="#lang" && lang) _btns.update("lang", lang.substring(0,2));
+                                });
+                        });
                         
                         // dom items
                         _dom = _widget.dom;

@@ -5,14 +5,17 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils"],
-        function(Widget, Model, Event, Config, Store, Utils){
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils", "CouchDBView"],
+        function(Widget, Model, Event, Config, Store, Utils, CouchDBView){
                 
                 function AvatarConstructor($array){
 
-                        var _store = new Store(),
+                        var _store = new Store({"img":"", "online": false}),
                             _avatars = Config.get("avatars"),
+                            _cdb = new CouchDBView([]),
                             _id = $array[0]; 
+                        
+                        _cdb.setTransport(Config.get("transport"));
                         
                         // setup
                         this.plugins.addAll({
@@ -21,15 +24,30 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                 if (img && img !== "in progress") {
                                                         this.setAttribute("style", "background-image: url('"+img+"');");
                                                 }
+                                        },
+                                        setStatus : function(online){
+                                                (online)?this.classList.add("online"):this.classList.remove("online");
                                         }
                                 }),
                                 "event" : new Event(this)
                         });
                         
                         // set template
-                        this.template='<div class="avatar" data-avatar="bind: setStyle, img"></div>';
+                        this.template='<div class="avatar" data-avatar="bind: setStyle, img; bind: setStatus, online"></div>';
                         
                         // init
+                        // check if user is online
+                        _cdb.sync(Config.get("db"), "users", "_view/online", {key: '"'+_id+'"'})
+                        .then(function(){
+                                (_cdb.get(0)) ? _store.set("online", true) : _store.set("online", false);       
+                        });
+                        // watch for updates
+                        ["added", "deleted", "updated"].forEach(function(change){
+                                _cdb.watch(change, function(){
+                                        (_cdb.get(0)) ? _store.set("online", true) : _store.set("online", false);
+                                });
+                        });
+                        
                         if ($array.length>1) {
                                 _store.set("img", "img/avatars/deedee6.png");
                         }

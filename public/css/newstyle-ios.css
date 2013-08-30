@@ -164,7 +164,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 .list ul{
     height: 652px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #deck-list{
@@ -200,6 +200,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   /*factorize with every box-shadow */
   -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
 
+}
+
+.idea-list{
+    height: 637px;
 }
 
 .idea-list, .twoq-list, .twoq-searchlist{
@@ -332,8 +336,27 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .tools {
-  padding:15px;
-  height: 30px;
+  padding:10px 15px 10px 15px;
+  height: 55px;
+}
+
+.listbtns{
+    line-height: 28px;
+    margin: 5px auto;
+    text-align: center;
+    width: 271px;
+    height: 28px;
+}
+
+.listbtns li:first-child{
+    border-left: 1px solid #CCCCCC;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.listbtns li:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .search  {
@@ -341,7 +364,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   outline:0;
   height:25px;
   line-height: 25px;
-  padding:0 25px 0 10px;
+  padding:0 5px 0 5px;
   width:160px;
   border-radius:5px;
   background:#F2F2F2;
@@ -1329,32 +1352,33 @@ ul.notify-list{
 
 }*/
 #public-list .search, #idea-list .search{
-    float: left;
+    width: 261px;
 }
 
 #public-list .tools-button, #idea-list .tools-button{
     display: inline-block;
-    float: left;
-    width: 32px;
-    height: 23px;
+    width: 39px;
+    height: 26px;
     border: 1px solid #CCCCCC;
+    border-left: none;
     background: white;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
 
+.tools-button.bylang{
+    line-height: 36px;
+    font-size: 25px;
+    color: #808080;
+}
+
 #public-list .tools-button.bydate, #idea-list .tools-button.bydate{
     margin-left: 5px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
     background-image: url('../img/public/byDateDisable.png');   
 }
 
 #public-list .tools-button.byrating, #idea-list .tools-button.byrating{
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-left: none;
     background-image: url('../img/public/byRatingDisable.png');    
 }
 
@@ -2075,6 +2099,10 @@ textarea.solution {
 
 .replyAvatar{
     margin-left: 15px;
+}
+
+.online{
+    -webkit-box-shadow: inset 0px 0px 5px #65f134;    
 }
 /*
 #public .twocentAvatar{

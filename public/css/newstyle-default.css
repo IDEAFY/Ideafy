@@ -233,7 +233,7 @@ input::-webkit-file-upload-button{
 
 .list ul{
     height: 652px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #deck-list{
@@ -809,9 +809,9 @@ ul.notify-list{
 
 #new2q-popup{
     width: 560px;
-    height: 300px;
+    height: 320px;
     margin-left: -280px;
-    margin-top: -320px;
+    margin-top: -340px;
 }
 
 #new2c-popup{
@@ -1092,13 +1092,15 @@ ul.notify-list{
 }
 
 #newidea-popup.appear, #newdeck-popup.appear{
-    -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateY(689px);
+    -webkit-transition:top 0.2s linear;
+    top: 50%;
+    margin-top: -280px;
 }
 
 #new2q-popup.appear, #new2c-popup.appear{
-    -webkit-transition:-webkit-transform 0.2s linear;
-    -webkit-transform:translateY(550px);
+    -webkit-transition:top 0.2s linear;
+    top: 50%;
+    margin-top: -160px;
 }
 
 #help-popup.appear{

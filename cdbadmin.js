@@ -197,6 +197,60 @@ function CDBAdmin(){
         };
         
         /*
+         * getBulkView retrieves a set of docs from a view in the database
+         * @param {String} design : the name of the design document
+         * @param {String} view : the name of the view in thedesign document
+         * @param {Object} query : the database query
+         * @param {CouchDBView} cdbStore : the store containing the view
+         * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
+         */
+        getBulkView = function(design, view, idList, cdbStore){
+                var promise = new _Promise(),
+                    result = {}, options = {}, req, callback;
+
+                // manually build the http request to couchDB
+                options.hostname = "127.0.0.1";
+                options.port = 5984;
+                options.method = "POST";
+                options.auth = _cdbAdminCredentials;
+                options.agent = false;
+                options.path = "/"+_db+"/_design/"+design+"/_view/"+view;
+                options.headers = {
+                        "Content-Type" : "application/json"
+                };
+                options.data = JSON.stringify({
+                        keys : idList
+                });
+
+                /**
+                * Http request callback, handles couchDB response
+                * @param {Object} res the response
+                */
+                callback = function(res) {
+                        var body = "";
+                        res.on('data', function(chunk) {
+                                body += chunk;
+                        });
+
+                        res.on('end', function() {
+                                var json = JSON.parse(body);
+                                if (json.rows.length === idList.length){
+                                        cdbStore.reset(json.rows);
+                                        promise.fulfill();
+                                }
+                                else {
+                                        promise.reject();
+                                }
+                        });
+                };
+                // emit the http request and the data
+                req = http.request(options, callback);
+                req.end(options.data, "utf8");
+                
+                return promise;
+        };
+        
+        /*
          * Remove doc from database
          * @param {String} docId : the id of the document
          * @param {CouchDBDocument} cdbStore : the store containing the doc to be deleted

@@ -141,10 +141,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 _widget.dom.querySelector("#idea-cache").classList.add("invisible");        
                         };
                         
-                        _widget.reset = function reset(viewStore, index){
+                        _widget.reset = function reset(id){
                                 
-                                var id = viewStore.get(index).id,
-                                    promise = new Promise();
+                                var promise = new Promise();
                                 
                                 // reset voting popup
                                 vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
@@ -180,13 +179,13 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 _domWrite.classList.remove("invisible");
                                                 break;
                                         case "#public-favorites":
-                                                (user.get("favorites")) ? fav = user.get("favorites").concat() : fav = [];
+                                                (user.get("public-favorites")) ? fav = user.get("public-favorites").concat() : fav = [];
                                                 
                                                 idx = fav.indexOf(id);
                                                 (idx > -1) ? fav.splice(fav.indexOf(id), 1) : fav.push(id);
                                                 
                                                 if (fav.length < 100){
-                                                        user.set("favorites", fav);
+                                                        user.set("public-favorites", fav);
                                                         user.upload()
                                                         .then(function(){
                                                                 (idx>-1)?alert(_labels.get("removedfav")):alert(_labels.get("addedfav"));

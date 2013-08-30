@@ -192,13 +192,13 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 _domWrite.classList.remove("invisible");
                                                 break;
                                         case "#library-favorites":
-                                                (user.get("favorites")) ? fav = user.get("favorites").concat() : fav = [];
+                                                (user.get("library-favorites")) ? fav = user.get("library-favorites").concat() : fav = [];
                                                 
                                                 idx = fav.indexOf(id);
                                                 (idx > -1) ? fav.splice(fav.indexOf(id), 1) : fav.push(id);
                                                 
                                                 if (fav.length < 100){
-                                                        user.set("favorites", fav);
+                                                        user.set("library-favorites", fav);
                                                         user.upload()
                                                         .then(function(){
                                                                 (idx>-1)?alert(_labels.get("removedfav")):alert(_labels.get("addedfav"));

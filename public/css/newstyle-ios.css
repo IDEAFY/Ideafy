@@ -167,6 +167,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     overflow-y: auto;
 }
 
+.list ul.idea-list{
+    height: 637px;
+}
+
 #deck-list{
     height: 712px;
 }
@@ -200,10 +204,6 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
   /*factorize with every box-shadow */
   -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
 
-}
-
-.idea-list{
-    height: 637px;
 }
 
 .idea-list, .twoq-list, .twoq-searchlist{
@@ -338,25 +338,6 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 .tools {
   padding:10px 15px 10px 15px;
   height: 55px;
-}
-
-.listbtns{
-    line-height: 28px;
-    margin: 5px auto;
-    text-align: center;
-    width: 271px;
-    height: 28px;
-}
-
-.listbtns li:first-child{
-    border-left: 1px solid #CCCCCC;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-.listbtns li:last-child{
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 .search  {
@@ -1129,7 +1110,7 @@ ul.notify-list{
     border: 1px solid #657b99;
 }
 
-.idealang ul{
+.idealang ul, .list ul.langlist{
     margin-top: -28px;
     width: 440px;
     height: 30px;
@@ -1137,6 +1118,33 @@ ul.notify-list{
     background: white;
     line-height: 30px;
     position: absolute;
+}
+
+.list ul.langlist{
+    margin-top: -77px;
+    width: 301px;
+    height: 75px;
+    position: absolute;
+    z-index: 2000;
+    left: 0px;
+    text-align: center;
+    background: -webkit-radial-gradient(center, ellipse cover, #808080 0%, #292929 100%);
+    overflow: auto;
+}
+
+.langlist li{
+    margin: 5px 6px 0px 6px;
+    width: 36px;
+    height: 24px;
+    border-radius: 5px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    -webkit-box-shadow: inset 0 0 1px #ccc;
+    line-height: 34px;
+    font-family: times;
+    font-size: 30px;
 }
 
 .idea-edit .idealang ul{
@@ -1353,9 +1361,18 @@ ul.notify-list{
 }*/
 #public-list .search, #idea-list .search{
     width: 261px;
+    margin: -5px 0px 5px 0px;
 }
 
-#public-list .tools-button, #idea-list .tools-button{
+.list ul.listbtns{
+    line-height: 28px;
+    margin: 5px auto;
+    text-align: center;
+    width: 271px;
+    height: 28px;
+}
+
+.tools-button{
     display: inline-block;
     width: 39px;
     height: 26px;
@@ -1367,29 +1384,54 @@ ul.notify-list{
     background-repeat: no-repeat;
 }
 
-.tools-button.bylang{
-    line-height: 36px;
-    font-size: 25px;
-    color: #808080;
+.tools-button:first-child{
+    border-left: 1px solid #CCCCCC;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
-#public-list .tools-button.bydate, #idea-list .tools-button.bydate{
-    margin-left: 5px;
+.tools-button:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.tools-button.bylang{
+    line-height: 37px;
+    font-size: 30px;
+    color: #a0a0a0;
+    font-family: times;
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.tools-button.bylang.pushed{
+    background: -webkit-radial-background(center, ellipse cover, #808080 0%, #000000 100%);
+}
+
+.tools-button.bydate{
     background-image: url('../img/public/byDateDisable.png');   
 }
 
-#public-list .tools-button.byrating, #idea-list .tools-button.byrating{
+.tools-button.byfav{
+    background-image: url('../img/public/byFavDisable.png');    
+}
+
+.tools-button.byrating{
     background-image: url('../img/public/byRatingDisable.png');    
 }
 
-#public-list .tools-button.bydate.pushed, #idea-list .tools-button.bydate.pushed{
+.tools-button.bydate.pushed{
     background-image: url('../img/public/byDateActive.png');   
 }
 
-#public-list .tools-button.byrating.pushed, #idea-list .tools-button.byrating.pushed{
-    background-image: url('../img/public/byRatingActive.png');   
+.tools-button.byfav.pushed{
+    background-image: url('../img/public/byFavActive.png');   
 }
 
+.tools-button.byrating.pushed{
+    background-image: url('../img/public/byRatingActive.png');   
+}
 
 #public-list .option.right, #idea-list .option.right, #decklist .option.right, #connect-messages .option.right, #connect-contacts .option.right, #mtc-list .option.right {
   background:url('../img/public/plus2.png') no-repeat center center;

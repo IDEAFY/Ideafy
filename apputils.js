@@ -7,7 +7,7 @@ var fs = require("fs");
 function AppUtils(){
         var _Promise, _CouchDBDocument,
             _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin,
-            _updateCard, _deleteAttachment, _deleteCard;
+            _getBulkView, _updateCard, _deleteAttachment, _deleteCard;
         
         this.setConstructors = function(CouchDBDocument, CouchDBView, Promise){
                 _CouchDBDocument = CouchDBDocument;
@@ -22,12 +22,13 @@ function AppUtils(){
                 _getDocAsAdmin = _cdbAdmin.getDoc;
                 _createDocAsAdmin = _cdbAdmin.getDoc;
                 _getViewAsAdmin = _cdbAdmin.getView;
+                _getBulkView = _cdbAdmin.getBulkView;
                 _removeDocAsAdmin = _cdbAdmin.removeDoc;      
         };
         
         
         /*
-         * Update a card after one of its deck container was removed form database
+         * Update a card after one of its deck container was removed from database
          */
         _updateCard = function(cardId, deckId){
                 var cardCDB = new _CouchDBDocument(),
@@ -249,6 +250,17 @@ function AppUtils(){
                         }       
                 });
         };
+
+        /*
+         * Retrieve a given list of favorite ideas
+         */
+        this.getFavList = function getFavList(idList, onEnd){
+                var cdbView = new _CouchDBView();
+                _getBulkView("library", "publicideas", idList, cdbView)
+                .then(function(){
+                        onEnd(cdbView.toJSON());
+                });
+        }
 }
 
 exports.AppUtils = AppUtils;

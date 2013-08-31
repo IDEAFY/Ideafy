@@ -254,9 +254,9 @@ function AppUtils(){
         /*
          * Retrieve a given list of favorite ideas
          */
-        this.getFavList = function getFavList(idList, onEnd){
+        this.getFavList = function getFavList(json, onEnd){
                 var cdbView = new _CouchDBView();
-                _getBulkView("library", "publicideas", idList, cdbView)
+                _getBulkView("library", "publicideas", json.idList, cdbView)
                 .then(function(){
                         onEnd(cdbView.toJSON());
                 });

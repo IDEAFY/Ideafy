@@ -130,6 +130,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                             fav = _usr.get("public-favorites") || [];
                         if ($query === "fav"){
                                 if (fav.length){
+                                        console.log("before fav httpreq");
                                         Config.get("transport").request("GetFavList", fav, function(res){
                                                 console.log(res);
                                                 _store.reset(JSON.parse(res));

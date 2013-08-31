@@ -32,7 +32,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         toggleFavEdit : function(authors){
                                             (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#library-edit") : this.setAttribute("href", "#library-favorites");
                                             // check if idea is already a user's favorite
-                                            (user.get("favorites") && (user.get("favorites").indexOf(_store.get("_id"))>-1)) ? this.classList.add("unfav") : this.classList.remove("unfav");       
+                                            (user.get("library-favorites") && (user.get("library-favorites").indexOf(_store.get("_id"))>-1)) ? this.classList.add("unfav") : this.classList.remove("unfav");       
                                         },
                                         // toggle header buttons left
                                         toggleTwocentShare : function(authors){

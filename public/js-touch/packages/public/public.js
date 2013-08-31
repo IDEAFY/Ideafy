@@ -13,7 +13,6 @@ define(["OObject", "Amy/Control-plugin" ,
 		return function PublicConstructor(){
 		//declaration
 			var _widget = new Widget(),
-				_dom, byDate, byRating,
 				_db = Config.get("db"),
 				_radio = new Control(_widget),
 				_detail= new Detail(),
@@ -86,40 +85,47 @@ define(["OObject", "Amy/Control-plugin" ,
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
 				    _id = event.target.getAttribute("data-listideas_id");
 				
-				_detail.reset(_ideaList.get(_id).id);
+				_detail.reset(_ideaList,_id);
 				
 			};
 			
 			// function used to retrieve the currently highlighted idea in a list and display its details
 	               _widget.displayHighlightedIdea = function displayHighlightedIdea(){
-			     var ideaList = _stack.getStack().getCurrentScreen(),
-			         ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"); 
-			         id = ideaNode.getAttribute("data-listideas_id");
+			     var ideaList, ideaNode, id;
+			     ideaList = _stack.getStack().getCurrentScreen(),
+			     ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"); 
+			     id = ideaNode.getAttribute("data-listideas_id");
+			     
 			     ideaNode.classList.add("selected");
 			     ideaNode.scrollIntoView();
                              _radio.init(ideaNode);        
-			     _detail.reset(ideaList.getModel().get(id).id);            
+			     _detail.reset(ideaList.getModel(),id);            
 			};
 			
 			// this piece can be considerably simplified --> using stack & control plugins
 			
 			_widget.show = function(event, node){
 			     var id = parseInt(node.getAttribute("data-listbtns_id"), 10),
-			         name = _btns.get(id).name;
+			         name = _btns.get(id).name,
+			         st = _stack.getStack();
 			         
 			     _btns.loop(function(v,i){
 			             (i === id) ? _btns.update(i, "pushed", true) : _btns.update(i, "pushed", false);        
 			     });
 			     
-			     console.log(name);
-			     
 			     if (name === "#lang"){
 			             
 			             _widget.dom.querySelector(".langlist").classList.remove("invisible");
 			     }
-			     else if (name !== _stack.getStack().getCurrentName){
-			             _stack.getStack().show(name);
-			             _widget.displayHighlightedIdea();
+			     else if (name !== st.getCurrentName){
+			             st.show(name);
+			             if (st.get(name).getModel().getNbItems()){
+			                     _widget.displayHighlightedIdea();
+			             }
+			             else{
+			                     // display empty list message in detail window
+			                     // _detail.displayEmpty(name);
+			             }
 			     }  
 			};
 			
@@ -144,10 +150,10 @@ define(["OObject", "Amy/Control-plugin" ,
 
 			_widget.mosaic = function(){
 				var domDetail = document.getElementById("public-detail");
-                                _dom.classList.toggle("mosaic");
+                                _widget.dom.classList.toggle("mosaic");
                                 if (domDetail.classList.contains("invisible")) {
                                         domDetail.classList.remove("invisible");
-                                        _detail.reset(listDate.get(0).id);
+                                        _detail.reset(listDate.getModel(), 0);
                                 }
 			};
 			
@@ -197,7 +203,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 listRating.init();
                                 listDate.init().then(function(){
                                         _stack.getStack().show("#list-date");
-                                        _detail.reset(listDate.get(0).id);        
+                                        _detail.reset(listDate.getModel(), 0);        
                                 });        
                         };
                         
@@ -222,31 +228,39 @@ define(["OObject", "Amy/Control-plugin" ,
                                 });
                         });
                         
-                        // dom items
-                        _dom = _widget.dom;
-                        byDate = _dom.querySelector(".bydate");
-                        byRating =  _dom.querySelector(".byrating");
                         
                         //initialize list UIs
 			listDate = new Polling(_db, "library", "_view/publicideas");
 		        // list date needs to be in polling mode with a polling_interval defined in Config to avoid traffic overload
 		        listRating = new List(_db, "ideas", "_view/ideasbyvotes");
-		        listFav = new ListFav();
+		        listFav = new List(_db, "library", "_view/publicideas", "fav");
 			listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:60, include_docs: true});
 			 
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
+			_stack.getStack().add("#list-fav", listFav);
 			_stack.getStack().add("#list-date", listDate);
 			
-			// show public ideas sorted by most recent
-		        listRating.init();
-		        
-		        listDate.init().then(function(){
+			// init public ideas sorted by rating
+			listRating.init();
+			
+			// init public ideas sorted by most recent then init public favorites
+		        listDate.init()
+		        .then(function(){
+		               console.log("listDate init");
 		              _stack.getStack().show("#list-date");
-		              _widget.displayHighlightedIdea();      
+		              _widget.displayHighlightedIdea();
+		              return listFav.init();     
+		        })
+		        .then(function(){
+		                console.log("fav init ok");
+		                // Watch for favorites changes in user document and update list accordingly
+                                _user.watchValue("public-favorites", function(){
+                                        listFav.resetQuery();        
+                                });
 		        });
 		        
-
+                        FAV = listFav;
 			//return
 			return _widget;
 		};

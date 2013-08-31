@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin"], 
-        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place){
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin", "lib/spin.min"], 
+        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place, Spinner){
                 return function PublicDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
@@ -31,7 +31,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         toggleFavEdit : function(authors){
                                             (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#public-edit") : this.setAttribute("href", "#public-favorites");
                                             // check if idea is already a user's favorite
-                                            (user.get("favorites") && (user.get("favorites").indexOf(_store.get("_id"))>-1)) ? this.classList.add("unfav") : this.classList.remove("unfav");     
+                                            (user.get("public-favorites") && (user.get("public-favorites").indexOf(_store.get("_id"))>-1)) ? this.classList.add("unfav") : this.classList.remove("unfav");     
                                         },
                                         // toggle header buttons left
                                         toggleTwocentShare : function(authors){
@@ -141,9 +141,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 _widget.dom.querySelector("#idea-cache").classList.add("invisible");        
                         };
                         
-                        _widget.reset = function reset(id){
+                        _widget.reset = function reset(viewStore, index){
                                 
-                                var promise = new Promise();
+                                var id = viewStore.get(index).id,
+                                    promise = new Promise();
                                 
                                 // reset voting popup
                                 vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
@@ -172,24 +173,39 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.action = function(event, node){
                                 var name = node.getAttribute("href"),
                                     id = _store.get("_id"),
-                                    fav, idx;
+                                    fav, idx, favSpinner = new Spinner();
                                 switch(name){
                                         case "#public-2cents":
                                                 _twocentWriteUI.reset(id);
                                                 _domWrite.classList.remove("invisible");
                                                 break;
                                         case "#public-favorites":
+                                                console.log("favorites");
+                                                favSpinner.spin(node);
                                                 (user.get("public-favorites")) ? fav = user.get("public-favorites").concat() : fav = [];
                                                 
                                                 idx = fav.indexOf(id);
-                                                (idx > -1) ? fav.splice(fav.indexOf(id), 1) : fav.push(id);
+                                                (idx > -1) ? fav.splice(idx, 1) : fav.push(id);
                                                 
+                                                console.log(idx, fav);
                                                 if (fav.length < 100){
-                                                        user.set("public-favorites", fav);
-                                                        user.upload()
+                                                        user.unsync();
+                                                        user.sync(Config.get("db"), user.get("_id"))
                                                         .then(function(){
-                                                                (idx>-1)?alert(_labels.get("removedfav")):alert(_labels.get("addedfav"));
-                                                                node.classList.toggle("unfav");
+                                                                user.set("public-favorites", fav);
+                                                                return user.upload();
+                                                        })
+                                                        .then(function(){
+                                                                console.log("upload successful");
+                                                                favSpinner.stop();
+                                                                if (idx>-1){
+                                                                        alert(_labels.get("removedfav"));
+                                                                        node.classList.remove("unfav");
+                                                                }
+                                                                else{
+                                                                        alert(_labels.get("addedfav"));
+                                                                        node.classList.add("unfav");
+                                                                }
                                                         });
                                                 }
                                                 else {

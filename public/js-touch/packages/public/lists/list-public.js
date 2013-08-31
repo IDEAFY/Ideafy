@@ -8,6 +8,7 @@
 define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function ListPublicConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
+                _usr =  Config.get("user"),
                 touchStart,
                 touchPoint,
                 currentBar = null,
@@ -40,10 +41,10 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         "labels" : new Model(Config.get("labels")),
                         "listideas" : new Model(_store, {
                                 date : function date(date) {
-                                        this.innerHTML = Utils.formatDate(date);
+                                        if (date) this.innerHTML = Utils.formatDate(date);
                                 },
                                 setDesc : function(desc){
-                                        this.innerHTML = desc.replace(/\n/g, "<br>");        
+                                        if (desc) this.innerHTML = desc.replace(/\n/g, "<br>");        
                                 },
                                 setRating : function setRating(rating) {
                                         if (rating === undefined) {
@@ -75,15 +76,27 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 this.resetQuery = function(query) {
-                        var promise=new Promise();
+                        var promise=new Promise(),
+                            fav = _usr.get("public-favorites") || [];
                         _options.query = query;
 
                         _store.unsync();
                         _store.reset([]);
-                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                currentBar && currentBar.hide();
-                                promise.fulfill();
-                        });
+                        
+                        if ($query === "fav" && fav.length){
+                                Config.get("transport").request("GetFavList", fav, function(res){
+                                        console.log("fav update result : ", res);
+                                        _store.reset(JSON.parse(res));
+                                        promise.fulfill();
+                                })
+                        }
+                        else {
+                                _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        currentBar && currentBar.hide();
+                                        promise.fulfill();      
+                                });
+                        }
+                        
                         return promise;
                 };
                 
@@ -113,10 +126,26 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 this.init = function init(){
-                        var promise = new Promise();
-                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                promise.fulfill();      
-                        });
+                        var promise = new Promise(),
+                            fav = _usr.get("public-favorites") || [];
+                        if ($query === "fav"){
+                                if (fav.length){
+                                        Config.get("transport").request("GetFavList", fav, function(res){
+                                                console.log(res);
+                                                _store.reset(JSON.parse(res));
+                                                promise.fulfill();
+                                        });
+                                }
+                                else {
+                                        _store.reset([]);
+                                        promise.fulfill();
+                                }
+                        }
+                        else {
+                                _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        promise.fulfill();      
+                                });
+                        }
                         return promise;
                 };
 

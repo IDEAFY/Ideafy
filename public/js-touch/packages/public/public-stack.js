@@ -28,6 +28,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 
 		//detail
 			_widget.reset = function reset(viewStore, index){
+			        console.log(index, viewStore.toJSON());
 			        _store = viewStore;
 			        current = index;
 			        _stack.getStack().show("#public-ideadetail");

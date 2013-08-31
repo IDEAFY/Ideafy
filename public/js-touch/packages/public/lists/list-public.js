@@ -77,18 +77,19 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 
                 this.resetQuery = function(query) {
                         var promise=new Promise(),
-                            fav = _usr.get("public-favorites") || [];
+                            fav = _usr.get("public-favorites") || [],
+                            json = {idList: fav};
                         _options.query = query;
 
                         _store.unsync();
                         _store.reset([]);
                         
                         if ($query === "fav" && fav.length){
-                                Config.get("transport").request("GetFavList", fav, function(res){
+                                Config.get("transport").request("GetFavList", json, function(res){
                                         console.log("fav update result : ", res);
                                         _store.reset(JSON.parse(res));
                                         promise.fulfill();
-                                })
+                                });
                         }
                         else {
                                 _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
@@ -127,11 +128,12 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 
                 this.init = function init(){
                         var promise = new Promise(),
-                            fav = _usr.get("public-favorites") || [];
+                            fav = _usr.get("public-favorites") || [],
+                            json = {idList : fav};
                         if ($query === "fav"){
                                 if (fav.length){
                                         console.log("before fav httpreq");
-                                        Config.get("transport").request("GetFavList", fav, function(res){
+                                        Config.get("transport").request("GetFavList", json, function(res){
                                                 console.log(res);
                                                 _store.reset(JSON.parse(res));
                                                 promise.fulfill();

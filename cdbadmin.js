@@ -281,12 +281,13 @@ function CDBAdmin(){
                 });
                 
                 return promise;        
-        }
+        };
         
         
         this.updateUserIP = updateUserIP;
         this.getDoc = getDoc;
         this.getView = getView;
+        this.getBulkView = getBulkView;
         this.updateDoc = updateDoc;
         this.removeDoc = removeDoc;
         this.createDoc = createDoc;

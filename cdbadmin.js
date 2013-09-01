@@ -2,7 +2,8 @@
  * Application handlers
  */
 
-var fs = require("fs");
+var fs = require("fs"),
+    http = require("http");
 
 function CDBAdmin(){
         

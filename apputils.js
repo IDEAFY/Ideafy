@@ -13,7 +13,7 @@ function AppUtils(){
                 _CouchDBDocument = CouchDBDocument;
                 _CouchDBView = CouchDBView;
                 _Promise = Promise;
-        }
+        };
         
         this.setCDBAdmin = function(cdbAdmin){
                 _cdbAdmin = cdbAdmin;
@@ -260,7 +260,7 @@ function AppUtils(){
                 .then(function(){
                         onEnd(cdbView.toJSON());
                 });
-        }
+        };
 }
 
 exports.AppUtils = AppUtils;

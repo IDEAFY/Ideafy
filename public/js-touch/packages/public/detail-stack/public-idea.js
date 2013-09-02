@@ -173,22 +173,22 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.action = function(event, node){
                                 var name = node.getAttribute("href"),
                                     id = _store.get("_id"),
-                                    fav, idx, favSpinner = new Spinner();
+                                    fav, idx,
+                                    favSpinner = new Spinner({color:"#FFFFFF", lines:8, length: 6, width: 3, radius:6, left: 3, top: 3});
                                 switch(name){
                                         case "#public-2cents":
                                                 _twocentWriteUI.reset(id);
                                                 _domWrite.classList.remove("invisible");
                                                 break;
                                         case "#public-favorites":
-                                                console.log("favorites");
+                                                node.classList.add("favwait");
                                                 favSpinner.spin(node);
                                                 (user.get("public-favorites")) ? fav = user.get("public-favorites").concat() : fav = [];
                                                 
                                                 idx = fav.indexOf(id);
                                                 (idx > -1) ? fav.splice(idx, 1) : fav.push(id);
                                                 
-                                                console.log(idx, fav);
-                                                if (fav.length < 100){
+                                                if (fav.length < 100 || fav.length < user.get("public-favorites").length){
                                                         user.unsync();
                                                         user.sync(Config.get("db"), user.get("_id"))
                                                         .then(function(){
@@ -196,8 +196,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                                 return user.upload();
                                                         })
                                                         .then(function(){
-                                                                console.log("upload successful");
                                                                 favSpinner.stop();
+                                                                node.classList.remove("favwait");
                                                                 if (idx>-1){
                                                                         alert(_labels.get("removedfav"));
                                                                         node.classList.remove("unfav");
@@ -210,6 +210,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 }
                                                 else {
                                                         alert(_labels.get("maxfavsize"));
+                                                        favSpinner.stop();
+                                                        node.classList.remove("favwait");
                                                 }
                                                 
                                                 break;

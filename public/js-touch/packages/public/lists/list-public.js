@@ -86,7 +86,6 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         
                         if ($query === "fav" && fav.length){
                                 Config.get("transport").request("GetFavList", json, function(res){
-                                        console.log("fav update result : ", res);
                                         _store.reset(JSON.parse(res));
                                         promise.fulfill();
                                 });
@@ -99,6 +98,10 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         }
                         
                         return promise;
+                };
+                
+                this.setLang = function(lang){
+                        
                 };
                 
                 this.setStart = function(event, node){
@@ -132,9 +135,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                             json = {idList : fav};
                         if ($query === "fav"){
                                 if (fav.length){
-                                        console.log("before fav httpreq", fav);
                                         Config.get("transport").request("GetFavList", json, function(res){
-                                                console.log(res);
                                                 _store.reset(JSON.parse(res));
                                                 promise.fulfill();
                                         });

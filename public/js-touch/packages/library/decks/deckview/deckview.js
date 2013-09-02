@@ -27,7 +27,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         deckView.plugins.addAll({
                                 "cardmenu" : new Model(cardMenu, {
                                         setClass : function(name){
-                                                this.classList.add(name);
+                                                (name) && this.classList.add(name);
                                         },
                                         setActive : function(active){
                                                 (active)?this.classList.add("active"):this.classList.remove("active");
@@ -38,7 +38,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                 "deckviewevent" : new Event(deckView)
                         });
                         
-                        deckView.template = '<div><div data-place="place: newCard"></div><div data-place="place: shareDeck"></div><ul class="card-menu" data-cardmenu="foreach"><li><div class="card-type" data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: touchstart, viewCards"></div><div class="card-count" data-cardmenu="bind:innerHTML, count"></div></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>';
+                        deckView.template = '<div id="deckview" class="details"><div data-place="place: newCard"></div><div data-place="place: shareDeck"></div><ul class="card-menu" data-cardmenu="foreach"><li><div class="card-type" data-cardmenu = "bind: setClass, name; bind:setActive, active" data-deckviewevent="listen: touchstart, viewCards"></div><div class="card-count" data-cardmenu="bind:innerHTML, count"></div></li></li></ul><div id="deckviewstack" data-deckviewstack="destination"></div></div>';
                         
                         deckView.viewCards = function(event, node){
                                 var id = node.getAttribute("data-cardmenu_id");
@@ -54,20 +54,20 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         };
                         
                         deckView.hideEditView = function hideEditView(){
-                                newCardUI.close();        
+                                newCardUI && newCardUI.close();        
                         };
                         
                         deckView.reset = function reset(deck, screen){
                                 deckView.hideEditView();
                                 deckShareUI.hide();
+                                deckView.dom.setAttribute("style", "overflow-y: none;");
                                 
-                                ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
-                                        innerStack.getStack().get(value).reset(deck);        
+                                ["details", "characters", "contexts", "problems", "techno"].forEach(function(val){
+                                        innerStack.getStack().get(val).reset(deck);       
                                 });
                                 
                                 deckId = deck._id;
                                 deckTitle = deck.title;
-                                
                                 cardMenu.reset([]);
                                 
                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){
@@ -94,7 +94,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         Config.get("observer").watch("deck-share", function(deckId){
                                 deckShareUI.reset(deckId);
                                 deckShareUI.show();
-                        })
+                        });
                         
                         return deckView;
                         

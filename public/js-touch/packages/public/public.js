@@ -135,17 +135,24 @@ define(["OObject", "Amy/Control-plugin" ,
                                 id = parseInt(node.getAttribute("data-select_id"), 10);
                                 _languages.loop(function(v,i){
                                         (id === i) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);
-                                })                
+                                });                
                         };
                         
                         _widget.setLang = function(event, node){
-                                var id;
+                                var id, lang;
                                 event.stopPropagation();
                                 id = node.getAttribute("data-select_id");
+                                lang = _languages.get(id).name;
+                                
                                 _btns.loop(function(v,i){
-                                        if (v.name === "#lang") _btns.update(i, "lang", _languages.get(id).name);
+                                        if (v.name === "#lang") _btns.update(i, "lang", lang);
                                 });
-                                _widget.dom.querySelector(".langlist").classList.add("invisible");        
+                                _widget.dom.querySelector(".langlist").classList.add("invisible");
+                                
+                                // apply language filter
+                                listDate.setLang(lang);
+                                listRating.setLang(lang);
+                                listFav.setLang(lang);
                         };
 
 			_widget.mosaic = function(){
@@ -247,7 +254,6 @@ define(["OObject", "Amy/Control-plugin" ,
 			// init public ideas sorted by most recent then init public favorites
 		        listDate.init()
 		        .then(function(){
-		               console.log("listDate init");
 		              _stack.getStack().show("#list-date");
 		              _widget.displayHighlightedIdea();
 		              return listFav.init();     
@@ -255,13 +261,17 @@ define(["OObject", "Amy/Control-plugin" ,
 		        .then(function(){
 		                console.log("fav init ok");
 		                // Watch for favorites changes in user document and update list accordingly
-                                _user.watchValue("public-favorites", function(){
-                                        listFav.resetQuery();        
+                                _user.watchValue("public-favorites", function(val){
+                                        if (val.length !== listFav.getModel().getNbItems()) {
+                                                listFav.resetQuery();
+                                                if (_stack.getStack().getCurrentName === "#list-fav"){
+                                                        _widget.displayHighlightedIdea();
+                                                }
+                                        }       
                                 });
 		        });
 		        
-                        FAV = listFav;
-			//return
+                        //return
 			return _widget;
 		};
 	});

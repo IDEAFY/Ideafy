@@ -183,7 +183,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         deckDetails.hideButtons = function(){
                                 deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
                                 deckDetails.dom.querySelector(".sendmail").classList.add("invisible");        
-                        }
+                        };
                         
                         deckDetails.editPic = function(event, node){
                                 if (deckModel.get("created_by") === user.get("_id")){

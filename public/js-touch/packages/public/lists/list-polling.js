@@ -75,6 +75,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 currentBar && currentBar.hide();
                                 _store.reset(JSON.parse(cdb.toJSON()));
+                                console.log(JSON.stringify(query), _store.toJSON());
                                 cdb.unsync();
                                 polling = setInterval(function(){
                                         cdb.reset([]);
@@ -87,6 +88,15 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                                 promise.fulfill();
                         });
                         return promise;
+                };
+                
+                this.setLang = function(lang){
+                        if (lang === "*"){
+                                widget.resetQuery({descending : true,limit : 50});        
+                        }
+                        else{
+                                widget.resetQuery({startkey:'["","'+lang+'"]', endkey:'[{},"'+lang+'"]', descending: false, limit: 50});
+                        }       
                 };
                 
                 this.setStart = function(event, node){

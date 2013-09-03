@@ -16,9 +16,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _user = Config.get("user"),
                             _resetLang = function(){
                                 // set language to the user's language by default
-                                _store.set("lang", _user.get("lang"));
+                                var l = _user.get("lang").substring(0,2);
+                                _store.set("lang", l);
                                 _languages.loop(function(v,i){
-                                        (v.name === _user.get("lang").substring(0,2)) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
+                                        (v.name === l) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
                                 });        
                             },
                             _labels = Config.get("labels"),

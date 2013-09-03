@@ -62,7 +62,7 @@ define(["OObject", "Amy/Control-plugin" ,
 				"select" : new Model (_languages, {
                                         setBg : function(name){
                                                 if (name === "*"){
-                                                        this.setAttribute('sytle', "background-image: none;");
+                                                        this.setAttribute('style', "background-image: none;background: whitesmoke;");
                                                         this.innerHTML="*";
                                                 }
                                                 else{
@@ -109,22 +109,23 @@ define(["OObject", "Amy/Control-plugin" ,
 			         name = _btns.get(id).name,
 			         st = _stack.getStack();
 			         
-			     _btns.loop(function(v,i){
-			             (i === id) ? _btns.update(i, "pushed", true) : _btns.update(i, "pushed", false);        
-			     });
-			     
 			     if (name === "#lang"){
 			             
 			             _widget.dom.querySelector(".langlist").classList.remove("invisible");
 			     }
-			     else if (name !== st.getCurrentName){
-			             st.show(name);
-			             if (st.get(name).getModel().getNbItems()){
-			                     _widget.displayHighlightedIdea();
-			             }
-			             else{
-			                     // display empty list message in detail window
-			                     // _detail.displayEmpty(name);
+			     else {
+			             _btns.loop(function(v,i){
+                                                (i === id) ? _btns.update(i, "pushed", true) : _btns.update(i, "pushed", false);        
+                                     });
+                                     if (name !== st.getCurrentName){
+			                     st.show(name);
+			                     if (st.get(name).getModel().getNbItems()){
+			                             _widget.displayHighlightedIdea();
+			                     }
+			                     else{
+			                             // display empty list message in detail window
+			                             // _detail.displayEmpty(name);
+			                     }
 			             }
 			     }  
 			};
@@ -237,7 +238,7 @@ define(["OObject", "Amy/Control-plugin" ,
                         
                         
                         //initialize list UIs
-			listDate = new Polling(_db, "library", "_view/publicideas");
+			listDate = new Polling(_db, "library", "_view/publicideasbylang");
 		        // list date needs to be in polling mode with a polling_interval defined in Config to avoid traffic overload
 		        listRating = new List(_db, "ideas", "_view/ideasbyvotes");
 		        listFav = new List(_db, "library", "_view/publicideas", "fav");
@@ -259,7 +260,6 @@ define(["OObject", "Amy/Control-plugin" ,
 		              return listFav.init();     
 		        })
 		        .then(function(){
-		                console.log("fav init ok");
 		                // Watch for favorites changes in user document and update list accordingly
                                 _user.watchValue("public-favorites", function(val){
                                         if (val.length !== listFav.getModel().getNbItems()) {

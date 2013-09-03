@@ -72,7 +72,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                         }
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        this.setAttribute("style", "background-image: none;");
                                                 }
                                         }
                                         }),
@@ -537,7 +537,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 cdb.set("sessionReplay", _idea.get("sessionReplay"));
                                 cdb.set("authornames", names.join(", "));
                                 //set the idea's language to the same language as the session
-                                cdb.set("lang", $session.get("lang"));
+                                cdb.set("lang", $session.get("lang").substring(0,2));
                                 cdb.set("_id", _id);
                                 cdb.sync(Config.get("db"), _id)
                                 .then(function(){
@@ -745,4 +745,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // Return
                         return _widget;
                 };    
-        })
+        });

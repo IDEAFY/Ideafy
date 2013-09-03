@@ -11,7 +11,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 touchStart,
                 touchPoint,
                 currentBar = null,
-                    _options = {
+                _options = {
                         db : $db,
                         view : $view,
                         design : $design,

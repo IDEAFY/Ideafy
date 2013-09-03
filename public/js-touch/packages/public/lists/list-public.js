@@ -20,7 +20,8 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                 descending : true,
                                 limit : 50
                         }
-                };
+                },
+                widget = this;
 
                 //setup
                 _store.setTransport(Config.get("transport"));
@@ -30,14 +31,14 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         _options.query = $query;
                 }
                 
-                this.template = "<div><div id='noresult' class='date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:innerHTML,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
+                widget.template = "<div><div id='noresult' class='date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:innerHTML,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
 
                 // change template for listSearch
                 if (_options.query.q){
-                        this.template = "<div><div id='noresult' class='date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, rating'></span>" + " </div>" + "</li>" + "</ul></div>";       
+                        widget.template = "<div><div id='noresult' class='date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, rating'></span>" + " </div>" + "</li>" + "</ul></div>";       
                 }
                 
-                this.plugins.addAll({
+                widget.plugins.addAll({
                         "labels" : new Model(Config.get("labels")),
                         "listideas" : new Model(_store, {
                                 date : function date(date) {
@@ -50,7 +51,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                         if (rating === undefined) {
                                                 var _id = this.getAttribute("data-listideas_id"),
                                                     _arr = _store.get(_id).doc.votes || [];
-                                                if (_arr.length === 0) {this.innerHTML = ""}
+                                                if (_arr.length === 0) {this.innerHTML = "";}
                                                 else {
                                                         this.innerHTML = Math.round(_arr.reduce(function(x,y){return x+y;})/_arr.length*100)/100;
                                                 }
@@ -71,11 +72,11 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         "listevent" : new Event(this)
                         });
 
-                this.getModel = function() {
+                widget.getModel = function() {
                         return _store;
                 };
                 
-                this.resetQuery = function(query) {
+                widget.resetQuery = function(query) {
                         var promise=new Promise(),
                             fav = _usr.get("public-favorites") || [],
                             json = {idList: fav};
@@ -86,7 +87,14 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         
                         if ($query === "fav" && fav.length){
                                 Config.get("transport").request("GetFavList", json, function(res){
-                                        _store.reset(JSON.parse(res));
+                                        var arr = JSON.parse(res), i, l, lang;
+                                        if (!query.key || query.key === "*") _store.reset(arr);
+                                        else{
+                                                for (i=0, l=arr.length; i<l; i++){
+                                                        lang = arr[i].value.doc.lang.substring(0,2);
+                                                        if (query.key === '"'+lang+'"') _store.alter("push", arr[i]);
+                                                }        
+                                        }
                                         promise.fulfill();
                                 });
                         }
@@ -100,16 +108,21 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         return promise;
                 };
                 
-                this.setLang = function(lang){
-                        
+                widget.setLang = function(lang){
+                       if (lang === "*"){
+                                widget.resetQuery({descending : true,limit : 50});        
+                        }
+                        else{
+                                widget.resetQuery({key:'"'+lang+'"', descending: true, limit: 50});
+                        }  
                 };
                 
-                this.setStart = function(event, node){
+                widget.setStart = function(event, node){
                         touchStart = [event.pageX, event.pageY];
                         currentBar && currentBar.hide(); 
                 };
                 
-                this.showActionBar = function(event, node){
+                widget.showActionBar = function(event, node){
                         var id = node.getAttribute("data-listideas_id"),
                             dom = document.getElementById("public"),
                             frag, display = false;
@@ -129,7 +142,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         }
                 };
                 
-                this.init = function init(){
+                widget.init = function init(){
                         var promise = new Promise(),
                             fav = _usr.get("public-favorites") || [],
                             json = {idList : fav};

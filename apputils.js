@@ -53,7 +53,7 @@ function AppUtils(){
                               _deleteCard(cardId)
                               .then(function(){
                                         promise.fulfill();        
-                              })
+                              });
                         }
                });
                return promise;        

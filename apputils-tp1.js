@@ -6,14 +6,14 @@ var fs = require("fs");
 
 function AppUtils(){
         var _Promise, _CouchDBDocument,
-            _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin,
+            _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _getBulkView, _removeDocAsAdmin,
             _updateCard, _deleteAttachment, _deleteCard;
         
         this.setConstructors = function(CouchDBDocument, CouchDBView, Promise){
                 _CouchDBDocument = CouchDBDocument;
                 _CouchDBView = CouchDBView;
                 _Promise = Promise;
-        }
+        };
         
         this.setCDBAdmin = function(cdbAdmin){
                 _cdbAdmin = cdbAdmin;
@@ -22,6 +22,7 @@ function AppUtils(){
                 _getDocAsAdmin = _cdbAdmin.getDoc;
                 _createDocAsAdmin = _cdbAdmin.getDoc;
                 _getViewAsAdmin = _cdbAdmin.getView;
+                _getBulkView = _cdbAdmin.getBulkView;
                 _removeDocAsAdmin = _cdbAdmin.removeDoc;      
         };
         
@@ -52,7 +53,7 @@ function AppUtils(){
                               _deleteCard(cardId)
                               .then(function(){
                                         promise.fulfill();        
-                              })
+                              });
                         }
                });
                return promise;        
@@ -247,6 +248,17 @@ function AppUtils(){
                                         }
                                 });        
                         }       
+                });
+        };
+        
+        /*
+         * Retrieve a given list of favorite ideas
+         */
+        this.getFavList = function getFavList(json, onEnd){
+                var cdbView = new _CouchDBView();
+                _getBulkView("library", "allideas", json.idList, cdbView)
+                .then(function(){
+                        onEnd(cdbView.toJSON());
                 });
         };
 }

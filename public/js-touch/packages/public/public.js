@@ -7,9 +7,9 @@
 
 define(["OObject", "Amy/Control-plugin" ,
 	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
-	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Store"], 
+	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Store", "lib/spin.min"], 
 	function(Widget, Control, Model, Place, Delegate, Map, 
-		Config, Detail, Utils, List, Polling, Stack, Menu, Store){
+		Config, Detail, Utils, List, Polling, Stack, Menu, Store, Spinner){
 		return function PublicConstructor(){
 		//declaration
 			var _widget = new Widget(),
@@ -18,6 +18,7 @@ define(["OObject", "Amy/Control-plugin" ,
 				_detail= new Detail(),
                                 _menu, listDate, listRating, listFav, listSearch,
                                 _user = Config.get("user"),
+                                _labels = Config.get("labels"),
                                 _btns = new Store([
                                         {name:"#list-fav", css:"byfav", pushed: false, lang:null},
                                         {name:"#list-date", css:"bydate", pushed: true, lang:null},
@@ -25,8 +26,10 @@ define(["OObject", "Amy/Control-plugin" ,
                                         {name:"#lang", css:"bylang", pushed: false, lang: "*"}
                                 ]),
                                 _languages = new Store([{name:"*"}]),
+                                _currentLang = "*",
                                 _usrLg = Config.get("userLanguages"),
-				_stack = new Stack();
+				_stack = new Stack(),
+				_listSpinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();;
 
 		//setup
 		      // build languages & flags
@@ -34,7 +37,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		              _languages.alter("push", val);
 		      });
 		
-		      _widget.template='<div id="public"><div id = "public-menu"></div><div id="public-list" class="list"><div class="header blue-light"><div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, publicideasheadertitle"></span><div class="option right" data-publicevent="listen: touchstart, plus"></div></div><div data-liststack="destination" data-publiccontrol="radio:li.list-item,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search"><ul class="listbtns" data-listbtns="foreach"><li class="tools-button" data-listbtns="bind:setName, name; bind:setClass, css; bind:setPushed, pushed; bind:setLang, lang" data-publicevent="listen:touchstart,show"></li></ul><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-publicevent="listen: touchstart, selectFlag; listen: touchend, setLang"></li></ul></div></div></div><div id="public-detail" class="details" data-publicplace="place:details"></div></div>';
+		      _widget.template='<div id="public"><div id = "public-menu"></div><div id="public-list" class="list"><div class="header blue-light"><div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, publicideasheadertitle"></span><div class="option right" data-publicevent="listen: touchstart, plus"></div></div><div data-liststack="destination" data-publiccontrol="radio:li.list-item,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search"><ul class="listbtns" data-listbtns="foreach"><li class="tools-button" data-listbtns="bind:setName, name; bind:setClass, css; bind:setPushed, pushed; bind:setLang, lang" data-publicevent="listen:touchstart,show"></li></ul><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-publicevent="listen: touchstart, setLang; listen:touchend, stopPropagation"></li></ul></div></div></div><div id="public-detail" class="details" data-publicplace="place:details"></div></div>';
 		
 		      _widget.plugins.addAll({
 				"liststack" : _stack,
@@ -70,7 +73,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                                 }
                                         } 
                                 }),
-				"label" : new Model(Config.get("labels")),
+				"label" : new Model(_labels),
 
 				/* mays be have event plugin in control*/
 				"publicevent" : new Delegate(_widget),
@@ -78,8 +81,7 @@ define(["OObject", "Amy/Control-plugin" ,
 				"publiccontrol" :_radio
 			});
 			
-			
-                        _widget.place(Map.get("public"));
+			_widget.place(Map.get("public"));
 
 			_widget.selectStart = function(event){
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
@@ -110,7 +112,6 @@ define(["OObject", "Amy/Control-plugin" ,
 			         st = _stack.getStack();
 			         
 			     if (name === "#lang"){
-			             
 			             _widget.dom.querySelector(".langlist").classList.remove("invisible");
 			     }
 			     else {
@@ -123,37 +124,41 @@ define(["OObject", "Amy/Control-plugin" ,
 			                             _widget.displayHighlightedIdea();
 			                     }
 			                     else{
-			                             // display empty list message in detail window
-			                             // _detail.displayEmpty(name);
+			                             _detail.displayEmpty(name);
 			                     }
 			             }
 			     }  
 			};
 			
-			_widget.selectFlag = function(event, node){
-                                var id;
-                                event.stopPropagation();
-                                id = parseInt(node.getAttribute("data-select_id"), 10);
-                                _languages.loop(function(v,i){
-                                        (id === i) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);
-                                });                
-                        };
-                        
-                        _widget.setLang = function(event, node){
+			_widget.setLang = function(event, node){
                                 var id, lang;
                                 event.stopPropagation();
+                                event.preventDefault();
                                 id = node.getAttribute("data-select_id");
                                 lang = _languages.get(id).name;
-                                
+                                _currentLang = lang;
+                                // set flag in filter button
                                 _btns.loop(function(v,i){
                                         if (v.name === "#lang") _btns.update(i, "lang", lang);
                                 });
+                                // remove flag list
                                 _widget.dom.querySelector(".langlist").classList.add("invisible");
-                                
                                 // apply language filter
-                                listDate.setLang(lang);
-                                listRating.setLang(lang);
-                                listFav.setLang(lang);
+                                ["#list-rating", "#list-fav", "#list-date"].forEach(function(name){
+                                        var st = _stack.getStack();
+                                        st.get(name).setLang(lang)
+                                        .then(function(){
+                                                if (st.getCurrentName() === name && st.get(name).getModel().getNbItems() === 0){
+                                                        _detail.displayEmpty(name);
+                                                }
+                                                else _widget.displayHighlightedIdea();         
+                                        });     
+                                });
+                        };
+                        
+                        _widget.stopPropagation = function(event,node){
+                                event.stopPropagation();
+                                event.preventDefault();       
                         };
 
 			_widget.mosaic = function(){
@@ -197,11 +202,10 @@ define(["OObject", "Amy/Control-plugin" ,
                                 .then(function(){
                                         _stack.getStack().show("#list-search");
                                         if (listSearch.getModel().getNbItems() >0){
-                                                document.getElementById("noresult").classList.add("invisible");
                                                 _widget.displayHighlightedIdea();
                                         }
                                         else {
-                                                document.getElementById("noresult").classList.remove("invisible");
+                                                _detail.displayEmpty("search");
                                         }      
                                 });
                         };
@@ -238,9 +242,9 @@ define(["OObject", "Amy/Control-plugin" ,
                         
                         
                         //initialize list UIs
-			listDate = new Polling(_db, "library", "_view/publicideasbylang");
+			listDate = new Polling(_db, "library", "_view/publicideasbylang", {startkey:'[0,{}]', endkey:'[0]', descending: true, limit:50});
 		        // list date needs to be in polling mode with a polling_interval defined in Config to avoid traffic overload
-		        listRating = new List(_db, "ideas", "_view/ideasbyvotes");
+		        listRating = new List(_db, "ideas", "_view/ideasbyvotes", {startkey:'[0,{}]', endkey:'[0]', descending: true, limit:50});
 		        listFav = new List(_db, "library", "_view/publicideas", "fav");
 			listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:60, include_docs: true});
 			 
@@ -256,16 +260,16 @@ define(["OObject", "Amy/Control-plugin" ,
 		        listDate.init()
 		        .then(function(){
 		              _stack.getStack().show("#list-date");
-		              _widget.displayHighlightedIdea();
+		              (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
 		              return listFav.init();     
 		        })
 		        .then(function(){
 		                // Watch for favorites changes in user document and update list accordingly
                                 _user.watchValue("public-favorites", function(val){
                                         if (val.length !== listFav.getModel().getNbItems()) {
-                                                listFav.resetQuery();
+                                                listFav.resetQuery(_currentLang);
                                                 if (_stack.getStack().getCurrentName === "#list-fav"){
-                                                        _widget.displayHighlightedIdea();
+                                                        (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
                                                 }
                                         }       
                                 });

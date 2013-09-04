@@ -5,13 +5,15 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-idea", "./detail-stack/public-edit", "./detail-stack/public-sendmail", "./detail-stack/public-share", "service/config", "Store", "lib/spin.min"], 
-	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store, Spinner){
+define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-stack/public-idea", "./detail-stack/public-edit", "./detail-stack/public-sendmail", "./detail-stack/public-share", "service/config", "Store", "lib/spin.min"], 
+	function(Widget, Model, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store, Spinner){
 		return function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
+			     _emptyList = new Widget(),
 			     _ideaDetail, _sendmail, _share, _edit,
 		             _stack = new Stack(),
+		             _labels = Config.get("labels"),
 		             _observer = Config.get("observer"),
 		             _store = new Store(),
 		             current = 0,
@@ -25,19 +27,32 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
 			});
 			
 			_widget.template = '<div class="detail-stack" data-detailstack="destination"></div>';
-
+                        
+                        _emptyList.template = '<div class="msgsplash"><div class="header blue-dark"><span data-labels="bind:innerHTML, noideafound"></span></div><div class="innersplash"><span data-labels="bind: innerHTML, tryotherview"></span></div></div>';
+                        _emptyList.plugins.add("labels", new Model(_labels));
+                        
 		//detail
 			_widget.reset = function reset(viewStore, index){
 			        _store = viewStore;
 			        current = index;
-			        _stack.getStack().show("#public-ideadetail");
-                                _ideaDetail.hideCache();
-                                spinner.spin(_widget.dom);
-			        _ideaDetail.reset(viewStore, index)
-                                .then(function(){
-                                        spinner.stop();
-                                        cache.classList.add("invisible");
-                                });
+			        if (_store.getNbItems()){
+			             _stack.getStack().show("#public-ideadetail");
+                                        _ideaDetail.hideCache();
+                                        spinner.spin(_widget.dom);
+			             _ideaDetail.reset(viewStore, index)
+                                        .then(function(){
+                                                spinner.stop();
+                                                cache.classList.add("invisible");
+                                        });
+                                }
+                                else{
+                                        _stack.getStack().show("#empty-list");
+                                }
+			};
+			
+			_widget.displayEmpty = function displayEmpty(name){
+			        console.log(name);
+			        _stack.getStack().show("#empty-list");                     
 			};
 			
 			_widget.action = function action(name){
@@ -92,6 +107,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/public-ide
                         _stack.getStack().add("#public-edit", _edit);
                         _stack.getStack().add("#public-sendmail", _sendmail);
                         _stack.getStack().add("#public-share", _share);
+                        _stack.getStack().add("#empty-list", _emptyList);
                         
                         _observer.watch("public-viewidea", function(id){
 			             _widget.viewIdea(id);       

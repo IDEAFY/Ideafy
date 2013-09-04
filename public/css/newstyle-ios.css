@@ -1593,9 +1593,20 @@ ul.notify-list{
   overflow-y: scroll;
 }
 
+.detail-body .idealegend{
+    font-family: Pacifico;
+    font-size: 12px;
+    color: #657B99;
+    margin-top: 15px;    
+}
+
 .detail-body p{
     margin-top: 15px;
     text-align: justify;
+}
+
+.detail-body .ideap{
+    margin-top: 2px;
 }
 
 #public-detail .detail-footer, #ideas-detail .detail-footer{
@@ -1782,7 +1793,7 @@ textarea.solution {
 .edit-visibility{
     text-align: right;
     color: #b3b3b3;
-    width: 65%;
+    width: 60%;
 }
 
 .current-visibility{
@@ -1791,7 +1802,7 @@ textarea.solution {
     background-size: 16px 16px;
     background-repeat: no-repeat;
     color: #F27B3D;
-    width: 30%;
+    width: 35%;
     background-image: url('../img/public/privateForList.png');
 }
 
@@ -5247,7 +5258,7 @@ li.color-item{
 }
 
 .innersplash{
-    width:100%;
+    width:630px;
     height:712px;
     background: white;
     background-image: url('../img/brainstorm/doctordeedee87x85.png');
@@ -5259,6 +5270,17 @@ li.color-item{
     font-size: 24px;
     color: #404040;
     overflow-y: hidden;
+}
+
+.innersplash span{
+    display: inline-block;
+    width: 400px;
+    height: 150px;
+    font-size: 18px;
+    color: #657b99;
+    line-height: 25px;
+    font-family: Helvetica;
+    padding-top: 25px;
 }
 
 #msgdetail .msgdetailarea{
@@ -5302,12 +5324,12 @@ li.color-item{
     color: #808080;
 }
 
-#msgdetail .detail-header .date, #noresult .date{
+#msgdetail .detail-header .date, .noresult.date{
     font-size: 14px;
     float: none;
 }
 
-#noresult .date{
+.noresult.date{
     padding-left: 20px;
 }
 
@@ -7392,7 +7414,7 @@ li.my2q{
     background: #657B99;
 }
 
-#noresult{
+.noresult{
     position: absolute;
     margin: 10px;
 }

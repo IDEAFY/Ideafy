@@ -31,11 +31,11 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         _options.query = $query;
                 }
                 
-                widget.template = "<div><div id='noresult' class='date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:innerHTML,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
+                widget.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:innerHTML,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
 
                 // change template for listSearch
                 if (_options.query.q){
-                        widget.template = "<div><div id='noresult' class='date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, rating'></span>" + " </div>" + "</li>" + "</ul></div>";       
+                        widget.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, rating'></span>" + " </div>" + "</li>" + "</ul></div>";       
                 }
                 
                 widget.plugins.addAll({
@@ -79,28 +79,31 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 widget.resetQuery = function(query) {
                         var promise=new Promise(),
                             fav = _usr.get("public-favorites") || [],
-                            json = {idList: fav};
+                            json = {idList: fav},
+                            nores = widget.dom.querySelector(".noresult");
+                            
                         _options.query = query;
-
                         _store.unsync();
                         _store.reset([]);
                         
                         if ($query === "fav" && fav.length){
                                 Config.get("transport").request("GetFavList", json, function(res){
                                         var arr = JSON.parse(res), i, l, lang;
-                                        if (!query.key || query.key === "*") _store.reset(arr);
+                                        if (!query || query === "*") _store.reset(arr);
                                         else{
                                                 for (i=0, l=arr.length; i<l; i++){
                                                         lang = arr[i].value.doc.lang.substring(0,2);
-                                                        if (query.key === '"'+lang+'"') _store.alter("push", arr[i]);
+                                                        if (query === lang) _store.alter("push", arr[i]);
                                                 }        
                                         }
+                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();
                                 });
                         }
                         else {
                                 _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                         currentBar && currentBar.hide();
+                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();      
                                 });
                         }
@@ -109,11 +112,12 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 widget.setLang = function(lang){
-                       if (lang === "*"){
-                                widget.resetQuery({descending : true,limit : 50});        
+                        if ($query === "fav") return widget.resetQuery(lang);
+                        else if (lang === "*"){
+                                return widget.resetQuery({startkey:'[0,{}]', endkey:'[0]',descending : true,limit : 50});        
                         }
                         else{
-                                widget.resetQuery({key:'"'+lang+'"', descending: true, limit: 50});
+                                return widget.resetQuery({startkey:'[1,"'+lang+'", {}]', endkey:'[1,"'+lang+'"]', descending: true, limit: 50});
                         }  
                 };
                 
@@ -145,21 +149,25 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 widget.init = function init(){
                         var promise = new Promise(),
                             fav = _usr.get("public-favorites") || [],
-                            json = {idList : fav};
+                            json = {idList : fav},
+                            nores = widget.dom.querySelector(".noresult");
                         if ($query === "fav"){
                                 if (fav.length){
                                         Config.get("transport").request("GetFavList", json, function(res){
                                                 _store.reset(JSON.parse(res));
+                                                nores.classList.add("invisible");
                                                 promise.fulfill();
                                         });
                                 }
                                 else {
                                         _store.reset([]);
+                                        nores.classList.remove("invisible");
                                         promise.fulfill();
                                 }
                         }
                         else {
                                 _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();      
                                 });
                         }

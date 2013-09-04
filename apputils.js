@@ -53,7 +53,7 @@ function AppUtils(){
                               _deleteCard(cardId)
                               .then(function(){
                                         promise.fulfill();        
-                              })
+                              });
                         }
                });
                return promise;        
@@ -256,7 +256,7 @@ function AppUtils(){
          */
         this.getFavList = function getFavList(json, onEnd){
                 var cdbView = new _CouchDBView();
-                _getBulkView("library", "publicideas", json.idList, cdbView)
+                _getBulkView("library", "allideas", json.idList, cdbView)
                 .then(function(){
                         onEnd(cdbView.toJSON());
                 });

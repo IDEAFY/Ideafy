@@ -29,14 +29,14 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         _options.query = $query;
                 }
                 
-                this.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,value.doc.authors"></div><h2 data-listideas="bind:innerHTML,value.doc.authornames"></h2><span class="date" data-listideas="bind:date, value.doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,value.doc.title"></h3><p data-listideas="bind:innerHTML, value.doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, value.doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, value.rating"></span></div></li></ul></div>';
+                widget.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,value.doc.authors"></div><h2 data-listideas="bind:innerHTML,value.doc.authornames"></h2><span class="date" data-listideas="bind:date, value.doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,value.doc.title"></h3><p data-listideas="bind:innerHTML, value.doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, value.doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, value.rating"></span></div></li></ul></div>';
                 
                 // change template for listSearch
                 if (_options.query.q){
-                        this.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames"></h2><span class="date" data-listideas="bind:date, doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:setDesc, doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, rating"></span></div></li></ul></div>';        
+                        widget.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames"></h2><span class="date" data-listideas="bind:date, doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:setDesc, doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, rating"></span></div></li></ul></div>';        
                 }
 
-                this.plugins.addAll({
+                widget.plugins.addAll({
                         "labels": new Model(Config.get("labels")),
                         "listideas": new Model(_store, {
                                 date : function date(date) {
@@ -73,10 +73,10 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         "listevent" : new Event(this)
                         });
 
-                this.getModel = function() {
+                widget.getModel = function() {
                         return _store;
                 };
-                this.resetQuery = function(query) {
+                widget.resetQuery = function(query) {
                         var promise = new Promise(), nores = widget.dom.querySelector(".noresult");
                         _options.query = query;
                         
@@ -90,12 +90,22 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         return promise;
                 };
 
-                this.setStart = function(event, node){
+                widget.setStart = function(event, node){
                         touchStart = [event.pageX, event.pageY];
                         currentBar && currentBar.hide(); 
                 };
                 
-                this.showActionBar = function(event, node){
+                widget.setLang = function(lang){
+                        if ($query === "fav") return widget.resetQuery(lang);
+                        else if (lang === "*"){
+                                return widget.resetQuery({startkey:'[0,{}]', endkey:'[0]',descending : true,limit : 50});        
+                        }
+                        else{
+                                return widget.resetQuery({startkey:'[1,"'+lang+'", {}]', endkey:'[1,"'+lang+'"]', descending: true, limit: 50});
+                        }  
+                };
+                
+                widget.showActionBar = function(event, node){
                         var id = node.getAttribute("data-listideas_id"),
                             dom = document.getElementById("ideas"),
                             frag, display = false;
@@ -115,7 +125,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         }
                 };
                 
-                this.init = function init(){
+                widget.init = function init(){
                         var promise = new Promise(), nores = widget.dom.querySelector(".noresult");
                         _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 currentBar && currentBar.hide();

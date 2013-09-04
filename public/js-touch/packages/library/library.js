@@ -44,7 +44,9 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 	        // init
 	               _menu = new Menu(_widget.dom.querySelector("#library-menu"), setView);
 	               _menu.toggleActive(false);
+	               console.log("before ideas");
 	               _ideas = new Ideas();
+	               console.log("ideas ok");
 	               _sessions = new Sessions();
 	               _decks = new Decks();
 	               _stack.getStack().add("#ideas", _ideas);

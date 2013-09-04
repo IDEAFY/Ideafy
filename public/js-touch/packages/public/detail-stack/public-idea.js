@@ -63,7 +63,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 if (authors.length === 1 && authors[0]=== user.get("_id")){
                                                         this.innerHTML = _labels.get("youwrotelbl");
                                                 }
-                                                else if (authors.length >1) this.innerHTML = _labels.get("theywrotelbl")
+                                                else if (authors.length >1) this.innerHTML = _labels.get("theywrotelbl");
                                                 else {
                                                         this.innerHTML = _labels.get("ideawrotelbl");
                                                 }        

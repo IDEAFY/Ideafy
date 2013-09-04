@@ -29,7 +29,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 _currentLang = "*",
                                 _usrLg = Config.get("userLanguages"),
 				_stack = new Stack(),
-				_listSpinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();;
+				_listSpinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
 
 		//setup
 		      // build languages & flags
@@ -137,6 +137,10 @@ define(["OObject", "Amy/Control-plugin" ,
                                 id = node.getAttribute("data-select_id");
                                 lang = _languages.get(id).name;
                                 _currentLang = lang;
+                                
+                                // set Spinner
+                                _listSpinner.spin(document.getElementById("public-list"));
+                                
                                 // set flag in filter button
                                 _btns.loop(function(v,i){
                                         if (v.name === "#lang") _btns.update(i, "lang", lang);
@@ -148,6 +152,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                         var st = _stack.getStack();
                                         st.get(name).setLang(lang)
                                         .then(function(){
+                                                if (st.getCurrentName() === name) _listSpinner.stop();
                                                 if (st.getCurrentName() === name && st.get(name).getModel().getNbItems() === 0){
                                                         _detail.displayEmpty(name);
                                                 }
@@ -182,10 +187,10 @@ define(["OObject", "Amy/Control-plugin" ,
 			                             _widget.dom.querySelector(".listbtns").classList.remove("invisible");
                                                      // default list viewed by date
                                                      _stack.getStack().show("#list-date");
-                                                      _btns.loop(function(v,i){
+                                                     _btns.loop(function(v,i){
                                                                 (v.name === "#list-date") ? _btns.update(i, "pushed", true) : _btns.update(i, "pushed", false);        
-                                                        });
-                                                      _widget.displayHighlightedIdea();        
+                                                     });
+                                                     _widget.displayHighlightedIdea();        
 			                     });
 			             }
 			             else{

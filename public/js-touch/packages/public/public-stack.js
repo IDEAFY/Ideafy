@@ -17,7 +17,7 @@ define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-s
 		             _observer = Config.get("observer"),
 		             _store = new Store(),
 		             current = 0,
-		             spinner = new Spinner({color:"#9AC9CD", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
+		             spinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
 
 		//setup
 		        
@@ -51,7 +51,6 @@ define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-s
 			};
 			
 			_widget.displayEmpty = function displayEmpty(name){
-			        console.log(name);
 			        _stack.getStack().show("#empty-list");                     
 			};
 			

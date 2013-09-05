@@ -244,17 +244,31 @@ define(["OObject", "Amy/Control-plugin" ,
 			listDate = new List(_db, "library", "_view/ideas", {key: Config.get("uid"), descending: true});
 			listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
 			listRating = new List(_db, "ideas", "_view/privatebyvotes", {endkey: '["'+Config.get("user").get("_id")+'"]', startkey: '["'+Config.get("user").get("_id")+'",{},{}]', descending: true});
-			listFav = new List(_db, "library", "_view/ideas", "fav");
+			listFav = new List(_db, "library", "_view/allideas", "fav");
 			
 			_stack.getStack().add("#list-date", listDate);
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
+			_stack.getStack().add("#list-fav", listFav);
 			
 			listRating.init();
-			listDate.init().then(function(){
+			listDate.init()
+			.then(function(){
                               _stack.getStack().show("#list-date");
-                              _widget.displayHighlightedIdea();         
-		        });
+                              (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
+                              return listFav.init();     
+                        })
+                        .then(function(){
+                                // Watch for favorites changes in user document and update list accordingly
+                                _user.watchValue("library-favorites", function(val){
+                                        if (val.length !== listFav.getModel().getNbItems()) {
+                                                listFav.resetQuery(_currentLang);
+                                                if (_stack.getStack().getCurrentName === "#list-fav"){
+                                                        (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
+                                                }
+                                        }       
+                                });
+                        });
                         
                         //return
 			return _widget;

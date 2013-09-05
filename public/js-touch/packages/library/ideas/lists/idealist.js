@@ -77,16 +77,33 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         return _store;
                 };
                 widget.resetQuery = function(query) {
-                        var promise = new Promise(), nores = widget.dom.querySelector(".noresult");
+                        var promise = new Promise(), nores = widget.dom.querySelector(".noresult"),
+                            fav = Config.get("user").get("library-favorites") || [],
+                            json = {idList: fav};
                         _options.query = query;
-                        
                         _store.unsync();
                         _store.reset([]);
-                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
-                                currentBar && currentBar.hide();
-                                promise.fulfill();
-                        });
+                        if ($query === "fav"){
+                                Config.get("transport").request("GetFavList", json, function(res){
+                                        var arr = JSON.parse(res), i, l, lang;
+                                        if (!query || query === "*") _store.reset(arr);
+                                        else{
+                                                for (i=0, l=arr.length; i<l; i++){
+                                                        lang = arr[i].value.doc.lang.substring(0,2);
+                                                        if (query === lang) _store.alter("push", arr[i]);
+                                                }        
+                                        }
+                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        promise.fulfill();
+                                });
+                        }
+                        else {
+                                _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        currentBar && currentBar.hide();
+                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        promise.fulfill();      
+                                });
+                        }
                         return promise;
                 };
 
@@ -96,13 +113,31 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 widget.setLang = function(lang){
-                        if ($query === "fav") return widget.resetQuery(lang);
-                        else if (lang === "*"){
-                                return widget.resetQuery({startkey:'[0,{}]', endkey:'[0]',descending : true,limit : 50});        
+                        var query;
+                        if ($query === "fav") query = lang;
+                        else {
+                                switch($view){
+                                        case "_view/ideas":
+                                                if (lang === "*"){
+                                                        query = {key: Config.get("uid"), descending: true};        
+                                                }
+                                                else{
+                                                        query = {key:'[0,'+Config.get("uid")+',"'+lang+'"]', descending: true};
+                                                }
+                                                break;
+                                        case "_view/privatebyvotes":
+                                                if (lang === "*"){
+                                                        query = {endkey: '["'+Config.get("user").get("_id")+'"]', startkey: '["'+Config.get("user").get("_id")+'",{},{}]', descending: true};
+                                                }
+                                                else {
+                                                        query = {endkey: '["'+Config.get("user").get("_id")+'"]', startkey: '["'+Config.get("user").get("_id")+'",{},{}]', descending: true};        
+                                                }
+                                                break;
+                                        default:
+                                                break;        
+                                }
                         }
-                        else{
-                                return widget.resetQuery({startkey:'[1,"'+lang+'", {}]', endkey:'[1,"'+lang+'"]', descending: true, limit: 50});
-                        }  
+                        return widget.resetQuery(query); 
                 };
                 
                 widget.showActionBar = function(event, node){

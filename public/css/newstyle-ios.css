@@ -1137,7 +1137,7 @@ ul.notify-list{
     height: 20px;
     margin-top: 5px;
     background-size: contain;
-    border: 1px solid #657b99;
+    border: 1px solid rgba(101,123,153,0.2);
 }
 
 .idealang ul, .list ul.langlist{

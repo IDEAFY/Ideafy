@@ -133,11 +133,21 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                 }
                                                         }
                                                         // check if idea is part of the user favorites (public or library) and display add/remove button accordingly
-                                                        if (user.get("public-favorites").indexOf(data._id) > -1 || user.get("library-favorites").indexOf(data._id) > -1){
-                                                                buttons.alter("push", {name:"unfav", icon:"img/public/unfav-actionbar.png"}); 
+                                                        if (document.getElementById("public")){
+                                                                if (user.get("public-favorites").indexOf(data._id) > -1){
+                                                                        buttons.alter("push", {name:"unfav", icon:"img/public/unfav-actionbar.png"}); 
+                                                                }
+                                                                else{
+                                                                        buttons.alter("push", {name:"addfav", icon:"img/public/addfav-actionbar.png"});
+                                                                }
                                                         }
-                                                        else{
-                                                                buttons.alter("push", {name:"addfav", icon:"img/public/addfav-actionbar.png"});
+                                                        else if (document.getElementById("library")){
+                                                        if (user.get("library-favorites").indexOf(data._id) > -1){
+                                                                        buttons.alter("push", {name:"unfav", icon:"img/public/unfav-actionbar.png"}); 
+                                                                }
+                                                                else{
+                                                                        buttons.alter("push", {name:"addfav", icon:"img/public/addfav-actionbar.png"});
+                                                                }        
                                                         }
                                                         
                                                         
@@ -434,15 +444,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                         user.upload()
                                         .then(function(){
                                                 favSpinner.stop();
-                                                alert(_labels.get("addedfav"));
+                                                alert(labels.get("addedfav"));
                                                 ui.hide();
                                         });
                                 }
                                 else{
                                         favSpinner.stop();
-                                        alert(_labels.get("maxfavsize"));
+                                        alert(labels.get("maxfavsize"));
                                         ui.hide();     
-                                }  
+                                }
                         };
                         
                         this.removeFav = function(list){
@@ -453,7 +463,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 user.upload()
                                 .then(function(){
                                         favSpinner.stop();
-                                        alert(_labels.get("removedfav"));
+                                        alert(labels.get("removedfav"));
                                         ui.hide();
                                 });       
                         };

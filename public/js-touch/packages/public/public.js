@@ -95,8 +95,11 @@ define(["OObject", "Amy/Control-plugin" ,
 	               _widget.displayHighlightedIdea = function displayHighlightedIdea(){
 			     var ideaList, ideaNode, id;
 			     ideaList = _stack.getStack().getCurrentScreen(),
-			     ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"); 
-			     id = ideaNode.getAttribute("data-listideas_id");
+			     ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"), 
+			     id = 0;
+			     
+			     console.log("public selected : ", ideaNode);
+			     if (ideaNode) id = ideaNode.getAttribute("data-listideas_id");
 			     
 			     ideaNode.classList.add("selected");
 			     ideaNode.scrollIntoView();
@@ -272,10 +275,12 @@ define(["OObject", "Amy/Control-plugin" ,
 		                // Watch for favorites changes in user document and update list accordingly
                                 _user.watchValue("public-favorites", function(val){
                                         if (val.length !== listFav.getModel().getNbItems()) {
-                                                listFav.resetQuery(_currentLang);
-                                                if (_stack.getStack().getCurrentName === "#list-fav"){
-                                                        (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
-                                                }
+                                                listFav.resetQuery(_currentLang)
+                                                .then(function(){
+                                                        if (_stack.getStack().getCurrentName() === "#list-fav"){
+                                                                (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
+                                                        }
+                                                });
                                         }       
                                 });
 		        });

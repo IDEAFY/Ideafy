@@ -42,7 +42,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                     user.watchValue("library-favorites", function(val){
                                                         (val.indexOf(_store.get("_id"))>-1) ? node.classList.add("unfav"): node.classList.remove("unfav");        
                                                     });
-                                                }       
+                                            }       
                                         },
                                         // toggle header buttons left
                                         toggleTwocentShare : function(authors){

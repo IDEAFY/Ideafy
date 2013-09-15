@@ -101,13 +101,19 @@ define(["OObject", "Amy/Control-plugin" ,
 			// function used to retrieve the currently highlighted idea in a list and display its details
                        _widget.displayHighlightedIdea = function displayHighlightedIdea(){
                              var ideaList = _stack.getStack().getCurrentScreen(),
-                                 ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"); 
-                                 id = ideaNode.getAttribute("data-listideas_id");
+                                 ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"), 
+                                 id;
                              
-                             ideaNode.classList.add("selected");
-                             ideaNode.scrollIntoView();
-                             _radio.init(ideaNode);        
-                             _detail.reset(ideaList.getModel(), id);            
+                             if (ideaNode){
+                                        id = ideaNode.getAttribute("data-listideas_id");
+                                        ideaNode.classList.add("selected");
+                                        ideaNode.scrollIntoView();
+                                        _radio.init(ideaNode);        
+                                        _detail.reset(ideaList.getModel(), id);
+                             }
+                             else{
+                                     _detail.displayEmpty(_stack.getStack().getCurrentName());
+                             }            
                         };
 
 			// this piece can be considerably simplified --> using stack & control plugins
@@ -262,10 +268,12 @@ define(["OObject", "Amy/Control-plugin" ,
                                 // Watch for favorites changes in user document and update list accordingly
                                 _user.watchValue("library-favorites", function(val){
                                         if (val.length !== listFav.getModel().getNbItems()) {
-                                                listFav.resetQuery(_currentLang);
-                                                if (_stack.getStack().getCurrentName === "#list-fav"){
-                                                        (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
-                                                }
+                                                listFav.resetQuery(_currentLang)
+                                                .then(function(){
+                                                        if (_stack.getStack().getCurrentName() === "#list-fav"){
+                                                                (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
+                                                        }
+                                                });
                                         }       
                                 });
                         });

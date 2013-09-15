@@ -123,12 +123,14 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 
                 widget.setStart = function(event, node){
                         touchStart = [event.pageX, event.pageY];
-                        currentBar && currentBar.hide(); 
+                        if (currentBar){
+                                currentBar.hide();
+                                currentBar = null;
+                        } 
                 };
                 
                 widget.showActionBar = function(event, node){
                         var id = node.getAttribute("data-listideas_id"),
-                            dom = document.getElementById("public"),
                             frag, display = false;
                         
                         touchPoint = [event.pageX, event.pageY];

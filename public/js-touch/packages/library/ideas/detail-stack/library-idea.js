@@ -30,9 +30,19 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "ideadetail" : new Model(_store, {
                                         // toggle header buttons right
                                         toggleFavEdit : function(authors){
-                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#library-edit") : this.setAttribute("href", "#library-favorites");
-                                            // check if idea is already a user's favorite
-                                            (user.get("library-favorites") && (user.get("library-favorites").indexOf(_store.get("_id"))>-1)) ? this.classList.add("unfav") : this.classList.remove("unfav");       
+                                            var node = this;
+                                            if (authors.indexOf(user.get("_id"))>-1) {
+                                                    node.setAttribute("href", "#library-edit");
+                                            }
+                                            else{
+                                                    node.setAttribute("href", "#library-favorites");
+                                                    // check if idea is already a user's favorite
+                                                    (user.get("library-favorites") && (user.get("library-favorites").indexOf(_store.get("_id"))>-1)) ? node.classList.add("unfav") : node.classList.remove("unfav");
+                                                    
+                                                    user.watchValue("library-favorites", function(val){
+                                                        (val.indexOf(_store.get("_id"))>-1) ? node.classList.add("unfav"): node.classList.remove("unfav");        
+                                                    });
+                                                }       
                                         },
                                         // toggle header buttons left
                                         toggleTwocentShare : function(authors){

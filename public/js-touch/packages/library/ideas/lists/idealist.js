@@ -19,6 +19,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                 descending : true
                         }
                 },
+                user = Config.get("user"),
                 widget = this;
 
                 //setup
@@ -109,7 +110,10 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
 
                 widget.setStart = function(event, node){
                         touchStart = [event.pageX, event.pageY];
-                        currentBar && currentBar.hide(); 
+                        if (currentBar){
+                                 currentBar.hide();
+                                 currentBar = null;        
+                        } 
                 };
                 
                 widget.setLang = function(lang){
@@ -119,18 +123,18 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                 switch($view){
                                         case "_view/ideas":
                                                 if (lang === "*"){
-                                                        query = {key: Config.get("uid"), descending: true};        
+                                                        query = {key: '"' + user.get("_id")+'"', descending: true};        
                                                 }
                                                 else{
-                                                        query = {key:'[0,'+Config.get("uid")+',"'+lang+'"]', descending: true};
+                                                        query = {key:'[0,"'+user.get("_id")+'","'+lang+'"]', descending: true};
                                                 }
                                                 break;
                                         case "_view/privatebyvotes":
                                                 if (lang === "*"){
-                                                        query = {endkey: '["'+Config.get("user").get("_id")+'"]', startkey: '["'+Config.get("user").get("_id")+'",{},{}]', descending: true};
+                                                        query = {endkey: '["'+user.get("_id")+'"]', startkey: '["'+Config.get("user").get("_id")+'",{},{}]', descending: true};
                                                 }
                                                 else {
-                                                        query = {endkey: '["'+Config.get("user").get("_id")+'"]', startkey: '["'+Config.get("user").get("_id")+'",{},{}]', descending: true};        
+                                                        query = {endkey: '["'+user.get("_id")+'"]', startkey: '["'+Config.get("user").get("_id")+'",{},{}]', descending: true};        
                                                 }
                                                 break;
                                         default:
@@ -161,12 +165,30 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 widget.init = function init(){
-                        var promise = new Promise(), nores = widget.dom.querySelector(".noresult");
-                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                currentBar && currentBar.hide();
-                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
-                                promise.fulfill();   
-                        });
+                        var promise = new Promise(),
+                            fav = user.get("library-favorites") || [],
+                            json = {idList : fav},
+                            nores = widget.dom.querySelector(".noresult");
+                        if ($query === "fav"){
+                                if (fav.length){
+                                        Config.get("transport").request("GetFavList", json, function(res){
+                                                _store.reset(JSON.parse(res));
+                                                nores.classList.add("invisible");
+                                                promise.fulfill();
+                                        });
+                                }
+                                else {
+                                        _store.reset([]);
+                                        nores.classList.remove("invisible");
+                                        promise.fulfill();
+                                }
+                        }
+                        else {
+                                _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        promise.fulfill();      
+                                });
+                        }
                         return promise;
                 };
         }

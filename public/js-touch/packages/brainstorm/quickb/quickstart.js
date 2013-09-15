@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "lib/spin.min", "Promise"],
-        function(Widget, Map, Model, Event, Config, Help, Spinner, Promise){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "lib/spin.min", "Promise", "Store"],
+        function(Widget, Map, Model, Event, Config, Help, Spinner, Promise, Store){
                 
                 return function QuickStartConstructor($session, $prev, $next, $progress){
                         
@@ -14,24 +14,49 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _widget = new Widget(),
                             _user = Config.get("user"),
                             _db = Config.get("db"),
+                            _languages = new Store(Config.get("userLanguages")),
+                            _resetLang = function(){
+                                // set language to the user's language by default
+                                var l = _user.get("lang").substring(0,2);
+                                $session.set("lang", l);
+                                _languages.loop(function(v,i){
+                                        (v.name === l) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
+                                });        
+                            },
                              _labels = Config.get("labels"),
                              _next = "step",
                              spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 360, left:545}).spin();
                              // deduct 20px from position shown in navigator
                         
+                        // reset languages
+                        _resetLang();
+                        
                         // setup
                         _widget.plugins.addAll({
                                 "labels" : new Model(_labels),
+                                "select" : new Model (_languages, {
+                                        setBg : function(name){
+                                                this.setAttribute("style", "background-image:url('img/flags/"+name+".png');");
+                                                //(name === _user.get("lang").substring(0,2)) ? this.classList.add("selected") : this.classList.remove("selected");
+                                        },
+                                        setSelected : function(selected){
+                                                (selected) ? this.classList.add("selected") : this.classList.remove("selected");        
+                                        } 
+                                }),
                                 "model" : new Model($session, {
                                         setTitle : function(initiator){
                                                 var _now = new Date();
                                                 if (initiator && initiator.username) this.setAttribute("placeholder", _labels.get("quickstarttitleplaceholderpre")+initiator.username+_labels.get("quickstarttitleplaceholderpost"));
+                                        },
+                                        displayLang : function(lang){
+                                                var l=lang.substring(0,2);
+                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png');");       
                                         }
                                 }),
                                 "quickstartevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "quickstart"><div class="previousbutton" data-quickstartevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickstart" data-quickstartevent="listen:touchstart, toggleProgress"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="quickstart-form"><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="quickstart-title" autofocus="" name="title" data-model="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="quickstart-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div>';
+                        _widget.template = '<div id = "quickstart"><div class="previousbutton" data-quickstartevent="listen: touchstart, press; listen: touchstart, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, quickstart" data-quickstartevent="listen:touchstart, toggleProgress"></div><div class="help-brainstorm" data-quickstartevent="listen:touchstart, help"></div><form class="quickstart-form"><div class="idealang"><div class="currentlang" data-model="bind: displayLang, lang" data-quickstartevent="listen: touchstart, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-quickstartevent="listen: touchstart, selectFlag; listen: touchend, setLang"></li></ul></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="quickstart-title" autofocus="" name="title" data-model="bind:value, title; bind: setTitle, initiator"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="quickstart-desc" name="description" data-model="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea><div class="next-button" data-labels="bind:innerHTML, nextbutton" data-quickstartevent="listen: touchstart, press; listen:touchend, next"></div></form><div>';
                         
                         _widget.place(Map.get("quickstart"));
                         
@@ -88,6 +113,27 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 $progress();               
                         };
                         
+                        _widget.showLang = function(event, node){
+                                _widget.dom.querySelector(".idealang ul").classList.remove("invisible");        
+                        };
+                        
+                        _widget.selectFlag = function(event, node){
+                                var id;
+                                event.stopPropagation();
+                                id = parseInt(node.getAttribute("data-select_id"), 10);
+                                _languages.loop(function(v,i){
+                                        (id === i) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);
+                                });                
+                        };
+                        
+                        _widget.setLang = function(event, node){
+                                var id;
+                                event.stopPropagation();
+                                id = node.getAttribute("data-select_id");
+                                $session.set("lang", _languages.get(id).name);
+                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");        
+                        };
+                        
                         _widget.reset = function reset(sip){
                                 var now = new Date(), step = $session.get("step"), promise = new Promise();
                                 if (sip){
@@ -98,6 +144,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 else{
                                         $session.set("startTime", now.getTime());
                                         $session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        $session.set("lang", _user.get("lang"));
                                         _next = "step";
                                 }
                         };

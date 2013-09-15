@@ -279,7 +279,7 @@ define(["Olives/OObject", "service/map", "Olives/Model-plugin", "Olives/Event-pl
               _widget.place(_dom);
               
               // init session data
-              _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
+              _sessionsCDB.sync(_db, "library", "_view/sessions", {key: '"'+_user.get("_id")+'"', descending: true}).then(function(){
                                 _widget.resetSessionData();
                                 ["added", "deleted", "updated"].forEach(function(change){
                                         _sessionsCDB.watch(change, function(idx, value){

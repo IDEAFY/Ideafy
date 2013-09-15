@@ -38,7 +38,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newidea" : new Model(_store, {
                                         displayLang : function(lang){
                                                 var l=lang.substring(0,2);
-                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png');")        
+                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png');");       
                                         },
                                         setVisibility : function(visibility){
                                                 if (visibility === "public"){
@@ -100,7 +100,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 id = parseInt(node.getAttribute("data-select_id"), 10);
                                 _languages.loop(function(v,i){
                                         (id === i) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);
-                                })                
+                                });               
                         };
                         
                         _widget.setLang = function(event, node){

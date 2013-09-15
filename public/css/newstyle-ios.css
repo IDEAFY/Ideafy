@@ -839,8 +839,8 @@ ul.notify-list{
     font-size: 12px;
 }
 
-#newdeck-popup .newidea-footer{
-    margin-top: 20px;
+#newdeck-popup .errormsg{
+    float: left;
 }
 
 #newidea-popup .publicwarning{
@@ -1092,9 +1092,39 @@ ul.notify-list{
     text-align: right;
 }
 
-.idea-edit .idealang{
-    margin-top: -15px;
+.idea-edit .idealang, #ideafy-quick .idealang, #ideafy-quick .idealang ul{
     width: 590px;
+}
+
+.deckdetails .idealang{
+    width: 566px;
+    margin-top: 20px;
+    position: absolute;
+}
+
+.deckdetails .idealang ul{
+    position: absolute;
+    z-index: 2000;
+    background: white;
+    width: 144px;
+    padding: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 5px #657b99;
+    margin-left: 413px;
+    height: auto;
+    margin-top: 0px;
+}
+
+#newmub .idealang, #newmub .idealang ul{
+    width: 851px;
+}
+
+#newmub .idealang{
+    margin-top: 0px;
+}
+
+.idea-edit .idealang, #newdeck-popup .idealang{
+    margin-top: -15px;    
 }
 
 #new2q-popup .idealang{
@@ -2509,6 +2539,7 @@ textarea.solution {
     margin-right: 5px;
     background-size: contain;
     background-position:center center;
+    background-repeat: no-repeat;
 }
 
 .actionbar .replaysession, .actionbar .deletesession{
@@ -2716,7 +2747,7 @@ textarea.solution {
 }
 
 #deckview .cardlist, #deckview .deckdetails{
-    height: 568px;
+    height: 608px;
     background-image:url('../img/library/bgdeck.jpg');
     background-size: cover;
     padding: 20px;
@@ -2831,7 +2862,7 @@ textarea.solution {
 }
 
 #deckview .deckheader{
-    padding: 12px;  
+    padding: 11px;  
     background: transparent; 
 }
 
@@ -2847,6 +2878,11 @@ textarea.solution {
     background-repeat: no-repeat;
     background-size: contain;
     margin-right: 20px;    
+}
+
+#deckview .deckheader span.date{
+    margin-top: -14px;
+    font-size: 14px;
 }
 
 #deckview .deckdescription{
@@ -7378,10 +7414,9 @@ li.my2q{
 #mulist .mulistoptions{
     float: right;
     margin-top: -35px;
-    height: 37px;
-    display: inline-table;
+    height: 32px;
+    display: inline-block;
     width: 400px;
-    line-height:30px;
 }
 
 #mulist .mulistoptions .search{
@@ -7393,15 +7428,55 @@ li.my2q{
 }
 
 #mulist .mulistoptions select{
-    width: 60px;
-    height: 30px;
+    width: 100px;
+    height: 25px;
     border-color: #CCCCCC;
     background-size: 25px;
     padding-right: 25px;
+    float: left;
+    margin-top: 6px;
 }
 
-#mulist .mulistoptions select.modes{
-    width: 100px;
+#mulist .mulistoptions .selectlang{
+    width: 60px;
+    height: 23px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    display: inline-block;
+    float: left;
+    margin-top: 6px;
+}
+
+#mulist .mulistoptions .selectlang div{
+    float: left;
+    line-height: 30px;
+    text-align: center;
+    width: 34px;
+    font-family: times;
+    height: 23px;
+    background-size: 34px 23px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+#mulist .mulistoptions .selectlang button{
+    float: left;
+    height: 23px;
+    border: none;
+    background: url('../img/profile/buttonMinSeeMoreDisable.png') no-repeat right center;
+    background-size: 25px 25px;    
+}
+
+#mulist .mulistoptions ul.langlist{
+    position: absolute;
+    z-index: 2000;
+    background: white;
+    width: 144px;
+    padding: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 5px #657b99;
+    margin-top: 40px;
+    margin-left: 60px;
 }
 
 #mulistall, #musearch{

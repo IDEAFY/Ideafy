@@ -19,20 +19,30 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                     muSearch = new Store([]),
                     muPreviewUI = new MUPreview(),
                     musessions = new Store([]),
-                    muListOptions = new Store({"lang":[labels.get("all")], "modes":["allmodes", "roulette", "campfire", "boardroom"], "selectedLang": "all", "selectedMode": "allmodes"}),
+                    muListOptions = new Store({"modes":["allmodes", "roulette", "campfire", "boardroom"], "selectedLang": "all", "selectedMode": "allmodes"}),
+                    _languages = new Store([{name:"*"}]),
+                    _usrLg = Config.get("userLanguages"), 
                     currentList = "mulistall",
                     contacts = Utils.getUserContactIds(), // array of user ids
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 6, radius:10, top: 200}).spin();
                 
+                // build languages & flags
+                _usrLg.forEach(function(val){
+                        _languages.alter("push", val);
+                });
+                
                 widget.plugins.addAll({
                         "labels" : new Model(labels),
                         "options" : new Model(muListOptions,{
-                                setLang : function(lang){
-                                        var i,l, res="";
-                                        for (i=0, l=lang.length;i<l;i++){
-                                                res+='<option>'+lang[i]+'</option>';
+                                setBg : function(lang){
+                                        if (lang === "all"){
+                                                this.setAttribute("style", "background-image: none;");
+                                                this.innerHTML = "*";
                                         }
-                                        this.innerHTML=res;        
+                                        else{
+                                                this.innerHTML = " ";
+                                                this.setAttribute("style", "background-image:url('img/flags/"+lang+".png');");
+                                        }
                                 },
                                 setMode : function(modes){
                                         var i,l, res="";
@@ -41,6 +51,18 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                         }
                                         this.innerHTML=res;        
                                 }
+                        }),
+                        "select" : new Model (_languages, {
+                                setBg : function(name){
+                                        if (name === "*"){
+                                                        this.setAttribute('style', "background-image: none;background: whitesmoke;text-align: center;");
+                                                        this.innerHTML="*";
+                                        }
+                                        else{
+                                                this.innerHTML = " ";
+                                                this.setAttribute("style", "background-image:url('img/flags/"+name+".png');");
+                                        }
+                                } 
                         }),
                         "muall" : new Model(muListAll, {
                                 setParticipants : function (array){
@@ -65,14 +87,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                         }
                                 },
                                 setLang : function(lang){
-                                        switch(lang){
-                                                case "fr-fr":
-                                                        this.setAttribute("style", "background-image:url('img/flags/france.png');");
-                                                        break;
-                                                default:
-                                                        this.setAttribute("style", "background-image:url('img/flags/USA.png');");
-                                                        break;
-                                        }
+                                        this.setAttribute("style", "background-image: url('img/flags/"+lang.substring(0,2)+".png');");
                                         this.innerHTML = " ";
                                 }
                         }),
@@ -99,15 +114,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                         }        
                                 },
                                 setLang : function(lang){
-                                        switch(lang){
-                                                case "fr-fr":
-                                                        this.setAttribute("style", "background-image:url('img/flags/france.png');");
-                                                        break;
-                                                default:
-                                                        this.setAttribute("style", "background-image:url('img/flags/USA.png');");
-                                                        break;
-                                                
-                                        }
+                                        var l = lang.substring(0,2);
+                                        this.setAttribute("style", "background-image:url('img/flags/"+l+".png');");
                                         this.innerHTML = " ";
                                 }        
                         }),
@@ -115,7 +123,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         "mulistevent" : new Event(widget)
                 });
                 
-                widget.template = '<div id="mulist"><div id="mulist-content"><div id="mulistspinner"></div><div data-mupreview = "place: preview"></div><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><select class="modes" data-options="bind: setMode, modes" data-mulistevent="listen:change, filterMode"></select><select data-options="bind: setLang, lang" data-mulistevent="listen:change, filterLang"></select></div><hr/><div class="mulistheader"><div class="mumode" data-labels="bind:innerHTML, mode"></div><div class="mutitle" data-labels="bind:innerHTML, title"></div><div class="mulang" data-labels="bind:innerHTML, lang"></div><div class="muleadername" data-labels="bind:innerHTML, leader"></div><div class="muparts" data-labels="bind:innerHTML, participants"></div></div><div class="noresult invisible" data-labels="bind:innerHTML, nosessionfound"></div><ul id="mulistall" data-muall="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-muall="bind:setMode, value.mode"></div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mulang" data-muall="bind:setLang, value.lang"></div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musearch" class="invisible" data-musearch="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-musearch="bind:setMode, fields.mode"></div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mulang" data-musearch="bind:setLang, fields.lang"></div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
+                widget.template = '<div id="mulist"><div id="mulist-content"><div id="mulistspinner"></div><div data-mupreview = "place: preview"></div><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><select class="modes" data-options="bind: setMode, modes" data-mulistevent="listen:change, filterMode"></select><div class="selectlang"><div data-options="bind:setBg, selectedLang"></div><button data-mulistevent = "listen:touchstart, displayLang"></button></div><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-mulistevent="listen: touchend, filterLang"></li></ul></div><hr/><div class="mulistheader"><div class="mumode" data-labels="bind:innerHTML, mode"></div><div class="mutitle" data-labels="bind:innerHTML, title"></div><div class="mulang" data-labels="bind:innerHTML, lang"></div><div class="muleadername" data-labels="bind:innerHTML, leader"></div><div class="muparts" data-labels="bind:innerHTML, participants"></div></div><div class="noresult invisible" data-labels="bind:innerHTML, nosessionfound"></div><ul id="mulistall" data-muall="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-muall="bind:setMode, value.mode"></div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mulang" data-muall="bind:setLang, value.lang"></div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musearch" class="invisible" data-musearch="foreach"><li data-mulistevent="listen: touchstart, zoom"><div class="mumode" data-musearch="bind:setMode, fields.mode"></div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mulang" data-musearch="bind:setLang, fields.lang"></div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
                 
                 widget.reset = function reset(){
                        currentList = "mulistall";
@@ -197,19 +205,20 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 // a function to add qualifying sessions (e.g. waiting, less than 4 participants and relevant to user)
-                widget.addSessions = function addSessions(arr, mode){
+                widget.addSessions = function addSessions(arr, mode, lang){
                         var promise = new Promise(),
                             cdb = new CouchDBView(),
                             view = "_view/"+mode, query = {};
                         
                         cdb.setTransport(transport);
                         if (mode === "roulette"){
-                                query = {descending:false, limit:50};
+                                (lang) ? query = {key:'"'+lang+'"', descending:false, limit:50} : query = {descending:false, limit:50};
                         }
                         else{
-                                query={key: Config.get("uid"),descending:false};      
+                                (lang) ? query={key: '["'+user.get("_id")+'","'+lang+'"]',descending:false} : query={startkey: '["'+user.get("_id")+'",{}]', endkey: '["'+user.get("_id")+'"]', descending:true};
                         }
                         cdb.sync(db, "library", view, query).then(function(){
+                                console.log("MODE : ", mode, "QUERY : ", JSON.stringify(query), "RESULT : ", cdb.toJSON());
                                 cdb.loop(function(v,i){
                                         arr.unshift(v);
                                 });
@@ -231,13 +240,20 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         }        
                 };
                 
+                widget.displayLang = function(event, node){
+                        widget.dom.querySelector(".langlist").classList.remove("invisible");        
+                };
+                
                 widget.filterLang = function(event, node){
-                        var i = node.selectedIndex;
+                        var i = parseInt(node.getAttribute("data-select_id"), 10);
+                        
+                        widget.dom.querySelector(".langlist").classList.add("invisible");
+                        
                         if (i === 0){
-                                muListOptions.set("selectedLang", "all");        
+                                muListOptions.set("selectedLang", "all");       
                         }
                         else{
-                                muListOptions.set("selectedLang", muListOptions.get("lang")[i]);
+                                muListOptions.set("selectedLang", _languages.get(i).name);
                         }
                         // start spinner
                         spinner.spin(document.getElementById("mulistspinner"));
@@ -288,7 +304,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 if (currentList === "mulistall"){
                                         muListAll.reset([]);
                                         if (mode){
-                                                widget.addSessions(arr, mode, {lang: lang}).then(function(){
+                                                widget.addSessions(arr, mode, lang).then(function(){
                                                         muListAll.reset(arr);
                                                         if (arr.length){
                                                                 widget.dom.querySelector(".noresult").classList.add("invisible");
@@ -300,12 +316,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                 });
                                         }
                                         else{
-                                                widget.addSessions(arr, "roulette", {lang: lang})
+                                                widget.addSessions(arr, "roulette", lang)
                                                 .then(function(){
-                                                        return widget.addSessions(arr, "campfire", {lang: lang});
+                                                        return widget.addSessions(arr, "campfire", lang);
                                                 })
                                                 .then(function(){
-                                                        return widget.addSessions(arr, "boardroom", {lang: lang});
+                                                        return widget.addSessions(arr, "boardroom", lang);
                                                 })
                                                 .then(function(){
                                                         muListAll.reset(arr);
@@ -367,11 +383,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 
                 
                 // init
-                // get available languages
-                
-                transport.request("GetLanguages", {}, function(result){
-                        muListOptions.set("lang", [labels.get("all")].concat(result));     
-                });
                 
                 // pass the refresh callback to the preview UI to automatically refresh the current list once a preview window is closed
                 muPreviewUI.init(widget.refreshList);
@@ -384,12 +395,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         arr.splice(0, 1, labels.get("all"));
                         muListOptions.set("lang", arr);     
                 });
-                
-                
-                MUALL = muListAll;
-                MUSEARCH = muSearch;
-                MUOPTIONS = muListOptions;
-                
                 
                 return widget;
                    

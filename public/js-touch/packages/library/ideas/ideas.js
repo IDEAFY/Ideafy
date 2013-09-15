@@ -229,7 +229,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 _searchInput.set("search", "");
                                 listSearch.resetQuery({q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
                                 listRating.resetQuery({startkey: '["'+Config.get("user").get("_id")+'",{}]', endkey: '["'+Config.get("user").get("_id")+'"]', descending: true, include_docs:true}) ;
-                                listDate.resetQuery({key: Config.get("uid"), descending: true, include_docs:true})
+                                listDate.resetQuery({key: '"'+_user.get("_id")+'"', descending: true, include_docs:true})
                                 .then(function(){
                                         _stack.getStack().show("#list-date");
                                         _widget.displayHighlightedIdea();         
@@ -241,7 +241,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			// for library for the time being only propose list by date or search tool
 			// additional options (rating/favorites etc. may be offered in the future)
 			
-			listDate = new List(_db, "library", "_view/ideas", {key: Config.get("uid"), descending: true});
+			listDate = new List(_db, "library", "_view/ideas", {key: '"'+_user.get("_id")+'"', descending: true});
 			listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
 			listRating = new List(_db, "ideas", "_view/privatebyvotes", {endkey: '["'+Config.get("user").get("_id")+'"]', startkey: '["'+Config.get("user").get("_id")+'",{},{}]', descending: true});
 			listFav = new List(_db, "library", "_view/allideas", "fav");

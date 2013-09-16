@@ -1438,27 +1438,41 @@ ul.notify-list{
 }
 
 /* factorize with other header buttons */
+#public-detail .option, #ideas-detail .option{
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
 #public-detail .option.right, #ideas-detail .option.right {
   background-size:40%;
 }
 
 #public-detail .option.right[href="#public-favorites"], #ideas-detail .option.right[href="#library-favorites"]{
-    background:url('../img/public/vote.png') no-repeat center center;
+    background-image:url('../img/public/vote.png');
     background-size: 15px;
 }
 
+#public-detail .option.right[href="#public-favorites"].unfav, #ideas-detail .option.right[href="#library-favorites"].unfav{
+    background-image:url('../img/public/unfav.png');
+    background-size: 15px;    
+}
+
+#public-detail .option.right[href="#public-favorites"].favwait, #ideas-detail .option.right[href="#library-favorites"].favwait{
+    background-image:none;   
+}
+
 #public-detail .option.right[href="#public-edit"], #ideas-detail .option.right[href="#library-edit"] {
-    background:url('../img/wall/headerModifyYourIdea.png') no-repeat center center;
+    background-image:url('../img/wall/headerModifyYourIdea.png');
     background-size: 20px;
 }
 
 #public-detail .option.left[href="#public-2cents"], #ideas-detail .option.left[href="#library-2cents"]{
-    background:url('../img/public/2cents.png') no-repeat center center;
+    background-image:url('../img/public/2cents.png');
     background-size: 20px;
 }
 
 #public-detail .option.left[href="#public-share"], #ideas-detail .option.left[href="#library-share"]{
-    background:url('../img/wall/25shareActive.png') no-repeat center center;
+    background-image:url('../img/wall/25shareActive.png');
     background-size: 30px;
 }
 

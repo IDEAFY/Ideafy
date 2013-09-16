@@ -99,7 +99,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.getCardList = function getCardList(idlist){
-                                var cdb = new CouchDBBulkDocuments(), query = idlist;
+                                var cdb = new CouchDBBulkDocuments(), query = idlist, promise = new Promise();
                                 if (idlist[0] === "newcard"){
                                         query = idlist.slice(1, idlist.length);
                                 }
@@ -115,14 +115,17 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         
                                                 // display first page
                                                 cardList.displayPage(0);
+                                                promise.fulfill();
                                                 cdb.unsync();
                                         });
                                 }
                                 else{
                                         cards.reset([{_id:"newcard", title:"", picture_file:""}]);
                                         pagination.set("nbPages", 1); 
-                                        cardList.displayPage(0);       
+                                        cardList.displayPage(0);
+                                        promise.fulfill();       
                                 }
+                                return promise;
                         };
                         
                         cardList.displayPage = function displayPage(pageNB){
@@ -192,7 +195,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                         cardCDB.upload()
                                                         .then(function(){
                                                                 promise.fulfill();
-                                                        })
+                                                        });
                                                 }
                                                 else{
                                                         if (file.search("img/decks") === -1){

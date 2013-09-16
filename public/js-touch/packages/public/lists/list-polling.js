@@ -23,10 +23,16 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         }
                 },
                 widget = this;
+                
+                // set default query parameters
+                if ($query) {
+                        _options.query = $query;
+                }
 
-                this.template = "<ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul>";
+                this.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
 
                 this.plugins.addAll({
+                        "labels": new Model(Config.get("labels")),
                         "listideas" : new Model(_store, {
                                 date : function date(creadate) {
                                         this.innerHTML = Utils.formatDate(creadate);
@@ -67,7 +73,9 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 widget.resetQuery = function resetQuery(query) {
                         var promise=new Promise(),
                             interval = user.get("settings").polling_interval || Config.get("polling_interval"),
-                            cdb = new CouchDBView();
+                            cdb = new CouchDBView(),
+                            nores = widget.dom.querySelector(".noresult");
+                        
                         if (query) {_options.query = query;}
                         
                         clearInterval(polling);
@@ -75,12 +83,14 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 currentBar && currentBar.hide();
                                 _store.reset(JSON.parse(cdb.toJSON()));
+                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                 cdb.unsync();
                                 polling = setInterval(function(){
                                         cdb.reset([]);
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 currentBar && currentBar.hide();
                                                 _store.reset(JSON.parse(cdb.toJSON()));
+                                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                                 cdb.unsync();
                                         });
                                 },interval);
@@ -89,9 +99,21 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         return promise;
                 };
                 
+                this.setLang = function(lang){
+                        if (lang === "*"){
+                                return widget.resetQuery({startkey:'[0,{}]', endkey:'[0]', descending : true, limit : 50});        
+                        }
+                        else{
+                                return widget.resetQuery({key:'[1,"'+lang+'"]', descending: true, limit: 50});
+                        }       
+                };
+                
                 this.setStart = function(event, node){
                         touchStart = [event.pageX, event.pageY];
-                        currentBar && currentBar.hide();
+                        if (currentBar){
+                                 currentBar.hide();
+                                 currentBar = null;        
+                        }
                 };
                 
                 this.showActionBar = function(event, node){
@@ -122,15 +144,18 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 this.init = function init(){
                         var promise = new Promise(),
                             interval = user.get("settings").polling_interval || Config.get("polling_interval"),
-                            cdb = new CouchDBView();
+                            cdb = new CouchDBView(),
+                            nores = widget.dom.querySelector(".noresult");
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));
+                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                 cdb.unsync();
                                 polling = setInterval(function(){
                                         cdb.reset([]);
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 _store.reset(JSON.parse(cdb.toJSON()));
+                                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                                 cdb.unsync();
                                         });
                                 },interval);
@@ -141,7 +166,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 
                 // watch for change in polling interval in user settings
                 user.watchValue("settings", function(){
-                        var cdb = new CouchDBView(), interval;
+                        var cdb = new CouchDBView(), interval, nores = widget.dom.querySelector(".noresult");
                         if (user.get("settings").polling_interval !== Config.get("polling_interval")){
                                 Config.set("polling_interval", user.get("settings").polling_interval);
                                 interval = Config.get("polling_interval");
@@ -152,6 +177,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 currentBar && currentBar.hide();
                                                 _store.reset(JSON.parse(cdb.toJSON()));
+                                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                                 cdb.unsync();
                                         });
                                 },interval);        

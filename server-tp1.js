@@ -142,7 +142,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 0);                    // reduce logging
+        io.set('log level', 3);                    // reduce logging
         io.set("close timeout", 300);
         io.set("heartbeat interval", 25);
         
@@ -891,7 +891,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                  */
 
                 // manually build the http request to couchDB
-                options.hostname = "127.0.0.1";
+                options.hostname = "10.224.7.243";
                 options.port = 5984;
                 options.method = "POST";
                 options.auth = cdbAdminCredentials;

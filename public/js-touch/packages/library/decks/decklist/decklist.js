@@ -29,7 +29,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                                         setAuthor: function(author){
                                                 if (author === "Taiaut"){
                                                         this.innerHTML = "";
-                                                        this.setAttribute("style", "background-image:url('img/logo.png');")
+                                                        this.setAttribute("style", "background-image:url('img/logo.png');");
                                                 }
                                                 else {
                                                         this.innerHTML = author; //need to make sure that author field is filled with username and userid needs to be saved along somewhere with the deck document

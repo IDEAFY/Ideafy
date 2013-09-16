@@ -15,7 +15,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 "#login" : _login
         }), _dock = new Dock(), _local = new LocalStore(), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user"), _currentVersion;
 
-        _currentVersion = "1.1.2";
+        _currentVersion = "1.1.5";
         
         //setup
         _body.plugins.addAll({
@@ -195,6 +195,9 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
          * Watch for signout events
          */       
         Config.get("observer").watch("signout", function(){
+                // change user status
+                _user.set("online", false);
+                
                 // clear local store
                 _local.set("currentLogin", "");
                 _local.set("userAvatar", "");
@@ -211,29 +214,35 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         /*
          * Manage socket connectivity
          */
-        document.addEventListener("pause", Utils.disconnectSocket);
-        document.addEventListener("resume", Utils.checkSocketStatus);
+        document.addEventListener("pause", Utils.disconnectSocket, false);
+        document.addEventListener("resume", Utils.checkSocketStatus, false);
                 
         // attempt to reconnect socket if required in case of user actions
-        Map.get("body").addEventListener("touchstart", Utils.checkSocketStatus);
+        Map.get("body").addEventListener("touchstart", Utils.checkSocketStatus, false);
         
         // resync user document upon socket reconnection
-        Config.get("observer").watch("reconnect", function(){
+        Config.get("observer").watch("reconnect", function(option){
                 _local.sync("ideafy-data");
                 if (navigator.connection && navigator.connection.type === "none"){
                         _login.setScreen("#nointernet");
                 }
                 else {
-                        checkServerStatus
-                        .then(function(){
-                                _user.unsync();
-                                return _user.sync(_db, _local.get("currentLogin"));
-                        }, function(){
-                                _login.setScreen("#maintenance-screen");        
-                        })
-                        .then(function(){
-                                console.log("user resynchronized");
-                        });          
+                        if (option === "all"){
+                                checkServerStatus
+                                .then(function(){
+                                        _user.unsync();
+                                        return _user.sync(_db, _local.get("currentLogin"));
+                                }, function(){
+                                        _login.setScreen("#maintenance-screen");        
+                                })
+                                .then(function(){
+                                        console.log("user resynchronized");
+                                });
+                        }
+                        else{
+                                _user.set("online", true);
+                                _user.upload();
+                        }        
                 }    
         });
 }); 

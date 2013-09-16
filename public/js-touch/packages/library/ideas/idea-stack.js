@@ -5,17 +5,19 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-idea", "./detail-stack/library-edit", "./detail-stack/library-sendmail", "./detail-stack/library-share", "service/config", "Store", "lib/spin.min"], 
-	function(Widget, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store, Spinner){
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./detail-stack/library-idea", "./detail-stack/library-edit", "./detail-stack/library-sendmail", "./detail-stack/library-share", "service/config", "Store", "lib/spin.min"], 
+	function(Widget, Map, Stack, Model, IdeaDetail, Edit, Sendmail, Share, Config, Store, Spinner){
 		return function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
+			     _emptyList = new Widget(),
 			     _ideaDetail, _sendmail, _share, _edit,
 		             _stack = new Stack(),
 		             _observer = Config.get("observer"),
+		             _labels = Config.get("labels"),
 		             _store = new Store(),
 		             current = 0,
-		             spinner = new Spinner({color:"#9AC9CD", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
+		             spinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
 
 		//setup
 		        
@@ -25,6 +27,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-id
 			});
 			
 			_widget.template = '<div class="detail-stack" data-detailstack="destination"></div>';
+			
+			_emptyList.template = '<div class="msgsplash"><div class="header blue-dark"><span data-labels="bind:innerHTML, noideafound"></span></div><div class="innersplash"><span data-labels="bind: innerHTML, tryotherview"></span></div></div>';
+                        _emptyList.plugins.add("labels", new Model(_labels));
 
 		//library
 			_widget.reset = function reset(viewStore, index){
@@ -79,6 +84,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-id
 			         _share.reset(idea._id);
                                  _stack.getStack().show("#library-share");        
                         };
+                        
+                        _widget.displayEmpty = function displayEmpty(name){
+                                _stack.getStack().show("#empty-list");                     
+                        };
 			
 			// init
 			_ideaDetail = new IdeaDetail(_widget.action);
@@ -90,6 +99,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "./detail-stack/library-id
                         _stack.getStack().add("#library-edit", _edit);
                         _stack.getStack().add("#library-sendmail", _sendmail);
                         _stack.getStack().add("#library-share", _share);
+                        _stack.getStack().add("#empty-list", _emptyList);
                         
                         _observer.watch("library-viewidea", function(id){
 			             _widget.viewIdea(id);       

@@ -7,26 +7,78 @@
 
 define(["OObject", "Amy/Control-plugin" ,
 	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Store", "service/map", "service/config",
-	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin"], 
+	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin", "lib/spin.min"], 
 	function(Widget, Control, Model, Place, Delegate, Store, Map, 
-		Config, Detail, List, Stack){
+		Config, Detail, List, Stack, Spinner){
 		return function IdeasConstructor(){
 		//declaration
 			var _widget = new Widget(),
-				_dom, byDate, byRating,        // disabled if search is active
-				_searchInput = new Store({"search": ""}),
-				_db = Config.get("db"),
-				_observer = Config.get("observer"),
-				_radio = new Control(_widget),
-				_detail = new Detail(),
-				listDate, listRating, listSearch,
-				_stack = new Stack();
+			     _searchInput = new Store({"search": ""}),
+			     _db = Config.get("db"),
+			     _observer = Config.get("observer"),
+			     _radio = new Control(_widget),
+                                _detail = new Detail(),
+                                listDate, listRating, listSearch, listFav,
+			     initldQuery, initlrQuery,
+			     _user = Config.get("user"),
+                                _labels = Config.get("labels"),
+                                _currentLang = _user.get("lang").substring(0,2),
+                                _btns = new Store([
+                                        {name:"#list-fav", css:"byfav", pushed: false, lang:null},
+                                        {name:"#list-date", css:"bydate", pushed: true, lang:null},
+                                        {name:"#list-rating", css:"byrating", pushed: false, lang:null},
+                                        {name:"#lang", css:"bylang", pushed: false, lang: _currentLang}
+                                ]),
+                                _languages = new Store([{name:"*"}]),
+                                _usrLg = Config.get("userLanguages"),
+		               _stack = new Stack(),
+                                _listSpinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
+                
+                //setup
+                       
+                       // build languages & flags
+                      _usrLg.forEach(function(val){
+                              _languages.alter("push", val);
+                      });
+                
+		       _widget.template='<div id = "ideas"><div id="idea-list" class="list"><div class="header blue-light"><div class="option left" data-ideascontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, idealistheadertitle">My Ideas</span><div class="option right" data-ideasevent="listen: touchstart, plus"></div></div><div data-idealiststack="destination" data-ideascontrol="radio:li.list-item,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-search="bind: value, search" data-label="bind: placeholder, searchprivateplaceholder" data-ideasevent="listen: keypress, search"><ul class="listbtns" data-listbtns="foreach"><li class="tools-button" data-listbtns="bind:setName, name; bind:setClass, css; bind:setPushed, pushed; bind:setLang, lang" data-ideasevent="listen:touchstart,show"></li></ul><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-ideasevent="listen: touchstart, setLang; listen:touchend, stopPropagation"></li></ul></div></div></div><div id="ideas-detail" class="details" data-ideaplace="place:details"></div></div>';
 
-		//setup
-		       _widget.template='<div id = "ideas"><div id="idea-list" class="list"><div class="header blue-light"><div class="option left" data-ideascontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, idealistheadertitle">My Ideas</span><div class="option right" data-ideasevent="listen: touchstart, plus"></div></div><div data-idealiststack="destination" data-ideascontrol="radio:li,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-search="bind: value, search" data-label="bind: placeholder, searchprivateplaceholder" data-ideasevent="listen: keypress, search"><div name="#list-date" class="tools-button bydate pushed" data-ideasevent="listen:touchstart,show"></div><div name="#list-rating" class="tools-button byrating" data-ideasevent="listen:touchstart,show"></div></div></div></div><div id="ideas-detail" class="details" data-ideaplace="place:details"></div></div>';
 		       
 			_widget.plugins.addAll({
 				"idealiststack" : _stack,
+				"listbtns" : new Model(_btns,{
+                                        setPushed : function(pushed){
+                                                (pushed)?this.classList.add("pushed"):this.classList.remove("pushed");
+                                        },
+                                        setLang : function(lang){
+                                                if (lang && lang !=="*") {
+                                                        this.setAttribute("style", "background-image:url('img/flags/"+lang+".png');");
+                                                        this.innerHTML = "";
+                                                }
+                                                if (lang === "*") {
+                                                        this.setAttribute("style","background-image: none;");
+                                                        this.innerHTML = "*";
+                                                }
+                                        },
+                                        setClass : function(css){
+                                                css && this.classList.add(css);
+                                        },
+                                        setName : function(name){
+                                                name && this.setAttribute("name", name);
+                                        }
+                                }),
+                                "select" : new Model (_languages, {
+                                        setBg : function(name){
+                                                if (name === "*"){
+                                                        this.setAttribute('style', "background-image: none;background: whitesmoke;");
+                                                        this.innerHTML="*";
+                                                }
+                                                else{
+                                                        this.setAttribute("style", "background-image:url('img/flags/"+name+".png');");
+                                                }
+                                        } 
+                                }),
+                                "label" : new Model(_labels),
 				"search" : new Model(_searchInput),
 
 				/* mays be have event plugin in control*/
@@ -51,37 +103,85 @@ define(["OObject", "Amy/Control-plugin" ,
 			// function used to retrieve the currently highlighted idea in a list and display its details
                        _widget.displayHighlightedIdea = function displayHighlightedIdea(){
                              var ideaList = _stack.getStack().getCurrentScreen(),
-                                 ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"); 
-                                 id = ideaNode.getAttribute("data-listideas_id");
+                                 ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"), 
+                                 id;
                              
-                             ideaNode.classList.add("selected");
-                             ideaNode.scrollIntoView();
-                             _radio.init(ideaNode);        
-                             _detail.reset(ideaList.getModel(), id);            
+                             if (ideaNode){
+                                        id = ideaNode.getAttribute("data-listideas_id");
+                                        ideaNode.classList.add("selected");
+                                        ideaNode.scrollIntoView();
+                                        _radio.init(ideaNode);        
+                                        _detail.reset(ideaList.getModel(), id);
+                             }
+                             else{
+                                     _detail.displayEmpty(_stack.getStack().getCurrentName());
+                             }            
                         };
 
 			// this piece can be considerably simplified --> using stack & control plugins
 			_widget.show = function(event, node){
-			     var byDate = _dom.querySelector(".bydate"),
-			         byRating =  _dom.querySelector(".byrating"),
-			         name = node.getAttribute("name");
-			     if (name !== _stack.getStack().getCurrentName){
-			             _stack.getStack().show(name);
-			             if (name === "#list-date"){
-			                     byRating.classList.remove("pushed");
-			                     byDate.classList.add("pushed");
-			             }
-			             else{
-			                     byRating.classList.add("pushed");
-                                             byDate.classList.remove("pushed"); 
-			             }
-			             _widget.displayHighlightedIdea();
-			     }    
+			     var id = parseInt(node.getAttribute("data-listbtns_id"), 10),
+                                 name = _btns.get(id).name,
+                                 st = _stack.getStack();
+                                 
+                             if (name === "#lang"){
+                                     _widget.dom.querySelector(".langlist").classList.remove("invisible");
+                             }
+                             else {
+                                     _btns.loop(function(v,i){
+                                                (i === id) ? _btns.update(i, "pushed", true) : _btns.update(i, "pushed", false);        
+                                     });
+                                     if (name !== st.getCurrentName){
+                                             st.show(name);
+                                             if (st.get(name).getModel().getNbItems()){
+                                                     _widget.displayHighlightedIdea();
+                                             }
+                                             else{
+                                                     _detail.displayEmpty(name);
+                                             }
+                                     }
+                             }   
 			};
+			
+			_widget.setLang = function(event, node){
+                                var id, lang;
+                                event.stopPropagation();
+                                event.preventDefault();
+                                id = node.getAttribute("data-select_id");
+                                lang = _languages.get(id).name;
+                                _currentLang = lang;
+                                
+                                // set Spinner
+                                _listSpinner.spin(document.getElementById("idea-list"));
+                                
+                                // set flag in filter button
+                                _btns.loop(function(v,i){
+                                        if (v.name === "#lang") _btns.update(i, "lang", lang);
+                                });
+                                // remove flag list
+                                _widget.dom.querySelector(".langlist").classList.add("invisible");
+                                // apply language filter
+                                ["#list-rating", "#list-fav", "#list-date"].forEach(function(name){
+                                        var st = _stack.getStack();
+                                        st.get(name).setLang(lang)
+                                        .then(function(){
+                                                if (st.getCurrentName() === name) _listSpinner.stop();
+                                                if (st.getCurrentName() === name && st.get(name).getModel().getNbItems() === 0){
+                                                        _detail.displayEmpty(name);
+                                                }
+                                                else _widget.displayHighlightedIdea();         
+                                        });     
+                                });
+                        };
+                        
+                        _widget.stopPropagation = function(event,node){
+                                event.stopPropagation();
+                                event.preventDefault();       
+                        };
 
 			_widget.mosaic = function(){
 			        var domDetail = document.getElementById("ideas-detail");
-				_dom.classList.toggle("mosaic");
+				_widget.dom.classList.toggle("mosaic");
 				if (domDetail.classList.contains("invisible")) {
 				        domDetail.classList.remove("invisible");
 				        _detail.reset(listDate.getModel(), 0);
@@ -98,16 +198,16 @@ define(["OObject", "Amy/Control-plugin" ,
 			        var usr;
 			        if (event.keyCode === 13){
 			             if (node.value === ""){
-			                     byDate.setAttribute("style", "display: inline-block;");
-                                             byRating.setAttribute("style", "display: inline-block;");
+			                     _widget.dom.querySelector(".listbtns").classList.remove("invisible");
 			                     // default list viewed by date
 			                     _stack.getStack().show("#list-date");
-			                     byDate.classList.add("pushed");
-			                     byRating.classList.remove("pushed");
+			                     _btns.loop(function(v,i){
+                                                (v.name === "#list-date") ? _btns.update(i, "pushed", true) : _btns.update(i, "pushed", false);        
+                                             });
                                              _widget.displayHighlightedIdea();
 			             }
 			             else{
-			                     usr = Config.get("user").get("_id").replace(/@/, "at");
+			                     usr = _user.get("_id").replace(/@/, "at");
 			                     _widget.searchIdea("users:"+usr+ " AND "+node.value);
 			             }
 			             node.blur();
@@ -115,19 +215,19 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			_widget.searchIdea = function searchIdea(query){
-			      // hide sorting buttons (not available for the time being in search mode)
-                                byDate.setAttribute("style", "display: none;");
-                                byRating.setAttribute("style", "display: none;");
+			        // hide sorting buttons (not available for the time being in search mode)
+                                _widget.dom.querySelector(".listbtns").classList.add("invisible");
+                                
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
                                         // display search list and fill search field with idea title if applicable
                                         _stack.getStack().show("#list-search");
                                         if (listSearch.getModel().getNbItems() >0){
                                                 _searchInput.set("search", listSearch.getModel().get(0).doc.title);
-                                                document.getElementById("noresult").classList.add("invisible");
+                                                _widget.dom.querySelector(".noresult").classList.add("invisible");
                                                 _widget.displayHighlightedIdea();
                                         }
                                         else {
-                                                document.getElementById("noresult").classList.remove("invisible");
+                                                _widget.dom.querySelector(".noresult").classList.remove("invisible");
                                         }        
                                 });
                         };
@@ -137,7 +237,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 _searchInput.set("search", "");
                                 listSearch.resetQuery({q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
                                 listRating.resetQuery({startkey: '["'+Config.get("user").get("_id")+'",{}]', endkey: '["'+Config.get("user").get("_id")+'"]', descending: true, include_docs:true}) ;
-                                listDate.resetQuery({key: Config.get("uid"), descending: true, include_docs:true})
+                                listDate.resetQuery({key: '"'+_user.get("_id")+'"', descending: true, include_docs:true})
                                 .then(function(){
                                         _stack.getStack().show("#list-date");
                                         _widget.displayHighlightedIdea();         
@@ -146,27 +246,75 @@ define(["OObject", "Amy/Control-plugin" ,
                         
 			// INIT
 			
-			// dom items
-                        _dom = _widget.dom;
-                        byDate = _dom.querySelector(".bydate");
-                        byRating =  _dom.querySelector(".byrating");
+			// create db queries based on default language
+                        if (_user.get("settings").contentLang) {
+                                _currentLang = _user.get("settings").contentLang;
+                                if (_currentLang === "all") _currentLang = "*";
+                                _btns.loop(function(v,i){
+                                        if (v.name==="#lang") _btns.update(i, "lang", _currentLang);
+                                });
+                        }
+                        
+                        if (_currentLang === "*"){
+                                initldQuery = {key: '"'+_user.get("_id")+'"', descending: true};
+                                initlrQuery = {endkey: '[0,"'+_user.get("_id")+'"]', startkey: '[0,"'+_user.get("_id")+'",{},{}]', descending: true};
+                        }
+                        else{
+                                initldQuery = {key:'[0,"'+_user.get("_id")+'","'+_currentLang+'"]', descending: true};
+                                initlrQuery = {endkey: '[1,"'+_user.get("_id")+'","'+_currentLang+'"]', startkey: '[1,"'+_user.get("_id")+'","'+_currentLang+'",{},{}]', descending: true};
+                        }
 			
 			// for library for the time being only propose list by date or search tool
 			// additional options (rating/favorites etc. may be offered in the future)
 			
-			listDate = new List(_db, "library", "_view/ideas", {key: Config.get("uid"), descending: true});
+			listDate = new List(_db, "library", "_view/ideas", initldQuery);
 			listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
-			listRating = new List(_db, "ideas", "_view/privatebyvotes", {startkey: '["'+Config.get("user").get("_id")+'",{}]', endkey: '["'+Config.get("user").get("_id")+'"]', descending: true});
+			listRating = new List(_db, "ideas", "_view/privatebyvotes", initlrQuery);
+			listFav = new List(_db, "library", "_view/allideas", "fav");
 			
 			_stack.getStack().add("#list-date", listDate);
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
+			_stack.getStack().add("#list-fav", listFav);
 			
 			listRating.init();
-			listDate.init().then(function(){
+			listDate.init()
+			.then(function(){
                               _stack.getStack().show("#list-date");
-                              _widget.displayHighlightedIdea();         
-		        });
+                              (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
+                              return listFav.setLang(_currentLang);     
+                        })
+                        .then(function(){
+                                // Watch for favorites changes in user document and update list accordingly
+                                _user.watchValue("library-favorites", function(val){
+                                        if (val.length !== listFav.getModel().getNbItems()) {
+                                                listFav.resetQuery(_currentLang)
+                                                .then(function(){
+                                                        if (_stack.getStack().getCurrentName() === "#list-fav"){
+                                                                (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
+                                                        }
+                                                });
+                                        }       
+                                });
+                                
+                                // watch for default language filter changes
+                                _user.watchValue("settings", function(s){
+                                        if(!s.contentLang)  _currentLang = _user.get("lang").substring(0,2);
+                                        else if (s.contentLang === "all"){
+                                                _currentLang = "*";
+                                        }
+                                        else{
+                                                _currentLang = s.contentLang;
+                                        }
+                                
+                                        _btns.loop(function(v,i){
+                                                if (v.name==="#lang") _btns.update(i, "lang", _currentLang);
+                                        });
+                                        ["#list-date", "#list-rating", "#list-fav"].forEach(function(ui){
+                                                _stack.getStack().get(ui).setLang(_currentLang);        
+                                        });
+                                });
+                        });
                         
                         //return
 			return _widget;

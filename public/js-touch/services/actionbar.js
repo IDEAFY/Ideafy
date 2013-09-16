@@ -20,7 +20,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                             db = Config.get("db"),
                             buildButtons,
                             ui = this,
-                            spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10}).spin();
+                            spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10}).spin(),
+                            favSpinner = new Spinner({color:"#a0a0a0", lines:10, length: 6, width: 4, radius:6}).spin() ;
                         
                         this.plugins.addAll({
                                 "buttons" : new Model(buttons, {
@@ -85,6 +86,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 break;
                                         case "twocent":
                                                 this.sendTwocent();
+                                                break;
+                                        case "unfav":
+                                                favSpinner.spin(node);
+                                                (document.getElementById("public")) ? this.removeFav("public-favorites") : this.removeFav("library-favorites");
+                                                break;
+                                        case "addfav":
+                                                favSpinner.spin(node);
+                                                (document.getElementById("public")) ? this.addFav("public-favorites") : this.addFav("library-favorites");
+                                                break;
                                         default:
                                                 break;        
                                 }
@@ -122,7 +132,25 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                         });
                                                                 }
                                                         }
-                                                
+                                                        // check if idea is part of the user favorites (public or library) and display add/remove button accordingly
+                                                        if (document.getElementById("public")){
+                                                                if (user.get("public-favorites").indexOf(data._id) > -1){
+                                                                        buttons.alter("push", {name:"unfav", icon:"img/public/unfav-actionbar.png"}); 
+                                                                }
+                                                                else{
+                                                                        buttons.alter("push", {name:"addfav", icon:"img/public/addfav-actionbar.png"});
+                                                                }
+                                                        }
+                                                        else if (document.getElementById("library")){
+                                                        if (user.get("library-favorites").indexOf(data._id) > -1){
+                                                                        buttons.alter("push", {name:"unfav", icon:"img/public/unfav-actionbar.png"}); 
+                                                                }
+                                                                else{
+                                                                        buttons.alter("push", {name:"addfav", icon:"img/public/addfav-actionbar.png"});
+                                                                }        
+                                                        }
+                                                        
+                                                        
                                                         // email -- if you can see it you can email it
                                                         buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});
                                                 
@@ -272,7 +300,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                         }
                                                                                                 });        
                                                                                         }       
-                                                                                })
+                                                                                });
                                                                         }
                                                                 }
                                                                 document.body.removeChild(document.querySelector(".confirm"));
@@ -405,6 +433,39 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         this.sendTwocent = function sendTwocent(){
                                 New2C.reset($data);       
+                        };
+                        
+                        this.addFav = function(list){
+                                var fav, update;
+                                (user.get(list)) ? fav = user.get(list).concat() : fav = [];
+                                if (fav.length<100){
+                                        fav.push($data._id);
+                                        user.set(list, fav);
+                                        user.upload()
+                                        .then(function(){
+                                                favSpinner.stop();
+                                                alert(labels.get("addedfav"));
+                                                ui.hide();
+                                        });
+                                }
+                                else{
+                                        favSpinner.stop();
+                                        alert(labels.get("maxfavsize"));
+                                        ui.hide();     
+                                }
+                        };
+                        
+                        this.removeFav = function(list){
+                                var fav;
+                                (user.get(list)) ? fav = user.get(list).concat() : fav = [];
+                                fav.splice(fav.indexOf($data._id), 1);
+                                user.set(list, fav);
+                                user.upload()
+                                .then(function(){
+                                        favSpinner.stop();
+                                        alert(labels.get("removedfav"));
+                                        ui.hide();
+                                });       
                         };
                         
                         buildButtons($type, $data);

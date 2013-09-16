@@ -131,10 +131,10 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                                 break;
                                         case "_view/privatebyvotes":
                                                 if (lang === "*"){
-                                                        query = {endkey: '["'+user.get("_id")+'"]', startkey: '["'+Config.get("user").get("_id")+'",{},{}]', descending: true};
+                                                        query = {endkey: '[0,"'+user.get("_id")+'"]', startkey: '[0,"'+user.get("_id")+'",{},{}]', descending: true};
                                                 }
                                                 else {
-                                                        query = {endkey: '["'+user.get("_id")+'"]', startkey: '["'+Config.get("user").get("_id")+'",{},{}]', descending: true};        
+                                                        query = {endkey: '[1,"'+user.get("_id")+'"]', startkey: '[1,"'+user.get("_id")+'","'+lang+'",{},{}]', descending: true};        
                                                 }
                                                 break;
                                         default:

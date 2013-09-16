@@ -6910,12 +6910,12 @@ li.my2q{
 
 .settingmodule{
     margin-bottom: 20px;
-    padding: 20px;
-    min-height: 260px;
+    padding: 10px 20px;
+    height: auto;;
     background: #f2f2f2;
     border: 1px dashed #cccccc;
     border-radius: 5px;
-    width: 811px;
+    width: 851px;
 }
 
 #aboutstack{
@@ -6998,7 +6998,7 @@ li.my2q{
 .settingmodule li{
     padding: 10px 20px;
     display: inline-table;
-    width: 771px;;
+    width: 811px;;
 }
 
 .settingmodule li > span{
@@ -7437,7 +7437,7 @@ li.my2q{
     margin-top: 6px;
 }
 
-#mulist .mulistoptions .selectlang{
+#mulist .mulistoptions .selectlang, .settingmodule .selectlang{
     width: 60px;
     height: 23px;
     border: 1px solid #CCC;
@@ -7447,7 +7447,17 @@ li.my2q{
     margin-top: 6px;
 }
 
-#mulist .mulistoptions .selectlang div{
+.settingmodule .selectlang{
+    width: 120px;
+    height: 23px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    display: inline-block;
+    float: right;
+    margin-right: 50px;
+}
+
+#mulist .mulistoptions .selectlang div, .settingmodule .selectlang div{
     float: left;
     line-height: 30px;
     text-align: center;
@@ -7459,7 +7469,15 @@ li.my2q{
     border-bottom-left-radius: 4px;
 }
 
-#mulist .mulistoptions .selectlang button{
+.settingmodule .selectlang div{
+    width: 95px;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 24px;
+}
+
+#mulist .mulistoptions .selectlang button, .settingmodule .selectlang button{
     float: left;
     height: 23px;
     border: none;
@@ -7467,7 +7485,13 @@ li.my2q{
     background-size: 25px 25px;    
 }
 
-#mulist .mulistoptions ul.langlist{
+.settingmodule .selectlang button{
+    width:25px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#mulist .mulistoptions ul.langlist, .settingmodule ul.langlist{
     position: absolute;
     z-index: 2000;
     background: white;
@@ -7477,6 +7501,17 @@ li.my2q{
     -webkit-box-shadow: 0px 0px 5px #657b99;
     margin-top: 40px;
     margin-left: 60px;
+}
+
+.settingmodule ul.langlist{
+    margin-top: 15px;
+    margin-left: 625px;
+}
+
+.settingmodule .langlist li{
+    width: 36px;
+    display: inline-block;
+    padding: 0px;
 }
 
 #mulistall, #musearch{

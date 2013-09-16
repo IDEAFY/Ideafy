@@ -17,16 +17,17 @@ define(["OObject", "Amy/Control-plugin" ,
 				_radio = new Control(_widget),
 				_detail= new Detail(),
                                 _menu, listDate, listRating, listFav, listSearch,
+                                initQuery,
                                 _user = Config.get("user"),
                                 _labels = Config.get("labels"),
+                                _currentLang = _user.get("lang").substring(0,2),
                                 _btns = new Store([
                                         {name:"#list-fav", css:"byfav", pushed: false, lang:null},
                                         {name:"#list-date", css:"bydate", pushed: true, lang:null},
                                         {name:"#list-rating", css:"byrating", pushed: false, lang:null},
-                                        {name:"#lang", css:"bylang", pushed: false, lang: "*"}
+                                        {name:"#lang", css:"bylang", pushed: false, lang: _currentLang}
                                 ]),
                                 _languages = new Store([{name:"*"}]),
-                                _currentLang = "*",
                                 _usrLg = Config.get("userLanguages"),
 				_stack = new Stack(),
 				_listSpinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
@@ -241,18 +242,26 @@ define(["OObject", "Amy/Control-plugin" ,
 			_menu  = new Menu(_widget.dom.querySelector("#public-menu"));
                         _menu.toggleActive(false);
                         
-                        // language
-                        _user.watchValue("lang", function(lang){
+                        // create db queries based on default language
+                        if (_user.get("settings").contentLang) {
+                                _currentLang = _user.get("settings").contentLang;
+                                if (_currentLang === "all") _currentLang = "*";
                                 _btns.loop(function(v,i){
-                                        if (v.name==="#lang" && lang) _btns.update("lang", lang.substring(0,2));
+                                        if (v.name==="#lang") _btns.update(i, "lang", _currentLang);
                                 });
-                        });
+                        }
                         
+                        if (_currentLang === "*"){
+                                initQuery = {startkey:'[0,{}]', endkey:'[0]', descending: true, limit:50};
+                        }
+                        else{
+                                initQuery = {startkey:'[1,"'+_currentLang+'", {}]', endkey:'[1,"'+_currentLang+'"]', descending: true, limit: 50};       
+                        }
                         
                         //initialize list UIs
-			listDate = new Polling(_db, "library", "_view/publicideasbylang", {startkey:'[0,{}]', endkey:'[0]', descending: true, limit:50});
+			listDate = new Polling(_db, "library", "_view/publicideasbylang", initQuery);
 		        // list date needs to be in polling mode with a polling_interval defined in Config to avoid traffic overload
-		        listRating = new List(_db, "ideas", "_view/ideasbyvotes", {startkey:'[0,{}]', endkey:'[0]', descending: true, limit:50});
+		        listRating = new List(_db, "ideas", "_view/ideasbyvotes", initQuery);
 		        listFav = new List(_db, "library", "_view/publicideas", "fav");
 			listSearch = new List("_fti/local/"+_db, "indexedideas", "publicbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:60, include_docs: true});
 			 
@@ -267,9 +276,11 @@ define(["OObject", "Amy/Control-plugin" ,
 			// init public ideas sorted by most recent then init public favorites
 		        listDate.init()
 		        .then(function(){
+		                var lang;
 		              _stack.getStack().show("#list-date");
 		              (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
-		              return listFav.init();     
+		              // apply default language to the list of favorites
+		              return listFav.setLang(_currentLang);     
 		        })
 		        .then(function(){
 		                // Watch for favorites changes in user document and update list accordingly
@@ -282,6 +293,24 @@ define(["OObject", "Amy/Control-plugin" ,
                                                         }
                                                 });
                                         }       
+                                });
+                                
+                                // watch for default language filter changes
+                                _user.watchValue("settings", function(s){
+                                        if(!s.contentLang)  _currentLang = _user.get("lang").substring(0,2);
+                                        else if (s.contentLang === "all"){
+                                                _currentLang = "*";
+                                        }
+                                        else{
+                                                _currentLang = s.contentLang;
+                                        }
+                                
+                                        _btns.loop(function(v,i){
+                                                if (v.name==="#lang") _btns.update(i, "lang", _currentLang);
+                                        });
+                                        ["#list-date", "#list-rating", "#list-fav"].forEach(function(ui){
+                                                _stack.getStack().get(ui).setLang(_currentLang);        
+                                        });
                                 });
 		        });
 		        

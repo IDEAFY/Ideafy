@@ -341,6 +341,7 @@
 	"designedby": "Designed by : ",
 	"mtcheadertitle": "My Two Cents Wall",
 	"userpref": "User Preferences",
+	"publicwallsettings": Public wall settings,
 	"brainstormsettings": "Brainstorm Settings",
 	"aboutIdeafy": "About Ideafy",
 	"faq": "FAQ",
@@ -533,5 +534,10 @@
 	"alreadyshared" : "This has already been shared with intended recipients",
 	"addedfav": "This idea has been added to your favorites",
 	"removedfav": "This idea has been removed from your favorites",
-	"maxfavsize": "Your list of favorites has reached the maximum size. Remove some ideas before trying to add this one."
+	"maxfavsize": "Your list of favorites has reached the maximum size. Remove some ideas before trying to add this one.",
+	"noideafound": "No idea found",
+	"tryotherview": "Change view, modify language filters or add ideas to your favorites. To leave the search view, erase the content of the search field and press the return key.",
+	"solution": "Solution",
+	"principle": "Principle",
+	"defaultlangfilter": "Default language filter : "
 }

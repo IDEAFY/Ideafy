@@ -55,8 +55,8 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			};
 			
 			/*
-			 * start function is called by body after dock widget is shown (so that wrapper dom becomes avaialble)
-			 * used to highlight statrtup screen in the left menu and display tips if and as necessary
+			 * start function is called by body after dock widget is shown (so that wrapper dom becomes available)
+			 * used to highlight startup screen in the left menu and display tips if and as necessary
 			 */
 			_widget.start = function start(firstStart){
 			        var pub = _widget.dom.querySelector('a[href="#public"]'),
@@ -79,7 +79,11 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 // show tips if applicable
                                 if (firstStart || _user.get("settings").showTips !== false){
                                         _tips.init(firstStart);
-                                }        
+                                }
+                                
+                                // set user connection status
+                                _user.set("online", true);
+                                _user.upload();       
 			};
 			
 			_widget.reset = function reset(){

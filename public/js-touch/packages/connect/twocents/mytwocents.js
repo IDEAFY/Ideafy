@@ -249,7 +249,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                                 contactList.alter("push", {"contact":connections[i], "selected":false});
                                         }
                                 }
-                                mytwoq.resetQuery({key: Config.get("uid"), descending: true})
+                                mytwoq.resetQuery({key: '"' + user.get("_id")+'"', descending: true})
                                 .then(function(){
                                         mtcStack.getStack().show("#mytwoq");
                                         mtcDetails.reset("default");
@@ -308,7 +308,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         }
                         
                         // add twocent and twoquestion lists to the stack
-                        mytwoq = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: Config.get("uid"), descending: true});
+                        mytwoq = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: '"' + user.get("_id")+'"', descending: true});
                         contacttwoq = new TwoQList("contact", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
                         blank = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
                         

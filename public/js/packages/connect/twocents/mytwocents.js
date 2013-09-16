@@ -131,7 +131,7 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                                     auto = dom.querySelector(".autocontact");
                                 
                                 // display div if not present
-                                if (auto.classList.contains("invisible")) auto.classList.remove("invisible")   
+                                if (auto.classList.contains("invisible")) auto.classList.remove("invisible");   
                                 
                                 if (!node.value || node.value === ""){
                                         arr = [];
@@ -219,11 +219,11 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                         
                         // init contactList
                         for (i=0, l=connections.length; i<l; i++){
-                                if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false})
+                                if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false});
                         }
                         
                         // add twocent and twoquestion lists to the stack
-                        mytwoq = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: Config.get("uid"), descending: true});
+                        mytwoq = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: '"'+user.get("_id")+'"', descending: true});
                         contacttwoq = new TwoQList("contact", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
                         blank = new TwoQList("contact", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
                         

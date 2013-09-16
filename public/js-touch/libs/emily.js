@@ -7,7 +7,7 @@
  */
 
 /**
- * Emily
+ * Emily.js - http://flams.github.com/emily/
  * Copyright(c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
@@ -18,6 +18,8 @@ define('Tools',[],
  * Tools is a collection of tools
  */
 function Tools(){
+
+    
 
     /**
      * Get the closest number in an array
@@ -382,7 +384,7 @@ function Tools(){
 
 
 /**
- * Emily
+ * Emily.js - http://flams.github.com/emily/
  * Copyright(c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
@@ -397,123 +399,125 @@ define('Observable',["Tools"],
 */
 function Observable(Tools) {
 
-        /**
-         * Defines the Observable
-         * @private
-         * @returns {_Observable}
-         */
-        return function ObservableConstructor() {
+	
 
-                /**
-                 * The list of topics
-                 * @private
-                 */
-                var _topics = {};
+	/**
+	 * Defines the Observable
+	 * @private
+	 * @returns {_Observable}
+	 */
+	return function ObservableConstructor() {
 
-                /**
-                 * Add an observer
-                 * @param {String} topic the topic to observe
-                 * @param {Function} callback the callback to execute
-                 * @param {Object} scope the scope in which to execute the callback
-                 * @returns handle
-                 */
-                this.watch = function watch(topic, callback, scope) {
-                        if (typeof callback == "function") {
-                                var observers = _topics[topic] = _topics[topic] || [],
-                                observer = [callback, scope];
+		/**
+		 * The list of topics
+		 * @private
+		 */
+		var _topics = {};
 
-                                observers.push(observer);
-                                return [topic,observers.indexOf(observer)];
+		/**
+		 * Add an observer
+		 * @param {String} topic the topic to observe
+		 * @param {Function} callback the callback to execute
+		 * @param {Object} scope the scope in which to execute the callback
+		 * @returns handle
+		 */
+		this.watch = function watch(topic, callback, scope) {
+			if (typeof callback == "function") {
+				var observers = _topics[topic] = _topics[topic] || [],
+				observer = [callback, scope];
 
-                        } else {
-                                return false;
-                        }
-                };
+				observers.push(observer);
+				return [topic,observers.indexOf(observer)];
 
-                /**
-                 * Remove an observer
-                 * @param {Handle} handle returned by the watch method
-                 * @returns {Boolean} true if there were subscribers
-                 */
-                this.unwatch = function unwatch(handle) {
-                        var topic = handle[0], idx = handle[1];
-                        if (_topics[topic] && _topics[topic][idx]) {
-                                // delete value so the indexes don't move
-                                delete _topics[topic][idx];
-                                // If the topic is only set with falsy values, delete it;
-                                if (!_topics[topic].some(function (value) {
-                                        return !!value;
-                                })) {
-                                        delete _topics[topic];
-                                }
-                                return true;
-                        } else {
-                                return false;
-                        }
-                };
+			} else {
+				return false;
+			}
+		};
 
-                /**
-                 * Notifies observers that a topic has a new message
-                 * @param {String} topic the name of the topic to publish to
-                 * @param subject
-                 * @returns {Boolean} true if there was subscribers
-                 */
-                this.notify = function notify(topic) {
-                        var observers = _topics[topic],
-                                args = Tools.toArray(arguments).slice(1);
+		/**
+		 * Remove an observer
+		 * @param {Handle} handle returned by the watch method
+		 * @returns {Boolean} true if there were subscribers
+		 */
+		this.unwatch = function unwatch(handle) {
+			var topic = handle[0], idx = handle[1];
+			if (_topics[topic] && _topics[topic][idx]) {
+				// delete value so the indexes don't move
+				delete _topics[topic][idx];
+				// If the topic is only set with falsy values, delete it;
+				if (!_topics[topic].some(function (value) {
+					return !!value;
+				})) {
+					delete _topics[topic];
+				}
+				return true;
+			} else {
+				return false;
+			}
+		};
 
-                        if (observers) {
-                                Tools.loop(observers, function (value) {
-                                        try {
-                                                if (value) {
-                                                        value[0].apply(value[1] || null, args);
-                                                }
-                                        } catch (err) { }
-                                });
-                                return true;
-                        } else {
-                                return false;
-                        }
-                },
+		/**
+		 * Notifies observers that a topic has a new message
+		 * @param {String} topic the name of the topic to publish to
+		 * @param subject
+		 * @returns {Boolean} true if there was subscribers
+		 */
+		this.notify = function notify(topic) {
+			var observers = _topics[topic],
+				args = Tools.toArray(arguments).slice(1);
 
-                /**
-                 * Check if topic has the described observer
-                 * @param {Handle}
-                 * @returns {Boolean} true if exists
-                 */
-                this.hasObserver = function hasObserver(handle) {
-                        return !!( handle && _topics[handle[0]] && _topics[handle[0]][handle[1]]);
-                };
+			if (observers) {
+				Tools.loop(observers, function (value) {
+					try {
+						if (value) {
+							value[0].apply(value[1] || null, args);
+						}
+					} catch (err) { }
+				});
+				return true;
+			} else {
+				return false;
+			}
+		},
 
-                /**
-                 * Check if a topic has observers
-                 * @param {String} topic the name of the topic
-                 * @returns {Boolean} true if topic is listened
-                 */
-                this.hasTopic = function hasTopic(topic) {
-                        return !!_topics[topic];
-                };
+		/**
+		 * Check if topic has the described observer
+		 * @param {Handle}
+		 * @returns {Boolean} true if exists
+		 */
+		this.hasObserver = function hasObserver(handle) {
+			return !!( handle && _topics[handle[0]] && _topics[handle[0]][handle[1]]);
+		};
 
-                /**
-                 * Unwatch all or unwatch all from topic
-                 * @param {String} topic optional unwatch all from topic
-                 * @returns {Boolean} true if ok
-                 */
-                this.unwatchAll = function unwatchAll(topic) {
-                        if (_topics[topic]) {
-                                delete _topics[topic];
-                        } else {
-                                _topics = {};
-                        }
-                        return true;
-                };
+		/**
+		 * Check if a topic has observers
+		 * @param {String} topic the name of the topic
+		 * @returns {Boolean} true if topic is listened
+		 */
+		this.hasTopic = function hasTopic(topic) {
+			return !!_topics[topic];
+		};
 
-        };
+		/**
+		 * Unwatch all or unwatch all from topic
+		 * @param {String} topic optional unwatch all from topic
+		 * @returns {Boolean} true if ok
+		 */
+		this.unwatchAll = function unwatchAll(topic) {
+			if (_topics[topic]) {
+				delete _topics[topic];
+			} else {
+				_topics = {};
+			}
+			return true;
+		};
+
+	};
 
 });
 
 /**
- * Emily
+ * Emily.js - http://flams.github.com/emily/
  * Copyright(c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
@@ -524,6 +528,8 @@ define('StateMachine',["Tools"],
  * Create a stateMachine
  */
 function StateMachine(Tools) {
+
+	
 
      /**
      * @param initState {String} the initial state
@@ -766,7 +772,7 @@ function StateMachine(Tools) {
 });
 
 /**
- * Emily
+ * Emily.js - http://flams.github.com/emily/
  * Copyright(c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
@@ -777,6 +783,8 @@ define('Promise',["Observable", "StateMachine"],
  * Create a promise/A+
  */
 function Promise(Observable, StateMachine) {
+
+	
 
     return function PromiseConstructor() {
 
@@ -1032,7 +1040,7 @@ function Promise(Observable, StateMachine) {
 });
 
 /**
- * Emily
+ * Emily.js - http://flams.github.com/emily/
  * Copyright(c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
@@ -1044,6 +1052,8 @@ define('Store',["Observable", "Tools"],
  * or on an array
  */
  function Store(Observable, Tools) {
+
+    
 
     /**
      * Defines the Store
@@ -1070,7 +1080,7 @@ define('Store',["Observable", "Tools"],
          */
         _valueObservable = new Observable(),
 
-                /**
+        /**
          * Saves the handles for the subscriptions of the computed properties
          * @private
          */
@@ -1238,11 +1248,11 @@ define('Store',["Observable", "Tools"],
          * @returns the result of the method call
          */
         this.proxy = function proxy(func) {
-                if (_data[func]) {
-                        return _data[func].apply(_data, Array.prototype.slice.call(arguments, 1));
-                } else {
-                        return false;
-                }
+            if (_data[func]) {
+                return _data[func].apply(_data, Array.prototype.slice.call(arguments, 1));
+            } else {
+                return false;
+            }
         };
 
         /**
@@ -1342,26 +1352,26 @@ define('Store',["Observable", "Tools"],
          * @returns {Boolean} false if wrong params given to the function
          */
         this.compute = function compute(name, computeFrom, callback, scope) {
-                var args = [];
+            var args = [];
 
-                if (typeof name == "string" &&
-                        typeof computeFrom == "object" &&
-                        typeof callback == "function" &&
-                        !this.isCompute(name)) {
+            if (typeof name == "string" &&
+                typeof computeFrom == "object" &&
+                typeof callback == "function" &&
+                !this.isCompute(name)) {
 
-                        _computed[name] = [];
+                _computed[name] = [];
 
-                        Tools.loop(computeFrom, function (property) {
-                                _computed[name].push(this.watchValue(property, function () {
-                                        this.set(name, callback.call(scope));
-                                }, this));
-                        }, this);
-
+                Tools.loop(computeFrom, function (property) {
+                    _computed[name].push(this.watchValue(property, function () {
                         this.set(name, callback.call(scope));
-                        return true;
-                } else {
-                        return false;
-                }
+                    }, this));
+                }, this);
+
+                this.set(name, callback.call(scope));
+                return true;
+            } else {
+                return false;
+            }
         };
 
         /**
@@ -1370,15 +1380,15 @@ define('Store',["Observable", "Tools"],
          * @returns {Boolean} true if the property is removed
          */
         this.removeCompute = function removeCompute(name) {
-                if (this.isCompute(name)) {
-                        Tools.loop(_computed[name], function (handle) {
-                                this.unwatchValue(handle);
-                        }, this);
-                        this.del(name);
-                        return true;
-                } else {
-                        return false;
-                }
+            if (this.isCompute(name)) {
+                Tools.loop(_computed[name], function (handle) {
+                    this.unwatchValue(handle);
+                }, this);
+                this.del(name);
+                return true;
+            } else {
+                return false;
+            }
         };
 
         /**
@@ -1387,7 +1397,7 @@ define('Store',["Observable", "Tools"],
          * @returns {Boolean} true if it's a computed property
          */
         this.isCompute = function isCompute(name) {
-                return !!_computed[name];
+            return !!_computed[name];
         };
 
         /**
@@ -1410,11 +1420,10 @@ define('Store',["Observable", "Tools"],
 });
 
 /**
- * Emily
+ * Emily.js - http://flams.github.com/emily/
  * Copyright(c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
-
 define('Transport',[],
 /**
  * @class
@@ -1424,98 +1433,339 @@ define('Transport',[],
  */
 function Transport() {
 
+    
+
+    /**
+     * Create a Transport
+     * @param {Emily Store} [optionanl] $reqHandlers an object containing the request handlers
+     * @returns
+     */
+    return function TransportConstructor($reqHandlers) {
+
         /**
-         * Create a Transport
-         * @param {Emily Store} [optionanl] $reqHandlers an object containing the request handlers
+         * The request handlers
+         * @private
+         */
+        var _reqHandlers = null;
+
+        /**
+         * Set the requests handlers object
+         * @param {Emily Store} reqHandlers an object containing the requests handlers
          * @returns
          */
-        return function TransportConstructor($reqHandlers) {
+        this.setReqHandlers = function setReqHandlers(reqHandlers) {
+            if (reqHandlers instanceof Object) {
+                _reqHandlers = reqHandlers;
+                return true;
+            } else {
+                return false;
+            }
+        };
 
-                /**
-                 * The request handlers
-                 * @private
-                 */
-                var _reqHandlers = null;
+        /**
+         * Get the requests handlers
+         * @returns{ Emily Store} reqHandlers the object containing the requests handlers
+         */
+        this.getReqHandlers = function getReqHandlers() {
+            return _reqHandlers;
+        };
 
-                /**
-                 * Set the requests handlers object
-                 * @param {Emily Store} reqHandlers an object containing the requests handlers
-                 * @returns
-                 */
-                this.setReqHandlers = function setReqHandlers(reqHandlers) {
-                        if (reqHandlers instanceof Object) {
-                                _reqHandlers = reqHandlers;
-                                return true;
-                        } else {
-                                return false;
-                        }
+        /**
+         * Issue a request to a request handler
+         * @param {String} reqHandler the name of the request handler to issue the request to
+         * @param {Object} data the data, or payload, to send to the request handler
+         * @param {Function} callback the function to execute with the result
+         * @param {Object} scope the scope in which to execute the callback
+         * @returns
+         */
+        this.request = function request(reqHandler, data, callback, scope) {
+            if (_reqHandlers.has(reqHandler) &&
+                typeof data != "undefined") {
+
+                _reqHandlers.get(reqHandler)(data, function () {
+                    if (callback) {
+                        callback.apply(scope, arguments);
+                    }
+                });
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        /**
+         * Issue a request to a reqHandler but keep listening for the response as it can be sent in several chunks
+         * or remain open as long as the abort funciton is not called
+         * @param {String} reqHandler the name of the request handler to issue the request to
+         * @param {Object} data the data, or payload, to send to the request handler
+         * @param {Function} callback the function to execute with the result
+         * @param {Object} scope the scope in which to execute the callback
+         * @returns {Function} the abort function to call to stop listening
+         */
+        this.listen = function listen(reqHandler, data, callback, scope) {
+            if (_reqHandlers.has(reqHandler) &&
+                typeof data != "undefined" &&
+                typeof callback == "function") {
+
+                var func = function () {
+                    callback.apply(scope, arguments);
+                },
+                abort;
+
+                abort = _reqHandlers.get(reqHandler)(data, func, func);
+                return function () {
+                    if (typeof abort == "function") {
+                        abort();
+                    } else if (typeof abort == "object" && typeof abort.func == "function") {
+                        abort.func.call(abort.scope);
+                    }
                 };
+            } else {
+                return false;
+            }
+        };
 
-                /**
-                 * Get the requests handlers
-                 * @returns{ Emily Store} reqHandlers the object containing the requests handlers
-                 */
-                this.getReqHandlers = function getReqHandlers() {
-                        return _reqHandlers;
-                };
+        this.setReqHandlers($reqHandlers);
 
-                /**
-                 * Issue a request to a request handler
-                 * @param {String} reqHandler the name of the request handler to issue the request to
-                 * @param {Object} data the data, or payload, to send to the request handler
-                 * @param {Function} callback the function to execute with the result
-                 * @param {Object} scope the scope in which to execute the callback
-                 * @returns
-                 */
-                this.request = function request(reqHandler, data, callback, scope) {
-                        if (_reqHandlers.has(reqHandler) &&
-                                typeof data != "undefined") {
+    };
 
-                                _reqHandlers.get(reqHandler)(data, function () {
-                                        if (callback) {
-                                                callback.apply(scope, arguments);
-                                        }
-                                });
-                                return true;
-                        } else {
-                                return false;
-                        }
-                };
+});
 
-                /**
-                 * Issue a request to a reqHandler but keep listening for the response as it can be sent in several chunks
-                 * or remain open as long as the abort funciton is not called
-                 * @param {String} reqHandler the name of the request handler to issue the request to
-                 * @param {Object} data the data, or payload, to send to the request handler
-                 * @param {Function} callback the function to execute with the result
-                 * @param {Object} scope the scope in which to execute the callback
-                 * @returns {Function} the abort function to call to stop listening
-                 */
-                this.listen = function listen(reqHandler, data, callback, scope) {
-                        if (_reqHandlers.has(reqHandler) &&
-                                typeof data != "undefined" &&
-                                typeof callback == "function") {
+/**
+ * Emily.js - http://flams.github.com/emily/
+ * Copyright(c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
+ * MIT Licensed
+ */
 
-                                var func = function () {
-                                        callback.apply(scope, arguments);
-                                },
-                                abort;
+define('Router',["Observable", "Store", "Tools"],
 
-                                abort = _reqHandlers.get(reqHandler)(data, func, func);
-                                return function () {
-                                        if (typeof abort == "function") {
-                                                abort();
-                                        } else if (typeof abort == "object" && typeof abort.func == "function") {
-                                                abort.func.call(abort.scope);
-                                        }
-                                };
-                        } else {
-                                return false;
-                        }
-                };
+/**
+ * @class
+ * Routing allows for navigating in an application by defining routes.
+ */
+function Router(Observable, Store, Tools) {
 
-                this.setReqHandlers($reqHandlers);
+    
+
+    return function RouterConstructor() {
+
+        /**
+         * The routes observable (the applications use it)
+         * @private
+         */
+        var _routes = new Observable(),
+
+        /**
+         * The events observable (used by Routing)
+         * @private
+         */
+        _events = new Observable(),
+
+        /**
+         * The routing history
+         * @private
+         */
+        _history = new Store([]),
+
+        /**
+         * For navigating through the history, remembers the current position
+         * @private
+         */
+        _currentPos = -1,
+
+        /**
+         * The depth of the history
+         * @private
+         */
+        _maxHistory = 10;
+
+        /**
+         * Only for debugging
+         * @private
+         */
+        this.getRoutesObservable = function getRoutesObservable() {
+            return _routes;
+        };
+
+        /**
+         * Only for debugging
+         * @private
+         */
+        this.getEventsObservable = function getEventsObservable() {
+            return _events;
+        };
+
+        /**
+         * Set the maximum length of history
+         * As the user navigates through the application, the
+         * routeur keeps track of the history. Set the depth of the history
+         * depending on your need and the amount of memory that you can allocate it
+         * @param {Number} maxHistory the depth of history
+         * @returns {Boolean} true if maxHistory is equal or greater than 0
+         */
+        this.setMaxHistory = function setMaxHistory(maxHistory) {
+            if (maxHistory >= 0) {
+                _maxHistory = maxHistory;
+                return true;
+            } else {
+                return false;
+            }
 
         };
+
+        /**
+         * Get the current max history setting
+         * @returns {Number} the depth of history
+         */
+        this.getMaxHistory = function getMaxHistory() {
+            return _maxHistory;
+        };
+
+        /**
+         * Set a new route
+         * @param {String} route the name of the route
+         * @param {Function} func the function to be execute when navigating to the route
+         * @param {Object} scope the scope in which to execute the function
+         * @returns a handle to remove the route
+         */
+        this.set = function set() {
+            return _routes.watch.apply(_routes, arguments);
+        };
+
+        /**
+         * Remove a route
+         * @param {Object} handle the handle provided by the set method
+         * @returns true if successfully removed
+         */
+        this.unset = function unset(handle) {
+            return _routes.unwatch(handle);
+        };
+
+        /**
+         * Navigate to a route
+         * @param {String} route the route to navigate to
+         * @param {*} *params
+         * @returns
+         */
+        this.navigate = function get(route, params) {
+            if (this.load.apply(this, arguments)) {
+                // Before adding a new route to the history, we must clear the forward history
+                _history.proxy("splice", _currentPos +1, _history.count());
+                _history.proxy("push", Tools.toArray(arguments));
+                this.ensureMaxHistory(_history);
+                _currentPos = _history.count() -1;
+                return true;
+            } else {
+                return false;
+            }
+
+        };
+
+        /**
+         * Ensure that history doesn't grow bigger than the max history setting
+         * @param {Store} history the history store
+         * @private
+         */
+        this.ensureMaxHistory = function ensureMaxHistory(history) {
+            var count = history.count(),
+                max = this.getMaxHistory(),
+                excess = count - max;
+
+            if (excess > 0) {
+                history.proxy("splice", 0, excess);
+            }
+        };
+
+        /**
+         * Actually loads the route
+         * @private
+         */
+        this.load = function load() {
+            var copy = Tools.toArray(arguments);
+
+            if (_routes.notify.apply(_routes, copy)) {
+                copy.unshift("route");
+                _events.notify.apply(_events, copy);
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        /**
+         * Watch for route changes
+         * @param {Function} func the func to execute when the route changes
+         * @param {Object} scope the scope in which to execute the function
+         * @returns {Object} the handle to unwatch for route changes
+         */
+        this.watch = function watch(func, scope) {
+            return _events.watch("route", func, scope);
+        };
+
+        /**
+         * Unwatch routes changes
+         * @param {Object} handle the handle was returned by the watch function
+         * @returns true if unwatch
+         */
+        this.unwatch = function unwatch(handle) {
+            return _events.unwatch(handle);
+        };
+
+        /**
+         * Get the history store, for debugging only
+         * @private
+         */
+        this.getHistoryStore = function getHistoryStore() {
+            return _history;
+        };
+
+        /**
+         * Get the current length of history
+         * @returns {Number} the length of history
+         */
+        this.getHistoryCount = function getHistoryCount() {
+            return _history.count();
+        };
+
+        /**
+         * Flush the entire history
+         */
+        this.clearHistory = function clearHistory() {
+            _history.reset([]);
+        };
+
+        /**
+         * Go back and forth in the history
+         * @param {Number} nb the amount of history to rewind/forward
+         * @returns true if history exists
+         */
+        this.go = function go(nb) {
+            var history = _history.get(_currentPos + nb);
+            if (history) {
+                _currentPos += nb;
+                this.load.apply(this, history);
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        /**
+         * Go back in the history, short for go(-1)
+         * @returns
+         */
+        this.back = function back() {
+            return this.go(-1);
+        };
+
+        /**
+         * Go forward in the history, short for go(1)
+         * @returns
+         */
+        this.forward = function forward() {
+            return this.go(1);
+        };
+
+    };
 
 });

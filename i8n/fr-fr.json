@@ -341,6 +341,7 @@
 	"designedby": "Réalisé par : ",
 	"mtcheadertitle": "Mon Espace Twocents",
 	"userpref": "Préférences Utilisateur",
+	"publicwallsettings" : "Paramétrage de l'Espace Public",
 	"brainstormsettings": "Paramétrage du Brainstorming",
 	"aboutIdeafy": "A propos",
 	"faq": "FAQ",
@@ -533,5 +534,10 @@
 	"alreadyshared" : "Ce document a déjà été partagé avec les destinataires choisis",
 	"addedfav": "L'idée a été ajoutée à vos favoris",
 	"removedfav": "L'idée a été supprimée de vos favoris",
-	"maxfavsize": "Votre liste de favoris a atteint la taille maximale. Retirez un ou plusieurs éléments avant d'ajouter cette idée."
+	"maxfavsize": "Votre liste de favoris a atteint la taille maximale. Retirez un ou plusieurs éléments avant d'ajouter cette idée.",
+	"noideafound": "Aucune idée trouvée",
+	"tryotherview": "Changez de vue, modifiez le filtre de langues ou ajoutez des idées à vos favoris. Pour quitter la recherche, effacez le contenu du champ recherche et appuyez sur Entrée.",
+	"solution": "Solution",
+	"principle": "Principe",,
+	"defaultlangfilter": "Filtre de langue par défaut : "
 }

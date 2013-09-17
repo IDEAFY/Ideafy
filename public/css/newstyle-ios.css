@@ -7448,7 +7448,7 @@ li.my2q{
 }
 
 .settingmodule .selectlang{
-    width: 120px;
+    width: 60px;
     height: 23px;
     border: 1px solid #CCC;
     border-radius: 5px;
@@ -7470,7 +7470,7 @@ li.my2q{
 }
 
 .settingmodule .selectlang div{
-    width: 95px;
+    width: 34px;
     background-color: white;
     background-repeat: no-repeat;
     background-position: center;

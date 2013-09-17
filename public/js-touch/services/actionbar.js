@@ -111,6 +111,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         include_docs: true
                                                 })
                                                 .then(function(){
+                                                        var pubFav = user.get("public-favorites") || [],
+                                                            libFav = user.get("library-favorites") || [],
                                                         data = cdbView.get(0).doc;
                                                         $data = cdbView.get(0).doc;
                                                         // actions: edit, delete, email, share, replaysession, add to favorites ?
@@ -134,7 +136,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         }
                                                         // check if idea is part of the user favorites (public or library) and display add/remove button accordingly
                                                         if (document.getElementById("public")){
-                                                                if (user.get("public-favorites").indexOf(data._id) > -1){
+                                                                if (pubFav.indexOf(data._id) > -1){
                                                                         buttons.alter("push", {name:"unfav", icon:"img/public/unfav-actionbar.png"}); 
                                                                 }
                                                                 else{
@@ -142,7 +144,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                 }
                                                         }
                                                         else if (document.getElementById("library")){
-                                                        if (user.get("library-favorites").indexOf(data._id) > -1){
+                                                        if (libFav.indexOf(data._id) > -1){
                                                                         buttons.alter("push", {name:"unfav", icon:"img/public/unfav-actionbar.png"}); 
                                                                 }
                                                                 else{
@@ -200,7 +202,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                         case "contact":
                                                 // export vi email -- if you can see it you can email it
                                                 buttons.alter("push", {name: "mail", icon:"img/wall/35mail.png"});
-                                                if (data.type === "user") buttons.alter("push", {name: "twocent", icon:"img/2centDisable.png"})
+                                                if (data.type === "user") buttons.alter("push", {name: "twocent", icon:"img/2centDisable.png"});
                                                 buttons.alter("push", {name: "delete", icon:"img/wall/35delete.png"});
                                                 break;
                                         default:
@@ -326,7 +328,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 // if deleted contact is of type user
                                                 if ($data.type ==="user"){
                                                         for (i=arr.length-1; i>=0; i--){
-                                                                if (arr[i].type === "user" && arr[i].userid === $data.userid) arr.splice(i,1)
+                                                                if (arr[i].type === "user" && arr[i].userid === $data.userid) arr.splice(i,1);
                                                                 else if (arr[i].type === "group"){
                                                                         var grp = arr[i].contacts;
                                                                         for (j=grp.length-1; j>=0; j--){

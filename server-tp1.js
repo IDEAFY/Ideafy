@@ -279,7 +279,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         user.setTransport(transport);
                         user.set("password", json.password);
                         user.set("name", json.name);
-                        user.set("type", "user")
+                        user.set("type", "user");
                         
                         user.create().then(function (si) {
                                 

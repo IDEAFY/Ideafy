@@ -55,7 +55,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var transport = new Transport(olives.handlers),
             _db = "ideafy",
             cdbAdminCredentials = "admin:innovation4U",
-            currentVersion = "1.1.2",
+            currentVersion = "1.1.4",
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -466,22 +466,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         console.log(result);
                 });
         });
-        
-        // retrieve an attachment document (e.g brainstorming session)
-        /*olives.handlers.set("GetFile", function(json, onEnd){
-                var dir = json.dir || json.sid,
-                    _filename =  __dirname+'/attachments/'+ dir+'/'+json.filename;
-                    
-                fs.readFile(_filename, 'utf8', function(error, data){
-                        if (data){
-                                onEnd(data);
-                        }
-                        else {
-                                console.log(error);
-                                onEnd({"error": error});
-                        }                
-                });
-        });*/
         
         // retrieve a given user's avatar
         olives.handlers.set("GetAvatar", function(json, onEnd){

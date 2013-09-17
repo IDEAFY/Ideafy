@@ -55,7 +55,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var transport = new Transport(olives.handlers),
             _db = "ideafy",
             cdbAdminCredentials = "admin:innovation4U",
-            currentVersion = "1.1.2",
+            currentVersion = "1.1.4",
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -165,7 +165,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var updateUserIP = CDBAdmin.updateUserIP,
             updateDocAsAdmin = CDBAdmin.updateDoc,
             getDocAsAdmin = CDBAdmin.getDoc,
-            createDocAsAdmin = CDBAdmin.createtDoc,
+            createDocAsAdmin = CDBAdmin.createDoc,
             getViewAsAdmin = CDBAdmin.getView,
             removeDocAsAdmin = CDBAdmin.removeDoc,
             checkInvited = function(id, onEnd){
@@ -220,11 +220,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 switch(lang){
                         case ("en-us"):
                                 mailOptions.subject = "Ideafy confirmation";
-                                mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team."
+                                mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team.";
                                 break;
                         case ("fr-fr"):
                                 mailOptions.subject = "Confirmation d'inscription à Ideafy";
-                                mailOptions.text ="Merci de vous être enregistré sur Ideafy. Votre identifiant est "+login+ " et votre mot de passe "+pwd+". Nous espérons que vous prendrez plaisir à utiliser notre application.\nL'équipe Ideafy."
+                                mailOptions.text ="Merci de vous être enregistré sur Ideafy. Votre identifiant est "+login+ " et votre mot de passe "+pwd+". Nous espérons que vous prendrez plaisir à utiliser notre application.\nL'équipe Ideafy.";
                                 break;
                         default:
                                 mailOptions.subject = "Thank you for joining Ideafy";
@@ -271,6 +271,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
         olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
         olives.handlers.set("ShareDeck", appUtils.shareDeck);
+        olives.handlers.set("GetFavList", appUtils.getFavList);
         
         olives.handlers.set("Signup", function (json, onEnd) {
                         var user = new CouchDBUser();
@@ -517,7 +518,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         result.twoquestions_count = cdb.get("twoquestions_count");
                         
                         for (i=0, l=cdb.get("connections").length; i<l; i++){
-                                if (cdb.get("connections")[i].type === "user") contacts++
+                                if (cdb.get("connections")[i].type === "user") contacts++;
                         }
                         result.contacts = contacts;
                         
@@ -1478,7 +1479,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         var promise = new Promise(),
                             ip = sessionCDB.get("score"),
                             idList = [],
-                            parts = sessionCDB.get("participants"),
+                            parts = sessionCDB.get("participants") || [],
                             i,l,
                             reason;
                         

@@ -99,7 +99,6 @@ define(["OObject", "Amy/Control-plugin" ,
 			     ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"), 
 			     id = 0;
 			     
-			     console.log("public selected : ", ideaNode);
 			     if (ideaNode) id = ideaNode.getAttribute("data-listideas_id");
 			     
 			     ideaNode.classList.add("selected");

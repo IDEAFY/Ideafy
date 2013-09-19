@@ -6,8 +6,8 @@ var fs = require("fs");
 
 function AppUtils(){
         var _Promise, _CouchDBDocument,
-            _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _getBulkView, _removeDocAsAdmin,
-            _updateCard, _deleteAttachment, _deleteCard;
+            _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin,
+            _getBulkView, _updateCard, _deleteAttachment, _deleteCard;
         
         this.setConstructors = function(CouchDBDocument, CouchDBView, Promise){
                 _CouchDBDocument = CouchDBDocument;

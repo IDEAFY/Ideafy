@@ -210,7 +210,7 @@ function CDBAdmin(){
                     result = {}, options = {}, req, callback;
 
                 // manually build the http request to couchDB
-                options.hostname = "127.0.0.1";
+                options.hostname = "10.224.7.243";
                 options.port = 5984;
                 options.method = "POST";
                 options.auth = _cdbAdminCredentials;

@@ -279,7 +279,10 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                         // Action bar
                         messageUI.setStart = function(event, node){
                                 touchStart = [event.pageX, event.pageY];
-                                currentBar && currentBar.hide();  // hide previous action bar 
+                                if (currentBar){
+                                        currentBar.hide();
+                                        currentBar = null;        
+                                } 
                         };
                 
                         messageUI.showActionBar = function(event, node){

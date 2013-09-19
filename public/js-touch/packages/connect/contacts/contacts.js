@@ -181,7 +181,10 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                         // Action bar
                         contactsUI.setStart = function(event, node){
                                 touchStart = [event.pageX, event.pageY];
-                                currentBar && currentBar.hide();  // hide previous action bar 
+                                if (currentBar){
+                                        currentBar.hide();
+                                        currentBar = null;
+                                }  
                         };
                 
                         contactsUI.showActionBar = function(event, node){
@@ -276,5 +279,5 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                         });
                         
                         return contactsUI;    
-                }
-        })
+                };
+        });

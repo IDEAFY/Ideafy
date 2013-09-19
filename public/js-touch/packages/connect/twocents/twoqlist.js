@@ -123,7 +123,10 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
 
                 this.setStart = function(event, node){
                         touchStart = [event.pageX, event.pageY];
-                        currentBar && currentBar.hide();
+                        if (currentBar){
+                                 currentBar.hide();
+                                 currentBar = null;        
+                        }
                 };
                 
                 this.showActionBar = function(event, node){

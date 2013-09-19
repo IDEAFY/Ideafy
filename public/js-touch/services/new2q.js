@@ -28,11 +28,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             
                         _store.setTransport(Config.get("transport"));
                         
+                        // reset languages
+                        _resetLang();
+                        
                         _widget.plugins.addAll({
                                 "new2q" : new Model(_store, {
                                         displayLang : function(lang){
                                                 var l=lang.substring(0,2);
-                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png');")        
+                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png');");       
                                         },
                                         setLength : function(type){
                                                 if (type === 10) this.setAttribute("maxlength", _maxLength);
@@ -80,7 +83,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 id = parseInt(node.getAttribute("data-select_id"), 10);
                                 _languages.loop(function(v,i){
                                         (id === i) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);
-                                })                
+                                });               
                         };
                         
                         _widget.setLang = function(event, node){
@@ -93,6 +96,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
+                                _widget.dom.querySelector(".description").blur();
                         };
                         
                         _widget.closePopup = function closePopup(){
@@ -182,7 +186,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         json.dest = dest;
                                                         // notification request
                                                         Config.get("transport").request("Notify", json, function(result){
-                                                                var result = JSON.parse(result);
                                                                 console.log(result);
                                                         });
                                                         

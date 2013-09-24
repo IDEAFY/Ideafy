@@ -88,7 +88,7 @@ define(["OObject", "Amy/Control-plugin" ,
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
 				    _id = event.target.getAttribute("data-listideas_id");
 				
-				_detail.reset(_ideaList,_id);
+				_detail.reset(_ideaList, _id);
 				
 			};
 			

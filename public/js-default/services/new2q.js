@@ -74,6 +74,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.place(Map.get("new2q-popup"));
                         
                         _widget.showLang = function(event, node){
+                                event.stopPropagation();
+                                event.preventDefault();
                                 _widget.dom.querySelector(".idealang ul").classList.remove("invisible");        
                         };
                         

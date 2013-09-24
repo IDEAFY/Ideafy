@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin"], 
-        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place){
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin", "lib/spin.min"], 
+        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place, Spinner){
                 return function PublicDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
@@ -28,8 +28,20 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "label" : new Model(_labels),
                                 "publicdetail" : new Model(_store, {
                                         // toggle header buttons right
-                                        toggleRateEdit : function(authors){
-                                            (authors.indexOf(user.get("_id"))>-1) ? this.setAttribute("href", "#public-edit") : this.setAttribute("href", "#public-favorites");       
+                                        toggleFavEdit : function(authors){
+                                                var node = this;
+                                                if (authors.indexOf(user.get("_id"))>-1) {
+                                                        node.setAttribute("href", "#public-edit");
+                                                }
+                                                else{
+                                                        node.setAttribute("href", "#public-favorites");
+                                                        // check if idea is already a user's favorite
+                                                        (user.get("public-favorites") && (user.get("public-favorites").indexOf(_store.get("_id"))>-1)) ? node.classList.add("unfav") : node.classList.remove("unfav");
+                                                    
+                                                        user.watchValue("public-favorites", function(val){
+                                                                (val.indexOf(_store.get("_id"))>-1) ? node.classList.add("unfav"): node.classList.remove("unfav");        
+                                                        });
+                                                }     
                                         },
                                         // toggle header buttons left
                                         toggleTwocentShare : function(authors){
@@ -61,7 +73,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 if (authors.length === 1 && authors[0]=== user.get("_id")){
                                                         this.innerHTML = _labels.get("youwrotelbl");
                                                 }
-                                                else if (authors.length >1) this.innerHTML = _labels.get("theywrotelbl")
+                                                else if (authors.length >1) this.innerHTML = _labels.get("theywrotelbl");
                                                 else {
                                                         this.innerHTML = _labels.get("ideawrotelbl");
                                                 }        
@@ -128,7 +140,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "publicdetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, authors" data-publicdetailevent="listen: mousedown, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleRateEdit, authors" data-publicdetailevent="listen: mousedown, action" class="option right"></a></div><div id="idea-cache"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, authors"></div><h2 data-publicdetail="bind:innerHTML,title"></h2><span class="date" data-publicdetail="bind:date, creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-publicdetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><p data-publicdetail="bind:setDescription,description"></p><p data-publicdetail="bind:setSolution,solution"></p></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,votes"></div><div class="publicButton" data-publicdetail="bind:toggleVoteButton, votes" name="vote" data-publicdetailevent="listen: mousedown, press; listen: mouseup, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, twocents" data-place="place: PublicTwocentUI"></div></div>';
+                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, authors" data-publicdetailevent="listen: mousedown, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleFavEdit, authors" data-publicdetailevent="listen: mousedown, action" class="option right"></a></div><div id="idea-cache"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, authors"></div><h2 data-publicdetail="bind:innerHTML,title"></h2><span class="date" data-publicdetail="bind:date, creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-publicdetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><p data-publicdetail="bind:setDescription,description"></p><p data-publicdetail="bind:setSolution,solution"></p></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,votes"></div><div class="publicButton" data-publicdetail="bind:toggleVoteButton, votes" name="vote" data-publicdetailevent="listen: mousedown, press; listen: mouseup, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, twocents" data-place="place: PublicTwocentUI"></div></div>';
                 
                 //Public
                         _widget.showCache = function showCache(){
@@ -169,12 +181,54 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.action = function(event, node){
-                                var name = node.getAttribute("href");
-                                if (name === "#public-2cents"){
-                                        _twocentWriteUI.reset(_store.get("_id"));
-                                        _domWrite.classList.remove("invisible");
-                                }
-                                else $action(name);       
+                                var name = node.getAttribute("href"),
+                                    id = _store.get("_id"),
+                                    fav, idx,
+                                    favSpinner = new Spinner({color:"#FFFFFF", lines:8, length: 6, width: 3, radius:6, left: 3, top: 3});
+                                switch(name){
+                                        case "#public-2cents":
+                                                _twocentWriteUI.reset(id);
+                                                _domWrite.classList.remove("invisible");
+                                                break;
+                                        case "#public-favorites":
+                                                node.classList.add("favwait");
+                                                favSpinner.spin(node);
+                                                (user.get("public-favorites")) ? fav = user.get("public-favorites").concat() : fav = [];
+                                                
+                                                idx = fav.indexOf(id);
+                                                (idx > -1) ? fav.splice(idx, 1) : fav.push(id);
+                                                
+                                                if (fav.length < 100 || fav.length < user.get("public-favorites").length){
+                                                        user.unsync();
+                                                        user.sync(Config.get("db"), user.get("_id"))
+                                                        .then(function(){
+                                                                user.set("public-favorites", fav);
+                                                                return user.upload();
+                                                        })
+                                                        .then(function(){
+                                                                favSpinner.stop();
+                                                                node.classList.remove("favwait");
+                                                                if (idx>-1){
+                                                                        alert(_labels.get("removedfav"));
+                                                                        node.classList.remove("unfav");
+                                                                }
+                                                                else{
+                                                                        alert(_labels.get("addedfav"));
+                                                                        node.classList.add("unfav");
+                                                                }
+                                                        });
+                                                }
+                                                else {
+                                                        alert(_labels.get("maxfavsize"));
+                                                        favSpinner.stop();
+                                                        node.classList.remove("favwait");
+                                                }
+                                                
+                                                break;
+                                        default:
+                                                $action(name);
+                                                break;
+                                }       
                         };
                         
                         _widget.edit = function(){

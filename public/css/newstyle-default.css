@@ -822,7 +822,7 @@ ul.notify-list{
 }
 
 #new2q-popup .form textarea, #new2c-popup .form textarea{
-    height: 200px;
+    height: 180px;
     font-size: 18px;
     line-height: 30px;
     padding-right: 5px;

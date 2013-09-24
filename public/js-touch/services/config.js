@@ -7,18 +7,18 @@
 
 define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"], 
    function(Store, Transport, CouchDBDocument, Observable) {
-        var _location, _transport, _user, _observer, _config = new Store(), _socket;
+        var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "";
         
         this.reset = function(){
                  
-                var _location = "http://8.19.34.68:1664",
-                    //_location = "http://37.153.96.26:1664"; // uncomment for app deployment
-                    //_location = location.origin;
-                    _version = "1.1.5",
-                    _socket = io.connect(_location),
-                    _transport = new Transport(_socket),
-                    _user =  new CouchDBDocument(),
-                    _observer = new Observable();
+                _location = "http://8.19.34.68:1664";
+                //_location = "http://37.153.96.26:1664"; // uncomment for app deployment
+                //_location = location.origin;
+                _version = "1.1.5";
+                _socket = io.connect(_location);
+                _transport = new Transport(_socket);
+                _user =  new CouchDBDocument();
+                _observer = new Observable();
                 
                 _user.setTransport(_transport);
                 

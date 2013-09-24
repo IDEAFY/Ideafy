@@ -278,11 +278,16 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                  * Check socket status and reconnect if needed
                  */
                 checkSocketStatus : function(){
-                        var sock = Config.get("socket");
+                        var sock = Config.get("socket"),
+                            obs = Config.get("observer"),
+                            usr = Config.get("user");
+                        // reconnect socket if not connected
                         if (!sock.socket.connected){
                                 sock.socket.connect(Config.get("location"));
-                                Config.get("observer").notify("reconnect");
-                        }              
+                                obs.notify("reconnect", "all");
+                        }
+                        // if socket is ok but user is offline reconnect user
+                        else if (!usr.get("online")) obs.notify("reconnect", "user");              
                 },
                 
                 /*
@@ -507,5 +512,5 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                         document.addEventListener("mousedown", listener, true);
                         return listener;      
                 }
-	}
+	};
 });

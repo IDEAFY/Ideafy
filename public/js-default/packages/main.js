@@ -15,7 +15,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 "#login" : _login
         }), _dock = new Dock(), _local = new LocalStore(), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user"), _currentVersion;
 
-        _currentVersion = "1.1.5";
+        _currentVersion = Config.get("version");
         
         //setup
         _body.plugins.addAll({
@@ -199,6 +199,9 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
          * Watch for signout events
          */       
         Config.get("observer").watch("signout", function(){
+                // change user status
+                _user.set("online", false);
+                
                 // clear local store
                 _local.set("currentLogin", "");
                 _local.set("userAvatar", "");
@@ -216,17 +219,25 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         Map.get("body").addEventListener("mousedown", Utils.checkSocketStatus, false);
         
         // resync user document upon socket reconnection
-        Config.get("observer").watch("reconnect", function(){
+        Config.get("observer").watch("reconnect", function(option){
                 _local.sync("ideafy-data");
-                checkServerStatus
-                .then(function(){
-                        _user.unsync();
-                        return _user.sync(_db, _local.get("currentLogin"));
-                }, function(){
+                if (option === "all"){
+                        checkServerStatus
+                        .then(function(){
+                                _user.unsync();
+                                return _user.sync(_db, _local.get("currentLogin"));
+                        }, function(){
                                 _login.setScreen("#maintenance-screen");        
                         })
-                .then(function(){
-                        console.log("user resynchronized");
-                });              
+                        .then(function(){
+                                console.log("user resynchronized");
+                                _user.set("online", true);
+                                return _user.upload();
+                        });
+                }
+                else{
+                        _user.set("online", true);
+                        return _user.upload();
+                }              
         });
 }); 

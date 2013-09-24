@@ -7,13 +7,14 @@
 
 define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"], 
    function(Store, Transport, CouchDBDocument, Observable) {
-        var _location, _transport, _user, _observer, _config = new Store(), _socket;
+        var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "";
         
         this.reset = function(){
                  
                 //_location = "http://37.153.96.26:1664"; // uncomment for app deployment
                 _location = "http://8.19.34.68:1664";
                 //_location = location.origin;
+                _version = "1.1.5";
                 _socket = io.connect(_location);
                 _transport = new Transport(_socket);
                 _user =  new CouchDBDocument();
@@ -22,6 +23,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                 
                 _config.reset({
                         location : _location,
+                        version: _version,
                         socket : _socket,
                         transport : _transport,
                         db : "ideafy",
@@ -92,7 +94,10 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                                 "news" : [],
                                 "twocents" : [],
                                 "twoquestions" : [],
-                                "settings": {"notifyPopup": true, "useascharacter": false, "ccme": false, "privacy_lvl": 0, "showTips": true, "startupScreen": "#public", "listSize": null, "polling_interval": 60000}
+                                "public-favorites": [],
+                                "library-favorites": [],
+                                "settings": {"notifyPopup": true, "useascharacter": false, "ccme": false, "privacy_lvl": 0, "showTips": true, "startupScreen": "#public", "listSize": null, "polling_interval": 60000, "contentLang": ""},
+                                "online": false
                         },
                         ideaTemplate:{
                                 "title": "",
@@ -195,10 +200,10 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
         "ideasolplaceholder": "Describe how your idea would work, what components, products, services or technologies you would  use",
         "privatelbl": "Private",
         "publiclbl": "Public",
-        "ideavisiblelbl": "Your idea is ",
-        "setideavisiblelbl" : "Change status:",
-        "ideafyreplaylbl": "Ideafy Replay is",
-        "ideafysetreplaylbl": "Change Ideafy Replay status: ",
+        "ideavisiblelbl": "Your idea is :",
+        "setideavisiblelbl" : "Change status :",
+        "ideafyreplaylbl": "Ideafy Replay is :",
+        "ideafysetreplaylbl": "Change Ideafy Replay status :",
         "enabledreplaylbl": "Enabled",
         "disabledreplaylbl": "Disabled",
         "enablereplaylbl": "Enable",
@@ -695,7 +700,10 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
         "deldeckwarning" : "Deleting this deck will definitively remove it from your library. If you are its author, it will also be removed from the database as well as any card you created that is only attached to this deck. Are you sure you want to proceed ?",
         "cannotdelactivedeck" : "You cannot remove your active deck.  Please review your settings.",
         "cannotremovecard" : "You cannot remove this card from your active deck.  An active deck requires at leat one character card, one context card, one problem card and three technology cards.",
-        "alreadyshared" : "This has already been shared with intended recipients"
+        "alreadyshared" : "This has already been shared with intended recipients",
+        "addedfav": "This idea has been added to your favorites",
+        "removedfav": "This idea has been removed from your favorites",
+        "maxfavsize": "Your list of favorites has reached the maximum size. Remove some ideas before trying to add this one."
 },
                 lang: "en-us",
                 userLanguages:[

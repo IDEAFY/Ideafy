@@ -237,11 +237,13 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                                 })
                                 .then(function(){
                                         console.log("user resynchronized");
+                                        _user.set("online", true);
+                                        return _user.upload();
                                 });
                         }
                         else{
                                 _user.set("online", true);
-                                _user.upload();
+                                return _user.upload();
                         }        
                 }    
         });

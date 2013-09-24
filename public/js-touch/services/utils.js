@@ -517,5 +517,5 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                         document.addEventListener("touchstart", listener, true);
                         return listener;      
                 }
-	}
+	};
 });

@@ -21,7 +21,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                             buildButtons,
                             ui = this,
                             spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10}).spin(),
-                            favSpinner = new Spinner({color:"#a0a0a0", lines:10, length: 6, width: 4, radius:6}).spin() ;
+                            favSpinner = new Spinner({color:"#a0a0a0", lines:10, length: 6, width: 4, radius:6}).spin();
                         
                         this.plugins.addAll({
                                 "buttons" : new Model(buttons, {
@@ -112,7 +112,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 })
                                                 .then(function(){
                                                         var pubFav = user.get("public-favorites") || [],
-                                                            libFav = user.get("library-favorites") || [],
+                                                            libFav = user.get("library-favorites") || [];
                                                         data = cdbView.get(0).doc;
                                                         $data = cdbView.get(0).doc;
                                                         // actions: edit, delete, email, share, replaysession, add to favorites ?

@@ -54,6 +54,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         this.press = function(event, node){
                                 event.stopPropagation();
+                                event.preventDefault();
                                 node.classList.add("pressed");
                                 spinner.el = document.getElementById("abspinner");
                         };
@@ -63,6 +64,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                     action = buttons.get(id).name;
                                 
                                 event.stopPropagation();
+                                event.preventDefault();
                                 node.classList.remove("pressed");
                                 
                                 
@@ -86,6 +88,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 break;
                                         case "twocent":
                                                 this.sendTwocent();
+                                                break;
                                         case "unfav":
                                                 favSpinner.spin(node);
                                                 (document.getElementById("public")) ? this.removeFav("public-favorites") : this.removeFav("library-favorites");

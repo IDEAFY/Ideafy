@@ -1483,7 +1483,8 @@ ul.notify-list{
 
 }*/
 #public-list .search, #idea-list .search{
-    float: left;
+    width: 261px;
+    margin: -5px 0px 5px 0px;
 }
 
 .list ul.listbtns{
@@ -1492,6 +1493,7 @@ ul.notify-list{
     text-align: center;
     width: 271px;
     height: 28px;
+    overflow: hidden;
 }
 
 .tools-button{

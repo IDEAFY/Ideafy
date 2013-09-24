@@ -7503,7 +7503,7 @@ li.my2q{
     background: #657B99;
 }
 
-#noresult{
+.noresult{
     position: absolute;
     margin: 10px;
 }

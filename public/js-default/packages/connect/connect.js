@@ -57,19 +57,18 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
                  
                 // watch for events
                         _observer.watch("display-message", function(id){
-                                _stack.getStack().show("#messages");        
+                                _menu.setWidget("#messages");        
                         });
                         
                         _observer.watch("display-twoq", function(){
-                                _stack.getStack().show("#twocents");         
+                                _menu.setWidget("#twocents");         
                         });
                         
                         _observer.watch("display-twoc", function(){
-                                _stack.getStack().show("#twocents");         
+                                _menu.setWidget("#twocents");         
                         });
                         
                         _observer.watch("message-contact", function(){
-                                //_stack.getStack().show("#messages");
                                 _menu.setWidget("#messages");       
                         });
 

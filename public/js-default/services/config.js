@@ -94,7 +94,10 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                                 "news" : [],
                                 "twocents" : [],
                                 "twoquestions" : [],
-                                "settings": {"notifyPopup": true, "useascharacter": false, "ccme": false, "privacy_lvl": 0, "showTips": true, "startupScreen": "#public", "listSize": null, "polling_interval": 60000}
+                                "public-favorites": [],
+                                "library-favorites": [],
+                                "settings": {"notifyPopup": true, "useascharacter": false, "ccme": false, "privacy_lvl": 0, "showTips": true, "startupScreen": "#public", "listSize": null, "polling_interval": 60000, "contentLang": ""},
+                                "online": false
                         },
                         ideaTemplate:{
                                 "title": "",

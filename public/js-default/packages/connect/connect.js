@@ -69,7 +69,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
                         });
                         
                         _observer.watch("message-contact", function(){
-                                _stack.getStack().show("#messages");        
+                                //_stack.getStack().show("#messages");
+                                _menu.setWidget("#messages");       
                         });
 
                        

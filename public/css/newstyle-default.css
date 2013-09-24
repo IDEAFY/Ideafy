@@ -414,7 +414,7 @@ input::-webkit-file-upload-button{
   outline:0;
   height:25px;
   line-height: 25px;
-  padding:0 25px 0 10px;
+  padding:0 5px 0 5px;
   width:160px;
   border-radius:5px;
   background:#F2F2F2;

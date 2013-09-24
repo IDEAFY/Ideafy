@@ -236,6 +236,10 @@ input::-webkit-file-upload-button{
     overflow-y: auto;
 }
 
+.list ul.idea-list{
+    height: 637px;
+}
+
 #deck-list{
     height: 712px;
 }
@@ -401,8 +405,8 @@ input::-webkit-file-upload-button{
 }
 
 .tools {
-  padding:15px;
-  height: 30px;
+  padding:10px 15px 10px 15px;
+  height: 55px;
 }
 
 .search  {

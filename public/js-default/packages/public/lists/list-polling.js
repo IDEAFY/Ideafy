@@ -81,6 +81,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 currentBar && currentBar.hide();
                                 _store.reset(JSON.parse(cdb.toJSON()));
+                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                 cdb.unsync();
                                 polling = setInterval(function(){
                                         cdb.reset([]);

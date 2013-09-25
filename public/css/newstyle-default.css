@@ -5419,6 +5419,17 @@ li.color-item{
     overflow-y: hidden;
 }
 
+.innersplash span{
+    display: inline-block;
+    width: 400px;
+    height: 150px;
+    font-size: 18px;
+    color: #657b99;
+    line-height: 25px;
+    font-family: Helvetica;
+    padding-top: 25px;
+}
+
 #msgdetail .msgdetailarea{
     height: 712px;
     overflow-y: scroll;

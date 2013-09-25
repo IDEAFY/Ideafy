@@ -153,7 +153,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         
                         _widget.reset = function reset(viewStore, index){
                            
-                                console.log(index, viewStore.get(index), viewStore.toJSON());    
                                 var id = viewStore.get(index).id,
                                     promise = new Promise();
                                 

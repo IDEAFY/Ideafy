@@ -347,7 +347,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               
               _widget.place(_dom);
               
-              
               _widget.reset = function reset(){
                         // reset couchDBView
                         _sessionsCDB.unsync();
@@ -366,7 +365,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _searchData = [];
                         _currentSearch = "";
                         // retrieve session list from CouchDB
-                        _sessionsCDB.sync(_db, "library", "_view/sessions", {key: Config.get("uid"), descending: true}).then(function(){
+                        _sessionsCDB.sync(_db, "library", "_view/sessions", {key: '"'+_user.get("_id")+'"', descending: true}).then(function(){
                                 _widget.resetSessionData();
                         });         
               };

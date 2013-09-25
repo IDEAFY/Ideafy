@@ -72,26 +72,21 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               widget.displayDeck = displayDeck;
               
               widget.init = function init(){
-                      console.log("deck init");
                       // init UIs
                       ideafyDecks = new List("all_decks");
                       // taiautDecks = new List("taiaut_decks"); -- in App purchase of official decks
                       // customDecks = new List("custom_decks"); -- feature not available in the first release
                       
                       stack.getStack().add("ideafy", ideafyDecks);
-                      console.log("list added to stack");
                       
                       // initial view should show active deck as highlighted and active deck content in the view
                       ideafyDecks.init(function(sync){
-                              console.log("ideafy deck init called");
                               if (sync){
                                       // show all decks
                                       stack.getStack().show("ideafy");
                                       deckView.init();
-                                      consle.log("after deckview init");
                                       ideafyDecks.highlightDeck(deckControl.init,0);
-                                      deckView.reset(ideafyDecks.getModel().get(0));
-                                      console.log("after deckview reset call");
+                                      deckView.reset(ideafyDecks.getModel().get(0), "details");
                                       currentSelected = 0;
                               };
                       });

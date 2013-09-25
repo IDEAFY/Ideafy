@@ -50,7 +50,6 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 	               _stack.getStack().add("#ideas", _ideas);
 	               _stack.getStack().add("#sessions", _sessions);
 	               _stack.getStack().add("#decks", _decks);
-	               console.log("deck UI added to stack");
 	               
 	               // set current view
 	               _stack.getStack().show("#ideas");

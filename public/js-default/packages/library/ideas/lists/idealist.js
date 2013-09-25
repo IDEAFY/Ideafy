@@ -8,16 +8,18 @@
 define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function IdeaListConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
-                display = false,
-                currentBar = null,
+                    display = false,
+                    currentBar = null,
                     _options = {
-                        db : $db,
-                        view : $view,
-                        design : $design,
-                        query : {
-                                descending : true
-                        }
-                };
+                                db : $db,
+                                view : $view,
+                                design : $design,
+                                query : {
+                                        descending : true
+                                }
+                     },
+                     user = Config.get("user"),
+                     widget = this;
 
                 //setup
                 _store.setTransport(Config.get("transport"));
@@ -27,14 +29,14 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         _options.query = $query;
                 }
                 
-                this.template = '<div><div id="noresult" class="date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,value.doc.authors"></div><h2 data-listideas="bind:innerHTML,value.doc.authornames"></h2><span class="date" data-listideas="bind:date, value.doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,value.doc.title"></h3><p data-listideas="bind:innerHTML, value.doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, value.doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, value.rating"></span></div></li></ul></div>';
+                this.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,value.doc.authors"></div><h2 data-listideas="bind:innerHTML,value.doc.authornames"></h2><span class="date" data-listideas="bind:date, value.doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,value.doc.title"></h3><p data-listideas="bind:innerHTML, value.doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, value.doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, value.rating"></span></div></li></ul></div>';
                 
                 // change template for listSearch
                 if (_options.query.q){
-                        this.template = '<div><div id="noresult" class="date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames"></h2><span class="date" data-listideas="bind:date, doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:setDesc, doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, rating"></span></div></li></ul></div>';        
+                        this.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames"></h2><span class="date" data-listideas="bind:date, doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:setDesc, doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, rating"></span></div></li></ul></div>';        
                 }
 
-                this.plugins.addAll({
+                widget.plugins.addAll({
                         "labels": new Model(Config.get("labels")),
                         "listideas": new Model(_store, {
                                 date : function date(date) {
@@ -71,26 +73,76 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         "listevent" : new Event(this)
                         });
 
-                this.getModel = function() {
+                widget.getModel = function() {
                         return _store;
                 };
-                this.resetQuery = function(query) {
-                        var promise = new Promise();
+                widget.resetQuery = function(query) {
+                        var promise = new Promise(), nores = widget.dom.querySelector(".noresult"),
+                            fav = Config.get("user").get("library-favorites") || [],
+                            json = {idList: fav};
                         _options.query = query;
-                        
                         _store.unsync();
                         _store.reset([]);
-                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                promise.fulfill();
-                        });
+                        if ($query === "fav"){
+                                Config.get("transport").request("GetFavList", json, function(res){
+                                        var arr = JSON.parse(res), i, l, lang;
+                                        if (!query || query === "*") _store.reset(arr);
+                                        else{
+                                                for (i=0, l=arr.length; i<l; i++){
+                                                        lang = arr[i].value.doc.lang.substring(0,2);
+                                                        if (query === lang) _store.alter("push", arr[i]);
+                                                }        
+                                        }
+                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        promise.fulfill();
+                                });
+                        }
+                        else {
+                                _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        currentBar && currentBar.hide();
+                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        promise.fulfill();      
+                                });
+                        }
                         return promise;
                 };
 
-                this.setStart = function(event, node){
-                        currentBar && currentBar.hide();  // hide previous action bar  
+                widget.setStart = function(event, node){
+                        if (currentBar){
+                                 currentBar.hide();
+                                 currentBar = null;        
+                        } // hide previous action bar  
                 };
                 
-                this.showActionBar = function(event, node){
+                widget.setLang = function(lang){
+                        var query;
+                        if ($query === "fav") query = lang;
+                        else {
+                                switch($view){
+                                        case "_view/ideas":
+                                                if (lang === "*"){
+                                                        query = {key: '"' + user.get("_id")+'"', descending: true};        
+                                                }
+                                                else{
+                                                        query = {key:'[0,"'+user.get("_id")+'","'+lang+'"]', descending: true};
+                                                }
+                                                break;
+                                        case "_view/privatebyvotes":
+                                                if (lang === "*"){
+                                                        query = {endkey: '[0,"'+user.get("_id")+'"]', startkey: '[0,"'+user.get("_id")+'",{},{}]', descending: true};
+                                                }
+                                                else {
+                                                        query = {endkey: '[1,"'+user.get("_id")+'"]', startkey: '[1,"'+user.get("_id")+'","'+lang+'",{},{}]', descending: true};        
+                                                }
+                                                break;
+                                        default:
+                                                break;        
+                                }
+                        }
+                        return widget.resetQuery(query); 
+                };
+                
+                widget.showActionBar = function(event, node){
                         var id = node.getAttribute("data-listideas_id"),
                             display = false, frag,
                             dom = document.getElementById("ideas");
@@ -109,11 +161,31 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         }
                 };
                 
-                this.init = function init(){
-                        var promise = new Promise();
-                        _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                promise.fulfill();   
-                        });
+                widget.init = function init(){
+                        var promise = new Promise(),
+                            fav = user.get("library-favorites") || [],
+                            json = {idList : fav},
+                            nores = widget.dom.querySelector(".noresult");
+                        if ($query === "fav"){
+                                if (fav.length){
+                                        Config.get("transport").request("GetFavList", json, function(res){
+                                                _store.reset(JSON.parse(res));
+                                                nores.classList.add("invisible");
+                                                promise.fulfill();
+                                        });
+                                }
+                                else {
+                                        _store.reset([]);
+                                        nores.classList.remove("invisible");
+                                        promise.fulfill();
+                                }
+                        }
+                        else {
+                                _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
+                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        promise.fulfill();      
+                                });
+                        }
                         return promise;
                 };
         }

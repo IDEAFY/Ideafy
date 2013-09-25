@@ -1437,7 +1437,7 @@ ul.notify-list{
 
 .mosaic .list-item {
     display: block;
-    width: 170px;
+    width: 168px;
     padding: 5px 10px;
     float: left;
     height: 180px;
@@ -1454,7 +1454,7 @@ ul.notify-list{
 
 .mosaic .item-body{
     height: 108px;
-    overflow-y: scroll;    
+    overflow-y: auto;    
 }
 
 .mosaic .list-item h3{
@@ -1470,7 +1470,8 @@ ul.notify-list{
 .mosaic .item-body p{
     margin-top: 10px;
     height: 83px;
-    overflow-y: scroll;
+    overflow-y: visible;
+    padding: 0px 2px;
 }
 
 .mosaic .item-footer{

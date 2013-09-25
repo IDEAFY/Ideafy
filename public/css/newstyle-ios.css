@@ -1298,7 +1298,7 @@ ul.notify-list{
   background: white;
 }
 
-.mosaic .list ul{
+.mosaic .list-item ul{
     padding-top: 10px;
     background: url('../img/library/bgdeck.jpg');
     -webkit-box-shadow: inset 0px 5px 5px #ccc;
@@ -1314,31 +1314,31 @@ ul.notify-list{
     width: 300px;
 }
 
-.mosaic li:nth-child(7n){
+.mosaic li.list-item:nth-child(7n){
     border-left: 10px solid #657B99;
 }
 
-.mosaic li:nth-child(7n+1){
+.mosaic li.list-item:nth-child(7n+1){
     border-left: 10px solid #F27B3D;   
 }
 
-.mosaic li:nth-child(7n+2){
+.mosaic li.list-item:nth-child(7n+2){
     border-left: 10px solid #9AC9CD;   
 }
 
-.mosaic li:nth-child(7n+3){
+.mosaic li.list-item:nth-child(7n+3){
     border-left: 10px solid #4D4D4D; 
 }
 
-.mosaic li:nth-child(7n+4){
+.mosaic li.list-item:nth-child(7n+4){
     border-left: 10px solid #F2E520;
 }
 
-.mosaic li:nth-child(7n+5){
+.mosaic li.list-item:nth-child(7n+5){
     border-left: 10px solid #BD262C;
 }
 
-.mosaic li:nth-child(7n+6){
+.mosaic li.list-item:nth-child(7n+6){
     border-left: 10px solid #5F8F28;
 }
 

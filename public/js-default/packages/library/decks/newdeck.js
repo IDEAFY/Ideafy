@@ -13,6 +13,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _widget = new Widget(),
                             _store = new Store({}),
                             _user = Config.get("user"),
+                            _languages = new Store(Config.get("userLanguages")),
+                            _resetLang = function(){
+                                // set language to the user's language by default
+                                var l = _user.get("lang").substring(0,2);
+                                _store.set("default_lang", l);
+                                _languages.loop(function(v,i){
+                                        (v.name === l) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
+                                });        
+                            },
                             _transport = Config.get("transport"),
                             _labels = Config.get("labels"),
                             _error = new Store({"error": ""}),
@@ -73,9 +82,25 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             };
                             
                         _store.setTransport(Config.get("transport"));
+                        // reset languages
+                        _resetLang();
                         
                         _widget.plugins.addAll({
-                                "newdeck" : new Model(_store),
+                                "newdeck" : new Model(_store,{
+                                        displayLang : function(lang){
+                                                var l=lang.substring(0,2);
+                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png');");       
+                                        }
+                                }),
+                                "select" : new Model (_languages, {
+                                        setBg : function(name){
+                                                this.setAttribute("style", "background-image:url('img/flags/"+name+".png');");
+                                                //(name === _user.get("lang").substring(0,2)) ? this.classList.add("selected") : this.classList.remove("selected");
+                                        },
+                                        setSelected : function(selected){
+                                                (selected) ? this.classList.add("selected") : this.classList.remove("selected");        
+                                        } 
+                                }),
                                 "labels" : new Model(_labels),
                                 "errormsg" : new Model(_error, {
                                         setError : function(error){
@@ -95,7 +120,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newdeckevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:mousedown, cancel"></div></div><form class="form"><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend data-labels="bind: innerHTML, setdecklogo"></legend><div class="deckicon"><div class="decklogo"></div><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-newdeckevent="listen: mousedown, selectpress; listen: change, uploadnDisplay"><div data-labels="bind:innerHTML, importlbl" data-newdeckevent="listen: mousedown, press; listen: mouseup, release"></div></span></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></form></div>';
+                        _widget.template = '<div id="newdeck-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createdecklbl"></span><div class="close-popup" data-newdeckevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newdeck="bind: displayLang, default_lang" data-newdeckevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newdeckevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, decktitleplaceholder" data-newdeck="bind: value, title" data-newdeckevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, deckdescplaceholder" data-newdeck="bind: value, description" data-newdeckevent="listen: input, resetError"></textarea><legend data-labels="bind: innerHTML, setdecklogo"></legend><div class="deckicon"><div class="decklogo"></div><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-newdeckevent="listen: mousedown, selectpress; listen: change, uploadnDisplay"><div data-labels="bind:innerHTML, importlbl" data-newdeckevent="listen: mousedown, press; listen: mouseup, release"></div></span></div><div class="newidea-footer"><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newdeckevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></form></div>';
                         
                         _widget.reset = function reset(edit){
                                 _store.reset({
@@ -125,6 +150,27 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
+                        };
+                        
+                        _widget.showLang = function(event, node){
+                                _widget.dom.querySelector(".idealang ul").classList.remove("invisible");        
+                        };
+                        
+                        _widget.selectFlag = function(event, node){
+                                var id;
+                                event.stopPropagation();
+                                id = parseInt(node.getAttribute("data-select_id"), 10);
+                                _languages.loop(function(v,i){
+                                        (id === i) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);
+                                });               
+                        };
+                        
+                        _widget.setLang = function(event, node){
+                                var id;
+                                event.stopPropagation();
+                                id = node.getAttribute("data-select_id");
+                                _store.set("default_lang", _languages.get(id).name);
+                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");        
                         };
                         
                         _widget.selectpress = function(event, node){

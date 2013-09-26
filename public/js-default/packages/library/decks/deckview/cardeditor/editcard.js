@@ -223,7 +223,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                             picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
                          
                         el.setAttribute("style", "background-image: none");
-                        picSpinner.spin(el)        
+                        picSpinner.spin(el);       
                         // first read the file to memory, once loaded resize and display upload button
                         _reader.onload = function(e) {
                                 _img.src = e.target.result;

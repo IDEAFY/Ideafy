@@ -27,7 +27,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         deckView.plugins.addAll({
                                 "cardmenu" : new Model(cardMenu, {
                                         setClass : function(name){
-                                                this.classList.add(name);
+                                                (name) && this.classList.add(name);
                                         },
                                         setActive : function(active){
                                                 (active)?this.classList.add("active"):this.classList.remove("active");
@@ -54,7 +54,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         };
                         
                         deckView.hideEditView = function hideEditView(){
-                                newCardUI.close();        
+                                newCardUI && newCardUI.close();        
                         };
                         
                         deckView.reset = function reset(deck, screen){
@@ -62,14 +62,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                                 deckShareUI.hide();
                                 deckView.dom.setAttribute("style", "overflow-y: none;");
                                 
-                                console.log("calling all ui reset functions");
                                 ["details", "characters", "contexts", "problems", "techno"].forEach(function(value){
                                         innerStack.getStack().get(value).reset(deck);        
                                 });
                                 
                                 deckId = deck._id;
                                 deckTitle = deck.title;
-                                
                                 cardMenu.reset([]);
                                 
                                 ["characters", "contexts", "problems", "techno"].forEach(function(type){
@@ -85,15 +83,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         
                         deckView.init = function init(){
                                 // initialize inner stack
-                                var dd = new DeckDetails($update);
-                                console.log("deck details ok");
-                                innerStack.getStack().add("details", dd);
-                                
-                                ["characters", "contexts", "problems", "techno"].forEach(function(type){
-                                        var ui =  new CardList(type, deckView.editCard, $update);
-                                        console.log(type, "ui init ok");
-                                        innerStack.getStack().add(type, ui);      
-                                });
+                                innerStack.getStack().add("details", new DeckDetails($update));
+                                innerStack.getStack().add("characters", new CardList("characters", deckView.editCard, $update));
+                                innerStack.getStack().add("contexts", new CardList("contexts", deckView.editCard, $update));
+                                innerStack.getStack().add("problems", new CardList("problems", deckView.editCard, $update));
+                                innerStack.getStack().add("techno", new CardList("techno", deckView.editCard, $update));
                         };
                         
                         Config.get("observer").watch("deck-share", function(deckId){

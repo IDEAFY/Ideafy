@@ -6923,12 +6923,12 @@ li.my2q{
 }
 
 #dashboard-about .aboutcontent{
-    padding: 20px;
+    padding: 10px 20px;
     margin: 20px;
     border: 1px solid #657b99;
     border-radius: 5px;
     width: 851px;
-    height: 530px;
+    height: 550px;
     overflow-y: scroll;
 }
 

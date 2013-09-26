@@ -7020,12 +7020,12 @@ li.my2q{
 
 .settingmodule{
     margin-bottom: 20px;
-    padding: 20px;
-    min-height: 260px;
+    padding: 10px 20px;
+    height: auto;;
     background: #f2f2f2;
     border: 1px dashed #cccccc;
     border-radius: 5px;
-    width: 811px;
+    width: 851px;
 }
 
 #aboutstack{
@@ -7033,13 +7033,17 @@ li.my2q{
 }
 
 #dashboard-about .aboutcontent{
-    padding: 20px;
+    padding: 10px 20px;
     margin: 20px;
     border: 1px solid #657b99;
     border-radius: 5px;
     width: 851px;
-    height: 530px;
+    height: 550px;
     overflow-y: scroll;
+}
+
+.aboutcontent li{
+    margin-bottom: 10px;
 }
 
 .aboutcontent textarea{

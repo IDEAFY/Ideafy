@@ -151,7 +151,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         setInterval(function(){
                 console.log("number of sockets used : ", Object.keys(io.connected).length, "socket names : ", JSON.stringify(Object.keys(io.connected)));
-        }, 120000);
+        }, 15000);
         
         // register transport
         olives.registerSocketIO(io);
@@ -219,11 +219,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 switch(lang){
                         case ("en-us"):
                                 mailOptions.subject = "Ideafy confirmation";
-                                mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team."
+                                mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team.";
                                 break;
                         case ("fr-fr"):
                                 mailOptions.subject = "Confirmation d'inscription à Ideafy";
-                                mailOptions.text ="Merci de vous être enregistré sur Ideafy. Votre identifiant est "+login+ " et votre mot de passe "+pwd+". Nous espérons que vous prendrez plaisir à utiliser notre application.\nL'équipe Ideafy."
+                                mailOptions.text ="Merci de vous être enregistré sur Ideafy. Votre identifiant est "+login+ " et votre mot de passe "+pwd+". Nous espérons que vous prendrez plaisir à utiliser notre application.\nL'équipe Ideafy.";
                                 break;
                         default:
                                 mailOptions.subject = "Thank you for joining Ideafy";
@@ -278,7 +278,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         user.setTransport(transport);
                         user.set("password", json.password);
                         user.set("name", json.name);
-                        user.set("type", "user")
+                        user.set("type", "user");
                         
                         user.create().then(function (si) {
                                 
@@ -518,7 +518,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         result.twoquestions_count = cdb.get("twoquestions_count");
                         
                         for (i=0, l=cdb.get("connections").length; i<l; i++){
-                                if (cdb.get("connections")[i].type === "user") contacts++
+                                if (cdb.get("connections")[i].type === "user") contacts++;
                         }
                         result.contacts = contacts;
                         
@@ -1244,7 +1244,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 .then(function(){
                                         smtpTransport.sendMail(mailOptions, function(error, response) {
                                                 if (error) {
-                                                        console.log(error, response);
                                                         onEnd({
                                                                 sendmail : "error",
                                                                 reason : error,
@@ -1633,7 +1632,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 
                                 if (json.visibility === "public") {increment *= 2;}
                                 if (json.sessionReplay){increment = Math.floor(increment*1.5);}
-                                console.log("muidea increment : ", increment);
                                 break;     
                         default:
                                 increment = 0;

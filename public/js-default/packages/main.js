@@ -245,4 +245,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 sock.socket.connect(Config.get("location"));
                 Utils.disconnectSocket();
         });
+        
+        SOCK = Config.get("socket");
 }); 

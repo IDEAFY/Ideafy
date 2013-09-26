@@ -253,4 +253,5 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         });
         
         SOCK = Config.get("socket");
+        CONF = Config;
 }); 

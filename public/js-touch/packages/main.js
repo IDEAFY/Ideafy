@@ -247,4 +247,10 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         }        
                 }    
         });
+        
+        Config.get("socket").on('disconnect', function(){
+                alert("socket disconnected !!!");
+        });
+        
+        SOCK = Config.get("socket");
 }); 

@@ -275,7 +275,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // disconnection events
         io.sockets.on("connection", function(socket){
+                console.log("socket connected : ", JSON.stringify(socket));
                 socket.on("disconnect", function(){
+                        
+                        console.log("disconnect event : ", JSON.stringify(socket));
                         var cdbView = new CouchDBView(),
                             cdbDoc = new CouchDBDocument();
                         

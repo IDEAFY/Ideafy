@@ -31,7 +31,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                            "label" : new Model(labels),
                            "stats" : new Model(stats,{
                                    setViewLbl : function(view){
-                                        this.innerHTML = labels.get(view);             
+                                        this.innerHTML = labels.get(view);
+                                        (view === "info") ? this.setAttribute("style", "background: #9ac9cd;"):this.setAttribute("style", "background: #5F8F28;");             
                                    },
                                    toggleInformation : function(view){
                                         (view === "info") ? this.classList.remove("invisible"):this.classList.add("invisible");        
@@ -102,11 +103,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         var couple = family.couple,
                                             children = family.children,
                                             res1, res2;
-                                        if (couple === null) res1 = labels.get("completeprofile")     
-                                        else if (couple === 0) res1 = labels.get("singlelbl")
-                                        else if (couple === 1) res1 = labels.get("marriedlbl")
-                                        else if (couple === 2) res1 = labels.get("divorcedlbl")
-                                        else if (couple === 3) res1 = labels.get("widowlbl")
+                                        if (couple === null) res1 = labels.get("completeprofile");     
+                                        else if (couple === 0) res1 = labels.get("singlelbl");
+                                        else if (couple === 1) res1 = labels.get("marriedlbl");
+                                        else if (couple === 2) res1 = labels.get("divorcedlbl");
+                                        else if (couple === 3) res1 = labels.get("widowlbl");
                                                 
                                         if (!children || children === 0) {res2 = "";}
                                         else{
@@ -121,19 +122,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         this.innerHTML = res1 + res2;
                                 },
                                 setOccupation : function(occupation){
-                                        if (occupation.situation === 4) this.innerHTML = labels.get("stayathome")
-                                        else if (occupation.situation === 3) this.innerHTML = labels.get("unemployed")
+                                        if (occupation.situation === 4) this.innerHTML = labels.get("stayathome");
+                                        else if (occupation.situation === 3) this.innerHTML = labels.get("unemployed");
                                         else if (occupation.situation === 0) {
                                                 (occupation.organization)?this.innerHTML = labels.get("student")+ " @ " + occupation.organization : this.innerHTML = labels.get("student");
                                         }
                                         else if (occupation.situation === 2){
-                                                (occupation.job)? this.innerHTML = occupation.job + " (" + labels.get("retired") + ")" : this.innerHTML = labels.get("retired")      
+                                                (occupation.job)? this.innerHTML = occupation.job + " (" + labels.get("retired") + ")" : this.innerHTML = labels.get("retired");      
                                         }
                                         else if (occupation.situation === 1){
-                                                if (!occupation.job && !occupation.organization) this.innerHTML = labels.get("active")
-                                                else if (occupation.job && !occupation.organization) this.innerHTML=occupation.job
-                                                else if (!occupation.job && occupation.organization) this.innerHTML = labels.get("active") + " @ " + occupation.organization
-                                                else this.innerHTML = occupation.job + " @ " + occupation.organization
+                                                if (!occupation.job && !occupation.organization) this.innerHTML = labels.get("active");
+                                                else if (occupation.job && !occupation.organization) this.innerHTML=occupation.job;
+                                                else if (!occupation.job && occupation.organization) this.innerHTML = labels.get("active") + " @ " + occupation.organization;
+                                                else this.innerHTML = occupation.job + " @ " + occupation.organization;
                                         }
                                         else this.innerHTML=labels.get("completeprofile");        
                                 },
@@ -192,19 +193,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         this.innerHTML = count;
                                 },
                                 setBarLength : function(ip){
-                                        if (ip >= 300000) this.setAttribute("style", "width: 100%")
-                                        else if (ip >= 30000) this.setAttribute("style", "width: 75%")
-                                        else if (ip >= 3000) this.setAttribute("style", "width: 50%")
-                                        else this.setAttribute("style", "width: 25%")
+                                        if (ip >= 300000) this.setAttribute("style", "width: 100%");
+                                        else if (ip >= 30000) this.setAttribute("style", "width: 75%");
+                                        else if (ip >= 3000) this.setAttribute("style", "width: 50%");
+                                        else this.setAttribute("style", "width: 25%");
                                 }
                            }),
                            "news": new Model(news,{
                                    setType : function(type){
-                                        if (type.search("CX")>-1) this.setAttribute("style", "background: url('img/profileDisable.png') no-repeat center center; background-size: contain;")
-                                        else if (type.search("RWD")>-1 || type.search("RANK") >-1) this.setAttribute("style", "background: url('img/brainstorm/yourScore40.png') no-repeat center center; background-size: 40px;")
-                                        else if (type.search("ID")>-1) this.setAttribute("style", "background: url('img/libraryIdeaDisabled40.png') no-repeat center center; background-size: 40px;")
-                                        else if (type.search("2Q")>-1) this.setAttribute("style", "background: url('img/2questionDisable50.png') no-repeat center center; background-size: 40px;")
-                                        else if (type.search("2CTS")>-1) this.setAttribute("style", "background: url('img/2centDisable.png') no-repeat center center; background-size: 40px;")    
+                                        if (type.search("CX")>-1) this.setAttribute("style", "background: url('img/profileDisable.png') no-repeat center center; background-size: contain;");
+                                        else if (type.search("RWD")>-1 || type.search("RANK") >-1) this.setAttribute("style", "background: url('img/brainstorm/yourScore40.png') no-repeat center center; background-size: 40px;");
+                                        else if (type.search("ID")>-1) this.setAttribute("style", "background: url('img/libraryIdeaDisabled40.png') no-repeat center center; background-size: 40px;");
+                                        else if (type.search("2Q")>-1) this.setAttribute("style", "background: url('img/2questionDisable50.png') no-repeat center center; background-size: 40px;");
+                                        else if (type.search("2CTS")>-1) this.setAttribute("style", "background: url('img/2centDisable.png') no-repeat center center; background-size: 40px;");   
                                    },
                                    setContent : function(content){
                                         var id = this.getAttribute("data-news_id");
@@ -258,14 +259,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 LB.init(lb);
                         }
                         
-                        if (node.value == 1){
-                                node.setAttribute("style", "background: #5F8F28;");
-                                stats.set("view", "leaderboard");
-                        }
-                        else{
-                                node.setAttribute("style", "background: #9AC9CD;");
-                                stats.set("view", "info");        
-                        }
+                        (node.value == 1) ? stats.set("view", "leaderboard"):stats.set("view", "info");
                    };
                    
                    profileUI.edit = function(event, node){

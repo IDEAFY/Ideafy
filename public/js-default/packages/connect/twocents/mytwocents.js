@@ -249,7 +249,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                                 contactList.alter("push", {"contact":connections[i], "selected":false});
                                         }
                                 }
-                                mytwoq.resetQuery({key: Config.get("uid"), descending: true})
+                                mytwoq.resetQuery({key: '"' + user.get("_id")+'"', descending: true})
                                 .then(function(){
                                         mtcStack.getStack().show("#mytwoq");
                                         mtcDetails.reset("default");
@@ -279,7 +279,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                         });
                                         
                                         // get li element
-                                        node = contacttwoq.dom.querySelector("li[data-twoqlist_id='"+index+"']")
+                                        node = contacttwoq.dom.querySelector("li[data-twoqlist_id='"+index+"']");
                                         
                                         // hightlight item in the list
                                         mtcControl.init(node);
@@ -304,11 +304,11 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         
                         // init contactList
                         for (i=0, l=connections.length; i<l; i++){
-                                if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false})
+                                if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false});
                         }
                         
                         // add twocent and twoquestion lists to the stack
-                        mytwoq = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: Config.get("uid"), descending: true});
+                        mytwoq = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: '"' + user.get("_id")+'"', descending: true});
                         contacttwoq = new TwoQList("contact", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
                         blank = new TwoQList("user", db, "questions", "_view/questionsbyauthor", {key: '"Blank_List"', descending: true});
                         

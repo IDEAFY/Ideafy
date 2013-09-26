@@ -112,7 +112,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 showSessionBtn : function(sessionStatus){
-                                        console.log(sessionStatus);
                                         (sessionStatus && sessionStatus === "waiting" && !message.get("joined"))?this.classList.remove("invisible"):this.classList.add("invisible");   
                                 },
                                 setJoinMsg : function(sessionStatus){
@@ -142,7 +141,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         }),
                         "cxr": new Model(cxrConfirm,{
                                 setVisibility : function(resp){
-                                        (resp)?this.classList.remove("invisible"):this.classList.add("invisible")
+                                        (resp)?this.classList.remove("invisible"):this.classList.add("invisible");
                                 },
                                 setResponseMessage : function(resp){
                                         (resp === "YES")?this.innerHTML = labels.get("CXRaccepted")+message.get("username")+labels.get("isnowacontact"): this.innerHTML = labels.get("CXRrejected");
@@ -318,7 +317,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         var cdb = new CouchDBDocument();
                         cdb.setTransport(transport);
                         cdb.sync(Config.get("db"), sid).then(function(){
-                                console.log(cdb.get("status"));
                                 if (cdb.get("status") === "waiting"){
                                         message.set("sessionStatus", "waiting");
                                 }
@@ -329,7 +327,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 
                 msgDetailUI.gotoSession = function(event, node){
                         var arr = user.get("notifications");
-                        node.classList.remove("pressed");
+                        node.classList.remove("pushed");
                         message.set("joined", true);
                         Config.get("observer").notify("join-musession", message.get("docId"));
                         
@@ -350,7 +348,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         cxrConfirm.reset({"response":""});
                         message.reset(msg);
                         msgReplyUI.reset(msg, "reply");
-                        console.log(msg);
                         // check if message type is a session invite and if so check session status
                         if (message.get("type") === "INV"){
                                 if (message.get("joined")){

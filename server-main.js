@@ -272,6 +272,30 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("ShareDeck", appUtils.shareDeck);
         olives.handlers.set("GetFavList", appUtils.getFavList);
         
+        
+        // disconnection events
+        io.sockets.on("connection", function(socket){
+                socket.on("disconnect", function(){
+                        var cdbView = new CouchDBView(),
+                            cdbDoc = new CouchDBDocument();
+                        
+                        getViewAsAdmin("users", "sockets", {key: '"'+socket.sessionid+'"'}, cdbView)
+                        .then(function(){
+                                console.log(cdbView.toJSON());
+                                if (cdbView.getNbItems()){
+                                        getDocAsAdmin(cdbView.get(0).id, cdbDoc)
+                                        .then(function){
+                                                cdbDoc.set("online", false);
+                                                return updateDocAsAdmin(cdbDoc.get("_id"), cdbDoc);
+                                        }
+                                        .then(function(){
+                                                console.log("disconnection successful");
+                                        })
+                                }
+                        });        
+                });  
+        });
+        
         olives.handlers.set("Signup", function (json, onEnd) {
                         var user = new CouchDBUser();
                         

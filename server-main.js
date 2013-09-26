@@ -277,14 +277,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.sockets.on("connection", function(socket){
                 console.log("socket connected : ", socket);
                 socket.on("disconnect", function(){
-                        
-                        console.log("disconnect event : ", socket);
                         var cdbView = new CouchDBView(),
                             cdbDoc = new CouchDBDocument();
                         
-                        getViewAsAdmin("users", "sockets", {key: '"'+socket.sessionid+'"'}, cdbView)
+                        getViewAsAdmin("users", "sockets", {key: '"'+socket.id+'"'}, cdbView)
                         .then(function(){
-                                console.log(cdbView.toJSON());
                                 if (cdbView.getNbItems()){
                                         getDocAsAdmin(cdbView.get(0).id, cdbDoc)
                                         .then(function(){

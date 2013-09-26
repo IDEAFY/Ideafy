@@ -28,7 +28,6 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                 {"name": labels.get("never"), "value": 86400000}
                                 ],
                        options = new Store({"screens": screens, "timers": timers, "pwd":"", "pwdbis":"", "lang":[], "pwdchange": "", "contentLang": user.get("lang").substring(0,2)}),
-                       
                        _languages = new Store([{name:"*"}]),
                        _usrLg = Config.get("userLanguages"),
                        settings = new Store();
@@ -99,7 +98,6 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                         }
                                 } 
                            }),
-                           
                            "settings" : new Model(settings),
                            "settingsevent" : new Event(settingsUI)
                    });
@@ -134,7 +132,6 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                         }        
                    };
                    
-                   
                    settingsUI.displayLang = function(event, node){
                         settingsUI.dom.querySelector(".langlist").classList.remove("invisible");        
                    };
@@ -155,7 +152,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                         }
                         user.set("settings", s);
                         user.upload();
-                };
+                   };
                    
                    settingsUI.getDecks = function getDecks(){
                         var cdb = new CouchDBBulkDocuments(),

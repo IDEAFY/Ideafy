@@ -12,6 +12,8 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                    
                    var settingsUI = new Widget(),
                        labels = Config.get("labels"),
+                       user = Config.get("user"),
+                       transport = Config.get("transport"),
                        screens = [
                                 {"name": labels.get("public"), "dest": "#public"},
                                 {"name": labels.get("library"), "dest": "#library"},
@@ -25,11 +27,15 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                 {"name": labels.get("everyfifteen"), "value": 900000},
                                 {"name": labels.get("never"), "value": 86400000}
                                 ],
-                       options = new Store({"screens": screens, "timers": timers, "pwd":"", "pwdbis":"", "lang":[], "pwdchange": ""}),
-                       settings = new Store(),
-                       transport = Config.get("transport"),
-                       user = Config.get("user");
-                  
+                       options = new Store({"screens": screens, "timers": timers, "pwd":"", "pwdbis":"", "lang":[], "pwdchange": "", "contentLang": user.get("lang").substring(0,2)}),
+                       _languages = new Store([{name:"*"}]),
+                       _usrLg = Config.get("userLanguages"),
+                       settings = new Store();                  
+                   
+                   // build languages & flags
+                   _usrLg.forEach(function(val){
+                        _languages.alter("push", val);
+                   });
                    
                    settingsUI.plugins.addAll({
                            "label" : new Model(labels),
@@ -68,13 +74,35 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                            }
                                            this.innerHTML=res;
                                            this.selectedIndex = idx;
-                                   }
+                                   },
+                                   setBg : function(l){
+                                        if (l === "all"){
+                                                this.setAttribute("style", "background-image: none;");
+                                                this.innerHTML = "*";
+                                        }
+                                        else{
+                                                this.innerHTML = " ";
+                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png');");
+                                        }
+                                }
+                           }),
+                           "select" : new Model (_languages, {
+                                setBg : function(name){
+                                        if (name === "*"){
+                                                        this.setAttribute('style', "background-image: none;background: whitesmoke;text-align: center;");
+                                                        this.innerHTML="*";
+                                        }
+                                        else{
+                                                this.innerHTML = " ";
+                                                this.setAttribute("style", "background-image:url('img/flags/"+name+".png');");
+                                        }
+                                } 
                            }),
                            "settings" : new Model(settings),
                            "settingsevent" : new Event(settingsUI)
                    });
                    
-                   settingsUI.template = '<div id="dashboard-settings"><div class="header blue-dark"><span data-label="bind:innerHTML, settingslbl"></span></div><div class="settingscontent"><div class="settingmodule"><legend data-label="bind:innerHTML, userpref"></legend><ul><li><span data-label="bind:innerHTML, setlang"></span><select data-options="bind:setLang, lang" data-settingsevent="listen: change, updateLang"></select></li><li class="startupscreen"><span data-label="bind: innerHTML, choosestartup"></span><select data-options="bind:setStartupScreen, screens" data-settingsevent="listen: change, updateStartup"></select></li><li class="startupscreen"><span data-label="bind: innerHTML, choosepolling"></span><select data-options="bind:setPollingInterval, timers" data-settingsevent="listen: change, updatePollingInterval"></select></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, showTips" data-settingsevent="listen: change, showTips"><label data-label="bind:innerHTML, showtips"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, notifyPopup" data-settingsevent="listen: change, showNotif"><label data-label="bind:innerHTML, shownotif"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, useascharacter" data-settingsevent="listen: change, useAsChar"><label data-label="bind:innerHTML, usechar"></label></li><li><span data-label="bind: innerHTML, changepwd"></span><input class="input" type="password" data-label="bind:placeholder, passwordplaceholder" data-options="bind: value, pwd" data-settingsevent="listen: input, clearOK"><input class="input" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-options="bind: value, pwdbis" data-settingsevent="listen: input, clearOK"><span class="changeok" data-options="bind: innerHTML, pwdchange"></span><div class="next-button" data-label="bind:innerHTML, changelbl" data-settingsevent="listen: mousedown, press; listen:mouseup, changePWD"></div></li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, brainstormsettings"></legend><ul><li class="activedeck"><span data-label="bind:innerHTML, setdeck">Set brainstorming deck</span><select data-options="bind:setDecks, decks" data-settingsevent="listen: mousedown, getDecks;listen: change, updateDeck"></select></li></ul></div></div></div>';
+                   settingsUI.template = '<div id="dashboard-settings"><div class="header blue-dark"><span data-label="bind:innerHTML, settingslbl"></span></div><div class="settingscontent"><div class="settingmodule"><legend data-label="bind:innerHTML, publicwallsettings"></legend><ul><li class="startupscreen"><span data-label="bind: innerHTML, choosepolling"></span><select data-options="bind:setPollingInterval, timers" data-settingsevent="listen: change, updatePollingInterval"></select></li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, brainstormsettings"></legend><ul><li class="activedeck"><span data-label="bind:innerHTML, setdeck">Set brainstorming deck</span><select data-options="bind:setDecks, decks" data-settingsevent="listen: mousedown, getDecks; listen: change, updateDeck"></select></li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, userpref"></legend><ul><li><span data-label="bind:innerHTML, setlang"></span><select data-options="bind:setLang, lang" data-settingsevent="listen: change, updateLang"></select></li><li class="activelang"><span data-label="bind:innerHTML, defaultlangfilter"></span><div class="selectlang"><div data-options="bind:setBg, contentLang"></div><button data-settingsevent = "listen:mouseup, displayLang"></button></div><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-settingsevent="listen: mouseup, setContentLang"></li></ul></li><li class="startupscreen"><span data-label="bind: innerHTML, choosestartup"></span><select data-options="bind:setStartupScreen, screens" data-settingsevent="listen: change, updateStartup"></select></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, showTips" data-settingsevent="listen: change, showTips"><label data-label="bind:innerHTML, showtips"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, notifyPopup" data-settingsevent="listen: change, showNotif"><label data-label="bind:innerHTML, shownotif"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, useascharacter" data-settingsevent="listen: change, useAsChar"><label data-label="bind:innerHTML, usechar"></label></li><li><span data-label="bind: innerHTML, changepwd"></span><input class="input" type="password" data-label="bind:placeholder, passwordplaceholder" data-options="bind: value, pwd" data-settingsevent="listen: input, clearOK"><input class="input" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-options="bind: value, pwdbis" data-settingsevent="listen: input, clearOK"><span class="changeok" data-options="bind: innerHTML, pwdchange"></span><div class="next-button" data-label="bind:innerHTML, changelbl" data-settingsevent="listen: mousedown, press; listen:mouseup, changePWD"></div></li></ul></div></div></div>';
                    
                    settingsUI.place(Map.get("dashboard-settings"));
                    
@@ -97,9 +125,33 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                                 {"name": labels.get("brainstorm"), "dest": "#brainstorm"},
                                                 {"name": labels.get("connect"), "dest": "#connect"},
                                                 {"name": labels.get("dashboard"), "dest": "#dahsboard"}
-                                        ]);      
+                                        ]);
+                                        // reset active filter language
+                                        (settings.get("contentLang")) ? options.set("contentLang", settings.get("contentLang")) : options.set("contentLang", user.get("lang").substring(0,2));     
                                 });
                         }        
+                   };
+                   
+                   settingsUI.displayLang = function(event, node){
+                        settingsUI.dom.querySelector(".langlist").classList.remove("invisible");        
+                   };
+                
+                   settingsUI.setContentLang = function(event, node){
+                        var i = parseInt(node.getAttribute("data-select_id"), 10),
+                            s = user.get("settings");
+                        
+                        settingsUI.dom.querySelector(".langlist").classList.add("invisible");
+                        
+                        if (i === 0){
+                                s.contentLang = "all";
+                                options.set("contentLang", "all");       
+                        }
+                        else{
+                                s.contentLang = _languages.get(i).name;
+                                options.set("contentLang", s.contentLang);
+                        }
+                        user.set("settings", s);
+                        user.upload();
                    };
                    
                    settingsUI.getDecks = function getDecks(){
@@ -214,6 +266,9 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                         transport.request("GetLanguages", {}, function(result){
                                 options.set("lang", result);      
                         });
+                        
+                        // set active filter language
+                        (settings.get("contentLang")) ? options.set("contentLang", settings.get("contentLang")) : options.set("contentLang", user.get("lang").substring(0,2));
                         
                         // reload timer and screens labels
                         options.set("timers", [

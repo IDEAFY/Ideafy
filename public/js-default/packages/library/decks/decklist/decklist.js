@@ -44,12 +44,10 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         deckList.template = '<ul id="deck-list" data-decks="foreach"><li class="list-item" data-decklistevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div class = "decklight"></div><div class="item-header"><h3 data-decks="bind:innerHTML, title"></h3><span class="version" data-decks="bind:setVersion, version"></span></div><div class="item-body"><p data-decks="bind:innerHTML,description"></p></div><div class="item-footer"><label data-labels="bind:innerHTML, designedby"></label><div class="author" data-decks="bind:setAuthor, author"></div><span class="date" data-decks="bind:date, date"></div></div></li></ul>';
                         
                         deckList.setStart = function(event, node){
-                                console.log("set Start node :", node)
                                 currentBar && currentBar.hide(); // hide previous action bar
                         };
                         
                         deckList.showActionBar = function(event, node){
-                                console.log("doubleclick node :", node)
                                 var id = node.getAttribute("data-decks_id"),
                                     display = false, frag;
                                     

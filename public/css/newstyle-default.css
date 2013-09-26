@@ -1454,12 +1454,14 @@ ul.notify-list{
 
 .mosaic .item-body{
     height: 108px;
-    overflow-y: auto;    
+    overflow-y: auto;
+    padding-right: 5px;   
 }
 
 .mosaic .list-item h3{
     padding-top: 0px;
     letter-spacing: 0px;
+    text-align: left;
 }
 
 .mosaic .item-header{
@@ -1471,7 +1473,6 @@ ul.notify-list{
     margin-top: 10px;
     height: 83px;
     overflow-y: visible;
-    padding: 0px 2px;
 }
 
 .mosaic .item-footer{

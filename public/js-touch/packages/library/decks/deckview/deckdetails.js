@@ -279,7 +279,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         };
                         
                         deckDetails.cancel = function(event, node){
-                                var deck = JSON.parse(deckModel.toJSON());
                                 deckModel.reset(_currentDeck);
                                 deckDetails.hideButtons();
                                 node.classList.remove("pressed");

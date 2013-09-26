@@ -218,7 +218,14 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         deckDetails.editPic = function(event, node){
                                 if (deckModel.get("created_by") === user.get("_id")){
                                         node.setAttribute("style", "background-image: url('img/brainstorm/reload.png')");
-                                }        
+                                        document.body.onfocus = function(){
+                                                if (!node.querySelector("input").value.length){
+                                                        deckModel.set("picture_file", "");
+                                                        deckModel.set("picture_file", _currentDeck.picture_file);        
+                                                }
+                                                document.body.onfocus = null;        
+                                        };
+                                }       
                         };
                         
                         deckDetails.showLang = function(event, node){
@@ -257,8 +264,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                     _img = new Image(),
                                      el = deckDetails.dom.querySelector(".decklogo"),
                                      picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
-                                
-                                console.log("change event", JSON.stringify(event));
                                 
                                 el.setAttribute("style", "background-image: none");
                                 picSpinner.spin(el);       

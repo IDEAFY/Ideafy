@@ -284,13 +284,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 console.log(cdbView.toJSON());
                                 if (cdbView.getNbItems()){
                                         getDocAsAdmin(cdbView.get(0).id, cdbDoc)
-                                        .then(function){
+                                        .then(function(){
                                                 cdbDoc.set("online", false);
                                                 return updateDocAsAdmin(cdbDoc.get("_id"), cdbDoc);
-                                        }
+                                        })
                                         .then(function(){
                                                 console.log("disconnection successful");
-                                        })
+                                        });
                                 }
                         });        
                 });  

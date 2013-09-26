@@ -222,7 +222,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         };
                         
                         deckDetails.showLang = function(event, node){
-                                deckDetails.dom.querySelector(".idealang ul").classList.remove("invisible");        
+                                if (deckModel.get("created_by") === user.get("_id")){
+                                        deckDetails.dom.querySelector(".idealang ul").classList.remove("invisible");
+                                }        
                         };
                         
                         deckDetails.selectFlag = function(event, node){
@@ -255,7 +257,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                     _img = new Image(),
                                      el = deckDetails.dom.querySelector(".decklogo"),
                                      picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
-                         
+                                
+                                console.log("change event", JSON.stringify(event));
+                                
                                 el.setAttribute("style", "background-image: none");
                                 picSpinner.spin(el);       
                                 // first read the file to memory, once loaded resize and display upload button

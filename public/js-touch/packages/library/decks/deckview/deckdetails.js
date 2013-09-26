@@ -218,7 +218,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         };
                         
                         deckDetails.showLang = function(event, node){
-                                deckDetails.dom.querySelector(".idealang ul").classList.remove("invisible");        
+                                if (deckModel.get("created_by") === user.get("_id")){
+                                        deckDetails.dom.querySelector(".idealang ul").classList.remove("invisible");
+                                }        
                         };
                         
                         deckDetails.selectFlag = function(event, node){

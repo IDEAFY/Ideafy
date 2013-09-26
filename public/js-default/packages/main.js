@@ -240,4 +240,11 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         return _user.upload();
                 }              
         });
+        
+        Config.get("socket").on('disconnect', function(){
+                alert("socket disconnected !!!");
+        });
+        
+        SOCK = Config.get("socket");
+        CONF = Config;
 }); 

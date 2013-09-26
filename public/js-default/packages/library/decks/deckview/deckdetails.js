@@ -18,6 +18,13 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                             carouselSpinner = new Spinner({top:255, left: 297, lines: 8, radius: 6, color: "#cccccc"}).spin(),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
+                            _languages = new Store(Config.get("userLanguages")),
+                            _resetLang = function(){
+                                _languages.loop(function(v,i){
+                                        (deckModel.get("default_lang") && (v.name === deckModel.get("default_lang").substring(0,2))) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
+                                });        
+                            },
+                            _currentDeck,
                             _currentDataURL,
                             MIN_WIDTH = 60, MIN_HEIGHT = 60,
                             resizeImage = function(img){
@@ -119,11 +126,20 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                         });        
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        this.setAttribute("style", "background-image: none;");
                                                 }
                                         }
                                  }),
                                 "deckdetails" : new Model(deckModel, {
+                                        displayLang : function(lang){
+                                                var l;
+                                                if (lang) {
+                                                        deckDetails.dom.querySelector(".idealang").classList.remove("invisible");
+                                                        l=lang.substring(0,2);
+                                                        this.setAttribute("style", "background-image:url('img/flags/"+l+".png');");
+                                                }
+                                                else deckDetails.dom.querySelector(".idealang").classList.add("invisible");        
+                                        },
                                         formatDate : function(date) {
                                                 (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
                                         },
@@ -133,7 +149,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                         this.setAttribute("style", "background-image:url('img/connect/graygroup.png');");
                                                 }
                                                 else if (picture === "img/logo.png"){
-                                                        this.setAttribute("style", "background-image:url('img/logo.png');")        
+                                                        this.setAttribute("style", "background-image:url('img/logo.png');");       
                                                 }
                                                 else if (picture === "decklogo"){
                                                         picSpinner = new Spinner({color:"#657b99"}).spin(node);
@@ -159,11 +175,21 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 }       
                                         }
                                 }),
+                                "select" : new Model (_languages, {
+                                        setBg : function(name){
+                                                if (name){
+                                                        this.setAttribute("style", "background-image:url('img/flags/"+name+".png');");
+                                                }
+                                        },
+                                        setSelected : function(selected){
+                                                (selected) ? this.classList.add("selected") : this.classList.remove("selected");        
+                                        } 
+                                }),
                                 "carouselevent" : new Event(deckDetails),
                                 "editevent" : new Event(deckDetails)        
                         });
                         
-                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="decklogo" data-deckdetails="bind: setPic, picture_file" data-editevent="listen: mousedown, editPic"><input class="invisible" type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editevent="listen: change, changePic"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by" data-editevent="listen:input, displayButtons"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by" data-editevent="listen:input, displayButtons"></p><div class="cancelmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider invisible" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div></div>';
+                        deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="idealang invisible"><div class="currentlang" data-deckdetails="bind: displayLang, default_lang" data-editevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-editevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><div class="decklogo" data-deckdetails="bind: setPic, picture_file" data-editevent="listen: mousedown, editPic"><input class="invisible" type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editevent="listen: change, changePic"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by" data-editevent="listen:input, displayButtons"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" ></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by" data-editevent="listen:input, displayButtons"></p><div class="cancelmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider invisible" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div></div>';
                         
                         deckDetails.displayCards = function displayCards(id){
                                 var i, arr = [];
@@ -187,12 +213,41 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         deckDetails.hideButtons = function(){
                                 deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
                                 deckDetails.dom.querySelector(".sendmail").classList.add("invisible");        
-                        }
+                        };
                         
                         deckDetails.editPic = function(event, node){
                                 if (deckModel.get("created_by") === user.get("_id")){
                                         node.setAttribute("style", "background-image: url('img/brainstorm/reload.png')");
                                 }        
+                        };
+                        
+                        deckDetails.showLang = function(event, node){
+                                deckDetails.dom.querySelector(".idealang ul").classList.remove("invisible");        
+                        };
+                        
+                        deckDetails.selectFlag = function(event, node){
+                                var id;
+                                event.stopPropagation();
+                                event.preventDefault();
+                                id = parseInt(node.getAttribute("data-select_id"), 10);
+                                _languages.loop(function(v,i){
+                                        (id === i) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);
+                                });                
+                        };
+                        
+                        deckDetails.setLang = function(event, node){
+                                var id;
+                                event.stopPropagation();
+                                event.preventDefault();
+                                id = node.getAttribute("data-select_id");
+                                deckModel.set("default_lang", _languages.get(id).name);
+                                if (deckModel.get("default_lang") !== _currentDeck.default_lang.substring(0,2)){
+                                        deckDetails.displayButtons();
+                                }
+                                else{
+                                        deckDetails.hideButtons();        
+                                }
+                                deckDetails.dom.querySelector(".idealang ul").classList.add("invisible");        
                         };
                         
                         deckDetails.changePic = function(event, node){
@@ -202,7 +257,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                      picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
                          
                                 el.setAttribute("style", "background-image: none");
-                                picSpinner.spin(el)        
+                                picSpinner.spin(el);       
                                 // first read the file to memory, once loaded resize and display upload button
                                 _reader.onload = function(e) {
                                         _img.src = e.target.result;
@@ -216,7 +271,12 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 });
                                         }, 300);
                                 };
-                                _reader.readAsDataURL(node.files[0]);       
+                                if (node.files.length){
+                                        _reader.readAsDataURL(node.files[0]);
+                                }
+                                else{
+                                        node.querySelector("input").classList.add("invisible");                
+                                }       
                         };
                         
                         deckDetails.press = function(event, node){
@@ -224,9 +284,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         };
                         
                         deckDetails.cancel = function(event, node){
-                                var deck = JSON.parse(deckModel.toJSON());
-                                deckModel.reset({});
-                                deckModel.reset(deck);
+                                deckModel.reset(_currentDeck);
                                 deckDetails.hideButtons();
                                 node.classList.remove("pressed");
                         };
@@ -272,12 +330,17 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
                                 deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
                                 _currentDataURL = null;
+                                
                                 deckModel.reset(deck);
-                                // launch carousel spinner
-                                carouselSpinner.spin(deckDetails.dom.querySelector(".deckcarousel"));
+                                _resetLang();
+                                
+                                // keep a 'local' copy of the deck
+                                _currentDeck = JSON.parse(deckModel.toJSON());
                                 
                                 //reset card range
                                 range.set("max", 0);
+                                // launch carousel spinner
+                                carouselSpinner.spin(deckDetails.dom.querySelector(".deckcarousel"));
                                 // get all cards.
                                 allCards.reset([]);
                                 allCards.sync(Config.get("db"), "library", "_view/cards", {key: '"'+ deckModel.get("_id")+'"'}).then(function(){

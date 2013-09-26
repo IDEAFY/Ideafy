@@ -98,7 +98,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.getCardList = function getCardList(idlist){
-                                var cdb = new CouchDBBulkDocuments(), query = idlist;
+                                var cdb = new CouchDBBulkDocuments(), query = idlist, promise = new Promise();
                                 if (idlist[0] === "newcard"){
                                         query = idlist.slice(1, idlist.length);
                                 }
@@ -114,14 +114,17 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         
                                                 // display first page
                                                 cardList.displayPage(0);
+                                                promise.fulfill();
                                                 cdb.unsync();
                                         });
                                 }
                                 else{
                                         cards.reset([{_id:"newcard", title:"", picture_file:""}]);
                                         pagination.set("nbPages", 1); 
-                                        cardList.displayPage(0);       
+                                        cardList.displayPage(0);
+                                        promise.fulfill();       
                                 }
+                                return promise;
                         };
                         
                         cardList.displayPage = function displayPage(pageNB){
@@ -191,11 +194,11 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                         cardCDB.upload()
                                                         .then(function(){
                                                                 promise.fulfill();
-                                                        })
+                                                        });
                                                 }
                                                 else{
                                                         if (file.search("img/decks") === -1){
-                                                                json = {type: "card", file: file}
+                                                                json = {type: "card", file: file};
                                                                 Config.get("transport").request("DeleteAttachment", json, function(result){
                                                                         if (result !== "ok"){
                                                                                 console.log(result);
@@ -316,7 +319,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         case 1:
                                                 pos.x = 304;
                                                 pos.y = 157;
-                                                caret = "left"
+                                                caret = "left";
                                                 break;
                                         case 2:
                                                 pos.x = 23;
@@ -371,7 +374,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         default:
                                                 pos.x = 157;
                                                 pos.y = 157;
-                                                caret = "left"
+                                                caret = "left";
                                                 break;
                                         
                                 }

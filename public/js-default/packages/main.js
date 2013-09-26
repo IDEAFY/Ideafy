@@ -182,7 +182,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                                 _login.setScreen("#signup-screen");
                         }
                         else {
-                                _transport.request("CheckLogin", {"id" : current}, function(result) {
+                                _transport.request("CheckLogin", {"id" : current, "sock" : Config.get("socket").socket.sessionid}, function(result) {
                                         if (result.authenticated) {_body.init();}
                                         else {
                                                 _login.setScreen("#login-screen");

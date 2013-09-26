@@ -420,7 +420,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         sessionStore.get(sessionID, function(err, session){
                                 if(err){throw new Error(err);}
                                 else{
-                                        (session.auth && session.auth.search(json.id) >-1) ? onEnd({authenticated: true}) : onEnd({authenticated : false});
+                                        if (session.auth && session.auth.search(json.id) >-1) {
+                                                cdb.set("sock", json.sock);
+                                                cdb.set("online", true);
+                                                updateDocAsAdmin(json.id, cdb)
+                                                .then(function(){
+                                                        onEnd({authenticated: true});        
+                                                });
+                                        }
+                                        else onEnd({authenticated : false});
                                 } 
                         });
                 }, function(){onEnd({authenticated: false});});

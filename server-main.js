@@ -150,7 +150,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         http.globalAgent.maxSockets = Infinity;
         
         setInterval(function(){
-                console.log("number of sockets used : ", Object.keys(io.connected).length);
+                console.log("number of sockets used : ", Object.keys(io.connected).length, "socket names : ", JSON.stringify(Object.keys(io.connected)));
         }, 120000);
         
         // register transport

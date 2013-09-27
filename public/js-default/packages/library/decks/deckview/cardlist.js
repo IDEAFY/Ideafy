@@ -218,7 +218,13 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         
                         cardList.push = function(event, node){
                                 node.classList.add("invisible");
-                                event.stopPropagation();        
+                                event.stopPropagation();
+                                if (node.classList.contains("leftcaret")){
+                                        cardList.displayPrevious();        
+                                }
+                                if (node.classList.contains("rightcaret")){
+                                        cardList.displayNext();        
+                                }       
                         };
                         
                         cardList.press = function(event, node){
@@ -226,7 +232,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.previousPage = function(event, node){
-                                cardList.displayPrevious();        
+                                cardList.displayPrevious();       
                         };
                         
                         cardList.nextPage = function(event, node){

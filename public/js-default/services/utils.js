@@ -283,7 +283,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                             usr = Config.get("user");
                         // reconnect socket if not connected
                         if (!sock.socket.connected){
-                                console.log("reconnecting socket");
                                 sock.socket.reconnect();
                                 obs.notify("reconnect", "all");
                         }

@@ -350,7 +350,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         });
                                 }
                                 if (value === "in progress" && session.get("initiator").id !== user.get("_id")){
-                                        console.log("session in progress -- starting any moment now");
                                         // unsync session & remove exit listener
                                         document.removeEventListener("mousedown", exitListener.listener, true);
                                         session.unsync();

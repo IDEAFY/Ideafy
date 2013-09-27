@@ -292,8 +292,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                 });    
                         };
-                        VOTE = _vote;
-                        VOTEUI = _widget;
+                        
                         return _widget;       
-                }
-        })
+                };
+        });

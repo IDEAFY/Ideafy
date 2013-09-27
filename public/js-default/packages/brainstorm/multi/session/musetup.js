@@ -486,9 +486,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                         "cards": _drawnCards.char + _drawnCards.context + _drawnCards.problem
                                 };
                                 
-                                console.log("before transport request : ", json);
                                 _transport.request("UpdateSessionScore", json, function(result){
-                                        console.log(result);
                                         if (result.res === "ok"){
                                                 promise.fulfill();
                                         }

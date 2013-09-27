@@ -78,7 +78,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                         }
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        this.setAttribute("style", "background-image: none;");
                                                 }
                                         }
                                 }),
@@ -645,10 +645,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _scenario.watch("updated", function(){
                                         (_widget.isLeader() && _scenario.get("title") && _scenario.get("story") && _scenario.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
-                        
-                        SCWHITEB = _wb;
-                        SCCONTENT = _wbContent;
-                        SC = _scenario;
                         
                         // Return
                         return _widget;

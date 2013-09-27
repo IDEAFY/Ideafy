@@ -926,10 +926,6 @@ ul.notify-list{
     float: left;
 }
 
-#newdeck-popup .newidea-footer{
-    margin-top: 20px;
-}
-
 #newidea-popup .publicwarning{
     height: 50px;
     width: 230px;
@@ -1204,7 +1200,7 @@ ul.notify-list{
 }
 
 #newmub .idealang, #newmub .idealang ul{
-    width: 851px;
+    width: 841px;
 }
 
 #newmub .idealang{
@@ -2663,7 +2659,7 @@ textarea.solution {
     width: 70px;
     background-repeat: no-repeat;
     background-position: center center;
-    background-image: url('../img/library/sessionQuick.png');;
+    background-image: url('../img/library/sessionQuick.png');
     background-size: 40px 40px;
 }
 
@@ -2970,6 +2966,11 @@ textarea.solution {
     margin-right: 20px;    
 }
 
+#deckview .deckheader span.date{
+    margin-top: -14px;
+    font-size: 14px;
+}
+
 #deckview .deckdescription{
     height: 118px;
     border-top: 1px solid #CCC;
@@ -3015,7 +3016,7 @@ textarea.solution {
 
 #deckview .deckcarousel ul li:nth-child(2), #deckview .deckcarousel ul li:nth-child(4){
     -webkit-transform: scale(0.8);
-    margin: 0px 5px 0px 5px;;
+    margin: 0px 5px 0px 5px;
 }
 
 #deckview .deckcarousel .card{
@@ -3415,7 +3416,7 @@ textarea.solution {
 
 #brainstorm{
     position: absolute;
-    left: 93px;;
+    left: 93px;
     height: 748px;
 /*    background:#F2F2F2 url('../img/bg.png') no-repeat center center;*/
     background: #CCCCCC;
@@ -5403,7 +5404,7 @@ li.color-item{
 
 .msgsplash{
     width: 630px;
-    height:748px;;
+    height:748px;
 }
 
 .innersplash{
@@ -5478,7 +5479,7 @@ li.color-item{
     float: none;
 }
 
-#noresult .date{
+.noresult .date{
     padding-left: 20px;
 }
 
@@ -7021,7 +7022,7 @@ li.my2q{
 .settingmodule{
     margin-bottom: 20px;
     padding: 10px 20px;
-    height: auto;;
+    height: auto;
     background: #f2f2f2;
     border: 1px dashed #cccccc;
     border-radius: 5px;
@@ -7109,7 +7110,7 @@ li.my2q{
 .settingmodule li{
     padding: 10px 20px;
     display: inline-table;
-    width: 771px;;
+    width: 771px;
 }
 
 .settingmodule li > span{
@@ -7591,13 +7592,13 @@ li.my2q{
 #mulist .mulistoptions .selectlang button, .settingmodule .selectlang button{
     float: left;
     height: 23px;
+    width: 25px;
     border: none;
     background: url('../img/profile/buttonMinSeeMoreDisable.png') no-repeat right center;
     background-size: 25px 25px;    
 }
 
 .settingmodule .selectlang button{
-    width:25px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }

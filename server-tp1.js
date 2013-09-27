@@ -143,15 +143,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
         io.set('log level', 0);                    // reduce logging
-        io.set("close timeout", 300);
+        io.set("close timeout", 60);
         io.set("heartbeat interval", 25);
         
         // we need lots of sockets
         http.globalAgent.maxSockets = Infinity;
         
         setInterval(function(){
-                console.log("number of sockets used : ", Object.keys(io.connected).length);
-        }, 120000);
+                console.log("number of sockets used : ", Object.keys(io.connected).length, "socket names : ", JSON.stringify(Object.keys(io.connected)));
+        }, 60000);
         
         // register transport
         olives.registerSocketIO(io);
@@ -272,6 +272,26 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
         olives.handlers.set("ShareDeck", appUtils.shareDeck);
         olives.handlers.set("GetFavList", appUtils.getFavList);
+        
+        // disconnection events
+        io.sockets.on("connection", function(socket){
+                socket.on("disconnect", function(){
+                        var cdbView = new CouchDBView(),
+                            cdbDoc = new CouchDBDocument();
+                        
+                        getViewAsAdmin("users", "sockets", {key: '"'+socket.id+'"'}, cdbView)
+                        .then(function(){
+                                if (cdbView.getNbItems()){
+                                        getDocAsAdmin(cdbView.get(0).id, cdbDoc)
+                                        .then(function(){
+                                                cdbDoc.set("online", false);
+                                                cdbDoc.set("sock", "");
+                                                return updateDocAsAdmin(cdbDoc.get("_id"), cdbDoc);
+                                        });
+                                }
+                        });        
+                });  
+        });
         
         olives.handlers.set("Signup", function (json, onEnd) {
                         var user = new CouchDBUser();
@@ -420,7 +440,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         sessionStore.get(sessionID, function(err, session){
                                 if(err){throw new Error(err);}
                                 else{
-                                        (session.auth && session.auth.search(json.id) >-1) ? onEnd({authenticated: true}) : onEnd({authenticated : false});
+                                        if (session.auth && session.auth.search(json.id) >-1) {
+                                                cdb.set("sock", json.sock);
+                                                cdb.set("online", true);
+                                                updateDocAsAdmin(json.id, cdb)
+                                                .then(function(){
+                                                        onEnd({authenticated: true});        
+                                                });
+                                        }
+                                        else onEnd({authenticated : false});
                                 } 
                         });
                 }, function(){onEnd({authenticated: false});});
@@ -439,7 +467,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         
                         if (!result.error) {
                                 var cookieJSON = cookie.parse(json.handshake.headers.cookie), 
-                                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0];
+                                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
+                                    cdb = new CouchDBDocument();
                                 
                                 sessionStore.get(sessionID, function(err, session) {
                                         if (err) {
@@ -447,11 +476,19 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         } else {
                                                 session.auth = json.name + ":" + json.password;
                                                 sessionStore.set(sessionID, session);
-                                                onEnd({
-                                                        login : "ok",
-                                                        db : _db,
-                                                        message: json.name + " is logged-in",
-                                                        session: session
+                                                getDocAsAdmin(json.name, cdb)
+                                                .then(function(){
+                                                        cdb.set("online", true);
+                                                        cdb.set("sock", json.sock);
+                                                        return updateDocAsAdmin(json.name, cdb);
+                                                })
+                                                .then(function(){
+                                                        onEnd({
+                                                                login : "ok",
+                                                                db : _db,
+                                                                message: json.name + " is logged-in",
+                                                                session: session
+                                                        });
                                                 });
                                         }
                                 });

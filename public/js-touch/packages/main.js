@@ -178,7 +178,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                                 _login.setScreen("#signup-screen");
                         }
                         else {
-                                _transport.request("CheckLogin", {"id" : current}, function(result) {
+                                _transport.request("CheckLogin", {"id" : current, "sock" : Config.get("socket").socket.sessionid}, function(result) {
                                         if (result.authenticated) {_body.init();}
                                         else {
                                                 _login.setScreen("#login-screen");
@@ -197,6 +197,8 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         Config.get("observer").watch("signout", function(){
                 // change user status
                 _user.set("online", false);
+                _user.set("sock", "");
+                _user.upload();
                 
                 // clear local store
                 _local.set("currentLogin", "");
@@ -236,13 +238,14 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                                         _login.setScreen("#maintenance-screen");        
                                 })
                                 .then(function(){
-                                        console.log("user resynchronized");
                                         _user.set("online", true);
+                                        _user.set("sock", Config.get("socket").socket.sessionid);
                                         return _user.upload();
                                 });
                         }
                         else{
                                 _user.set("online", true);
+                                _user.set("sock", Config.get("socket").socket.sessionid);
                                 return _user.upload();
                         }        
                 }    

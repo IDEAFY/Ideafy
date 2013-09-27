@@ -222,6 +222,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         // resync user document upon socket reconnection
         Config.get("observer").watch("reconnect", function(option){
                 _local.sync("ideafy-data");
+                console.log("reconnecting");
                 if (option === "all"){
                         checkServerStatus
                         .then(function(){
@@ -233,11 +234,16 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         .then(function(){
                                 _user.set("online", true);
                                 _user.set("sock", Config.get("socket").socket.sessionid);
+                                console.log(_user.toJSON());
                                 return _user.upload();
+                        })
+                        .then(function(){
+                                console.log("reconnection successful");
                         });
                 }
                 else{
                         _user.set("online", true);
+                        _user.set("sock", Config.get("socket").socket.sessionid);
                         return _user.upload();
                 }              
         });

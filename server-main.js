@@ -151,7 +151,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         setInterval(function(){
                 console.log("number of sockets used : ", Object.keys(io.connected).length, "socket names : ", JSON.stringify(Object.keys(io.connected)));
-        }, 15000);
+        }, 60000);
         
         // register transport
         olives.registerSocketIO(io);
@@ -275,7 +275,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // disconnection events
         io.sockets.on("connection", function(socket){
-                console.log("socket connected : ", socket);
                 socket.on("disconnect", function(){
                         var cdbView = new CouchDBView(),
                             cdbDoc = new CouchDBDocument();

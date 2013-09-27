@@ -284,8 +284,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                         // reconnect socket if not connected
                         if (!sock.socket.connected){
                                 console.log("reconnecting socket");
-                                Config.set("socket", io.connect(Config.get("location")));
-                                Config.set("transport", new Transport(sock));
+                                sock.socket.reconnect();
                                 obs.notify("reconnect", "all");
                         }
                         // if socket is ok but user is offline reconnect user

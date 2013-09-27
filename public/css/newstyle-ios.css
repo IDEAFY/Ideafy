@@ -7484,12 +7484,9 @@ li.my2q{
     border: none;
     width: 25px;
     background: url('../img/profile/buttonMinSeeMoreDisable.png') no-repeat right center;
-    background-size: 25px 25px;    
-}
-
-.settingmodule .selectlang button{
+    background-size: 25px 25px; 
     border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 5px;   
 }
 
 #mulist .mulistoptions ul.langlist, .settingmodule ul.langlist{

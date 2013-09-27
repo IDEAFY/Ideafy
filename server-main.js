@@ -287,9 +287,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         .then(function(){
                                                 cdbDoc.set("online", false);
                                                 return updateDocAsAdmin(cdbDoc.get("_id"), cdbDoc);
-                                        })
-                                        .then(function(){
-                                                console.log("disconnection successful");
                                         });
                                 }
                         });        
@@ -471,7 +468,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         
                         if (!result.error) {
                                 var cookieJSON = cookie.parse(json.handshake.headers.cookie), 
-                                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0];
+                                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
+                                    cdb = new CouchDBDocument();
                                 
                                 sessionStore.get(sessionID, function(err, session) {
                                         if (err) {
@@ -479,11 +477,19 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         } else {
                                                 session.auth = json.name + ":" + json.password;
                                                 sessionStore.set(sessionID, session);
-                                                onEnd({
-                                                        login : "ok",
-                                                        db : _db,
-                                                        message: json.name + " is logged-in",
-                                                        session: session
+                                                getDocAsAdmin(json.name, cdb)
+                                                .then(function(){
+                                                        cdb.set("online", true);
+                                                        cdb.set("sock", json.sock);
+                                                        return updateDocAsAdmin(json.name, cdb);
+                                                })
+                                                .then(function(){
+                                                        onEnd({
+                                                                login : "ok",
+                                                                db : _db,
+                                                                message: json.name + " is logged-in",
+                                                                session: session
+                                                        });
                                                 });
                                         }
                                 });

@@ -230,8 +230,8 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                                 _login.setScreen("#maintenance-screen");        
                         })
                         .then(function(){
-                                console.log("user resynchronized");
                                 _user.set("online", true);
+                                _user.set("sock", Config.get("socket").socket.sessionid);
                                 return _user.upload();
                         });
                 }
@@ -239,11 +239,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         _user.set("online", true);
                         return _user.upload();
                 }              
-        });
-        
-        Config.get("socket").on('disconnect', function(){
-                sock.socket.connect(Config.get("location"));
-                Utils.disconnectSocket();
         });
         
         SOCK = Config.get("socket");

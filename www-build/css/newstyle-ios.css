@@ -131,7 +131,10 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 .list ul{
     height: 652px;
-    overflow-y: scroll;
+    overflow-y: auto;
+}
+.list ul.idea-list{
+    height: 637px;
 }
 #deck-list{
     height: 712px;
@@ -269,15 +272,15 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     background-size:19px 14px;
 }
 .tools {
-  padding:15px;
-  height: 30px;
+  padding:10px 15px 10px 15px;
+  height: 55px;
 }
 .search  {
   border:0;
   outline:0;
   height:25px;
   line-height: 25px;
-  padding:0 25px 0 10px;
+  padding:0 5px 0 5px;
   width:160px;
   border-radius:5px;
   background:#F2F2F2;
@@ -593,9 +596,9 @@ ul.notify-list{
 }
 #new2q-popup{
     width: 560px;
-    height: 300px;
+    height: 320px;
     left: 230px;
-    top: -320px
+    top: -330px;
 }
 #new2c-popup{
     height: 320px;
@@ -686,8 +689,8 @@ ul.notify-list{
     margin: 35px 20px;
     font-size: 12px;
 }
-#newdeck-popup .newidea-footer{
-    margin-top: 20px;
+#newdeck-popup .errormsg{
+    float: left;
 }
 #newidea-popup .publicwarning{
     height: 50px;
@@ -890,7 +893,113 @@ ul.notify-list{
 }
 #newidea-popup .form, #new2q-popup .form{
     font-size: 16px;
-    padding: 20px;
+    padding: 40px 20px 20px 20px;
+}
+#newidea-popup .form{
+    height: 464px;
+}
+.idealang{
+    margin-top: -35px;
+    margin-bottom: 5px;
+    height: 30px;
+    width: 440px;
+    text-align: right;
+}
+.idea-edit .idealang, #ideafy-quick .idealang, #ideafy-quick .idealang ul{
+    width: 590px;
+}
+.deckdetails .idealang{
+    width: 566px;
+    margin-top: 20px;
+    position: absolute;
+}
+.deckdetails .idealang ul{
+    position: absolute;
+    z-index: 2000;
+    background: white;
+    width: 144px;
+    padding: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 5px #657b99;
+    margin-left: 413px;
+    height: auto;
+    margin-top: 0px;
+}
+#newmub .idealang, #newmub .idealang ul{
+    width: 851px;
+}
+#newmub .idealang{
+    margin-top: 0px;
+}
+.idea-edit .idealang, #newdeck-popup .idealang{
+    margin-top: -15px;    
+}
+#new2q-popup .idealang{
+    width: 520px;
+}
+.currentlang{
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    margin-top: 5px;
+    background-size: contain;
+    border: 1px solid rgba(101,123,153,0.2);
+}
+.idealang ul, .list ul.langlist{
+    margin-top: -28px;
+    width: 440px;
+    height: 30px;
+    
+    background: white;
+    line-height: 30px;
+    position: absolute;
+}
+.list ul.langlist{
+    margin-top: -77px;
+    width: 301px;
+    height: 75px;
+    position: absolute;
+    z-index: 2000;
+    left: 0px;
+    text-align: center;
+    background: -webkit-radial-gradient(center, ellipse cover, #808080 0%, #292929 100%);
+    overflow: auto;
+}
+.langlist li{
+    margin: 5px 6px 0px 6px;
+    width: 36px;
+    height: 24px;
+    border-radius: 5px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    -webkit-box-shadow: inset 0 0 1px #ccc;
+    line-height: 34px;
+    font-family: times;
+    font-size: 30px;
+}
+.idea-edit .idealang ul{
+    width: 590px;
+    margin-top: -31px;
+}
+#new2q-popup .idealang ul{
+    width: 520px;
+}
+.idealang li{
+    margin: 3px 6px;
+    width: 36px;
+    height: 24px;
+    border-radius: 5px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    -webkit-box-shadow: inset 0px 0px 1px #CCCCCC;
+}
+.idealang li.selected{
+    -webkit-box-shadow: inset 0px 0px 5px #657b99;
+    border-radius: 0px;
 }
 .newideatitle{
     height: 36px;
@@ -967,16 +1076,12 @@ ul.notify-list{
      background-image:-webkit-linear-gradient(top, #f2f2f2 0%, #d4d4d4 80%);
      -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.4);
 }
-#public .list, #ideas .list {
-   
-   z-index:1000;
-}
 .mosaic .list{
   
   width:874px;
   background: white;
 }
-.mosaic .list ul{
+.mosaic .list-item ul{
     padding-top: 10px;
     background: url('../img/library/bgdeck.jpg');
     -webkit-box-shadow: inset 0px 5px 5px #ccc;
@@ -989,25 +1094,25 @@ ul.notify-list{
 .mosaic .tools input{
     width: 300px;
 }
-.mosaic li:nth-child(7n){
+.mosaic li.list-item:nth-child(7n){
     border-left: 10px solid #657B99;
 }
-.mosaic li:nth-child(7n+1){
+.mosaic li.list-item:nth-child(7n+1){
     border-left: 10px solid #F27B3D;   
 }
-.mosaic li:nth-child(7n+2){
+.mosaic li.list-item:nth-child(7n+2){
     border-left: 10px solid #9AC9CD;   
 }
-.mosaic li:nth-child(7n+3){
+.mosaic li.list-item:nth-child(7n+3){
     border-left: 10px solid #4D4D4D; 
 }
-.mosaic li:nth-child(7n+4){
+.mosaic li.list-item:nth-child(7n+4){
     border-left: 10px solid #F2E520;
 }
-.mosaic li:nth-child(7n+5){
+.mosaic li.list-item:nth-child(7n+5){
     border-left: 10px solid #BD262C;
 }
-.mosaic li:nth-child(7n+6){
+.mosaic li.list-item:nth-child(7n+6){
     border-left: 10px solid #5F8F28;
 }
 .mosaic .list-item {
@@ -1032,6 +1137,7 @@ ul.notify-list{
 .mosaic .list-item h3{
     padding-top: 0px;
     letter-spacing: 0px;
+    text-align: left;
 }
 .mosaic .item-header{
     height: 40px;
@@ -1048,35 +1154,64 @@ ul.notify-list{
     width: 100%;
 }
 #public-list .search, #idea-list .search{
-    float: left;
+    width: 261px;
+    margin: -5px 0px 5px 0px;
 }
-#public-list .tools-button, #idea-list .tools-button{
+.list ul.listbtns{
+    line-height: 28px;
+    margin: 5px auto;
+    text-align: center;
+    width: 271px;
+    height: 28px;
+}
+.tools-button{
     display: inline-block;
-    float: left;
-    width: 32px;
-    height: 23px;
+    width: 39px;
+    height: 26px;
     border: 1px solid #CCCCCC;
+    border-left: none;
     background: white;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
-#public-list .tools-button.bydate, #idea-list .tools-button.bydate{
-    margin-left: 5px;
+.tools-button:first-child{
+    border-left: 1px solid #CCCCCC;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    background-image: url('../img/public/byDateDisable.png');   
 }
-#public-list .tools-button.byrating, #idea-list .tools-button.byrating{
+.tools-button:last-child{
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    border-left: none;
+}
+.tools-button.bylang{
+    line-height: 37px;
+    font-size: 30px;
+    color: #a0a0a0;
+    font-family: times;
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.tools-button.bylang.pushed{
+    background: -webkit-radial-background(center, ellipse cover, #808080 0%, #000000 100%);
+}
+.tools-button.bydate{
+    background-image: url('../img/public/byDateDisable.png');   
+}
+.tools-button.byfav{
+    background-image: url('../img/public/byFavDisable.png');    
+}
+.tools-button.byrating{
     background-image: url('../img/public/byRatingDisable.png');    
 }
-#public-list .tools-button.bydate.pushed, #idea-list .tools-button.bydate.pushed{
+.tools-button.bydate.pushed{
     background-image: url('../img/public/byDateActive.png');   
 }
-#public-list .tools-button.byrating.pushed, #idea-list .tools-button.byrating.pushed{
+.tools-button.byfav.pushed{
+    background-image: url('../img/public/byFavActive.png');   
+}
+.tools-button.byrating.pushed{
     background-image: url('../img/public/byRatingActive.png');   
 }
 #public-list .option.right, #idea-list .option.right, #decklist .option.right, #connect-messages .option.right, #connect-contacts .option.right, #mtc-list .option.right {
@@ -1111,23 +1246,34 @@ ul.notify-list{
     background: white;
     z-index: 1000
 }
+#public-detail .option, #ideas-detail .option{
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 #public-detail .option.right, #ideas-detail .option.right {
   background-size:40%;
 }
 #public-detail .option.right[href="#public-favorites"], #ideas-detail .option.right[href="#library-favorites"]{
-    background:url('../img/public/vote.png') no-repeat center center;
+    background-image:url('../img/public/vote.png');
     background-size: 15px;
 }
+#public-detail .option.right[href="#public-favorites"].unfav, #ideas-detail .option.right[href="#library-favorites"].unfav{
+    background-image:url('../img/public/unfav.png');
+    background-size: 15px;    
+}
+#public-detail .option.right[href="#public-favorites"].favwait, #ideas-detail .option.right[href="#library-favorites"].favwait{
+    background-image:none;   
+}
 #public-detail .option.right[href="#public-edit"], #ideas-detail .option.right[href="#library-edit"] {
-    background:url('../img/wall/headerModifyYourIdea.png') no-repeat center center;
+    background-image:url('../img/wall/headerModifyYourIdea.png');
     background-size: 20px;
 }
 #public-detail .option.left[href="#public-2cents"], #ideas-detail .option.left[href="#library-2cents"]{
-    background:url('../img/public/2cents.png') no-repeat center center;
+    background-image:url('../img/public/2cents.png');
     background-size: 20px;
 }
 #public-detail .option.left[href="#public-share"], #ideas-detail .option.left[href="#library-share"]{
-    background:url('../img/wall/25shareActive.png') no-repeat center center;
+    background-image:url('../img/wall/25shareActive.png');
     background-size: 30px;
 }
 #ideas-detail .detail-footer .sharedwith{
@@ -1199,9 +1345,18 @@ ul.notify-list{
   font-size:14px;
   overflow-y: scroll;
 }
+.detail-body .idealegend{
+    font-family: Pacifico;
+    font-size: 12px;
+    color: #657B99;
+    margin-top: 15px;    
+}
 .detail-body p{
     margin-top: 15px;
     text-align: justify;
+}
+.detail-body .ideap{
+    margin-top: 2px;
 }
 #public-detail .detail-footer, #ideas-detail .detail-footer{
     height: 40px;
@@ -1353,21 +1508,21 @@ textarea.solution {
 }
 .edit-visibility, .current-visibility{
     display: inline-block;
-    font-size: 12px;
+    font-size: 16px;
     height: 30px;
 }
 .edit-visibility{
     text-align: right;
     color: #b3b3b3;
-    width: 65%;
+    width: 60%;
 }
 .current-visibility{
     padding-left: 25px;
     background-position: left center;
-    background-size: 15px 15px;
+    background-size: 16px 16px;
     background-repeat: no-repeat;
     color: #F27B3D;
-    width: 30%;
+    width: 35%;
     background-image: url('../img/public/privateForList.png');
 }
 .current-visibility.replay{
@@ -1382,6 +1537,7 @@ textarea.solution {
 }
 .edit-visibility span, .current-visibility span{
     font-family: Helvetica;
+    margin-right: 5px;
 }
 .submit label {
   -webkit-border-radius:4px;
@@ -1663,6 +1819,9 @@ textarea.solution {
 .replyAvatar{
     margin-left: 15px;
 }
+.online{
+    -webkit-box-shadow: inset 0px 0px 5px #65f134;    
+}
 .twocentAuthor, .twocent .commentLabel{
     float: left;
     font-size: 14px;
@@ -1938,6 +2097,7 @@ textarea.solution {
     margin-right: 5px;
     background-size: contain;
     background-position:center center;
+    background-repeat: no-repeat;
 }
 .actionbar .replaysession, .actionbar .deletesession{
     display: inline-block;
@@ -1962,7 +2122,7 @@ textarea.solution {
     width: 70px;
     background-repeat: no-repeat;
     background-position: center center;
-    background-image: url('../img/library/sessionQuick.png');;
+    background-image: url('../img/library/sessionQuick.png');
     background-size: 40px 40px;
 }
 .session-item td.session-info{
@@ -2101,7 +2261,7 @@ textarea.solution {
     background-size: contain;
 }
 #deckview .cardlist, #deckview .deckdetails{
-    height: 568px;
+    height: 608px;
     background-image:url('../img/library/bgdeck.jpg');
     background-size: cover;
     padding: 20px;
@@ -2199,7 +2359,7 @@ textarea.solution {
     margin-top: 10px;
 }
 #deckview .deckheader{
-    padding: 12px;  
+    padding: 11px;  
     background: transparent; 
 }
 #deckview .deckheader span{
@@ -2213,6 +2373,10 @@ textarea.solution {
     background-repeat: no-repeat;
     background-size: contain;
     margin-right: 20px;    
+}
+#deckview .deckheader span.date{
+    margin-top: -14px;
+    font-size: 14px;
 }
 #deckview .deckdescription{
     height: 118px;
@@ -2255,7 +2419,7 @@ textarea.solution {
 }
 #deckview .deckcarousel ul li:nth-child(2), #deckview .deckcarousel ul li:nth-child(4){
     -webkit-transform: scale(0.8);
-    margin: 0px 5px 0px 5px;;
+    margin: 0px 5px 0px 5px;
 }
 #deckview .deckcarousel .card{
     display: inline-block;
@@ -2790,10 +2954,12 @@ textarea.solution {
     margin-left: 58px;
     margin-right: 58px;
     background-size: contain;
-    background: url('../img/brainstorm/lockdraw.png') no-repeat center center;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url('../img/brainstorm/lockdraw.png');
 }
 .drawok.pushed{
-    background: url('../img/brainstorm/drawaccepted.png') no-repeat center center;
+    background-image: url('../img/brainstorm/drawaccepted.png');
 }
 .leftarea{
     width: 167px;
@@ -3868,6 +4034,7 @@ li.color-item{
     padding-top: 93px;
     height: 619px;
     text-align: center;
+    overflow: hidden;
 }
 #muidea .idea-cards{
     padding-top: 10px;
@@ -4176,7 +4343,6 @@ li.color-item{
 }
 .messages input, .contacts input{
     margin-top: 10px;
-    margin-left: -70px;
 }
 .msglist, .contactlist{
     margin-top: 20px;
@@ -4222,10 +4388,10 @@ li.color-item{
 }
 .msgsplash{
     width: 630px;
-    height:748px;;
+    height:748px;
 }
 .innersplash{
-    width:100%;
+    width:630px;
     height:712px;
     background: white;
     background-image: url('../img/brainstorm/doctordeedee87x85.png');
@@ -4237,6 +4403,16 @@ li.color-item{
     font-size: 24px;
     color: #404040;
     overflow-y: hidden;
+}
+.innersplash span{
+    display: inline-block;
+    width: 400px;
+    height: 150px;
+    font-size: 18px;
+    color: #657b99;
+    line-height: 25px;
+    font-family: Helvetica;
+    padding-top: 25px;
 }
 #msgdetail .msgdetailarea{
     height: 712px;
@@ -4270,11 +4446,11 @@ li.color-item{
     font-size: 14px;
     color: #808080;
 }
-#msgdetail .detail-header .date, #noresult .date{
+#msgdetail .detail-header .date, .noresult.date{
     font-size: 14px;
     float: none;
 }
-#noresult .date{
+.noresult.date{
     padding-left: 20px;
 }
 #msgdetail .detail-body{
@@ -5249,8 +5425,9 @@ li.my2q{
     width: 140px;
     height: 30px;
     border-radius: 15px;
-    background: #9AC9CD;
-    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);   
+    background: none;
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
+    z-index: 100;  
 }
 .infoslider::-webkit-slider-thumb {
      -webkit-appearance: none;
@@ -5264,7 +5441,7 @@ li.my2q{
 .slidertext{
     position: absolute;
     width: 140px;
-    top: 56px;
+    top: 58px;
     line-height: 30px;
     right: 97px;
     color: white;
@@ -5578,24 +5755,27 @@ li.my2q{
 }
 .settingmodule{
     margin-bottom: 20px;
-    padding: 20px;
-    min-height: 260px;
+    padding: 10px 20px;
+    height: auto;
     background: #f2f2f2;
     border: 1px dashed #cccccc;
     border-radius: 5px;
-    width: 811px;
+    width: 851px;
 }
 #aboutstack{
     margin-top: 121px;
 }
 #dashboard-about .aboutcontent{
-    padding: 20px;
+    padding: 10px 20px;
     margin: 20px;
     border: 1px solid #657b99;
     border-radius: 5px;
     width: 851px;
-    height: 530px;
+    height: 550px;
     overflow-y: scroll;
+}
+.aboutcontent li{
+    margin-bottom: 10px;
 }
 .aboutcontent textarea{
     height: 300px;
@@ -5605,7 +5785,6 @@ li.my2q{
     margin-top: 0px;
 }
 .aboutcontent legend{
-    padding: 0px;
     font-size: 20px;
 }
 .aboutcontent a{
@@ -5649,7 +5828,7 @@ li.my2q{
 .settingmodule li{
     padding: 10px 20px;
     display: inline-table;
-    width: 771px;;
+    width: 811px;
 }
 .settingmodule li > span{
     vertical-align: middle;
@@ -5734,6 +5913,7 @@ li.my2q{
     border-radius: 60px;
     z-index: 200;
     background: transparent;
+    position: relative;
 }
 #muinitslider::-webkit-slider-thumb{
     -webkit-appearance: none;
@@ -5770,6 +5950,7 @@ li.my2q{
     overflow-y: scroll;
     border-radius: 5px;
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 #newmub-content hr, #mulist-content hr{
     -webkit-margin-before: 0.2em;
@@ -5887,7 +6068,7 @@ li.my2q{
 .musession-confirm{
     position: absolute;
     width: 600px;
-    height: 150px;
+    height: 170px;
     left: 50%;
     margin-left: -300px;
     top: 50%;
@@ -6001,10 +6182,9 @@ li.my2q{
 #mulist .mulistoptions{
     float: right;
     margin-top: -35px;
-    height: 37px;
-    display: inline-table;
+    height: 32px;
+    display: inline-block;
     width: 400px;
-    line-height:30px;
 }
 #mulist .mulistoptions .search{
     float: right;
@@ -6014,14 +6194,79 @@ li.my2q{
     font-size: 14px;
 }
 #mulist .mulistoptions select{
-    width: 60px;
-    height: 30px;
+    width: 100px;
+    height: 25px;
     border-color: #CCCCCC;
     background-size: 25px;
     padding-right: 25px;
+    float: left;
+    margin-top: 6px;
 }
-#mulist .mulistoptions select.modes{
-    width: 100px;
+#mulist .mulistoptions .selectlang, .settingmodule .selectlang{
+    width: 60px;
+    height: 23px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    display: inline-block;
+    float: left;
+    margin-top: 6px;
+}
+.settingmodule .selectlang{
+    width: 60px;
+    height: 23px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    display: inline-block;
+    float: right;
+    margin-right: 50px;
+}
+#mulist .mulistoptions .selectlang div, .settingmodule .selectlang div{
+    float: left;
+    line-height: 30px;
+    text-align: center;
+    width: 34px;
+    font-family: times;
+    height: 23px;
+    background-size: 34px 23px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.settingmodule .selectlang div{
+    width: 34px;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 24px;
+}
+#mulist .mulistoptions .selectlang button, .settingmodule .selectlang button{
+    float: left;
+    height: 23px;
+    border: none;
+    width: 25px;
+    background: url('../img/profile/buttonMinSeeMoreDisable.png') no-repeat right center;
+    background-size: 25px 25px; 
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;   
+}
+#mulist .mulistoptions ul.langlist, .settingmodule ul.langlist{
+    position: absolute;
+    z-index: 2000;
+    background: white;
+    width: 144px;
+    padding: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 5px #657b99;
+    margin-top: 40px;
+    margin-left: 60px;
+}
+.settingmodule ul.langlist{
+    margin-top: 15px;
+    margin-left: 625px;
+}
+.settingmodule .langlist li{
+    width: 36px;
+    display: inline-block;
+    padding: 0px;
 }
 #mulistall, #musearch{
     height: 400px;
@@ -6032,7 +6277,7 @@ li.my2q{
     border-bottom-right-radius: 5px;
     background: #657B99;
 }
-#noresult{
+.noresult{
     position: absolute;
     margin: 10px;
 }
@@ -6120,7 +6365,7 @@ li.my2q{
 #mupreview .contentarea{
     position: absolute;
     top: 189px;
-    left: 46px;
+    left: 139px;
     background: white;
     border-radius: 5px;
 }

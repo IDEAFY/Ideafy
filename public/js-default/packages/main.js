@@ -222,7 +222,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         // resync user document upon socket reconnection
         Config.get("observer").watch("reconnect", function(option){
                 _local.sync("ideafy-data");
-                console.log("reconnecting");
+                console.log("reconnecting : ", option);
                 if (option === "all"){
                         checkServerStatus
                         .then(function(){

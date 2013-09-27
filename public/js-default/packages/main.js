@@ -224,7 +224,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 _local.sync("ideafy-data");
                 console.log("reconnecting : ", option);
                 if (option === "all"){
-                        checkServerStatus
+                        checkServerStatus()
                         .then(function(){
                                 console.log("server is on");
                                 _user.unsync();

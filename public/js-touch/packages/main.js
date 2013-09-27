@@ -230,7 +230,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 }
                 else {
                         if (option === "all"){
-                                checkServerStatus
+                                checkServerStatus()
                                 .then(function(){
                                         _user.unsync();
                                         return _user.sync(_db, _local.get("currentLogin"));

@@ -226,6 +226,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 if (option === "all"){
                         checkServerStatus
                         .then(function(){
+                                console.log("server is on");
                                 _user.unsync();
                                 return _user.sync(_db, _local.get("currentLogin"));
                         }, function(){

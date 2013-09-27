@@ -7103,6 +7103,7 @@ li.my2q{
     border-radius: 60px;
     z-index: 200;
     background: transparent;
+    position: relative;
 }
 
 #muinitslider::-webkit-slider-thumb{

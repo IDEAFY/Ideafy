@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */ 
 
-define(["service/config", "Observable", "Promise", "LocalStore"], function(Config, Observable, Promise, LocalStore){
+define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport"], function(Config, Observable, Promise, LocalStore, Transport){
 	return {
 		formatDate : function(array){
 			var month = array[1] + 1;
@@ -284,7 +284,8 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                         // reconnect socket if not connected
                         if (!sock.socket.connected){
                                 console.log("reconnecting socket");
-                                sock=io.connect(Config.get("location"));
+                                Config.set("socket", io.connect(Config.get("location")));
+                                Config.set("transport", new Transport(sock));
                                 obs.notify("reconnect", "all");
                         }
                         // if socket is ok but user is offline reconnect user

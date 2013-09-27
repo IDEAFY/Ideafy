@@ -286,6 +286,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                         getDocAsAdmin(cdbView.get(0).id, cdbDoc)
                                         .then(function(){
                                                 cdbDoc.set("online", false);
+                                                cdbDoc.set("sock", "");
                                                 return updateDocAsAdmin(cdbDoc.get("_id"), cdbDoc);
                                         });
                                 }

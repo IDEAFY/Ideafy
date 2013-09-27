@@ -70,7 +70,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         }
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        this.setAttribute("style", "background-image: none;");
                                                 }
                                         }
                                 }),
@@ -413,7 +413,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         (_scenario.get("title") && _scenario.get("story") && _scenario.get("solution")) ? _tools.set("shownext", true) : _tools.set("shownext", false);
                         });
                         
-                        TIM = _timer;
                         // Return
                         return _widget;
                 };     

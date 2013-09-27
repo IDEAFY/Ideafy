@@ -63,7 +63,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         }
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        this.setAttribute("style", "background-image: none;");
                                                 }
                                         }
                                         }),
@@ -220,7 +220,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // zoom on selected card
                         _widget.zoom = function(event, node){
                                 var type, id;
-                                if (node.getAttribute("name") === "scenario") type="scenario"
+                                if (node.getAttribute("name") === "scenario") type="scenario";
                                 else{
                                         type = "techno";
                                         id = node.getAttribute("data-techs_id");
@@ -374,7 +374,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 cdb.set("visibility", _idea.get("visibility"));
                                 cdb.set("authornames", $session.get("initiator").username);
                                 //set the idea's language to the same language as the session
-                                cdb.set("lang", $session.get("lang"));
+                                cdb.set("lang", $session.get("lang").substring(0,2));
                                 cdb.set("_id", _id);
                                 //upload idea in the database
                                 cdb.sync(Config.get("db"), _id)
@@ -505,4 +505,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // Return
                         return _widget;
                 };    
-        })
+        });

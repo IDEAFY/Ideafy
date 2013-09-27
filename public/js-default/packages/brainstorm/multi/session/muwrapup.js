@@ -79,7 +79,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                         }
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        this.setAttribute("style", "background-image: none;");
                                                 }
                                         }
                                 }),
@@ -135,17 +135,21 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 if ($session.get("chat")[5]){
                                         chatUI.reset($session.get("chat")[5])
                                         .then(function(){
-                                                chatUI.getModel().watchValue("msg", function(arr){
-                                                        if(arr.length>1 && !replay) {
-                                                                _wrapup.set("newmsg", true);
-                                                                setTimeout(function(){
-                                                                        clearInterval(_flash);       
-                                                                }, 2500);
-                                                        }               
-                                                });
                                                 // expand chat read area in to cover write interface in case of replay
                                                 if (replay){
                                                         chatUI.dom.querySelector(".chatread").classList.add("replayed");
+                                                        _wrapup.set("newmsg", false);
+                                                        _flash && clearInterval(_flash);
+                                                }
+                                                else{
+                                                        chatUI.getModel().watchValue("msg", function(arr){
+                                                                if(arr.length>1) {
+                                                                        _wrapup.set("newmsg", true);
+                                                                        setTimeout(function(){
+                                                                                clearInterval(_flash);       
+                                                                        }, 2500);
+                                                                }
+                                                        });
                                                 }
                                         });
                                 }
@@ -217,11 +221,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         $session.watchValue("chat", function(arr){
                                 if (arr.length === 6 && chatUI.getModel().get("_id") !== arr[5]){
                                         chatUI.reset(arr[5]);
-                                        chatUI.getModel().watchValue("msg", function(arr){
-                                                if(arr.length>1) {
-                                                        _wrapup.set("newmsg", true);
-                                                }               
-                                        });
+                                        if (!chatUI.getModel().get("readonly")){
+                                                chatUI.getModel().watchValue("msg", function(arr){
+                                                        if(arr.length>1) {
+                                                                _wrapup.set("newmsg", true);
+                                                        }               
+                                                });
+                                        }
                                 }
                         });
                         

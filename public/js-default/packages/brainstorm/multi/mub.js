@@ -108,7 +108,6 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 }
                 else {
                         if ($sip.mode === "join"){
-                                console.log("joining session", $sip);
                                 widget.join($sip.id);        
                         }
                         else{

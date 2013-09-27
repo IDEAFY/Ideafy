@@ -283,7 +283,8 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                             usr = Config.get("user");
                         // reconnect socket if not connected
                         if (!sock.socket.connected){
-                                sock.socket.connect(Config.get("location"));
+                                console.log("reconnecting socket");
+                                sock=io.connect(Config.get("location"));
                                 obs.notify("reconnect", "all");
                         }
                         // if socket is ok but user is offline reconnect user

@@ -266,10 +266,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                             req = new XMLHttpRequest();
                         req.open('GET', Config.get("location"));
                         req.onreadystatechange = function(){
-                                console.log(req.readyState);
-                                console.log(req.status);
                                      if(req.readyState === 4){
-                                             console.log(req.status);
                                              (req.status === 200) ? promise.fulfill() : promise.reject();
                                      }
                              };

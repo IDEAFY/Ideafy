@@ -201,7 +201,8 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         Config.get("observer").watch("signout", function(){
                 // change user status
                 _user.set("online", false);
-                
+                _user.set("sock", "");
+                _user.upload();
                 // clear local store
                 _local.set("currentLogin", "");
                 _local.set("userAvatar", "");

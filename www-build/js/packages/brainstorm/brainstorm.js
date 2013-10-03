@@ -1,8 +1,0 @@
-/**
- * https://github.com/TAIAUT/Ideafy
- * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
- */
-
-define(["Olives/OObject","service/map","service/submenu","Amy/Stack-plugin","Olives/Model-plugin","service/config","Store","service/utils","./ideafy-menu","./quickb/quickb"],function(e,t,n,r,i,s,o,u,a,f){return function(){var l=new e,c=new n(t.get("brainstorm-menu")),h=new o;return _stack=new r,l.plugins.addAll({brainstormstack:_stack,header:new i(h,{setDate:function(e){e&&(this.innerHTML=e.toLocaleDateString())},setTime:function(e){var t=e.getHours(),n=e.getMinutes(),r=e.getSeconds();t<10&&(t="0"+t),n<10&&(n="0"+n),r<10&&(r="0"+r),this.innerHTML=t+":"+n+":"+r}})}),l.alive(t.get("brainstorm")),l.showMenu=function(){c.toggleActive(!0)},l.hideMenu=function(){c.toggleActive(!1)},l.exitSession=function(){_stack.getStack().show("menu")},l.selectScreen=function(t,n){t==="continue"&&(t=n.type);if(_stack.getStack().get(t))_stack.getStack().get(t).reset(n),_stack.getStack().show(t);else{n?t=n.type:n=null;switch(t){case"quick":_stack.getStack().add("quick",new f(n,l.exitSession));break;case"tutorial":s.get("observer").notify("display-tutorials");break;default:t=""}t&&_stack.getStack().show(t)}},c.toggleActive(!1),h.set("headertitle",s.get("labels").get("brainstormheadertitle")),setInterval(function(){var e=new Date;h.set("date",e)},1e3),_stack.getStack().add("menu",new a(l.selectScreen)),_stack.getStack().show("menu"),s.get("observer").watch("replay-session",function(e,t){var n={};n.id=e,t?n.type=t:e.toLowerCase().search("quick")>-1&&(n.type="quick"),l.selectScreen(n.type,n)}),l}});

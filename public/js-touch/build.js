@@ -7,7 +7,8 @@
 
 /* deps load before main script??*/
 require.config({
-	baseUrl : "js-touch/packages",
+        waitSeconds: 45,
+        baseUrl : "js-default/packages",
         paths: {
                 lib : "../libs",
                 service : "../services",
@@ -18,7 +19,7 @@ require.config({
                 brainstorm : "brainstorm",
                 twocents : "twocents"
         },
-        deps: ["lib/socket.io.min", "lib/couchdbtools","lib/emily",  "lib/olives", "lib/amy2", "lib/spin.min"]
+        deps: ["lib/socket.io.min", "lib/CouchDBTools.min","lib/Emily.min",  "lib/Olives.min", "lib/amy2", "lib/spin.min"]
         
 });
 

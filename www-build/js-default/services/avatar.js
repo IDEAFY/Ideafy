@@ -1,8 +1,0 @@
-/**
- * https://github.com/TAIAUT/Ideafy
- * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
- */
-
-define(["OObject","Bind.plugin","Event.plugin","service/config","Store","service/utils","CouchDBView"],function(e,t,n,r,i,s,o){function u(e){var u=new i({img:"",online:!1}),a=r.get("avatars"),f=new o([]),l=e[0];f.setTransport(r.get("transport")),this.plugins.addAll({avatar:new t(u,{setStyle:function(e){e&&e!=="in progress"&&this.setAttribute("style","background-image: url('"+e+"');")},setStatus:function(e){e?this.classList.add("online"):this.classList.remove("online")}}),event:new n(this)}),this.template='<div class="avatar" data-avatar="bind: setStyle, img; bind: setStatus, online"></div>',f.sync(r.get("db"),"users","_view/online",{key:'"'+l+'"'}).then(function(){f.get(0)?u.set("online",!0):u.set("online",!1)}),["added","deleted","updated"].forEach(function(e){f.watch(e,function(){f.get(0)?u.set("online",!0):u.set("online",!1)})}),e.length>1?u.set("img","img/avatars/deedee6.png"):l===r.get("user").get("_id")?(u.set("img",r.get("avatar")),r.watchValue("avatar",function(){u.set("img",r.get("avatar"))})):l==="ideafy@taiaut.com"||l==="IDEAFY"?u.set("img","img/avatars/doctordeedee.png"):a.get(l)?a.get(l)==="in progress"?a.watchValue(l,function(e){e&&e!=="in progress"&&u.set("img",e)}):u.set("img",a.get(l)):s.getAvatarById(l).then(function(e){u.set("img",a.get(l))})}return function(n){return u.prototype=new e,new u(n)}});

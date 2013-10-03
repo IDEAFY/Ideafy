@@ -1,0 +1,8 @@
+/**
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2012-2013 TAIAUT
+ */
+
+define(["OObject","service/config","CouchDBView","Bind.plugin","Event.plugin","Store"],function(e,t,s,i,n,a){return function(){var c=new e,r=new s,o=t.get("user"),l=t.get("labels"),d=new a([]);return c.plugins.addAll({label:new i(l),howto:new i(d),howtoevent:new n(c)}),c.template='<div class="aboutcontent"><div id="userguidetoc"><legend data-label="bind:innerHTML, toc"></legend><ul data-howto="foreach"><li><span data-howto="bind: innerHTML, title" data-howtoevent="listen: touchstart, press; listen:touchend, goto"></span></li></ul></div><br/><ul data-howto="foreach"><li data-howto="bind:id, _id"><legend data-howto="bind:innerHTML, title"></legend><p data-howto="bind: innerHTML, body"></p><span class="backtotop" data-label="bind:innerHTML, backtotop" data-howtoevent="listen: touchstart, backToTop"></span></li></ul></div>',c.press=function(e,t){t.setAttribute("style","font-weight: bold;")},c.goto=function(e,t){var s=t.getAttribute("data-howto_id"),i=d.get(s)._id;t.setAttribute("style","font-weight: normal;"),document.getElementById(i).scrollIntoView()},c.backToTop=function(){document.getElementById("userguidetoc").scrollIntoView()},r.setTransport(t.get("transport")),c.fetch=function(e){r.unsync(),r.reset([]),d.reset([]),r.sync(t.get("db"),"about","_view/howto").then(function(){r.loop(function(t){t.value.default_lang!==e&&t.value.translations[e]?d.alter("push",t.value.translations[e]):d.alter("push",t.value)})})},c.fetch(o.get("lang")),o.watchValue("lang",function(){c.fetch(o.get("lang"))}),c}});

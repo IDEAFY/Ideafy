@@ -977,7 +977,8 @@ ul.notify-list{
     background-image: url('../img/brainstorm/delete28.png');
     background-size: 28px;
     background-repeat: no-repeat;
-    background-position: center;    
+    background-position: center;
+    -webkit-box-shadow: 0px -3px 3px 0px rgba(0,0,0,0.6);    
 }
 
 .help-screen, .tip-screen{
@@ -987,7 +988,7 @@ ul.notify-list{
     padding: 30px;
     border-radius: 10px;
     max-height: 340px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .help-screen h2, .settingmodule legend{
@@ -2619,6 +2620,7 @@ textarea.solution {
     margin-right: 5px;
     background-size: contain;
     background-position:center center;
+    background-repeat: no-repeat;
 }
 
 .actionbar .replaysession, .actionbar .deletesession{

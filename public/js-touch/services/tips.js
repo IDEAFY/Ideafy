@@ -67,7 +67,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.getRandomTip = function getRandomTip(){
                                 var nb = _allTips.getNbItems(),
                                     id = Math.floor(Math.random()*nb);
-                                if (nb === 0) _widget.close()
+                                if (nb === 0) _widget.close();
                                 else{
                                         _tip.reset(_allTips.get(id));
                                         // remove tip (can only be shwon once per session)

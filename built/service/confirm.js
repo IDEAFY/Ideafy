@@ -1,8 +1,0 @@
-/**
- * https://github.com/TAIAUT/Ideafy
- * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
- */
-
-define(["OObject","service/map","Bind.plugin","Event.plugin","service/config","Store"],function(e,t,i,n,s,a){function r(e,r,o,c){var l=s.get("labels"),d=this,u=new a({question:r}),p=o;d.plugins.addAll({label:new i(l),confirm:new i(u),confirmevent:new n(this)}),d.template='<div class = "confirm"><div class="help-doctor"></div><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-confirmevent="listen:touchstart, press; listen:touchend, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-confirmevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl">Cancel</div></div>',d.press=function(e,t){e.stopPropagation(),t.classList.add("pressed")},d.ok=function(e,i){i.classList.remove("pressed"),t.get("cache").classList.remove("appear"),p&&p(!0)},d.cancel=function(e,i){i&&i.classList.remove("pressed"),t.get("cache").classList.remove("appear"),p&&p(!1)},d.close=function(){t.get("cache").classList.remove("appear"),e&&e.removeChild(e.lastChild)},d.hide=function(){t.get("cache").classList.remove("appear"),d.dom.classList.add("invisible")},d.show=function(){t.get("cache").classList.add("appear"),d.dom.classList.remove("invisible")},d.reset=function(e,t){u.set("question",e),p=t},d.render(),e&&d.place(e),c&&d.dom.classList.add(c),r?u.set("question",r):d.hide(),setTimeout(function(){d.close},15e3)}return function(t,i,n,s){return r.prototype=new e,new r(t,i,n,s)}});

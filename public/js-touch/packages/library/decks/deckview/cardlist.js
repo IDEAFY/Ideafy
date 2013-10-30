@@ -256,7 +256,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 if ((touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
                                         cardList.displayNext();
                                 }
-                                else if ((touchStart[0]-touchPoint[0]) < 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                else if ((touchStart[0]-touchPoint[0]) < -40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
                                         cardList.displayPrevious();
                                 }
                         };

@@ -1,6 +1,6 @@
 ({		    
-                    baseUrl: "public/js-default/packages",
-                    mainConfigFile: "public/js-default/build.js",
+                    baseUrl: "public/js-ios/packages",
+                    mainConfigFile: "public/js-ios/build.js",
                     dir: "built",
 		    name: "main",
                     optimize: "uglify2",

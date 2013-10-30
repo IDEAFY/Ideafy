@@ -199,7 +199,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                 }
                                                 else{
                                                         if (file.search("img/decks") === -1){
-                                                                json = {type: "card", file: file};
+                                                                json = {type: "card", file: file}
                                                                 Config.get("transport").request("DeleteAttachment", json, function(result){
                                                                         if (result !== "ok"){
                                                                                 console.log(result);
@@ -256,7 +256,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 if ((touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
                                         cardList.displayNext();
                                 }
-                                else if ((touchStart[0]-touchPoint[0]) < 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                                else if ((touchStart[0]-touchPoint[0]) < -40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
                                         cardList.displayPrevious();
                                 }
                         };
@@ -324,7 +324,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         case 1:
                                                 pos.x = 304;
                                                 pos.y = 157;
-                                                caret = "left";
+                                                caret = "left"
                                                 break;
                                         case 2:
                                                 pos.x = 23;
@@ -379,7 +379,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                         default:
                                                 pos.x = 157;
                                                 pos.y = 157;
-                                                caret = "left";
+                                                caret = "left"
                                                 break;
                                         
                                 }

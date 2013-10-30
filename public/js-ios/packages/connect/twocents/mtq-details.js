@@ -43,7 +43,7 @@ define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "tw
                                                 var nb = twocents.length || 0;
                                                 if (!nb) this.innerHTML = labels.get("noreplyyet")
                                                 else if (nb === 1) this.innerHTML = nb + " " + labels.get("showonetcreply")
-                                                else this.innerHTML = nb + labels.get("showtcrepliesafter");
+                                                else this.innerHTML = nb + "showtcrepliesafter";        
                                         },
                                         date : function date(date){
                                                 if (date) this.innerHTML = Utils.formatDate(date);

@@ -157,10 +157,6 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         if (result.db){
                                                                                 $local.set("db", result.db);
                                                                         }
-                                                                        
-                                                                        // set online status and socket info
-                                                                        user.set("online", true);
-                                                                        user.set("sock", Config.get("socket").socket.sessionid);
 
                                                                         // upload to database
                                                                         user.setTransport(_transport);
@@ -225,7 +221,7 @@ define(["OObject" ,"Amy/Stack-plugin",
 
                                 if (email && password) {
                                         loginSpinner.spin(_loginForm.dom);
-                                        _transport.request("Login", {name : email, password : password, sock : Config.get("socket").socket.sessionid}, function(result) {
+                                        _transport.request("Login", {name : email, password : password}, function(result) {
                                                 if (result.login === "ok") {
                                                         Config.set("uid", '"' + email + '"');
                                                         // check if there is a new db

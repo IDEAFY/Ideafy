@@ -43,6 +43,11 @@ define(["Amy/Stack-plugin", "./wbdefault", "./wbmain", "./wbpostit", "./wbimport
                         this.getStack().add("postit", new Postit($store, this.exitScreen));
                         this.getStack().add("import", new Import($store, this.exitScreen));
                         this.getStack().add("drawing", new Drawing($store, this.exitScreen));
+       
+                        this.init = function(){
+                                _stack.getStack().get("main").init($type);
+                        };
+       
                 }
                 
                 return function WhiteboardFactory($type, $store, $tools, $mode){

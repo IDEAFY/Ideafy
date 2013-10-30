@@ -15,7 +15,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                     _reader = new FileReader(),
                     _progress = new Store({"status": null}),
                     _pos = null, // the position of the postit
-                    _postit = new Store({"type": "import", "content":""}),
+                    _postit = new Store({"type": "import", "content":"", "author": Config.get("user").get("_id")}),
                     _sid, // the current session id
                     MAX_WIDTH = 400,
                     MAX_HEIGHT = 300,
@@ -195,7 +195,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 _widget.reset = function reset($pos){
                         _pos = $pos;
                         
-                        _postit.reset({"type": "import", "content":""});
+                        _postit.reset({"type": "import", "content":"", "author": Config.get("user").get("_id")});
                         _widget.dom.querySelector("#importbuttons").classList.remove("invisible");
                         
                         if (_pos || _pos === 0){

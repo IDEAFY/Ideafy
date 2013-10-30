@@ -62,8 +62,10 @@ define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-s
                                                 _edit.reset(id);
                                                 _stack.getStack().show('#public-edit');
                                              break;
+                                        
                                         case "#public-favorites":  
                                              break;
+                                             
                                         case "#public-share":
                                                 _share.reset(id);
                                                 _stack.getStack().show("#public-share");

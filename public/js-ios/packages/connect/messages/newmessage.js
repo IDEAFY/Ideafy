@@ -19,15 +19,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                             sendInProgress = false,
                             spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin(),
                             autoCompleteUIs = {},
-                            validateRecipients = function(onEnd){
+                            validateRecipients = function(arr){
                                     var to = message.get("toList").toLowerCase().split(/,|;/),
                                         cc = message.get("ccList").toLowerCase().split(/,|;/),
                                         contacts = JSON.stringify(user.get("connections")).toLowerCase(),
                                         dest = [],
                                         json = {},
                                         promise = new Promise();
-                                    // reset recipient list
-                                    arr = [];   
                                     // check recipients
                                     for (i=0, l=to.length; i<l; i++){
                                         if (contacts.search(to[i].trim()) > -1){
@@ -35,8 +33,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                         }
                                         else{
                                                 error.set("errormsg", labels.get("tolbl")+" : "+to[i].trim()+labels.get("notavalidcontact"));
-                                                sendInProgress = false;
-                                                promise.reject();
+                                                promise.fulfill();
                                                 break;
                                         }       
                                     }
@@ -48,8 +45,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                                 }
                                                 else{
                                                         error.set("errormsg", labels.get("tolbl")+" : "+cc[i].trim()+labels.get("notavalidcontact"));
-                                                        sendInProgress = false;
-                                                        promise.reject();
+                                                        promise.fulfill();
                                                         break;
                                                 }      
                                             }
@@ -58,17 +54,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                     if (!error.get("errormsg")){
                                                 json.list = dest;
                                                 transport.request("CheckRecipientList", json, function(result){
-                                                        var arr = [];
                                                         if (!result.error){
                                                                 for (i=0, l=result.length; i<l; i++){
                                                                         arr.push(result[i].value);
                                                                 }
-                                                                onEnd(arr);
                                                                 promise.fulfill();
                                                         }
                                                         else {
                                                                 error.set("errormsg", result.error);
-                                                                promise.reject();
+                                                                promise.fulfill();
                                                         }
                                                 });
                                     };
@@ -95,7 +89,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                 error.reset({"errormsg":""});
                                 
                                 if (data){
-                                        if (data.type === "user") message.set("toList", data.username);
+                                        if (data.type === "user") message.set("toList", data.username)
                                         else {
                                                 for (i=0, l=data.contacts.length; i<l;i++){
                                                         (list)? list = list+", "+data.contacts[i].username : list = data.contacts[i].username;        
@@ -172,7 +166,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                         }
                                         // check recipients and send message if ok
                                         json.dest = [];
-                                        validateRecipients(function(result){json.dest=result;}).then(function(){
+                                        validateRecipients(json.dest).then(function(){
                                                 if (!error.get("errormsg")){
                                                         json.date = [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
                                                         

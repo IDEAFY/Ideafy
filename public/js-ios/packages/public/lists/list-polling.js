@@ -136,6 +136,11 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         }
                 };
                 
+                // set default query parameters
+                if ($query) {
+                        _options.query = $query;
+                }
+                
                 this.init = function init(){
                         var promise = new Promise(),
                             interval = user.get("settings").polling_interval || Config.get("polling_interval"),

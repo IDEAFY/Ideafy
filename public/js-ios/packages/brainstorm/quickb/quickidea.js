@@ -220,7 +220,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // zoom on selected card
                         _widget.zoom = function(event, node){
                                 var type, id;
-                                if (node.getAttribute("name") === "scenario") type="scenario";
+                                if (node.getAttribute("name") === "scenario") type="scenario"
                                 else{
                                         type = "techno";
                                         id = node.getAttribute("data-techs_id");
@@ -414,6 +414,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("ideaWB"));
+                                _wb.init();
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // reset timer if previous session was exited while in quickidea step

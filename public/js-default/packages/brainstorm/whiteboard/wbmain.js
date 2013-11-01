@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config" ],
-        function(Widget, Model, Event, Config){
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
+        function(Widget, Model, Event, Config, Store){
                 
            return function WBMainConstructor($store, $tools, $select){
              

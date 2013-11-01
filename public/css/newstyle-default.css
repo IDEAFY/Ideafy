@@ -1575,7 +1575,7 @@ ul.notify-list{
 /* public details */ 
 #public-detail, #ideas-detail, #message-detail {
     -webkit-transition: opacity 480ms ease-out;
-    overflow-y: scroll;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -1585,7 +1585,7 @@ ul.notify-list{
     padding-bottom: 5px;
 }
 
-.mosaic #public-detail {
+.mosaic #public-detail, .mosaic .detail-stack {
   opacity: 0.3;
 }
 

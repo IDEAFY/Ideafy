@@ -1502,7 +1502,7 @@ ul.notify-list{
     padding-bottom: 5px;
 }
 
-.mosaic #public-detail {
+.mosaic #public-detail, .mosaic #ideas-detail {
   opacity: 0.3;
 }
 

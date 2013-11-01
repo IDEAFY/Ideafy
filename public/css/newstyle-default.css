@@ -299,7 +299,8 @@ input::-webkit-file-upload-button{
 }
 
 #library .mosaic .idea-list .list-item p{
-    width: 170px;
+    width: 165px;
+    padding-right: 5px;
 }
 
 .list-item.selected {

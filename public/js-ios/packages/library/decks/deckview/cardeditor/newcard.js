@@ -80,11 +80,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                                                 cdb.upload()
                                                 .then(function(){
                                                         p.fulfill();
-                                                });
+                                                })
                                         }
                                         else{
                                                 if (file.search("img/decks") === -1){
-                                                        json = {type: "card", file: file};
+                                                        json = {type: "card", file: file}
                                                         transport.request("DeleteAttachment", json, function(result){
                                                                 if (result !== "ok"){
                                                                         console.log(result);
@@ -266,5 +266,5 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         newCard.init();
                         
                         return newCard;     
-                };
+                }
 });

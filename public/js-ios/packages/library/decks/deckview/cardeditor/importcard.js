@@ -366,5 +366,5 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 
                 return importCard;
                    
-           };
+           }
 });

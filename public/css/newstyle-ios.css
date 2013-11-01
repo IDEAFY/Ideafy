@@ -274,10 +274,12 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 
 .item-body h3 {
   padding-top: 3px;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 20px;
   font-weight: normal;
   color: #404040;
+  letter-spacing: 0;
+  text-align: left;
 }
 
 .idea-list .item-body{
@@ -2773,6 +2775,16 @@ textarea.solution {
 #deckview .cardlist .pagenb{
     position: absolute;
     margin-top: -10px;
+    margin-left: 225px;
+    z-index: 100;
+    display: inline-block;
+}
+
+.whiteboard .pagenb{
+    margin: 5px auto;
+}
+
+#deckview .cardlist .pagenb, .whiteboard .pagenb{
     width: 150px;
     height: 20px;
     line-height: 20px;
@@ -2780,18 +2792,16 @@ textarea.solution {
     text-align: center;
     font-family: Helvetica;
     font-size: 12px;
-    display: inline-block;
-    margin-left: 225px;
 }
 
-#deckview .cardlist .pagenb .leftcaret{
+#deckview .cardlist .pagenb .leftcaret, .whiteboard .pagenb .leftcaret{
     border-bottom: 10px solid transparent;
     border-top: 10px solid transparent;
     border-right: 10px solid #808080;
     float: left;
 }
 
-#deckview .cardlist .pagenb .rightcaret{
+#deckview .cardlist .pagenb .rightcaret, .whiteboard .pagenb .rightcaret{
     border-bottom: 10px solid transparent;
     border-top: 10px solid transparent;
     border-left: 10px solid #808080;
@@ -3908,6 +3918,7 @@ textarea.solution {
     font-family: Pacifico;
     overflow-y: scroll;
     text-align: center;
+    margin-top: 10px;
 }
 
 .inner-postit{
@@ -3991,17 +4002,16 @@ textarea.solution {
     float: left;
     width: 95px;
     height: 34px;
-    background-size: contain;
 }
 
 .postpostit{
     background: url('../img/brainstorm/buttonPostDisable.png') no-repeat center center;
-    background-size: contain;
+    background-size: cover;
 }
 
 .delpostit{
     background: url('../img/brainstorm/buttonDeleteDisable.png') no-repeat center center;
-    background-size: contain;
+    background-size: cover;
 }
 
 .postpostit.pressed{

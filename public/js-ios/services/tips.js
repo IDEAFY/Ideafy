@@ -60,14 +60,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                         _widget.place(Map.get("tip-popup"));
                                         document.getElementById("tip-popup").classList.add("visible");
-                                        document.getElementById("cache").classList.add("visible");
+                                        document.getElementById("cache").classList.add("appear");
                                 }); 
                         };
                         
                         _widget.getRandomTip = function getRandomTip(){
                                 var nb = _allTips.getNbItems(),
                                     id = Math.floor(Math.random()*nb);
-                                if (nb === 0) _widget.close()
+                                if (nb === 0) _widget.close();
                                 else{
                                         _tip.reset(_allTips.get(id));
                                         // remove tip (can only be shwon once per session)
@@ -87,7 +87,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.close = function(event, node){
                                 // hide window
                                 document.getElementById("tip-popup").classList.remove("visible");
-                                document.getElementById("cache").classList.remove("visible");
+                                document.getElementById("cache").classList.remove("appear");
                         };
                         
                         _widget.doNotShow = function(event, node){

@@ -36,7 +36,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                     ]),
                     _labels = Config.get("labels"),
                     _progress = new Store({"status": null}),
-                    _postit = new Store({"type": "drawing", "content":"", "background":""}),
+                    _postit = new Store({"type": "drawing", "content":"", "background":"", "author": Config.get("user").get("_id")}),
                     _uploadCanvas = function(filename){
                             var _promise = new Promise(),
                                 _url = '/upload',
@@ -59,6 +59,9 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             return _promise;
                     },
                     _sid,
+                    _memCanvas,
+                    _memCtx,
+                    _started = false;
                     _LEFT = 93; // the absolute position of the brainstorm screen (=== dock width)
                 
                 _widget.plugins.addAll({
@@ -135,6 +138,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             _ctx = _canvas.getContext("2d");
                         
                         _ctx.clearRect(0,0,_canvas.width, _canvas.height);
+                        _memCtx.clearRect(0,0,_canvas.width, _canvas.height);
                         node.classList.remove("selected");       
                 };
                 
@@ -171,7 +175,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _pencil.set("mode", "pencil");
                         _colors.loop(function(v,i){
                                 if (v.active) _pencil.set("color", v.color);
-                        })
+                        });
                 };
                 
                 _widget.expand = function(event, node){
@@ -219,7 +223,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 _widget.cancel = function(event, node){
                         _widget.clear(event, node);
                         _widget.resetColors();
-                        _postit.reset({"type": "drawing", "content":"", "background":""});
+                        _postit.reset({"type": "drawing", "content":"", "background":"", "author": Config.get("user").get("_id")});
                         node.classList.remove("selected");
                         $exit("drawing");       
                 };
@@ -258,7 +262,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 cv.setAttribute("height", 380);
                         }
                         if (!_pos && _pos !== 0){
-                                _postit.reset({"type": "drawing", "content":"", "background":""});
+                                _postit.reset({"type": "drawing", "content":"", "background":"", "author": Config.get("user").get("_id")});
                         }
                         else{
                                _postit.reset($store.get($pos));
@@ -271,29 +275,88 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 
                 _widget.start = function(event, node){
                                 var touches = event.touches,
+                                    offsetLeft = node.offsetLeft + _LEFT,
+                                    i;
+       
+                                _started = true;
+                                /* at first start create buffer canvas */
+                                if (!_memCanvas){
+                                    _memCanvas = document.createElement('canvas');
+                                    _memCtx = _memCanvas.getContext('2d');
+                                    _memCanvas.width = event.target.width;
+                                    _memCanvas.height = event.target.height;
+                                }
+       
+                                for (i=0, l = touches.length; i<l; i++){
+                                    var touch = touches[i];
+                                    _lines[touch.identifier] = [{
+                                        x : touch.pageX - offsetLeft,
+                                        y : touch.clientY - node.offsetTop
+                                    }];
+       
+                                }
+                                event.preventDefault();
+       
+       
+                                /* var touches = event.touches,
                                     offsetLeft = node.offsetLeft + _LEFT;
-                                
+       
                                 for(i = 0, l = touches.length; i < l; i++) {
                                         var touch = touches[i];
+       
                                         _lines[touch.identifier] = {
                                                 x : touch.pageX - offsetLeft,
-                                                y : touch.pageY - node.offsetTop
+                                                y : touch.clientY - node.offsetTop
                                         };
                                 }
                                 event.preventDefault();
+                                 */
                         };
 
                 _widget.end = function(event, node){
+                    var canvas = _widget.dom.querySelector(".drawingcanvas");
+                    if (_started){
+                        _started = false;
+                        _memCtx.clearRect(0,0,canvas.width, canvas.height);
+                        _memCtx.drawImage(canvas, 0, 0);
+                        _lines = [];
+                    }
                 };
 
                 _widget.move = function(event, node){
-                        var touches = event.touches,
-                            offsetLeft = node.offsetLeft + _LEFT;
+                        var canvas = _widget.dom.querySelector(".drawingcanvas"),
+                            ctx = canvas.getContext('2d'),
+                            touches = event.touches,
+                            offsetLeft = node.offsetLeft + _LEFT,
+                            i;
+       
+                        ctx.lineWidth = _pencil.get("size");
+                        ctx.strokeStyle = _pencil.get("color");
+                        ctx.lineCap = _pencil.get("cap");
+       
+                        if (_started){
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                ctx.drawImage(_memCanvas, 0, 0);
+                                for (i=0, l = touches.length; i<l; i++){
+                                    var touch = touches[i];
+                                    _lines[touch.identifier].push({
+                                        x : touch.pageX - offsetLeft,
+                                        y : touch.clientY - node.offsetTop
+                                    });
+                                    _widget.drawLine(ctx, touch.identifier);
+                                }
+                        }
+       
+                        /* event.preventDefault();*/
+       
+                        /* var touches = event.touches,
+                            offsetLeft = node.offsetLeft + _LEFT,
+                            i, lines;
                         for(i = 0, l = touches.length; i < l; i++){
                                 var touch = touches[i],
                                     id = touch.identifier,
                                     moveX = touch.pageX - offsetLeft - _lines[id].x,
-                                    moveY = touch.pageY - node.offsetTop - _lines[id].y,
+                                    moveY = touch.clientY - node.offsetTop - _lines[id].y,
                                     ret = _widget.draw(node, id, moveX, moveY);
                                 _lines[id] = {
                                         x : ret.x,
@@ -301,6 +364,30 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 };
                         }
                         event.preventDefault();
+                         */
+                };
+       
+                _widget.drawLine = function(ctx, id){
+                        var i, a, b, c, arr = _lines[id];
+       
+                        a = arr[0];
+                        if (arr.length < 6){
+                                ctx.beginPath();
+                                ctx.arc(a.x, a.y, ctx.linewidth / 2, 0, Math.PI * 2, !0);
+                                ctx.closePath();
+                                ctx.fill();
+                                return;
+                        }
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+       
+                        for (i=1; i<arr.length-2; i++){
+                                    b = (arr[i].x + arr [i+1].x) / 2;
+                                    c = (arr[i].y + arr [i+1].y) / 2;
+                                    ctx.quadraticCurveTo(arr[i].x, arr[i].y, b, c);
+                        }
+                        ctx.quadraticCurveTo(arr[i].x, arr[i].y, arr[i+1].x, arr[i+1].y);
+                        ctx.stroke();
                 };
 
                 _widget.draw = function(canvas, i, changeX, changeY){
@@ -320,7 +407,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 y:_lines[i].y+changeY
                         };
                 };
-                
+       
                 return _widget;      
                    
            };

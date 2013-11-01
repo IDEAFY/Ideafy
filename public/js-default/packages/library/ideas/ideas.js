@@ -185,7 +185,7 @@ define(["OObject", "Amy/Control-plugin" ,
 				        domDetail.classList.remove("invisible");
 				        _detail.reset(listDate.getModel(), 0);
 				}
-				else domDetail.classList.add("invisible");
+				// else domDetail.classList.add("invisible");
 			};
 			
 			_widget.plus = function(){

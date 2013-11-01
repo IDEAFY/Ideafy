@@ -588,6 +588,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("ideaWB"));
+                                _wb.init();
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // reset timer if previous session was exited while in muidea step

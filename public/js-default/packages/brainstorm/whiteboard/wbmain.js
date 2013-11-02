@@ -92,7 +92,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                         node.classList.add("invisible");
                 };
        
-                _widget.previousPage = function(evetn, node){
+                _widget.previousPage = function(event, node){
+                        event.stopPropagation();
                         _widget.displayPage("previous");
                 };
        

@@ -89,8 +89,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                 _widget.template = '<div class="wbmain"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-wbevent="listen:mousedown, push; listen:mouseup, previousPage"></div><span data-pagination="bind: setPage, currentPage; bind:setNbPages, nbPages"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-wbevent="listen:mousedown, push; listen:mouseup, nextPage"></div></div><ul class="wblist" data-wbmain="foreach"><li class="wb-item postit" data-wbmain="bind: displayPost, type" data-wbevent="listen: mouseup, edit; listen:dblclick, cancelEdit"></li><ul><div>';
                 
                  _widget.push = function(event,node){
+                        event.stopImmediatePropagation();
                         node.classList.add("invisible");
-                        console.log(_widget.displayPage);
                 };
        
                 _widget.previousPage = function(event, node){

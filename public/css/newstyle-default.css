@@ -1821,7 +1821,7 @@ ul.notify-list{
 .detail-stack {
   position:absolute;
   width:630px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 #ideas-detail .detail-stack{
@@ -2629,14 +2629,16 @@ textarea.solution {
     width: 70px;
     height: 61px;
     background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .actionbar .replaysession{
-    background: url('../img/library/25goToSession.png') no-repeat center center;    
+    background-image: url('../img/library/25goToSession.png') ;    
 }
 
 .actionbar .deletesession{
-    background: url('../img/library/25delete.png') no-repeat center center;    
+    background-image: url('../img/library/25delete.png');    
 }
 
 /* -- removed - doesn't look good as outline shows

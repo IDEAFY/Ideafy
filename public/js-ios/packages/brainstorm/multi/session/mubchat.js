@@ -29,7 +29,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 this.setAttribute("style", "display:none;");
                                         }
                                         else{
-                                                this.setAttribute("style", "disaply:table-cell;");
+                                                this.setAttribute("style", "display:table-cell;");
                                                 this.setAttribute("contenteditable", true);
                                         }
                                 },
@@ -160,6 +160,15 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 case "start":
                                         newMsg = {"user": "SYS", "time": now, "type": 4};
                                         break;
+                                case "end":
+                                        // automatically insert leader leave message
+                                        chat.alter("push", {user: "SYS", type: 2, time: now, arg: position});
+                                        msg.push({user: "SYS", type: 2, time: now, arg: position});
+                                        
+                                        now = new Date().getTime();
+                                        newMsg ={"user": "SYS", "time": now, "type":7};
+                                        mubChat.setReadonly();
+                                        break;
                                 case "leave":
                                         newMsg = {user: "SYS", type: 2, time: now, arg: position};
                                         break;
@@ -184,7 +193,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 promise.fulfill();
                         });
                         
-                        return promise; 
+                        return promise;
                 };
                 
                 mubChat.clear = function clear(){

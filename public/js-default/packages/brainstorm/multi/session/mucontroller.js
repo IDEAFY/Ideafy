@@ -78,15 +78,25 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }
                         else{
                                 if (_session.get("step") === "muwrapup"){
-                                        muWrapup.getChatUI().leave();
                                         if (_session.get("initiator").id === _user.get("_id")){
-                                                muWrapup.getChatUI().setReadonly();
+                                                muWrapup.getChatUI().setMsg("end")
+                                                .then(function(){
+                                                        // reset sessionInProgress in user doc
+                                                        _user.set("sessionInProgress", "");
+                                                        return _user.upload();      
+                                                })
+                                                .then(function(){
+                                                        $exit();
+                                                });
                                         }
-                                        // reset sessionInProgress in user doc
-                                        _user.set("sessionInProgress", "");
-                                        _user.upload().then(function(){
-                                                $exit();        
-                                        });        
+                                        else{
+                                                muWrapup.getChatUI().leave();
+                                                // reset sessionInProgress in user doc
+                                                _user.set("sessionInProgress", "");
+                                                _user.upload().then(function(){
+                                                        $exit();        
+                                                }); 
+                                        }       
                                 }
                                 else {
                                         confirmUI.show();

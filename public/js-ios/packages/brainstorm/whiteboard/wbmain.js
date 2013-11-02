@@ -92,7 +92,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                         "wbevent" : new Event(_widget)
                 });
                 
-                _widget.template = '<div class="wbmain" data-wbevent="listen:touchstart, setStart; listen:touchmove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-wbevent="listen:touchstart, push; listen:touchend, previousPage"></div><span data-pagination="bind: setPage, currentPage; bind:setNbPages, nbPages"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-wbevent="listen:touchstart, push; listen:touchend, nextPage"></div></div><ul class="wblist" data-wbmain="foreach"><li class="wb-item postit" data-wbmain="bind: displayPost, type" data-wbevent="listen: touchend, edit; listen:touchmove, cancelEdit"></li><ul><div>';
+                _widget.template = '<div class="wbmain" data-wbevent="listen:touchstart, setStart; listen:touchmove, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-wbevent="listen:touchstart, push; listen:touchend, previousPage"></div><span data-pagination="bind: setPage, currentPage; bind:setNbPages, nbPages"></span><div class = "rightcaret" data-pagination="bind: setRight, Page" data-wbevent="listen:touchstart, push; listen:touchend, nextPage"></div></div><ul class="wblist" data-wbmain="foreach"><li class="wb-item postit" data-wbmain="bind: displayPost, type" data-wbevent="listen: touchend, edit; listen:touchmove, cancelEdit"></li><ul><div>';
                 
        
                 _widget.setStart = function(event, node){
@@ -115,7 +115,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                         node.classList.add("invisible");
                 };
        
-                _widget.previousPage = function(evetn, node){
+                _widget.previousPage = function(event, node){
                         _widget.displayPage("previous");
                 };
        

@@ -134,7 +134,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                 
                 _widget.displayPage = function(target){
                     var currentPage = _pagination.get("currentPage"), cp, i, j;
-       
+                     console.log(target, cp);
                     switch(target){
                         case "next":
                             cp = currentPage;
@@ -149,6 +149,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                             break;
                     }
        
+                    console.log(_pagination.get("currentPage"));
                     _page.reset([]);
                     for (i=0; i<_pageSize; i++){
        
@@ -160,6 +161,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                             break;
                         }
                     }
+                    console.log(_page.toJSON());
                 };
        
                 _widget.getNbPages = function(){

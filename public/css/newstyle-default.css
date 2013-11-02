@@ -3993,10 +3993,6 @@ textarea.solution {
     -webkit-box-shadow: 0px 3px 5px 1px rgba(23,41,48,0.4);
 }
 
-.wbmain{
-    overflow-y: scroll;
-}
-
 .wbmain, .wbdrawing{
     width: 717px;
     height: 438px;  

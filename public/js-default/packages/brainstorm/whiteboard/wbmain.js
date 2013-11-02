@@ -93,7 +93,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                 };
        
                 _widget.previousPage = function(event, node){
-                        event.stopPropagation();
+                        event.preventDefault();
                         _widget.displayPage("previous");
                 };
        

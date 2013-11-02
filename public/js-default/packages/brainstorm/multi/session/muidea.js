@@ -72,7 +72,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                         }
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        this.setAttribute("style", "background-image: none;");
                                                 }
                                         }
                                         }),
@@ -244,7 +244,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // zoom on selected card
                         _widget.zoom = function(event, node){
                                 var type, id;
-                                if (node.getAttribute("name") === "scenario") type="scenario"
+                                if (node.getAttribute("name") === "scenario") type="scenario";
                                 else{
                                         type = "techno";
                                         id = node.getAttribute("data-techs_id");

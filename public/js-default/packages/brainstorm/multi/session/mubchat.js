@@ -29,7 +29,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 this.setAttribute("style", "display:none;");
                                         }
                                         else{
-                                                this.setAttribute("style", "disaply:table-cell;");
+                                                this.setAttribute("style", "dispaly:table-cell;");
                                                 this.setAttribute("contenteditable", true);
                                         }
                                 },
@@ -159,6 +159,15 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         switch(message){
                                 case "start":
                                         newMsg = {"user": "SYS", "time": now, "type": 4};
+                                        break;
+                                case "end":
+                                        // automatically insert leader leave message
+                                        chat.alter("push", {user: "SYS", type: 2, time: now, arg: position});
+                                        msg.push({user: "SYS", type: 2, time: now, arg: position});
+                                        
+                                        now = new Date().getTime();
+                                        newMsg ={"user": "SYS", "time": now, "type":7};
+                                        mubChat.setReadonly();
                                         break;
                                 case "leave":
                                         newMsg = {user: "SYS", type: 2, time: now, arg: position};

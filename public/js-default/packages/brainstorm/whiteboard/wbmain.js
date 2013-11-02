@@ -90,10 +90,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                 
                  _widget.push = function(event,node){
                         node.classList.add("invisible");
+                        // console.log(_wdiget.displayPage);
                 };
        
                 _widget.previousPage = function(event, node){
-                        event.preventDefault();
                         _widget.displayPage("previous");
                 };
        

@@ -42,7 +42,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                                         (currentPage < _pagination.get("nbPages"))? this.classList.remove("invisible"):this.classList.add("invisible");
                                 }
                         }),
-                        "wbmain" : new Model($store, {
+                        "wbmain" : new Model(_page, {
                                 "displayPost" : function(type){
                                         var node =this,
                                             id = node.getAttribute("data-wbmain_id"),

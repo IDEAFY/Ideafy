@@ -2880,6 +2880,11 @@ textarea.solution {
     float: right;
 }
 
+.leftcaret.invisible, .rightcaret.invisible{
+    display: block;
+    opacity: 0;
+}
+
 
 #deckview .cardlist .card{
     background: white;

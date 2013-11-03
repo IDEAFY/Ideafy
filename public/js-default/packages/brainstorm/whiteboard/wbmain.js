@@ -63,6 +63,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                                                         this.innerHTML="";
                                                         spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, left: 50, top: 50}).spin(node);
                                                         dir = "sessions/"+_sid;
+                                                        json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");
                                                                 spinner.stop();

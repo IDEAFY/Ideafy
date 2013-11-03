@@ -81,7 +81,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 },
                                 "showPreview" : function(content){
                                         var json, node=this, _transport=Config.get("transport");
-                                        if (!content) this.innerHTML = ""
+                                        if (!content) this.innerHTML = "";
                                         else {
                                                 json = {"dir":"sessions/"+_sid, "filename":content};
                                                 _transport.request("GetFile", json, function(data){

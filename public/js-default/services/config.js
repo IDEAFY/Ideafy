@@ -12,8 +12,8 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
         this.reset = function(){
                  
                 //_location = "http://37.153.96.26:1664"; // uncomment for app deployment
-                _location = "http://8.19.34.68:1664";
-                //_location = location.origin;
+                //_location = "http://8.19.34.68:1664";
+                _location = location.origin;
                 _version = "1.1.7";
                 _socket = io.connect(_location);
                 _transport = new Transport(_socket);

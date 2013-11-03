@@ -46,9 +46,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                                 "displayPost" : function(type){
                                         var node =this,
                                             id = node.getAttribute("data-wbmain_id"),
-                                            content = $store.get(id).content,
-                                            style = $store.get(id).style,
-                                            bg = $store.get(id).background,
+                                            content = _page.get(id).content,
+                                            style = _page.get(id).style,
+                                            bg = _page.get(id).background,
                                             dir, spinner, json;
                                         switch(type){
                                                 case "postit":
@@ -64,7 +64,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                                                         spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, left: 50, top: 50}).spin(node);
                                                         dir = "sessions/"+_sid;
                                                         console.log("filename :", content, " dir : ", dir);
-                                                        json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");
                                                                 spinner.stop();

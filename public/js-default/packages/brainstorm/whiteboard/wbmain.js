@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
-        function(Widget, Model, Event, Config, Store){
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.min", "Store" ],
+        function(Widget, Model, Event, Config, Spinner, Store){
                 
            return function WBMainConstructor($store, $tools, $select){
              
@@ -49,8 +49,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                                             content = $store.get(id).content,
                                             style = $store.get(id).style,
                                             bg = $store.get(id).background,
-                                            dir,
-                                            json;
+                                            dir, spinner, json;
                                         switch(type){
                                                 case "postit":
                                                         node.classList.remove("photo");
@@ -62,20 +61,25 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                                                         node.classList.add("photo");
                                                         node.classList.remove("drawing");
                                                         this.innerHTML="";
+                                                        spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, left: 50, top: 50}).spin(node);
                                                         dir = "sessions/"+_sid;
+                                                        console.log("filename :", content, " dir : ", dir);
                                                         json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
+                                                                node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");
+                                                                spinner.stop();
                                                         });
                                                         break;
                                                 case "drawing":
                                                         node.classList.remove("photo");
                                                         node.classList.add("drawing");
                                                         this.innerHTML="";
+                                                        spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, left: 50, top: 30}).spin(node);
                                                         dir = "sessions/"+_sid;
                                                         json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");   
+                                                                node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;"); 
+                                                                spinner.stop();  
                                                         });
                                                         break;
                                                 default:
@@ -135,8 +139,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                 
                 _widget.displayPage = function(target){
                     var currentPage = _pagination.get("currentPage"), cp, i, j;
-                     console.log(target, cp);
-                    switch(target){
+                     switch(target){
                         case "next":
                             cp = currentPage;
                             _pagination.set("currentPage", cp+1);
@@ -150,7 +153,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                             break;
                     }
        
-                    console.log(_pagination.get("currentPage"));
                     _page.reset([]);
                     for (i=0; i<_pageSize; i++){
        
@@ -162,7 +164,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                             break;
                         }
                     }
-                    console.log(_page.toJSON());
                 };
        
                 _widget.getNbPages = function(){

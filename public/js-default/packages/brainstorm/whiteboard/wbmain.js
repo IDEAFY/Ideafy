@@ -91,12 +91,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store" ],
                  _widget.push = function(event,node){
                         node.classList.add("invisible");
                         event.stopPropagation();
-                        if (node.classList.contains("leftcaret")){
-                                        _widget.previousPage();        
-                        }
-                        if (node.classList.contains("rightcaret")){
-                                        _widget.nextPage();       
-                        }
                 };
        
                 _widget.previousPage = function(event, node){

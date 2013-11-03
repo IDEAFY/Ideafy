@@ -219,12 +219,12 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         cardList.push = function(event, node){
                                 node.classList.add("invisible");
                                 event.stopPropagation();
-                                if (node.classList.contains("leftcaret")){
+                               /* if (node.classList.contains("leftcaret")){
                                         cardList.displayPrevious();        
                                 }
                                 if (node.classList.contains("rightcaret")){
                                         cardList.displayNext();        
-                                }       
+                                }  */     
                         };
                         
                         cardList.press = function(event, node){

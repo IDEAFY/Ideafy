@@ -1669,8 +1669,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 
                                 
                                 if (json.visibility === "public") {increment *= 2;}
-                                if (json.sessionReplay){increment = Math.floor(increment*1.5);}
-                                console.log("muidea increment : ", increment);
+                                if (json.sessionReplay) increment = Math.floor(increment*1.5);
                                 break;     
                         default:
                                 increment = 0;

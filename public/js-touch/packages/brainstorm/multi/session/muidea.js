@@ -187,7 +187,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 timers.muidea = _timer.get("timer");
                                                 // update session document
                                                 $session.set("idea", [JSON.parse(_idea.toJSON())]);
-                                                if (replay) {$session.set("replayIdeas", [])}
+                                                if (replay) $session.set("replayIdeas", []);
                                                 $session.set("elapsedTimers", timers);
                                                 $session.set("duration", duration);
                                                 $session.set("status", "completed");
@@ -244,7 +244,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // zoom on selected card
                         _widget.zoom = function(event, node){
                                 var type, id;
-                                if (node.getAttribute("name") === "scenario") type="scenario"
+                                if (node.getAttribute("name") === "scenario") type="scenario";
                                 else{
                                         type = "techno";
                                         id = node.getAttribute("data-techs_id");

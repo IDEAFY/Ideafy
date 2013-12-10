@@ -142,7 +142,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 0);                    // reduce logging
+        io.set('log level', 333);                    // reduce logging
         io.set("close timeout", 60);
         io.set("heartbeat interval", 25);
         
@@ -1669,7 +1669,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 
                                 
                                 if (json.visibility === "public") {increment *= 2;}
-                                if (json.sessionReplay) increment = Math.floor(increment*1.5);
+                                if (json.sessionReplay){increment = Math.floor(increment*1.5);}
+                                console.log("muidea increment : ", increment);
                                 break;     
                         default:
                                 increment = 0;

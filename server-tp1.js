@@ -992,7 +992,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         mailOptions.cc = json.cc;
                         mailOptions.replyTo = json.replyTo;
                         mailOptions.subject = json.subject;
-                        mailOptions.html = "<p><b>"+json.header+"</b></p><p>"+json.body+"</p><p>----------<br>"+ json.signature +"<div>"+json.attachHeader + json.attachBody+"</div>";
+                        mailOptions.html = "<p><b>"+json.header+"</b></p><p>"+json.body.replace(/\n/g, "<br>")+"</p><p>----------<br>"+ json.signature +"<div>"+json.attachHeader + json.attachBody+"</div>";
                         
                 }
                 

@@ -109,6 +109,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         // if there are cards to be removed from database do so now
                         if (deletedCards.length){
                                 transport.request("DeleteCards", {idList: deletedCards}, function(result){
+                                        if (result === "ok") deletedCards = [];
                                         return result;
                                 });
                         }

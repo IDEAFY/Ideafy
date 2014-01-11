@@ -58,9 +58,10 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "signupevent" : new Event(_signupForm)
                         });
                         
-                        _signupForm.template = '<form id="signup-form"><p class="login-fields"><input data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: keypress, resetError"><input data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: keypress, resetError"><input data-loginmodel="bind:value,confirm-password" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: keypress, resetError"><input data-loginmodel="bind:value,firstname" type="text" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: keypress, resetError"><input data-loginmodel="bind:value,lastname" type="text" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:keypress, resetError; listen:keypress, entersignup"></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: touchstart, press; listen: touchend, release; listen:touchend, signup"></label></p><p><label class="login-button pressed-btn" name="#login-screen" data-signupevent="listen: touchstart, press; listen:touchend, release; listen: touchend, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form>';
+                        _signupForm.template = '<form id="signup-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: input, resetError"><input name="password" type="password" data-loginmodel="bind:value,password"data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: input, resetError"><input name="confirm" type="password" data-loginmodel="bind:value,confirm-password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: input, resetError"><input name="firstname" type="text" data-loginmodel="bind:value,firstname" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: input, resetError"><input name="lastname" type="text" data-loginmodel="bind:value,lastname" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:input, resetError; listen:keypress, entersignup"></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: touchstart, press; listen: touchend, release; listen:touchend, signup"></label></p><p><label class="login-button pressed-btn btn-ready" name="#login-screen" data-signupevent="listen: touchstart, press; listen:touchend, release; listen: touchend, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form>';
                         
                         _signupForm.press = function(event, node){
+                                node.focus();
                                 node.classList.add("pressed");        
                         };
                         
@@ -76,11 +77,22 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _signupForm.showLogin = function(event, node){
+                                _login.reset();
                                 _stack.getStack().show("#login-screen");
                         };
                         
                         _signupForm.resetError = function(event, node){
-                                _store.set("error", "");        
+                                var name = node.getAttribute("name"),
+                                       btn = _signupForm.dom.querySelector("#signup");
+                                _store.set("error", "");
+                                _store.set(name, node.value);
+                               
+                               if (_store.get("email") && _store.get("password") && _store.get("confirm-password") && _store.get("firstname") && _store.get("lastname")){
+                                      btn.classList.add("btn-ready");
+                               }
+                               else{
+                                       btn.classList.remove("btn-ready");
+                               }      
                         };
                         
                         _signupForm.signup = function signup(event, node){
@@ -91,6 +103,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                     ln = _store.get("lastname"),
                                     promise = new Promise(),
                                     user = new CouchDBDocument();
+                                 console.log(_store.toJSON());   
+                                 node.classList.remove("btn-ready");
                                 // handle form errors
                                 if (email === "") {
                                         _store.set("error", _labels.get("signupmissingemail"));
@@ -191,7 +205,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "loginevent" : new Event(_loginForm)
                         });
                         
-                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:keypress, resetError"><input data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: keypress, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:touchstart, press; listen: touchend, release; listen:touchend, login"></label></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup-button" class="pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: touchstart, press; listen:touchend, release; listen: touchend, showSignup"></label></p></form>';
+                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" autofocus="autofocus" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:input, resetError"><input name="password" type="password" data-loginmodel="bind:value,password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: input, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:touchstart, press; listen: touchend, release; listen:touchend, login"></label></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup-button" class="pressed-btn btn-ready" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: touchstart, press; listen:touchend, release; listen: touchend, showSignup"></label></p></form>';
                         
                         _loginForm.press = function(event, node){
                                 node.classList.add("pressed");        
@@ -209,11 +223,19 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _loginForm.showSignup = function(event, node){
+                                _login.reset();
                                 _stack.getStack().show("#signup-screen");
                         };
                         
                         _loginForm.resetError = function(event, node){
-                                _store.set("error", "");        
+                                var name = node.getAttribute("name"),
+                                      btn = _loginForm.dom.querySelector(".login-button");
+                                _store.set("error", "");
+                                _store.set(name, node.value);
+                                if (_store.get("email") && _store.get("password")){
+                                        btn.classList.add("btn-ready");
+                                }
+                                else btn.classList.remove("btn-ready");  
                         };
                         
                         _loginForm.login = function login(event, node){
@@ -245,7 +267,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                 }
                                         });
                                 }
-                                else {_store.set("error", _labels.get("invalidlogin"));}        
+                                else {_store.set("error", _labels.get("invalidlogin"));}
+                                node.classList.remove("btn-ready");      
                         };
 
                         // ADDING ALL UIS TO STACK

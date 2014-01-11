@@ -142,7 +142,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 333);                    // reduce logging
+        io.set('log level', 0);                    // reduce logging
         io.set("close timeout", 60);
         io.set("heartbeat interval", 25);
         
@@ -218,11 +218,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 };
                 
                 switch(lang){
-                        case ("en-us"):
+                        case "en-us":
                                 mailOptions.subject = "Ideafy confirmation";
                                 mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team.";
                                 break;
-                        case ("fr-fr"):
+                        case "fr-fr":
                                 mailOptions.subject = "Confirmation d'inscription à Ideafy";
                                 mailOptions.text ="Merci de vous être enregistré sur Ideafy. Votre identifiant est "+login+ " et votre mot de passe "+pwd+". Nous espérons que vous prendrez plaisir à utiliser notre application.\nL'équipe Ideafy.";
                                 break;

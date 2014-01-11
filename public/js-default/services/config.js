@@ -14,7 +14,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                 //_location = "http://37.153.97.128:3113"; 
                 _location = "http://8.19.34.68:1664";
                 //_location = location.origin;
-                _version = "1.1.7";
+                _version = "1.1.9";
                 _socket = io.connect(_location);
                 _transport = new Transport(_socket);
                 _user =  new CouchDBDocument();

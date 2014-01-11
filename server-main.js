@@ -28,14 +28,16 @@ var http = require("http"),
         port : "6379"
     }),
     wrap = require("./wrap"),
-    pwd = require("./pwd.js"),
     srvutils = require("./srvutils.js"),
     apputils = require("./apputils.js"),
+    comutils = require("./comutils.js"),
+    loginutils = require("./loginutils.js"),
     cdbadmin = require("./cdbadmin.js");
     
-    var changePassword = new pwd.ChangePassword(),
-        srvUtils = new srvutils.SrvUtils(),
+    var srvUtils = new srvutils.SrvUtils(),
         appUtils = new apputils.AppUtils(),
+        comUtils = new comutils.ComUtils(),
+        loginUtils = new loginutils.LoginUtils(),
         CDBAdmin = new cdbadmin.CDBAdmin();
   
 // create reusable transport method (opens pool of SMTP connections)
@@ -55,7 +57,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var transport = new Transport(olives.handlers),
             _db = "ideafy",
             cdbAdminCredentials = "admin:innovation4U",
-            currentVersion = "1.1.7",
+            currentVersion = "1.1.8",
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -168,6 +170,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
             createDocAsAdmin = CDBAdmin.createDoc,
             getViewAsAdmin = CDBAdmin.getView,
             removeDocAsAdmin = CDBAdmin.removeDoc,
+            sendSignupEmail = comUtils.sendSignupEmail,
            checkInvited = function(id, onEnd){
                 transport.request("CouchDB", {
                         method : "GET",
@@ -209,24 +212,25 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }});
                 
                 return promise;        
-           },
-           sendSignupEmail = function(login, pwd, lang){
+           };
+/*           sendSignupEmail = function(login, pwd, lang){
                 var mailOptions = {
                         from : "IDEAFY <ideafy@taiaut.com>", // sender address
                         to : login
                 };
                 
                 switch(lang){
-                        case ("en-us"):
+                        case "en-us":
                                 mailOptions.subject = "Ideafy confirmation";
                                 mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team.";
                                 break;
-                        case ("fr-fr"):
+                        case "fr-fr":
                                 mailOptions.subject = "Confirmation d'inscription à Ideafy";
                                 mailOptions.text ="Merci de vous être enregistré sur Ideafy. Votre identifiant est "+login+ " et votre mot de passe "+pwd+". Nous espérons que vous prendrez plaisir à utiliser notre application.\nL'équipe Ideafy.";
                                 break;
                         default:
                                 mailOptions.subject = "Thank you for joining Ideafy";
+                                mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team.";
                                 break;
                 }
                 smtpTransport.sendMail(mailOptions, function(error, response) {
@@ -235,6 +239,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                 });        
            };
+*/
         
         
         /*
@@ -256,13 +261,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("GetLanguages", srvUtils.getLanguages);
         
         // change password handler
-        changePassword.setCouchDBDocument(CouchDBDocument);
-        changePassword.setCookie(cookie);
-        changePassword.setTransport(transport);
-        changePassword.setAdminCredentials(cdbAdminCredentials);
-        changePassword.setSessionStore(sessionStore);
+        loginUtils.setCouchDBDocument(CouchDBDocument);
+        loginUtils.setCookie(cookie);
+        loginUtils.setTransport(transport);
+        loginUtils.setAdminCredentials(cdbAdminCredentials);
+        loginUtils.setSessionStore(sessionStore);
         
-        olives.handlers.set("ChangePWD", changePassword.handler);
+        olives.handlers.set("ChangePWD", loginUtils.changePassword);
         
         // application utilities and handlers
         appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
@@ -434,8 +439,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                     sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
                     cdb = new CouchDBDocument();
                 
-                console.log(json);
-                   
                 // return false if document does not exist in database
                 getDocAsAdmin(json.id, cdb).then(function(){
                         sessionStore.get(sessionID, function(err, session){

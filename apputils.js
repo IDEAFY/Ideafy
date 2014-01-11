@@ -261,6 +261,6 @@ function AppUtils(){
                         onEnd(cdbView.toJSON());
                 });
         };
-}
+};
 
 exports.AppUtils = AppUtils;

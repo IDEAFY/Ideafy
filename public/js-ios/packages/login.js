@@ -103,7 +103,6 @@ define(["OObject" ,"Amy/Stack-plugin",
                                     ln = _store.get("lastname"),
                                     promise = new Promise(),
                                     user = new CouchDBDocument();
-                                 console.log(_store.toJSON());   
                                  node.classList.remove("btn-ready");
                                 // handle form errors
                                 if (email === "") {

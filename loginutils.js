@@ -9,7 +9,7 @@ var _CouchDBDocument, _cookie, _transport;
         
         this.setFunctions = function(sendSignupEmail, checkInvited, cdbAdmin){
                 _sendSignupEmail = sendSignupEmail;
-                _checkInvited = _checkInvited;
+                _checkInvited = checkInvited;
                 _createdDocAsAdmin = cdbAdmin.createDoc;
                 _getDocAsAdmin = cdbAdmin.getDoc;
                 _updateDocAsAdmin = cdbAdmin.updateDoc;        

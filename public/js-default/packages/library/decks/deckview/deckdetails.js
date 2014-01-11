@@ -340,6 +340,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
                                 _currentDataURL = null;
                                 
+                                // force deck picture reset
+                                deckModel.set("picture_file", "");
+                                
                                 deckModel.reset(deck);
                                 _resetLang();
                                 

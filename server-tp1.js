@@ -218,11 +218,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 };
                 
                 switch(lang){
-                        case ("en-us"):
+                        case "en-us":
                                 mailOptions.subject = "Ideafy confirmation";
                                 mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team.";
                                 break;
-                        case ("fr-fr"):
+                        case "fr-fr":
                                 mailOptions.subject = "Confirmation d'inscription à Ideafy";
                                 mailOptions.text ="Merci de vous être enregistré sur Ideafy. Votre identifiant est "+login+ " et votre mot de passe "+pwd+". Nous espérons que vous prendrez plaisir à utiliser notre application.\nL'équipe Ideafy.";
                                 break;
@@ -992,7 +992,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         mailOptions.cc = json.cc;
                         mailOptions.replyTo = json.replyTo;
                         mailOptions.subject = json.subject;
-                        mailOptions.html = "<p><b>"+json.header+"</b></p><p>"+json.body+"</p><p>----------<br>"+ json.signature +"<div>"+json.attachHeader + json.attachBody+"</div>";
+                        mailOptions.html = "<p><b>"+json.header+"</b></p><p>"+json.body.replace(/\n/g, "<br>")+"</p><p>----------<br>"+ json.signature +"<div>"+json.attachHeader + json.attachBody+"</div>";
                         
                 }
                 

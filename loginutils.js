@@ -7,7 +7,7 @@ var _CouchDBDocument, _cookie, _transport;
                 _CouchDBUser = CouchDBUser;
         };
         
-        this.setFunctions = function(sendSignupEmail, checkIvited, cdbAdmin){
+        this.setFunctions = function(sendSignupEmail, checkInvited, cdbAdmin){
                 _sendSignupEmail = sendSignupEmail;
                 _checkInvited = _checkInvited;
                 _createdDocAsAdmin = cdbAdmin.createDoc;

@@ -260,13 +260,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("Lang", srvUtils.getLabels);
         olives.handlers.set("GetLanguages", srvUtils.getLanguages);
         
-        // change password handler
-        loginUtils.setCouchDBDocument(CouchDBDocument);
-        loginUtils.setCookie(cookie);
+        // login utilities
+        loginUtils.setConstructors(CouchDBDocument, CouchDBUser);
+        loginUtils.setFunctions(sendSignupEmail, checkInvited, CDBAdmin);
         loginUtils.setTransport(transport);
         loginUtils.setAdminCredentials(cdbAdminCredentials);
         loginUtils.setSessionStore(sessionStore);
         
+        olives.handlers.set("Signup", loginUtils.signup);
+        olives.handlers.set("CheckLogin", loginUtils.checkLogin);
         olives.handlers.set("ChangePWD", loginUtils.changePassword);
         
         // application utilities and handlers
@@ -298,7 +300,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });  
         });
         
-        olives.handlers.set("Signup", function (json, onEnd) {
+/*        olives.handlers.set("Signup", function (json, onEnd) {
                         var user = new CouchDBUser();
                         
                         user.setTransport(transport);
@@ -412,6 +414,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 }
                          });
                 });
+*/
         
         olives.handlers.set('Welcome', function(json, onEnd){
                 var Id = "I:WELCOME:US", cdb = new CouchDBDocument(), lang="EN-US";
@@ -434,7 +437,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });
         });
 
-        olives.handlers.set("CheckLogin", function(json, onEnd){
+/*        olives.handlers.set("CheckLogin", function(json, onEnd){
                 var cookieJSON = cookie.parse(json.handshake.headers.cookie),
                     sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
                     cdb = new CouchDBDocument();
@@ -457,8 +460,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         });
                 }, function(){onEnd({authenticated: false});});
         });
+*/
         
-        olives.handlers.set("Login", function(json, onEnd) {
+/*        olives.handlers.set("Login", function(json, onEnd) {
                 var user = new CouchDBUser();
                 
                 user.setTransport(transport);
@@ -507,6 +511,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         console.log(result);
                 });
         });
+ */
         
         // retrieve a given user's avatar
         olives.handlers.set("GetAvatar", function(json, onEnd){

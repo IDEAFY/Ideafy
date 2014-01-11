@@ -20,7 +20,7 @@ function AppUtils(){
                 _updateUserIP = _cdbAdmin.updateUserIP;
                 _updateDocAsAdmin = _cdbAdmin.updateDoc;
                 _getDocAsAdmin = _cdbAdmin.getDoc;
-                _createDocAsAdmin = _cdbAdmin.getDoc;
+                _createDocAsAdmin = _cdbAdmin.createDoc;
                 _getViewAsAdmin = _cdbAdmin.getView;
                 _getBulkView = _cdbAdmin.getBulkView;
                 _removeDocAsAdmin = _cdbAdmin.removeDoc;      

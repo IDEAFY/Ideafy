@@ -270,6 +270,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         olives.handlers.set("Signup", loginUtils.signup);
         olives.handlers.set("CheckLogin", loginUtils.checkLogin);
+        olives.handlers.set("Login", loginUtils.login);
         olives.handlers.set("ChangePWD", loginUtils.changePassword);
         
         // application utilities and handlers

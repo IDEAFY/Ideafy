@@ -15,20 +15,12 @@ var _CouchDBDocument, _cookie, _transport;
                 _updateDocAsAdmin = cdbAdmin.updateDoc;        
         };
         
-        this.setCookie = function (cookie) {
-                _cookie = cookie;     
-        };
-        
-        this.setTransport = function (transport) {
-                _transport = transport;      
-        };
-
-        this.setAdminCredentials = function (credentials) {
-                _cdbAdminCredentials = credentials;      
-        };
-        
-        this.setSessionStore = function (sessionStore) {
-                _sessionStore = sessionStore;        
+        this.setVar = function (cookie, sessionStore, transport, db, credentials) {
+                _cookie = cookie;
+                _sessionStore = sessionStore;
+                _transport = transport;
+                _db = db;
+               _cdbAdminCredentials = credentials;   
         };
         
         

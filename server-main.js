@@ -263,10 +263,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         // login utilities
         loginUtils.setConstructors(CouchDBDocument, CouchDBUser);
         loginUtils.setFunctions(sendSignupEmail, checkInvited, CDBAdmin);
-        loginUtils.setTransport(transport);
-        loginUtils.setAdminCredentials(cdbAdminCredentials);
-        loginUtils.setSessionStore(sessionStore);
-        loginUtils.setCookie(cookie);
+        loginUtils.setVar(cookie, sessionStore, transport, _db, cdbAdminCredentials);
         
         olives.handlers.set("Signup", loginUtils.signup);
         olives.handlers.set("CheckLogin", loginUtils.checkLogin);

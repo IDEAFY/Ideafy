@@ -57,7 +57,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var transport = new Transport(olives.handlers),
             _db = "ideafy",
             cdbAdminCredentials = "admin:innovation4U",
-            currentVersion = "1.1.8",
+            currentVersion = "1.1.7",
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -212,6 +212,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
         olives.handlers.set("ShareDeck", appUtils.shareDeck);
         olives.handlers.set("GetFavList", appUtils.getFavList);
+        olives.handlers.set("GetAvatar", appUtils.getAvatar);
         
         
         // disconnection events
@@ -252,34 +253,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 })
                 .then(function(){
                         onEnd({"res": "ok"});
-                });
-        });
-        
-        // retrieve a given user's avatar
-        olives.handlers.set("GetAvatar", function(json, onEnd){
-                var _file, _cdb = new CouchDBView();
-                _cdb.setTransport(transport);
-                        
-                getViewAsAdmin('users', 'short', {key:'"'+json.id+'"'}, _cdb).then(function(){
-                        var _image = _cdb.get(0).value.picture_file;
-                        
-                        // if user avatar is one of the default choices then return path (available in local files)
-                        if (_image.search("img/avatars/deedee")>-1){
-                                onEnd(_image);
-                        }
-                        // otherwise return file located in attachments directory (should already be base64)
-                        else {
-                                _file = __dirname+"/attachments/avatars/"+_image;
-                                fs.readFile(_file, 'utf8', function (error, data){
-                                        if (data){
-                                                onEnd(data);  
-                                        }
-                                        else {
-                                                console.log(error);
-                                                onEnd({"error": error});
-                                        }        
-                                });      
-                        }
                 });
         });
         

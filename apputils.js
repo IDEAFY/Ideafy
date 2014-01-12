@@ -5,9 +5,10 @@
 var fs = require("fs");
 
 function AppUtils(){
-        var _Promise, _CouchDBDocument,
+        var _CouchDBDocument, _CouchDBView, Promise,
             _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin,
-            _getBulkView, _updateCard, _deleteAttachment, _deleteCard;
+            _getBulkView, _updateCard, _deleteAttachment, _deleteCard,
+            _transport, _db, _cdbAdminCredentials;
         
         this.setConstructors = function(CouchDBDocument, CouchDBView, Promise){
                 _CouchDBDocument = CouchDBDocument;
@@ -16,14 +17,13 @@ function AppUtils(){
         };
         
         this.setCDBAdmin = function(cdbAdmin){
-                _cdbAdmin = cdbAdmin;
-                _updateUserIP = _cdbAdmin.updateUserIP;
-                _updateDocAsAdmin = _cdbAdmin.updateDoc;
-                _getDocAsAdmin = _cdbAdmin.getDoc;
-                _createDocAsAdmin = _cdbAdmin.createDoc;
-                _getViewAsAdmin = _cdbAdmin.getView;
-                _getBulkView = _cdbAdmin.getBulkView;
-                _removeDocAsAdmin = _cdbAdmin.removeDoc;      
+                _updateUserIP = cdbAdmin.updateUserIP;
+                _updateDocAsAdmin = cdbAdmin.updateDoc;
+                _getDocAsAdmin = cdbAdmin.getDoc;
+                _createDocAsAdmin = cdbAdmin.createDoc;
+                _getViewAsAdmin = cdbAdmin.getView;
+                _getBulkView = cdbAdmin.getBulkView;
+                _removeDocAsAdmin = cdbAdmin.removeDoc;      
         };
         
         this.setVar = function(transport, db, credentials){
@@ -317,6 +317,36 @@ function AppUtils(){
                 
                 return promise;        
            };
+           
+           /*
+            * Retrieve avatar of a given user
+            */
+            this.getAvatar = function(json, onEnd){
+                        var _file, _cdb = new _CouchDBView();
+                        _cdb.setTransport(_transport);
+                        
+                        _getViewAsAdmin('users', 'short', {key:'"'+json.id+'"'}, _cdb).then(function(){
+                                var _image = _cdb.get(0).value.picture_file;
+                        
+                                // if user avatar is one of the default choices then return path (available in local files)
+                                if (_image.search("img/avatars/deedee")>-1){
+                                        onEnd(_image);
+                                }
+                                // otherwise return file located in attachments directory (should already be base64)
+                                else {
+                                        _file = __dirname+"/attachments/avatars/"+_image;
+                                        fs.readFile(_file, 'utf8', function (error, data){
+                                                if (data){
+                                                        onEnd(data);  
+                                                }
+                                                else {
+                                                        console.log(error);
+                                                        onEnd({"error": error});
+                                                }        
+                                        });      
+                                }
+                        });
+        };
 };
 
 exports.AppUtils = AppUtils;

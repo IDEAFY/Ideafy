@@ -1,18 +1,27 @@
-var nodemailer = require("nodemailer"),
-      // create reusable transport method (opens pool of SMTP connections)
-      smtpTransport = nodemailer.createTransport("SMTP", {
-                // mail sent by Ideafy,
-                host: "smtp.gmail.com",
-                secureConnection : true,
-                port : 465,
-                auth : {
-                        user : "vincent.weyl@gmail.com",
-                        pass : "$Nor&Vin2012"
-                }
-        });
+/**
+ * IDEAFY -- communication utilities
+ * ===============================
+ * 
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2013-2014 TAIAUT
+ * 
+ */
         
 function ComUtils(){
+        
+        var _smtpTransport, _supportEmail;
  
+        this.setVar = function(smtpTransport, supportEmail){
+                _smtpTransport = smtpTransport;
+                _supportEmail = supportEmail;
+        };
+ 
+        /*
+         * Sending signup confirmation email -- localized versions
+         */
+        
         this.sendSignupEmail = function(login, pwd, lang){
                 var mailOptions = {
                         from : "IDEAFY <ideafy@taiaut.com>", // sender address
@@ -38,7 +47,32 @@ function ComUtils(){
                                 console.log(error, response, "it's right here");
                         }
                 });        
-           }; 
+           };
+           
+           /*
+            * Send support requests to address defined in supportEmail variable
+            */
+            this.support = function(json, onEnd){
+                        var   date = new Date(json.date),
+                                mailOptions = {
+                                        from : "IDEAFY <ideafy@taiaut.com>", // sender address
+                                        to : _supportEmail, // list of receivers
+                                        replyTo : "", // recipient should reply to sender
+                                        subject : "Support request from "+json.userid + " "+ date.toDateString(), // Subject line
+                                        html : "Userid : "+json.userid+"\nDate : " + date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear()+ " "+date.getHours()+":"+date.getMinutes()+"\n\nRequest :\n"+ json.request // html body
+                                };
+                        
+                        smtpTransport.sendMail(mailOptions, function(error, response) {
+                                if (error) {
+                                        onEnd(error);
+                                }
+                                else {
+                                        onEnd("ok");
+                                }
+                        });        
+             };
+           
+           
        
 };
 

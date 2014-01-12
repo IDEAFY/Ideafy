@@ -57,6 +57,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var transport = new Transport(olives.handlers),
             _db = "ideafy",
             cdbAdminCredentials = "admin:innovation4U",
+            supportEmail = "contact@taiaut.com",
             currentVersion = "1.1.7",
             app = http.createServer(connect()
                 .use(connect.responseTime())
@@ -203,6 +204,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("ChangePWD", loginUtils.changePassword);
         
         // communication utilities (mail and application notifications)
+        comUtils.setVar(smtpTransport, supportEmail);
+        
+        olives.handlers.set("Support", comUtils.support);
         
         // application utilities and handlers
         appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
@@ -1449,15 +1453,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 _path += "cards/";
                                 break;
                         default:
-                                break
-                }
+                                break;
+                };
                 _path += json.file;
                 fs.exists(_path, function(exists){
                         if (exists){
                                 // need to delete all files first
                                 fs.unlink(_path, function(err){
                                         i(err) ? onEnd(err) : onEnd("ok");
-                                }) 
+                                });
                         }
                         else onEnd("file not found");
                 });
@@ -1465,29 +1469,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         
         });
         
-        // Receive support requests -- send mail to contact@taiaut.com
-        olives.handlers.set("Support", function(json, onEnd){
-                var     date = new Date(json.date),
-                        mailOptions = {
-                                from : "IDEAFY <ideafy@taiaut.com>", // sender address
-                                to : "contact@taiaut.com", // list of receivers
-                                replyTo : "", // recipient should reply to sender
-                                subject : "Support request from "+json.userid + " "+ date.toDateString(), // Subject line
-                                html : "Userid : "+json.userid+"\nDate : " + date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear()+ " "+date.getHours()+":"+date.getMinutes()+"\n\nRequest :\n"+ json.request // html body
-                        };
-                        
-                smtpTransport.sendMail(mailOptions, function(error, response) {
-                        if (error) {
-                                onEnd(error);
-                        }
-                        else {
-                                onEnd("ok");
-                        }
-                });        
-        });
-        
-        
-
 });
 
 process.on('uncaughtException', function(error) {

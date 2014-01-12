@@ -1,5 +1,12 @@
-/*
- * Utility handlers
+/**
+ * IDEAFY -- server-side utilities
+ * ===============================
+ * 
+ * https://github.com/TAIAUT/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent.weyl@taiaut.com>
+ * Copyright (c) 2013-2014 TAIAUT
+ * 
  */
 
 var fs = require("fs");

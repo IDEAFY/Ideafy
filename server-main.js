@@ -144,7 +144,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 3);                    // reduce logging
+        io.set('log level', 0);                    // reduce logging
         io.set("close timeout", 60);
         io.set("heartbeat interval", 25);
         
@@ -165,83 +165,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // Application utility functions
         var updateUserIP = CDBAdmin.updateUserIP,
-            updateDocAsAdmin = CDBAdmin.updateDoc,
-            getDocAsAdmin = CDBAdmin.getDoc,
-            createDocAsAdmin = CDBAdmin.createDoc,
-            getViewAsAdmin = CDBAdmin.getView,
-            removeDocAsAdmin = CDBAdmin.removeDoc,
-            sendSignupEmail = comUtils.sendSignupEmail,
-           checkInvited = function(id, onEnd){
-                transport.request("CouchDB", {
-                        method : "GET",
-                        path:"/ideafy_invites/"+id,
-                        auth: cdbAdminCredentials,
-                        agent:false,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
-                        }
-                }, function (res) {
-                        var json = JSON.parse(res);
-                        if (json._id) {
-                                onEnd(json);
-                        }
-                        else {
-                                onEnd(false);
-                        }
-                });        
-           },
-           addInvited = function(id, cdbDoc){
-                var promise = new Promise();
-                transport.request("CouchDB", {
-                        method : "PUT",
-                        path:"/ideafy_invites/"+id,
-                        auth: cdbAdminCredentials,
-                        agent:false,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
-                        },
-                        data: cdbDoc.toJSON()
-                }, function (res) {
-                        var json = JSON.parse(res);
-                        if (json.ok) {
-                                promise.fulfill();
-                        } else {
-                                promise.reject();
-                        }});
-                
-                return promise;        
-           };
-/*           sendSignupEmail = function(login, pwd, lang){
-                var mailOptions = {
-                        from : "IDEAFY <ideafy@taiaut.com>", // sender address
-                        to : login
-                };
-                
-                switch(lang){
-                        case "en-us":
-                                mailOptions.subject = "Ideafy confirmation";
-                                mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team.";
-                                break;
-                        case "fr-fr":
-                                mailOptions.subject = "Confirmation d'inscription à Ideafy";
-                                mailOptions.text ="Merci de vous être enregistré sur Ideafy. Votre identifiant est "+login+ " et votre mot de passe "+pwd+". Nous espérons que vous prendrez plaisir à utiliser notre application.\nL'équipe Ideafy.";
-                                break;
-                        default:
-                                mailOptions.subject = "Thank you for joining Ideafy";
-                                mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team.";
-                                break;
-                }
-                smtpTransport.sendMail(mailOptions, function(error, response) {
-                        if (error) {
-                                console.log(error, response, "it's right here");
-                        }
-                });        
-           };
-*/
-        
-        
+              updateDocAsAdmin = CDBAdmin.updateDoc,
+              getDocAsAdmin = CDBAdmin.getDoc,
+              createDocAsAdmin = CDBAdmin.createDoc,
+              getViewAsAdmin = CDBAdmin.getView,
+              removeDocAsAdmin = CDBAdmin.removeDoc,
+              sendSignupEmail = comUtils.sendSignupEmail,
+              checkInvited = appUtils.checkInvited,
+              addInvited = appUtils.addInvited; 
+                       
         /*
          * APPLICATION HANDLERS
          */
@@ -270,8 +202,11 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("Login", loginUtils.login);
         olives.handlers.set("ChangePWD", loginUtils.changePassword);
         
+        // communication utilities (mail and application notifications)
+        
         // application utilities and handlers
         appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
+        appUtils.setVar(transport, _db, cdbAdminCredentials);
         appUtils.setCDBAdmin(CDBAdmin);
         olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
         olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
@@ -299,122 +234,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });  
         });
         
-/*        olives.handlers.set("Signup", function (json, onEnd) {
-                        var user = new CouchDBUser();
-                        
-                        user.setTransport(transport);
-                        user.set("password", json.password);
-                        user.set("name", json.name);
-                        user.set("type", "user");
-                        
-                        user.create().then(function (si) {
-                                
-                                // add credentials to the cookie
-                                var cookieJSON = cookie.parse(json.handshake.headers.cookie), 
-                                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0];
-                                sessionStore.get(sessionID, function(err, session) {
-                                        if (err) {
-                                                throw new Error(err);
-                                        }
-                                        else {
-                                                session.auth = json.name + ":" + json.password;
-                                                sessionStore.set(sessionID, session);
-                                                onEnd({
-                                                        signup : "ok",
-                                                        db : _db,
-                                                        message: json.name + " successfully signed up"
-                                                });
-                                                
-                                                // send confirmation Email
-                                                sendSignupEmail(json.name, json.password, json.lang);
-                                                
-                                                // create reward doc
-                                                 // create reward document
-                                                var rewards = new CouchDBDocument({
-                                                        "profilecomplete": 0,
-                                                        "playthegame": 0,
-                                                        "tutorialcomplete": 0,
-                                                        "ideas5": 0,
-                                                        "ideas25": 0,
-                                                        "ideas100": 0,
-                                                        "ideas250": 0,
-                                                        "bronzeacorn": 0,
-                                                        "silveracorn": 0,
-                                                        "goldenacorn": 0,
-                                                        "platinumflame": 0,
-                                                        "platinumwildfire": 0,
-                                                        "easybrainstormer": 0,
-                                                        "mindstormer": 0,
-                                                        "mastermindstormer": 0,
-                                                        "guide": 0,
-                                                        "leader": 0,
-                                                        "mindweaver": 0,
-                                                        "opinionator": 0,
-                                                        "feedbackartist": 0,
-                                                        "chatterbox": 0,
-                                                        "allday": 0,
-                                                        "curious": 0,
-                                                        "puzzled": 0,
-                                                        "whyarewehere": 0,
-                                                        "scored":[],
-                                                        "type": 11
-                                                });
-                                                createDocAsAdmin(json.name+"_rewards", rewards);
-                                                
-                                                // check for referrals and update accordingly
-                                                checkInvited(json.name, function(result){
-                                                        if (result){
-                                                                result.sender.forEach(function(id){
-                                                                        var cdbDoc = new CouchDBDocument();
-                                                                        getDocAsAdmin(id, cdbDoc)
-                                                                        .then(function(){
-                                                                                var ip = cdbDoc.get("ip"),
-                                                                                    notif = cdbDoc.get("notifications") || [],
-                                                                                    now = new Date();
-                                                                                cdbDoc.set("ip", ip+200);
-                                                                                notif.unshift({
-                                                                                        type : "REF",
-                                                                                        status : "unread",
-                                                                                        date : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
-                                                                                        author: json.name,
-                                                                                        username : json.fn + " " + json.ln,
-                                                                                        firstname : json.fn
-                                                                                });
-                                                                                cdbDoc.set("notifications", notif);
-                                                                                return updateDocAsAdmin(id, cdbDoc);
-                                                                        });       
-                                                                });
-                                                                // remove document from ideafy_invites
-                                                                transport.request("CouchDB", {
-                                                                        method : "DELETE",
-                                                                        path:"/ideafy_invites/"+json.name,
-                                                                        auth: cdbAdminCredentials,
-                                                                        agent:false,
-                                                                        headers: {
-                                                                                "Content-Type": "application/json",
-                                                                                "Connection": "close"
-                                                                        }
-                                                                }, function (res) {
-                                                                        console.log(res);
-                                                                });
-                                                        }        
-                                                });
-                                        }
-                                });
-                        }, function (json) {
-                                if (json.error === "conflict") {
-                                        onEnd({
-                                                status: "failed",
-                                                message: "An account with this user name already exists."
-                                        });
-                                }
-                                else{
-                                        onEnd({status: "failed", reason: json, message:"failed to create new user"});
-                                }
-                         });
-                });
-*/
-        
         olives.handlers.set('Welcome', function(json, onEnd){
                 var Id = "I:WELCOME:US", cdb = new CouchDBDocument(), lang="EN-US";
                 // workaround to solve language issue 
@@ -435,82 +254,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         onEnd({"res": "ok"});
                 });
         });
-
-/*        olives.handlers.set("CheckLogin", function(json, onEnd){
-                var cookieJSON = cookie.parse(json.handshake.headers.cookie),
-                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
-                    cdb = new CouchDBDocument();
-                
-                // return false if document does not exist in database
-                getDocAsAdmin(json.id, cdb).then(function(){
-                        sessionStore.get(sessionID, function(err, session){
-                                if(err){throw new Error(err);}
-                                else{
-                                        if (session.auth && session.auth.search(json.id) >-1) {
-                                                cdb.set("sock", json.sock);
-                                                cdb.set("online", true);
-                                                updateDocAsAdmin(json.id, cdb)
-                                                .then(function(){
-                                                        onEnd({authenticated: true});        
-                                                });
-                                        }
-                                        else onEnd({authenticated : false});
-                                } 
-                        });
-                }, function(){onEnd({authenticated: false});});
-        });
-*/
-        
-/*        olives.handlers.set("Login", function(json, onEnd) {
-                var user = new CouchDBUser();
-                
-                user.setTransport(transport);
-                user.set("password", json.password);
-                user.set("name", json.name);
-                
-                user.login(json.name, json.password).then(function(result) {
-                        
-                        var result = JSON.parse(result);
-                        
-                        if (!result.error) {
-                                var cookieJSON = cookie.parse(json.handshake.headers.cookie), 
-                                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
-                                    cdb = new CouchDBDocument();
-                                
-                                sessionStore.get(sessionID, function(err, session) {
-                                        if (err) {
-                                                throw new Error(err);
-                                        } else {
-                                                session.auth = json.name + ":" + json.password;
-                                                sessionStore.set(sessionID, session);
-                                                getDocAsAdmin(json.name, cdb)
-                                                .then(function(){
-                                                        cdb.set("online", true);
-                                                        cdb.set("sock", json.sock);
-                                                        return updateDocAsAdmin(json.name, cdb);
-                                                })
-                                                .then(function(){
-                                                        onEnd({
-                                                                login : "ok",
-                                                                db : _db,
-                                                                message: json.name + " is logged-in",
-                                                                session: session
-                                                        });
-                                                });
-                                        }
-                                });
-
-                        } else {
-                                onEnd({
-                                        login : "failed",
-                                        reason : "name or password invalid"
-                                });
-                        }
-                }, function(result) {
-                        console.log(result);
-                });
-        });
- */
         
         // retrieve a given user's avatar
         olives.handlers.set("GetAvatar", function(json, onEnd){

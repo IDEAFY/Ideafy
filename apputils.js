@@ -26,6 +26,12 @@ function AppUtils(){
                 _removeDocAsAdmin = _cdbAdmin.removeDoc;      
         };
         
+        this.setVar = function(transport, db, credentials){
+                _transport = transport;
+                _db = db;
+                _cdbAdminCredentials = credentials;
+        };
+        
         
         /*
          * Update a card after one of its deck container was removed from database
@@ -261,6 +267,56 @@ function AppUtils(){
                         onEnd(cdbView.toJSON());
                 });
         };
+        
+        /*
+         * Check if a new user is registering after an invitation
+         */
+         this.checkInvited = function(id, onEnd){
+                _transport.request("CouchDB", {
+                        method : "GET",
+                        path:"/ideafy_invites/"+id,
+                        auth: _cdbAdminCredentials,
+                        agent:false,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        }
+                }, function (res) {
+                        var json = JSON.parse(res);
+                        if (json._id) {
+                                onEnd(json);
+                        }
+                        else {
+                                onEnd(false);
+                        }
+                });        
+           };
+           
+           /*
+            * Add a user to the invitation database
+            */
+           this.addInvited = function(id, cdbDoc){
+                var promise = new _Promise();
+                _transport.request("CouchDB", {
+                        method : "PUT",
+                        path:"/ideafy_invites/"+id,
+                        auth: _cdbAdminCredentials,
+                        agent:false,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        },
+                        data: cdbDoc.toJSON()
+                }, function (res) {
+                        var json = JSON.parse(res);
+                        if (json.ok) {
+                                promise.fulfill();
+                        } else {
+                                promise.reject();
+                        }});
+                
+                return promise;        
+           };
 };
 
 exports.AppUtils = AppUtils;

@@ -42,7 +42,7 @@ function ComUtils(){
                                 mailOptions.text ="Thank you for registering to Ideafy. Your login is "+login+ " and your password is "+pwd+". We hope you will find the application enjoyable and useful.\nThe Ideafy team.";
                                 break;
                 }
-                smtpTransport.sendMail(mailOptions, function(error, response) {
+                _smtpTransport.sendMail(mailOptions, function(error, response) {
                         if (error) {
                                 console.log(error, response, "it's right here");
                         }
@@ -62,7 +62,7 @@ function ComUtils(){
                                         html : "Userid : "+json.userid+"\nDate : " + date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear()+ " "+date.getHours()+":"+date.getMinutes()+"\n\nRequest :\n"+ json.request // html body
                                 };
                         
-                        smtpTransport.sendMail(mailOptions, function(error, response) {
+                        _smtpTransport.sendMail(mailOptions, function(error, response) {
                                 if (error) {
                                         onEnd(error);
                                 }

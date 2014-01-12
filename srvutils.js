@@ -13,7 +13,8 @@ var fs = require("fs");
 
 function SrvUtils(){
 
-        this.setCurrentVersion = function (currentVersion) {
+        this.setVar = function (contentPath, currentVersion) {
+                _contentPath = contentPath;
                 _currentVersion = currentVersion;
         };
         
@@ -35,7 +36,7 @@ function SrvUtils(){
 
         this.getFile = function(json, onEnd){
                 var dir = json.dir || json.sid,
-                    _filename =  __dirname+'/attachments/'+ dir+'/'+json.filename;
+                    _filename =  _contentPath+'/attachments/'+ dir+'/'+json.filename;
                     
                 fs.readFile(_filename, 'utf8', function(error, data){
                         if (data){
@@ -82,6 +83,49 @@ function SrvUtils(){
                         }
                 });
         };
+        
+        /*
+         * Clean up attachments from drive when user deletes a session
+         */
+        this.cleanUpSession = function(id, onEnd){
+                var _path = _contentPath+'/attachments/'+id;
+                
+                fs.exists(_path, function(exists){
+                        if (exists){
+                                // need to delete all files first
+                                fs.readdirSync(_path).forEach(function(file){
+                                        fs.unlink(path.join(_path, file));
+                                });
+                                fs.rmdirSync(_path); 
+                        }
+                        onEnd("ok");
+                });        
+        };
+        
+        /*
+         * Delete attachment from drive
+         */
+        this.deleteAttachment = function(json, onEnd){
+                var _path = _contentPath+'/attachments/';
+                
+                switch(json.type){
+                        case "card":
+                                _path += "cards/";
+                                break;
+                        default:
+                                break;
+                };
+                _path += json.file;
+                fs.exists(_path, function(exists){
+                        if (exists){
+                                // need to delete all files first
+                                fs.unlink(_path, function(err){
+                                        i(err) ? onEnd(err) : onEnd("ok");
+                                });
+                        }
+                        else onEnd("file not found");
+                });
+         };
 
 }
         

@@ -59,13 +59,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
             cdbAdminCredentials = "admin:innovation4U",
             supportEmail = "contact@taiaut.com",
             currentVersion = "1.1.7",
+            contentPath = __dirname,
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
-                .use(connect.bodyParser({ uploadDir:__dirname+'/public/upload', keepExtensions: true }))
+                .use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
                 .use('/upload', function(req, res){
                         var type = req.body.type,
-                            _path = __dirname+'/attachments/',
+                            _path = contentPath+'/attachments/',
                             filename, // final name of the file on server
                             tempname, // temp name after file upload
                             now,
@@ -187,11 +188,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
        CDBAdmin.setDB(_db);
         
         // utility handlers (no couchdb)
-        srvUtils.setCurrentVersion(currentVersion);
+        srvUtils.setVar(contentPath, currentVersion);
         olives.handlers.set("CheckVersion", srvUtils.checkVersion);
         olives.handlers.set("GetFile", srvUtils.getFile);
         olives.handlers.set("Lang", srvUtils.getLabels);
         olives.handlers.set("GetLanguages", srvUtils.getLanguages);
+        olives.handlers.set("cleanUpSession", srvUtils.cleanUpSession);
+        olives.handlers.set("DeleteAttachment", srvUtils.deleteAttachment);
         
         // login utilities
         loginUtils.setConstructors(CouchDBDocument, CouchDBUser);
@@ -1426,47 +1429,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 else {
                         onEnd({res:"ok", value: 0});
                 }
-        });
-        
-        // Clean up attachments from drive when user deletes a session
-        olives.handlers.set("cleanUpSession", function(id, onEnd){
-                var _path = __dirname+'/attachments/'+id;
-                
-                fs.exists(_path, function(exists){
-                        if (exists){
-                                // need to delete all files first
-                                fs.readdirSync(_path).forEach(function(file){
-                                        fs.unlink(path.join(_path, file));
-                                });
-                                fs.rmdirSync(_path); 
-                        }
-                        onEnd("ok");
-                });        
-        });
-        
-        // Delete attachment from drive
-        olives.handlers.set("DeleteAttachment", function(json, onEnd){
-                var _path = __dirname+'/attachments/';
-                
-                switch(json.type){
-                        case "card":
-                                _path += "cards/";
-                                break;
-                        default:
-                                break;
-                };
-                _path += json.file;
-                fs.exists(_path, function(exists){
-                        if (exists){
-                                // need to delete all files first
-                                fs.unlink(_path, function(err){
-                                        i(err) ? onEnd(err) : onEnd("ok");
-                                });
-                        }
-                        else onEnd("file not found");
-                });
-                
-                        
         });
         
 });

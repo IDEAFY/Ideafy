@@ -1,6 +1,6 @@
 /**
- * IDEAFY
- * ======
+ * IDEAFY server
+ * =============
  * 
  * https://github.com/TAIAUT/Ideafy
  * Proprietary License - All rights reserved

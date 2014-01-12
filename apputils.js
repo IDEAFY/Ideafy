@@ -317,6 +317,36 @@ function AppUtils(){
                 
                 return promise;        
            };
+           
+           /*
+            * Retrieve avatar of a given user
+            */
+            this.getAvatar = function(json, onEnd){
+                        var _file, _cdb = new _CouchDBView();
+                        _cdb.setTransport(_transport);
+                        
+                        _getViewAsAdmin('users', 'short', {key:'"'+json.id+'"'}, _cdb).then(function(){
+                                var _image = _cdb.get(0).value.picture_file;
+                        
+                                // if user avatar is one of the default choices then return path (available in local files)
+                                if (_image.search("img/avatars/deedee")>-1){
+                                        onEnd(_image);
+                                }
+                                // otherwise return file located in attachments directory (should already be base64)
+                                else {
+                                        _file = __dirname+"/attachments/avatars/"+_image;
+                                        fs.readFile(_file, 'utf8', function (error, data){
+                                                if (data){
+                                                        onEnd(data);  
+                                                }
+                                                else {
+                                                        console.log(error);
+                                                        onEnd({"error": error});
+                                                }        
+                                        });      
+                                }
+                        });
+        };
 };
 
 exports.AppUtils = AppUtils;

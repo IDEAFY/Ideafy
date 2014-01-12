@@ -1,6 +1,8 @@
 function LoginUtils(){
 
-var _CouchDBDocument, _cookie, _transport;
+var _CouchDBDocument, _CouchDBUser,
+      _sendSignupEmail, _checkInvited, _createDocAsAdmin, _getDocAsAdmin, _updateDocAsAdmin,
+      _cookie, _sessionStore, _transport, _db, _cdbAdminCredentials;
         
         this.setConstructors= function (CouchDBDocument, CouchDBUser) {
                 _CouchDBDocument = CouchDBDocument;
@@ -10,7 +12,7 @@ var _CouchDBDocument, _cookie, _transport;
         this.setFunctions = function(sendSignupEmail, checkInvited, cdbAdmin){
                 _sendSignupEmail = sendSignupEmail;
                 _checkInvited = checkInvited;
-                _createdDocAsAdmin = cdbAdmin.createDoc;
+                _createDocAsAdmin = cdbAdmin.createDoc;
                 _getDocAsAdmin = cdbAdmin.getDoc;
                 _updateDocAsAdmin = cdbAdmin.updateDoc;        
         };

@@ -57,7 +57,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var transport = new Transport(olives.handlers),
             _db = "ideafy",
             cdbAdminCredentials = "admin:innovation4U",
-            currentVersion = "1.1.8",
+            currentVersion = "1.1.7",
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())

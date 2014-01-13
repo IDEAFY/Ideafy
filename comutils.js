@@ -17,6 +17,62 @@ function ComUtils(){
                 _smtpTransport = smtpTransport;
                 _supportEmail = supportEmail;
         };
+        
+        // Sending email messages from Ideafy
+        this.sendMail = function(json, onEnd) {
+
+                var type = json.type,
+                    mailOptions = {
+                        from : "IDEAFY <ideafy@taiaut.com>", // sender address
+                        to : "", // list of receivers
+                        cc : "", // automatic copy to sender
+                        replyTo : "", // recipient should reply to sender
+                        subject : "", // Subject line
+                        html : "" // html body
+                };
+
+                if (type === "invite") {
+                        // set mail parameters
+                        mailOptions.to = json.recipient;
+                        mailOptions.subject = json.sender + " invites you to join the Ideafy community";
+                        mailOptions.html = "<p style='background: whitesmoke; font-family=helvetica; font-size=24px; text-align=justify;'><b>Take advantage of this invitation! Get Ideafy now and join the fast growing online community of Ideafans. Compete for best idea, best mind and many other exciting challenges. Give your imagination and your ideas a new life.</b></p><p><a href='https://itunes.apple.com/us/app/ideafy/id605681593?mt=8&uo=4' target='itunes_store'style='display:inline-block;overflow:hidden;background:url(http://linkmaker.itunes.apple.com/htmlResources/assets/images/web/linkmaker/badge_appstore-lrg.png) no-repeat;width:135px;height:40px;@media only screen{background-image:url(http://linkmaker.itunes.apple.com/htmlResources/assets/images/web/linkmaker/badge_appstore-lrg.svg);}'></p>";
+                }
+                
+                if (type === "doc") {
+                        // set mail parameters
+                        mailOptions.to = json.recipient;
+                        mailOptions.cc = json.cc;
+                        mailOptions.replyTo = json.replyTo;
+                        mailOptions.subject = json.subject;
+                        mailOptions.html = "<p><b>"+json.header+"</b></p><p>"+json.body.replace(/\n/g, "<br>")+"</p><p>----------<br>"+ json.signature +"<div>"+json.attachHeader + json.attachBody+"</div>";
+                        
+                }
+                
+                if (type === "message"){
+                        console.log("exporting message");                
+                }
+                
+                if (type === "contact"){
+                        console.log("exporting contact");        
+                }
+                
+                _smtpTransport.sendMail(mailOptions, function(error, response) {
+                        if (error) {
+                                console.log(error, response);
+                                onEnd({
+                                        sendmail : "error",
+                                        reason : error,
+                                        response : response
+                                });
+                        } 
+                        else {
+                                onEnd({
+                                        sendmail : "ok",
+                                        recipient : json.recipient
+                                });
+                        }
+                });
+        };
  
         /*
          * Sending signup confirmation email -- localized versions

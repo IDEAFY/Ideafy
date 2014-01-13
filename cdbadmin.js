@@ -7,28 +7,20 @@ var fs = require("fs"),
 
 function CDBAdmin(){
         
-        var _Promise, _CouchDBDocument, _transport, _db,
+        var _Promise, _CouchDBDocument, _transport, _db, _dbIP, _dbPort,
             updateUserIP, updateDoc, getDoc, createDoc, getView, removeDoc;
         
-        this.setAdminCredentials = function(credentials){
-                _cdbAdminCredentials = credentials;
-        };
-        
-        this.setPromise = function(Promise){
-                _Promise = Promise;        
-        };
-        
-        this.setCouchDBDocument = function (CouchDBDocument) {
-                _CouchDBDocument = CouchDBDocument;
-                
-        };
-        
-        this.setTransport = function (transport) {
-                _transport = transport;      
-        };
-        
-        this.setDB = function(db){
+        this.setVar = function(db, dbIP, dbPort, credentials, transport){
                 _db = db;
+                _dbIP = dbIP;
+                _dbPort = dbPort;
+                _cdbAdminCredentials = credentials;
+                _transport = transport;
+        };
+        
+        this.setConstructors = function(Promise, CouchDBDocument){
+                _Promise = Promise; 
+                _CouchDBDocument = CouchDBDocument;      
         };
         
         /*
@@ -210,8 +202,8 @@ function CDBAdmin(){
                     result = {}, options = {}, req, callback;
 
                 // manually build the http request to couchDB
-                options.hostname = "127.0.0.1";
-                options.port = 5984;
+                options.hostname = _dbIP;
+                options.port = _dbPort;
                 options.method = "POST";
                 options.auth = _cdbAdminCredentials;
                 options.agent = false;

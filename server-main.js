@@ -55,7 +55,7 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
 
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
         var transport = new Transport(olives.handlers),
-            _db, cdbAdminCredentials, supportEmail, currentVersion, contentPath, badges,
+            _db, _dbIP, _dbPort, cdbAdminCredentials, supportEmail, currentVersion, contentPath, badges,
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -165,8 +165,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
          *  APPLICATION CONFIGURATION
          ****************************************/
         
-        // Name of the application database
+        // Name and IP address of the application database
         _db = "ideafy";
+        _dbIP = "127.0.0.1";
+        _dbPort = 5984;
         // Database admin login
         cdbAdminCredentials = "admin:innovation4U";
         // email address fro application support
@@ -182,6 +184,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
          *  Application utility functions
          */
         
+        // cdbadmin utilities
+       CDBAdmin.setVar(_db, _dbIP, _dbPort, cdbAdminCredentials, transport);
+       CDBAdmin.setConstructors(Promise, CouchDBDocument);
+        
         var updateUserIP = CDBAdmin.updateUserIP,
               updateDocAsAdmin = CDBAdmin.updateDoc,
               getDocAsAdmin = CDBAdmin.getDoc,
@@ -192,17 +198,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
               checkInvited = appUtils.checkInvited,
               addInvited = appUtils.addInvited; 
                        
-        /*
-         * APPLICATION HANDLERS
-         */
-        
-        // cdbadmin utilities
-       CDBAdmin.setAdminCredentials(cdbAdminCredentials);
-       CDBAdmin.setCouchDBDocument(CouchDBDocument);
-       CDBAdmin.setTransport(transport);
-       CDBAdmin.setPromise(Promise);
-       CDBAdmin.setDB(_db);
-        
         // utility handlers (no couchdb)
         srvUtils.setVar(contentPath, currentVersion);
         olives.handlers.set("CheckVersion", srvUtils.checkVersion);
@@ -229,7 +224,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // application utilities and handlers
         appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
-        appUtils.setVar(transport, _db, cdbAdminCredentials, badges);
+        appUtils.setVar(transport, _db, _dbIP, _dbPort, cdbAdminCredentials, badges);
         appUtils.setCDBAdmin(CDBAdmin);
         olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
         olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
@@ -239,6 +234,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("GetUserDetails", appUtils.getUserDetails);
         olives.handlers.set("GetGrade", appUtils.getGrade);
         olives.handlers.set("GetAchievements", appUtils.getAchievements);
+        olives.handlers.set("GetUserNames", appUtils.getUserNames);
         
         
         // disconnection events
@@ -282,52 +278,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });
         });
         
-        // Bulk query to obtain user names from user ids
-        olives.handlers.set("GetUserNames", function(json, onEnd) {
-
-                var result = {}, list = json.list, options = {}, req, callback;
-
-                /**
-                 * Building a temporary solution before changes in couchDBStore (one bulk query of the view)
-                 */
-
-                // manually build the http request to couchDB
-                options.hostname = "127.0.0.1";
-                options.port = 5984;
-                options.method = "POST";
-                options.auth = cdbAdminCredentials;
-                options.path = "/"+_db+"/_design/users/_view/short";
-                options.headers = {
-                        "Content-Type" : "application/json"
-                };
-                options.data = JSON.stringify({
-                        keys : list
-                });
-
-                /**
-                * Http request callback, handles couchDB response
-                * @param {Object} res the response
-                */
-                callback = function(res) {
-                        var body = "";
-                        res.on('data', function(chunk) {
-                                body += chunk;
-                        });
-
-                        res.on('end', function() {
-                                if (JSON.parse(body).rows.length === list.length){
-                                        result = JSON.parse(body).rows;
-                                        onEnd(result);
-                                }
-                                else {
-                                        onEnd({error: "Error : one or more users not found in Ideafy"});
-                                }
-                        });
-                };
-                // emit the http request and the data
-                req = http.request(options, callback);
-                req.end(options.data, "utf8");
-        });
+        
         
         
         // Checking email recipient list

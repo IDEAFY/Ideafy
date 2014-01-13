@@ -15,7 +15,7 @@ function AppUtils(){
         var _CouchDBDocument, _CouchDBView, Promise,
             _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin,
             _getBulkView, _updateCard, _deleteAttachment, _deleteCard,
-            _transport, _db, _cdbAdminCredentials, _badges;
+            _transport, _db,_dbIP, _dbPort, _cdbAdminCredentials, _badges;
         
         this.setConstructors = function(CouchDBDocument, CouchDBView, Promise){
                 _CouchDBDocument = CouchDBDocument;
@@ -33,9 +33,11 @@ function AppUtils(){
                 _removeDocAsAdmin = cdbAdmin.removeDoc;      
         };
         
-        this.setVar = function(transport, db, credentials, badges){
+        this.setVar = function(transport, db, dbIP, dbPort, credentials, badges){
                 _transport = transport;
                 _db = db;
+                _dbIp = dbIp;
+                _dbport = dbPort;
                 _cdbAdminCredentials = credentials;
                 _badges = badges || {
                         profile : true,
@@ -762,6 +764,52 @@ function AppUtils(){
                 });      
         };
         
+        // Bulk query to obtain user names from user ids
+        this.getUserNames = function(json, onEnd) {
+
+                var result = {}, list = json.list, options = {}, req, callback;
+
+                /**
+                 * Building a temporary solution before changes in couchDBStore (one bulk query of the view)
+                 */
+
+                // manually build the http request to couchDB
+                options.hostname = _dbIP;
+                options.port = _dbPort;
+                options.method = "POST";
+                options.auth = cdbAdminCredentials;
+                options.path = "/"+_db+"/_design/users/_view/short";
+                options.headers = {
+                        "Content-Type" : "application/json"
+                };
+                options.data = JSON.stringify({
+                        keys : list
+                });
+
+                /**
+                * Http request callback, handles couchDB response
+                * @param {Object} res the response
+                */
+                callback = function(res) {
+                        var body = "";
+                        res.on('data', function(chunk) {
+                                body += chunk;
+                        });
+
+                        res.on('end', function() {
+                                if (JSON.parse(body).rows.length === list.length){
+                                        result = JSON.parse(body).rows;
+                                        onEnd(result);
+                                }
+                                else {
+                                        onEnd({error: "Error : one or more users not found in Ideafy"});
+                                }
+                        });
+                };
+                // emit the http request and the data
+                req = http.request(options, callback);
+                req.end(options.data, "utf8");
+        };
 };
 
 exports.AppUtils = AppUtils;

@@ -354,6 +354,92 @@ function AppUtils(){
                                 }
                         });
         };
+        
+        /*
+         * Retrieve a given user profile information
+         */
+        this.getUserDetails = function(json, onEnd){
+                var cdb = new _CouchDBDocument();
+                _getDocAsAdmin(json.userid, cdb).then(function(){
+                        // check privacy settings
+                        var privacy = 0, contacts = 0, i, l, result={};
+                        if (cdb.get("settings") && cdb.get("settings").privacy_lvl) privacy = cdb.get("settings").privacy_lvl;
+                        
+                        // return user basic info, stats and score
+                        result._id = cdb.get("_id");
+                        result.privacy = privacy;
+                        result.firstname = cdb.get("firstname");
+                        result.lastname = cdb.get("lastname");
+                        result.username = cdb.get("username");
+                        result.intro = cdb.get("intro");
+                        result.ip = cdb.get("ip");
+                        result.achievements = cdb.get("achievements");
+                        result.ideas_count = cdb.get("ideas_count");
+                        result.su_sessions_count = cdb.get("su_sessions_count");
+                        result.mu_sessions_count = cdb.get("mu_sessions_count");
+                        result.twoquestions_count = cdb.get("twoquestions_count");
+                        
+                        for (i=0, l=cdb.get("connections").length; i<l; i++){
+                                if (cdb.get("connections")[i].type === "user") contacts++;
+                        }
+                        result.contacts = contacts;
+                        
+                        if (privacy >= 1){
+                        }
+                        if (privacy >=2){
+                                
+                        }
+                        onEnd(result);
+                });
+        };
+        
+        /*
+         * Retrieve a user's grade information
+         */
+        this.getGrade = function(json, onEnd){
+                var cdb = new _CouchDBDocument(), leadercdb = new _CouchDBView(), arr, dis, res={grade:null, distinction:null};
+                _getDocAsAdmin("GRADES", cdb).then(function(){
+                        arr = cdb.get(json.lang).grades;
+                        dis = cdb.get(json.lang).distinctions;
+                        for(i=0, l=arr.length; i<l; i++){
+                                if (json.ip >= arr[i].min_score) res.grade=arr[i];        
+                        }
+                        // check ranking
+                        return _getViewAsAdmin("users", "leaderboard", {descending:true, limit:100}, leadercdb);
+                })
+                .then(function(){
+                        var leaders = JSON.parse(leadercdb.toJSON()), l = leaders.length, i = 0;
+                        if (json.ip === leaders[0].key && json.ip >= arr[3].min_score) {
+                                res.distinction = dis[5];
+                        }
+                        else if (json.ip == leaders[1].key && json.ip >= arr[3].min_score){
+                                res.distinction = dis[4];
+                        }
+                        else if (json.ip == leaders[2].key && json.ip >= arr[3].min_score){
+                                res.distinction = dis[3];
+                        }
+                        else {
+                                i = Math.min(l-1,9);
+                                if (json.ip >= leaders[i].key && json.ip >= arr[5].min_score){
+                                        res.distinction = dis[2];
+                                }
+                                else{
+                                        i = Math.min(l-1, 19);
+                                        if (json.ip >= leaders[i].key && json.ip >= arr[4].min_score){
+                                                res.distinction = dis[1];
+                                        }
+                                        else {
+                                                i = Math.min(l-1, 99);
+                                                if (json.ip >= leaders[i].key && json.ip >= arr[3].min_score) {
+                                                        res.distinction = dis[0];
+                                                }
+                                        }
+                                }
+                        }
+                        onEnd(res);
+                }); 
+        };
+        
 };
 
 exports.AppUtils = AppUtils;

@@ -220,6 +220,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("ShareDeck", appUtils.shareDeck);
         olives.handlers.set("GetFavList", appUtils.getFavList);
         olives.handlers.set("GetAvatar", appUtils.getAvatar);
+        olives.handlers.set("GetUserDetails", appUtils.getUserDetails);
+        olives.handlers.set("GetGrade", appUtils.getGrade);
         
         
         // disconnection events
@@ -261,87 +263,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 .then(function(){
                         onEnd({"res": "ok"});
                 });
-        });
-        
-        // retrieve a given user profile information
-        olives.handlers.set("GetUserDetails", function(json, onEnd){
-                var cdb = new CouchDBDocument();
-                getDocAsAdmin(json.userid, cdb).then(function(){
-                        // check privacy settings
-                        var privacy = 0, contacts = 0, i, l, result={};
-                        if (cdb.get("settings") && cdb.get("settings").privacy_lvl) privacy = cdb.get("settings").privacy_lvl;
-                        
-                        // return user basic info, stats and score
-                        result._id = cdb.get("_id");
-                        result.privacy = privacy;
-                        result.firstname = cdb.get("firstname");
-                        result.lastname = cdb.get("lastname");
-                        result.username = cdb.get("username");
-                        result.intro = cdb.get("intro");
-                        result.ip = cdb.get("ip");
-                        result.achievements = cdb.get("achievements");
-                        result.ideas_count = cdb.get("ideas_count");
-                        result.su_sessions_count = cdb.get("su_sessions_count");
-                        result.mu_sessions_count = cdb.get("mu_sessions_count");
-                        result.twoquestions_count = cdb.get("twoquestions_count");
-                        
-                        for (i=0, l=cdb.get("connections").length; i<l; i++){
-                                if (cdb.get("connections")[i].type === "user") contacts++;
-                        }
-                        result.contacts = contacts;
-                        
-                        if (privacy >= 1){
-                        }
-                        if (privacy >=2){
-                                
-                        }
-                        onEnd(result);
-                });
-        });
-        
-        // retrieve a user's grade information
-        olives.handlers.set("GetGrade", function(json, onEnd){
-                var cdb = new CouchDBDocument(), leadercdb = new CouchDBView(), arr, dis, res={grade:null, distinction:null};
-                getDocAsAdmin("GRADES", cdb).then(function(){
-                        arr = cdb.get(json.lang).grades;
-                        dis = cdb.get(json.lang).distinctions;
-                        for(i=0, l=arr.length; i<l; i++){
-                                if (json.ip >= arr[i].min_score) res.grade=arr[i];        
-                        }
-                        // check ranking
-                        return getViewAsAdmin("users", "leaderboard", {descending:true, limit:100}, leadercdb);
-                })
-                .then(function(){
-                        var leaders = JSON.parse(leadercdb.toJSON()), l = leaders.length, i = 0;
-                        if (json.ip === leaders[0].key && json.ip >= arr[3].min_score) {
-                                res.distinction = dis[5];
-                        }
-                        else if (json.ip == leaders[1].key && json.ip >= arr[3].min_score){
-                                res.distinction = dis[4];
-                        }
-                        else if (json.ip == leaders[2].key && json.ip >= arr[3].min_score){
-                                res.distinction = dis[3];
-                        }
-                        else {
-                                i = Math.min(l-1,9);
-                                if (json.ip >= leaders[i].key && json.ip >= arr[5].min_score){
-                                        res.distinction = dis[2];
-                                }
-                                else{
-                                        i = Math.min(l-1, 19);
-                                        if (json.ip >= leaders[i].key && json.ip >= arr[4].min_score){
-                                                res.distinction = dis[1];
-                                        }
-                                        else {
-                                                i = Math.min(l-1, 99);
-                                                if (json.ip >= leaders[i].key && json.ip >= arr[3].min_score) {
-                                                        res.distinction = dis[0];
-                                                }
-                                        }
-                                }
-                        }
-                        onEnd(res);
-                }); 
         });
         
         // retrieve a user's achievements

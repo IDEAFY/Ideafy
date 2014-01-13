@@ -55,11 +55,7 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
 
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
         var transport = new Transport(olives.handlers),
-            _db = "ideafy",
-            cdbAdminCredentials = "admin:innovation4U",
-            supportEmail = "contact@taiaut.com",
-            currentVersion = "1.1.7",
-            contentPath = __dirname,
+            _db, cdbAdminCredentials, supportEmail, currentVersion, contentPath, badges,
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
@@ -165,7 +161,27 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         CouchDBTools.configuration.sessionStore = sessionStore;
         olives.handlers.set("CouchDB", CouchDBTools.handler);
         
-        // Application utility functions
+        /****************************************
+         *  APPLICATION CONFIGURATION
+         ****************************************/
+        
+        // Name of the application database
+        _db = "ideafy";
+        // Database admin login
+        cdbAdminCredentials = "admin:innovation4U";
+        // email address fro application support
+        supportEmail = "contact@taiaut.com";
+        // Application  client minimum version
+        currentVersion = "1.1.7";
+        // Path where attachments are stored
+        contentPath = __dirname;
+        // Rules to grant special badges and achievements
+        badges;
+        
+        /*
+         *  Application utility functions
+         */
+        
         var updateUserIP = CDBAdmin.updateUserIP,
               updateDocAsAdmin = CDBAdmin.updateDoc,
               getDocAsAdmin = CDBAdmin.getDoc,
@@ -208,12 +224,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // communication utilities (mail and application notifications)
         comUtils.setVar(smtpTransport, supportEmail);
-        
+        olives.handlers.set("SendMail", comUtils.sendMail);
         olives.handlers.set("Support", comUtils.support);
         
         // application utilities and handlers
         appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
-        appUtils.setVar(transport, _db, cdbAdminCredentials);
+        appUtils.setVar(transport, _db, cdbAdminCredentials, badges);
         appUtils.setCDBAdmin(CDBAdmin);
         olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
         olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
@@ -222,6 +238,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("GetAvatar", appUtils.getAvatar);
         olives.handlers.set("GetUserDetails", appUtils.getUserDetails);
         olives.handlers.set("GetGrade", appUtils.getGrade);
+        olives.handlers.set("GetAchievements", appUtils.getAchievements);
         
         
         // disconnection events
@@ -265,313 +282,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });
         });
         
-        // retrieve a user's achievements
-        olives.handlers.set("GetAchievements", function(json, onEnd){
-                // start by fecthing the user document
-                var userCDB = new CouchDBDocument(), // user doc
-                    userIdeasCDB = new CouchDBView(), // all public ideas crafted by user
-                    ssCDB = new CouchDBView(), // all single sessions completed by user
-                    msCDB = new CouchDBView(), // all multi-user sessions initiated by user
-                    questionsCDB = new CouchDBView(), // all twoquestions asked by user
-                    userRewards = new CouchDBDocument(), // user rewards doc
-                    achievementsCDB = new CouchDBDocument(), // all achievements available
-                    user = {},
-                    achievements = {},
-                    result = [],
-                    update = false,
-                    now = new Date(),
-                    date = [now.getFullYear(), now.getMonth(), now.getDate()];
-                    
-                getDocAsAdmin(json.userid, userCDB).then(function(){
-                        // set user
-                        user = JSON.parse(userCDB.toJSON());
-                        // get user rewards document
-                        return getDocAsAdmin(json.userid+"_rewards", userRewards);
-                })
-                .then(function(){
-                        // get achievements and retrieve the appropriate language
-                        return getDocAsAdmin("ACHIEVEMENTS", achievementsCDB);
-                })
-                .then(function(){
-                        achievements = achievementsCDB.get(json.lang);
-                        // check completed achievements
-                        //1. profile complete
-                        if (user.profile_complete) {
-                                if (!userRewards.get("profilecomplete")){
-                                        user.ip += achievements.profilecomplete.reward;
-                                        user.news.unshift({type: "RWD", date: date, content: achievements.profilecomplete});
-                                        userRewards.set("profilecomplete", 1);
-                                        update = true;
-                                }
-                                result.push(achievements.profilecomplete);
-                        }
-                        //2. tutorial complete
-                        if (user.tutorial_complete){
-                                if (!userRewards.get("tutorialcomplete")){
-                                        user.ip += achievements.tutorialcomplete.reward;
-                                        user.news.unshift({type: "RWD", date: date, content: achievements.tutorialcomplete});
-                                        userRewards.set("tutorialcomplete", 1);
-                                        update = true;
-                                }
-                                result.push(achievements.tutorialcomplete);
-                        }
-                        //3. use as character
-                        if (user.settings.useascharacter){
-                                if (!userRewards.get("playthegame")){
-                                        user.ip += achievements.playthegame.reward;
-                                        user.news.unshift({type: "RWD", date: date, content: achievements.playthegame});
-                                        userRewards.set("playthegame", 1);
-                                        update = true;
-                                }
-                                result.push(achievements.playthegame);
-                        }//Check user ideas (public ones)
-                        return getViewAsAdmin("achievements", "publicideas", {key: '"'+json.userid+'"'}, userIdeasCDB);
-                })
-                .then(function(){
-                        var idea_count = userIdeasCDB.getNbItems();
-                        // update user doc if needed
-                        if (user.ideas_count !== idea_count){
-                                user.ideas_count = idea_count;
-                                update = true;        
-                        }
-                                                
-                        //4, 5, 6, 7. If user has published at least 5, 25, 100, 250 ideas
-                        [5, 25, 100, 250].forEach(function(val){
-                                if (idea_count >= val){
-                                        if (!userRewards.get("ideas"+val)){
-                                                user.ip += achievements["ideas"+val].reward;
-                                                user.news.unshift({type: "RWD", date: date, content: achievements["ideas"+val]});
-                                                userRewards.set("ideas"+val, 1);
-                                                update = true;
-                                        }
-                                        result.push(achievements["ideas"+val]);
-                                }        
-                        });
-                        // Check for hall of fame ideas
-                        userIdeasCDB.loop(function(v,i){
-                                var rating, vlength;
-                                if (v.votes) {vlength = v.votes.length;}
-                                //8. 100 votes and minimum grade of 3.5
-                                if (vlength >= 100){
-                                        rating = Math.round(v.votes.reduce(function(x,y){return x+y;})/vlength*100)/100;
-                                        if (rating >= 3.5){
-                                                if (!userRewards.get("bronzeacorn")){
-                                                        user.ip += achievements.bronzeacorn.reward;
-                                                        user.news.unshift({type: "RWD", date: date, content: achievements.bronzeacorn});
-                                                        userRewards.set("bronzeacorn", 1);
-                                                                update = true;
-                                                }
-                                                result.push(achievements.bronzeacorn);        
-                                        } 
-                                        //9. 500 votes and minimum grade of 4
-                                        if (vlength >= 500 && rating >= 4){
-                                                if (!userRewards.get("silveracorn")){
-                                                        user.ip += achievements.silveracorn.reward;
-                                                        user.news.unshift({type: "RWD", date: date, content: achievements.silveracorn});
-                                                        userRewards.set("silveracorn", 1);
-                                                        update = true;
-                                                }
-                                                result.push(achievements.silveracorn);        
-                                        }     
-                                        //10. 1000 votes and minimum grade of 4.5
-                                        if (vlength >= 1000 && rating >= 4.5){
-                                                if (!userRewards.get("goldenacorn")){
-                                                        user.ip += achievements.goldenacorn.reward;
-                                                        user.news.unshift({type: "RWD", date: date, content: achievements.goldenacorn});
-                                                        userRewards.set("goldenacorn", 1);
-                                                        update = true;
-                                                }
-                                                result.push(achievements.goldenacorn);        
-                                        }     
-                                }
-                        });
-                        // check session achievements
-                        return getViewAsAdmin("achievements", "singlesessions", {key: '"'+json.userid+'"'}, ssCDB);
-                })
-                .then(function(){
-                        var ss_count = ssCDB.getNbItems();
-                        // update user doc if needed
-                        if (user.su_sessions_count !== ss_count){
-                                user.su_sessions_count = ss_count;
-                                update = true;
-                        }
-                        //11. If user has completed at least 5 single user sessions
-                        if (ss_count >= 5){
-                                if (!userRewards.get("easybrainstormer")){
-                                        user.ip += achievements.easybrainstormer.reward;
-                                        user.news.unshift({type: "RWD", date: date, content: achievements.easybrainstormer});
-                                        userRewards.set("easybrainstormer", 1);
-                                        update = true;
-                                }
-                                result.push(achievements.easybrainstormer);
-                                //12. If user has completed at least 20 single user sessions
-                                if (ss_count >= 20){
-                                        if (!userRewards.get("mindstormer")){
-                                                user.ip += achievements.mindstormer.reward;
-                                                user.news.unshift({type: "RWD", date: date, content: achievements.mindstormer});
-                                                userRewards.set("mindstormer", 1);
-                                                update = true;
-                                        }
-                                        result.push(achievements.mindstormer);
-                                        //13. If user has completed at least 50 single user sessions
-                                        if (ss_count >= 50){
-                                                if (!userRewards.get("mastermindstormer")){
-                                                        user.ip += achievements.mastermindstormer.reward;
-                                                        user.news.unshift({type: "RWD", date: date, content: achievements.mastermindstormer});
-                                                        userRewards.set("mastermindstormer", 1);
-                                                        update = true;
-                                                }
-                                                result.push(achievements.mastermindstormer);
-                                        }
-                                }
-                        }
-                       // do the same with multi-user sessions
-                       return getViewAsAdmin("achievements", "multisessions", {key: '"'+json.userid+'"'}, msCDB);
-                })
-                .then(function(){
-                        var ms_count = msCDB.getNbItems();
-                        // update user doc if needed
-                        if (user.mu_sessions_count !== ms_count){
-                                user.mu_sessions_count = ms_count;
-                                update = true;
-                        }
-                        //14. If user has initiated and completed at least 5 multi user sessions
-                        if (ms_count >= 5){
-                                if (!userRewards.get("guide")){
-                                        user.ip += achievements.guide.reward;
-                                        user.news.unshift({type: "RWD", date: date, content: achievements.guide});
-                                        userRewards.set("guide", 1);
-                                        update = true;
-                                }
-                                result.push(achievements.guide);
-                                //15. If user has initiated and completed at least 10 multi user sessions
-                                if (ms_count >= 10){
-                                        if (!userRewards.get("leader")){
-                                                user.ip += achievements.leader.reward;
-                                                user.news.unshift({type: "RWD", date: date, content: achievements.leader});
-                                                userRewards.set("leader", 1);
-                                                update = true;
-                                        }
-                                        result.push(achievements.leader);
-                                        //16. If user has initiated and completed at least 25 multi user sessions
-                                        if (ms_count >= 25){
-                                                if (!userRewards.get("mindweaver")){
-                                                        user.ip += achievements.mindweaver.reward;
-                                                        user.news.unshift({type: "RWD", date: date, content: achievements.mindweaver});
-                                                        userRewards.set("mindweaver", 1);
-                                                        update = true;
-                                                }
-                                                result.push(achievements.mindweaver);
-                                        }
-                                }
-                        }                               
-                        // check twoquestions achievements
-                        return getViewAsAdmin("achievements", "twoquestions", {key: '"'+json.userid+'"'}, questionsCDB);
-                })
-                .then(function(){
-                        var tq_count = questionsCDB.getNbItems();
-                         // update user doc if needed
-                        if (user.twoquestions_count !== tq_count){
-                                user.twoquestions_count = tq_count;
-                                update = true;
-                        }
-                        //17. If user has asked at least 5 twoquestions
-                        if (tq_count >= 5){
-                                if (!userRewards.get("curious")){
-                                        user.ip += achievements.curious.reward;
-                                        user.news.unshift({type: "RWD", date: date, content: achievements.curious});
-                                        userRewards.set("curious", 1);
-                                        update = true;
-                                }
-                                result.push(achievements.curious);
-                                //18. If user has asked at least 15 twoquestions
-                                if (tq_count >= 15){
-                                        if (!userRewards.get("puzzled")){
-                                                user.ip += achievements.puzzled.reward;
-                                                user.news.unshift({type: "RWD", date: date, content: achievements.puzzled});
-                                                userRewards.set("puzzled", 1);
-                                                update = true;
-                                        }
-                                        result.push(achievements.puzzled);
-                                        //19. If user has asked at least 50 twoquestions
-                                        if (tq_count >= 50){
-                                                if (!userRewards.get("whyarewehere")){
-                                                        user.ip += achievements.whyarewehere.reward;
-                                                        user.news.unshift({type: "RWD", date: date, content: achievements.whyarewehere});
-                                                        userRewards.set("whyarewehere", 1);
-                                                        update = true;
-                                                }
-                                                result.push(achievements.whyarewehere);
-                                        }
-                                }
-                        }
-                        // finally check user document for twocent counts
-                        //20. If user has posted at least 10 twocents
-                        if (user.twocents_count >= 10){
-                                if (!userRewards.get("opinionator")){
-                                        user.ip += achievements.opinionator.reward;
-                                        user.news.unshift({type: "RWD", date: date, content: achievements.opinionator});
-                                        userRewards.set("opinionator", 1);
-                                        update = true;
-                                }
-                                result.push(achievements.opinionator);
-                                //21. If user has posted at least 100 twocents
-                                if (user.twocents_count >= 100){
-                                        if (!userRewards.get("feedbackartist")){
-                                                user.ip += achievements.feedbackartist.reward;
-                                                user.news.unshift({type: "RWD", date: date, content: achievements.feedbackartist});
-                                                userRewards.set("feedbackartist", 1);
-                                                update = true;
-                                        }
-                                        result.push(achievements.feedbackartist);
-                                       //22. If user has posted at least 1000 twocents
-                                        if (user.twocents_count >= 1000){
-                                                if (!userRewards.get("chatterbox")){
-                                                        user.ip += achievements.chatterbox.reward;
-                                                        user.news.unshift({type: "RWD", date: date, content: achievements.chatterbox});
-                                                        userRewards.set("chatterbox", 1);
-                                                        update = true;
-                                                }
-                                                result.push(achievements.chatterbox);
-                                                //23. If user has posted at least 5000 twocents
-                                                if (user.twocents_count >= 5000){
-                                                        if (!userRewards.get("allday")){
-                                                                user.ip += achievements.allday.reward;
-                                                                user.news.unshift({type: "RWD", date: date, content: achievements.allday});
-                                                                userRewards.set("allday", 1);
-                                                                update = true;
-                                                        }
-                                                        result.push(achievements.allday);
-                                                }
-                                        }
-                                }
-                        }
-                        if (update){
-                                // update user rewards documents
-                                updateDocAsAdmin(userRewards.get("_id"), userRewards)
-                                .then(function(){
-                                        // update user doc (score and news) if necessary
-                                        return getDocAsAdmin(json.userid, userCDB);
-                                })
-                                .then(function(){
-                                        userCDB.set("ip", user.ip);
-                                        userCDB.set("ideas_count", user.ideas_count);
-                                        userCDB.set("su_sessions_count", user.su_sessions_count);
-                                        userCDB.set("mu_sessions_count", user.mu_sessions_count);
-                                        userCDB.set("twoquestions_count", user.twoquestions_count);
-                                        userCDB.set("news", user.news);
-                                        userCDB.set("achievements", result);
-                                        return updateDocAsAdmin(json.userid, userCDB);
-                                })
-                                .then(function(){
-                                        onEnd(result);
-                                });
-                        } 
-                        else {onEnd(result);}      
-                });      
-        });
-        
-        // Checking email recipient list
+        // Bulk query to obtain user names from user ids
         olives.handlers.set("GetUserNames", function(json, onEnd) {
 
                 var result = {}, list = json.list, options = {}, req, callback;
@@ -618,61 +329,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 req.end(options.data, "utf8");
         });
         
-        // Sending email messages from Ideafy
-        olives.handlers.set("SendMail", function(json, onEnd) {
-
-                var type = json.type,
-                    mailOptions = {
-                        from : "IDEAFY <ideafy@taiaut.com>", // sender address
-                        to : "", // list of receivers
-                        cc : "", // automatic copy to sender
-                        replyTo : "", // recipient should reply to sender
-                        subject : "", // Subject line
-                        html : "" // html body
-                };
-
-                if (type === "invite") {
-                        // set mail parameters
-                        mailOptions.to = json.recipient;
-                        mailOptions.subject = json.sender + " invites you to join the Ideafy community";
-                        mailOptions.html = "<p style='background: whitesmoke; font-family=helvetica; font-size=24px; text-align=justify;'><b>Take advantage of this invitation! Get Ideafy now and join the fast growing online community of Ideafans. Compete for best idea, best mind and many other exciting challenges. Give your imagination and your ideas a new life.</b></p><p><a href='https://itunes.apple.com/us/app/ideafy/id605681593?mt=8&uo=4' target='itunes_store'style='display:inline-block;overflow:hidden;background:url(http://linkmaker.itunes.apple.com/htmlResources/assets/images/web/linkmaker/badge_appstore-lrg.png) no-repeat;width:135px;height:40px;@media only screen{background-image:url(http://linkmaker.itunes.apple.com/htmlResources/assets/images/web/linkmaker/badge_appstore-lrg.svg);}'></p>";
-                }
-                
-                if (type === "doc") {
-                        // set mail parameters
-                        mailOptions.to = json.recipient;
-                        mailOptions.cc = json.cc;
-                        mailOptions.replyTo = json.replyTo;
-                        mailOptions.subject = json.subject;
-                        mailOptions.html = "<p><b>"+json.header+"</b></p><p>"+json.body.replace(/\n/g, "<br>")+"</p><p>----------<br>"+ json.signature +"<div>"+json.attachHeader + json.attachBody+"</div>";
-                        
-                }
-                
-                if (type === "message"){
-                        console.log("exporting message");                
-                }
-                
-                if (type === "contact"){
-                        console.log("exporting contact");        
-                }
-                
-                smtpTransport.sendMail(mailOptions, function(error, response) {
-                        if (error) {
-                                console.log(error, response);
-                                onEnd({
-                                        sendmail : "error",
-                                        reason : error,
-                                        response : response
-                                });
-                        } 
-                        else {
-                                onEnd({
-                                        sendmail : "ok",
-                                        recipient : json.recipient
-                                });
-                        }
-                });
-        });
         
         // Checking email recipient list
         olives.handlers.set("CheckRecipientList", function(json, onEnd) {

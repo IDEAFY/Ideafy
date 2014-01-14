@@ -36,7 +36,7 @@ function AppUtils(){
         this.setVar = function(transport, db, dbIP, dbPort, credentials, badges){
                 _transport = transport;
                 _db = db;
-                _dbIp = dbIp;
+                _dbIP = dbIP;
                 _dbport = dbPort;
                 _cdbAdminCredentials = credentials;
                 _badges = badges || {
@@ -810,6 +810,76 @@ function AppUtils(){
                 req = http.request(options, callback);
                 req.end(options.data, "utf8");
         };
+        
+        // Add welcome idea to user library
+        this.welcome = function(json, onEnd){
+                var Id = "I:WELCOME:US", cdb = new _CouchDBDocument(), lang="EN-US";
+                // workaround to solve language issue 
+                if (json.language) {
+                      lang =  json.language.toUpperCase();
+                      }
+                if (["US", "FR"].indexOf(lang.substr(3))>-1) {
+                        Id = "I:WELCOME:"+lang.substr(3);
+                }
+                
+                _getDocAsAdmin(Id, cdb)
+                .then(function(){
+                        var shared = cdb.get("sharewith");
+                        shared.push(json.userid);
+                        return _updateDocAsAdmin(Id, cdb);
+                })
+                .then(function(){
+                        onEnd({"res": "ok"});
+                });
+        };
+        
+        // Checking email recipient list
+        this.checkRecipientList = function(json, onEnd) {
+
+                var result = {}, list = json.list, options = {}, req, callback;
+
+                /**
+                 * Building a temporary solution before changes in couchDBStore (one bulk query of the view)
+                 */
+
+                // manually build the http request to couchDB
+                options.hostname = _dbIP;
+                options.port = _dbPort;
+                options.method = "POST";
+                options.auth = _cdbAdminCredentials;
+                options.path = "/"+_db+"/_design/users/_view/username";
+                options.headers = {
+                        "Content-Type" : "application/json"
+                };
+                options.data = JSON.stringify({
+                        keys : list
+                });
+
+                /**
+                * Http request callback, handles couchDB response
+                * @param {Object} res the response
+                */
+                callback = function(res) {
+                        var body = "";
+                        res.on('data', function(chunk) {
+                                body += chunk;
+                        });
+
+                        res.on('end', function() {
+                                if (JSON.parse(body).rows.length === list.length){
+                                        result = JSON.parse(body).rows;
+                                        onEnd(result);
+                                }
+                                else {
+                                        onEnd({error: "Error : one of more recipients not found in Ideafy"});
+                                }
+                        });
+                };
+                // emit the http request and the data
+                req = http.request(options, callback);
+                req.end(options.data, "utf8");
+        };
+        
 };
 
 exports.AppUtils = AppUtils;

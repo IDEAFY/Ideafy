@@ -171,6 +171,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         _dbPort = 5984;
         // Database admin login
         cdbAdminCredentials = "admin:innovation4U";
+        // mail sender & address
+        mailSender = "IDEAFY <ideafy@taiaut.com>";
         // email address fro application support
         supportEmail = "contact@taiaut.com";
         // Application  client minimum version
@@ -218,9 +220,13 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("ChangePWD", loginUtils.changePassword);
         
         // communication utilities (mail and application notifications)
-        comUtils.setVar(smtpTransport, supportEmail);
+        comUtils.setVar(smtpTransport, supportEmail, mailSender);
+        comUtils.setConstructors(CouchDBDocument);
+        comUtils.setFunctions(CDBAdmin, checkInvited, addInvited);
         olives.handlers.set("SendMail", comUtils.sendMail);
         olives.handlers.set("Support", comUtils.support);
+        olives.handlers.set("Notify", comUtils.notify);
+        olives.handlers.set("Invite", invite);
         
         // application utilities and handlers
         appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
@@ -235,6 +241,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("GetGrade", appUtils.getGrade);
         olives.handlers.set("GetAchievements", appUtils.getAchievements);
         olives.handlers.set("GetUserNames", appUtils.getUserNames);
+        olives.handlers.set("Welcome", appUtils.welcome);
+        olives.handlers.set("CheckRecipientList", appUtils.welcome);
         
         
         // disconnection events
@@ -257,329 +265,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 });  
         });
         
-        olives.handlers.set('Welcome', function(json, onEnd){
-                var Id = "I:WELCOME:US", cdb = new CouchDBDocument(), lang="EN-US";
-                // workaround to solve language issue 
-                if (json.language) {
-                      lang =  json.language.toUpperCase();
-                      }
-                if (["US", "FR"].indexOf(lang.substr(3))>-1) {
-                        Id = "I:WELCOME:"+lang.substr(3);
-                }
-                
-                getDocAsAdmin(Id, cdb)
-                .then(function(){
-                        var shared = cdb.get("sharewith");
-                        shared.push(json.userid);
-                        return updateDocAsAdmin(Id, cdb);
-                })
-                .then(function(){
-                        onEnd({"res": "ok"});
-                });
-        });
-        
-        
-        
-        
-        // Checking email recipient list
-        olives.handlers.set("CheckRecipientList", function(json, onEnd) {
-
-                var result = {}, list = json.list, options = {}, req, callback;
-
-                /**
-                 * Building a temporary solution before changes in couchDBStore (one bulk query of the view)
-                 */
-
-                // manually build the http request to couchDB
-                options.hostname = "127.0.0.1";
-                options.port = 5984;
-                options.method = "POST";
-                options.auth = cdbAdminCredentials;
-                options.path = "/"+_db+"/_design/users/_view/username";
-                options.headers = {
-                        "Content-Type" : "application/json"
-                };
-                options.data = JSON.stringify({
-                        keys : list
-                });
-
-                /**
-                * Http request callback, handles couchDB response
-                * @param {Object} res the response
-                */
-                callback = function(res) {
-                        var body = "";
-                        res.on('data', function(chunk) {
-                                body += chunk;
-                        });
-
-                        res.on('end', function() {
-                                if (JSON.parse(body).rows.length === list.length){
-                                        result = JSON.parse(body).rows;
-                                        onEnd(result);
-                                }
-                                else {
-                                        onEnd({error: "Error : one of more recipients not found in Ideafy"});
-                                }
-                        });
-                };
-                // emit the http request and the data
-                req = http.request(options, callback);
-                req.end(options.data, "utf8");
-        });
-        
-        // Ideafy messaging system
-        olives.handlers.set("Notify", function(json, onEnd) {
-
-                var dest = json.dest, sendResults = new Store([]),
-                // build message
-                message = {
-                        "type" : json.type,
-                        "status" : "unread",
-                        "date" : json.date,
-                        "author" : json.author,
-                        "username" : json.username,
-                        "firstname" : json.firstname,
-                        "toList" : json.toList,
-                        "ccList" : json.ccList,
-                        "object" : json.object,
-                        "body" : json.body,
-                        "signature" : json.signature
-                },
-
-                /**
-                 * A function to push message to couchDB
-                 * @param {Object} msg the message to deliver
-                 * @param {String} userid the userid in couchDB to deliver the message to
-                 */
-                sendMessage = function(msg, userid) {
-                        var cdb = new CouchDBDocument();
-                        getDocAsAdmin(userid, cdb)
-                        .then(function() {
-                                var arr = [], empty = false;
-                                // retrieve notifications array
-                                if (cdb.get("notifications")[0]){arr = cdb.get("notifications");}
-                                
-                                // add message
-                                arr.unshift(msg);
-                                
-                                // update store and upload
-                                cdb.set("notifications", arr);
-                                
-                                return updateDocAsAdmin(userid, cdb);
-                        })
-                        .then(function() {
-                                sendResults.alter("push", {
-                                        res : "ok",
-                                        id : userid
-                                });
-                        });
-                },
-                /**
-                 * A function to add message to sender's document in couchDB
-                 * @param {Object} msg the message to deliver
-                 */
-                addMessageToSent = function(msg){
-                        var cdb = new CouchDBDocument();
-                        getDocAsAdmin(msg.author, cdb)
-                        .then(function(){
-                                var arr = cdb.get("sentMessages")||[];
-                                arr.unshift(msg);
-                                cdb.set('sentMessages', arr);
-                                return updateDocAsAdmin(msg.author, cdb);
-                        });
-                },
-                /*
-                 * A function to insert contact in a user's connection list when a request was accepted
-                 */
-                insertContact = function(userid, contact, onEnd){
-                        var cdb = new CouchDBDocument(), contacts = [], pos=0, news =[];
-                        getDocAsAdmin(userid, cdb)
-                        .then(function(){
-                                var i;
-                                contacts = cdb.get("connections");
-                                news = cdb.get("news") || [];
-                                for (i=0,l=contacts.length;i<l;i++){
-                                        // check if contact is of type user or group first
-                                        if (contacts[i].type === "user"){
-                                                if (contacts[i].lastname < contact.lastname) {pos++;} 
-                                                if (contacts[i].lastname === contact.lastname){
-                                                        if (contacts[i].firstname < contact.firstname) {pos++;} 
-                                                }
-                                        }
-                                        else {
-                                                if (contacts[i].username < contact.lastname)  {pos++;}
-                                        }  
-                                }
-                                contacts.splice(pos, 0, contact);
-                                if (contact.type === "user") {
-                                        news.unshift({"type": "CX+", "date": json.date, "content": {userid:json.author, username:contact.username}});
-                                }
-                                cdb.set("connections", contacts);
-                                cdb.set("news", news);
-                                return updateDocAsAdmin(userid, cdb);
-                        })
-                        .then(function(){
-                                onEnd("ok");
-                        });
-                },
-                /*
-                 * A function to remove a contact in a user's connection list when a cancel request is sent
-                 */
-                removeContact = function(userid, contact, onEnd){
-                        var cdb = new CouchDBDocument(), contacts = [], pos=0, news =[];
-                        getDocAsAdmin(userid, cdb)
-                        .then(function(){
-                                var i,j, grp;
-                                contacts = cdb.get("connections");
-                                news = cdb.get("news") || [];
-                                for (i=contacts.length-1;i>=0;i--){
-                                        // check if contact is of type user or group first
-                                        if (contacts[i].type === "user"){
-                                                if (contacts[i].userid === contact.userid) {contacts.splice(i,1);}
-                                        }
-                                        else if ((contacts[i].type === "group")){
-                                                grp = contacts[i].contacts;
-                                                for (j=grp.length-1;j>=0; j--){
-                                                        if (grp.userid === contact.userid) {grp.splice(j,1);}
-                                                }
-                                        } 
-                                }
-                                if (contact.type === "user") {
-                                        news.unshift({"type": "CX-", "date": json.date, "content": {userid:contact.userid, username:contact.username}});
-                                }
-                                cdb.set("connections", contacts);
-                                cdb.set("news", news);
-                                return updateDocAsAdmin(userid, cdb);
-                        })
-                        .then(function(){
-                                onEnd("ok");
-                        });
-                };
-                
-                 
-                // add specificities depending on message type
-                if (json.type === "CXR") {
-                        message.contactInfo = json.contactInfo;
-                }
-                
-                if (json.type === "DOC") {
-                        message.docId = json.docId;
-                        message.docType = json.docType;
-                        message.docTitle = json.docTitle;
-                }
-                
-                if (json.type === "2Q+") {
-                        message.docId = json.docId;
-                        message.docType = json.type;
-                }
-                
-                if (json.type === "INV") {
-                        message.docId = json.docId;
-                        message.docTitle = json.docTitle;
-                }
-
-                // send message to all recipients
-                for ( i = 0, l = dest.length; i < l; i++) {
-                        sendMessage(message, dest[i]);
-                }
-                
-                // add message to sent list
-                addMessageToSent(message);
-                
-                // return sendResults if all messages have been delivered
-                sendResults.watch("added", function() {
-                        if (sendResults.getNbItems() === dest.length) {
-                                //adding some post-treatment
-                                if (json.type === "CXRaccept"){
-                                         insertContact(json.dest[0], json.contactInfo, function(result){
-                                                if (result){
-                                                        // add to both users' score
-                                                        updateUserIP(json.dest[0], "CXR", 25, function(result){console.log(result);});
-                                                        updateUserIP(json.author, "CXR", 25, function(result){
-                                                                onEnd(sendResults.toJSON());
-                                                        });
-                                                }
-                                         });
-                                }
-                                else if (json.type === "CXCancel"){
-                                        removeContact(json.dest[0], json.contactInfo, function(result){
-                                                if (result){
-                                                        // add to both users' score
-                                                        updateUserIP(json.dest[0], "CXC", -25, function(result){console.log(result);});
-                                                        updateUserIP(json.author, "CXC", -25, function(result){
-                                                                onEnd(sendResults.toJSON());
-                                                        });
-                                                }        
-                                        });
-                                }
-                                else {onEnd(sendResults.toJSON());}
-                        }
-                });
-        });
-        
-        // Invite a user to join Ideafy
-        olives.handlers.set("Invite", function(json, onEnd){
-                var mailOptions = {
-                        from : "IDEAFY <ideafy@taiaut.com>", // sender address
-                        to : json.id, // list of receivers
-                        cc : json.senderid, // automatic copy to sender
-                        replyTo : "", // recipient should reply to sender
-                        subject : json.sendername + " invites you to join the Ideafy community",
-                        html : json.body
-                };
-                
-                // check if user has already been invited
-                checkInvited(json.id, function(result){
-                        var cdb = new CouchDBDocument();
-                        // if not then create doc in database and send email
-                        if (!result){
-                                cdb.set("_id", json.id);
-                                cdb.set("sender", [json.senderid]);
-                                addInvited(json.id, cdb)
-                                .then(function(){
-                                        smtpTransport.sendMail(mailOptions, function(error, response) {
-                                                if (error) {
-                                                        onEnd({
-                                                                sendmail : "error",
-                                                                reason : error,
-                                                                response : response
-                                                        });
-                                                } 
-                                                else {
-                                                        onEnd("ok");
-                                                }
-                                        });        
-                                }); 
-                        }
-                        else{
-                                cdb.reset(result);
-                                // check if user has already been invited by this sender
-                                if (cdb.get("sender").indexOf(json.senderid)>-1){
-                                        onEnd("alreadyinvited");
-                                }
-                                else{
-                                        cdb.set("sender", cdb.get("sender").push(json.senderid));
-                                        addInvited(json.id, cdb)
-                                        .then(function(){
-                                                smtpTransport.sendMail(mailOptions, function(error, response) {
-                                                        if (error) {
-                                                                onEnd({
-                                                                        sendmail : "error",
-                                                                        reason : error,
-                                                                        response : response
-                                                                });
-                                                        } 
-                                                        else {
-                                                                onEnd("ok");
-                                                        }
-                                                });        
-                                        });
-                                }      
-                        }        
-                });  
-        });
-
         // Voting on ideas
         olives.handlers.set("Vote", function(json, onEnd) {
 

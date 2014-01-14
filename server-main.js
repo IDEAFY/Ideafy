@@ -202,8 +202,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // disconnection events
         io.sockets.on("connection", function(socket){
-                socket.on("disconnect", appUtils.setOffline(socket));  
-        });      
+                socket.on("disconnect", function(){
+                        appUtils.setOffline(socket);       
+                });  
+        });       
 });
 
 process.on('uncaughtException', function(error) {

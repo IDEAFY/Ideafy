@@ -226,7 +226,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("SendMail", comUtils.sendMail);
         olives.handlers.set("Support", comUtils.support);
         olives.handlers.set("Notify", comUtils.notify);
-        olives.handlers.set("Invite", invite);
+        olives.handlers.set("Invite", comUtils.invite);
         
         // application utilities and handlers
         appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);

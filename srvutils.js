@@ -19,6 +19,68 @@ function SrvUtils(){
         };
         
         /*
+         * Upload function for avatars and various attachments
+         */
+        this.uploadFunc = function(req, res){
+                var type = req.body.type,
+                      _path = contentPath+'/attachments/',
+                      filename, // final name of the file on server
+                      tempname, // temp name after file upload
+                      now,
+                      dataurl,
+                      dir;
+            
+                if (type === 'postit' || type === 'deckpic' || type === 'cardpic'){
+                        dir = req.body.dir;
+                        now = new Date();
+                        filename = _path+dir+'/'+req.body.filename;
+                        dataurl = req.body.dataString;
+                                
+                        fs.exists(_path+dir, function(exists){
+                                if (!exists) {
+                                        fs.mkdir(_path+dir, 0777, function(err){
+                                        if (err) {throw(err);}
+                                                fs.writeFile(filename, dataurl, function(err){
+                                                if (err) {throw(err);}
+                                                        res.write("ok");
+                                                        res.end();
+                                                });
+                                        });
+                                }
+                                else {
+                                        fs.exists(filename, function(exists){
+                                                if (exists) fs.unlinkSync(filename);
+                                                fs.writeFile(filename, dataurl, function(err){
+                                                        if (err) {throw(err);}
+                                                                res.write("ok");
+                                                                res.end();
+                                                });   
+                                        });
+                                }       
+                        });
+                }
+                if (type === 'avatar'){
+                        filename = _path+'avatars/'+req.body.filename;
+                        dataurl = req.body.img;
+                        fs.exists(filename, function(exists){
+                                if (exists) {
+                                        fs.unlinkSync(filename);
+                                }
+                                fs.writeFile(filename, dataurl, function(err){
+                                        if (err) {
+                                                throw(err);
+                                        }
+                                        else{
+                                                res.write("ok");
+                                                res.end();
+                                        }
+                                });
+                        });
+                }
+        };
+
+        
+        /*
         * CheckVersion handler : to test if client version is the most current one
         */
         this.checkVersion = function(json, onEnd){

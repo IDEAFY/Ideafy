@@ -23,7 +23,7 @@ function SrvUtils(){
          */
         this.uploadFunc = function(req, res){
                 var type = req.body.type,
-                      _path = contentPath+'/attachments/',
+                      _path = _contentPath+'/attachments/',
                       filename, // final name of the file on server
                       tempname, // temp name after file upload
                       now,

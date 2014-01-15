@@ -24,7 +24,7 @@ var http = require("http"),
     url = require("url"), 
     redirect = require('connect-redirection'), 
     sessionStore = new RedisStore({
-        hostname : "127.0.0.1",
+        hostname : "10.224.0.27",
         port : "6379"
     }),
     wrap = require("./wrap"),
@@ -43,12 +43,12 @@ var srvUtils = new srvutils.SrvUtils(),
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
-        host: "smtp.gmail.com",
+        host: "10.224.0.27",
         secureConnection : true,
         port : 465,
         auth : {
-                user : "vincent.weyl@gmail.com",
-                pass : "$Nor&Vin2012"
+                user : "ideafy-taiaut",
+                pass : fs.readFileSync(".password", "utf8").trim()
         }
 });
 
@@ -61,7 +61,7 @@ var _db, _dbIP, _dbPort, cdbAdminCredentials, supportEmail, currentVersion, cont
      
 // Name and IP address of the application database
 _db = "ideafy";
-_dbIP = "127.0.0.1";
+_dbIP = "10.224.7.243";
 _dbPort = 5984;
 // Database admin login
 cdbAdminCredentials = "admin:innovation4U";
@@ -72,7 +72,7 @@ supportEmail = "contact@taiaut.com";
 // Application  client minimum version
 currentVersion = "1.1.7";
 // Path where attachments are stored
-contentPath = __dirname;
+contentPath = "/shared";
 // Rules to grant special badges and achievements
 badges;
 
@@ -104,7 +104,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 path : "/"
                         }
                 }))
-                .use(connect.static(__dirname + "/public"))).listen(1664),
+                .use(connect.static(__dirname + "/public"))).listen(3113),
                 io = socketIO.listen(app, {
                         log : true
                 });

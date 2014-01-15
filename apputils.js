@@ -15,7 +15,7 @@ function AppUtils(){
         var _CouchDBDocument, _CouchDBView, Promise,
             _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin,
             _getBulkView, _updateCard, _deleteAttachment, _deleteCard,
-            _transport, _db,_dbIP, _dbPort, _cdbAdminCredentials, _badges;
+            _transport, _db,_dbIP, _dbPort, _cdbAdminCredentials, _badges, _contentPath;
         
         this.setConstructors = function(CouchDBDocument, CouchDBView, Promise){
                 _CouchDBDocument = CouchDBDocument;
@@ -33,7 +33,7 @@ function AppUtils(){
                 _removeDocAsAdmin = cdbAdmin.removeDoc;      
         };
         
-        this.setVar = function(transport, db, dbIP, dbPort, credentials, badges){
+        this.setVar = function(transport, db, dbIP, dbPort, credentials, badges, contentPath){
                 _transport = transport;
                 _db = db;
                 _dbIP = dbIP;
@@ -54,7 +54,8 @@ function AppUtils(){
                         muSessionThresholds : [5, 10, 25],
                         tqThresholds : [5, 15, 50],
                         tcThresholds : [10, 100, 1000, 5000]
-                };
+                },
+                _contentPath = contentPath;
         };
         
         
@@ -120,10 +121,10 @@ function AppUtils(){
                 var _path;
                 switch(type){
                         case "deck":
-                                _path = __dirname+'/attachments/decks/'+filename;
+                                _path = _contentPath+'/attachments/decks/'+filename;
                                 break;
                         case "card":
-                                _path = __dirname+'/attachments/cards/'+filename;
+                                _path = _contentPath+'/attachments/cards/'+filename;
                                 break;
                         default:
                                 break;
@@ -359,7 +360,7 @@ function AppUtils(){
                                 }
                                 // otherwise return file located in attachments directory (should already be base64)
                                 else {
-                                        _file = __dirname+"/attachments/avatars/"+_image;
+                                        _file = _contentPath+"/attachments/avatars/"+_image;
                                         fs.readFile(_file, 'utf8', function (error, data){
                                                 if (data){
                                                         onEnd(data);  

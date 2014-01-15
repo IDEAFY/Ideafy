@@ -101,11 +101,7 @@ var _CouchDBDocument, _CouchDBUser,
                                                         "scored":[],
                                                         "type": 11
                                                 });
-                                                console.log(rewards.toJSON());
-                                                _createDocAsAdmin(json.name+"_rewards", rewards)
-                                                .then(function(){
-                                                        console.log("rewards doc created");
-                                                });
+                                                _createDocAsAdmin(json.name+"_rewards", rewards);
                                                 
                                                 // check for referrals and update accordingly
                                                 _checkInvited(json.name, function(result){

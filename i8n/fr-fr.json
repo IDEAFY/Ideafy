@@ -540,5 +540,7 @@
 	"tryotherview": "Changez de vue, modifiez le filtre de langues ou ajoutez des idées à vos favoris. Pour quitter la recherche, effacez le contenu du champ recherche et appuyez sur Entrée.",
 	"solution": "Solution",
 	"principle": "Principe",
-	"defaultlangfilter": "Filtre de langue par défaut : "
+	"defaultlangfilter": "Filtre de langue par défaut : ",
+	"pwdchange": "Changement de votre mot de passe Ideafy",
+	"pwdchangebody": "Vous avez défini un nouveau mot de passe pour vous connecter à Ideafy : "
 }

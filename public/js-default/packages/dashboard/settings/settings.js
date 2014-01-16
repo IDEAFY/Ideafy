@@ -246,7 +246,19 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                            }
                            else{
                                    transport.request("ChangePWD", {"userid": user.get("_id"), "pwd": options.get("pwd")}, function(result){
-                                           if (result === "ok") options.set("pwdchange", "&#10003;");
+                                           var json = {};
+                                           if (result === "ok") {
+                                                   options.set("pwdchange", "&#10003;");
+                                                   
+                                                   // send confirmation email with new password & notification
+                                                   json.type = pwd;
+                                                   json.to = user.get("_id");
+                                                   json.subject = labels.get("pwdchange");
+                                                   json.html = labels.get("pwdchangebody") + options.get("pwd");
+                                                   transport.request("SendMail", json, function(result){
+                                                           console.log(result);
+                                                   });
+                                           }
                                    });
                            }
                    };

@@ -251,7 +251,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                                    options.set("pwdchange", "&#10003;");
                                                    
                                                    // send confirmation email with new password & notification
-                                                   json.type = pwd;
+                                                   json.type = "pwd";
                                                    json.to = user.get("_id");
                                                    json.subject = labels.get("pwdchange");
                                                    json.html = labels.get("pwdchangebody") + options.get("pwd");

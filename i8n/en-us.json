@@ -540,5 +540,7 @@
 	"tryotherview": "Change view, modify language filters or add ideas to your favorites. To leave the search view, erase the content of the search field and press the return key.",
 	"solution": "Solution",
 	"principle": "Principle",
-	"defaultlangfilter": "Default language filter : "
+	"defaultlangfilter": "Default language filter : ",
+	"pwdchange": "Ideafy password change",
+	"pwdchangebody": "You successfully changed your Ideafy password to : " 
 }

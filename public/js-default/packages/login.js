@@ -268,7 +268,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                 }
                                         });
                                 }
-                                else {_store.set("error", _labels.get("invalidlogin"));}        
+                                else {_store.set("error", _labels.get("invalidlogin"));}   
+                                node.classList.remove("btn-ready");     
                         };
 
                         // ADDING ALL UIS TO STACK

@@ -242,7 +242,7 @@ define(["OObject" ,"Amy/Stack-plugin",
 
                                 if (email && password) {
                                         loginSpinner.spin(_loginForm.dom);
-                                        _transport.request("Login", {name : email, password : password}, function(result) {
+                                        _transport.request("Login", {name : email, password : password, sock : Config.get("socket").socket.sessionid}, function(result) {
                                                 if (result.login === "ok") {
                                                         Config.set("uid", '"' + email + '"');
                                                         // check if there is a new db

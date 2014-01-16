@@ -71,6 +71,12 @@ function ComUtils(){
                         console.log("exporting contact");        
                 }
                 
+                if (type === "pwd"){
+                        mailOptions.to = json.to;
+                        mailOptions.subject = json.subject;
+                        mailOptions.html = json.html;        
+                }
+                
                 _smtpTransport.sendMail(mailOptions, function(error, response) {
                         if (error) {
                                 console.log(error, response);

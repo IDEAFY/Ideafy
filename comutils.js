@@ -77,22 +77,23 @@ function ComUtils(){
                         mailOptions.html = json.html;        
                 }
                 
-                _smtpTransport.sendMail(mailOptions, function(error, response) {
-                        if (error) {
-                                console.log(error, response);
-                                onEnd({
-                                        sendmail : "error",
-                                        reason : error,
-                                        response : response
-                                });
-                        } 
-                        else {
-                                onEnd({
-                                        sendmail : "ok",
-                                        recipient : json.recipient
-                                });
-                        }
-                });
+                if (["invite", "doc", "message", "contact", "pwd"].indexOf(type)) {
+                        _smtpTransport.sendMail(mailOptions, function(error, response) {
+                                if (error) {
+                                        onEnd({
+                                                sendmail : "error",
+                                                reason : error,
+                                                response : response
+                                        });
+                                } 
+                                else {
+                                        onEnd({
+                                                sendmail : "ok",
+                                                recipient : json.recipient
+                                        });
+                                }
+                        });
+                }
         };
  
         /*

@@ -22,10 +22,10 @@
   	<script type="text/javascript" charset="utf-8">
         function onLoad(){
         	var app = document.createElement('script');
-            app.setAttribute("data-main", "js-default/build");
-            app.setAttribute("src", "js-default/libs/require.js");
+            app.setAttribute("data-main", "js-min/packages/main");
+            app.setAttribute("src", "js-min/libs/require.js");
             document.head.appendChild(app);
-        }
+        };
 	</script>
 </head>
 <body onload="onLoad()" data-stack="destination" data-event="selector:.pressed-btn, mousedown, press; selector:.pressed-btn, mouseup, release">

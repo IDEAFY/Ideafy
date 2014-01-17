@@ -246,7 +246,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                            }
                            else{
                                    transport.request("ChangePWD", {"userid": user.get("_id"), "pwd": options.get("pwd")}, function(result){
-                                           var json = {}, notif = {}, now, n = user.get("notifications") || [];
+                                           var json = {}, notif = {}, now, n = user.get("notifications").concat() || [];
                                            if (result === "ok") {
                                                    options.set("pwdchange", "&#10003;");
                                                    

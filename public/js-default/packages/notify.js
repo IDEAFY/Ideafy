@@ -178,9 +178,8 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                 // watch for new/unread messages
                 
                 user.watchValue("notifications", function(){
-                        var unread = notify.getUnread();
-                        
-                        console.log(user.get("notifications"), "\n", messages.toJSON());
+                        var unread = notify.getUnread(),
+                              n = user.get("notifications").concat() || [];
                         
                         if (unread > currentUnread){
                                 notif.set("newmsg", true);
@@ -192,7 +191,8 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                                 notif.set("unread", unread);
                                 currentUnread = unread;
                         }
-                        messages.reset(user.get("notifications").concat());                      
+                        messages.reset(n);
+                        console.log(messages.toJSON());                
                 });
                 
                 return notify;

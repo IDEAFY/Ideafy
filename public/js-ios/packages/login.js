@@ -238,7 +238,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _loginForm.login = function login(event, node){
-                                var email = _store.get("email").toLowerCase(), password = _store.get("password");
+                                var email = _store.get("email").toLowerCase(), password = _store.get("password"), el = node || _loginForm.dom.querySelector(".login-button");
 
                                 if (email && password) {
                                         loginSpinner.spin(_loginForm.dom);
@@ -267,7 +267,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         });
                                 }
                                 else {_store.set("error", _labels.get("invalidlogin"));}
-                                node.classList.remove("btn-ready");      
+                                el.classList.remove("btn-ready");      
                         };
 
                         // ADDING ALL UIS TO STACK

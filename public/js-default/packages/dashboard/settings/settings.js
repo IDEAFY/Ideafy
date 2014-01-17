@@ -273,7 +273,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                                    user.set("notifications", n);
                                                    user.upload()
                                                    .then(function(result){
-                                                           console.log("user upload ok : ", result);
+                                                           if (!result.ok) console.log(result);
                                                    });
                                           }
                                    });

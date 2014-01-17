@@ -141,7 +141,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                         "notifyevent" : new Event(notifyPopup)
                 });
                 
-                notifyPopup.template = '<div class="invisible"><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:mousedown, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:mousedown, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
+                notifyPopup.template = '<div class="invisible"><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:mousedown, closePopup"></div><ul class="notify-list" data-notify="foreach"><li data-notify="bind: setStyle, status" data-notifyevent="listen:mousedown, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
                 
                 notifyPopup.closePopup = function closePopup(event, node){
                         notifyPopup.dom.classList.add("invisible");        

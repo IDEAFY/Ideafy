@@ -191,6 +191,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                                 notif.set("unread", unread);
                                 currentUnread = unread;
                         }
+                        messages.reset([]);
                         messages.reset(n);
                         console.log(messages.toJSON());                
                 });

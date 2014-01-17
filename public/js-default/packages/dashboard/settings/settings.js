@@ -246,7 +246,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                            }
                            else{
                                    transport.request("ChangePWD", {"userid": user.get("_id"), "pwd": options.get("pwd")}, function(result){
-                                           var json = {};
+                                           var json = {}, notif = {}, now, n = user.get("notfications");
                                            if (result === "ok") {
                                                    options.set("pwdchange", "&#10003;");
                                                    
@@ -256,9 +256,23 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                                    json.subject = labels.get("pwdchange");
                                                    json.html = labels.get("pwdchangebody") + options.get("pwd");
                                                    transport.request("SendMail", json, function(result){
-                                                           console.log(result);
+                                                           if (result.sendmail !== "ok") console.log(result);
                                                    });
-                                           }
+                                                   
+                                                   // also add notification message
+                                                   now = new Date();
+                                                   notif.type = "pwd";
+                                                   notif.status = "unread";
+                                                   notif.date = [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
+                                                   notif.author = "IDEAFY";
+                                                   notif.username = "Ideafy";
+                                                   notif.firstname =  "DeeDee";
+                                                   notif.object = labels.get("pwdupdate");
+                                                   notif.body =  labels.get("pwdchangebody") + options.get("pwd");
+                                                   n.unshift(notif);
+                                                   user.set("notifications", n);
+                                                   user.upload();
+                                          }
                                    });
                            }
                    };

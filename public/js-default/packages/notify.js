@@ -180,6 +180,8 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                 user.watchValue("notifications", function(){
                         var unread = notify.getUnread();
                         
+                        console.log(user.get("notifications"), "\n", messages.toJSON());
+                        
                         if (unread > currentUnread){
                                 notif.set("newmsg", true);
                                 notif.set("unread", unread);

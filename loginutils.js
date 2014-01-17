@@ -282,6 +282,61 @@ var _CouchDBDocument, _CouchDBUser,
                         });
                 });        
         };
+        
+        /*
+        * User password reset
+        */
+        
+        this.resetPassword = function(json, onEnd){
+                var cdb = new _CouchDBDocument(),
+                      userPath = "/_users/org.couchdb.user:"+json.userid,
+                      cookieJSON = _cookie.parse(json.handshake.headers.cookie),
+                      sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0] ,
+                      generatePassword = function() {
+                                var length = 8,
+                                      charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+                                      retVal = "";
+                                for (var i = 0, n = charset.length; i < length; ++i) {
+                                        retVal += charset.charAt(Math.floor(Math.random() * n));
+                                }
+                                return retVal;
+                        };
+        
+                _transport.request("CouchDB", {
+                        method : "GET",
+                        path: userPath,
+                        auth: _cdbAdminCredentials,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        }
+                }, function (res) {
+                        cdb.reset(JSON.parse(res));
+                        cdb.set("password", json.pwd);
+                        _transport.request("CouchDB", {
+                                method : "PUT",
+                                path:userPath,
+                                auth: _cdbAdminCredentials,
+                                headers: {
+                                        "Content-Type": "application/json",
+                                        "Connection": "close"
+                                },
+                                data: cdb.toJSON()
+                        }, function (res) {
+                                if (JSON.parse(res).ok) {
+                                        _sessionStore.get(sessionID, function(err, session) {
+                                        if (err) {
+                                                throw new Error(err);
+                                        } else {
+                                                session.auth = json.userid + ":" + json.pwd;
+                                                _sessionStore.set(sessionID, session);
+                                                onEnd("ok");
+                                        }
+                                });
+                                }
+                        });
+                });        
+        };
        
 };
 

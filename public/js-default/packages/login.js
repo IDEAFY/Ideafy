@@ -89,8 +89,9 @@ define(["OObject" ,"Amy/Stack-plugin",
                                if (_store.get("email") && _store.get("password") && _store.get("confirm-password") && _store.get("firstname") && _store.get("lastname")){
                                       btn.classList.add("btn-ready");
                                }
-                               else{
-                                       btn.classList.remove("btn-ready");       
+                               else {
+                                       btn.classList.remove("btn-ready");
+                              }     
                         };
                         
                         _signupForm.signup = function signup(event, node){

@@ -271,7 +271,10 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                                    notif.body =  labels.get("pwdchangebody") + options.get("pwd");
                                                    n.unshift(notif);
                                                    user.set("notifications", n);
-                                                   user.upload();
+                                                   user.upload()
+                                                   .then(function(result){
+                                                           console.log("user upload ok : ", result);
+                                                   });
                                           }
                                    });
                            }

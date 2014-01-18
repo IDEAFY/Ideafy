@@ -77,17 +77,31 @@ function ComUtils(){
                         mailOptions.html = json.html;        
                 }
                 
-                if (["invite", "doc", "message", "contact", "pwd"].indexOf(type)) {
+                if (type === "pwdReset"){
+                        mailOptions.to = json.to;
+                        switch(json.lang){
+                                case "fr-fr":
+                                        mailOptions.subject = "Réinitialisation du mot de passe Ideafy";
+                                        mailOptions.html = "Voici votre mot de passe temporaire, à changer lors de votre prochaine connexion : "+json.pwd;
+                                        break;
+                                default:
+                                        mailOptions.subject = "Ideafy password reset";
+                                        mailOptions.html = "Here is your temporary password : "+json.pwd+". Please change it as soon as you get connected." ;
+                                        break;
+                        }       
+                }
+                
+                if (["invite", "doc", "message", "contact", "pwd", "pwdReset"].indexOf(type) > -1) {
                         _smtpTransport.sendMail(mailOptions, function(error, response) {
                                 if (error) {
-                                        onEnd({
+                                        onEnd && onEnd({
                                                 sendmail : "error",
                                                 reason : error,
                                                 response : response
                                         });
                                 } 
                                 else {
-                                        onEnd({
+                                        onEnd && onEnd({
                                                 sendmail : "ok",
                                                 recipient : json.recipient
                                         });

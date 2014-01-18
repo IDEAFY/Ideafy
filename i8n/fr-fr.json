@@ -543,5 +543,6 @@
 	"defaultlangfilter": "Filtre de langue par défaut : ",
 	"pwdchange": "Changement de votre mot de passe Ideafy",
 	"pwdchangebody": "Vous avez défini un nouveau mot de passe pour vous connecter à Ideafy : ",
-	"pwdupdate": "Nouveau mot de passe"
+	"pwdupdate": "Nouveau mot de passe",
+	"forgotpwd": "Mot de passe oublié?"
 }

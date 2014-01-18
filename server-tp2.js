@@ -160,7 +160,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("DeleteAttachment", srvUtils.deleteAttachment);
         
         // login utilities
-        loginUtils.setConstructors(CouchDBDocument, CouchDBUser);
+        loginUtils.setConstructors(CouchDBDocument, CouchDBUser, Promise);
         loginUtils.setFunctions(sendSignupEmail, checkInvited, CDBAdmin);
         loginUtils.setVar(cookie, sessionStore, transport, _db, cdbAdminCredentials);
         

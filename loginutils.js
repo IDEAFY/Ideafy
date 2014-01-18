@@ -334,8 +334,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 .then(function(){
                         onEnd("ok"); 
                 });
-                        
-       
+        };                 
 };
 
 exports.LoginUtils = LoginUtils;

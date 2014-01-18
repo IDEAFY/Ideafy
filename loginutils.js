@@ -42,7 +42,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
         /*
          * A function that changes the database password of a given user to the supplied password
          */
-        _changePassword = function(user, pwd){
+        _changePassword = function(user, pwd, json){
                 var cdb = new _CouchDBDocument(),
                       promise = new _Promise(),
                       userPath = "/_users/org.couchdb.user:"+user,
@@ -296,7 +296,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
         */
         
         this.changePassword = function(json, onEnd){
-                _changePassword(json.userid, json.pwd)
+                _changePassword(json.userid, json.pwd, json)
                 .then(function(){
                         onEnd("ok");
                  });       
@@ -322,7 +322,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 };
                 
                 pwd = generatePassword();
-                _changePassword(user, pwd)
+                _changePassword(user, pwd, json)
                 .then(function(){
                         return _getDocAsAdmin(user, cdb);
                 })

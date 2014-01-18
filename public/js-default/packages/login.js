@@ -206,7 +206,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "label": new Model(_labels),
                                 "loginmodel" : new Model(_store,{
                                         forgotpwd : function(reset){
-                                                (reset) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                                (reset) ? this.classList.remove("loginvisible") : this.classList.add("loginvisible");
                                         }
                                 }),
                                 "loginevent" : new Event(_loginForm)

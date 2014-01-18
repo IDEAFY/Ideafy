@@ -23,7 +23,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         "lastname" : "",
                                         "confirm-password" : "",
                                         "password" : "",
-                                        "error" : ""
+                                        "error" : "",
+                                        "reset" : false
                              }),
                              _labels = Config.get("labels"),
                              _transport = Config.get("transport"),
@@ -203,11 +204,15 @@ define(["OObject" ,"Amy/Stack-plugin",
                         // login form
                         _loginForm.plugins.addAll({
                                 "label": new Model(_labels),
-                                "loginmodel" : new Model(_store),
+                                "loginmodel" : new Model(_store,{
+                                        forgotpwd : function(reset){
+                                                (reset) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                        }
+                                }),
                                 "loginevent" : new Event(_loginForm)
                         });
                         
-                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:keypress, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: keypress, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:mousedown, press; listen: mouseup, release; listen:mouseup, login"></label></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup-button" class="pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showSignup"></label></p></form>';
+                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:keypress, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: keypress, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:mousedown, press; listen: mouseup, release; listen:mouseup, login"></label></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"><label class="backtotop" data-lablel="bind:innerHTML, forgotpwd" data-loginmodel="bind:forgotpwd, reset" data-loginevent="listen:mousedown, press:mouseup, resetPassword">Forgot your password?</label></label></p><p><label id="signup-button" class="pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showSignup"></label></p></form>';
                         
                         _loginForm.press = function(event, node){
                                 node.classList.add("pressed");        
@@ -265,12 +270,21 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                 }
                                                 else {
                                                         _store.set("error", _labels.get("invalidlogin"));
+                                                        _store.set("reset", true);
                                                         loginSpinner.stop();
                                                 }
                                         });
                                 }
                                 else {_store.set("error", _labels.get("invalidlogin"));}   
                                 el.classList.remove("btn-ready");     
+                        };
+                        
+                        _loginForm.resetPassword = function(event, node){
+                                _transport.request("ResetPassword", {user:email}, function(result){
+                                        if (result === "ok"){
+                                                _store.set("error", "a temporary password has been sent to "+email);
+                                        }
+                                });      
                         };
 
                         // ADDING ALL UIS TO STACK
@@ -300,7 +314,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         "lastname" : "",
                                         "confirm-password" : "",
                                         "password" : "",
-                                        "error" : ""
+                                        "error" : "",
+                                        "reset" : false
                                 });
                                 if (signout){ reload = true;}
                         };

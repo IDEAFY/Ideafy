@@ -11,21 +11,24 @@
 
 function LoginUtils(){
 
-var _CouchDBDocument, _CouchDBUser,
+var _CouchDBDocument, _CouchDBUser, _Promise,
       _sendSignupEmail, _checkInvited, _createDocAsAdmin, _getDocAsAdmin, _updateDocAsAdmin,
-      _cookie, _sessionStore, _transport, _db, _cdbAdminCredentials;
+      _cookie, _sessionStore, _transport, _db, _cdbAdminCredentials,
+      _changePassword;
         
-        this.setConstructors= function (CouchDBDocument, CouchDBUser) {
+        this.setConstructors= function (CouchDBDocument, CouchDBUser, Promise) {
                 _CouchDBDocument = CouchDBDocument;
                 _CouchDBUser = CouchDBUser;
+                _Promise = Promise;
         };
         
-        this.setFunctions = function(sendSignupEmail, checkInvited, cdbAdmin){
+        this.setFunctions = function(sendSignupEmail, checkInvited, cdbAdmin, sendMail){
                 _sendSignupEmail = sendSignupEmail;
                 _checkInvited = checkInvited;
                 _createDocAsAdmin = cdbAdmin.createDoc;
                 _getDocAsAdmin = cdbAdmin.getDoc;
-                _updateDocAsAdmin = cdbAdmin.updateDoc;        
+                _updateDocAsAdmin = cdbAdmin.updateDoc,
+                _sendMail = sendMail; 
         };
         
         this.setVar = function (cookie, sessionStore, transport, db, credentials) {
@@ -34,6 +37,57 @@ var _CouchDBDocument, _CouchDBUser,
                 _transport = transport;
                 _db = db;
                _cdbAdminCredentials = credentials;   
+        };
+        
+        /*
+         * A function that changes the database password of a given user to the supplied password
+         */
+        _changePassword = function(user, pwd){
+                var cdb = new _CouchDBDocument(),
+                      promise = new _Promise(),
+                      userPath = "/_users/org.couchdb.user:"+user,
+                      cookieJSON = _cookie.parse(json.handshake.headers.cookie),
+                      sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0] ;
+        
+                _transport.request("CouchDB", {
+                        method : "GET",
+                        path: userPath,
+                        auth: _cdbAdminCredentials,
+                        headers: {
+                                "Content-Type": "application/json",
+                                "Connection": "close"
+                        }
+                }, function (res) {
+                        cdb.reset(JSON.parse(res));
+                        cdb.set("password", pwd);
+                        _transport.request("CouchDB", {
+                                method : "PUT",
+                                path:userPath,
+                                auth: _cdbAdminCredentials,
+                                headers: {
+                                        "Content-Type": "application/json",
+                                        "Connection": "close"
+                                },
+                                data: cdb.toJSON()
+                        }, function (res) {
+                                if (JSON.parse(res).ok) {
+                                        _sessionStore.get(sessionID, function(err, session) {
+                                                if (err) {
+                                                        throw new Error(err);
+                                                        promise.reject();
+                                                }
+                                                else {
+                                                        session.auth = json.userid + ":" + json.pwd;
+                                                        _sessionStore.set(sessionID, session);
+                                                        promise.fulfill();
+                                                }
+                                        });
+                                }
+                                else promise.reject();
+                        });
+                });
+                
+                return promise;         
         };
         
         
@@ -242,101 +296,45 @@ var _CouchDBDocument, _CouchDBUser,
         */
         
         this.changePassword = function(json, onEnd){
-                var cdb = new _CouchDBDocument(),
-                        userPath = "/_users/org.couchdb.user:"+json.userid,
-                        cookieJSON = _cookie.parse(json.handshake.headers.cookie),
-                        sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0] ;
-        
-                _transport.request("CouchDB", {
-                        method : "GET",
-                        path: userPath,
-                        auth: _cdbAdminCredentials,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
-                        }
-                }, function (res) {
-                        cdb.reset(JSON.parse(res));
-                        cdb.set("password", json.pwd);
-                        _transport.request("CouchDB", {
-                                method : "PUT",
-                                path:userPath,
-                                auth: _cdbAdminCredentials,
-                                headers: {
-                                        "Content-Type": "application/json",
-                                        "Connection": "close"
-                                },
-                                data: cdb.toJSON()
-                        }, function (res) {
-                                if (JSON.parse(res).ok) {
-                                        _sessionStore.get(sessionID, function(err, session) {
-                                        if (err) {
-                                                throw new Error(err);
-                                        } else {
-                                                session.auth = json.userid + ":" + json.pwd;
-                                                _sessionStore.set(sessionID, session);
-                                                onEnd("ok");
-                                        }
-                                });
-                                }
-                        });
-                });        
+                _changePassword(json.userid, json.pwd)
+                .then(function(){
+                        onEnd("ok");
+                 });       
         };
         
         /*
         * User password reset
         */
-        
         this.resetPassword = function(json, onEnd){
-                var cdb = new _CouchDBDocument(),
-                      userPath = "/_users/org.couchdb.user:"+json.userid,
-                      cookieJSON = _cookie.parse(json.handshake.headers.cookie),
-                      sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0] ,
-                      generatePassword = function() {
-                                var length = 8,
-                                      charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-                                      retVal = "";
-                                for (var i = 0, n = charset.length; i < length; ++i) {
-                                        retVal += charset.charAt(Math.floor(Math.random() * n));
-                                }
-                                return retVal;
-                        };
-        
-                _transport.request("CouchDB", {
-                        method : "GET",
-                        path: userPath,
-                        auth: _cdbAdminCredentials,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
+                var user = json.login,
+                      cdb = new _CouchDBDocument(),
+                      generatePassword,
+                      pwd;
+                
+                generatePassword = function() {
+                        var length = 8,
+                              charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+                              retVal = "";
+                        for (var i = 0, n = charset.length; i < length; ++i) {
+                                retVal += charset.charAt(Math.floor(Math.random() * n));
                         }
-                }, function (res) {
-                        cdb.reset(JSON.parse(res));
-                        cdb.set("password", json.pwd);
-                        _transport.request("CouchDB", {
-                                method : "PUT",
-                                path:userPath,
-                                auth: _cdbAdminCredentials,
-                                headers: {
-                                        "Content-Type": "application/json",
-                                        "Connection": "close"
-                                },
-                                data: cdb.toJSON()
-                        }, function (res) {
-                                if (JSON.parse(res).ok) {
-                                        _sessionStore.get(sessionID, function(err, session) {
-                                        if (err) {
-                                                throw new Error(err);
-                                        } else {
-                                                session.auth = json.userid + ":" + json.pwd;
-                                                _sessionStore.set(sessionID, session);
-                                                onEnd("ok");
-                                        }
-                                });
-                                }
-                        });
-                });        
-        };
+                         return retVal;
+                };
+                
+                pwd = generatePassword();
+                _changePassword(user, pwd)
+                .then(function(){
+                        return _getDocAsAdmin(user, cdb);
+                })
+                .then(function(){
+                        cdb.set("resetPWD", true);
+                        _sendMail({to:user, type:"pwdReset", lang:cdb.get("lang"), pwd:pwd);
+                        return _updateDocAsAdmin(user, cdb);     
+                })
+                .then(function(){
+                        onEnd("ok"); 
+                });
+                        
        
 };
 

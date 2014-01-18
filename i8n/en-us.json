@@ -543,5 +543,6 @@
 	"defaultlangfilter": "Default language filter : ",
 	"pwdchange": "Ideafy password change",
 	"pwdchangebody": "You successfully changed your Ideafy password to : " ,
-	"pwdupdate": "Password change"
+	"pwdupdate": "Password change",
+	"forgotpwd": "Forgot your password ?"
 }

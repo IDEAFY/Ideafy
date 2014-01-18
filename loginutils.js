@@ -328,7 +328,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 })
                 .then(function(){
                         cdb.set("resetPWD", true);
-                        _sendMail({to:user, type:"pwdReset", lang:cdb.get("lang"), pwd:pwd);
+                        _sendMail({to:user, type:"pwdReset", lang:cdb.get("lang"), pwd:pwd});
                         return _updateDocAsAdmin(user, cdb);     
                 })
                 .then(function(){

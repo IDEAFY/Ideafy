@@ -134,3 +134,8 @@
 .loginvisible{
     display: hidden;
 }
+
+.forgotpwd{
+    font-size: 12px;
+    color: #404040;
+}

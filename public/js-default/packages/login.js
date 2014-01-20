@@ -59,7 +59,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "signupevent" : new Event(_signupForm)
                         });
                         
-                        _signupForm.template = '<form id="signup-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: input, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: input, resetError"><input name="confirm-password" data-loginmodel="bind:value,confirm-password" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: input, resetError"><input name="firstname" data-loginmodel="bind:value,firstname" type="text" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: input, resetError"><input name="lastname" data-loginmodel="bind:value,lastname" type="text" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:input, resetError; listen:keypress, entersignup"></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: mousedown, press; listen: mouseup, release; listen:mouseup, signup"></label></p><p><label class="login-button pressed-btn" name="#login-screen" data-signupevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form>';
+                        _signupForm.template = '<form id="signup-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: input, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: input, resetError"><input name="confirm-password" data-loginmodel="bind:value,confirm-password" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: input, resetError"><input name="firstname" data-loginmodel="bind:value,firstname" type="text" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: input, resetError"><input name="lastname" data-loginmodel="bind:value,lastname" type="text" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:input, resetError; listen:keypress, entersignup"></p><p class="login-error"><label data-loginmodel="bind:innerHTML,error"></label></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: mousedown, press; listen: mouseup, release; listen:mouseup, signup"></label></p><p><label class="login-button pressed-btn" name="#login-screen" data-signupevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form>';
                         
                         _signupForm.press = function(event, node){
                                 node.classList.add("pressed");        
@@ -280,9 +280,9 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _loginForm.resetPassword = function(event, node){
-                                _transport.request("ResetPassword", {user:email}, function(result){
+                                _transport.request("ResetPassword", {user:_store.get("email")}, function(result){
                                         if (result === "ok"){
-                                                _store.set("error", "a temporary password has been sent to "+email);
+                                                _store.set("error", "a temporary password has been sent to "+_store.get("email"));
                                         }
                                 });      
                         };

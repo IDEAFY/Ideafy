@@ -212,7 +212,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "loginevent" : new Event(_loginForm)
                         });
                         
-                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:keypress, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: keypress, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:mousedown, press; listen: mouseup, release; listen:mouseup, login"></label></p><p class="login-error"><label data-loginmodel="bind:innerHTML,error" class="login-error"></label><label class="forgotpwd" data-loginmodel="bind:forgotpwd,reset" data-label="bind:innerHTML, forgotpwd"  data-loginevent="listen:mousedown, press; listen:mouseup, release; listen:mouseup, resetPassword">Forgot your password?</label></p><p><label id="signup-button" class="pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showSignup"></label></p></form>';
+                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:input, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: input, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:mousedown, press; listen: mouseup, release; listen:mouseup, login"></label></p><p class="login-error"><label data-loginmodel="bind:innerHTML,error" class="login-error"></label><label class="forgotpwd" data-loginmodel="bind:forgotpwd,reset" data-label="bind:innerHTML, forgotpwd"  data-loginevent="listen:mousedown, press; listen:mouseup, release; listen:mouseup, resetPassword">Forgot your password?</label></p><p><label id="signup-button" class="pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showSignup"></label></p></form>';
                         
                         _loginForm.press = function(event, node){
                                 node.classList.add("pressed");        
@@ -238,6 +238,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 var name = node.getAttribute("name"),
                                       btn = _loginForm.dom.querySelector(".login-button");
                                 _store.set("error", "");
+                                _sotre.set("reset", false);
                                 _store.set(name, node.value);
                                 if (_store.get("email") && _store.get("password")){
                                         btn.classList.add("btn-ready");
@@ -280,9 +281,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _loginForm.resetPassword = function(event, node){
-                                console.log("reset pwd called");
                                 _transport.request("ResetPWD", {user:_store.get("email")}, function(result){
-                                        console.log(result);
                                         if (result === "ok"){
                                                 _store.set("error", "a temporary password has been sent to "+_store.get("email"));
                                         }

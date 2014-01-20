@@ -45,7 +45,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                                                 var node = this;
                                                 Utils.getGrade(ip, function(result){
                                                         if (result.distinction) node.setAttribute("style", "background: url('img/profile/"+result.distinction.badge+"') no-repeat center center; background-size: 40px 40px;");
-                                                })
+                                                });
                                         },
                                         setScore : function(ip){
                                                 this.innerHTML = ip + " ip";

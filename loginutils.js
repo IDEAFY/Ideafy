@@ -306,7 +306,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
         * User password reset
         */
         this.resetPassword = function(json, onEnd){
-                var user = json.login,
+                var user = json.user,
                       cdb = new _CouchDBDocument(),
                       generatePassword,
                       pwd;
@@ -322,6 +322,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 };
                 
                 pwd = generatePassword();
+                console.log(pwd);
                 _changePassword(user, pwd, json)
                 .then(function(){
                         return _getDocAsAdmin(user, cdb);

@@ -76,9 +76,9 @@
     text-shadow: 2px 2px 2px black;
 }
 
-#login-form .login-error {
+#login-form p.login-error {
 	height:154px;
-	line-height:154px;
+	line-height:77px;
 }
 
 #signup-form .login-error {
@@ -88,8 +88,7 @@
 
 
 .login-error {
-	display:inline-block;
-
+	display: block;
     font-size: 13px;
     font-weight: bold;
     color: white;
@@ -122,10 +121,16 @@
 }
 
 .loginvisible{
-    display: hidden;
+    display: none;
 }
 
 .forgotpwd{
     font-size: 12px;
     color: #404040;
+}
+
+.forgotpwd.pressed{
+    color: white;
+    background: transparent;
+    -webkit-box-shadow: none;
 }

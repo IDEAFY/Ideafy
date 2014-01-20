@@ -280,7 +280,9 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _loginForm.resetPassword = function(event, node){
+                                console.log("reset pwd called");
                                 _transport.request("ResetPassword", {user:_store.get("email")}, function(result){
+                                        console.log(result);
                                         if (result === "ok"){
                                                 _store.set("error", "a temporary password has been sent to "+_store.get("email"));
                                         }

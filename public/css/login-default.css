@@ -82,13 +82,13 @@
     color: white;
     border: 1px inset #CCCCCC;
     height: 38px;
-    line-heigth: 38px;
+    line-height: 38px;
     text-shadow: 2px 2px 2px black;
 }
 
 #login-form p.login-error{
 	height:154px;
-	line-height:154px;
+	line-height:77px;
 }
 
 #signup-form .login-error {
@@ -98,9 +98,8 @@
 
 
 .login-error {
-	display:inline-block;
-
-    font-size: 13px;
+	display: block;
+	font-size: 13px;
     font-weight: bold;
     color: white;
 }
@@ -142,4 +141,6 @@
 
 .forgotpwd.pressed{
     color: white;
+    background: transparent;
+    -webkit-box-shadow: none;
 }

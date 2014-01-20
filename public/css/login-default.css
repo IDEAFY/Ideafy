@@ -96,8 +96,7 @@
     height:40px;
 }
 
-
-.login-error {
+.login-error label{
 	font-size: 13px;
     font-weight: bold;
     color: white;

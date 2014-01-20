@@ -86,7 +86,7 @@
     text-shadow: 2px 2px 2px black;
 }
 
-#login-form .login-error {
+#login-form .login-error p{
 	height:154px;
 	line-height:154px;
 }
@@ -96,11 +96,13 @@
     height:40px;
 }
 
-.login-error label{
-	font-size: 13px;
+
+.login-error {
+	display:inline-block;
+
+    font-size: 13px;
     font-weight: bold;
     color: white;
-    display: block;
 }
 
 #signup-button {

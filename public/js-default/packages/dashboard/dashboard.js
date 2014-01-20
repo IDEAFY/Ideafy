@@ -50,7 +50,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                // set current view
                         if (_user.get("resetPWD")){
                                 _stack.getStack().show("#settings");
-                                _widget.dom.querySelector(".input[type='password]").scrollIntoView();      
+                                //_widget.dom.querySelector(".input[type='password]").scrollIntoView();      
                         }
                         else{
                                 _stack.getStack().show("#profile");

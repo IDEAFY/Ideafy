@@ -86,7 +86,7 @@
     text-shadow: 2px 2px 2px black;
 }
 
-#login-form .login-error p{
+#login-form p.login-error{
 	height:154px;
 	line-height:154px;
 }

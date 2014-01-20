@@ -259,6 +259,9 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                                            if (result.sendmail !== "ok") console.log(result);
                                                    });
                                                    
+                                                   // set resetPWD field to false
+                                                   user.set("resetPWD", false);
+                                                   
                                                    // also add notification message
                                                    now = new Date();
                                                    notif.type = "pwd";

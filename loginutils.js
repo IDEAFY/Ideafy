@@ -322,7 +322,6 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 };
                 
                 pwd = generatePassword();
-                console.log(pwd);
                 _changePassword(user, pwd, json)
                 .then(function(){
                         return _getDocAsAdmin(user, cdb);

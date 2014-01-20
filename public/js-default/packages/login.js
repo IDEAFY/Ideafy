@@ -238,7 +238,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 var name = node.getAttribute("name"),
                                       btn = _loginForm.dom.querySelector(".login-button");
                                 _store.set("error", "");
-                                _sotre.set("reset", false);
+                                _store.set("reset", false);
                                 _store.set(name, node.value);
                                 if (_store.get("email") && _store.get("password")){
                                         btn.classList.add("btn-ready");

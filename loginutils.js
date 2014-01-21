@@ -265,6 +265,8 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                 _sessionStore.set(sessionID, session);
                                                 _getDocAsAdmin(json.name, cdb)
                                                 .then(function(){
+                                                        var now = new Date();
+                                                        cdb.set("lastCX", now.getTime());
                                                         cdb.set("online", true);
                                                         cdb.set("sock", json.sock);
                                                         return _updateDocAsAdmin(json.name, cdb);

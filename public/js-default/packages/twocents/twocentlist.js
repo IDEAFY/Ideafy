@@ -75,7 +75,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "ser
                                                 }       
                                         },
                                         toggleHideButton : function(replies){
-                                                if (!replies || !replies.length) this.classList.add("invisible")
+                                                if (!replies || !replies.length) this.classList.add("invisible");
                                                 else {
                                                          this.classList.remove("invisible");
                                                          if (replies.length === 1){

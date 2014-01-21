@@ -48,7 +48,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 this.setAttribute("style", "background: url('img/connect/"+value+"') no-repeat top left; background-size: contain;");
                                         },
                                         setStyle : function(sentok){
-                                                (sentok) ? this.setAttribute("style", "color: #5F8F28;"):this.setAttribute("style", "color: #F27B3D;")
+                                                (sentok) ? this.setAttribute("style", "color: #5F8F28;"):this.setAttribute("style", "color: #F27B3D;");
                                         },
                                         setVisible : function(contacts){
                                                 (contacts.length)?this.classList.remove("invisible"):this.classList.add("invisible");
@@ -115,7 +115,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 // check if contact is no yet present in group
                                 if (grpcontacts.toJSON().search(contact.userid) < 0){
                                         for (i=0, l =current.length; i<l; i++){
-                                                if (contact.lastname > current[i].lastname) index++
+                                                if (contact.lastname > current[i].lastname) index++;
                                                 else if (contact.lastname === current[i].lastname && contact.username > current[i].username) index++;
                                         }
                                         // insert new contact at index position

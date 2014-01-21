@@ -84,7 +84,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         }
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        this.setAttribute("style", "background-image: none;");
                                                 }
                                         }
                                 }),
@@ -129,7 +129,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         .then(function(){
                                                // resync with db
                                                 $session.unsync();
-                                                return $session.sync(Config.get("db"), $session.get("_id"))
+                                                return $session.sync(Config.get("db"), $session.get("_id"));
                                         })
                                         .then(function(){
                                                 var timers = $session.get("elapsedTimers");
@@ -238,7 +238,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.push = function(event, node){
                                 var name = node.getAttribute("name");
                                 if (node.classList.contains("drawok")){
-                                        if (_draw[name].get("_id") && _next === "step") node.classList.add("pushed")     
+                                        if (_draw[name].get("_id") && _next === "step") node.classList.add("pushed");    
                                 }
                                 else {node.classList.add("pushed");}
                         };

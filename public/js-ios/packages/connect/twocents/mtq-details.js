@@ -23,9 +23,9 @@ define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "tw
                                 "tqdetail" : new Model(model, {
                                         // set header title (user or user contact)
                                         setHeader : function(author){
-                                                if (!author) this.innerHTML = labels.get("selecttq")
-                                                else if (author === user.get("_id")) this.innerHTML = labels.get("mytqdetailheader")
-                                                else this.innerHTML = labels.get("tqheaderprefix")+model.get("username")+labels.get("tqheadersuffix")        
+                                                if (!author) this.innerHTML = labels.get("selecttq");
+                                                else if (author === user.get("_id")) this.innerHTML = labels.get("mytqdetailheader");
+                                                else this.innerHTML = labels.get("tqheaderprefix")+model.get("username")+labels.get("tqheadersuffix");      
                                         },
                                         // display twocents writing interface if applicable
                                         displayWriteTwocent : function(author){
@@ -41,8 +41,8 @@ define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "tw
                                         // display number of twocents
                                         displayTwocentNB : function(twocents){
                                                 var nb = twocents.length || 0;
-                                                if (!nb) this.innerHTML = labels.get("noreplyyet")
-                                                else if (nb === 1) this.innerHTML = nb + " " + labels.get("showonetcreply")
+                                                if (!nb) this.innerHTML = labels.get("noreplyyet");
+                                                else if (nb === 1) this.innerHTML = nb + " " + labels.get("showonetcreply");
                                                 else this.innerHTML = nb + "showtcrepliesafter";        
                                         },
                                         date : function date(date){

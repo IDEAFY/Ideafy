@@ -59,7 +59,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         }
                                                 }
                                                 else {
-                                                        this.setAttribute("style", "background-image: none;")
+                                                        this.setAttribute("style", "background-image: none;");
                                                 }
                                         }
                                 }),

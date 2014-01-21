@@ -49,7 +49,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                         var msg = user.get("notifications"),
                             unread = 0;
                         for (i=0, l=msg.length; i<l; i++){
-                                if (msg[i].status === "unread") unread++
+                                if (msg[i].status === "unread") unread++;
                         }
                         return unread;        
                 };
@@ -196,5 +196,5 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                 });
                 
                 return notify;
-                }
-        })
+                };
+        });

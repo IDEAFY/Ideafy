@@ -66,7 +66,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         //lookup user contacts for matching entries starting with usernames, then add last names
                                         _user.get("connections").forEach(function(item){
                                                 if (item.username.toLowerCase().search(pattern) === 0){
-                                                        _contactList.alter("push", {username: item.username, type:item.type})
+                                                        _contactList.alter("push", {username: item.username, type:item.type});
                                                 }                
                                         });
                                         // update selection based on current list
@@ -167,7 +167,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                         if (v.username === user.username){
                                                                                 _contactList.update(i, "selected", false);
                                                                         }
-                                                                })
+                                                                });
                                                                 _widget.remove(user);
                                                         });
                                                 }        
@@ -186,4 +186,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         AutoContactConstructor.prototype = new Widget();
                         return new AutoContactConstructor($dom, $outputNode, $update);
                 };
-        })
+        });

@@ -131,7 +131,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                     auto = dom.querySelector(".autocontact");
                                 
                                 // display div if not present
-                                if (auto.classList.contains("invisible")) auto.classList.remove("invisible")   
+                                if (auto.classList.contains("invisible")) auto.classList.remove("invisible");  
                                 
                                 // clear the search field if backspace is hit
                                 if (event.keyCode === 8){node.value = "";}
@@ -279,7 +279,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                         });
                                         
                                         // get li element
-                                        node = contacttwoq.dom.querySelector("li[data-twoqlist_id='"+index+"']")
+                                        node = contacttwoq.dom.querySelector("li[data-twoqlist_id='"+index+"']");
                                         
                                         // hightlight item in the list
                                         mtcControl.init(node);
@@ -304,7 +304,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         
                         // init contactList
                         for (i=0, l=connections.length; i<l; i++){
-                                if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false})
+                                if (connections[i].type === "user") contactList.alter("push", {"contact":connections[i], "selected":false});
                         }
                         
                         // add twocent and twoquestion lists to the stack

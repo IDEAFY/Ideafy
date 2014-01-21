@@ -172,7 +172,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         _pencil.set("mode", "pencil");
                         _colors.loop(function(v,i){
                                 if (v.active) _pencil.set("color", v.color);
-                        })
+                        });
                 };
                 
                 _widget.expand = function(event, node){

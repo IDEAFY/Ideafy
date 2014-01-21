@@ -155,11 +155,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _session.set("vote", vote);
                                         _session.upload()
                                         .then(function(){
-                                                console.log("upload ok");
                                                 _uploadInProgress = false;
                                          }, function(conflict){
                                                  console.log(conflict);
-                                         })
+                                         });
                                 }      
                         };
                         

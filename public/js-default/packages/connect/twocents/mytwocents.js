@@ -131,7 +131,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                     auto = dom.querySelector(".autocontact");
                                 
                                 // display div if not present
-                                if (auto.classList.contains("invisible")) auto.classList.remove("invisible")   
+                                if (auto.classList.contains("invisible")) auto.classList.remove("invisible");
                                 
                                 // clear the search field if backspace is hit
                                 if (event.keyCode === 8){node.value = "";}

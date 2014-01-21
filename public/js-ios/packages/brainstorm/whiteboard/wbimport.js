@@ -84,7 +84,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 },
                                 "showPreview" : function(content){
                                         var json, node=this, _transport = Config.get("transport"), spinner;
-                                        if (!content) this.innerHTML = ""
+                                        if (!content) this.innerHTML = "";
                                         else {
                                                 spinner = new Spinner().spin(node);
                                                 json = {"dir":"sessions/"+_sid, "filename":content};

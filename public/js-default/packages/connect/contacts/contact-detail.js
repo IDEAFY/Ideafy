@@ -152,7 +152,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                                 // reload notes from user connections
                                 var contacts = user.get("connections"), l=contacts.length; i;
                                 for (i=0; i<l;i++){
-                                        if (contacts[i].userid === contact.get("userid")) contact.set("notes", contacts[i].notes)
+                                        if (contacts[i].userid === contact.get("userid")) contact.set("notes", contacts[i].notes);
                                 }
                                 node.classList.add("pushed");
                                 contactDetails.hideNoteBtns();     

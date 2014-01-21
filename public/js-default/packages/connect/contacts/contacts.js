@@ -270,5 +270,5 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                         });
                         
                         return contactsUI;    
-                }
-        })
+                };
+        });

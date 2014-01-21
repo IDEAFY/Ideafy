@@ -332,11 +332,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         
                 widget.addContact = function(contact){
                         var i, l, add=true;
-                        if (contact.type === "user") invited.alter("push", contact)
+                        if (contact.type === "user") invited.alter("push", contact);
                         else{
                                 for(i=0, l=contact.contacts.length; i<l; i++){
                                         invited.loop(function(val,idx){
-                                                        if (val.userid === contact.contacts[i].userid) add = false                
+                                                        if (val.userid === contact.contacts[i].userid) add = false;             
                                         });
                                         if (add) {
                                                 invited.alter("push", contact.contacts[i]);

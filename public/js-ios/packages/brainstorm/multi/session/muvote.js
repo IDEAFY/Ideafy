@@ -158,7 +158,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 _uploadInProgress = false;
                                          }, function(conflict){
                                                  console.log(conflict);
-                                         })
+                                         });
                                 }      
                         };
                         
@@ -293,5 +293,5 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         return _widget;       
-                }
-        })
+                };
+        });

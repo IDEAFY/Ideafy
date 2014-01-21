@@ -24,7 +24,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./mtc-deta
                         
                         widget.setView = function setView(view){
                                 var current = mtcDetailStack.getStack().getCurrentName();
-                                if (view === "2Q" && current !== "twoqdetail") mtcDetailStack.getStack().show("twoqdetail")
+                                if (view === "2Q" && current !== "twoqdetail") mtcDetailStack.getStack().show("twoqdetail");
                                 else if (view === "2C" && current !== "twocdetail") {
                                         mtcDetailStack.getStack().get("twocdetail").reset();
                                         mtcDetailStack.getStack().show("twocdetail");

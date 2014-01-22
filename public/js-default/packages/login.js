@@ -286,7 +286,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         if (result === "ok"){
                                                 _store.set("error", _labels.get("temppwd")+_store.get("email"));
                                         }
-                                        else if (result.rst){
+                                        else if (result.rst){s
                                                 _store.set("error",_labels.get("failedpwdreset")+result.contact);
                                         }
                                         else {

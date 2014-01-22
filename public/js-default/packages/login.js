@@ -283,10 +283,11 @@ define(["OObject" ,"Amy/Stack-plugin",
                         
                         _loginForm.resetPassword = function(event, node){
                                 _transport.request("ResetPWD", {user:_store.get("email")}, function(result){
+                                        console.log(result);
                                         if (result === "ok"){
                                                 _store.set("error", _labels.get("temppwd")+_store.get("email"));
                                         }
-                                        else if (result.rst){s
+                                        else if (result.rst){
                                                 _store.set("error",_labels.get("failedpwdreset")+result.contact);
                                         }
                                         else {

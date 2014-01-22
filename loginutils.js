@@ -327,9 +327,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 
                 _getDocAsAdmin(user, cdb)
                 .then(function(){
-                        console.log(cdb.toJSON(), cdb.get("resetPWD"));
                         if (cdb.get("resetPWD")) {
-                                console.log("already reset!");
                                 onEnd({"rst": true, "contact": _support});
                         }
                         else{

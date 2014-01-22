@@ -27,10 +27,10 @@ define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "servi
                                         setBg : function(selected){
                                                 var id=this.getAttribute("data-ideafymenu_id");
                                                 if (selected){
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/"+_menu.get(id).bgselected+"');color:white;")
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/"+_menu.get(id).bgselected+"');color:white;");
                                                 }
                                                 else{
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/"+_menu.get(id).bg+"');color:#4D4D4D;")        
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/"+_menu.get(id).bg+"');color:#4D4D4D;");        
                                                 }
                                         }
                                 }),

@@ -187,7 +187,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 timers.muidea = _timer.get("timer");
                                                 // update session document
                                                 $session.set("idea", [JSON.parse(_idea.toJSON())]);
-                                                if (replay) {$session.set("replayIdeas", [])}
+                                                if (replay) {$session.set("replayIdeas", []);}
                                                 $session.set("elapsedTimers", timers);
                                                 $session.set("duration", duration);
                                                 $session.set("status", "completed");

@@ -13,7 +13,7 @@ function LoginUtils(){
 
 var _CouchDBDocument, _CouchDBUser, _Promise,
       _sendSignupEmail, _checkInvited, _createDocAsAdmin, _getDocAsAdmin, _updateDocAsAdmin,
-      _cookie, _sessionStore, _transport, _db, _cdbAdminCredentials,
+      _cookie, _sessionStore, _transport, _db, _cdbAdminCredentials, _support,
       _changePassword;
         
         this.setConstructors= function (CouchDBDocument, CouchDBUser, Promise) {
@@ -31,12 +31,13 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 _sendMail = sendMail; 
         };
         
-        this.setVar = function (cookie, sessionStore, transport, db, credentials) {
+        this.setVar = function (cookie, sessionStore, transport, db, credentials, supportEmail) {
                 _cookie = cookie;
                 _sessionStore = sessionStore;
                 _transport = transport;
                 _db = db;
-               _cdbAdminCredentials = credentials;   
+               _cdbAdminCredentials = credentials;
+               _support = supportEmail;
         };
         
         /*
@@ -265,6 +266,8 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                 _sessionStore.set(sessionID, session);
                                                 _getDocAsAdmin(json.name, cdb)
                                                 .then(function(){
+                                                        var now = new Date();
+                                                        cdb.set("lastCX", now.getTime());
                                                         cdb.set("online", true);
                                                         cdb.set("sock", json.sock);
                                                         return _updateDocAsAdmin(json.name, cdb);
@@ -280,7 +283,8 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                         }
                                 });
 
-                        } else {
+                        }
+                        else {
                                 onEnd({
                                         login : "failed",
                                         reason : "name or password invalid"
@@ -321,18 +325,21 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                          return retVal;
                 };
                 
-                pwd = generatePassword();
-                _changePassword(user, pwd, json)
+                _getDocAsAdmin(user, cdb)
                 .then(function(){
-                        return _getDocAsAdmin(user, cdb);
-                })
-                .then(function(){
-                        cdb.set("resetPWD", true);
-                        _sendMail({to:user, type:"pwdReset", lang:cdb.get("lang"), pwd:pwd});
-                        return _updateDocAsAdmin(user, cdb);     
-                })
-                .then(function(){
-                        onEnd("ok"); 
+                        if (cdb.get("resetPWD")) onEnd({"rst": true, "contact": _support});
+                        else{
+                                pwd = generatePassword();
+                                _changePassword(user, pwd, json)
+                                 .then(function(){
+                                        cdb.set("resetPWD", true);
+                                        _sendMail({to:user, type:"pwdReset", lang:cdb.get("lang"), pwd:pwd});
+                                        return _updateDocAsAdmin(user, cdb);     
+                                }, function(err){onEnd(err);})
+                                .then(function(){
+                                        onEnd("ok"); 
+                                }, function(err){onEnd(err);});     
+                        }        
                 });
         };                 
 };

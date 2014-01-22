@@ -141,7 +141,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         }),
                         "cxr": new Model(cxrConfirm,{
                                 setVisibility : function(resp){
-                                        (resp)?this.classList.remove("invisible"):this.classList.add("invisible")
+                                        (resp)?this.classList.remove("invisible"):this.classList.add("invisible");
                                 },
                                 setResponseMessage : function(resp){
                                         (resp === "YES")?this.innerHTML = labels.get("CXRaccepted")+message.get("username")+labels.get("isnowacontact"): this.innerHTML = labels.get("CXRrejected");

@@ -24,7 +24,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "service/uti
                         });
                         
                         // set template
-                        this.template='<ul data-avatar="foreach"><li data-avatar="bind: setAvatar, img; bind: name, id"></li></ul>'
+                        this.template='<ul data-avatar="foreach"><li data-avatar="bind: setAvatar, img; bind: name, id"></li></ul>';
                         // init
                         for (i=0; i<$ids.length; i++){
                                 if ($ids[i] === Config.get("user").get("_id")){

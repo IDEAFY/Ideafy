@@ -106,7 +106,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                 id = parseInt(node.getAttribute("data-select_id"), 10);
                                 _languages.loop(function(v,i){
                                         (id === i) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);
-                                })                
+                                });                
                         };
                         
                         _widget.setLang = function(event, node){

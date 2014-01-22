@@ -220,7 +220,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // zoom on selected card
                         _widget.zoom = function(event, node){
                                 var type, id;
-                                if (node.getAttribute("name") === "scenario") type="scenario"
+                                if (node.getAttribute("name") === "scenario") type="scenario";
                                 else{
                                         type = "techno";
                                         id = node.getAttribute("data-techs_id");

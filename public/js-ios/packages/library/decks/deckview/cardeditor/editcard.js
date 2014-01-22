@@ -254,12 +254,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                                 node.classList.remove("pressed");        
                                         });
                                 }, 750);
-                        }
+                        };
                         
                         onFail = function(message){
                                 alert("error: "+message);
                                 node.classList.remove("pressed");
-                        }
+                        };
                         
                         navigator.camera.getPicture(onSuccess, onFail, _options);       
                 };

@@ -149,7 +149,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                         
                                                                         // add welcome notification
                                                                         var now = new Date();
-
+                                                                        
+                                                                        user.set("regdate", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                                                         user.set("notifications", [{
                                                                                 "type" : "MSG",
                                                                                 "toList": fn + " " + ln,

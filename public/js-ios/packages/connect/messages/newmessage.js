@@ -89,7 +89,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                 error.reset({"errormsg":""});
                                 
                                 if (data){
-                                        if (data.type === "user") message.set("toList", data.username)
+                                        if (data.type === "user") message.set("toList", data.username);
                                         else {
                                                 for (i=0, l=data.contacts.length; i<l;i++){
                                                         (list)? list = list+", "+data.contacts[i].username : list = data.contacts[i].username;        

@@ -24,8 +24,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "labels" : new Model(_labels),
                                 "tip" : new Model(_tip,{
                                         setTitle : function(id){
-                                                if (id === "TIP:0") this.innerHTML = _labels.get("signupwelcomeobject")
-                                                else this.innerHTML = _labels.get("dyknow")        
+                                                if (id === "TIP:0") this.innerHTML = _labels.get("signupwelcomeobject");
+                                                else this.innerHTML = _labels.get("dyknow");        
                                         }
                                 }),
                                 "tipevent" : new Event(_widget)

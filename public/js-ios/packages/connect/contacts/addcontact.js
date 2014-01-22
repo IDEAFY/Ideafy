@@ -134,7 +134,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                                         (value)?this.classList.remove("invisible"):this.classList.add("invisible");
                              },
                              setStyle : function(sentok){
-                                     (sentok) ? this.setAttribute("style", "color: #5F8F28;"):this.setAttribute("style", "color: #F27B3D;")
+                                     (sentok) ? this.setAttribute("style", "color: #5F8F28;"):this.setAttribute("style", "color: #F27B3D;");
                              }
                      }),
                      "contacts" : new Model(displayContacts, {

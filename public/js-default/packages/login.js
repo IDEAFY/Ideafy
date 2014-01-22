@@ -287,7 +287,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                 _store.set("error", _labels.get("temppwd")+_store.get("email"));
                                         }
                                         else if (result.rst){
-                                                _store.set("error",_labels.get("failedpwdreset")+result.contact);
+                                                _store.set("error",_labels.get("failedpwdreset")+"mailto:"+result.contact);
                                         }
                                         else {
                                                 console.log(result);

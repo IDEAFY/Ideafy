@@ -327,7 +327,10 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 
                 _getDocAsAdmin(user, cdb)
                 .then(function(){
-                        if (cdb.get("resetPWD")) onEnd({"rst": true, "contact": _support});
+                        if (cdb.get("resetPWD")) {
+                                console.log("already reset!");
+                                onEnd({"rst": true, "contact": _support});
+                        }
                         else{
                                 pwd = generatePassword();
                                 _changePassword(user, pwd, json)

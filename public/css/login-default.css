@@ -102,6 +102,8 @@
 	font-size: 13px;
     font-weight: bold;
     color: white;
+    line-height: 1.3em;
+    height: 77px;
 }
 
 #signup-button {

@@ -22,3 +22,7 @@
     width: 30px;
     height: 30px;
 }
+
+.a-tools .importpic-button{
+    background-image: url('../img/r2/upload-picture.png');
+}

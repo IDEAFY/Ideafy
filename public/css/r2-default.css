@@ -13,3 +13,12 @@
     border-bottom-right-radius: 5px;
     -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.6);
 }
+
+#newidea-popup .a-tools{
+    
+}
+
+#newidea-popup .a-tools .toolbox-button div{
+    width: 30px;
+    height: 30px;
+}

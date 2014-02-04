@@ -1,0 +1,13 @@
+/* Idea Attachments */
+
+
+#newidea-popup .a-list{
+    height: 568px;
+    width: 250px;
+    position: absolute;
+    left: 480px;
+    top: 36px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.6);
+}

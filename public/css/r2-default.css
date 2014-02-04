@@ -2,8 +2,10 @@
 
 
 #newidea-popup .a-list{
+    display: block;
     height: 568px;
     width: 250px;
+    background: #e5e5e5;
     position: absolute;
     left: 480px;
     top: 36px;

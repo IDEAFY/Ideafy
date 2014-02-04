@@ -11,16 +11,14 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         function(Widget, LocalStore, Map, Stack, Model, Event, Dock, Login, Config, Utils, Promise) {
         
         //declaration
-        var _body = new Widget(), _login = null, _stack = new Stack({
-                                                                    "#login" : _login
-                                                                    }), _dock = new Dock(), _local = new LocalStore(), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user"), _currentVersion;
+        var _body = new Widget(), _login = null, _stack = new Stack({"#login" : _login}), _dock = new Dock(), _local = new LocalStore(), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user"), _currentVersion;
         
         _currentVersion = Config.get("version");
         
         //setup
         _body.plugins.addAll({
-                             "stack" : _stack
-                             });
+                "stack" : _stack
+        });
         
         //logic
         _body.init = function init(firstStart) {
@@ -50,24 +48,24 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
               var loadAvatar = new Promise();
               // get user avatar and labels if necessary
               if (_user.get("picture_file").search("img/avatars/deedee")>-1){
-              Config.set("avatar", _user.get("picture_file"));
-              loadAvatar.fulfill();
+                        Config.set("avatar", _user.get("picture_file"));
+                        loadAvatar.fulfill();
               }
               else if (_local.get("userAvatar")){
-              Config.set("avatar", _local.get("userAvatar"));
-              loadAvatar.fulfill();
+                        Config.set("avatar", _local.get("userAvatar"));
+                        loadAvatar.fulfill();
               }
               else{
-              _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
+                        _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                  if (!result.error) {
-                                 Config.set("avatar", result);
+                                        Config.set("avatar", result);
                                  }
                                  else {
-                                 console.log(result.error);
-                                 Config.set("avatar", "img/avatars/deedee1.png");
+                                        console.log(result.error);
+                                        Config.set("avatar", "img/avatars/deedee1.png");
                                  }
-                                 loadAvatar.fulfill();
-                                 });
+                                loadAvatar.fulfill();
+                        });
               }
               return loadAvatar;
               })
@@ -144,50 +142,50 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         // check connection
         if (navigator.connection && navigator.connection.type === "none"){
-        // get labels or assign default ones
-        (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
-        Config.set("lang", _labels.set("language"));
-        _login.setScreen("#nointernet");
+                // get labels or assign default ones
+                (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
+                Config.set("lang", _labels.set("language"));
+                _login.setScreen("#nointernet");
         }
         else {
-        checkServerStatus()
-        .then(function(){
+                checkServerStatus()
+                .then(function(){
               
-              // initialize labels to device language if available or US by default
-              if (_local.get("labels")) {
-              _labels.reset(_local.get("labels"));
-              Config.set("lang", _labels.get("language"));
-              }
-              else{
-              updateLabels(navigator.language);
-              }
+                        // initialize labels to device language if available or US by default
+                        if (_local.get("labels")) {
+                                _labels.reset(_local.get("labels"));
+                                Config.set("lang", _labels.get("language"));
+                        }
+                        else{
+                                updateLabels(navigator.language);
+                        }
               
-              // check client version
-              _transport.request("CheckVersion", {version: _currentVersion}, function(result){
+                        // check client version
+                        _transport.request("CheckVersion", {version: _currentVersion}, function(result){
                                  var msg = _labels.get("outdated") || "Please update your application";
                                  if (result === "outdated"){
-                                 alert(msg);
+                                        alert(msg);
                                  }
-                                 });
+                        });
               
-              var current = _local.get("currentLogin") || "";
+                        var current = _local.get("currentLogin") || "";
               
-              // if the last user is in the local storage show login if not display signup screen
-              if (!current) {
-              //display signup
-              _login.setScreen("#signup-screen");
-              }
-              else {
-              _transport.request("CheckLogin", {"id" : current, "sock" : Config.get("socket").socket.sessionid}, function(result) {
-                                 if (result.authenticated) {_body.init();}
-                                 else {
-                                 _login.setScreen("#login-screen");
-                                 }
-                                 });
+                        // if the last user is in the local storage show login if not display signup screen
+                        if (!current) {
+                                //display signup
+                                _login.setScreen("#signup-screen");
+                        }
+                        else {
+                        _transport.request("CheckLogin", {"id" : current, "sock" : Config.get("socket").socket.sessionid}, function(result) {
+                                        if (result.authenticated) {_body.init();}
+                                        else {
+                                                _login.setScreen("#login-screen");
+                                        }
+                        });
               }
               }, function(error){
-              (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
-              _login.setScreen("#maintenance-screen");
+                        (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
+                        _login.setScreen("#maintenance-screen");
               });
         }
         
@@ -195,23 +193,23 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
          * Watch for signout events
          */
         Config.get("observer").watch("signout", function(){
-                                     // change user status
-                                     _user.set("online", false);
-                                     _user.set("sock", "");
-                                     _user.upload();
+                // change user status
+                _user.set("online", false);
+                _user.set("sock", "");
+                _user.upload();
                                      
-                                     // clear local store
-                                     _local.set("currentLogin", "");
-                                     _local.set("userAvatar", "");
-                                     _local.sync("ideafy-data");
+                // clear local store
+                 _local.set("currentLogin", "");
+                 _local.set("userAvatar", "");
+                _local.sync("ideafy-data");
                                      
-                                     _stack.getStack().add("#login", _login);
-                                     _login.reset(true);
-                                     _stack.getStack().show("#login");
-                                     _stack.getStack().setCurrentScreen(_login);
-                                     _login.setScreen("#login-screen");
-                                     document.getElementById("cache").classList.remove("appear");
-                                     });
+                _stack.getStack().add("#login", _login);
+                _login.reset(true);
+                _stack.getStack().show("#login");
+                _stack.getStack().setCurrentScreen(_login);
+                _login.setScreen("#login-screen");
+                document.getElementById("cache").classList.remove("appear");
+        });
         
         /*
          * Manage socket connectivity
@@ -224,30 +222,30 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         // resync user document upon socket reconnection
         Config.get("observer").watch("reconnect", function(option){
-                                     _local.sync("ideafy-data");
-                                     if (navigator.connection && navigator.connection.type === "none"){
-                                     _login.setScreen("#nointernet");
-                                     }
-                                     else {
-                                     if (option === "all"){
-                                     checkServerStatus()
-                                     .then(function(){
-                                           _user.unsync();
-                                           return _user.sync(_db, _local.get("currentLogin"));
-                                           }, function(){
+                _local.sync("ideafy-data");
+                if (navigator.connection && navigator.connection.type === "none"){
+                        _login.setScreen("#nointernet");
+                }
+                else {
+                        if (option === "all"){
+                                checkServerStatus()
+                                .then(function(){
+                                        _user.unsync();
+                                        return _user.sync(_db, _local.get("currentLogin"));
+                                }, function(){
                                            _login.setScreen("#maintenance-screen");
-                                           })
-                                     .then(function(){
-                                           _user.set("online", true);
-                                           _user.set("sock", Config.get("socket").socket.sessionid);
-                                           return _user.upload();
-                                           });
-                                     }
-                                     else{
-                                     _user.set("online", true);
-                                     _user.set("sock", Config.get("socket").socket.sessionid);
-                                     return _user.upload();
-                                     }
-                                     }
-                                     });
+                                })
+                                .then(function(){
+                                        _user.set("online", true);
+                                        _user.set("sock", Config.get("socket").socket.sessionid);
+                                        return _user.upload();
+                                });
+                        }
+                        else{
+                                _user.set("online", true);
+                                _user.set("sock", Config.get("socket").socket.sessionid);
+                                return _user.upload();
+                        }
+                }
         });
+});

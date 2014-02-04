@@ -20,7 +20,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 "labels": new Model(_labels),
                                 "mail" : new Model(_mail, {
                                         setUserAvatar : function(from){
-                                                if (from) this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center;");
+                                                if (from) this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center; background-size: cover;");
                                         },
                                         date : function date(date){
                                                 if (date) this.innerHTML = Utils.formatDate(date);

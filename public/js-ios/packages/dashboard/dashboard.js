@@ -12,6 +12,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
 			var _widget = new Widget(),
                             _stack = new Stack(),
                             _profile, _settings, _about,
+                            _user = Config.get("user"),
                             _observer = Config.get("observer"),
                             setView = function setView(name){
                                   _stack.getStack().show(name);       
@@ -47,7 +48,13 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                        _stack.getStack().add("#about", _about);
                        
                // set current view
-                       _stack.getStack().show("#profile");
+                       if (_user.get("resetPWD")){
+                                _stack.getStack().show("#settings");
+                                //_widget.dom.querySelector(".input[type='password]").scrollIntoView();      
+                        }
+                        else{
+                                _stack.getStack().show("#profile");
+                        }
                        
                // watch for events
                         Config.get("observer").watch("display-tutorials", function(){

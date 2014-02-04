@@ -148,7 +148,8 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                 };
                 
                 notifyPopup.showPopup = function showPopup(event, node){
-                        notifyPopup.dom.classList.remove("invisible");        
+                        notifyPopup.dom.classList.remove("invisible");
+                        messages.reset(user.get("notifications").concat());      
                 };
                 
                 notifyPopup.displayComCenter = function displayComCenter(event, node){
@@ -172,15 +173,14 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                         currentUnread = notify.getUnread();
                         notif.set("unread", currentUnread);
                         notif.set("newmsg", false);
-                        messages.reset(user.get("notifications"));     
+                        messages.reset(user.get("notifications").concat());     
                 };
                 
                 // watch for new/unread messages
                 
                 user.watchValue("notifications", function(){
-                        var unread = notify.getUnread();
-                        
-                        messages.reset([]);
+                        var unread = notify.getUnread(),
+                              n = user.get("notifications").concat() || [];
                         
                         if (unread > currentUnread){
                                 notif.set("newmsg", true);
@@ -192,7 +192,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                                 notif.set("unread", unread);
                                 currentUnread = unread;
                         }
-                        messages.reset(user.get("notifications"));                      
+                        messages.reset(n);                       
                 });
                 
                 return notify;

@@ -60,15 +60,21 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			 */
 			_widget.start = function start(firstStart){
 			        var pub = _widget.dom.querySelector('a[href="#public"]'),
-			            current = _widget.dom.querySelector('a.selected'),
-			            startScreen = _widget.dom.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
+                                      dash = _widget.dom.querySelector('a[href="#dashboard"]'),
+			              current = _widget.dom.querySelector('a.selected'),
+			              startScreen = _widget.dom.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
 			         //set current stack view
-                                if (!_user.get("settings").startupScreen){
+                                if (!_user.get("settings").startupScreen && !_user.get("resetPWD")){
                                         if (current !== pub) {
                                                 _control.radioClass(pub, current, "selected");
                                                 _control.init(pub);
                                         }
                                         _stack.getStack().show("#public");
+                                }
+                                else if (_user.get("resetPWD")){
+                                        _control.radioClass(dash, current, "selected");
+                                        _control.init(dash);
+                                        _stack.getStack().show("#dashboard");     
                                 }
                                 else {
                                        _control.radioClass(startScreen, current, "selected");

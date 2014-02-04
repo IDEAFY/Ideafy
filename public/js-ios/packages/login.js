@@ -23,7 +23,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         "lastname" : "",
                                         "confirm-password" : "",
                                         "password" : "",
-                                        "error" : ""
+                                        "error" : "",
+                                        "reset" : false
                              }),
                              _labels = Config.get("labels"),
                              _transport = Config.get("transport"),
@@ -87,12 +88,12 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 _store.set("error", "");
                                 _store.set(name, node.value);
                                
-                               if (_store.get("email") && _store.get("password") && _store.get("confirm-password") && _store.get("firstname") && _store.get("lastname")){
-                                      btn.classList.add("btn-ready");
-                               }
-                               else{
-                                       btn.classList.remove("btn-ready");
-                               }      
+                                if (_store.get("email") && _store.get("password") && _store.get("confirm-password") && _store.get("firstname") && _store.get("lastname")){
+                                        btn.classList.add("btn-ready");
+                                }
+                                else{
+                                        btn.classList.remove("btn-ready");
+                                }      
                         };
                         
                         _signupForm.signup = function signup(event, node){
@@ -103,7 +104,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                     ln = _store.get("lastname"),
                                     promise = new Promise(),
                                     user = new CouchDBDocument();
-                                 node.classList.remove("btn-ready");
+                                node.classList.remove("btn-ready");
                                 // handle form errors
                                 if (email === "") {
                                         _store.set("error", _labels.get("signupmissingemail"));
@@ -171,6 +172,10 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         if (result.db){
                                                                                 $local.set("db", result.db);
                                                                         }
+                                                                        
+                                                                        // set online status and socket info
+                                                                        user.set("online", true);
+                                                                        user.set("sock", Config.get("socket").socket.sessionid);
 
                                                                         // upload to database
                                                                         user.setTransport(_transport);
@@ -201,11 +206,15 @@ define(["OObject" ,"Amy/Stack-plugin",
                         // login form
                         _loginForm.plugins.addAll({
                                 "label": new Model(_labels),
-                                "loginmodel" : new Model(_store),
+                                "loginmodel" : new Model(_store,{
+                                        forgotpwd : function(reset){
+                                                (reset) ? this.classList.remove("loginvisible") : this.classList.add("loginvisible");
+                                        }
+                                }),
                                 "loginevent" : new Event(_loginForm)
                         });
                         
-                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" autofocus="autofocus" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:input, resetError"><input name="password" type="password" data-loginmodel="bind:value,password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: input, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:touchstart, press; listen: touchend, release; listen:touchend, login"></label></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup-button" class="pressed-btn btn-ready" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: touchstart, press; listen:touchend, release; listen: touchend, showSignup"></label></p></form>';
+                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" autofocus="autofocus" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:input, resetError"><input name="password" type="password" data-loginmodel="bind:value,password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: input, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:touchstart, press; listen: touchend, release; listen:touchend, login"></label></p><p class="login-error"><label data-loginmodel="bind:innerHTML,error" class="login-error"></label><label class="forgotpwd" data-loginmodel="bind:forgotpwd,reset" data-label="bind:innerHTML, forgotpwd"  data-loginevent="listen:touchstart, press; listen:touchend, release; listen:touchend, resetPassword"></label></p><p><label id="signup-button" class="pressed-btn btn-ready" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: touchstart, press; listen:touchend, release; listen: touchend, showSignup"></label></p></form>';
                         
                         _loginForm.press = function(event, node){
                                 node.classList.add("pressed");        
@@ -231,6 +240,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 var name = node.getAttribute("name"),
                                       btn = _loginForm.dom.querySelector(".login-button");
                                 _store.set("error", "");
+                                _store.set("reset", false);
                                 _store.set(name, node.value);
                                 if (_store.get("email") && _store.get("password")){
                                         btn.classList.add("btn-ready");
@@ -263,12 +273,29 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                 }
                                                 else {
                                                         _store.set("error", _labels.get("invalidlogin"));
+                                                        _store.set("reset", true);
                                                         loginSpinner.stop();
                                                 }
                                         });
                                 }
-                                else {_store.set("error", _labels.get("invalidlogin"));}
+                                else _store.set("error", _labels.get("invalidlogin"));
                                 el.classList.remove("btn-ready");      
+                        };
+                        
+                        _loginForm.resetPassword = function(event, node){
+                                var login = _store.get("email").toLowerCase();
+                                _transport.request("ResetPWD", {user:login}, function(result){
+                                        if (result === "ok"){
+                                                _store.set("error", _labels.get("temppwd")+login);
+                                        }
+                                        else if (result.rst){
+                                                _store.set("error",_labels.get("failedpwdreset")+"<a href='mailto:"+result.contact+"?Subject=Password%20support%20"+login+"'>"+_labels.get("support")+"</a>");
+                                        }
+                                        else {
+                                                console.log(result);
+                                                _store.set("error", _labels.get("somethingwrong"));
+                                        }
+                                });      
                         };
 
                         // ADDING ALL UIS TO STACK
@@ -298,7 +325,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         "lastname" : "",
                                         "confirm-password" : "",
                                         "password" : "",
-                                        "error" : ""
+                                        "error" : "",
+                                        "reset" : false
                                 });
                                 if (signout){ reload = true;}
                         };

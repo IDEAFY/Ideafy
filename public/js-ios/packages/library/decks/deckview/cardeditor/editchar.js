@@ -286,7 +286,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         
                         onFail = function(message){
                                 alert("error: "+message);
-                            ;
+                        };
                         
                         navigator.camera.getPicture(onSuccess, onFail, _options);       
                 };
@@ -435,6 +435,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                
                MODEL = model;
                return editChar;         
-           };   
+           };  
         });
 

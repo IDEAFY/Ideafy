@@ -45,7 +45,7 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
         host: "10.224.0.27",
         secureConnection : true,
-        port : 465,
+        port : 587,
         auth : {
                 user : "ideafy-taiaut",
                 pass : fs.readFileSync(".password", "utf8").trim()
@@ -162,7 +162,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         // login utilities
         loginUtils.setConstructors(CouchDBDocument, CouchDBUser, Promise);
         loginUtils.setFunctions(sendSignupEmail, checkInvited, CDBAdmin, comUtils.sendMail);
-        loginUtils.setVar(cookie, sessionStore, transport, _db, cdbAdminCredentials);
+        loginUtils.setVar(cookie, sessionStore, transport, _db, cdbAdminCredentials, supportEmail);
         
         olives.handlers.set("Signup", loginUtils.signup);
         olives.handlers.set("CheckLogin", loginUtils.checkLogin);

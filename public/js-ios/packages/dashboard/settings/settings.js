@@ -104,7 +104,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                            "settingsevent" : new Event(settingsUI)
                    });
                    
-                   settingsUI.template = '<div id="dashboard-settings"><div class="header blue-dark"><span data-label="bind:innerHTML, settingslbl"></span></div><div class="settingscontent"><div class="settingmodule"><legend data-label="bind:innerHTML, publicwallsettings"></legend><ul><li class="startupscreen"><span data-label="bind: innerHTML, choosepolling"></span><select data-options="bind:setPollingInterval, timers" data-settingsevent="listen: change, updatePollingInterval"></select></li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, brainstormsettings"></legend><ul><li class="activedeck"><span data-label="bind:innerHTML, setdeck">Set brainstorming deck</span><select data-options="bind:setDecks, decks" data-settingsevent="listen: touchstart, getDecks; listen: change, updateDeck"></select></li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, userpref"></legend><ul><li><span data-label="bind:innerHTML, setlang"></span><select data-options="bind:setLang, lang" data-settingsevent="listen: change, updateLang"></select></li><li class="activelang"><span data-label="bind:innerHTML, defaultlangfilter"></span><div class="selectlang"><div data-options="bind:setBg, contentLang"></div><button data-settingsevent = "listen:touchstart, displayLang"></button></div><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-settingsevent="listen: touchend, setContentLang"></li></ul></li><li class="startupscreen"><span data-label="bind: innerHTML, choosestartup"></span><select data-options="bind:setStartupScreen, screens" data-settingsevent="listen: change, updateStartup"></select></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, showTips" data-settingsevent="listen: change, showTips"><label data-label="bind:innerHTML, showtips"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, notifyPopup" data-settingsevent="listen: change, showNotif"><label data-label="bind:innerHTML, shownotif"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, useascharacter" data-settingsevent="listen: change, useAsChar"><label data-label="bind:innerHTML, usechar"></label></li><li><span data-label="bind: innerHTML, changepwd"></span><input class="input" type="password" data-label="bind:placeholder, passwordplaceholder" data-options="bind: value, pwd" data-settingsevent="listen: input, clearOK"><input class="input" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-options="bind: value, pwdbis" data-settingsevent="listen: input, clearOK"><span class="changeok" data-options="bind: innerHTML, pwdchange"></span><div class="next-button" data-label="bind:innerHTML, changelbl" data-settingsevent="listen: touchstart, press; listen:touchend, changePWD"></div></li></ul></div></div></div>';
+                   settingsUI.template = '<div id="dashboard-settings"><div class="header blue-dark"><span data-label="bind:innerHTML, settingslbl"></span></div><div class="settingscontent"><div class="settingmodule"><legend data-label="bind:innerHTML, publicwallsettings"></legend><ul><li class="startupscreen"><span data-label="bind: innerHTML, choosepolling"></span><select data-options="bind:setPollingInterval, timers" data-settingsevent="listen: change, updatePollingInterval"></select></li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, brainstormsettings"></legend><ul><li class="activedeck"><span data-label="bind:innerHTML, setdeck">Set brainstorming deck</span><select data-options="bind:setDecks, decks" data-settingsevent="listen: touchstart, getDecks; listen: change, updateDeck"></select></li></ul></div><div class="settingmodule"><legend data-label="bind:innerHTML, userpref"></legend><ul><li><span data-label="bind:innerHTML, setlang"></span><select data-options="bind:setLang, lang" data-settingsevent="listen: change, updateLang"></select></li><li class="activelang"><span data-label="bind:innerHTML, defaultlangfilter"></span><div class="selectlang"><div data-options="bind:setBg, contentLang"></div><button data-settingsevent = "listen:touchstart, displayLang"></button></div><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-settingsevent="listen: touchend, setContentLang"></li></ul></li><li class="startupscreen"><span data-label="bind: innerHTML, choosestartup"></span><select data-options="bind:setStartupScreen, screens" data-settingsevent="listen: change, updateStartup"></select></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, showTips" data-settingsevent="listen: change, showTips"><label data-label="bind:innerHTML, showtips"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, notifyPopup" data-settingsevent="listen: change, showNotif"><label data-label="bind:innerHTML, shownotif"></label></li><li class="setting-input"><input type="checkbox" data-settings="bind: checked, useascharacter" data-settingsevent="listen: change, useAsChar"><label data-label="bind:innerHTML, usechar"></label></li><li><span data-label="bind: innerHTML, changepwd"></span><input class="input" type="password" data-label="bind:placeholder, passwordplaceholder" data-options="bind: value, pwd" data-settingsevent="listen:input, updatepwd; listen: input, clearOK"><input class="input" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-options="bind: value, pwdbis" data-settingsevent="listen:input, updatepwdbis; listen: input, clearOK"><span class="changeok" data-options="bind: innerHTML, pwdchange"></span><div class="next-button" data-label="bind:innerHTML, changelbl" data-settingsevent="listen: touchstart, press; listen:touchend, changePWD"></div></li></ul></div></div></div>';
                    
                    settingsUI.place(Map.get("dashboard-settings"));
                    
@@ -236,6 +236,14 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                            node.classList.add("pressed");
                    };
                    
+                   settingsUI.updatepwd = function(event, node){
+                           options.set("pwd", node.value);
+                   };
+                   
+                   settingsUI.updatepwdbis = function(event, node){
+                           options.set("pwdbis", node.value);
+                   };
+                   
                    settingsUI.clearOK = function(event, node){
                         options.set("pwdchange", "");        
                    };
@@ -246,9 +254,11 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                            // check if passwords match
                            if (options.get("pwd") !== options.get("pwdbis")){
                                    options.set("pwdbis", "");
+                                   options.set("pwdchange", "&#10007;");
                            }
                            else{
                                    transport.request("ChangePWD", {"userid": user.get("_id"), "pwd": options.get("pwd")}, function(result){
+                                           var json = {}, notif = {}, now, n = user.get("notifications").concat() || [];
                                            if (result === "ok") {
                                                    options.set("pwdchange", "&#10003;");
                                                    
@@ -318,7 +328,12 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                 {"name": labels.get("brainstorm"), "dest": "#brainstorm"},
                                 {"name": labels.get("connect"), "dest": "#connect"},
                                 {"name": labels.get("dashboard"), "dest": "#dahsboard"}
-                        ]); 
+                        ]);
+                        
+                        // reset pwd fields
+                        options.set("pwd", "");
+                        options.set("pwdbis", "");
+                        options.set("pwdchange", "");
                    };
                    
                    settingsUI.reset();

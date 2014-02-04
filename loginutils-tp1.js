@@ -217,32 +217,19 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
         this.checkLogin = function(json, onEnd){
                 var cookieJSON = _cookie.parse(json.handshake.headers.cookie),
                     sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
-                    cdb = new _CouchDBDocument(),
-                    user = new _CouchDBUser();
+                    cdb = new _CouchDBDocument();
                 
-                user.setTransport(_transport);
                 // return false if document does not exist in database
                 _getDocAsAdmin(json.id, cdb).then(function(){
                         _sessionStore.get(sessionID, function(err, session){
-                                var login = json.id, pwd;
                                 if(err){throw new Error(err);}
                                 else{
-                                        if (session.auth && session.auth.search(login) >-1) {
-                                                pwd = session.auth.replace(login+":", "");
-                                                user.set("name", login);
-                                                user.set("password", pwd);
-                                                user.login(login, pwd)
-                                                .then(function(result){
-                                                        var res = JSON.parse(result);
-                                                        console.log(res);
-                                                        cdb.set("sock", json.sock);
-                                                        cdb.set("online", true);
-                                                       _updateDocAsAdmin(json.id, cdb)
-                                                       .then(function(){
-                                                                onEnd({authenticated: true});        
-                                                        });        
-                                                }, function(result){
-                                                       onEnd({authenticated : false});        
+                                        if (session.auth && session.auth.search(json.id) >-1) {
+                                                cdb.set("sock", json.sock);
+                                                cdb.set("online", true);
+                                                _updateDocAsAdmin(json.id, cdb)
+                                                .then(function(){
+                                                        onEnd({authenticated: true});        
                                                 });
                                         }
                                         else onEnd({authenticated : false});
@@ -260,7 +247,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 
                 user.setTransport(_transport);
                 user.set("password", json.password);
-                user.set("name", json.name.toLowerCase());
+                user.set("name", json.name);
                 
                 user.login(json.name, json.password).then(function(result) {
                         
@@ -274,8 +261,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                 _sessionStore.get(sessionID, function(err, session) {
                                         if (err) {
                                                 throw new Error(err);
-                                        }
-                                        else {
+                                        } else {
                                                 session.auth = json.name + ":" + json.password;
                                                 _sessionStore.set(sessionID, session);
                                                 _getDocAsAdmin(json.name, cdb)
@@ -324,7 +310,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
         * User password reset
         */
         this.resetPassword = function(json, onEnd){
-                var user = json.user.toLowerCase(),
+                var user = json.user,
                       cdb = new _CouchDBDocument(),
                       generatePassword,
                       pwd;
@@ -332,13 +318,11 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 generatePassword = function() {
                         var length = 8,
                               charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-                              n = charset.length,
-                              i,
-                              ret = "";
-                        for (i = 0; i < length; ++i) {
-                                ret += charset.charAt(Math.floor(Math.random() * n));
+                              retVal = "";
+                        for (var i = 0, n = charset.length; i < length; ++i) {
+                                retVal += charset.charAt(Math.floor(Math.random() * n));
                         }
-                         return ret;
+                         return retVal;
                 };
                 
                 _getDocAsAdmin(user, cdb)
@@ -358,7 +342,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                         onEnd("ok"); 
                                 }, function(err){onEnd(err);});     
                         }        
-                }, function(err){onEnd(err);});
+                });
         };                 
 };
 

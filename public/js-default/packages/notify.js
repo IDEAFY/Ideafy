@@ -149,7 +149,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                 
                 notifyPopup.showPopup = function showPopup(event, node){
                         notifyPopup.dom.classList.remove("invisible");
-                        messages.reset(user.get("notifications"));      
+                        messages.reset(user.get("notifications").concat());      
                 };
                 
                 notifyPopup.displayComCenter = function displayComCenter(event, node){

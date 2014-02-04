@@ -90,7 +90,11 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 // show tips if applicable
                                 if (firstStart || _user.get("settings").showTips !== false){
                                         _tips.init(firstStart);
-                                }         
+                                } 
+                                
+                                // set user connection status
+                                _user.set("online", true);
+                                _user.upload();       
 
 			};
 			

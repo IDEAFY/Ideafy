@@ -62,6 +62,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _signupForm.template = '<form id="signup-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: input, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: input, resetError"><input name="confirm-password" data-loginmodel="bind:value,confirm-password" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: input, resetError"><input name="firstname" data-loginmodel="bind:value,firstname" type="text" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: input, resetError"><input name="lastname" data-loginmodel="bind:value,lastname" type="text" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:input, resetError; listen:keypress, entersignup"></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: mousedown, press; listen: mouseup, release; listen:mouseup, signup"></label></p><p><label class="login-button pressed-btn" name="#login-screen" data-signupevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form>';
                         
                         _signupForm.press = function(event, node){
+                                node.focus();
                                 node.classList.add("pressed");        
                         };
                         
@@ -87,12 +88,12 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 _store.set("error", "");
                                 _store.set(name, node.value);
                                
-                               if (_store.get("email") && _store.get("password") && _store.get("confirm-password") && _store.get("firstname") && _store.get("lastname")){
-                                      btn.classList.add("btn-ready");
-                               }
-                               else {
-                                       btn.classList.remove("btn-ready");
-                              }     
+                                if (_store.get("email") && _store.get("password") && _store.get("confirm-password") && _store.get("firstname") && _store.get("lastname")){
+                                        btn.classList.add("btn-ready");
+                                }
+                                else{
+                                        btn.classList.remove("btn-ready");
+                                }     
                         };
                         
                         _signupForm.signup = function signup(event, node){
@@ -165,7 +166,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         }]);
                                                                         
                                                                         // add welcome contents
-                                                                        _transport.request("Welcome", {userid:userid, language:user.get("lang")}, function(result){return(result);});
+                                                                        _transport.request("Welcome", {userid:userid, language:user.get("lang")}, function(result){return result;});
 
                                                                         // get database info
                                                                         if (result.db){
@@ -277,17 +278,18 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                 }
                                         });
                                 }
-                                else {_store.set("error", _labels.get("invalidlogin"));}   
+                                else _store.set("error", _labels.get("invalidlogin"));   
                                 el.classList.remove("btn-ready");     
                         };
                         
                         _loginForm.resetPassword = function(event, node){
-                                _transport.request("ResetPWD", {user:_store.get("email")}, function(result){
+                                var login = _store.get("email").toLowerCase();
+                                _transport.request("ResetPWD", {user:login}, function(result){
                                         if (result === "ok"){
-                                                _store.set("error", _labels.get("temppwd")+_store.get("email"));
+                                                _store.set("error", _labels.get("temppwd")+login);
                                         }
                                         else if (result.rst){
-                                                _store.set("error",_labels.get("failedpwdreset")+"<a href='mailto:"+result.contact+"?Subject=Password%20support%20"+_store.get("email")+"'>"+_labels.get("support")+"</a>");
+                                                _store.set("error",_labels.get("failedpwdreset")+"<a href='mailto:"+result.contact+"?Subject=Password%20support%20"+login+"'>"+_labels.get("support")+"</a>");
                                         }
                                         else {
                                                 console.log(result);

@@ -23,6 +23,10 @@
     height: 30px;
 }
 
+.a-tools .upload-button{
+    background-image: url('../img/brainstorm/importDisable100.png');
+}
+
 .a-tools .importpic-button{
     background-image: url('../img/r2/upload-picture.png');
 }

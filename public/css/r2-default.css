@@ -5,9 +5,13 @@
     font-size: 14px;
 }
 
+#newidea-popup .form{
+font-size: 14px;
+}
+
 #newidea-popup .visibility-input{
     text-align: center;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 #newidea-popup .a-legend{
@@ -15,10 +19,10 @@
 }
 
 #newidea-popup .attachments{
-    height: 60px;
+    height: 50px;
     border-radius: 5px;
     border: 1px solid #657b99;
-    padding: 10px 5px;
+    padding: 15px 5px;
 }
 
 #newidea-popup .a-list{
@@ -35,7 +39,20 @@
 }
 
 .attachments select{
-    
+    -webkit-appearance: none;
+    width: 120px;
+    padding-left: 5px;
+    padding-right: 30px;
+    margin-right: 10px;
+    background: url('../img/profile/buttonMinSeeMoreDisable.png') no-repeat right center;
+    background-size: 30px 30px;
+    height: 25px;
+    border-radius: 5px;
+    line-height: 25px;
+    border: 1px solid #CCC;
+    color: #404040;
+    font-family: Helvetica;
+    font-size: 12px;    
 }
 
 .attachments input{
@@ -43,7 +60,7 @@
     line-height: 20px;
 }
 
-#newidea-popup .attachment input::-webkit-input-placeholder{
+.input.custom-cat::-webkit-input-placeholder, .input.a-name::-webkit-input-placeholder{
     font-size: 12px;
 }
 
@@ -55,7 +72,7 @@
 #newidea-popup .a-name{
     display: block;
     margin-top: 5px;
-    margin-left: 2px;
+    width: 270px;
 }
 
 #newidea-popup .a-tools{
@@ -64,7 +81,7 @@
     width: 165px;
     text-align: center;
     float: right;
-    margin-top: -45px;    
+    margin-top: -50px;    
 }
 
 #newidea-popup .a-tools .toolbox-button {

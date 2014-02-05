@@ -63,7 +63,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 res+="<option>"+custom[i]+"</option>";
                                                         }
                                                 }
-                                                res+="<option>"+_labels.get("other")+"<option>";
+                                                res+="<option>"+_labels.get("other")+"</option>";
                                                 this.innerHTML = res;
                                         }
                                 }),

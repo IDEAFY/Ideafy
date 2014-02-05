@@ -1,5 +1,8 @@
 /* Idea Attachments */
 
+#newidea-popup{
+    height: 100px;
+}
 
 #newidea-popup .a-list{
     display: block;
@@ -25,9 +28,11 @@
 #newidea-popup .a-tools{
     display: inline-block;
     height: 50px;
-    width: 100%;
+    width: 180px;
     text-align: center;
-    padding: 5px;    
+    padding: 5px;
+    float: right;
+    margin-top: -20px;    
 }
 
 #newidea-popup .a-tools .toolbox-button {

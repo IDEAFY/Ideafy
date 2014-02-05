@@ -1,7 +1,13 @@
 /* Idea Attachments */
 
+#newidea-popup .a-legend{
+    color: #657b99;
+}
+
 #newidea-popup .attachments{
     height: 100px;
+    border-radius: 5px;
+    border: 1px solid #657b99;
 }
 
 #newidea-popup .a-list{
@@ -21,8 +27,24 @@
     margin-bottom: 10px;
 }
 
-#newidea-popup .attachments legend{
-    color: #657b99;
+.attachments input{
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.attachment input::-webkit-input-placeholder{
+    font-size: 12px;
+}
+
+#newidea-popup .custom-cat{
+    margin-left: 5px;
+    width: 115px;
+}
+
+#newidea-popup .a-name{
+    display: block;
+    margin-top: 5px;
+    width: 200px;
 }
 
 #newidea-popup .a-tools{
@@ -32,7 +54,7 @@
     text-align: center;
     padding: 5px;
     float: right;
-    margin-top: -20px;    
+    margin-top: -45px;    
 }
 
 #newidea-popup .a-tools .toolbox-button {

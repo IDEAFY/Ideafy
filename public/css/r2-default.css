@@ -1,5 +1,15 @@
 /* Idea Attachments */
 
+#newidea-popup .form textarea, #newidea-popup .form .newideatitle{
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+#newidea-popup .visibility-input{
+    text-align: center;
+    margin-top: 10px;
+}
+
 #newidea-popup .a-legend{
     color: #657b99;
 }

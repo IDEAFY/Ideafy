@@ -851,7 +851,7 @@ ul.notify-list{
     height: 100px;    
 }
 
-#newidea-popup .form textarea, #newidea-popup .form .newideatitle, #new2q-popup .form p, #new2c-popup .form p, #newdeck-popup .form textarea, #newdeck-popup .form .newideatitle{
+#new2q-popup .form p, #new2c-popup .form p, #newdeck-popup .form textarea, #newdeck-popup .form .newideatitle{
     margin-bottom:  20px;
     font-size: 14px;
 }
@@ -859,10 +859,6 @@ ul.notify-list{
 #new2c-popup .close-popup, #new2q-popup .close-popup, #newidea-popup .close-popup,  #newdeck-popup .close-popup{
     right: 0px;
     -webkit-box-shadow: 0px -3px 3px 0px rgba(0,0,0,0.6);
-}
-
-#newidea-popup .visibility-input{
-    text-align: center;
 }
 
 #newidea-popup .visibility-slider{

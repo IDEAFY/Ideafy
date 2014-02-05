@@ -5,9 +5,10 @@
 }
 
 #newidea-popup .attachments{
-    height: 100px;
+    height: 80px;
     border-radius: 5px;
     border: 1px solid #657b99;
+    padding: 10px 5px;
 }
 
 #newidea-popup .a-list{
@@ -63,6 +64,14 @@
     margin: 0px 10px;
     float: none;
     display: inline-block;
+}
+
+#newidea-popup .a-tools .toolbox-button:first-child{
+    margin-left: 0px;
+}
+
+#newidea-popup .a-tools .toolbox-button:last-child{
+    margin-right: 0px;
 }
 
 #newidea-popup .a-tools .toolbox-button div{

@@ -125,7 +125,7 @@ function SrvUtils(){
                                 });
                                 */
                                var data;
-                               fs.createReadStream(filename, {
+                               fs.createReadStream(_path, {
                                         'flags': 'r',
                                         'encoding': 'utf8',
                                         'mode': 0666,

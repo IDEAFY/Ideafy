@@ -124,7 +124,7 @@ function SrvUtils(){
                                         onEnd(JSON.parse(data));        
                                 });
                                 */
-                               var data;
+                               var data="";
                                var stream = fs.createReadStream(_path, {
                                         'flags': 'r',
                                         'encoding': 'utf8',

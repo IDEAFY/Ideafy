@@ -119,8 +119,22 @@ function SrvUtils(){
                 var _path = __dirname+'/i8n/'+json.lang+'.json';
                 fs.exists(_path, function(exists){
                         if (exists){
+                                /*
                                 var labels=fs.readFile(_path, 'utf8', function(err, data){
                                         onEnd(JSON.parse(data));        
+                                });
+                                */
+                               var data;
+                               fs.createReadStream(filename, {
+                                        'flags': 'r',
+                                        'encoding': 'utf8',
+                                        'mode': 0666,
+                                        'bufferSize': 4 * 1024
+                                }).addListener( "data", function(chunk) {
+                                        data+=chunk;
+                                }).addListener( "close",function() {
+                                        console.log(JSON.parse(data));
+                                        onEnd(JSON.parse(data));
                                 });
                         }
                         else{

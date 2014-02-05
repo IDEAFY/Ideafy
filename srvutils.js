@@ -135,7 +135,6 @@ function SrvUtils(){
                                         data+=chunk;
                                 });
                                 stream.on( "close",function() {
-                                        console.log(data);
                                         onEnd(JSON.parse(data));
                                 });
                         }

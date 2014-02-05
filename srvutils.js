@@ -125,14 +125,17 @@ function SrvUtils(){
                                 });
                                 */
                                var data;
-                               fs.createReadStream(_path, {
+                               var stream = fs.createReadStream(_path, {
                                         'flags': 'r',
                                         'encoding': 'utf8',
                                         'mode': 0666,
                                         'bufferSize': 4 * 1024
-                                }).addListener( "data", function(chunk) {
+                                });
+                                stream.on( "data", function(chunk) {
                                         data+=chunk;
-                                }).addListener( "close",function() {
+                                });
+                                stream.on( "close",function() {
+                                        console.log(data);
                                         console.log(JSON.parse(data));
                                         onEnd(JSON.parse(data));
                                 });

@@ -38,6 +38,7 @@
 #newidea-popup .a-tools .toolbox-button {
     width: 30px;
     height: 50px;
+    margin: 0px 10px;
     float: none;
     display: inline-block;
 }

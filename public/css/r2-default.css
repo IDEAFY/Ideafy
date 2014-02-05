@@ -44,6 +44,8 @@
 
 #newidea-popup .a-tools .toolbox-button legend{
     margin-top: 5px;
+    width: 30px;
+    color: #cccccc;
 }
 
 .a-tools .upload-button{

@@ -136,7 +136,6 @@ function SrvUtils(){
                                 });
                                 stream.on( "close",function() {
                                         console.log(data);
-                                        console.log(JSON.parse(data));
                                         onEnd(JSON.parse(data));
                                 });
                         }

@@ -18,17 +18,32 @@
     margin-bottom: 10px;
 }
 
-#newidea-popup .attachments label{
-    font-family: pacifico;
+#newidea-popup .attachments legend{
+    color: #657b99;
 }
 
 #newidea-popup .a-tools{
-    
+    display: inline-block;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    padding: 5px;    
+}
+
+#newidea-popup .a-tools .toolbox-button {
+    width: 30px;
+    height: 50px;
+    float: none;
+    display: inline-block;
 }
 
 #newidea-popup .a-tools .toolbox-button div{
     width: 30px;
     height: 30px;
+}
+
+#newidea-popup .a-tools .toolbox-button legend{
+    margin-top: 5px;
 }
 
 .a-tools .upload-button{

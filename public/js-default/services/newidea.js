@@ -55,7 +55,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 var custom = _user.get("categories") || [], arr, i, l,
                                                       res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
                                                 for (i=0, l=_cat.length; i<l;i++){
-                                                        console.log(_cat[i], _labels.get(cat[i]));
+                                                        console.log(_cat[i]);
                                                         res+="<option>"+_labels.get(_cat[i])+"</option>";
                                                 }
                                                 if (custom.length){

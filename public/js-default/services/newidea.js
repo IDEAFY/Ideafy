@@ -52,11 +52,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 (visibility === "public") ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         },
                                         setAttachmentCat : function(attachments){
-                                                var custom = _user.get("categories") || [], arr, i, l,
+                                                var custom = _user.get("categories") || [], arr, i, l, key
                                                       res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
                                                 for (i=0, l=_cat.length; i<l;i++){
-                                                        console.log(_cat[i]);
-                                                        res+="<option>"+_labels.get(_cat[i])+"</option>";
+                                                        key = _cat[i];
+                                                        res+="<option>"+_labels.get(key)+"</option>";
                                                 }
                                                 if (custom.length){
                                                         for (i=0, l=custom.length; i<l;i++){

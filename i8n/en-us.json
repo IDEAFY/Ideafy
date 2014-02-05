@@ -549,5 +549,13 @@
 	"failedpwdreset": "A temporary password has already been sent to you. Check your mailbox or contact ",
 	"filelbl": "File",
 	"imagelbl": "Image",
-	"drawinglbl": "Drawing" 
+	"drawinglbl": "Drawing",
+	"choosecat": "Choose category",
+	"bus": "Business model",
+	"mkt": "Marketing",
+	"notes": "Notes",
+	"arch": 'Architecture',
+	"spec": "Specifications",
+	"planning": "Planning",
+	"other": "Other" 
 }

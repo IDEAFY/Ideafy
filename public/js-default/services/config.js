@@ -7,18 +7,19 @@
 
 define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"], 
    function(Store, Transport, CouchDBDocument, Observable) {
-        var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "";
+        var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "", _categories = [];
         
         this.reset = function(){
                  
                 //_location = "http://37.153.97.128:3113"; 
                 _location = "http://8.19.34.68:1664";
                 //_location = location.origin;
-                _version = "1.2.0";
+                _version = "1.2.2";
                 _socket = io.connect(_location);
                 _transport = new Transport(_socket);
                 _user =  new CouchDBDocument();
                 _observer = new Observable();
+                _categories = ["bus", "mkt", "notes", "arch", "spec", "planning"],
                 _user.setTransport(_transport);
                 
                 _config.reset({
@@ -29,6 +30,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                         db : "ideafy",
                         user : _user,
                         observer : _observer,
+                        cat : _categories,
                         polling_interval : 60000,
                         userTemplate : {
                                 "lastname" : "",
@@ -120,7 +122,8 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                                 "votes": [],
                                 "rating": "",
                                 "authornames": "",
-                                "twocents": []
+                                "twocents": [],
+                                "attachments":[]
                         },
                         TQTemplate:{
                                 "author": [],

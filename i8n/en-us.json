@@ -546,5 +546,8 @@
 	"pwdupdate": "Password change",
 	"forgotpwd": "Forgot your password ?",
 	"temppwd": "A temporary password has been sent to ",
-	"failedpwdreset": "A temporary password has already been sent to you. Check your mailbox or contact " 
+	"failedpwdreset": "A temporary password has already been sent to you. Check your mailbox or contact ",
+	"filelbl": "File",
+	"imagelbl": "Image",
+	"drawinglbl": "Drawing" 
 }

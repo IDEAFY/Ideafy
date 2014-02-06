@@ -65,6 +65,7 @@ font-size: 14px;
 }
 
 #newidea-popup .custom-cat{
+    display: inline-block;
     margin-left: 5px;
     width: 115px;
 }

@@ -14,7 +14,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _store = new Store(Config.get("ideaTemplate")),
                             _attachment = new Store({
                                     custom : false,
-                                    category : ""
+                                    category : "",
+                                    name:""
                             }),
                             _languages = new Store(Config.get("userLanguages")),
                             _user = Config.get("user"),

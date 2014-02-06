@@ -104,12 +104,26 @@ font-size: 14px;
     width: 30px;
     height: 30px;
     border-radius: 15px;
+    -webkit-box-shadow: 0px 1px 3px #404040;
+}
+
+#newidea-popup .a-tools .toolbox-button div.pressed{
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
 }
 
 #newidea-popup .a-tools .toolbox-button legend{
     margin-top: 5px;
     width: 30px;
     color: #cccccc;
+}
+
+#newidea-popup .a-input{
+    position: relative;
+    margin-top: -30px;
+    margin-left:-30px;
+    width: 30px;
+    height: 30px;
+    background: blue;
 }
 
 .a-tools .upload-button{

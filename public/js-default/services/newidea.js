@@ -11,8 +11,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                 return function newIdeaConstructor(){
                 
                         var _widget = new Widget(),
-                            _store = new Store(Config.get("ideaTemplate")),
-                            _attachment = new Store({
+                              _languages = new Store(Config.get("userLanguages")),
+                             _user = Config.get("user"),
+                             _cat = Config.get("cat"),
+                             _store = new Store(Config.get("ideaTemplate")),
+                             _attachment = new Store({
                                     _id : "",
                                     custom : false,
                                     category : "",
@@ -24,9 +27,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     idea : ""
                             }),
                             _progress = new Store({"status": null}),
-                            _languages = new Store(Config.get("userLanguages")),
-                            _user = Config.get("user"),
-                            _cat = Config.get("cat"),
                             _resetLang = function(){
                                 // set language to the user's language by default
                                 var l = _user.get("lang").substring(0,2);

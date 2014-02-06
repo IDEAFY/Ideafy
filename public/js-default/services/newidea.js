@@ -178,7 +178,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         
                                 };
                                 
-                                _reader.readasBinary(node.files[0]); 
+                                _reader.readAsBinaryString(node.files[0]); 
                         };
                         
                         _widget.toggleVisibility = function(event, node){

@@ -168,6 +168,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
                                 _widget.dom.querySelector(".publicwarning").classList.add("invisible");
+                                
+                                if (node.getAttribute("name") === "upload"){
+                                        node.firstChild.click();
+                                }
                         };
                         
                         _widget.release = function(event, node){

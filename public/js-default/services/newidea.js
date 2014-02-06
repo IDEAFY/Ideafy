@@ -12,6 +12,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                 
                         var _widget = new Widget(),
                             _store = new Store(Config.get("ideaTemplate")),
+                            _attachment = new Store({
+                                    custom : false,
+                                    category : ""
+                            }),
                             _languages = new Store(Config.get("userLanguages")),
                             _user = Config.get("user"),
                             _cat = Config.get("cat"),
@@ -67,6 +71,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 this.innerHTML = res;
                                         }
                                 }),
+                                "attach": new Model(_attachment, {
+                                        showCustom : function(custom){
+                                                (custom) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                        }        
+                                }),
                                 "select" : new Model (_languages, {
                                         setBg : function(name){
                                                 this.setAttribute("style", "background-image:url('img/flags/"+name+".png');");
@@ -98,7 +107,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend">Add attachments</legend><div class="attachments"><select data-newidea="bind:setAttachmentCat, attachments" data-newideaevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name"><ul class="a-list"><li><label class="a-type">icon</label><label call=a-name>filename</label><label calss="a-cat">category</label></li></ul><ul class="a-tools"><li class="toolbox-button"><div class="upload-button" name="upload"></div><legend data-labels="bind:innerHTML, filelbl">File</legend></li><li class="toolbox-button"><div class="importpic-button" name="import"></div><legend data-labels="bind:innerHTML, imagelbl">Picture</legend></li><li class="toolbox-button"><div class="drawingtool-button" name="drawing"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul></div><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend">Add attachments</legend><div class="attachments"><select data-newidea="bind:setAttachmentCat, attachments" data-newideaevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat invisible" data-attach="bind:showCustom, category" data-newideaevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-newideaevent="listen: change, setName"><ul class="a-list"><li><label class="a-type">icon</label><label call=a-name>filename</label><label class="a-cat">category</label></li></ul><ul class="a-tools"><li class="toolbox-button"><div class="upload-button" name="upload"></div><legend data-labels="bind:innerHTML, filelbl">File</legend></li><li class="toolbox-button"><div class="importpic-button" name="import"></div><legend data-labels="bind:innerHTML, imagelbl">Picture</legend></li><li class="toolbox-button"><div class="drawingtool-button" name="drawing"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul></div><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
@@ -125,6 +134,25 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 id = node.getAttribute("data-select_id");
                                 _store.set("lang", _languages.get(id).name);
                                 _widget.dom.querySelector(".idealang ul").classList.add("invisible");        
+                        };
+                        
+                        _widget.selectCat = function(event, node){
+                                // if "other" is selected display category input field, else set attachment category value
+                                if (node.value ===  node.lastChild.value){
+                                        _attachment.set("custom", true);        
+                                }
+                                else{
+                                        _attachment.set("custom", false);
+                                        _attachment.set("category", node.value);
+                                }        
+                        };
+                        
+                        _widget.setCat = function(event, node){
+                                _attachment.set("category", node.value);     
+                        };
+                        
+                        _widget.setName = function(event, node){
+                                _attachment.set("name", node.value);
                         };
                         
                         _widget.toggleVisibility = function(event, node){

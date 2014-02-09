@@ -68,7 +68,7 @@ function SrvUtils(){
                                         if (err) {throw(err);}
                                         res.write("ok");
                                         res.end();
-                                );   
+                                });   
                         });      
                 }
                 if (type === 'avatar'){

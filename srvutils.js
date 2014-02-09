@@ -63,14 +63,20 @@ function SrvUtils(){
                         dir = req.body.dir;
                         fr = new FileReader();
                         filename = _path+dir+'/'+req.body.filename;
-                        fs.exists(filename, function(exists){
-                                if (exists) fs.unlinkSync(filename);
-                                fs.writeFile(filename, fr.readAsBinaryString(req.body.userfile), function(err){
-                                        if (err) {throw(err);}
-                                        res.write("ok");
-                                        res.end();
-                                });   
-                        });      
+                        
+                        fr.onload = function(e){
+                                fs.exists(filename, function(exists){
+                                        if (exists) fs.unlinkSync(filename);
+                                        fs.writeFile(filename, fr.result, function(err){
+                                                if (err) {throw(err);}
+                                                res.write("ok");
+                                                res.end();
+                                        });   
+                                });         
+                        };
+                        
+                        fr.readAsBinaryString(req.body.userfile);
+                             
                 }
                 if (type === 'avatar'){
                         filename = _path+'avatars/'+req.body.filename;

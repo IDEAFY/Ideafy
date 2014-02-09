@@ -59,23 +59,17 @@ function SrvUtils(){
                         });
                 }
                 if (type === 'afile'){
-                        console.log(req.body);
                         dir = req.body.dir;
-                        fr = new FileReader();
                         filename = _path+dir+'/'+req.body.filename;
                         
-                        fr.onloadend = function(e){
-                                fs.exists(filename, function(exists){
-                                        if (exists) fs.unlinkSync(filename);
-                                        fs.writeFile(filename, fr.result, function(err){
-                                                if (err) {throw(err);}
-                                                res.write("ok");
-                                                res.end();
-                                        });   
-                                });         
-                        };
-                        
-                        fr.readAsBinaryString(req.body.userfile);
+                        fs.exists(filename, function(exists){
+                                if (exists) fs.unlinkSync(filename);
+                                fs.writeFile(filename, req.files.userfile.path, function(err){
+                                        if (err) {throw(err);}
+                                        res.write("ok");
+                                        res.end();
+                                });   
+                        });
                              
                 }
                 if (type === 'avatar'){

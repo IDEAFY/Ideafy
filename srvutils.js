@@ -62,15 +62,28 @@ function SrvUtils(){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;
                         
-                        fs.exists(filename, function(exists){
-                                if (exists) fs.unlinkSync(filename);
-                                fs.writeFile(filename, req.files.userfile.path, function(err){
-                                        if (err) {throw(err);}
-                                        res.write("ok");
-                                        res.end();
-                                });   
+                        fs.exists(_path+dir, function(exists){
+                                if (!exists) {
+                                        fs.mkdir(_path+dir, 0777, function(err){
+                                                if (err) {throw(err);}
+                                                fs.writeFile(filename, req.files.userfile.path, function(err){
+                                                        if (err) {throw(err);}
+                                                        res.write("ok");
+                                                        res.end();
+                                                }); 
+                                        });
+                                }
+                                else {
+                                        fs.exists(filename, function(exists){
+                                                if (exists) fs.unlinkSync(filename);
+                                                fs.writeFile(filename, req.files.userfile.path, function(err){
+                                                        if (err) {throw(err);}
+                                                        res.write("ok");
+                                                        res.end();
+                                                });   
+                                        });
+                                }       
                         });
-                             
                 }
                 if (type === 'avatar'){
                         filename = _path+'avatars/'+req.body.filename;

@@ -64,7 +64,7 @@ function SrvUtils(){
                         fr = new FileReader();
                         filename = _path+dir+'/'+req.body.filename;
                         
-                        fr.onload = function(e){
+                        fr.onloadend = function(e){
                                 fs.exists(filename, function(exists){
                                         if (exists) fs.unlinkSync(filename);
                                         fs.writeFile(filename, fr.result, function(err){

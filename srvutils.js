@@ -62,7 +62,7 @@ function SrvUtils(){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;
                         
-                        console.log(req.files.userfile._writestream.encoding);
+                        console.log(req.files.userfile._writestream);
                         
                         fs.exists(_path+dir, function(exists){
                                 if (!exists) {

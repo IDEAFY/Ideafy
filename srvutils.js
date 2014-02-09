@@ -29,7 +29,7 @@ function SrvUtils(){
                       fr,
                       dataurl,
                       dir;
-            
+                console.log(type);
                 if (type === 'postit' || type === 'deckpic' || type === 'cardpic'){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;

@@ -180,7 +180,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                        _type = "afile",
                                        _dir = "ideas/"+_id;
                                
-                               console.log(node.files[0], node.files[0].name);
+                               console.log(node.files[0], node.files[0].fileName);
                                 
                                 _reader.onloadend = function(e){
                                         _fd.append("type", _type);

@@ -243,7 +243,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                              var req = new XMLHttpRequest();
                              
                              req.open('POST', Config.get("location")+url);
-                             req.setRequestHeader("Content-Type", "multipart/form-data");
                              req.onreadystatechange = function(){
                                      if(req.readyState === 4 && onEnd){
                                              onEnd(req);

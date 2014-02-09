@@ -26,13 +26,12 @@ function SrvUtils(){
                       _path = _contentPath+'/attachments/',
                       filename, // final name of the file on server
                       tempname, // temp name after file upload
-                      now,
+                      fr,
                       dataurl,
                       dir;
             
                 if (type === 'postit' || type === 'deckpic' || type === 'cardpic'){
                         dir = req.body.dir;
-                        now = new Date();
                         filename = _path+dir+'/'+req.body.filename;
                         dataurl = req.body.dataString;
                                 
@@ -58,6 +57,19 @@ function SrvUtils(){
                                         });
                                 }       
                         });
+                }
+                if (type === 'afile'){
+                        dir = req.body.dir;
+                        fr = new FileReader();
+                        filename = _path+dir+'/'+req.body.filename;
+                        fs.exists(filename, function(exists){
+                                if (exists) fs.unlinkSync(filename);
+                                fs.writeFile(filename, fr.readAsBinaryString(req.body.userfile), function(err){
+                                        if (err) {throw(err);}
+                                        res.write("ok");
+                                        res.end();
+                                );   
+                        });      
                 }
                 if (type === 'avatar'){
                         filename = _path+'avatars/'+req.body.filename;

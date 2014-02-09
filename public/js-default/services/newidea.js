@@ -180,13 +180,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                        _type = "afile",
                                        _dir = "ideas/"+_id;
                                
-                               console.log(node.files[0], node.files[0].fileName);
+                               console.log(node.files[0], node.files[0].name);
                                 
                                 _reader.onloadend = function(e){
                                         _fd.append("type", _type);
                                         _fd.append("dir", _dir);
                                         _fd.append("userfile", node.files[0]);
-                                        _fd.append("filename", node.files[0].fileName);
+                                        _fd.append("filename", node.files[0].name);
                                         Utils.uploadFile(_url, _fd, _progress, function(result){
                                                 console.log("upload successful");
                                         });

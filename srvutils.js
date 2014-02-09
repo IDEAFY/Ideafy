@@ -26,7 +26,6 @@ function SrvUtils(){
                       _path = _contentPath+'/attachments/',
                       filename, // final name of the file on server
                       tempname, // temp name after file upload
-                      fStream,
                       dataurl,
                       dir;
                 console.log(type, req);
@@ -75,19 +74,18 @@ function SrvUtils(){
                                 }   
                         });
                         
-                        fStream = fs.createFileStream(filename);
                         req.setEncoding('binary');
                         
                         req.on('data', function(chunk){
-                                req.pause();
-                                fStream.write(chunk, 'binary');       
+                                console.log("upload in progress");             
                         });
                         
                         req.on('end', function(){
-                                fStream.end();
-                                req.resume();
-                                res.write("ok");
-                                res.end();
+                                fs.writeFile(filename, req.files.userfile.path, 'binary', function(err){
+                                        if (err) {throw(err);}
+                                        res.write("ok");
+                                        res.end();
+                                });
                         });
                                 
                                 /*

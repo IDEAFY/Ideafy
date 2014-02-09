@@ -255,7 +255,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                              };
                              if (body.type === "afile"){
                                      req.setRequestHeader('content-type', 'multipart/form-data; boundary="--=====Ideafy=====--"');
-                                     req.sendAsBinary(body); 
+                                     req.sendAsBinary(body);
                              }
                              else {
                                      req.send(body);

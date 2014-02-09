@@ -62,8 +62,36 @@ function SrvUtils(){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;
                         
+                        // check if directory exists (e.g. idea I:_id for idea attachment)
+                        fs.exists(_path+dir, function(exists){
+                                if (!exists) fs.mkdir(_path+dir, 0777, function(err){
+                                        if (err) throw(err);
+                                }); 
+                                else{
+                                        // if a file with the same name already exists delete it
+                                        fs.exists(filename, function(exists){
+                                                        if (exists) fs.unlinkSync(filename);
+                                        });
+                                }   
+                        });
+                        
+                        fStream = fs.createFileStream(filename);
+                        req.setEncoding('binary');
+                        
+                        req.on('data', function(chunk){
+                                req.pause();
+                                fStream.write(chunk, 'binary');       
+                        });
+                        
                         req.on('end', function(){
-                                fs.exists(_path+dir, function(exists){
+                                fStream.end();
+                                req.resume();
+                                res.write("ok");
+                                res.end();
+                        });
+                                
+                                /*
+                                 fs.exists(_path+dir, function(exists){
                                         if (!exists) {
                                                 fs.mkdir(_path+dir, 0777, function(err){
                                                         if (err) {throw(err);}
@@ -84,8 +112,8 @@ function SrvUtils(){
                                                         });   
                                                 });
                                         }       
-                                });        
-                        });
+                                });
+                                */
                 }
                 if (type === 'avatar'){
                         filename = _path+'avatars/'+req.body.filename;

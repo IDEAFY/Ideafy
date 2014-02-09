@@ -242,6 +242,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 uploadFile : function(url, body, progress, onEnd){
                              var req = new XMLHttpRequest();
                              
+                             req.setRequestHeader("Content-Type", "multipart/form-data");
                              req.open('POST', Config.get("location")+url);
                              req.onreadystatechange = function(){
                                      if(req.readyState === 4 && onEnd){

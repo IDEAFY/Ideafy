@@ -26,7 +26,7 @@ function SrvUtils(){
                       _path = _contentPath+'/attachments/',
                       filename, // final name of the file on server
                       tempname, // temp name after file upload
-                      fr,
+                      fStream,
                       dataurl,
                       dir;
                 console.log(type, req);
@@ -62,29 +62,29 @@ function SrvUtils(){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;
                         
-                        console.log(req.files.userfile._writestream);
-                        
-                        fs.exists(_path+dir, function(exists){
-                                if (!exists) {
-                                        fs.mkdir(_path+dir, 0777, function(err){
-                                                if (err) {throw(err);}
-                                                fs.writeFile(filename, req.files.userfile.path, function(err){
+                        req.on('end', function(){
+                                fs.exists(_path+dir, function(exists){
+                                        if (!exists) {
+                                                fs.mkdir(_path+dir, 0777, function(err){
                                                         if (err) {throw(err);}
-                                                        res.write("ok");
-                                                        res.end();
-                                                }); 
-                                        });
-                                }
-                                else {
-                                        fs.exists(filename, function(exists){
-                                                if (exists) fs.unlinkSync(filename);
-                                                fs.writeFile(filename, req.files.userfile.path, function(err){
-                                                        if (err) {throw(err);}
-                                                        res.write("ok");
-                                                        res.end();
-                                                });   
-                                        });
-                                }       
+                                                        fs.writeFile(filename, req.files.userfile.path, function(err){
+                                                                if (err) {throw(err);}
+                                                                res.write("ok");
+                                                                res.end();
+                                                        }); 
+                                                });
+                                        }
+                                        else {
+                                                fs.exists(filename, function(exists){
+                                                        if (exists) fs.unlinkSync(filename);
+                                                                fs.writeFile(filename, req.files.userfile.path, function(err){
+                                                                if (err) {throw(err);}
+                                                                res.write("ok");
+                                                                res.end();
+                                                        });   
+                                                });
+                                        }       
+                                });        
                         });
                 }
                 if (type === 'avatar'){

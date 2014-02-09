@@ -86,7 +86,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
             app = http.createServer(connect()
                 .use(connect.responseTime())
                 .use(redirect())
-                .use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
+                //.use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
                 .use('/upload', srvUtils.uploadFunc)      
                 .use(function(req, res, next) {
                         res.setHeader("Ideady Server", "node.js/" + process.versions.node);

@@ -59,6 +59,7 @@ function SrvUtils(){
                         });
                 }
                 if (type === 'afile'){
+                        console.log(req.body);
                         dir = req.body.dir;
                         fr = new FileReader();
                         filename = _path+dir+'/'+req.body.filename;

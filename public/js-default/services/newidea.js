@@ -186,7 +186,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _fd.append("type", _type);
                                         _fd.append("dir", _dir);
                                         _fd.append("userfile", node.files[0]);
-                                        _fd.append("filename", node.files[0].name);
+                                        _fd.append("filename", node.files[0].fileName);
                                         Utils.uploadFile(_url, _fd, _progress, function(result){
                                                 console.log("upload successful");
                                         });

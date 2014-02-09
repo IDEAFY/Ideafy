@@ -79,7 +79,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 this.innerHTML = res;
                                         },
                                         listAttachments: function(attachments){
-                                                (attachments && attachments.length) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                                (attachments && attachments.length) ? this.setAttribute("style", "display:block;") : this.setAttribute("style", "display:none;");
                                         }
                                 }),
                                 "attach": new Model(_attachment, {

@@ -61,14 +61,14 @@ function SrvUtils(){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;
                         
-                        req.setEncoding('binary');
+                        //req.setEncoding('binary');
                         
                         fs.exists(_path+dir, function(exists){
                                 if (!exists) {
                                         fs.mkdir(_path+dir, 0777, function(err){
                                                 if (err) {throw(err);}
-                                                ins = fs.createReadStream(req.files.userfile.path, {encoding:'binary'});
-                                                outs = fs.createWriteStream(filename, {encoding:'binary'});
+                                                ins = fs.createReadStream(req.files.userfile.path);
+                                                outs = fs.createWriteStream(filename);
                                                 ins.pipe(outs);
                                                 /*
                                                 fs.writeFile(filename, req.files.userfile.path, 'binary',  function(err){

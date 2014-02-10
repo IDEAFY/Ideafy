@@ -72,10 +72,12 @@ function SrvUtils(){
                                                 ins.pipe(outs);
                                                
                                                // delete tmp file when done
-                                                outs.once('end', function(){
+                                                ins.once('end', function(){
                                                         fs.unlink(req.files.userfile.path, function(err){
                                                                 console.log(err);
                                                         });
+                                                        res.write("ok");
+                                                        res.end(); 
                                                 });
                                                 /*
                                                 fs.writeFile(filename, req.files.userfile.path, 'binary',  function(err){
@@ -84,10 +86,6 @@ function SrvUtils(){
                                                         res.end();
                                                 });
                                                 */
-                                               ins.once('end', function(){
-                                                        res.write("ok");
-                                                        res.end();        
-                                               });
                                         });
                                 }
                                 else {

@@ -99,6 +99,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }),
                                 "progress": new Model(_progress, {
                                         showStatus : function(status){
+                                                console.log(status);
                                                 (status)? this.setAttribute("value", status) : this.setAttribute("value", 0) ;
                                         }    
                                 }),
@@ -195,7 +196,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                        _type = "afile",
                                        _dir = "ideas/"+_id;
                                
-                               if (node.files.length){
+                               if (node.files && node.files.length){
                                         _store.set("_id", _id);
                                         _widget.dom.querySelector(".a-preview").classList.remove("invisible");
                                         

@@ -70,6 +70,13 @@ function SrvUtils(){
                                                 ins = fs.createReadStream(req.files.userfile.path);
                                                 outs = fs.createWriteStream(filename);
                                                 ins.pipe(outs);
+                                               
+                                               // delete tmp file when done
+                                                outs.once('end', function(){
+                                                        fs.unlink(req.files.userfile.path, function(err){
+                                                                console.log(err);
+                                                        });
+                                                });
                                                 /*
                                                 fs.writeFile(filename, req.files.userfile.path, 'binary',  function(err){
                                                         if (err) {throw(err);}
@@ -89,6 +96,13 @@ function SrvUtils(){
                                                 ins = fs.createReadStream(req.files.userfile.path);
                                                 outs = fs.createWriteStream(filename);
                                                 ins.pipe(outs);
+                                                
+                                                // delete tmp file when done
+                                                outs.once('end', function(){
+                                                        fs.unlink(req.files.userfile.path, function(err){
+                                                                console.log(err);
+                                                        });
+                                                });
                                                 /*
                                                 fs.writeFile(filename, req.files.userfile.path, 'binary',  function(err){
                                                         if (err) {throw(err);}

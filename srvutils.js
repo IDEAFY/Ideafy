@@ -86,8 +86,8 @@ function SrvUtils(){
                                 else {
                                         fs.exists(filename, function(exists){
                                                 if (exists) fs.unlinkSync(filename);
-                                                ins = fs.createReadStream(req.files.userfile.path, {encoding:'binary'});
-                                                outs = fs.createWriteStream(filename, {encoding:'binary'});
+                                                ins = fs.createReadStream(req.files.userfile.path);
+                                                outs = fs.createWriteStream(filename);
                                                 ins.pipe(outs);
                                                 /*
                                                 fs.writeFile(filename, req.files.userfile.path, 'binary',  function(err){

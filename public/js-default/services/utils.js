@@ -253,13 +253,13 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                                              progress.set("status", Math.round(e.loaded/e.total*100));
                                      }
                              };
+                             /*
                              if (body.type === "afile"){
                                      req.setRequestHeader('content-type', 'multipart/form-data; boundary="--=====Ideafy=====--"');
                                      req.sendAsBinary(body);
                              }
-                             else {
-                                     req.send(body);
-                             }
+                             */
+                             req.send(body);
                   },
                   
                   /**

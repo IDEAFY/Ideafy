@@ -26,7 +26,7 @@ function SrvUtils(){
                       _path = _contentPath+'/attachments/',
                       filename, // final name of the file on server
                       tempname, // temp name after file upload
-                      dataurl,
+                      dataurl, ins, outs,
                       dir;
                 console.log(type, req);
                 if (type === 'postit' || type === 'deckpic' || type === 'cardpic'){
@@ -37,9 +37,9 @@ function SrvUtils(){
                         fs.exists(_path+dir, function(exists){
                                 if (!exists) {
                                         fs.mkdir(_path+dir, 0777, function(err){
-                                        if (err) {throw(err);}
-                                                fs.writeFile(filename, dataurl, function(err){
                                                 if (err) {throw(err);}
+                                                fs.writeFile(filename, dataurl, function(err){
+                                                        if (err) {throw(err);}
                                                         res.write("ok");
                                                         res.end();
                                                 });
@@ -61,57 +61,48 @@ function SrvUtils(){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;
                         
-                        // check if directory exists (e.g. idea I:_id for idea attachment)
-                        fs.exists(_path+dir, function(exists){
-                                if (!exists) fs.mkdir(_path+dir, 0777, function(err){
-                                        if (err) throw(err);
-                                }); 
-                                else{
-                                        // if a file with the same name already exists delete it
-                                        fs.exists(filename, function(exists){
-                                                        if (exists) fs.unlinkSync(filename);
-                                        });
-                                }   
-                        });
-                        
                         req.setEncoding('binary');
                         
-                        req.on('data', function(chunk){
-                                console.log("upload in progress");             
-                        });
-                        
-                        req.on('end', function(){
-                                fs.writeFile(filename, req.files.userfile.path, 'binary', function(err){
-                                        if (err) {throw(err);}
-                                        res.write("ok");
-                                        res.end();
-                                });
-                        });
-                                
-                                /*
-                                 fs.exists(_path+dir, function(exists){
-                                        if (!exists) {
-                                                fs.mkdir(_path+dir, 0777, function(err){
+                        fs.exists(_path+dir, function(exists){
+                                if (!exists) {
+                                        fs.mkdir(_path+dir, 0777, function(err){
+                                                if (err) {throw(err);}
+                                                ins = fs.createReadStream(req.files.userfile.path, {encoding:'binary'});
+                                                outs = fs.createWriteStream(filename, {encoding:'binary'});
+                                                ins.pipe(outs);
+                                                /*
+                                                fs.writeFile(filename, req.files.userfile.path, 'binary',  function(err){
                                                         if (err) {throw(err);}
-                                                        fs.writeFile(filename, req.files.userfile.path, function(err){
-                                                                if (err) {throw(err);}
-                                                                res.write("ok");
-                                                                res.end();
-                                                        }); 
+                                                        res.write("ok");
+                                                        res.end();
                                                 });
-                                        }
-                                        else {
-                                                fs.exists(filename, function(exists){
-                                                        if (exists) fs.unlinkSync(filename);
-                                                                fs.writeFile(filename, req.files.userfile.path, function(err){
-                                                                if (err) {throw(err);}
-                                                                res.write("ok");
-                                                                res.end();
-                                                        });   
+                                                */
+                                               ins.once('end', function(){
+                                                        res.write("ok");
+                                                        res.end();        
+                                               });
+                                        });
+                                }
+                                else {
+                                        fs.exists(filename, function(exists){
+                                                if (exists) fs.unlinkSync(filename);
+                                                ins = fs.createReadStream(req.files.userfile.path, {encoding:'binary'});
+                                                outs = fs.createWriteStream(filename, {encoding:'binary'});
+                                                ins.pipe(outs);
+                                                /*
+                                                fs.writeFile(filename, req.files.userfile.path, 'binary',  function(err){
+                                                        if (err) {throw(err);}
+                                                        res.write("ok");
+                                                        res.end();
                                                 });
-                                        }       
-                                });
-                                */
+                                                */
+                                               ins.once('end', function(){
+                                                        res.write("ok");
+                                                        res.end();        
+                                               });
+                                        });
+                                }       
+                        });
                 }
                 if (type === 'avatar'){
                         filename = _path+'avatars/'+req.body.filename;

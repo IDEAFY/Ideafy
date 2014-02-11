@@ -200,6 +200,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _store.set("_id", _id);
                                         _widget.dom.querySelector(".a-preview").classList.remove("invisible");
                                         
+                                        setInterval(function(){
+                                                console.log(_progress.get("status"));
+                                        }, 1000);
+                                        
                                         _attachment.set("name", node.files[0].name);
                                         _attachment.set("docId", _id);
                                                                

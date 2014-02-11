@@ -28,7 +28,7 @@ function SrvUtils(){
                       tempname, // temp name after file upload
                       dataurl, ins, outs,
                       dir;
-                console.log(type, req);
+                
                 if (type === 'postit' || type === 'deckpic' || type === 'cardpic'){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;
@@ -61,8 +61,6 @@ function SrvUtils(){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;
                         
-                        //req.setEncoding('binary');
-                        
                         fs.exists(_path+dir, function(exists){
                                 if (!exists) {
                                         fs.mkdir(_path+dir, 0777, function(err){
@@ -79,13 +77,6 @@ function SrvUtils(){
                                                         res.write("ok");
                                                         res.end(); 
                                                 });
-                                                /*
-                                                fs.writeFile(filename, req.files.userfile.path, 'binary',  function(err){
-                                                        if (err) {throw(err);}
-                                                        res.write("ok");
-                                                        res.end();
-                                                });
-                                                */
                                         });
                                 }
                                 else {
@@ -96,22 +87,13 @@ function SrvUtils(){
                                                 ins.pipe(outs);
                                                 
                                                 // delete tmp file when done
-                                                outs.once('end', function(){
+                                                ins.once('end', function(){
                                                         fs.unlink(req.files.userfile.path, function(err){
                                                                 console.log(err);
                                                         });
-                                                });
-                                                /*
-                                                fs.writeFile(filename, req.files.userfile.path, 'binary',  function(err){
-                                                        if (err) {throw(err);}
                                                         res.write("ok");
-                                                        res.end();
+                                                        res.end(); 
                                                 });
-                                                */
-                                               ins.once('end', function(){
-                                                        res.write("ok");
-                                                        res.end();        
-                                               });
                                         });
                                 }       
                         });

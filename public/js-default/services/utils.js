@@ -249,9 +249,9 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                                      }
                              };
                              req.upload.onprogress = function(e){
-                                     console.log("event progress call", e);
                                      if(e.lengthComputable && progress){
                                              progress.set("status", Math.round(e.loaded/e.total*100));
+                                             console.log(progress.get("status"));
                                      }
                              };
                              

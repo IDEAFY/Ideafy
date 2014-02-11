@@ -133,11 +133,14 @@ font-size: 14px;
 }
 
 #newidea-popup .a-preview{
-    width: 150px;
-    height: 65px;
+    width: 148px;
+    height: 63px;
     position: relative;
     margin-top: -65px;
-    margin-left: 275px;    
+    margin-left: 275px;
+    background: #e5e5e5;
+    border: 1px solid #ccc;
+    border-radius: 3px;  
 }
 
 #newidea-popup .a-preview .a-content{

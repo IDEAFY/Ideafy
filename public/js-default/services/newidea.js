@@ -13,10 +13,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var _widget = new Widget(),
                               _transport = Config.get("transport"),
                               _languages = new Store(Config.get("userLanguages")),
-                             _user = Config.get("user"),
-                             _cat = Config.get("cat"),
-                             _store = new Store(Config.get("ideaTemplate")),
-                             _atemplate = {
+                              _user = Config.get("user"),
+                              _cat = Config.get("cat"),
+                              _store = new Store(Config.get("ideaTemplate")),
+                              _attachment = new Store({
                                     _id : "",
                                     custom : false,
                                     category : "",
@@ -26,8 +26,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     authors : [_user.get("_id")],
                                     authornames : [_user.get("username")],
                                     docId: ""
-                            },
-                             _attachment = new Store(_atemplate),
+                            }),
                             _progress = new Store({"status": null}),
                             _resetLang = function(){
                                 // set language to the user's language by default
@@ -103,7 +102,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 if (name === "") this.value = "";
                                         },
                                         resetCat : function(cat){
-                                                if (cat ==="") this.setAttribute("selectedIndex", 0);
+                                                if (cat === "") this.setAttribute("selectedIndex", 0);
                                         }    
                                 }),
                                 "progress": new Model(_progress, {
@@ -237,7 +236,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.acancel = function(event, node){
                                 var name = _attachment.get("name"), json = {};
                                 // clear attachment
-                                _attachment.reset(_atemplate);
+                                _attachment.reset({
+                                         _id : "",
+                                         custom : false,
+                                        category : "",
+                                        name : "",
+                                        type : "",
+                                        file : "",
+                                        authors : [_user.get("_id")],
+                                        authornames : [_user.get("username")],
+                                        docId: ""
+                                });
                                
                                 // hide a-preview window
                                 _widget.dom.querySelector(".a-preview").classList.add("invisible");

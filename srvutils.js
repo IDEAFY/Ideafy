@@ -89,7 +89,7 @@ function SrvUtils(){
                                                 // delete tmp file when done
                                                 ins.once('end', function(){
                                                         fs.unlink(req.files.userfile.path, function(err){
-                                                                console.log(err);
+                                                                if (err) console.log(err);
                                                         });
                                                         res.write("ok");
                                                         res.end(); 

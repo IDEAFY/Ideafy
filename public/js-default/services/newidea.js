@@ -45,6 +45,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             aspinner = new Spinner({color:"#657b99", lines:8, length: 6, width: 3, radius:6, top: -2, left: -2}).spin();
                             
                         _store.setTransport(_transport);
+                        _attachment.setTransport(_transport);
                         
                         // reset languages
                         _resetLang();
@@ -243,9 +244,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 node.setAttribute("visibility", "hidden");
                                 node.classList.remove("pressed");
                                 aspinner.spin(node);
-                                _attachment.setTransport(_transport);
                                 _attachment.sync(Config.get("db"), id)
-                                .then(function(){
+                                .then(function(err){
+                                        if (err) console.log(err);
                                         return _attachment.upload();
                                 })
                                 .then(function(){

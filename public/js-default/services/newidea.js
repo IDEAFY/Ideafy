@@ -11,11 +11,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                 return function newIdeaConstructor(){
                 
                         var _widget = new Widget(),
+                              _transport = Config.get("transport"),
                               _languages = new Store(Config.get("userLanguages")),
                              _user = Config.get("user"),
                              _cat = Config.get("cat"),
                              _store = new Store(Config.get("ideaTemplate")),
-                             _attachment = new Store({
+                             _atemplate = {
                                     _id : "",
                                     custom : false,
                                     category : "",
@@ -25,7 +26,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     authors : [_user.get("_id")],
                                     authornames : [_user.get("username")],
                                     docId: ""
-                            }),
+                            },
+                             _attachment = new Store(_atemplate),
                             _progress = new Store({"status": null}),
                             _resetLang = function(){
                                 // set language to the user's language by default
@@ -39,7 +41,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _error = new Store({"error": ""}),
                             spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
                             
-                        _store.setTransport(Config.get("transport"));
+                        _store.setTransport(_transport);
                         
                         // reset languages
                         _resetLang();
@@ -87,12 +89,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 (bool) ? this.setAttribute("style", "display:inline-block;") : this.setAttribute("style", "display:none;");
                                         },
                                         setContent : function(type){
+                                                var node = this;
                                                 switch(type){
                                                         case "file":
-                                                                this.innerHTML = _attachment.get("name");
+                                                                node.innerHTML = _attachment.get("name");
                                                                 break;
                                                         default:
-                                                                this.innerHTML = _attachment.get("name");
+                                                                node.innerHTML = _attachment.get("name");
                                                                 break;
                                                 }        
                                         }       
@@ -134,7 +137,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend" data-labels="bind:innerHTML, alegend"></legend><div class="attachments"><select data-newidea="bind:setAttachmentCat, attachments" data-newideaevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-newideaevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-newideaevent="listen: input, setName"><ul class="a-list" data-newidea="bind:listAttachments, attachments"><li><label class="a-type">icon</label><label call=a-name>filename</label><label class="a-cat">category</label></li></ul><ul class="a-tools" data-attach="bind:show, name"><li class="toolbox-button"><div class="upload-button" name="upload" data-newideaevent="listen:mousedown, press; listen:mouseup, release"><input type="file" class="a-input" data-newideaevent="listen:mouseup, check;listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button"><div class="importpic-button" name="import" data-newideaevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button"><div class="drawingtool-button" name="drawing" data-newideaevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attatch="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-newideaevent="listen:mousedown, press; listen:mouseup, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-newideaevent="listen:mousedown, press; listen:mouseup, release">&#10007</div></div><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend" data-labels="bind:innerHTML, alegend"></legend><div class="attachments"><select data-newidea="bind:setAttachmentCat, attachments" data-newideaevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-newideaevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-newideaevent="listen: input, setName"><ul class="a-list" data-newidea="bind:listAttachments, attachments"><li><label class="a-type">icon</label><label call=a-name>filename</label><label class="a-cat">category</label></li></ul><ul class="a-tools" data-attach="bind:show, name"><li class="toolbox-button"><div class="upload-button" name="upload" data-newideaevent="listen:mousedown, press; listen:mouseup, release"><input type="file" class="a-input" data-newideaevent="listen:mouseup, check;listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button"><div class="importpic-button" name="import" data-newideaevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button"><div class="drawingtool-button" name="drawing" data-newideaevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attatch="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-newideaevent="listen:mousedown, press; listen: mousedown, aconfirm; listen:mouseup, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-newideaevent="listen:mousedown, press; listen:mousedown, acancel; listen:mouseup, release">&#10007</div></div><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
@@ -217,6 +220,26 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 
                                         _reader.readAsBinaryString(node.files[0]);
                                 }
+                        };
+                        
+                        _widget.aconfirm = function(event, node){
+                                
+                        };
+                        
+                        _widget.acancel = function(event, node){
+                                var name = _attachment.get("name"), json = {};
+                                // clear attachment
+                                _attachment.reset(_atemplate);
+                               
+                                // hide a-preview window
+                                _widget.dom.querySelector(".a-preview").classList.remove("invisible");
+                                
+                                // erase file from server
+                                json.type = "idea";
+                                json.file = _store.get("_id") +"/"+name;
+                                _transport.request("DeleteAttachment", json, function(res){
+                                        console.log(res);        
+                                });     
                         };
                         
                         _widget.toggleVisibility = function(event, node){

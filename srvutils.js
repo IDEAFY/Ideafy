@@ -228,6 +228,8 @@ function SrvUtils(){
                         case "card":
                                 _path += "cards/";
                                 break;
+                        case "idea":
+                                _path += "ideas/";
                         default:
                                 break;
                 };

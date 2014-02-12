@@ -102,8 +102,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }),
                                 "progress": new Model(_progress, {
                                         showStatus : function(status){
-                                                console.log("hello", status);
-                                                (status)? this.setAttribute("value", status) : this.setAttribute("value", 0) ;
+                                                if (status){
+                                                        this.setAttribute("value", status);
+                                                        this.innerHTML = status+"%";
+                                                }
+                                                else {
+                                                        this.innerHTML = "";
+                                                        this.setAttribute("value", 0) ;
+                                                }
                                         }    
                                 }),
                                 "select" : new Model (_languages, {

@@ -42,7 +42,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             _labels = Config.get("labels"),
                             _error = new Store({"error": ""}),
                             spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin(),
-                            aspinner = new Spinner({color:"#657b99", lines:8, length: 6, width: 3, radius:6, top: -20, left: 0}).spin();
+                            aspinner = new Spinner({color:"#657b99", lines:8, length: 6, width: 3, radius:6, top: -2, left: -2}).spin();
                             
                         _store.setTransport(_transport);
                         
@@ -244,7 +244,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 node.classList.remove("pressed");
                                 aspinner.spin(node);
                                 _attachment.setTransport(_transport);
-                                _attachment.sync(Config.get(db), id)
+                                _attachment.sync(Config.get("db"), id)
                                 .then(function(){
                                         return _attachment.upload();
                                 })

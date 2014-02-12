@@ -17,7 +17,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                               _cat = Config.get("cat"),
                               _store = new Store(Config.get("ideaTemplate")),
                               _attachment = new Store({
-                                    _id : "",
                                     custom : false,
                                     category : "",
                                     name : "",
@@ -288,8 +287,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 var name = _attachment.get("name"), json = {};
                                 // clear attachment
                                 _attachment.reset({
-                                         _id : "",
-                                         custom : false,
+                                        custom : false,
                                         category : "",
                                         name : "",
                                         type : "",

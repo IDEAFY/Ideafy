@@ -22,9 +22,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     category : "",
                                     name : "",
                                     type : "",
-                                    file : "",
+                                    fileName : "",
                                     authors : [_user.get("_id")],
-                                    authornames : [_user.get("username")],
+                                    authornames : _user.get("username"),
                                     docId: "",
                                     rating: null,
                                     twocents:[]
@@ -40,7 +40,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             },
                             _labels = Config.get("labels"),
                             _error = new Store({"error": ""}),
-                            spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
+                            spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin(),
+                            aspinner = new Spinner({color:"#657b99", lines:8, length: 6, width: 3, radius:6, top: -20, left: 0}).spin();
                             
                         _store.setTransport(_transport);
                         
@@ -212,7 +213,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _store.set("_id", _id);
                                         _widget.dom.querySelector(".a-preview").classList.remove("invisible");
                                         
-                                        _attachment.set("name", node.files[0].name);
+                                        _attachment.set("fileName", node.files[0].name);
                                         _attachment.set("docId", _id);
                                         _attachment.set("type", "file");
                                                                
@@ -232,7 +233,50 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.aconfirm = function(event, node){
+                                var now = new Date(),
+                                      id = "A:"+now.getTime();
                                 
+                                node.setAttribute("visibility", "hidden");
+                                node.classList.remove("pressed");
+                                aspinner.spin(node);
+                                _attachment.setTransport(_transport);
+                                _attachment.sync(Config.get(db), id)
+                                .then(function(){
+                                        return _attachment.upload();
+                                })
+                                .then(function(){
+                                        var att = _store.get("attachments").concat();
+                                        // attach to idea
+                                        att.unshift({
+                                                id : id,
+                                                type : _attachment.get("type"),
+                                                category : _attachment.get("category"),
+                                                name : _attachment.get("name"),
+                                                file : _attachment.get("file"),
+                                                authornames : _attachment.get("authornames")
+                                        });
+                                        _store.set("attachments", att);
+                                        
+                                        // clear attachment
+                                        _attachment.reset({
+                                                 _id : "",
+                                                custom : false,
+                                                category : "",
+                                                name : "",
+                                                type : "",
+                                                fileName : "",
+                                                authors : [_user.get("_id")],
+                                                authornames : _user.get("username"),
+                                                docId: "",
+                                                rating: null,
+                                                twocents: []
+                                        });
+                               
+                                        // hide a-preview window and release button
+                                        aspinner.stop();
+                                        node.setAttribute("visibility", "visible");
+                                        _widget.dom.querySelector(".a-preview").classList.add("invisible");                
+                                });                                    
                         };
                         
                         _widget.acancel = function(event, node){
@@ -244,10 +288,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         category : "",
                                         name : "",
                                         type : "",
-                                        file : "",
+                                        fileName : "",
                                         authors : [_user.get("_id")],
                                         authornames : [_user.get("username")],
-                                        docId: ""
+                                        docId: "",
+                                        rating: null,
+                                        twocents: []
                                 });
                                
                                 // hide a-preview window and release button

@@ -156,7 +156,6 @@ font-size: 14px;
 #newidea-popup .uploadbar{
     -webkit-appearance : none;
     height: 16px;
-    background-color: #657b99;
     border-radius: 5px;
     padding: 2px;
     -webkit-box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
@@ -164,20 +163,20 @@ font-size: 14px;
 }
 
 #newidea-popup .uploadval{
-    float: lefty;
-    margin-top: -20px;
+    margin-top: -18px;
     width: 100%;
     line-height: 20px;
     font-size: 12px;
-    color: white;   
+    color: black;   
 }
 
-#newidea-popup .uploadbar{
-    
+#newidea-popup .uploadbar::-webkit-progress-bar{
+    background-color: white;
+    border: 1px solid #657b99; 
 }
 
-#newidea-popup .uploadbar{
-    
+#newidea-popup .uploadbar::-webkit-progress-value{
+    background-color: #657b99;
 }
 
 #newidea-popup .a-button{

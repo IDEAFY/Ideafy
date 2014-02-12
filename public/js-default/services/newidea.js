@@ -88,15 +88,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         show : function(bool){
                                                 (bool) ? this.setAttribute("style", "display:inline-block;") : this.setAttribute("style", "display:none;");
                                         },
-                                        setContent : function(type){
+                                        setContent : function(typ){
                                                 var node = this;
-                                                switch(type){
-                                                        case "file":
+                                                switch(typ){
+                                                         case "file":
                                                                 node.innerHTML = _attachment.get("name");
                                                                 break;
                                                         default:
                                                                 node.innerHTML = _attachment.get("name");
-                                                                break;
+                                                        break;
                                                 }        
                                         }       
                                 }),

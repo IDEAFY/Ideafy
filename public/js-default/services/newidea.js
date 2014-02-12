@@ -25,7 +25,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     file : "",
                                     authors : [_user.get("_id")],
                                     authornames : [_user.get("username")],
-                                    docId: ""
+                                    docId: "",
+                                    rating: null,
+                                    twocents:[]
                             }),
                             _progress = new Store({"status": null}),
                             _resetLang = function(){

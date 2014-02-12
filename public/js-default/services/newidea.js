@@ -102,7 +102,23 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 if (name === "") this.value = "";
                                         },
                                         resetCat : function(cat){
-                                                if (cat === "") this.setAttribute("selectedIndex", 0);
+                                                var custom = _user.get("categories") || [], arr, i, l, key,
+                                                      res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
+                                               
+                                                if (cat === "") {
+                                                        for (i=0, l=_cat.length; i<l;i++){
+                                                                key = _cat[i];
+                                                                res+="<option>"+_labels.get(key)+"</option>";
+                                                        }
+                                                        if (custom.length){
+                                                                for (i=0, l=custom.length; i<l;i++){
+                                                                        res+="<option>"+custom[i]+"</option>";
+                                                                }
+                                                        }
+                                                        res+="<option>"+_labels.get("other")+"</option>";
+                                                        this.innerHTML = res;        
+                                                }
+                                                
                                         }    
                                 }),
                                 "progress": new Model(_progress, {

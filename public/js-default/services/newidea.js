@@ -241,15 +241,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 var now = new Date(),
                                       id = "A:"+now.getTime();
                                 
-                                node.setAttribute("visibility", "hidden");
-                                node.classList.remove("pressed");
+                                
+                                node.setAttribute("style", "display: none;");
                                 aspinner.spin(node);
                                 
-                                console.log(_attachment.toJSON());
-                                _attachment.sync(Config.get("db"), id)
+                               _attachment.sync(Config.get("db"), id)
                                 .then(function(err){
                                         if (err) console.log(err);
-                                        console.log(_attachment.toJSON());
                                         return _attachment.upload();
                                 })
                                 .then(function(){
@@ -280,7 +278,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                
                                         // hide a-preview window and release button
                                         aspinner.stop();
-                                        node.setAttribute("visibility", "visible");
+                                        node.setAttribute("style", "display: inline-block");
+                                        node.classList.remove("pressed");
                                         _widget.dom.querySelector(".a-preview").classList.add("invisible");                
                                 });                                    
                         };

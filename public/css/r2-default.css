@@ -160,11 +160,26 @@ font-size: 14px;
     width: 90%;
 }
 
+#newidea-popup .a-button{
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    background: white;
+    -webkit-box-shadow: inset 0 -1px 1px #657b99;
+    float: left;
+    margin-top: 5px;
+}
+
+#newidea-popup .a-button.pressed{
+    background: #ccc;
+}
+
 #newidea-popup .a-confirm{
-    
+    color: #5F8F28;
 }
 
 #newidea-popup .a-cancel{
-    
+    color: red;
+    margin-left: 15px;   
 }
 

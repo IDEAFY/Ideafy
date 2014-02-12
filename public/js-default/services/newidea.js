@@ -249,11 +249,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         authornames : [_user.get("username")],
                                         docId: ""
                                 });
-                                
-                                // release button
-                                _widget.release(event, node);
                                
-                                // hide a-preview window
+                                // hide a-preview window and release button
+                                node.classList.remove("pressed");
                                 _widget.dom.querySelector(".a-preview").classList.add("invisible");
                                 
                                 // erase file from server

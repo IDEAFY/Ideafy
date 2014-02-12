@@ -244,9 +244,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 node.setAttribute("visibility", "hidden");
                                 node.classList.remove("pressed");
                                 aspinner.spin(node);
+                                
+                                console.log(_attachment.toJSON());
                                 _attachment.sync(Config.get("db"), id)
                                 .then(function(err){
                                         if (err) console.log(err);
+                                        console.log(_attachment.toJSON());
                                         return _attachment.upload();
                                 })
                                 .then(function(){

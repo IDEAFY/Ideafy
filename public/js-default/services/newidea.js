@@ -100,7 +100,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 }        
                                         },
                                         resetName : function(name){
-                                                if (name === "") this.innerHTML = "";
+                                                if (name === "") this.value = "";
                                         },
                                         resetCat : function(cat){
                                                 if (cat ==="") this.setAttribute("selectedIndex", 0);

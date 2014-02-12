@@ -163,20 +163,22 @@ font-size: 14px;
 }
 
 #newidea-popup .uploadval{
-    margin-top: -18px;
+    margin-top: -19px;
     width: 100%;
     line-height: 20px;
-    font-size: 12px;
+    font-size: 10px;
     color: black;   
 }
 
 #newidea-popup .uploadbar::-webkit-progress-bar{
     background-color: white;
-    border: 1px solid #657b99; 
+    border: 1px solid #657b99;
+    border-radius: 5px;
 }
 
 #newidea-popup .uploadbar::-webkit-progress-value{
     background-color: #657b99;
+    border-radius: 5px;
 }
 
 #newidea-popup .a-button{

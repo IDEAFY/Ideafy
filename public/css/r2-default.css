@@ -72,6 +72,9 @@ font-size: 14px;
 
 .acolor{
     color: #404040;
+}
+
+.attachments select .acolor{
     font-weight: normal;
 }
 

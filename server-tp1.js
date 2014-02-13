@@ -172,7 +172,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // communication utilities (mail and application notifications)
         comUtils.setVar(smtpTransport, supportEmail, mailSender);
-        comUtils.setConstructors(CouchDBDocument);
+        comUtils.setConstructors(CouchDBDocument, Store);
         comUtils.setFunctions(CDBAdmin, checkInvited, addInvited);
         olives.handlers.set("SendMail", comUtils.sendMail);
         olives.handlers.set("Support", comUtils.support);

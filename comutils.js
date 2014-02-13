@@ -12,7 +12,7 @@
 function ComUtils(){
         
         var _smtpTransport, _supportEmail,
-                _CouchDBDocument,
+                _CouchDBDocument, _Store,
                 _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP;
  
         this.setVar = function(smtpTransport, supportEmail, mailSender){
@@ -21,8 +21,9 @@ function ComUtils(){
                 _mailSender = mailSender;
         };
         
-        this.setConstructors = function(CouchDBDocument){
+        this.setConstructors = function(CouchDBDocument, Store){
                 _CouchDBDocument = CouchDBDocument;
+                _Store = Store;
         };
         
         this.setFunctions = function(CDBAdmin, checkInvited, addInvited){
@@ -169,7 +170,7 @@ function ComUtils(){
                  */ 
                 this.notify = function(json, onEnd) {
 
-                        var dest = json.dest, sendResults = new Store([]),
+                        var dest = json.dest, sendResults = new _Store([]),
                         // build message
                         message = {
                                 "type" : json.type,

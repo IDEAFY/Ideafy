@@ -241,7 +241,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                       id = "A:"+now.getTime();
                                 
                                 
-                                node.setAttribute("style", "display: none;");
                                 aspinner.spin(node);
                                 
                                _attachment.sync(Config.get("db"), id)
@@ -277,7 +276,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                
                                         // hide a-preview window and release button
                                         aspinner.stop();
-                                        node.setAttribute("style", "display: inline-block");
                                         node.classList.remove("pressed");
                                         _widget.dom.querySelector(".a-preview").classList.add("invisible");                
                                 });                                    

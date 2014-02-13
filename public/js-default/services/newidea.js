@@ -236,6 +236,59 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }
                         };
                         
+                        _widget.resetAttachment = function(){
+                                // clear attachment
+                                _attachment.reset({
+                                        custom : false,
+                                        category : "",
+                                        name : "",
+                                        type : "",
+                                        fileName : "",
+                                        authors : [_user.get("_id")],
+                                        authornames : [_user.get("username")],
+                                        docId: "",
+                                        rating: null,
+                                        twocents: []
+                                });
+                                
+                                // release buttons
+                                _widget.dom.querySelector(".a-confirm").classList.remove("pressed");
+                                _widget.dom.querySelector(".a-cancel").classList.remove("pressed");
+                               
+                                // hide a-preview window
+                                _widget.dom.querySelector(".a-preview").classList.add("invisible");        
+                        };
+                        
+                        _widget.deleteAttachmentFile = function(fileName){
+                                var json={type:"idea"},
+                                      promise = new Promise();
+                                
+                                json.file = _store.get("_id") +"/"+fileName;
+                                _transport.request("DeleteAttachment", json, function(res){
+                                        (res === "ok") ? promise.fulfill() : promise.reject() ;       
+                                });
+                                
+                                return promise;       
+                        };
+                        
+                        _widget.deleteAttachmentDoc = function(docId){
+                                var promise = new Promise(),
+                                      cdb = new Store();
+                                
+                                cdb.sync(Config.get("db"), docId)
+                                .then(function(){
+                                        return _widget.deleteAttachmentFile(cdb.get("fileName"));       
+                                })
+                                .then(function(){
+                                        return cdb.remove();
+                                })
+                                .then(function(){
+                                        promise.fulfill();
+                                });
+                                
+                                return promise;        
+                        };
+                        
                         _widget.aconfirm = function(event, node){
                                 var now = new Date(),
                                       id = "A:"+now.getTime();
@@ -258,55 +311,22 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 file : _attachment.get("file"),
                                                 authornames : _attachment.get("authornames")
                                         });
-                                        
-                                        // clear attachment
-                                        _attachment.reset({
-                                                 _id : "",
-                                                custom : false,
-                                                category : "",
-                                                name : "",
-                                                type : "",
-                                                fileName : "",
-                                                authors : [_user.get("_id")],
-                                                authornames : _user.get("username"),
-                                                docId: "",
-                                                rating: null,
-                                                twocents: []
-                                        });
                                
-                                        // hide a-preview window and release button
-                                        aspinner.stop();
-                                        node.classList.remove("pressed");
-                                        _widget.dom.querySelector(".a-preview").classList.add("invisible");                
+                                        // stop spinner
+                                        aspinner.stop(); 
+                                        
+                                        // reset attachment
+                                        _widget.resetAttachment();           
                                 });                                    
                         };
                         
                         _widget.acancel = function(event, node){
-                                var name = _attachment.get("name"), json = {};
-                                // clear attachment
-                                _attachment.reset({
-                                        custom : false,
-                                        category : "",
-                                        name : "",
-                                        type : "",
-                                        fileName : "",
-                                        authors : [_user.get("_id")],
-                                        authornames : [_user.get("username")],
-                                        docId: "",
-                                        rating: null,
-                                        twocents: []
-                                });
-                               
-                                // hide a-preview window and release button
-                                node.classList.remove("pressed");
-                                _widget.dom.querySelector(".a-preview").classList.add("invisible");
+                                var file = _attachment.get("fileName");
                                 
-                                // erase file from server
-                                json.type = "idea";
-                                json.file = _store.get("_id") +"/"+name;
-                                _transport.request("DeleteAttachment", json, function(res){
-                                        console.log(res);        
-                                });     
+                                _widget.deleteAttachmentFile(file);
+                                
+                                // reset attachment
+                                _widget.resetAttachment();   
                         };
                         
                         _widget.toggleVisibility = function(event, node){
@@ -332,9 +352,28 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.closePopup = function closePopup(){
+                                var delCount = 0;
                                 // hide window
                                 document.getElementById("newidea-popup").classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
+                                
+                                // reset _attachment and delete file from server if applicable
+                                if (_attachment.get("fileName")) _widget.deleteAttachmentFile(_attachment,get("fileNname"));
+                                _widget.resetAttachment();
+                                
+                                // reset _alist
+                                if (_alist.getNbItems()){
+                                        _alist.loop(function(v,i){
+                                                _widget.deleteAttachmentDoc(v._id)
+                                                .then(function(){
+                                                        delCount++;
+                                                        if (delCount === _alist.getNbItems()){
+                                                                console.log("all attachments successfully removed");
+                                                        }       
+                                                });
+                                        });    
+                                };
+                                
                                 // reset _store and _error
                                 _store.unsync();
                                 _store.reset(Config.get("ideaTemplate"));

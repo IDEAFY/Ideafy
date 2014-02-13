@@ -318,7 +318,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         .then(function(){
                                                 // add to attachment list
                                                 _alist.alter("unshift" , {
-                                                        id : id,
+                                                        docId : id,
                                                         type : _attachment.get("type"),
                                                         category : _attachment.get("category"),
                                                         name : _attachment.get("name"),
@@ -385,7 +385,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // reset _alist
                                 if (_alist.getNbItems()){
                                         _alist.loop(function(v,i){
-                                                _widget.deleteAttachmentDoc(v._id)
+                                                _widget.deleteAttachmentDoc(v.docId)
                                                 .then(function(){
                                                         delCount++;
                                                         if (delCount === _alist.getNbItems()){

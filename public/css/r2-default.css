@@ -70,6 +70,38 @@ font-size: 14px;
     font-size: 12px;    
 }
 
+.attachments select:first-child{
+    color: #4d4d4d;
+}
+
+.attachments select:8n+1{
+    color: #9ac9cd;    
+}
+
+.attachments select:8n+2{
+    color: #f27b3d;    
+}
+
+.attachments select:8n+3{
+    color: #bd262c;    
+}
+
+.attachments select:8n+4{
+    color: #5f8f28;    
+}
+
+.attachments select:8n+5{
+    color: #657b99;
+}
+
+.attachments select:8n+6{
+  color:  #a000a1; 
+}
+
+.attachment select: 8n+7{
+    color: #cccccc;
+}
+
 .attachments input{
     font-size: 12px;
     line-height: 24px;

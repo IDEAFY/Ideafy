@@ -241,9 +241,12 @@ font-size: 14px;
 }
 
 #newidea-popup .close-warning{
-    width: 15px;
-    height: 15px;
+    width: 10px;
+    height: 10px;
     background-image : url('../img/brainstorm/closeFrame.png');
     background-size: contain;
+    position: absolute;
+    left: 285px;
+    top: 5px;
 }
 

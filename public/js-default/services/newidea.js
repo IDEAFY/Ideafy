@@ -185,7 +185,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.selectCat = function(event, node){
                                 // if "other" is selected display category input field, else set attachment category value
-                                if (node.value ===  node.lastChild.value){
+                                if (node.value ===  node.lastChild.innerHTML){
                                         _attachment.set("custom", true);
                                         node.classList.add("acolor");       
                                 }

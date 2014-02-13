@@ -289,7 +289,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.deleteAttachmentDoc = function(docId){
                                 var promise = new Promise(),
                                       cdb = new Store();
-                                
+                                cdb.setTransport(_transport);
                                 cdb.sync(Config.get("db"), docId)
                                 .then(function(){
                                         return _widget.deleteAttachmentFile(cdb.get("fileName"));       

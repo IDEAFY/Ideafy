@@ -82,9 +82,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 }
                                                 res+="<option>"+_labels.get("other")+"</option>";
                                                 this.innerHTML = res;
-                                        },
-                                        listAttachments: function(attachments){
-                                                (attachments && attachments.length) ? this.setAttribute("style", "display:block;") : this.setAttribute("style", "display:none;");
                                         }
                                 }),
                                 "attach": new Model(_attachment, {
@@ -95,7 +92,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 var node = this;
                                                 switch(type){
                                                          case "file":
-                                                                node.innerHTML = _attachment.get("name");
+                                                                node.innerHTML = _attachment.get("fileName");
                                                                 break;
                                                         default:
                                                                 node.innerHTML = _attachment.get("name");
@@ -493,6 +490,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         });
                                 }
                         };
+                        
+                        ["added", "deleted"].forEach(function(val){
+                                _alist.watch(val, function(){
+                                        var node = _widget.dom.querySelector(".a-list");
+                                        (_alist.getNbItems()) ? node.setAttribute("style", "display:block;") : node.setAttribute("style", "display:none;");
+                                });       
+                        });
                         
                         return _widget;
                 };

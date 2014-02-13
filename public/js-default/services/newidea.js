@@ -385,6 +385,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // reset _alist
                                 if (_alist.getNbItems()){
                                         _alist.loop(function(v,i){
+                                                console.log(v);
                                                 _widget.deleteAttachmentDoc(v.docId)
                                                 .then(function(){
                                                         delCount++;

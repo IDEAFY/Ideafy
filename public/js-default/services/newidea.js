@@ -237,6 +237,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.resetAttachment = function(){
+                                // unsync if applicable
+                                _attachment.unsync();
+                                
                                 // clear attachment
                                 _attachment.reset({
                                         custom : false,
@@ -358,7 +361,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 document.getElementById("cache").classList.remove("appear");
                                 
                                 // reset _attachment and delete file from server if applicable
-                                if (_attachment.get("fileName")) _widget.deleteAttachmentFile(_attachment,get("fileNname"));
+                                if (_attachment.get("fileName")) _widget.deleteAttachmentFile(_attachment.get("fileNname"));
                                 _widget.resetAttachment();
                                 
                                 // reset _alist

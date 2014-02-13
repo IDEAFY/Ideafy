@@ -66,11 +66,13 @@ font-size: 14px;
     line-height: 25px;
     border: 1px solid #CCC;
     font-family: Helvetica;
-    font-size: 12px;    
+    font-size: 12px; 
+    font-weight: bold;  
 }
 
-.acolor0{
+.acolor{
     color: #4d4d4d;
+    font-weight: normal;
 }
 
 .acolor1{

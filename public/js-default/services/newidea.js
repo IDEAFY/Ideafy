@@ -187,6 +187,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // if "other" is selected display category input field, else set attachment category value
                                 if (node.value ===  node.lastChild.innerHTML){
                                         _attachment.set("custom", true);
+                                        for (i=1, l=Config.get("cat").length; i<=l;i++){
+                                                node.classList.remove("acolor"+i); 
+                                        };
                                         node.classList.add("acolor");       
                                 }
                                 else{

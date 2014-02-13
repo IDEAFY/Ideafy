@@ -70,11 +70,8 @@ font-size: 14px;
     font-weight: bold;  
 }
 
-.acolor{
+.attachments select.acolor{
     color: #404040;
-}
-
-.attachments select .acolor{
     font-weight: normal;
 }
 

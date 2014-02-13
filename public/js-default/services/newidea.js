@@ -277,6 +277,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 
                                 json.file = _store.get("_id") +"/"+fileName;
                                 _transport.request("DeleteAttachment", json, function(res){
+                                        console.log("deleted attachment " + fileName + "___" + res);
                                         (res === "ok") ? promise.fulfill() : promise.reject() ;       
                                 });
                                 

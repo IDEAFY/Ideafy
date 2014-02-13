@@ -40,6 +40,7 @@ font-size: 14px;
 
 #newidea-popup .a-list li{
     height: 50px;
+    line-height: 50px;
     margin-bottom: 5px;
     border-bottom: 1px dotted #808080;
 }
@@ -56,6 +57,7 @@ font-size: 14px;
 #newidea-popup .a-list .a-type{
     background-size: 20px 20px;
     background-position: center center;
+    background-repeat: no-repeat;
 }
 
 .attachments select{

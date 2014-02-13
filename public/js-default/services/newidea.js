@@ -142,6 +142,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         case "nosol":
                                                              this.innerHTML = _labels.get("solutionfield")+ _labels.get("emptyfielderror");
                                                              break;
+                                                        case "noaname":
+                                                                this.innerHTML = _labels.get("noaname");
+                                                                break;
+                                                        case "noacat":
+                                                                this.innerHTML = _labels.get("noacat");
+                                                                break;
                                                         default:
                                                              this.innerHTML = error;
                                                 }
@@ -151,7 +157,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend" data-labels="bind:innerHTML, alegend"></legend><div class="attachments"><select data-newidea="bind:setAttachmentCat, attachments" data-attach="bind:resetCat, category" data-newideaevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-newideaevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-attach="bind:resetName, name" data-newideaevent="listen: input, setName"><ul class="a-list" data-newidea="bind:listAttachments, attachments" data-alist="foreach"><li><label class="a-type" data-alist="bind:innerHTML, type">icon</label><label class="a-name" data-alist="bind:innerHTML, name">filename</label><label class="a-cat" data-alist="bind:innerHTML, category">category</label></li></ul><ul class="a-tools" data-attach="bind:show, name"><li class="toolbox-button"><div class="upload-button" name="upload" data-newideaevent="listen:mousedown, press; listen:mouseup, release"><input type="file" class="a-input" data-newideaevent="listen:mouseup, check;listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button"><div class="importpic-button" name="import" data-newideaevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button"><div class="drawingtool-button" name="drawing" data-newideaevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-newideaevent="listen:mousedown, press; listen: mousedown, aconfirm; listen:mouseup, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-newideaevent="listen:mousedown, press; listen:mousedown, acancel">&#10007</div></div></div><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend" data-labels="bind:innerHTML, alegend"></legend><div class="attachments"><select data-newidea="bind:setAttachmentCat, attachments" data-attach="bind:resetCat, category" data-newideaevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-newideaevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-attach="bind:resetName, name" data-newideaevent="listen: input, setName"><ul class="a-list" data-newidea="bind:listAttachments, attachments" data-alist="foreach"><li><label class="a-type" data-alist="bind:innerHTML, type">icon</label><label class="a-name" data-alist="bind:innerHTML, name">filename</label><label class="a-cat" data-alist="bind:innerHTML, category">category</label></li></ul><ul class="a-tools" data-attach="bind:show, category"><li class="toolbox-button"><div class="upload-button" name="upload" data-newideaevent="listen:mousedown, press; listen:mouseup, release"><input type="file" class="a-input" data-newideaevent="listen:mouseup, check;listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button"><div class="importpic-button" name="import" data-newideaevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button"><div class="drawingtool-button" name="drawing" data-newideaevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-newideaevent="listen:mousedown, press; listen: mousedown, aconfirm; listen:mouseup, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-newideaevent="listen:mousedown, press; listen:mousedown, acancel">&#10007</div></div></div><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
@@ -186,16 +192,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         _attachment.set("custom", true);        
                                 }
                                 else{
+                                        if (_error.get("error") === "noacat") _error.set("error", "");
                                         _attachment.set("custom", false);
                                         _attachment.set("category", node.value);
                                 }        
                         };
                         
                         _widget.setCat = function(event, node){
+                                if (_error.get("error") === "noacat" && node.value) _error.set("error", "");
                                 _attachment.set("category", node.value);     
                         };
                         
                         _widget.setName = function(event, node){
+                                if (_error.get("error") === "noaname" && node.value ) _error.set("error", "");
                                 _attachment.set("name", node.value);
                         };
                         
@@ -211,21 +220,24 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                        _id = _store.get("_id") || "I:"+_now.getTime(),
                                        _url = '/upload',
                                        _type = "afile",
-                                       _dir = "ideas/"+_id;
+                                       _dir = "ideas/"+_id,
+                                       fileName = "";
                                
                                if (node.files && node.files.length){
+                                       fileName = node.files[0].name;
                                         _store.set("_id", _id);
                                         _widget.dom.querySelector(".a-preview").classList.remove("invisible");
                                         
-                                        _attachment.set("fileName", node.files[0].name);
+                                        _attachment.set("fileName", fileName);
                                         _attachment.set("docId", _id);
                                         _attachment.set("type", "file");
+                                        if (!_attachment.get("name")) _attachment.set("name", fileName);
                                                                
                                         _reader.onloadend = function(e){
                                                 _fd.append("type", _type);
                                                 _fd.append("dir", _dir);
                                                 _fd.append("userfile", node.files[0]);
-                                                _fd.append("filename", node.files[0].name);
+                                                _fd.append("filename", fileName);
                                                 Utils.uploadFile(_url, _fd, _progress, function(result){
                                                         console.log("upload successful");
                                                         _attachment.set("uploaded", true);
@@ -296,31 +308,40 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 var now = new Date(),
                                       id = "A:"+now.getTime();
                                 
-                                
-                                aspinner.spin(node);
-                                
-                               _attachment.sync(Config.get("db"), id)
-                                .then(function(err){
-                                        if (err) console.log(err);
-                                        return _attachment.upload();
-                                })
-                                .then(function(){
-                                        // add to attachment list
-                                        _alist.alter("unshift" , {
-                                                id : id,
-                                                type : _attachment.get("type"),
-                                                category : _attachment.get("category"),
-                                                name : _attachment.get("name"),
-                                                file : _attachment.get("file"),
-                                                authornames : _attachment.get("authornames")
-                                        });
+                                // Attachment needs a name and a category to be uploaded
                                
-                                        // stop spinner
-                                        aspinner.stop(); 
+                               if (_attachment.get("name") && _attachment.get("category")){
+                                        aspinner.spin(node);
+                                
+                                _attachment.sync(Config.get("db"), id)
+                                        .then(function(err){
+                                                if (err) console.log(err);
+                                                return _attachment.upload();
+                                        })
+                                        .then(function(){
+                                                // add to attachment list
+                                                _alist.alter("unshift" , {
+                                                        id : id,
+                                                        type : _attachment.get("type"),
+                                                        category : _attachment.get("category"),
+                                                        name : _attachment.get("name"),
+                                                        file : _attachment.get("file"),
+                                                        authornames : _attachment.get("authornames")
+                                                });
+                               
+                                                // stop spinner
+                                                aspinner.stop(); 
                                         
-                                        // reset attachment
-                                        _widget.resetAttachment();           
-                                });                                    
+                                                // reset attachment
+                                                _widget.resetAttachment();           
+                                        });
+                                }
+                                else if (!_attachment.get("name")){
+                                        _error.set("error", "noaname");       
+                                }
+                                else{
+                                        _error.set("error", "noacat");       
+                                }                                 
                         };
                         
                         _widget.acancel = function(event, node){

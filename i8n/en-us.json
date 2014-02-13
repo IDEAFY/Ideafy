@@ -558,5 +558,7 @@
 	"arch": "Architecture",
 	"spec": "Specifications",
 	"planning": "Planning",
-	"other": "Other" 
+	"other": "Other",
+	"noaname": "Missing attachment name",
+	"noacat": "Missing attachment category"
 }

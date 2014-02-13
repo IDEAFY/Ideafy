@@ -928,21 +928,6 @@ ul.notify-list{
     float: left;
 }
 
-#newidea-popup .publicwarning{
-    height: 50px;
-    width: 230px;
-    background-image: url('../img/brainstorm/deedeetopright.png');
-    background-size: 30px 30px;
-    background-position: left center;
-    background-repeat: no-repeat;
-    padding: 5px 10px 5px 40px;
-    float: left;
-    margin-top: -20px;
-    font-family: helvetica;
-    font-size: 12px;
-    color: #404040;
-}
-
 #help-popup, #tip-popup{
     position: absolute;
     width: 480px;

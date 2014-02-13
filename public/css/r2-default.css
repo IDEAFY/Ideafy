@@ -219,3 +219,31 @@ font-size: 14px;
     margin-left: 15px;   
 }
 
+#newidea-popup .publicwarning{
+    height: 50px;
+    width: 230px;
+    background-image: url('../img/brainstorm/deedeetopright.png');
+    background-size: 30px;
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    padding: 10px 30px 5px 40px;
+    float: left;
+    margin-top: -78px;
+    font-family: helvetica;
+    font-size: 12px;
+    color: #404040;
+    position: absolute;
+    margin-left: 70px;
+    background-color: white;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0px -1px 2px #537b99;
+    font-weight: bold;
+}
+
+#newidea-popup .close-warning{
+    width: 15px;
+    height: 15px;
+    background-image : url('../img/brainstorm/closeFrame.png');
+    background-size: contain;
+}
+

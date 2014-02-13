@@ -323,7 +323,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         type : _attachment.get("type"),
                                                         category : _attachment.get("category"),
                                                         name : _attachment.get("name"),
-                                                        file : _attachment.get("file"),
+                                                        fileName : _attachment.get("fileName"),
                                                         authornames : _attachment.get("authornames")
                                                 });
                                

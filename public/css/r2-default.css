@@ -75,6 +75,8 @@ font-size: 14px;
     height: 10px;
     background-image : url('../img/brainstorm/closeFrame.png');
     background-size: contain;
+    margin-top: -50px;
+    margin-right: 10px;
 }
 
 .attachments select{

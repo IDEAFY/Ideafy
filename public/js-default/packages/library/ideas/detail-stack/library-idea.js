@@ -140,7 +140,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 else this.classList.add("invisible");
                                         },
                                         showAttachments : function(att){
-                                                (att & att.length) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                                (att && att.length) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         }
                                 }),
                                 "share" : new Model(_shareList),

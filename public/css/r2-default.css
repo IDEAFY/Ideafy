@@ -49,16 +49,24 @@ font-size: 14px;
 }
 
 #newidea-popup .a-list .a-name{
-    width: 150px;
+    width: 210px;
     display: inline-block;
     margin-top: 0px;
+    font-size: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 50px;
 }
 
 #newidea-popup .a-list .a-type{
     width: 20px;
     height: 20px;
-    display: inline-block;
-    margin: 0px 10px;
+    float: left;
+    margin: 15px 10px;
+    margin-left: 10px;
+    margin-top: 15px;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .attachments select{

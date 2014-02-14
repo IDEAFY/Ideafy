@@ -103,7 +103,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 this.value = name;
                                         },
                                         resetCat : function(cat){
-                                                if (cat === "") this.selectedIndex = 0;
+                                                if (cat === "") {
+                                                        this.selectedIndex = 0;
+                                                        [1,2,3,4,5,6].forEach(function(val){
+                                                                this.classList.remove("acolor"+val);
+                                                                this.classList.add(".acolor");
+                                                        });
+                                                }
                                         }    
                                 }),
                                 "progress": new Model(_progress, {

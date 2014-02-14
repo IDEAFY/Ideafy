@@ -103,11 +103,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 this.value = name;
                                         },
                                         resetCat : function(cat){
+                                                var node = this;
                                                 if (cat === "") {
-                                                        this.selectedIndex = 0;
+                                                        node.selectedIndex = 0;
                                                         [1,2,3,4,5,6].forEach(function(val){
-                                                                this.classList.remove("acolor"+val);
-                                                                this.classList.add(".acolor");
+                                                                node.classList.remove("acolor"+val);
+                                                                node.classList.add(".acolor");
                                                         });
                                                 }
                                         }    

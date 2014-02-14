@@ -50,6 +50,8 @@ font-size: 14px;
 
 #newidea-popup .a-list .a-name{
     width: 150px;
+    display: inline-block;
+    margin-top: 0px;
 }
 
 #newidea-popup .a-list .a-type{

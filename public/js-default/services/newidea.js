@@ -128,10 +128,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 }
                                         },
                                         setBg : function(cat){
-                                                var colors = ["9ac9cd", "#f27b3d", "#bd262c", "#5f8f28", "#657b99", "#a000a1"],
-                                                      idx = Config.get("cat").indexOf(cat);
+                                                var colors = ["9ac9cd", "#f27b3d", "#bd262c", "#5f8f28", "#657b99", "#a000a1"], node =this;
                                                 
-                                                (idx === -1) ? this.setAttribute("style", "background: #cccccc;") : this.setAttribute("style", "background:"+colors[idx]);
+                                                node.setAttribute("style": "background: transparent;");
+                                                
+                                                Config.get("cat").forEach(function(val, idx){
+                                                        if (_labels.get(val) === cat) node.setAttribute("style","background:"+ colors[idx]);
+                                                });
                                         }       
                                 }),
                                 "select" : new Model (_languages, {

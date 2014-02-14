@@ -70,13 +70,14 @@ font-size: 14px;
 }
 
 #newidea-popup .a-list .a-del{
-    float: right;
     width: 10px;
     height: 10px;
     background-image : url('../img/brainstorm/closeFrame.png');
     background-size: contain;
     margin-top: -50px;
-    margin-right: 10px;
+    position: absolute;
+    margin-left: 235px;
+    z-index: 10;
 }
 
 .attachments select{

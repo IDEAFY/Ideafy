@@ -123,7 +123,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         case "drawing":
                                                                 break; 
                                                         default:
-                                                                node.src =  "url('../img/brainstorm/importDisable100.png')";
+                                                                node.src =  "url('img/brainstorm/importDisable100.png')";
                                                                 break;
                                                 }
                                         },

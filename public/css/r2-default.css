@@ -48,19 +48,15 @@ font-size: 14px;
     border-top-right-radius: 5px;
 }
 
-#newidea-popup .a-list li > label{
-    display: inline-block; 
-    width: 40px; 
-}
-
 #newidea-popup .a-list .a-name{
     width: 150px;
 }
 
 #newidea-popup .a-list .a-type{
-    background-size: 20px 20px;
-    background-position: center center;
-    background-repeat: no-repeat;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin: 0px 10px;
 }
 
 .attachments select{

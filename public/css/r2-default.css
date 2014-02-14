@@ -69,6 +69,14 @@ font-size: 14px;
     background-repeat: no-repeat;
 }
 
+#newidea-popup .a-list .a-del{
+    float: right;
+    width: 10px;
+    height: 10px;
+    background-image : url('../img/brainstorm/closeFrame.png');
+    background-size: contain;
+}
+
 .attachments select{
     -webkit-appearance: none;
     width: 140px;

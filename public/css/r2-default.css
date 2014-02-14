@@ -41,8 +41,11 @@ font-size: 14px;
 #newidea-popup .a-list li{
     height: 50px;
     line-height: 50px;
-    margin-bottom: 5px;
     border-bottom: 1px dotted #808080;
+}
+
+#newidea-popup .a-list li:first-child{
+    border-top-right-radius: 5px;
 }
 
 #newidea-popup .a-list li > label{

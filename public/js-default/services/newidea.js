@@ -140,7 +140,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 node.setAttribute("style", "background-color: transparent;");
                                                 
                                                 Config.get("cat").forEach(function(val, idx){
-                                                        if (_labels.get(val) === cat) node.setAttribute("style","background-color:"+ colors[idx]);
+                                                        if (val === cat) node.setAttribute("style","background-color:"+ colors[idx]);
                                                 });
                                         }       
                                 }),
@@ -211,10 +211,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.selectCat = function(event, node){
+                                var cats = Config.get("cat");
                                 // if "other" is selected display category input field, else set attachment category value
                                 if (node.value ===  node.lastChild.innerHTML){
                                         _attachment.set("custom", true);
-                                        for (i=1, l=Config.get("cat").length; i<=l;i++){
+                                        for (i=1, l=cats.length; i<=l;i++){
                                                 node.classList.remove("acolor"+i); 
                                         };
                                         node.classList.add("acolor");       
@@ -223,8 +224,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         node.classList.remove("acolor");
                                         if (_error.get("error") === "noacat") _error.set("error", "");
                                         _attachment.set("custom", false);
-                                        _attachment.set("category", node.value);
-                                        for (i=1, l=Config.get("cat").length; i<=l;i++){
+                                        _attachment.set("category", cats[node.selectedIndex]);
+                                        for (i=1, l=cats.length; i<=l;i++){
                                                 (node.selectedIndex === i) ? node.classList.add("acolor"+i) : node.classList.remove("acolor"+i);        
                                         };  
                                 } 

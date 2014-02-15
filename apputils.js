@@ -9,7 +9,8 @@
  * 
  */
 
-var fs = require("fs");
+var fs = require("fs"),
+      http = require('http');
 
 function AppUtils(){
         var _CouchDBDocument, _CouchDBView, Promise,
@@ -37,7 +38,7 @@ function AppUtils(){
                 _transport = transport;
                 _db = db;
                 _dbIP = dbIP;
-                _dbport = dbPort;
+                _dbPort = dbPort;
                 _cdbAdminCredentials = credentials;
                 _badges = badges || {
                         profile : true,
@@ -778,7 +779,7 @@ function AppUtils(){
                 options.hostname = _dbIP;
                 options.port = _dbPort;
                 options.method = "POST";
-                options.auth = cdbAdminCredentials;
+                options.auth = _cdbAdminCredentials;
                 options.path = "/"+_db+"/_design/users/_view/short";
                 options.headers = {
                         "Content-Type" : "application/json"
@@ -786,7 +787,7 @@ function AppUtils(){
                 options.data = JSON.stringify({
                         keys : list
                 });
-
+                
                 /**
                 * Http request callback, handles couchDB response
                 * @param {Object} res the response

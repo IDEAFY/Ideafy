@@ -1707,6 +1707,13 @@ ul.notify-list{
   overflow-y: scroll;
 }
 
+.detail-body .idealegend{
+    font-family: Pacifico;
+    font-size: 12px;
+    color: #657B99;
+    margin-top: 15px;    
+}
+
 .detail-body p{
     margin-top: 15px;
     text-align: justify;

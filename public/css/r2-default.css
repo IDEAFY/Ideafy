@@ -93,8 +93,7 @@ font-size: 14px;
     line-height: 28px;
     border: 1px solid #CCC;
     font-family: Helvetica;
-    font-size: 12px; 
-    font-weight: bold;  
+    font-size: 12px;  
 }
 
 .attachments .acolor{
@@ -103,30 +102,38 @@ font-size: 14px;
 }
 
 .acolor1{
-    color: #9ac9cd;    
+    color: #9ac9cd; 
+    font-weight: bold;    
 }
 
 .acolor2{
-    color: #f27b3d;    
+    color: #f27b3d; 
+    font-weight: bold;    
 }
 
 .acolor3{
-    color: #bd262c;    
+    color: #bd262c; 
+    font-weight: bold;    
 }
 
 .acolor4{
-    color: #5f8f28;    
+    color: #5f8f28; 
+    font-weight: bold;    
 }
 
 .acolor5{
-    color: #657b99;
+    color: #657b99; 
+    font-weight: bold;
 }
 
 .acolor6{
   color:  #a000a1; 
+    font-weight: bold; 
 }
+
 .acolor7{
-    color: #cccccc;
+    color: #cccccc; 
+    font-weight: bold;
 }
 
 .attachments input{

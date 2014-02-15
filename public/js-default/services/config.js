@@ -20,6 +20,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                 _user =  new CouchDBDocument();
                 _observer = new Observable();
                 _categories = ["bus", "mkt", "notes", "arch", "spec", "planning"],
+                _catColors = ["#9ac9cd", "#f27b3d", "#bd262c", "#5f8f28", "#657b99", "#a000a1"],
                 _user.setTransport(_transport);
                 
                 _config.reset({
@@ -31,6 +32,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                         user : _user,
                         observer : _observer,
                         cat : _categories,
+                        catColors : _catColors,
                         polling_interval : 60000,
                         userTemplate : {
                                 "lastname" : "",

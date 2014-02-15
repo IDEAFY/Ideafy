@@ -146,8 +146,15 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 }),
                                 "alist": new Model(_alist,{
                                         setCat : function(cat){
-                                                var cats = Config.get("cat");
-                                                (cats.indexOf(cat) > -1) ? this.innerHTML = _labels.get(cat) : this.innerHTML = cat;
+                                                var cats = Config.get("cat"), colors = Config.get("catColors"), idx = cats.indexOf(cat);
+                                                if (idx > -1) {
+                                                        this.innerHTML = _labels.get(cat);
+                                                        this.setAttribute("style", "color:" + colors[idx]);
+                                                }
+                                                else{
+                                                        this.innerHTML = cat;
+                                                        this.setAttribute("sytle", "color: #404040");
+                                                }
                                         }
                                 }),
                                 "share" : new Model(_shareList),

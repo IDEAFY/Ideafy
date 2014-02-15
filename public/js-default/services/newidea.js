@@ -135,7 +135,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 }
                                         },
                                         setBg : function(cat){
-                                                var colors = ["#9ac9cd", "#f27b3d", "#bd262c", "#5f8f28", "#657b99", "#a000a1"], node =this;
+                                                var colors = Config.get ("catColors"), node =this;
                                                 
                                                 node.setAttribute("style", "background-color: transparent;");
                                                 

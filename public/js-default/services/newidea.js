@@ -224,7 +224,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         node.classList.remove("acolor");
                                         if (_error.get("error") === "noacat") _error.set("error", "");
                                         _attachment.set("custom", false);
-                                        _attachment.set("category", cats[node.selectedIndex]);
+                                        _attachment.set("category", cats[node.selectedIndex-1]);
                                         for (i=1, l=cats.length; i<=l;i++){
                                                 (node.selectedIndex === i) ? node.classList.add("acolor"+i) : node.classList.remove("acolor"+i);        
                                         };  

@@ -97,7 +97,7 @@ font-size: 14px;
     font-weight: bold;  
 }
 
-.attachments select.acolor{
+.attachments .acolor{
     color: #404040;
     font-weight: normal;
 }

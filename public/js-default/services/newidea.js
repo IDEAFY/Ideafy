@@ -278,7 +278,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 });
                                         };
                                 
-                                        _reader.readAsBinaryString(node.files[0]);
+                                        _reader.readAsArrayBuffer(node.files[0]);
                                 }
                         };
                         

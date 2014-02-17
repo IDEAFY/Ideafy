@@ -333,10 +333,12 @@ font-size: 14px;
 .a-list .a-type{
     width: 30px;
     background-size: 20px 20px;
-    background-position: center center;   
+    background-position: center center;
+    border-radius: 15px; 
 }
 
 .a-list .a-name{
+    margin-left: 5px;
     width: 350px;    
 }
 
@@ -350,7 +352,5 @@ font-size: 14px;
     background-image: url('../img/public/search.png');
     background-size: 15px 15px;
     background-position: center center;
-    overflow: hidden;
-    background-repeat: no-repeat;
-    display: inline-block; 
+    border-radius: 15px;
 }

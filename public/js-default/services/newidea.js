@@ -368,7 +368,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 var file = _attachment.get("fileName");
                                 
                                 console.log(_uploadReq);
-                                
+                                if (!uploadReq.readyState === 4){
+                                        _uploadReq.abort();
+                                        _progress.reset({status: ""});
+                                }
                                 _widget.deleteAttachmentFile(file);
                                 
                                 // reset attachment

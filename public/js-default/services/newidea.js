@@ -27,7 +27,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     authornames : _user.get("username"),
                                     docId: "",
                                     rating: null,
-                                    twocents:[]
+                                    twocents:[],
+                                    uploaded: false
                             }),
                             _alist = new Store([]),
                             _progress = new Store({"status": null}),
@@ -367,7 +368,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.acancel = function(event, node){
                                 var file = _attachment.get("fileName");
                                 
-                                console.log(_uploadReq);
                                 if (_uploadReq.readyState !== 4){
                                         _uploadReq.abort();
                                         _progress.reset({status: ""});
@@ -413,11 +413,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // reset _alist
                                 if (_alist.getNbItems()){
                                         _alist.loop(function(v,i){
-                                                console.log(v);
                                                 _widget.deleteAttachmentDoc(v.docId)
                                                 .then(function(){
-                                                        delCount++;
-                                                        console.log(delCount);      
+                                                        delCount++;     
                                                 });
                                         });    
                                 }; 

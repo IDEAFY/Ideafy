@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */ 
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min", "service/confirm"],
-        function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner, Confirm){
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min", "service/confirm", "service/utils"],
+        function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner, Confirm, Utils){
                 function ActionBarConstructor($type, $parent, $data){
                 
                         var buttons = new Store([]),
@@ -224,6 +224,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 if ($data.authors.length === 1 && $data.authors[0] === user.get("_id")){
                                                         cdb.sync(Config.get("db"), $data._id)
                                                         .then(function(){
+                                                                // check if there are attachments to this idea and if yes remove them
+                                                                var att = cdb.get("attachments") || [];
+                                                                if (att.length){
+                                                                        att.forEach(function(val){
+                                                                                Utils.deleteAttachmentDoc(val.docId);        
+                                                                        });
+                                                                }
                                                                 return cdb.remove();
                                                         })
                                                         .then(function(){

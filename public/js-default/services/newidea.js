@@ -308,7 +308,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.deleteAttachmentFile = function(fileName){
-                                var json={type:"idea"},
+                                /*var json={type:"idea"},
                                       promise = new Promise();
                                 
                                 json.file = _store.get("_id") +"/"+fileName;
@@ -316,10 +316,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         (res === "ok") ? promise.fulfill() : promise.reject() ;       
                                 });
                                 
-                                return promise;       
+                                return promise;
+                                */
+                               return Utils.deleteAttachmentFile("idea", _store.get("_id"), fileName);      
                         };
                         
                         _widget.deleteAttachmentDoc = function(docId){
+                                /*
                                 var promise = new Promise(),
                                       cdb = new Store();
                                 cdb.setTransport(_transport);
@@ -334,7 +337,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         promise.fulfill();
                                 });
                                 
-                                return promise;        
+                                return promise;
+                                */
+                               return Utils.deleteAttachmentDoc(docId);        
                         };
                         
                         _widget.removeAttachment = function(event, node){

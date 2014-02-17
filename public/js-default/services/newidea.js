@@ -272,7 +272,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 _fd.append("userfile", node.files[0]);
                                                 _fd.append("filename", fileName);
                                                 Utils.uploadFile(_url, _fd, _progress, function(result){
-                                                        console.log("upload successful");
                                                         _attachment.set("uploaded", true);
                                                 });
                                         };

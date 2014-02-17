@@ -395,7 +395,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	             user = Config.get("user"); 
 	       transport.request("GetGrade", {ip: ip, lang: user.get("lang")}, function(res){
 	               onEnd(res);        
-	       );
+	       });
         };
         
         /*

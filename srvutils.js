@@ -244,7 +244,7 @@ function SrvUtils(){
                                 fs.unlink(_path, function(err){
                                        if (err) onEnd(err);
                                        else{
-                                               if (_dir && !fs.readdirSync().length){
+                                               if (_dir && !fs.readdirSync(_dir).length){
                                                        fs.rmdirSync(_dir);
                                                }
                                                onEnd("ok");

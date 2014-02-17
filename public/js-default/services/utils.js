@@ -535,8 +535,8 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 json.docId = docId;
                 json.file = fileName;
                 Config.get("transport").request("DeleteAttachment", json, function(res){
-                        (res === "ok") ? promise.fulfill() : promise.reject() ;
-                        console.log(res, docId, fileName);      
+                        console.log(res);
+                        (res === "ok") ? promise.fulfill() : promise.reject() ;     
                 });
                 return promise;       
         };
@@ -551,10 +551,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 cdb.sync(Config.get("db"), docId)
                 .then(function(){
                         var type = "", id = cdb.get("docId");
-                        
                         if (id.search("I:") === 0) type = "idea";
-                        console.log(_utils.deleteAttachmentFile);
-                        
                         return _utils.deleteAttachmentFile(type, id, cdb.get("fileName"));       
                 })
                 .then(function(){

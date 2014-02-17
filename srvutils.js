@@ -231,12 +231,13 @@ function SrvUtils(){
                                 _dir = "";
                                 break;
                         case "idea":
-                                _path += "ideas/"+ json.docId + "/";
-                                _dir = _path;
+                                _dir = _path + "ideas/"+ json.docId ;
+                                _path = _dir + "/";
                         default:
                                 break;
                 };
                 _path += json.file;
+                console.log(_dir, _path);
                 fs.exists(_path, function(exists){
                         if (exists){
                                 // delete file first

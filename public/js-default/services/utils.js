@@ -532,7 +532,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                       promise = new Promise();
                 
                 
-                console.log(type, docId, filename);
+                console.log(type, docId, fileName);
                               
                 json.file = docId +"/"+fileName;
                 Config.get("transport").request("DeleteAttachment", json, function(res){

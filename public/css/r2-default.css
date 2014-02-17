@@ -322,16 +322,22 @@ font-size: 14px;
     line-height: 30px;
 }
 
+.a-list li > label{
+    height: 30px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    display: inline-block;
+    line-height: 30px;
+}
+
 .a-list .a-type{
     width: 30px;
-    height: 30px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;    
+    background-size: 20px 20px;
+    background-position: center center;   
 }
 
 .a-list .a-name{
-    width: 250px;    
+    width: 350px;    
 }
 
 .a-list .a-cat{
@@ -343,5 +349,8 @@ font-size: 14px;
     height: 30px;
     background-image: url('../img/public/search.png');
     background-size: 15px 15px;
-    background-position: center center;    
+    background-position: center center;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    display: inline-block; 
 }

@@ -296,7 +296,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         authornames : [_user.get("username")],
                                         docId: "",
                                         rating: null,
-                                        twocents: []
+                                        twocents: [],
+                                        uploaded: false
                                 });
                                 
                                 // release buttons

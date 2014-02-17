@@ -528,13 +528,12 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         * A function that deletes an attachment file from the server
         */
         _utils.deleteAttachmentFile = function(type, docId, fileName){
-                var json={type:type},
+                var json={},
                       promise = new Promise();
                 
-                
-                console.log(type, docId, fileName);
-                              
-                json.file = docId +"/"+fileName;
+                json.type = type;
+                json.docId = docId;
+                json.file = fileName;
                 Config.get("transport").request("DeleteAttachment", json, function(res){
                         (res === "ok") ? promise.fulfill() : promise.reject() ;
                         console.log(res, docId, fileName);      

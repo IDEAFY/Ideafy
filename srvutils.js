@@ -222,23 +222,32 @@ function SrvUtils(){
          * Delete attachment from drive
          */
         this.deleteAttachment = function(json, onEnd){
-                var _path = _contentPath+'/attachments/';
+                var _path = _contentPath+'/attachments/',
+                      _dir;
                 
                 switch(json.type){
                         case "card":
                                 _path += "cards/";
+                                _dir = "";
                                 break;
                         case "idea":
-                                _path += "ideas/";
+                                _path += "ideas/"+ json.docId + "/";
+                                _dir = _path;
                         default:
                                 break;
                 };
                 _path += json.file;
                 fs.exists(_path, function(exists){
                         if (exists){
-                                // need to delete all files first
+                                // delete file first
                                 fs.unlink(_path, function(err){
-                                        i(err) ? onEnd(err) : onEnd("ok");
+                                       if (err) onEnd(err);
+                                       else{
+                                               if (_dir && !fs.readdirSync().length){
+                                                       fs.rmdirSync(_dir);
+                                               }
+                                               onEnd("ok");
+                                       } 
                                 });
                         }
                         else onEnd("file not found");

@@ -226,7 +226,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         .then(function(){
                                                                 // check if there are attachments to this idea and if yes remove them
                                                                 var att = cdb.get("attachments") || [];
-                                                                console.log(att);
                                                                 if (att.length){
                                                                         att.forEach(function(val){
                                                                                 Utils.deleteAttachmentDoc(val.docId);        

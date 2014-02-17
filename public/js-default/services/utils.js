@@ -550,11 +550,12 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 cdb.setTransport(Config.get("transport"));
                 cdb.sync(Config.get("db"), docId)
                 .then(function(){
-                        var type = "";
+                        var type = "", id = cdb.get("docId");
                         
-                        if (cdb.get("docId").search("I:") > -1) type = "idea";
+                        if (id.search("I:") === 0) type = "idea";
+                        console.log(_utils.deleteAttachmentFile);
                         
-                        return _utils.deleteAttachmentFile(type, cdb.get("docId"), cdb.get("fileName"));       
+                        return _utils.deleteAttachmentFile(type, id, cdb.get("fileName"));       
                 })
                 .then(function(){
                         return cdb.remove();

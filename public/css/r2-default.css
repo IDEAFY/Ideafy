@@ -51,7 +51,8 @@ font-size: 14px;
 #newidea-popup .a-list .a-name{
     width: 210px;
     display: inline-block;
-    margin-top: 0px;
+    margin: 0px;
+    line-height: 50px;
     font-size: 12px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -343,7 +344,7 @@ font-size: 14px;
 }
 
 .a-list .a-cat{
-    width: 100px;
+    width: 120px;
 }
 
 .a-list .a-zoom{

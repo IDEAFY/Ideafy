@@ -344,7 +344,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.removeAttachment = function(event, node){
                                 var idx = parseInt(node.getAttribute("data-alist_id"), 10),
-                                      docid = _alist.get(idx).docId;
+                                      docId = _alist.get(idx).docId;
                                 
                                 _alist.alter("splice", idx, 1);
                                 _widget.deleteAttachmentDoc(docId);

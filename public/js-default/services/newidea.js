@@ -425,12 +425,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 node.classList.remove("pressed");
                         };
                         
-                        _widget.closePopup = function closePopup(){
-                                var delCount = 0;
-                                // hide window
-                                document.getElementById("newidea-popup").classList.remove("appear");
-                                document.getElementById("cache").classList.remove("appear");
-                                
+                        _widget.clearAttachments = function(){
                                 // reset _attachment and delete file from server if applicable
                                 if (_attachment.get("fileName")) _widget.deleteAttachmentFile(_attachment.get("fileNname"));
                                 _widget.resetAttachment();
@@ -442,18 +437,28 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 _widget.deleteAttachmentDoc(v.docId)
                                                 .then(function(){
                                                         delCount++;
-                                                        if (delCount === _alist.getNbItems()){
-                                                                console.log("all attachments successfully removed");
-                                                        }       
+                                                        console.log(delCount);      
                                                 });
                                         });    
-                                };
+                                }; 
+                         };
+                        
+                        _widget.closePopup = function closePopup(){
+                                var delCount = 0;
+                                // hide window
+                                document.getElementById("newidea-popup").classList.remove("appear");
+                                document.getElementById("cache").classList.remove("appear");
+                                
+                                // reset _attachment and delete file from server if applicable
+                                if (_attachment.get("fileName")) _widget.deleteAttachmentFile(_attachment.get("fileNname"));
+                                _widget.resetAttachment();
                                 
                                 // reset _store and _error
                                 _store.unsync();
                                 _store.reset(Config.get("ideaTemplate"));
                                 _resetLang();
                                 _error.reset({"error":""});
+                                _alist.reset([]);
                                 
                                 //reset visibility slider
                                 _widget.dom.querySelector(".visibility-slider").value = 1;
@@ -483,6 +488,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.cancel = function(event, node){
+                                if (_alist.getNbItems()) _widget.clearAttachments();
                                 _widget.closePopup();   
                         };
                         

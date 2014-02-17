@@ -530,7 +530,10 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         _utils.deleteAttachmentFile = function(type, docId, fileName){
                 var json={type:type},
                       promise = new Promise();
-                                
+                
+                
+                console.log(type, docId, filename);
+                              
                 json.file = docId +"/"+fileName;
                 Config.get("transport").request("DeleteAttachment", json, function(res){
                         (res === "ok") ? promise.fulfill() : promise.reject() ;       

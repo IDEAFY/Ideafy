@@ -263,6 +263,8 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 else{
                         req.send(body);
                 }
+                
+                return req;
         };
                   
         /**

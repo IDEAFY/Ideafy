@@ -12,6 +12,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                 
                         var _widget = new Widget(),
                               _transport = Config.get("transport"),
+                              _uploadReq,
                               _languages = new Store(Config.get("userLanguages")),
                               _user = Config.get("user"),
                               _cat = Config.get("cat"),
@@ -271,7 +272,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 _fd.append("dir", _dir);
                                                 _fd.append("userfile", node.files[0]);
                                                 _fd.append("filename", fileName);
-                                                Utils.uploadFile(_url, _fd, _progress, function(result){
+                                                _uploadReq = Utils.uploadFile(_url, _fd, _progress, function(result){
                                                         _attachment.set("uploaded", true);
                                                 });
                                         };
@@ -307,38 +308,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.deleteAttachmentFile = function(fileName){
-                                /*var json={type:"idea"},
-                                      promise = new Promise();
-                                
-                                json.file = _store.get("_id") +"/"+fileName;
-                                _transport.request("DeleteAttachment", json, function(res){
-                                        (res === "ok") ? promise.fulfill() : promise.reject() ;       
-                                });
-                                
-                                return promise;
-                                */
-                               return Utils.deleteAttachmentFile("idea", _store.get("_id"), fileName);      
+                                return Utils.deleteAttachmentFile("idea", _store.get("_id"), fileName);      
                         };
                         
                         _widget.deleteAttachmentDoc = function(docId){
-                                /*
-                                var promise = new Promise(),
-                                      cdb = new Store();
-                                cdb.setTransport(_transport);
-                                cdb.sync(Config.get("db"), docId)
-                                .then(function(){
-                                        return _widget.deleteAttachmentFile(cdb.get("fileName"));       
-                                })
-                                .then(function(){
-                                        return cdb.remove();
-                                })
-                                .then(function(){
-                                        promise.fulfill();
-                                });
-                                
-                                return promise;
-                                */
-                               return Utils.deleteAttachmentDoc(docId);        
+                                return Utils.deleteAttachmentDoc(docId);        
                         };
                         
                         _widget.removeAttachment = function(event, node){
@@ -391,6 +365,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.acancel = function(event, node){
                                 var file = _attachment.get("fileName");
+                                
+                                console.log(_uploadReq);
                                 
                                 _widget.deleteAttachmentFile(file);
                                 

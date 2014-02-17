@@ -237,13 +237,13 @@ function SrvUtils(){
                                 break;
                 };
                 _path += json.file;
-                console.log(_dir, _path);
                 fs.exists(_path, function(exists){
                         if (exists){
                                 // delete file first
                                 fs.unlink(_path, function(err){
                                        if (err) onEnd(err);
                                        else{
+                                               // if directory is empty, delete directory as well
                                                if (_dir && !fs.readdirSync(_dir).length){
                                                        fs.rmdirSync(_dir);
                                                }

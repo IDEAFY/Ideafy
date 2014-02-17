@@ -63,7 +63,7 @@ function SrvUtils(){
                         
                         fs.exists(_path+dir, function(exists){
                                 if (!exists) {
-                                        fs.mkdir(_path+dir, 0644, function(err){
+                                        fs.mkdir(_path+dir, 0666, function(err){
                                                 if (err) {throw(err);}
                                                 ins = fs.createReadStream(req.files.userfile.path);
                                                 outs = fs.createWriteStream(filename);

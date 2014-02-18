@@ -1721,7 +1721,11 @@ ul.notify-list{
 
 #public-detail .detail-footer, #ideas-detail .detail-footer{
     height: 40px;
-    padding-top: 20px;
+    padding-top: 10px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 10px;
+    border-top: 1px solid #cccccc;
 }
 
 .detail-footer{

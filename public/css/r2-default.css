@@ -372,3 +372,9 @@ font-size: 14px;
     background-position: center center;
     background-image: url('../img/wall/rateForList.png');
 }
+
+.attachment .idealegend{
+    margin-bottom: 2px;
+    width: 100%;
+    border-bottom: 1px solid #657b99;
+}

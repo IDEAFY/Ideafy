@@ -317,6 +317,10 @@ font-size: 14px;
     top: 5px;
 }
 
+#ideas-detail .a-list; #public-detail .a-list{
+    border-top: 1px solid #657b99;
+}
+
 .a-list li{
     width: 100%;
     height: 30px;
@@ -376,7 +380,6 @@ font-size: 14px;
 .attachments .idealegend{
     margin-bottom: 2px;
     width: 100%;
-    border-bottom: 1px solid #657b99;
 }
 
 .attachments .toggleattach{
@@ -384,6 +387,12 @@ font-size: 14px;
     background-position: right top;
     background-repeat: no-repeat;
     background-size: 15px 15px;
+    width: 15px;
+    height: 15px;
+    display: block;
+    float: right;
+    margin-top: -20px;
+    margin-right: 5px;
 }
 
 .attachments .toggleattach.show{

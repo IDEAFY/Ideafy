@@ -323,7 +323,7 @@ font-size: 14px;
     line-height: 30px;
 }
 
-.a-list li > label, .a-list li > a, a-list li > div{
+.a-list li > label, .a-list li > a, .a-list li > div{
     height: 30px;
     overflow: hidden;
     background-repeat: no-repeat;
@@ -358,4 +358,8 @@ font-size: 14px;
 
 .a-list .a-rating{
     
+}
+
+.a-list .item-acorn{
+    background-image: url('../img/wall/rateForList.png');
 }

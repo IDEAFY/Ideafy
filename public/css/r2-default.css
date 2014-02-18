@@ -323,7 +323,7 @@ font-size: 14px;
     line-height: 30px;
 }
 
-.a-list li > label{
+.a-list li > label, .a-list li > a{
     height: 30px;
     overflow: hidden;
     background-repeat: no-repeat;

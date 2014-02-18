@@ -122,7 +122,7 @@ function SrvUtils(){
          * Upload function for avatars and various attachments
          */
         this.downloadFunc = function(req, res){
-                console.log(req);        
+                console.log(req.url);        
         };
         
         /*

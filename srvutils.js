@@ -118,6 +118,12 @@ function SrvUtils(){
                 }
         };
 
+        /*
+         * Upload function for avatars and various attachments
+         */
+        this.downloadFunc = function(req, res){
+                console.log(req);        
+        };
         
         /*
         * CheckVersion handler : to test if client version is the most current one
@@ -249,6 +255,38 @@ function SrvUtils(){
                                                }
                                                onEnd("ok");
                                        } 
+                                });
+                        }
+                        else onEnd("file not found");
+                });
+         };
+         
+         /*
+         * Delete attachment from drive
+         */
+        this.getAttachment = function(json, onEnd){
+                var _path = _contentPath+'/attachments/',
+                      _dir, _data;
+                
+                switch(json.type){
+                        case "idea":
+                                _dir = _path + "ideas/"+ json.docId ;
+                                _path = _dir + "/";
+                        default:
+                                break;
+                };
+                _path += json.file;
+                fs.exists(_path, function(exists){
+                        var dest = __dirname + "/downloads/";
+                        if (exists){
+                                var rs = fs.createReadStream(path);
+                                
+                                 rs.on('data', function(chunk){
+                                        data += chunk;        
+                                });
+                                
+                                rs.on('close', function(){
+                                        onEnd(data);
                                 });
                         }
                         else onEnd("file not found");

@@ -87,7 +87,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 .use(connect.responseTime())
                 .use(redirect())
                 .use(connect.bodyParser({ uploadDir:contentPath+'/upload', keepExtensions: true }))
-                .use('/upload', srvUtils.uploadFunc)      
+                .use('/upload', srvUtils.uploadFunc)
+                .use('/downloads', srvUtils.downloadFunc)   
                 .use(function(req, res, next) {
                         res.setHeader("Ideady Server", "node.js/" + process.versions.node);
                         res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");

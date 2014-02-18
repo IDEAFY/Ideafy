@@ -319,6 +319,7 @@ font-size: 14px;
 
 #ideas-detail .a-list, #public-detail .a-list{
     border-top: 1px solid #657b99;
+    padding-top: 2px;
 }
 
 .a-list li{
@@ -375,11 +376,6 @@ font-size: 14px;
     float: none;
     background-position: center center;
     background-image: url('../img/wall/rateForList.png');
-}
-
-.attachments .idealegend{
-    margin-bottom: 2px;
-    width: 100%;
 }
 
 .attachments .toggleattach{

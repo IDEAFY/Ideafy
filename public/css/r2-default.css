@@ -73,11 +73,11 @@ font-size: 14px;
 #newidea-popup .a-list .a-del{
     width: 10px;
     height: 10px;
-    background-image : url('../img/brainstorm/closeFrame.png');
+    background-image: url('../img/brainstorm/closeFrame.png');
     background-size: contain;
-    margin-top: -50px;
+    margin-top: 20px;
     position: absolute;
-    margin-left: 235px;
+    margin-left: -15px;
     z-index: 10;
 }
 
@@ -317,7 +317,7 @@ font-size: 14px;
     top: 5px;
 }
 
-#ideas-detail .a-list; #public-detail .a-list{
+#ideas-detail .a-list, #public-detail .a-list{
     border-top: 1px solid #657b99;
 }
 

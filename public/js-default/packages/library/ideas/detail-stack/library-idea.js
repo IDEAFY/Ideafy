@@ -292,7 +292,15 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.toggleAttachments = function(event, node){
-                                
+                                var list = _widget.dom.querySelector(".a-list");
+                                if (node.classList.contains("show")){
+                                        list.classList.remove("invisible");
+                                        node.classList.remove("show");
+                                }
+                                else{
+                                        list.classList.add("invisible");
+                                        node.classList.add("show");
+                                }
                         };
                         
                         _widget.vote = function(event, node){

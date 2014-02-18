@@ -373,8 +373,19 @@ font-size: 14px;
     background-image: url('../img/wall/rateForList.png');
 }
 
-.attachment .idealegend{
+.attachments .idealegend{
     margin-bottom: 2px;
     width: 100%;
     border-bottom: 1px solid #657b99;
+}
+
+.attachments .toggleattach{
+    background-image: url('../img/public/hide.png');
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+}
+
+.attachments .toggleattach.show{
+    background-image: url('../img/public/show.png');
 }

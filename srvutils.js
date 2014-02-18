@@ -9,7 +9,8 @@
  * 
  */
 
-var fs = require("fs");
+var fs = require("fs"),
+      qs = require("querystring");
 
 function SrvUtils(){
 
@@ -122,7 +123,7 @@ function SrvUtils(){
          * Upload function for avatars and various attachments
          */
         this.downloadFunc = function(req, res){
-                console.log(req.url);        
+                console.log(qs.parse(req.url));        
         };
         
         /*

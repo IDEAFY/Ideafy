@@ -340,7 +340,7 @@ font-size: 14px;
 
 .a-list .a-name{
     margin-left: 5px;
-    width: 350px;    
+    width: 300px;    
 }
 
 .a-list .a-cat{
@@ -357,7 +357,7 @@ font-size: 14px;
 }
 
 .a-list .a-rating{
-    
+    width: 50px;       
 }
 
 .a-list .item-acorn{

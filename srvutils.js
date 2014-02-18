@@ -141,9 +141,9 @@ function SrvUtils(){
                  
                  fs.exists(path, function(exists){
                         if (exists){
-                                mimetype = mime.lookup(file.file);
+                                // mimetype = mime.lookup(file.file);
                                 res.setHeader('Content-disposition', 'attachment; filename=' + file.file);
-                                res.setHeader('Content-type', mimetype);
+                                // res.setHeader('Content-type', mimetype);
                                 rs = fs.createReadStream(path);
                                 rs.pipe(res);   
                         }        

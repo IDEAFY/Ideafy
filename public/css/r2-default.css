@@ -360,6 +360,15 @@ font-size: 14px;
     width: 50px;       
 }
 
-.a-list .item-acorn{
+.a-list .rating{
+    color: #404040;
+    font-family: helvetica;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+#ideas-detail .a-list .item-acorn, #public-detail .a-list .item-acorn{
+    float: none;
+    background-position: center center;
     background-image: url('../img/wall/rateForList.png');
 }

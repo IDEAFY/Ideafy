@@ -167,7 +167,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 var url =  Config.get("location")+"/downloads",
                                                       idx = this.getAttribute("data-alist_id");
                                                 if (name){
-                                                        url += "?docid=" +  _alist.get(idx).docId + "&file=" + name;
+                                                        url += "?atype=idea&docid=" +  _alist.get(idx).docId + "&file=" + name;
                                                         this.setAttribute("href", url);
                                                 }       
                                         }

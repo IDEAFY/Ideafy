@@ -10,7 +10,8 @@
  */
 
 var fs = require("fs"),
-      qs = require("querystring");
+      qs = require("querystring"),
+      mime = require("mime");
 
 function SrvUtils(){
 
@@ -123,7 +124,31 @@ function SrvUtils(){
          * Upload function for avatars and various attachments
          */
         this.downloadFunc = function(req, res){
-                console.log(qs.parse(req.url));        
+                var query = req.url.replace('/?', ""),
+                      file = qs.parse(query),
+                      path = _contentPath+"/attachments/",
+                      rs, mimetype;
+                 
+                 switch(file.atype){
+                        case "idea":
+                                path += "ideas/";
+                                break;
+                        default:
+                                break;        
+                 };
+                 
+                 path += file.docid + "/" + file.file;
+                 
+                 fs.exists(path, function(exists){
+                        if (exists){
+                                mimetype = mime.lookup(file.file);
+                                res.setHeader('Content-disposition', 'attachment; filename=' + file.file);
+                                res.setHeader('Content-type', mimetype);
+                                rs = fs.createReadStream(path);
+                                rs.pipe(res);   
+                        }        
+                 });
+                       
         };
         
         /*

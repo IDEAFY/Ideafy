@@ -323,7 +323,7 @@ font-size: 14px;
     line-height: 30px;
 }
 
-.a-list li > label, .a-list li > a{
+.a-list li > label, .a-list li > a, a-list li > div{
     height: 30px;
     overflow: hidden;
     background-repeat: no-repeat;
@@ -354,4 +354,8 @@ font-size: 14px;
     background-size: 15px 15px;
     background-position: center center;
     border-radius: 15px;
+}
+
+.a-list .a-rating{
+    
 }

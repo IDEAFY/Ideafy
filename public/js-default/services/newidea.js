@@ -27,6 +27,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                     authornames : _user.get("username"),
                                     docId: "",
                                     rating: null,
+                                    votes:[],
                                     twocents:[],
                                     uploaded: false
                             }),
@@ -297,6 +298,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         authornames : [_user.get("username")],
                                         docId: "",
                                         rating: null,
+                                        votes: [],
                                         twocents: [],
                                         uploaded: false
                                 });

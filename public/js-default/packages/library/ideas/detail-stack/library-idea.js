@@ -305,7 +305,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.zoom = function(event, node){
-                                var idx = node.getAtribute("data-alist_id");
+                                var idx = node.getAttribute("data-alist_id");
                                 _attachmentUI.reset(_alist.get(idx).docId);        
                         };
                         

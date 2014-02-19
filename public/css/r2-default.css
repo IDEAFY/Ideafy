@@ -426,3 +426,18 @@ font-size: 14px;
 .attachment-screen .twocentText{
     height: 100px;
 }
+
+.attachment-screen .twocentMessage{
+    padding-bottom: 5px;
+    margin-left: 10px;
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px solid #CCCCCC;
+    font-size: 12px;
+}
+
+.attachment-screen .twocentAvatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+}

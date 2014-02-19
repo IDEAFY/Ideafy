@@ -420,7 +420,7 @@ font-size: 14px;
     height: 40px;
     border-radius: 20px;
     display: block;
-    background-image: url('../img/brainstorm/delete28.png');
+    background-image: url('../img/brainstorm/deleteBlue28.png');
 }
 
 .attachment-screen .twocentList{
@@ -454,7 +454,25 @@ font-size: 14px;
 
 .attachment-screen .writeTwocent .twocentCancel, .attachment-screen .writeTwocent .twocentPublish{
     height: 20px;
-    width: 80px;
+    width: 70px;
     font-size: 11px;
     line-height: 20px;
+}
+
+.attachment-screen .twocentAuthor, .attachment-screen .twocent .commentLabel {
+    font-size: 13px;
+}
+
+.attachment-screen .twocent .twocentDate{
+    font-size: 11px;
+}
+
+.attachment-screen .attach-header{
+    width: 100%;
+    height: 36px;
+    background: #657b99;
+    color: white;
+    font-family: pacifico;
+    font-size: 16px;
+    text-align: center;
 }

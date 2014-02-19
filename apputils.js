@@ -933,7 +933,7 @@ function AppUtils(){
                 var cdb = new _CouchDBDocument();
                 _getDocAsAdmin(json.docId, cdb)
                 .then(function(){
-                        var tc = cdb.get("twocents"), increment = 0, reason = "";
+                        var tc = cdb.get("twocents").concat(), increment = 0, reason = "";
                         if (json.type === "new"){
                                 // new twocents are always appended at the top of the list
                                 tc.unshift(json.twocent);

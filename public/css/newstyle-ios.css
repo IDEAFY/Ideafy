@@ -5118,7 +5118,7 @@ li.color-item{
     font-family: Helvetica;
     border-top: 1px solid #CCCCCC;
     margin-top: 5px;
-    padding-top: 5px;
+    padding: 5px;
     padding-bottom: 10px;
     font-size: 12px;
     text-align: justify;

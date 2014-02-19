@@ -193,7 +193,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("GetAchievements", appUtils.getAchievements);
         olives.handlers.set("GetUserNames", appUtils.getUserNames);
         olives.handlers.set("Welcome", appUtils.welcome);
-        olives.handlers.set("CheckRecipientList", appUtils.welcome);
+        olives.handlers.set("CheckRecipientList", appUtils.checkRecipientList);
         olives.handlers.set("Vote", appUtils.vote);
         olives.handlers.set("RemoveFromLibrary", appUtils.removeFromLibrary);
         olives.handlers.set("WriteTwocent", appUtils.writeTwocent);

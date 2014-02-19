@@ -422,3 +422,7 @@ font-size: 14px;
     display: block;
     background-image: url('../img/brainstorm/delete28.png');
 }
+
+.attachment-screen .twocentText{
+    height: 100px;
+}

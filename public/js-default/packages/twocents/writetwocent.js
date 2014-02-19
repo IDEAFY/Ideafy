@@ -78,6 +78,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         
                                 (editTC === "new") ? type = "new" : type = "edit";
                                 json = {docId: currentDoc, type: type, position: position, twocent: content};
+                                console.log("publishing towcent :", json);
                                 transport.request("WriteTwocent", json, function(result){
                                         if (result !== "ok"){
                                                 alert(Config.get("labels").get("somethingwrong"));        

@@ -839,7 +839,7 @@ function AppUtils(){
         this.checkRecipientList = function(json, onEnd) {
 
                 var result = {}, list = json.list, options = {}, req, callback;
-
+                console.log("checkRecipientList called");
                 /**
                  * Building a temporary solution before changes in couchDBStore (one bulk query of the view)
                  */

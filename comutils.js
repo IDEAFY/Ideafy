@@ -169,7 +169,7 @@ function ComUtils(){
                  * Ideafy notification system
                  */ 
                 this.notify = function(json, onEnd) {
-
+                        console.log("notify called", json);
                         var dest = json.dest, sendResults = new _Store([]),
                         // build message
                         message = {

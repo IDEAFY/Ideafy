@@ -423,6 +423,11 @@ font-size: 14px;
     background-image: url('../img/brainstorm/delete28.png');
 }
 
+.attachment-screen .twocentList{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
 .attachment-screen .twocentText{
     height: 100px;
 }
@@ -436,8 +441,20 @@ font-size: 14px;
     font-size: 12px;
 }
 
+.attachment-screen .writeTwocent .writeFooter{
+    padding-bottom: 5px;
+    margin-top: 5px;
+}
+
 .attachment-screen .twocentAvatar{
     width: 30px;
     height: 30px;
     border-radius: 15px;
+}
+
+.attachment-screen .writeTwocent .twocentCancel, .attachment-screen .writeTwocent .twocentPublish{
+    height: 20px;
+    width: 80px;
+    font-size: 11px;
+    line-height: 20px;
 }

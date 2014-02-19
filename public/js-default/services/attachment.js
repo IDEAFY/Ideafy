@@ -47,7 +47,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 .then(function(){
                                         console.log(cdb.toJSON());
                                 }, function(err){console.log(err);});
-                                return promise;
                         };
                         
                         ui.close = function(event, node){

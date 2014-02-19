@@ -204,9 +204,11 @@ function ComUtils(){
                                 
                                         // update store and upload
                                         cdb.set("notifications", arr);
+                                        console.log(cdb.get("notifications"));
                                         return _updateDocAsAdmin(userid, cdb);
                                 })
                                 .then(function() {
+                                        console.log("user doc updated");
                                         sendResults.alter("push", {
                                                 res : "ok",
                                                 id : userid
@@ -326,6 +328,7 @@ function ComUtils(){
                 
                         // return sendResults if all messages have been delivered
                         sendResults.watch("added", function() {
+                                console.log(sendResults.getNbItems(), dest.length);
                                 if (sendResults.getNbItems() === dest.length) {
                                         //adding some post-treatment
                                         if (json.type === "CXRaccept"){

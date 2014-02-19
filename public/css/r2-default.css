@@ -396,3 +396,19 @@ font-size: 14px;
 .attachments .toggleattach.show{
     background-image: url('../img/public/show.png');
 }
+
+.attachment-screen{
+    width: 660px;
+    height: 660px;
+    background: white;
+    margin: 40px auto;
+    opacity: 1;
+    z-index: 2000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -330px;
+    margin-left: -330px;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0px 0px 15px #657b99;
+}

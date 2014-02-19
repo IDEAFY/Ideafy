@@ -25,7 +25,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                 "labels" : new Model(Config.get("labels")),
                                 "attach" : new Model(cdb,{
                                         displayTwocentList : function(twocents){
-                                                (twocents && twocents.list) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                                (twocents && twocents.length) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         }
                                 }),
                                 "place": new Place({"LibraryTwocentUI" : _attachmentTwocentListUI}),

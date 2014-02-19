@@ -138,7 +138,6 @@ function SrvUtils(){
                  };
                  
                  path += file.docid + "/" + file.file;
-                 console.log(path); 
                  fs.exists(path, function(exists){
                         if (exists){
                                 mimetype = mime.lookup(file.file);

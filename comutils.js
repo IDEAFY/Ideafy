@@ -169,7 +169,6 @@ function ComUtils(){
                  * Ideafy notification system
                  */ 
                 this.notify = function(json, onEnd) {
-                        console.log("notify called", json);
                         var dest = json.dest, sendResults = new _Store([]),
                         // build message
                         message = {
@@ -204,11 +203,9 @@ function ComUtils(){
                                 
                                         // update store and upload
                                         cdb.set("notifications", arr);
-                                        console.log(cdb.get("notifications"));
                                         return _updateDocAsAdmin(userid, cdb);
                                 })
                                 .then(function() {
-                                        console.log("user doc updated");
                                         sendResults.alter("push", {
                                                 res : "ok",
                                                 id : userid
@@ -328,14 +325,13 @@ function ComUtils(){
                 
                         // return sendResults if all messages have been delivered
                         sendResults.watch("added", function() {
-                                console.log(sendResults.getNbItems(), dest.length);
                                 if (sendResults.getNbItems() === dest.length) {
                                         //adding some post-treatment
                                         if (json.type === "CXRaccept"){
                                                 insertContact(json.dest[0], json.contactInfo, function(result){
                                                         if (result){
                                                                 // add to both users' score
-                                                                _updateUserIP(json.dest[0], "CXR", 25, function(result){console.log(result);});
+                                                                _updateUserIP(json.dest[0], "CXR", 25, function(result){return result;});
                                                                 _updateUserIP(json.author, "CXR", 25, function(result){
                                                                         onEnd(sendResults.toJSON());
                                                                 });
@@ -346,7 +342,7 @@ function ComUtils(){
                                                 removeContact(json.dest[0], json.contactInfo, function(result){
                                                         if (result){
                                                                 // add to both users' score
-                                                                _updateUserIP(json.dest[0], "CXC", -25, function(result){console.log(result);});
+                                                                _updateUserIP(json.dest[0], "CXC", -25, function(result){return result;});
                                                                 _updateUserIP(json.author, "CXC", -25, function(result){
                                                                         onEnd(sendResults.toJSON());
                                                                 });

@@ -5,13 +5,14 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin"], 
-        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place){
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin", "service/attachment"], 
+        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place, Attachment){
                 return function IdeaDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
                              _libraryTwocentList = new TwocentList("library"),
                              _twocentWriteUI = new WriteTwocent("library"),
+                             _attachmentUI = new Attachment("idea"),
                              _labels = Config.get("labels"),
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,
@@ -198,7 +199,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
-                                "place" : new Place({"LibraryTwocentUI" : _libraryTwocentList}),
+                                "place" : new Place({"LibraryTwocentUI" : _libraryTwocentList, "Attachment" : _attachmentUI}),
                                 "ideadetailevent" : new Event(_widget)
                         });
 

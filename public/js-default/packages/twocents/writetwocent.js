@@ -15,7 +15,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                     transport = Config.get("transport"),
                     now = new Date(),
                     twocent = new Store({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": [now.getFullYear(), now.getMonth(), now.getDate()], "datemod": "", "plusones": 0, "replies": []}),
-                    currentIdea,
+                    currentDoc,
                     cancel,
                     view = $view || "public",
                     editTC = "new", // to distinguish between new and edit mode
@@ -48,7 +48,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                             twocentTemplate = {"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0, "replies": []};
                         
                         if ($id) {
-                                currentIdea = $id;
+                                currentDoc = $id;
                                 }
                         if ($twocent){
                                 twocent.reset($twocent);
@@ -77,7 +77,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 var     content = JSON.parse(twocent.toJSON()), json, type;
                                         
                                 (editTC === "new") ? type = "new" : type = "edit";
-                                json = {docId: currentIdea, type: type, position: position, twocent: content};
+                                json = {docId: currentDoc, type: type, position: position, twocent: content};
                                 transport.request("WriteTwocent", json, function(result){
                                         if (result !== "ok"){
                                                 alert(Config.get("labels").get("somethingwrong"));        
@@ -86,7 +86,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 // hide write interface
                                                 (editTC === "new")?document.getElementById(view+"-writetwocents").classList.add("invisible"):cancel();
                                                 //need to reset store
-                                                ui.reset(currentIdea);
+                                                ui.reset(currentDoc);
                                         }               
                                 }, ui);
                         }

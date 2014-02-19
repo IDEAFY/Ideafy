@@ -12,7 +12,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        
                         // declaration
                         var ui = this,
-                             _libraryTwocentList = new TwocentList("attach"),
+                             _attachmentTwocentListUI = new TwocentList("attach"),
                              _twocentWriteUI = new WriteTwocent("attach"),
                             cdb = new CouchDBDocument(),
                             labels = Config.get("labels"),
@@ -28,7 +28,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                                 (twocents && twocents.list) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         }
                                 }),
-                                "place": new Place({"LibraryTwocentUI" : _libraryTwocentList}),
+                                "place": new Place({"LibraryTwocentUI" : _attachmentTwocentListUI}),
                                 "attachevent" : new Event(ui)        
                         });
                         
@@ -36,11 +36,16 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         
                         ui.reset = function reset(id){
                                 console.log(ui.dom, id);
-                                // complete UI build and display
+                                // complete UI build (twocents) and display
                                 var _domWrite = ui.dom.querySelector("#attach-writetwocents");
+                                
+                                _twocentWriteUI.reset(id);
+                                _attachmentTwocentListUI.reset(id);
+                                
                                 ui.dom.classList.remove("invisible");
                                 _twocentWriteUI.place(_domWrite);
                                 
+                                // retrieve attachment document form database
                                 cdb.unsync();
                                 cdb.reset({});
                                 cdb.sync(Config.get("db"), id)

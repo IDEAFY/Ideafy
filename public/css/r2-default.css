@@ -412,3 +412,13 @@ font-size: 14px;
     border-radius: 5px;
     -webkit-box-shadow: inset 0px 0px 15px #657b99;
 }
+
+.attachment-screen .close-popup{
+    top: -20px;
+    right: 0px;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    display: block;
+    background-image: url('../img/brainstorm/delete28.png');
+}

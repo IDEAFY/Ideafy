@@ -3,6 +3,7 @@
     opacity: 0.6;
     -webkit-transition: opacity 1s linear;
     z-index: 1500;
+    display:block;
 }
 
 

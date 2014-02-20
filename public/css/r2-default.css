@@ -502,3 +502,15 @@ font-size: 14px;
     font-size: 12px;
 }
 
+.attachment-screen .a-cat{
+    width: 50px;
+    height: 40px;
+    line-height: 40px;
+    display: inline;
+}
+
+.attachment-screen .a-vote{
+    float: right;
+    margin-right: 10px;
+}
+

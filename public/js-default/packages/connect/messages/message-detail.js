@@ -181,17 +181,20 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 case "reply":
                                         options.classList.add("invisible");
                                         msgReplyUI.reset(JSON.parse(message.toJSON()), "reply");
-                                        replyNode.classList.remove("invisible"); 
+                                        replyNode.classList.remove("invisible");
+                                        replyNode.scrollIntoView();
                                         break;
                                 case "replyall":
                                         options.classList.add("invisible");
                                         msgReplyUI.reset(JSON.parse(message.toJSON()), "replyall");
-                                        replyNode.classList.remove("invisible"); 
+                                        replyNode.classList.remove("invisible");
+                                        replyNode.scrollIntoView(); 
                                         break;
                                 case "forward":
                                         options.classList.add("invisible");
                                         msgReplyUI.reset(JSON.parse(message.toJSON()), "forward");
-                                        replyNode.classList.remove("invisible"); 
+                                        replyNode.classList.remove("invisible");
+                                        replyNode.scrollIntoView();
                                         break;
                                 case "deletemsg":
                                         options.classList.add("invisible");

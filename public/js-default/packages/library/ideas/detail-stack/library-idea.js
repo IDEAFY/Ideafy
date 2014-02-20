@@ -194,8 +194,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "share" : new Model(_shareList),
                                 "vote" : new Model(vote,{
                                         setIcon : function(active){
-                                                var styleActive = "background: url('img/public/activeIdeaVote.png') no-repeat center center;",
-                                                    styleInactive = "background: url('img/public/rateForList.png') no-repeat center center;";
+                                                var styleActive = "background-image: url('img/public/activeIdeaVote.png');",
+                                                    styleInactive = "background-image: url('img/public/rateForList.png');";
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),

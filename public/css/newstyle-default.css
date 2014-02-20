@@ -1813,9 +1813,10 @@ ul.notify-list{
 }
 
 #ratingPopup{
-    position: relative;
+    position: absolute;
     margin-top: -5px;
-    margin-left: -250px;
+    margin-left: -40px;
+    z-index: 2000;
 }
 
 /* public detail stack */

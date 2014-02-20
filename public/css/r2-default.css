@@ -487,14 +487,14 @@ font-size: 14px;
 }
 
 .attachment-screen .a-name{
-    margin-top: 10px;
+    padding-top: 10px;
     font-size: 14px;
 }
 
 .a-contrib .a-span, .attachment-screen .a-date{
     font-style: italic;
     font-size: 11px;
-    color: #cccccc;
+    color: #808080;
 }
 
 .a-contrib .a-author{

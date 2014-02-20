@@ -1736,7 +1736,7 @@ ul.notify-list{
 /* idea voting piece */
 #public-detail .rateIdea, #ideas-detail .rateIdea{
   position: absolute;
-  left: 490px;
+  left: 475px;
 }
 
 #public-detail a.item-acorn, #ideas-detail a.item-acorn{

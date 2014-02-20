@@ -476,3 +476,29 @@ font-size: 14px;
     font-size: 16px;
     text-align: center;
 }
+
+.attachment-screen .a-type{
+    width: 40px;
+    height: 40px;
+    float: left;
+    background-image: url('../img/connect/graygroup.png');
+    background-size: contain;
+    margin: 10px;
+}
+
+.attachment-screen .a-name{
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.a-contrib .a-span, .attachment-screen .a-date{
+    font-style: italic;
+    font-size: 11px;
+    color: #cccccc;
+}
+
+.a-contrib .a-author{
+    color: #f27b3d;
+    font-size: 12px;
+}
+

@@ -17,22 +17,47 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                             cdb = new CouchDBDocument(),
                             labels = Config.get("labels"),
                             transport = Config.get("transport"),
-                            user = Config.get("user");
+                            user = Config.get("user"),
+                            vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                         
                         cdb.setTransport(transport);
                         // define plugins and methods
                         ui.plugins.addAll({
                                 "labels" : new Model(Config.get("labels")),
                                 "attach" : new Model(cdb,{
+                                        setCat : function(cat){
+                                                var cats = Config.get("cat"), colors = Config.get("catColors"), idx = cats.indexOf(cat);
+                                                if (idx > -1) {
+                                                        this.innerHTML = labels.get(cat);
+                                                        this.setAttribute("style", "color:" + colors[idx]);
+                                                }
+                                                else{
+                                                        this.innerHTML = cat;
+                                                        this.setAttribute("sytle", "color: #404040");
+                                                }
+                                        },
                                         displayTwocentList : function(twocents){
                                                 (twocents && twocents.length) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                        },
+                                        setDate : function(id){
+                                                var stamp = parseInt(id.replace("A:", ""), 10),
+                                                      date = new Date(stamp);
+                                                console.log("stamp", date);
+                                                this.innerHTML = date.toLocaleDateString();
+                                        }
+                                }),
+                                "vote" : new Model(vote,{
+                                        setIcon : function(active){
+                                                var styleActive = "background: url('img/public/activeIdeaVote.png') no-repeat center center;",
+                                                    styleInactive = "background: url('img/public/rateForList.png') no-repeat center center;";
+                                                (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
                                 "place": new Place({"LibraryTwocentUI" : _attachmentTwocentListUI}),
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div id="attach-writetwocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a=left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-cat" data-attach="setCat, cat"></div><div class="a-contrib"><span>Contributed by: </span><span data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="setCat, cat"></div><div class="a-rating"></div><div class="a-vote"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><div id="attach-writetwocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div>';
                         
                         ui.reset = function reset(id){
                                 console.log(ui.dom, id);

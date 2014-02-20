@@ -44,8 +44,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         
                 
                 ui.reset = function reset($id, $twocent, $pos, $cancel){
-                        var now = new Date(),
-                            twocentTemplate = {"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0, "replies": []};
+                        var now = new Date();
                         
                         if ($id) {
                                 currentDoc = $id;
@@ -57,7 +56,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 twocent.set("datemod", [now.getFullYear(), now.getMonth(), now.getDate()]); // setting modification date
                         }
                         else {
-                                twocent.reset(twocentTemplate);
+                                twocent.reset({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0, "replies": []});
                                 twocent.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                 editTC = "new";
                         }

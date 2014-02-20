@@ -18,7 +18,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                             labels = Config.get("labels"),
                             transport = Config.get("transport"),
                             user = Config.get("user"),
-                            vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
+                            vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
+                            _voted = false;
                         
                         cdb.setTransport(transport);
                         // define plugins and methods
@@ -44,6 +45,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                       date = new Date(stamp);
                                                 console.log("stamp", date);
                                                 this.innerHTML = date.toLocaleDateString();
+                                        },
+                                        showVoting : function(id){
+                                                var arr = user.get("rated_a") || [];
+                                                (arr.indexOf(id) > -1) ? this.classList.add("invisible") : this.classList.remove("invisible");
                                         }
                                 }),
                                 "vote" : new Model(vote,{
@@ -57,7 +62,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a=left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span">Contributed by: </span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating"></div><div class="a-vote"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><div id="attach-writetwocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a=left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span">Contributed by: </span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating"></div><div class="a-vote" data-attach="bind:showVoting, _id"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><div id="attach-writetwocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div>';
                         
                         ui.reset = function reset(id){
                                 console.log(ui.dom, id);
@@ -108,7 +113,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 else {
                                                         // update user store locally to keep consistency
                                                         ri.unshift(id);
-                                                        user.set("rated_ideas", ri);
+                                                        user.set("rated_a", ri);
                                                         alert(Config.get("labels").get("thankyou"));
                                                         
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store

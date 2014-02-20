@@ -49,6 +49,18 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         showVoting : function(id){
                                                 var arr = user.get("rated_a") || [];
                                                 (arr.indexOf(id) > -1) ? this.classList.add("invisible") : this.classList.remove("invisible");
+                                        },
+                                        showRating : function(votes){
+                                                var rating = 0, l = 0;
+                                                if (votes && votes.length){
+                                                        l = votes.length;
+                                                        rating = Math.round(votes.reduce(function(x,y){return x+y;})/l*100)/100;
+                                                        this.classList.remove("invisible");
+                                                        this.innerHTML = rating;
+                                                }
+                                                else {
+                                                        this.classList.add("invisible");
+                                                }
                                         }
                                 }),
                                 "vote" : new Model(vote,{

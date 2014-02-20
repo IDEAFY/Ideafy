@@ -313,6 +313,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.vote = function(event, node){
                                 if (!_voted){
                                         //display voting popup
+                                        document.querySelector(".cache").classList.add("appear");
                                         document.getElementById("ratingPopup").classList.add("appear");
                                 }
                                 node.classList.remove("pressed");
@@ -347,6 +348,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
                                                         document.getElementById("ratingPopup").classList.remove("appear");
+                                                        document.querySelector(".cache").classList.remove("appear");
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                                                 }
                                         });

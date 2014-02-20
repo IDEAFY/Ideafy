@@ -237,6 +237,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.vote = function(event, node){
                                 if (!_voted){
                                         //display voting popup
+                                        document.getElementById("cache").classList.add("appear1");
                                         document.getElementById("ratingPopup").classList.add("appear");
                                 }
                                 node.classList.remove("pressed");
@@ -270,6 +271,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         alert(Config.get("labels").get("thankyou"));
                                                         
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
+                                                        document.getElementById("cache").classList.remove("appear1");
                                                         document.getElementById("ratingPopup").classList.remove("appear");
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                                                 }

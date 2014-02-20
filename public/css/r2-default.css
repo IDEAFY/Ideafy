@@ -488,6 +488,7 @@ font-size: 14px;
 
 .attachment-screen .attach-body{
     margin-bottom: 10px;
+    height: 60px;
 }
 
 .attachment-screen .a-type{
@@ -497,6 +498,11 @@ font-size: 14px;
     background-image: url('../img/connect/graygroup.png');
     background-size: contain;
     margin: 10px;
+}
+
+.attachment-screen .a-left{
+    float: left;
+    width: 300px;
 }
 
 .attachment-screen .a-name{
@@ -516,14 +522,20 @@ font-size: 14px;
 }
 
 .attachment-screen .a-cat{
+    width: 100px;
+    height: 60px;
+    line-height: 60px;
+    float: left;
+}
+
+.attachment-screen .a-rating{
     width: 50px;
-    height: 40px;
-    line-height: 40px;
-    display: inline;
+    float: left;
+    height: 60px;
 }
 
 .attachment-screen .a-vote{
     float: right;
     margin-right: 10px;
-    margin-top: -50px;
+    margin-top: 15px;
 }

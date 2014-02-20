@@ -57,7 +57,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a=left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span">Contributed by: </span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, cat"></div><div class="a-rating"></div><div class="a-vote"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><div id="attach-writetwocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a=left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span">Contributed by: </span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating"></div><div class="a-vote"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><div id="attach-writetwocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div>';
                         
                         ui.reset = function reset(id){
                                 console.log(ui.dom, id);
@@ -82,6 +82,41 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         ui.close = function(event, node){
                                ui.dom.classList.add("invisible");
                                document.querySelector(".cache").classList.remove("appear");
+                        };
+                        
+                        ui.previewVote = function(event, node){
+                             var i=0, idx = node.getAttribute("data-vote_id");
+                             vote.loop(function(v,i){
+                                     (i<=idx) ? vote.update(i, "active", true):vote.update(i, "active",false);        
+                             });            
+                        };
+                        
+                        ui.castVote = function(event, node){
+                                var grade = parseInt(node.getAttribute("data-vote_id"))+1,
+                                    id = cdb.get("_id"),
+                                    json = {id : id, vote: grade, voter: user.get("_id")};
+                                
+                                // prevent multiple votes on the same idea -- if request fails or before database is updated 
+                                if (!_voted){
+                                        _voted = true;
+                                        transport.request("Vote", json, function(result){
+                                                var ri = user.get("rated_a") || [];
+                                                if (result !== "ok"){
+                                                        console.log(result, "something went wrong, please try again later");
+                                                        _voted = false;
+                                                }
+                                                else {
+                                                        // update user store locally to keep consistency
+                                                        ri.unshift(id);
+                                                        user.set("rated_ideas", ri);
+                                                        alert(Config.get("labels").get("thankyou"));
+                                                        
+                                                        //cleanup 1- remove popup 2- hide vote button 3- reset vote store
+                                                        document.getElementById("ratingPopup").classList.remove("appear");
+                                                        vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
+                                                }
+                                        });
+                                }
                         };
                 }
                 

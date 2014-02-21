@@ -56,14 +56,16 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 }
                                         },
                                         showRating : function(votes){
-                                                var rating = 0, l = 0, votingEl = ui.dom.querySelector(".a-vote");
+                                                var votingEl = ui.dom.querySelector(".a-vote");
                                                 this.classList.add("invisible");
                                                 if (votes && votes.length && votingEl.classList.contains("invisible")){
-                                                        l = votes.length;
-                                                        rating = Math.round(votes.reduce(function(x,y){return (x+y);})/l*100)/100;
                                                         this.classList.remove("invisible");
-                                                        this.innerHTML = rating;
                                                 }
+                                        },
+                                        displayRating : function(votes){
+                                                if (votes && votes.length){
+                                                        this.innerHTML =   Math.round(votes.reduce(function(x,y){return (x+y);})/votes.length*100)/100;      
+                                                }        
                                         }
                                 }),
                                 "vote" : new Model(vote,{
@@ -77,7 +79,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><div id="attach-writetwocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><span data-attach="bind:displayRating, votes"></span></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><div id="attach-writetwocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div>';
                         
                         ui.reset = function reset(id){
                                 // complete UI build (twocents) and display
@@ -108,10 +110,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                              vote.loop(function(v,i){
                                      (i<=idx) ? vote.update(i, "active", true):vote.update(i, "active",false);        
                              });            
-                        };
-                        
-                        ui.getModel = function(){
-                                return cdb;        
                         };
                         
                         ui.castVote = function(event, node){

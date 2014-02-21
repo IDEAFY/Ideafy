@@ -595,7 +595,7 @@ font-size: 14px;
     display: inline-block;
 }
 
-.attachment-screen .attach-download, .attachment-screen .a-2cent{
+.attachment-screen .attach-download, .attachment-screen .a-2cent, .attachment-screen .a-edit, .attachment-screen .a-delete{
     width: 30px;
     height: 30px;
     float: left;

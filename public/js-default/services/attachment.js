@@ -43,7 +43,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         setDate : function(id){
                                                 var stamp = parseInt(id.replace("A:", ""), 10),
                                                       date = new Date(stamp);
-                                                console.log("stamp", date);
                                                 this.innerHTML = date.toLocaleDateString();
                                         },
                                         showVoting : function(id){
@@ -131,6 +130,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 // prevent multiple votes on the same idea -- if request fails or before database is updated 
                                 if (!_voted){
                                         _voted = true;
+                                        console.log(json);
                                         transport.request("Vote", json, function(result){
                                                 var ra = user.get("rated_a") || [];
                                                 if (result !== "ok"){

@@ -82,10 +82,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 var url =  Config.get("location")+"/downloads", type;
                                                 if (cdb.get("docId").search("I:") > -1) type = "idea";
                                                 if (name){
-                                                        url += "?atype=" + type + "&docid=" +  cdb.get("_id")+ "&file=" + name;
+                                                        url += "?atype=" + type + "&docid=" +  cdb.get("docId")+ "&file=" + name;
                                                         this.setAttribute("href", url);
-                                                } 
-                                                console.log(url);      
+                                                }     
                                         }
                                 }),
                                 "vote" : new Model(vote,{

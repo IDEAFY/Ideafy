@@ -614,7 +614,18 @@ font-size: 14px;
 }
 
 .attachment-screen .a-2cent{
-    background-image: url('../img/public/2cents.png');
+    background-image: url('../img/connect/twocent.png');
+    background-size: cover;
+}
+
+.attachment-screen .a-edit{
+    background-image: url('../img/connect/twocent.png');
+    background-size: cover;
+}
+
+.attachment-screen .a-delete{
+    background-image: url('../img/connect/twocent.png');
+    background-size: cover;
 }
 
 .attachment-screen .attach-download.a-pressed{

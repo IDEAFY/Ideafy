@@ -88,6 +88,20 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         },
                                         showWriteTwocent : function(twocents){
                                                 (twocents && twocents,length) ? this .classList.add("invisible") : this.classList.remove("invisible");
+                                        },
+                                        displayEdit : function(arr){
+                                                (arr.indexOf(user.get("_id")) > -1) ? this.setAttribute("style", "display:inline-block;") : this.setAttribute("style", "display:none;");
+                                        },
+                                        displayDelete : function(twocents){
+                                                if (twocents && twocents.length){
+                                                        this.setAttribute("style", "display:none;");
+                                                }
+                                                else if (cdb.get("authors").indexOf(user.get("_id")) < 0){
+                                                        this.setAttribute("style", "display:none;");        
+                                                }
+                                                else{
+                                                        this.setAttribute("style", "display:inline-block;"); 
+                                                }
                                         }
                                 }),
                                 "vote" : new Model(vote,{
@@ -101,7 +115,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:mousedown, press; listen:mouseup, download"></a></li><li><div class="a-2cent" data-attachevent="listen:mousedown, press; listen:mouseup, displayWriteTwocent"></div></li></ul><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:mousedown, press; listen:mouseup, download"></a></li><li><div class="a-2cent" data-attachevent="listen:mousedown, press; listen:mouseup, displayWriteTwocent"></div></li><li><div class="a-edit" data-attachevent="listen:mousedown, press; listen:mouseup, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:mousedown, press; listen:mouseup, edit"></div></li></ul><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
                         
                         ui.reset = function reset(id){
                                 // complete UI build (twocents) and display
@@ -177,6 +191,14 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         ui.displayWriteTwocent = function(event, node){
                                 ui.dom.querySelector("#attach-writetwocents").classList.remove("invisible");
                                 node.classList.remove("a-pressed");
+                        };
+                        
+                        ui.edit = function(event, node){
+                                
+                        };
+                        
+                        ui.delete = function(event, node){
+                                
                         };
                 }
                 

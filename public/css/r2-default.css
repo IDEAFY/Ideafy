@@ -577,19 +577,33 @@ font-size: 14px;
     -webkit-box-shadow: 0px 0px 3px #cccccc;
 }
 
-.attachment-screen .attach-download{
+.attachment-screen .actionbtn{
+    float: left;
+    display: inline-block;
+    height: 40px;
+    margin: -25px auto;
+}
+
+.attachment-screen .attach-download, .attachment-screen .a-2cent{
     width: 40px;
     height: 40px;
     float: left;
     border-radius: 20px;
     -webkit-box-shadow: inset 0px -1px 3px #292929;
-    margin-left: 310px;
-    margin-top: -25px;
-    background-image: url('../img/r2/download.png');
+    margin-left: 5px;
+    margin-right: 5px;
     background-size: 30px 30px;
     background-position: center;
     background-repeat: no-repeat;
     background-color: #657b99;
+}
+
+.attachment-screen .attach-download{
+    background-image: url('../img/r2/download.png');    
+}
+
+.attachment-screen .a-2cent{
+    background-image: url('../img/public/2cents.png');
 }
 
 .attachment-screen .attach-download.a-pressed{

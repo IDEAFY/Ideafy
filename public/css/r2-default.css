@@ -535,7 +535,7 @@ font-size: 14px;
 }
 
 .attachment-screen .a-rating{
-    width: 120px;
+    width: 140px;
     float: left;
     height: 60px;
     overflow-x: visible;
@@ -564,7 +564,7 @@ font-size: 14px;
 }
 
 .attachment-screen .a-rating span.votes{
-    width: 80px;
+    width: 75px;
     height: 60px;
     line-height: 60px;
     font-weight: normal;

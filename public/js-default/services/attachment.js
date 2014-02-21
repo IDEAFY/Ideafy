@@ -56,11 +56,11 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 }
                                         },
                                         showRating : function(votes){
-                                                var rating = 0, l = 0, rated = user.get("rated_a") || [], authors = cdb.get("authors");
+                                                var rating = 0, l = 0;
                                                 this.classList.add("invisible");
                                                 if (votes && votes.length){
                                                         l = votes.length;
-                                                        rating = Math.round(votes.reduce(function(x,y){return x+y;})/l*100)/100;
+                                                        rating = Math.round(votes.reduce(function(x,y){return (x+y);})/l*100)/100;
                                                         this.classList.remove("invisible");
                                                         this.innerHTML = rating;
                                                 }
@@ -71,13 +71,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 var styleActive = "background-image: url('img/public/activeIdeaVote.png');",
                                                     styleInactive = "background-image: url('img/public/rateForList.png');";
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
-                                        }
-                                }),
-                                "user": new Model(user,{
-                                        displayRating : function(rated_a){
-                                                var authors = cdb.get("authors"), votes = cdb.get("votes") || [];
-                                                (rated_a.indexOf(cdb.get("_id")) > -1 || authors.indexOf(user.get("_id")) > -1) ? this.classList.remove("invisible") : this.classList.add("invisible");
-                                                if (!votes.length) this.classList.add("invisible");        
                                         }
                                 }),
                                 "place": new Place({"LibraryTwocentUI" : _attachmentTwocentListUI}),

@@ -182,10 +182,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                                 var v = cdb.get("votes") || [],
                                                                       l = v.length;
                                                                 if (l===0){
-                                                                        node.innerHTML = l;
+                                                                        node.innerHTML = "";
                                                                 }
                                                                 else{
-                                                                        node.innerHTML = Math.round(v.reduce(function(x,y){return x+y;})/votes.length*100)/100;
+                                                                        node.innerHTML = Math.round(v.reduce(function(x,y){return x+y;})/l*100)/100;
                                                                 }
                                                         });
                                                 }

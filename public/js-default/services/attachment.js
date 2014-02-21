@@ -47,11 +47,16 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 this.innerHTML = date.toLocaleDateString();
                                         },
                                         showVoting : function(id){
-                                                var arr = user.get("rated_a") || [];
-                                                (arr.indexOf(id) > -1) ? this.classList.add("invisible") : this.classList.remove("invisible");
+                                                var arr = user.get("rated_a") || [], authors = cdb.get("authors");
+                                                if (authors.indexOf(user.get("_id")) > -1){
+                                                        this.classList.add("invisible");
+                                                }
+                                                else{
+                                                        (arr.indexOf(id) > -1) ? this.classList.add("invisible") : this.classList.remove("invisible");
+                                                }
                                         },
                                         showRating : function(votes){
-                                                var rating = 0, l = 0;
+                                                var rating = 0, l = 0, rated = user.get("rated_a") || [];
                                                 if (votes && votes.length){
                                                         l = votes.length;
                                                         rating = Math.round(votes.reduce(function(x,y){return x+y;})/l*100)/100;

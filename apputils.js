@@ -902,9 +902,17 @@ function AppUtils(){
                 })
                 .then(function(){
                         var ri = votercdb.get("rated_ideas") || [],
-                            ip = votercdb.get("ip") || 0;
-                        ri.unshift(json.id);
-                        votercdb.set("rated_ideas", ri);
+                              ra = votercdb.get("rated_a") || [],
+                             ip = votercdb.get("ip") || 0;
+                        
+                        if (json.id.search("I:") > -1){
+                                ri.unshift(json.id);
+                                votercdb.set("rated_ideas", ri);        
+                        }
+                        if (json.id.search("A:") > -1){
+                                ra.unshift(json.id);
+                                votercdb.set("rated_a", ri);
+                        }
                         votercdb.set("ip", ip+2);
                         return _updateDocAsAdmin(json.voter, votercdb);
                 })

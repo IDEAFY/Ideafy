@@ -562,5 +562,6 @@
 	"other": "Other",
 	"noaname": "Missing attachment name",
 	"noacat": "Missing attachment category",
-	"contrib": "Contributed by: "
+	"contrib": "Contributed by: ",
+	"rateit": "Rate it!"
 }

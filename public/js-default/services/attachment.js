@@ -76,9 +76,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "user": new Model(user,{
                                         displayRating : function(rated_a){
                                                 var authors = cdb.get("authors"), votes = cdb.get("votes") || [];
-                                                (rated_a.indexOf(cdb.get("_id")) > -1 || authors.indexOf(user.get("_id")) > -1) ? this.classList.remove("invisible") : this.classList.add("invisible");
-                                                if (!votes.length) this.classList.add("invisible");        
-                                        }
+                                                this.classList.add("invisible");
+                                                if (authors.indexOf(user.get("_id")) > -1 ) this.classList.remove("invisible");
+                                                if (rated_a.indexOf(cdb.get("_id")) > -1 ) this.classList.remove("invisible");
+                                         }
                                 }),
                                 "place": new Place({"LibraryTwocentUI" : _attachmentTwocentListUI}),
                                 "attachevent" : new Event(ui)        

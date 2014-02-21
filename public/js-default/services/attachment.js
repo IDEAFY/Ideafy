@@ -110,6 +110,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                              });            
                         };
                         
+                        ui.getModel = function(){
+                                return cdb;        
+                        };
+                        
                         ui.castVote = function(event, node){
                                 var grade = parseInt(node.getAttribute("data-vote_id"))+1,
                                     id = cdb.get("_id"),

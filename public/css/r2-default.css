@@ -590,3 +590,8 @@ font-size: 14px;
     background-repeat: no-repeat;
     background-color: #657b99;
 }
+
+.attachment-screen .attach-download.a-pressed{
+    background-color: #666666;
+    -webkit-box-shadow: inset 0px 0px 5px 1px (0,0,0,0.6);
+}

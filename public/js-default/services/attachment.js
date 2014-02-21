@@ -84,7 +84,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 if (name){
                                                         url += "?atype=" + type + "&docid=" +  cdb.get("_id")+ "&file=" + name;
                                                         this.setAttribute("href", url);
-                                                }       
+                                                } 
+                                                console.log(url);      
                                         }
                                 }),
                                 "vote" : new Model(vote,{
@@ -164,7 +165,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.press = function(event, node){
-                                node.classList.add("pressed");
+                                node.classList.add("a-pressed");
                         };
                         
                         ui.download = function(event,node){

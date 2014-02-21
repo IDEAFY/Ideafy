@@ -911,7 +911,7 @@ function AppUtils(){
                         }
                         if (json.id.search("A:") > -1){
                                 ra.unshift(json.id);
-                                votercdb.set("rated_a", ri);
+                                votercdb.set("rated_a", ra);
                         }
                         votercdb.set("ip", ip+2);
                         return _updateDocAsAdmin(json.voter, votercdb);

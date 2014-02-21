@@ -541,7 +541,7 @@ font-size: 14px;
     margin-top: -55px;
 }
 
-.attachment-screen .a-rating .item-acorn{
+#ideas-detail .attachment-screen .a-rating .item-acorn, #public-detail .attachment-screen .a-rating .item-acorn{
     height: 60px;
     background-size: 15px 18px;
     background-position: left center;

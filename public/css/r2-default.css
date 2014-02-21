@@ -486,6 +486,10 @@ font-size: 14px;
     text-align: center;
 }
 
+.attachment-screen .attach-details{
+    overflow-y: auto;
+}
+
 .attachment-screen .attach-body{
     padding: 10px;
     height: 60px;
@@ -502,7 +506,7 @@ font-size: 14px;
 
 .attachment-screen .a-left{
     float: left;
-    width: 300px;
+    width: 280px;
 }
 
 .attachment-screen .a-name{
@@ -530,9 +534,10 @@ font-size: 14px;
 }
 
 .attachment-screen .a-rating{
-    width: 140px;
+    width: 120px;
     float: left;
     height: 60px;
+    overflow-x: visible;
 }
 
 .attachment-screen .a-vote{
@@ -565,3 +570,7 @@ font-size: 14px;
     font-size: 10px;
 }
 
+.attachment-screen .attach-preview{
+    width: 100%;
+    height: 360px;
+}

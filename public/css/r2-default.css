@@ -530,7 +530,7 @@ font-size: 14px;
 }
 
 .attachment-screen .a-rating{
-    width: 50px;
+    width: 140px;
     float: left;
     height: 60px;
 }
@@ -539,5 +539,27 @@ font-size: 14px;
     float: right;
     margin-right: 10px;
     margin-top: -55px;
+}
+
+.attachment-screen .item-acorn{
+    height: 60px;
+    background-size: 15px 18px;
+    background-position: left center;
+}
+
+.attachment-screen .a-rating span{
+    height: 60px;
+    line-height: 60px;
+    margin-left: 5px;
+    font-size: 16px;
+    color: #292929;
+    font-weight: bold;
+    float: left;
+}
+
+.attachment-screen .a-rating span.votes{
+    width: 100px;
+    height: 60px;
+    line-height: 60px;
 }
 

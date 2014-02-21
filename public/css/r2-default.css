@@ -488,6 +488,7 @@ font-size: 14px;
 
 .attachment-screen .attach-details{
     overflow-y: auto;
+    height: 604px;
 }
 
 .attachment-screen .attach-body{

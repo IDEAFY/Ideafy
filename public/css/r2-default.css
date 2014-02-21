@@ -510,7 +510,7 @@ font-size: 14px;
     font-size: 14px;
 }
 
-.a-contrib .a-span, .attachment-screen .a-date{
+.a-contrib .a-span, .attachment-screen .a-date, .attachment-screen .a-vote legend{
     font-style: italic;
     font-size: 11px;
     color: #808080;
@@ -540,3 +540,4 @@ font-size: 14px;
     margin-right: 10px;
     margin-top: -44px;
 }
+

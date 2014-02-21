@@ -494,6 +494,7 @@ font-size: 14px;
 .attachment-screen .attach-body{
     padding: 10px;
     height: 60px;
+    -webkit-box-shadow: 0px 0px 1px 3px #e5e5e5;
 }
 
 .attachment-screen .a-type{
@@ -578,13 +579,14 @@ font-size: 14px;
 }
 
 .attachment-screen .actionbtn{
-    float: left;
     display: inline-block;
     height: 40px;
     margin: -25px auto;
+    width: 100%;
+    text-align: center;
 }
 
-.attachment-screen .attach-download, .attachment-screen .a-2cent{
+.attachment-screen ..actionbtn li{
     width: 40px;
     height: 40px;
     float: left;

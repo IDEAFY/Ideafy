@@ -66,6 +66,17 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 if (votes && votes.length){
                                                         this.innerHTML =   Math.round(votes.reduce(function(x,y){return (x+y);})/votes.length*100)/100;      
                                                 }        
+                                        },
+                                        displayNbVotes : function(votes){
+                                                if (votes.length === 0){
+                                                        this.innerHTML = "("+labels.get("novotesyet")+")";
+                                                }
+                                                else if (votes.length === 1){
+                                                        this.innerHTML = "("+ labels.get("onevote")+")";
+                                                }
+                                                else{
+                                                        this.innerHTML = "("+votes.length + " "+ labels.get("votes")+")";
+                                                }
                                         }
                                 }),
                                 "vote" : new Model(vote,{
@@ -79,7 +90,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><span data-attach="bind:displayRating, votes"></span></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><div id="attach-writetwocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes"></span></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><div id="attach-writetwocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div>';
                         
                         ui.reset = function reset(id){
                                 // complete UI build (twocents) and display

@@ -168,7 +168,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.download = function(event,node){
-                                node.classList.remove("pressed");
+                                node.classList.remove("a-pressed");
                         };
                         
                         

@@ -455,10 +455,14 @@ font-size: 14px;
     margin-top: 5px;
 }
 
-.attachment-screen .twocentAvatar{
+.attachment-screen .twocentAvatar, .attachment-screen .twocentAvatar .avatar{
     width: 30px;
     height: 30px;
     border-radius: 15px;
+}
+
+.attachment-screen .twocentDate{
+    margin-left: 40px;
 }
 
 .attachment-screen .writeTwocent .twocentCancel, .attachment-screen .writeTwocent .twocentPublish{

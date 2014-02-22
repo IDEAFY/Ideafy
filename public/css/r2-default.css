@@ -632,3 +632,25 @@ font-size: 14px;
     background-color: #666666;
     -webkit-box-shadow: inset 0px 0px 5px 1px (0,0,0,0.6);
 }
+
+.a-delconfirm{
+    top: 20%;
+    left: 0;
+    width: 550px;
+    background: #657b99;
+    color: black;
+    text-align: center;
+    padding: 40px;
+    -webkit-box-shadow: inset 0px 0px 1px 15px white;
+    margin: 0px 15px;
+}
+
+.a-delconfirm .help-doctor{
+    display: none;
+}
+
+.a-delconfirm .confirm-question{
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}

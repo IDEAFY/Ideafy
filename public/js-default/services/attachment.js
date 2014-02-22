@@ -214,7 +214,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 // delete file form server     
                         };
                         
-                        ConfirmUI = new Confirm(ui.dom, labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
+                        ConfirmUI = new Confirm(document.getElementById("library"), labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
                 }
                 
                 return function AttachmentFactory($type){

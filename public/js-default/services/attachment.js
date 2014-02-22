@@ -201,6 +201,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         ui.confirmDelete = function(event, node){
                                 node.classList.remove("a-pressed");
                                 ConfirmUI.reset(labels.get("deleteattachment"), ui.deleteAttachment);
+                                ConfirmUI.show();
                         };
                         
                         ui.deleteAttachment =  function(event, node){

@@ -20,7 +20,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                             user = Config.get("user"),
                             vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                             _voted = false,
-                            ConfirmUI = new Confirm(ui.dom, labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
+                            ConfirmUI;
                         
                         cdb.setTransport(transport);
                         // define plugins and methods
@@ -212,9 +212,11 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 
                                 // delete file form server     
                         };
+                        
+                        ConfirmUI = new Confirm(ui.dom, labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
                 }
                 
-                return function TwocentListFactory($type){
+                return function AttachmentFactory($type){
                         AttachmentConstructor.prototype = new Widget();
                         return new AttachmentConstructor($type);
                 };

@@ -619,12 +619,12 @@ font-size: 14px;
 }
 
 .attachment-screen .a-edit{
-    background-image: url('../img/connect/twocent.png');
+    background-image: url('../img/wall/lastModified14-01.png');
     background-size: cover;
 }
 
 .attachment-screen .a-delete{
-    background-image: url('../img/connect/twocent.png');
+    background-image: url('../img/library/25delete.png');
     background-size: cover;
 }
 

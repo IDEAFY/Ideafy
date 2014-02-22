@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "Place.plugin", "service/utils"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, WriteTwocent, TwocentList, Place, Utils){
+define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "Place.plugin", "service/utils", "service/confirm"],
+        function(Widget, Config, Store, CouchDBDocument, Model, Event, WriteTwocent, TwocentList, Place, Utils, Confirm){
                 
                 function AttachmentConstructor($type){
                        
@@ -19,7 +19,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                             transport = Config.get("transport"),
                             user = Config.get("user"),
                             vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
-                            _voted = false;
+                            _voted = false,
+                            ConfirmUI = new Confirm(ui.dom, labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
                         
                         cdb.setTransport(transport);
                         // define plugins and methods
@@ -100,7 +101,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.setAttribute("style", "display:none;");        
                                                 }
                                                 else{
-                                                        this.setAttribute("style", "display:inline-block;"); 
+                                                        this.setAttribute("style", "display:inline-block;");
                                                 }
                                         }
                                 }),
@@ -115,7 +116,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:mousedown, press; listen:mouseup, download"></a></li><li><div class="a-2cent" data-attachevent="listen:mousedown, press; listen:mouseup, displayWriteTwocent"></div></li><li data-attach="bind:displayEdit, authors"><div class="a-edit" data-attachevent="listen:mousedown, press; listen:mouseup, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:mousedown, press; listen:mouseup, deleteAttachment"></div></li></ul><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat" data-attach="bind:setCat, category"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:mousedown, press; listen:mouseup, download"></a></li><li><div class="a-2cent" data-attachevent="listen:mousedown, press; listen:mouseup, displayWriteTwocent"></div></li><li data-attach="bind:displayEdit, authors"><div class="a-edit" data-attachevent="listen:mousedown, press; listen:mouseup, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:mousedown, press; listen:mouseup, confirmDelete"></div></li></ul></div><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
                         
                         ui.reset = function reset(id){
                                 // complete UI build (twocents) and display
@@ -197,8 +198,19 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 node.classList.remove("a-pressed");        
                         };
                         
+                        ui.confirmDelete = function(event, node){
+                                node.classList.remove("a-pressed");
+                                ConfirmUI.reset(labels.get("deleteattachment"), ui.deleteAttachment);
+                        };
+                        
                         ui.deleteAttachment =  function(event, node){
-                                node.classList.remove("a-pressed");       
+                                console.log("deleting attachment");
+                                
+                                // remove attachment from idea doc
+                                
+                                // delete attachment doc from database
+                                
+                                // delete file form server     
                         };
                 }
                 

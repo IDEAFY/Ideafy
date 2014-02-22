@@ -563,5 +563,6 @@
 	"noaname": "Missing attachment name",
 	"noacat": "Missing attachment category",
 	"contrib": "Contributed by: ",
-	"rateit": "Rate it!"
+	"rateit": "Rate it!",
+	"deleteattachment": "Are you sure you want to delete this attachment ?"
 }

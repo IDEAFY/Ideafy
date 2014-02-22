@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "Place.plugin", "service/utils", "service/confirm"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, WriteTwocent, TwocentList, Place, Utils, Confirm){
+define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "Place.plugin", "service/utils", "service/confirm", "Promise"],
+        function(Widget, Config, Store, CouchDBDocument, Model, Event, WriteTwocent, TwocentList, Place, Utils, Confirm, Promise){
                 
                 function AttachmentConstructor($type){
                        
@@ -211,12 +211,47 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         
                         ui.deleteAttachment =  function(choice){
                                 console.log("deleting attachment");
+                                var idea = cdb.get("docId"),
+                                      a_id = cdb.get("_id"),
+                                      fileName = cdb.get("fileName"),
+                                      ideaCDB = new CouchDBDocument();
                                 if (choice){
                                         // remove attachment from idea doc
-                                
-                                        // delete attachment doc from database
-                                
-                                        // delete file form server
+                                        ideaCDB.setTransport(transport);
+                                        ideaCDB.sync(Config.get("db"), idea)
+                                        .then(function(){
+                                                var a_array = ideaCDB.get("attachments").concat() || [],
+                                                      l = a_array.length, i, idx=-1,
+                                                      promise = new Promise();
+                                                for(i=0; i<l; i++){
+                                                        if (a_array[i].docId === a_id){
+                                                                idx = i;
+                                                                break;
+                                                        }
+                                                }
+                                               
+                                               if (idx <0){
+                                                       promise.reject("error: attachment not found");
+                                               }
+                                               else{
+                                                        a_array.splice(idx, 1);
+                                                        ideaCDB.set("attachments", a_array);
+                                                        ideaCDB.upload()
+                                                        .then(function(){
+                                                                promise.fulfill();
+                                                        }) ;
+                                               } 
+                                               return promise;       
+                                        })
+                                        .then(function(){
+                                                // delete attachment doc from database
+                                                return cdb.remove();        
+                                        })
+                                        .then(function(){
+                                                // close popup and delete file form server
+                                                ui.close();
+                                                return Utils.deleteAttachmentFile("idea", idea, fileName);  
+                                        });
                                 }
                                 else{
                                         ConfirmUI.hide();                

@@ -209,14 +209,18 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 ConfirmUI.show();
                         };
                         
-                        ui.deleteAttachment =  function(event, node){
+                        ui.deleteAttachment =  function(choice){
                                 console.log("deleting attachment");
+                                if (choice){
+                                        // remove attachment from idea doc
                                 
-                                // remove attachment from idea doc
+                                        // delete attachment doc from database
                                 
-                                // delete attachment doc from database
-                                
-                                // delete file form server     
+                                        // delete file form server
+                                }
+                                else{
+                                        ConfirmUI.hide();                
+                                }     
                         };
                 }
                 

@@ -128,6 +128,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 ui.dom.classList.remove("invisible");
                                 _twocentWriteUI.place(_domWrite);
                                 
+                                if (!ConfirmUI){
+                                        ConfirmUI = new Confirm(ui.dom, labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
+                                }
+                                
                                 // retrieve attachment document form database
                                 cdb.unsync();
                                 cdb.reset({});
@@ -213,8 +217,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 
                                 // delete file form server     
                         };
-                        
-                        ConfirmUI = new Confirm(document.getElementById("library"), labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
                 }
                 
                 return function AttachmentFactory($type){

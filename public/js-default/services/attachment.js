@@ -130,6 +130,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 
                                 if (!ConfirmUI){
                                         ConfirmUI = new Confirm(ui.dom, labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
+                                        ConfirmUI.hide();
                                 }
                                 
                                 // retrieve attachment document form database

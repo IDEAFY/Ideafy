@@ -106,12 +106,22 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 }
                                         },
                                         setSelectCat : function(cat){
-                                                var custom = user.get("categories") || [], arr, i, l, key, idx = null,
+                                                var custom = user.get("categories") || [], arr, i, l, key, idx = null, node = this,
                                                       res = "<option selected disabled style='display:none;'>"+labels.get("choosecat")+"</option>";
+                                                      
+                                                /* reset colors */
+                                               [1,2,3,4,5,6].forEach(function(val){
+                                                        node.classList.remove("acolor"+val);
+                                                        node.classList.add(".acolor");
+                                                });      
+                                                      
                                                 for (i=0, l=_cat.length; i<l;i++){
                                                         key = _cat[i];
                                                         res+="<option>"+labels.get(key)+"</option>";
-                                                        if (cat === key) idx = i+1;
+                                                        if (cat === key) {
+                                                                idx = i+1;
+                                                                node.classList.add("acolor"+idx);
+                                                        }
                                                 }
                                                 if (custom.length){
                                                         for (i=0, l=custom.length; i<l;i++){

@@ -511,6 +511,10 @@ font-size: 14px;
     margin: 10px;
 }
 
+.attachment-screen.edit .a-type{
+    background-image: url('../img/r2/upload-picture.png');    
+}
+
 .attachment-screen .a-left{
     float: left;
     width: 280px;

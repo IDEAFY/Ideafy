@@ -249,7 +249,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.check = function(event, node){
-                                node.classList.remove()"a-pressed");      
+                                node.classList.remove("a-pressed");      
                         };
                         
                         ui.uploadFile = function(event, node){

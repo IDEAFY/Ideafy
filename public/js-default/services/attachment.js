@@ -106,7 +106,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 }
                                         },
                                         setSelectCat : function(cat){
-                                                var custom = _user.get("categories") || [], arr, i, l, key, idx = null,
+                                                var custom = user.get("categories") || [], arr, i, l, key, idx = null,
                                                       res = "<option selected disabled style='display:none;'>"+labels.get("choosecat")+"</option>";
                                                 for (i=0, l=_cat.length; i<l;i++){
                                                         key = _cat[i];

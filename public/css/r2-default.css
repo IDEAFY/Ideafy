@@ -535,9 +535,25 @@ font-size: 14px;
 .attachment-screen .a-cat{
     width: 140px;
     height: 60px;
-    line-height: 60px;
     float: left;
+}
+
+.attachment-screen .a-cat span{
+    display: block;
+    line-height: 60px;
     font-size: 14px;
+}
+
+.attachment-screen.edit-a .a-cat span{
+    display: none;
+}
+
+.attachment-screen.edit-a .a-cat select{
+    display: block;
+}
+
+.attachment-screen.edit-a .a-cat input{
+    display: block;
 }
 
 .attachment-screen .a-rating{

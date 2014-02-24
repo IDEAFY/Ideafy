@@ -186,6 +186,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.close = function(event, node){
+                                if (ui.dom.classList.contains("edit-a")) ui.dom.classList.remove("edit-a");
                                ui.dom.classList.add("invisible");
                                document.querySelector(".cache").classList.remove("appear");
                         };
@@ -248,7 +249,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.check = function(event, node){
-                                
+                                node.classList.remove()"a-pressed");      
                         };
                         
                         ui.uploadFile = function(event, node){

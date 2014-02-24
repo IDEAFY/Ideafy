@@ -455,7 +455,7 @@ font-size: 14px;
     margin-top: 5px;
 }
 
-.attachment-screen .twocentAvatar, .attachment-screen .twocentAvatar .avatar. .attachment-screen .replyAvatar, .attachment-screen .replyAvatar .avatar{
+#attach-twocents .avatar, #attach-writetwocents .avatar{
     width: 30px;
     height: 30px;
     border-radius: 15px;

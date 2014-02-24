@@ -530,7 +530,14 @@ font-size: 14px;
 }
 
 .attachment-screen.edit-a .a-name{
-    background: #e5e5e5;
+    -webkit-box-sizing: border-box;
+    width: 90%;
+    padding: 0 0 0 10px;
+    border: 0px;
+    border-radius: 0px;
+    outline: 0;
+    background-image: -webkit-linear-gradient(top, #F2F2F2, #F2F2F2);
+    -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
 }
 
 .a-contrib .a-span, .attachment-screen .a-date, .attachment-screen .a-vote legend{
@@ -585,7 +592,7 @@ font-size: 14px;
     display: block;
     height: 20px;
     line-height: 20px;
-    margin-top: 3px;
+    margin-top: 5px;
 }
 
 .attachment-screen .a-rating{

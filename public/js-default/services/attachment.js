@@ -133,6 +133,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         ConfirmUI.hide();
                                 }
                                 
+                                console.log(ui.dom);
+                                
                                 // retrieve attachment document form database
                                 cdb.unsync();
                                 cdb.reset({});

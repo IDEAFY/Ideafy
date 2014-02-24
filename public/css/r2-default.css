@@ -559,7 +559,7 @@ font-size: 14px;
 .attachment-screen.edit-a .a-cat select{
     display: block;
     -webkit-appearance: none;
-    width: 100px;
+    width: 140px;
     padding-left: 5px;
     padding-right: 30px;
     margin-right: 10px;
@@ -570,7 +570,7 @@ font-size: 14px;
     line-height: 28px;
     border: 1px solid #CCC;
     font-family: Helvetica;
-    font-size: 12px; 
+    font-size: 12px;
 }
 
 .attachment-screen.edit-a .a-cat input{
@@ -695,4 +695,12 @@ font-size: 14px;
     text-align: center;
     margin-top: 0px;
     margin-bottom: 10px;
+}
+
+.a-publish .sendmail{
+    
+}
+
+.a-cancel .cancelmail{
+    
 }

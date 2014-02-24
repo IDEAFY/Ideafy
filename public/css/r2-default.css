@@ -698,9 +698,9 @@ font-size: 14px;
 }
 
 .a-publish .sendmail{
-    
+    float: none;    
 }
 
 .a-cancel .cancelmail{
-    
+    float: none;    
 }

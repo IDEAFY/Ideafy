@@ -644,10 +644,15 @@ font-size: 14px;
     background-position: center;
     background-repeat: no-repeat;
     background-color: #f0f0f0;
+    display: block;
 }
 
 .attachment-screen .attach-download{
-    background-image: url('../img/r2/download.png');    
+    background-image: url('../img/r2/download.png');
+}
+
+.attachment-screen.edit-a .attach-download, .attachment-screen.edit-a .a-2cent, .attachment-screen.edit-a .a-edit, .attachment-screen.edit-a .a-delete{
+    display: none;   
 }
 
 .attachment-screen .a-2cent{

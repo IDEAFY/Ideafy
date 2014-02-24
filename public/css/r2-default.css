@@ -697,10 +697,22 @@ font-size: 14px;
     margin-bottom: 10px;
 }
 
-.a-publish .sendmail{
-    float: none;    
+.attachment-screen .a-publish .sendmail{
+    float: none;
+    display: none;    
 }
 
-.a-cancel .cancelmail{
-    float: none;    
+.attachment-screen .a-cancel .cancelmail{
+    float: none;
+    display: none;
+}
+
+.attachment-screen.edit-a .a-publish .sendmail{
+    float: none;
+    display: none;    
+}
+
+.attachment-screen.edit-a .a-cancel .cancelmail{
+    float: none;
+    display: none;
 }

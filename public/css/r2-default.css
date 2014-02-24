@@ -502,6 +502,10 @@ font-size: 14px;
     padding: 10px 0px;
 }
 
+.attachment-screen.edit-a .attach-body{
+    padding-bottom: 20px;
+}
+
 .attachment-screen .a-type{
     width: 40px;
     height: 40px;
@@ -523,6 +527,10 @@ font-size: 14px;
 .attachment-screen .a-name{
     padding-top: 10px;
     font-size: 14px;
+}
+
+.attachment-screen.edit-a .a-name{
+    background: #e5e5e5;
 }
 
 .a-contrib .a-span, .attachment-screen .a-date, .attachment-screen .a-vote legend{
@@ -575,6 +583,9 @@ font-size: 14px;
 
 .attachment-screen.edit-a .a-cat input{
     display: block;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 3px;
 }
 
 .attachment-screen .a-rating{
@@ -709,10 +720,10 @@ font-size: 14px;
 
 .attachment-screen.edit-a .a-publish .sendmail{
     float: none;
-    display: none;    
+    display: block;    
 }
 
 .attachment-screen.edit-a .a-cancel .cancelmail{
     float: none;
-    display: none;
+    display: block;
 }

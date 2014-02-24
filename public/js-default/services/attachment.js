@@ -230,7 +230,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         
                         ui.edit = function(event, node){
                                 node.classList.remove("a-pressed");
-                                ui.dom.classList.add("edit-a");    
+                                ui.dom.classList.add("edit-a");   
                         };
                         
                         ui.update = function(event, node){

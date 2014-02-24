@@ -519,13 +519,13 @@ font-size: 14px;
     background-image: url('../img/brainstorm/importDisable100.png');    
 }
 
-.attchment-screen .a-type input{
+.attachment-screen .a-type input{
     -webkit-appearance : none;
     display:none;
 }
 
 
-.attchment-screen.edit-a .a-type input{
+.attachment-screen.edit-a .a-type input{
     -webkit-appearance : none;
     display:block;
     width: 40px;

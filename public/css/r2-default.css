@@ -704,7 +704,7 @@ font-size: 14px;
     background-size: cover;
 }
 
-.attachment-screen .attach-download.a-pressed, .attachment-screen .a-2cent.a-pressed, .attachment-screen .a-edit.a-pressed, .attachment-screen .a-delete.a-pressed, .attachment-screen .cancelmail.a-pressed, .attachment-screen .sendmail.a-pressed{
+.attachment-screen .attach-download.a-pressed, .attachment-screen .a-2cent.a-pressed, .attachment-screen .a-edit.a-pressed, .attachment-screen .a-delete.a-pressed, .attachment-screen .a-type.a-pressed, .attachment-screen .cancelmail.a-pressed, .attachment-screen .sendmail.a-pressed{
     background-color: #666666;
     -webkit-box-shadow: inset 0px 0px 5px 1px (0,0,0,0.6);
 }

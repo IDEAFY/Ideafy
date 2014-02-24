@@ -265,7 +265,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.cancel = function(event, node){
-                                node.classList.remove("a-pressed");        
+                                node.classList.remove("a-pressed");
+                                ui.dom.classList.remove("edit-a");
+                                ui.resetEdit();       
                         };
                         
                         ui.confirmDelete = function(event, node){

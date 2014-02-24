@@ -112,7 +112,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 /* reset colors */
                                                [1,2,3,4,5,6].forEach(function(val){
                                                         node.classList.remove("acolor"+val);
-                                                        node.classList.add(".acolor");
+                                                        node.classList.add("acolor");
                                                 });      
                                                       
                                                 for (i=0, l=_cat.length; i<l;i++){

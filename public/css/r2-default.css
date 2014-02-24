@@ -554,6 +554,19 @@ font-size: 14px;
 
 .attachment-screen.edit-a .a-cat select{
     display: block;
+    -webkit-appearance: none;
+    width: 100px;
+    padding-left: 5px;
+    padding-right: 30px;
+    margin-right: 10px;
+    background: url('../img/profile/buttonMinSeeMoreDisable.png') no-repeat right center;
+    background-size: 30px 30px;
+    height: 28px;
+    border-radius: 5px;
+    line-height: 28px;
+    border: 1px solid #CCC;
+    font-family: Helvetica;
+    font-size: 12px; 
 }
 
 .attachment-screen.edit-a .a-cat input{

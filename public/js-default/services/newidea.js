@@ -111,7 +111,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         node.selectedIndex = 0;
                                                         [1,2,3,4,5,6].forEach(function(val){
                                                                 node.classList.remove("acolor"+val);
-                                                                node.classList.add(".acolor");
+                                                                node.classList.add("acolor");
                                                         });
                                                 }
                                         }    

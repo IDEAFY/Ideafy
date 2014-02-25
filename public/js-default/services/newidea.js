@@ -334,16 +334,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                
                                if (_attachment.get("name") && _attachment.get("category")){
                                         aspinner.spin(node);
-                                
+                                console.log(_attachment.toJSON());
                                 _attachment.sync(Config.get("db"), id)
                                         .then(function(err){
                                                 if (err) console.log(err);
+                                                console.log(id, _attachment.toJSON());
                                                 return _attachment.upload();
                                         })
                                         .then(function(){
                                                 var custom = _user.get("categories").concat() || [];
-                                                
-                                                console.log("upload successful");
                                                 
                                                 // add to attachment list
                                                 _alist.alter("unshift" , {

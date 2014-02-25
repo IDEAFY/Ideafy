@@ -511,21 +511,29 @@ font-size: 14px;
     height: 40px;
     border-radius: 20px;
     float: left;
-    background-image: url('../img/connect/graygroup.png');
     background-size: contain;
     margin: 10px;
 }
 
+.attachment-screen .a-type{
+    display: block;
+    background-image: url('../img/connect/graygroup.png');
+}
+
 .attachment-screen .a-type-edit{
+    display: none;
+    background-image: url('../img/brainstorm/importDisable100.png');  
+}
+
+.attachment-screen.edit-a .a-type{
     display: none;
 }
 
 .attachment-screen.edit-a .a-type-edit{
-    display: block;
-    background-image: url('../img/brainstorm/importDisable100.png');    
+    display: block;  
 }
 
-.attachment-screen .a-type input{
+.attachment-screen .a-type-edit input{
     -webkit-appearance : none;
     width: 40px;
     height: 40px;

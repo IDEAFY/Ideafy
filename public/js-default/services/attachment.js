@@ -264,7 +264,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         ui.edit = function(event, node){
                                 node.classList.remove("a-pressed");
                                 ui.dom.classList.add("edit-a");
-                                ui.dom.querySelector("a-name").setAttribute("contentEditable", true);  
+                                ui.dom.querySelector(".a-name").setAttribute("contentEditable", true);  
                         };
                         
                         ui.updateName = function(event, node){

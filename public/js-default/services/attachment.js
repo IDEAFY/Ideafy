@@ -263,7 +263,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         
                         ui.edit = function(event, node){
                                 node.classList.remove("a-pressed");
-                                ui.dom.classList.add("edit-a");   
+                                ui.dom.classList.add("edit-a");
+                                ui.dom.querySelector("a-name").setAttribute("contentEditable", true);  
                         };
                         
                         ui.updateName = function(event, node){
@@ -366,6 +367,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 if (cdbEdit.get("fileName") !== cdb.get("fileName")) ui.deleteAttachmentFile(cdbEdit.get("fileName"));
                                 
                                 // exit edit interface
+                                ui.dom.querySelector("a-name").setAttribute("contentEditable", false);  
                                 ui.dom.classList.remove("edit-a");
                                 
                                 // reset Edit store

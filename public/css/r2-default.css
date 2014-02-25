@@ -506,7 +506,7 @@ font-size: 14px;
     padding-bottom: 20px;
 }
 
-.attachment-screen .a-type{
+.attachment-screen .a-type, .attachment-screen .a-type-edit{
     width: 40px;
     height: 40px;
     border-radius: 20px;
@@ -514,6 +514,10 @@ font-size: 14px;
     background-image: url('../img/connect/graygroup.png');
     background-size: contain;
     margin: 10px;
+}
+
+.attachment-screen .a-type-edit{
+    display: none;
 }
 
 .attachment-screen.edit-a .a-type-edit{

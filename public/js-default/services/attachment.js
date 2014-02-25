@@ -52,7 +52,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         },
                                         setAuthors : function(names){
                                                 var res = "";
-                                                if (names && names.length){
+                                                if (names && names instanceof Array && names.length){
                                                         for (i=0, l=names.length; i<l;i++){
                                                                if (i === l-1){
                                                                        res += names[i];
@@ -60,7 +60,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                                else res += names[i] + ", ";
                                                         }
                                                         this.innerHTML = res;
-                                                }        
+                                                } 
+                                                else this.innerHTML = names;      
                                         },
                                         showVoting : function(id){
                                                 var arr = user.get("rated_a") || [], authors = cdb.get("authors");

@@ -109,7 +109,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 }),
                                 "edit": new Model(cdbEdit,{
                                         setSelectCat : function(cat){
-                                                console.log(cat);
                                                 var custom = user.get("categories") || [], arr, i, l, key, idx = null, node = this,
                                                       res = "<option selected disabled style='display:none;'>"+labels.get("choosecat")+"</option>";
                                                       
@@ -179,7 +178,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.resetEdit = function(){
-                                console.log("calling reset edit");
                                 cdbEdit.reset({});
                                 cdbEdit.set("name", cdb.get("name"));
                                 cdbEdit.set("authors", cdb.get("authors").concat());

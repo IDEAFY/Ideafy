@@ -521,7 +521,7 @@ font-size: 14px;
 
 .attachment-screen .a-type input{
     -webkit-appearance : none;
-    display:none;
+    visibility:hidden;
 }
 
 

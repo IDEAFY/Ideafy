@@ -16,6 +16,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                              _twocentWriteUI = new WriteTwocent("attach"),
                             cdb = new CouchDBDocument(),
                             cdbEdit = new Store(),
+                            _progress = new Store({status: null}),
+                            _uploadReq,
                             labels = Config.get("labels"),
                             transport = Config.get("transport"),
                             user = Config.get("user"),
@@ -148,7 +150,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-type-edit" data-attachevent="listen:mousedown, press"><input type="file" class="a-input" data-attachevent="listen:mousedown, check;listen:change, uploadFile"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat"><span data-attach="bind:setCat, category"></span><select class="acolor invisible" data-edit="bind:setSelectCat, category" data-attachevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat invisible" data-attach="bind:show, custom" data-attachevent="listen:input, setCat"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:mousedown, press; listen:mouseup, download"></a></li><li><div class="a-2cent" data-attachevent="listen:mousedown, press; listen:mouseup, displayWriteTwocent"></div></li><li data-attach="bind:displayEdit, authors"><div class="a-edit" data-attachevent="listen:mousedown, press; listen:mouseup, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:mousedown, press; listen:mouseup, confirmDelete"></div></li><li class="a-publish invisible"><div class="sendmail" data-labels="bind: innerHTML, publishlbl" data-attachevent="listen: mousedown, press; listen: mouseup, update"></div></li><li class="a-cancel invisible"><div class="cancelmail" data-labels="bind: innerHTML, cancellbl" data-attachevent="listen: mousedown, press; listen: mouseup, cancel">Cancel</div></li></ul><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-type-edit" data-attachevent="listen:mousedown, press"><input type="file" class="a-input" data-attachevent="listen:mousedown, check;listen:change, uploadFile"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat"><span data-attach="bind:setCat, category"></span><select class="acolor invisible" data-edit="bind:setSelectCat, category" data-attachevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat invisible" data-attach="bind:show, custom" data-attachevent="listen:input, setCat"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:mousedown, press; listen:mouseup, download"></a></li><li><div class="a-2cent" data-attachevent="listen:mousedown, press; listen:mouseup, displayWriteTwocent"></div></li><li data-attach="bind:displayEdit, authors"><div class="a-edit" data-attachevent="listen:mousedown, press; listen:mouseup, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:mousedown, press; listen:mouseup, confirmDelete"></div></li><li class="a-publish invisible"><div class="sendmail" data-labels="bind: innerHTML, publishlbl" data-attachevent="listen: mousedown, press; listen: mouseup, update"></div></li><li class="a-cancel invisible"><div class="cancelmail" data-labels="bind: innerHTML, cancellbl" data-attachevent="listen: mousedown, press; listen: mouseup, cancel">Cancel</div></li></ul><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
                         
                         ui.reset = function reset(id){
                                 // complete UI build (twocents) and display
@@ -179,6 +181,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         
                         ui.resetEdit = function(){
                                 cdbEdit.reset({});
+                                cdbEdit.set("type", cdb.get("type"));
                                 cdbEdit.set("name", cdb.get("name"));
                                 cdbEdit.set("authors", cdb.get("authors").concat());
                                 cdbEdit.set("fileName", cdb.get("fileName"));
@@ -256,17 +259,77 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.uploadFile = function(event, node){
+                                var _reader = new FileReader(),
+                                       _fd = new FormData(),
+                                       _id = cdb.get("docid"),
+                                       _url = '/upload',
+                                       _type = "afile",
+                                       _dir,
+                                       fileName = "";
+                               
+                               if (_id.search("I:") > -1) _dir = "ideas/" + _id;
+                               
+                               if (node.files && node.files.length){
+                                       fileName = node.files[0].name;
+                                       ui.dom.querySelector(".a-preview").classList.remove("invisible");
+                                        
+                                        cdbEdit.set("fileName", fileName);
+                                        
+                                        if (!cdbEdit.get("name")) cdbEdit.set("name", fileName);
+                                                               
+                                        _reader.onloadend = function(e){
+                                                _fd.append("type", _type);
+                                                _fd.append("dir", _dir);
+                                                _fd.append("userfile", node.files[0]);
+                                                _fd.append("filename", fileName);
+                                                _uploadReq = Utils.uploadFile(_url, _fd, _progress, function(result){
+                                                        return result;
+                                                });
+                                        };
+                                
+                                        _reader.readAsArrayBuffer(node.files[0]);
+                                }       
+                        };
+                        
+                        ui.checkUpdate = function(){
+                                var update = false;
+                                
+                                if (cdbEdit.get("name") !== cdb.get("name") || cdbEdit.get("fileName") !== cdb.get("fileName") || cdbEdit.get("category") !== cdb.get("category") || cdbEdit.get("authors").join() !== cdb.get("authors").join()){
+                                        update = true;
+                                }
+                                return update;
                                 
                         };
                         
                         ui.update = function(event, node){
-                                node.classList.remove("a-pressed");        
+                                node.classList.remove("a-pressed");
+                                
+                                if (ui.checkUpdate()){
+                                        console.log("attachment doc and idea doc need to be updated....");
+                                }
+                                
+                                else{
+                                        ui.cancel();
+                                }    
                         };
                         
                         ui.cancel = function(event, node){
                                 node.classList.remove("a-pressed");
+                                
+                                // if an upload request is in progress then cancel it
+                                if (_uploadReq && _uploadReq.readyState !== 4){
+                                        _uploadReq.abort();
+                                        _progress.reset({status: ""});
+                                } 
+                                
+                                // if a new file has been uploaded, delete it from server
+                                if (cdbEdit.get("fileName") !== cdb.get("fileName")) ui.deleteAttachmentFile(cdbEdit.get("fileName"));
+                                
+                                // exit edit interface
                                 ui.dom.classList.remove("edit-a");
-                                ui.resetEdit();       
+                                
+                                // reset Edit store
+                                ui.resetEdit();    
                         };
                         
                         ui.confirmDelete = function(event, node){
@@ -275,17 +338,21 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 ConfirmUI.show();
                         };
                         
+                        ui.deleteAttachmentFile = function(fileName){
+                                return Utils.deleteAttachmentFile(cdb.get("docId"), fileName);    
+                        };
+                        
                         ui.deleteAttachment =  function(choice){
-                                var idea = cdb.get("docId"),
+                                var doc = cdb.get("docId"),
                                       a_id = cdb.get("_id"),
                                       fileName = cdb.get("fileName"),
-                                      ideaCDB = new CouchDBDocument();
+                                      parentCDB = new CouchDBDocument();
                                 if (choice){
                                         // remove attachment from idea doc
-                                        ideaCDB.setTransport(transport);
-                                        ideaCDB.sync(Config.get("db"), idea)
+                                        parentCDB.setTransport(transport);
+                                        parentCDB.sync(Config.get("db"), doc)
                                         .then(function(){
-                                                var a_array = ideaCDB.get("attachments").concat() || [],
+                                                var a_array = parentCDB.get("attachments").concat() || [],
                                                       l = a_array.length, i, idx=-1,
                                                       promise = new Promise();
                                                 for(i=0; i<l; i++){
@@ -300,8 +367,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                }
                                                else{
                                                         a_array.splice(idx, 1);
-                                                        ideaCDB.set("attachments", a_array);
-                                                        ideaCDB.upload()
+                                                        parenCDB.set("attachments", a_array);
+                                                        parentCDB.upload()
                                                         .then(function(){
                                                                 promise.fulfill();
                                                         }) ;
@@ -315,7 +382,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         .then(function(){
                                                 // close popup and delete file form server
                                                 ui.close();
-                                                return Utils.deleteAttachmentFile("idea", idea, fileName);  
+                                                return Utils.deleteAttachmentFile(doc, fileName);  
                                         });
                                 }
                                 else{

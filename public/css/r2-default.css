@@ -212,7 +212,7 @@ font-size: 14px;
     -webkit-appearance: none;
     width: 30px;
     height: 30px;
-    visibility: hidden;
+    opacity: 0;
 }
 
 .a-tools .upload-button{

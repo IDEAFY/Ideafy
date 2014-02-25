@@ -311,7 +311,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.deleteAttachmentFile = function(fileName){
-                                return Utils.deleteAttachmentFile("idea", _store.get("_id"), fileName);      
+                                return Utils.deleteAttachmentFile(_store.get("_id"), fileName);      
                         };
                         
                         _widget.deleteAttachmentDoc = function(docId){
@@ -369,7 +369,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.acancel = function(event, node){
                                 var file = _attachment.get("fileName");
                                 
-                                if (_uploadReq.readyState !== 4){
+                                if (_uploadReq && _uploadReq.readyState !== 4){
                                         _uploadReq.abort();
                                         _progress.reset({status: ""});
                                 }

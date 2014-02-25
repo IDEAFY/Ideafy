@@ -50,6 +50,18 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                       date = new Date(stamp);
                                                 this.innerHTML = date.toLocaleDateString();
                                         },
+                                        setAuthors : function(names){
+                                                var res = "";
+                                                if (names && names.length){
+                                                        for (i=0, l=names.length; i<l;i++){
+                                                               if (i === l-1){
+                                                                       res += names[i];
+                                                               }
+                                                               else res += names[i] + ", ";
+                                                        }
+                                                        this.innerHTML = res;
+                                                }        
+                                        },
                                         showVoting : function(id){
                                                 var arr = user.get("rated_a") || [], authors = cdb.get("authors");
                                                 if (authors.indexOf(user.get("_id")) > -1){
@@ -161,7 +173,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-type-edit" data-attachevent="listen:mousedown, press"><input type="file" class="a-input" data-attachevent="listen:mousedown, check;listen:change, uploadFile"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name" data-attachevent="listen:input, updateName"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat"><span data-attach="bind:setCat, category"></span><select class="acolor invisible" data-edit="bind:setSelectCat, category" data-attachevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat invisible" data-edit="bind:show, custom" data-attachevent="listen:input, setCat"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-preview invisible"><div class="a-content" data-edit="bind:innerHTML, fileName"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:mousedown, press; listen:mouseup, download"></a></li><li><div class="a-2cent" data-attachevent="listen:mousedown, press; listen:mouseup, displayWriteTwocent"></div></li><li data-attach="bind:displayEdit, authors"><div class="a-edit" data-attachevent="listen:mousedown, press; listen:mouseup, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:mousedown, press; listen:mouseup, confirmDelete"></div></li><li class="a-publish invisible"><div class="sendmail" data-labels="bind: innerHTML, publishlbl" data-attachevent="listen: mousedown, press; listen: mouseup, update"></div></li><li class="a-cancel invisible"><div class="cancelmail" data-labels="bind: innerHTML, cancellbl" data-attachevent="listen: mousedown, press; listen: mouseup, cancel">Cancel</div></li></ul><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-type-edit" data-attachevent="listen:mousedown, press"><input type="file" class="a-input" data-attachevent="listen:mousedown, check;listen:change, uploadFile"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name" data-attachevent="listen:input, updateName"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: setAuthors, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat"><span data-attach="bind:setCat, category"></span><select class="acolor invisible" data-edit="bind:setSelectCat, category" data-attachevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat invisible" data-edit="bind:show, custom" data-attachevent="listen:input, setCat"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-preview invisible"><div class="a-content" data-edit="bind:innerHTML, fileName"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:mousedown, press; listen:mouseup, download"></a></li><li><div class="a-2cent" data-attachevent="listen:mousedown, press; listen:mouseup, displayWriteTwocent"></div></li><li data-attach="bind:displayEdit, authors"><div class="a-edit" data-attachevent="listen:mousedown, press; listen:mouseup, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:mousedown, press; listen:mouseup, confirmDelete"></div></li><li class="a-publish invisible"><div class="sendmail" data-labels="bind: innerHTML, publishlbl" data-attachevent="listen: mousedown, press; listen: mouseup, update"></div></li><li class="a-cancel invisible"><div class="cancelmail" data-labels="bind: innerHTML, cancellbl" data-attachevent="listen: mousedown, press; listen: mouseup, cancel">Cancel</div></li></ul><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
                         
                         ui.reset = function reset(id){
                                 // complete UI build (twocents) and display
@@ -195,6 +207,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 cdbEdit.set("type", cdb.get("type"));
                                 cdbEdit.set("name", cdb.get("name"));
                                 cdbEdit.set("authors", cdb.get("authors").concat());
+                                cdbEdit.set("authornames", cdb.get("authornames"));
                                 cdbEdit.set("fileName", cdb.get("fileName"));
                                 cdbEdit.set("category", cdb.get("category"));
                                 cdbEdit.set("custom", cdb.get("custom"));        
@@ -347,6 +360,30 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 
                                 if (ui.checkUpdate()){
                                         console.log("attachment doc and idea doc need to be updated....");
+                                        
+                                        // if attached file has changed, delete previous file
+                                        if (cdb.get("fileName") !== cdbEdit.get("fileName")){
+                                                ui.deleteAttachmentFile(cdb.get("fileName"));
+                                        }
+                                        
+                                        // update attachment document
+                                        cdb.set("name", cdbEdit.get("name"));
+                                        cdb.set("fileName", cdbEdit.get("fileName"));
+                                        cdb.set("category", cdbEdit.get("category"));
+                                        cdb.set("custom", cdbEdit.get("custom"));
+                                        cdb.set("authors", cdbEdit.get("authors"));
+                                        cdb.set("authornames", cdbEdit.get("authornames"));
+                                        
+                                        cdb.upload()
+                                        .then(function(){
+                                                return ui.updateParentDoc();
+                                        })
+                                        .then(function(){
+                                                ui.dom.classList.remove("edit-a");
+                                                ui.dom.querySelector(".a-name").setAttribute("contentEditable", false); 
+                                                // reset edit store
+                                                ui.resetEdit();                 
+                                        });
                                 }
                                 
                                 else{
@@ -430,6 +467,39 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 else{
                                         ConfirmUI.hide();                
                                 }     
+                        };
+                        
+                        ui.updateParentDoc = function(){
+                                var promise = new Promise(),
+                                      doc = new CouchDBDocument();
+                                
+                                doc.setTransport(transport);
+                                
+                                doc.sync(Config.get("db"), cdb.get("docId"))
+                                .then(function(){
+                                        var att = doc.get("attachments").concat() || [], idx, i, l = att.length;
+                                        for (i=0;i<l;i++){
+                                                if (att[i].docId === cdb.get("_id")){
+                                                        idx = i;
+                                                        break;
+                                                }
+                                        }
+                                        att.splice(idx, 1, {
+                                                docId : cdb.get("_id"),
+                                                type : cdb.get("type"),
+                                                category : cdb.get("category"),
+                                                name : cdb.get("name"),
+                                                fileName : cdb.get("fileName"),
+                                                authornames: cdb.get("authornames")
+                                        });
+                                        
+                                        return doc.upload();
+                                })
+                                .then(function(){
+                                        promise.fulfill();
+                                });
+                                                               
+                                return promise;
                         };
                 }
                 

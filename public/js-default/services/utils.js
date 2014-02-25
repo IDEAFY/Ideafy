@@ -9,13 +9,14 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         var _utils = {};
 	
 	_utils.formatDate = function(array){
-	       /*var month = array[1] + 1;
+	       var month = array[1] + 1;
 	       if(month < 10) {
 		      month = "0" + month;
 	       }
-	       return array[2] + "/" + month + "/" + array[0];*/
-	      var date = new Date(array);
-	      return date.toLocaleDateString();
+	       if (Config.get("user").get("lang").search("en") === 0){
+	               return month + "/" + array[2] + "/" + array[0];
+	       }
+	       else return array[2] + "/" + month + "/" + array[0];
 	};
 
         /*

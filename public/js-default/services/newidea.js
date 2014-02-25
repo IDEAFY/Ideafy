@@ -343,6 +343,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         .then(function(){
                                                 var custom = _user.get("categories").concat() || [];
                                                 
+                                                console.log("upload successful");
+                                                
                                                 // add to attachment list
                                                 _alist.alter("unshift" , {
                                                         docId : id,

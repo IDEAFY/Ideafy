@@ -337,7 +337,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _attachment.sync(Config.get("db"), id)
                                         .then(function(err){
                                                 if (err) console.log(err);
-                                                _attachment.set("_id", id);
                                                 return _attachment.upload();
                                         })
                                         .then(function(){
@@ -367,6 +366,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         
                                                 // reset attachment
                                                 _widget.resetAttachment();           
+                                        }, function(err){
+                                                console.log(err);
                                         });
                                 }
                                 else if (!_attachment.get("name")){

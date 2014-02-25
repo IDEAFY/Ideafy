@@ -179,6 +179,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.resetEdit = function(){
+                                console.log("calling reset edit");
                                 cdbEdit.reset({});
                                 cdbEdit.set("name", cdb.get("name"));
                                 cdbEdit.set("authors", cdb.get("authors").concat());
@@ -277,7 +278,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.deleteAttachment =  function(choice){
-                                console.log("deleting attachment");
                                 var idea = cdb.get("docId"),
                                       a_id = cdb.get("_id"),
                                       fileName = cdb.get("fileName"),

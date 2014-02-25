@@ -261,7 +261,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         ui.uploadFile = function(event, node){
                                 var _reader = new FileReader(),
                                        _fd = new FormData(),
-                                       _id = cdb.get("docid"),
+                                       _id = cdb.get("docId"),
                                        _url = '/upload',
                                        _type = "afile",
                                        _dir,

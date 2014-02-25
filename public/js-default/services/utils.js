@@ -9,11 +9,13 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         var _utils = {};
 	
 	_utils.formatDate = function(array){
-	       var month = array[1] + 1;
+	       /*var month = array[1] + 1;
 	       if(month < 10) {
 		      month = "0" + month;
 	       }
-	       return array[2] + "/" + month + "/" + array[0];
+	       return array[2] + "/" + month + "/" + array[0];*/
+	      var date = new Date(array);
+	      return date.toLocaleDateString();
 	};
 
         /*

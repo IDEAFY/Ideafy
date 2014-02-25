@@ -337,6 +337,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _attachment.sync(Config.get("db"), id)
                                         .then(function(){
                                                 return _attachment.upload();
+                                        }, function(err){
+                                                console.log(err);
+                                                return _attachment.upload();
                                         })
                                         .then(function(){
                                                 var custom = _user.get("categories").concat() || [];

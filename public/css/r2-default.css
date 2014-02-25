@@ -764,6 +764,7 @@ font-size: 14px;
     width: 130px;
     margin-right: 15px;
     height: 60px;
+    text-align: center;
 }
 
 .attachment-screen.edit-a  .uploadbar{

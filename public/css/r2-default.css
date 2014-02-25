@@ -767,6 +767,11 @@ font-size: 14px;
     text-align: center;
 }
 
+.attachment-screen.edit-a .a-content{
+    font-size: 11px;
+    line-height: 25px;
+}
+
 .attachment-screen.edit-a  .uploadbar{
     -webkit-appearance : none;
     height: 20px;

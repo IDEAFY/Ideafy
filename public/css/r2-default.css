@@ -758,3 +758,36 @@ font-size: 14px;
     float: none;
     display: block;
 }
+
+.attachment-screen.edit-a .a-preview{
+    float: right;
+    width: 130px;
+    margin-right: 15px;
+    height: 60px;
+}
+
+.attachment-screen.edit-a  .uploadbar{
+    -webkit-appearance : none;
+    height: 20px;
+    width: 90%;
+}
+
+.attachment-screen.edit-a .uploadval{
+    margin-top: -20px;
+    width: 100%;
+    line-height: 20px;
+    font-size: 10px;
+    color: black;   
+}
+
+.attachment-screen.edit-a  .uploadbar::-webkit-progress-bar{
+    background-color: white;
+    padding: 1px;
+    border: 1px solid #657b99;
+    border-radius: 3px;
+}
+
+.attachment-screen.edit-a  .uploadbar::-webkit-progress-value{
+    background-color: #657b99;
+    border-radius: 3px;
+}

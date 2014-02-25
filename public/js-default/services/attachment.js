@@ -291,7 +291,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.setCat = function(event, node){
-                                cdbEdit.set("category", node.innerHTML) ;       
+                                cdbEdit.set("category", node.value) ;       
                         };
                         
                         ui.check = function(event, node){

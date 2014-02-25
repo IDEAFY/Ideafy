@@ -341,6 +341,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 return _attachment.upload();
                                         })
                                         .then(function(){
+                                                var custom = _user.get("categories").concat() || [];
+                                                
                                                 // add to attachment list
                                                 _alist.alter("unshift" , {
                                                         docId : id,
@@ -350,6 +352,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         fileName : _attachment.get("fileName"),
                                                         authornames : _attachment.get("authornames")
                                                 });
+                                                
+                                                // if user created a new custom category add it
+                                                if (_attachment.get("custom")){
+                                                        if (custom.indexOf(_attachment.get("category")) === -1){
+                                                                custom.push(_attachment.get("category"));
+                                                                _user.set("categories", custom);
+                                                                _user.upload();       
+                                                        }
+                                                }
                                
                                                 // stop spinner
                                                 aspinner.stop(); 

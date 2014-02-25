@@ -110,6 +110,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         }
                                 }),
                                 "edit": new Model(cdbEdit,{
+                                        show : function(bool){
+                                                (bool) ? this.setAttribute("style", "display:inline-block;") : this.setAttribute("style", "display:none;");
+                                        },
                                         setSelectCat : function(cat){
                                                 var custom = user.get("categories") || [], arr, i, l, key, idx = null, node = this,
                                                       res = "<option selected disabled style='display:none;'>"+labels.get("choosecat")+"</option>";
@@ -137,7 +140,26 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 res+="<option>"+ labels.get("other")+"</option>";
                                                 this.innerHTML = res;
                                                 this.selectedIndex = idx || 0;     
-                                        }        
+                                        },
+                                        setContent : function(type){
+                                                var node = this;
+                                                switch(type){
+                                                         case "file":
+                                                                node.innerHTML = cdbEdit.get("fileName");
+                                                                break;
+                                                        default:
+                                                                node.innerHTML = cdbEdit.get("name");
+                                                        break;
+                                                }        
+                                        }       
+                                }),
+                                "progress": new Model(_progress, {
+                                        showStatus : function(status){
+                                                (status) ? this.setAttribute("value", status) : this.setAttribute("value", 0) ;
+                                        },
+                                        showVal : function(status){
+                                                (status) ? this.innerHTML = status + "%" : this.innerHTML = "";
+                                        }    
                                 }),
                                 "vote" : new Model(vote,{
                                         setIcon : function(active){
@@ -150,7 +172,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-type-edit" data-attachevent="listen:mousedown, press"><input type="file" class="a-input" data-attachevent="listen:mousedown, check;listen:change, uploadFile"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat"><span data-attach="bind:setCat, category"></span><select class="acolor invisible" data-edit="bind:setSelectCat, category" data-attachevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat invisible" data-attach="bind:show, custom" data-attachevent="listen:input, setCat"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:mousedown, press; listen:mouseup, download"></a></li><li><div class="a-2cent" data-attachevent="listen:mousedown, press; listen:mouseup, displayWriteTwocent"></div></li><li data-attach="bind:displayEdit, authors"><div class="a-edit" data-attachevent="listen:mousedown, press; listen:mouseup, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:mousedown, press; listen:mouseup, confirmDelete"></div></li><li class="a-publish invisible"><div class="sendmail" data-labels="bind: innerHTML, publishlbl" data-attachevent="listen: mousedown, press; listen: mouseup, update"></div></li><li class="a-cancel invisible"><div class="cancelmail" data-labels="bind: innerHTML, cancellbl" data-attachevent="listen: mousedown, press; listen: mouseup, cancel">Cancel</div></li></ul><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:mousedown, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-type-edit" data-attachevent="listen:mousedown, press"><input type="file" class="a-input" data-attachevent="listen:mousedown, check;listen:change, uploadFile"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name" data-attachevent="listen:input, updateName"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: innerHTML, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat"><span data-attach="bind:setCat, category"></span><select class="acolor invisible" data-edit="bind:setSelectCat, category" data-attachevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat invisible" data-edit="bind:show, custom" data-attachevent="listen:input, setCat"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-preview invisible"><div class="a-content" data-edit="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: mousedown, previewVote; listen: mouseup, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:mousedown, press; listen:mouseup, download"></a></li><li><div class="a-2cent" data-attachevent="listen:mousedown, press; listen:mouseup, displayWriteTwocent"></div></li><li data-attach="bind:displayEdit, authors"><div class="a-edit" data-attachevent="listen:mousedown, press; listen:mouseup, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:mousedown, press; listen:mouseup, confirmDelete"></div></li><li class="a-publish invisible"><div class="sendmail" data-labels="bind: innerHTML, publishlbl" data-attachevent="listen: mousedown, press; listen: mouseup, update"></div></li><li class="a-cancel invisible"><div class="cancelmail" data-labels="bind: innerHTML, cancellbl" data-attachevent="listen: mousedown, press; listen: mouseup, cancel">Cancel</div></li></ul><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
                         
                         ui.reset = function reset(id){
                                 // complete UI build (twocents) and display
@@ -185,7 +207,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 cdbEdit.set("name", cdb.get("name"));
                                 cdbEdit.set("authors", cdb.get("authors").concat());
                                 cdbEdit.set("fileName", cdb.get("fileName"));
-                                cdbEdit.set("category", cdb.get("category"));         
+                                cdbEdit.set("category", cdb.get("category"));
+                                cdbEdit.set("custom", cdb.get("custom"));        
                         };
                         
                         ui.close = function(event, node){
@@ -254,6 +277,33 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 ui.dom.classList.add("edit-a");   
                         };
                         
+                        ui.updateName = function(event, node){
+                                cdbEdit.set("name", node.innerHTML);        
+                        };
+                        
+                        ui.selectCat = function(event, node){
+                                // if "other" is selected display category input field, else set attachment category value
+                                if (node.value ===  node.lastChild.innerHTML){
+                                        cdbEdit.set("custom", true);
+                                        for (i=1, l=_cat.length; i<=l;i++){
+                                                node.classList.remove("acolor"+i); 
+                                        };
+                                        node.classList.add("acolor");       
+                                }
+                                else{
+                                        node.classList.remove("acolor");
+                                        cdbEdit.set("custom", false);
+                                        cdbEdit.set("category", _cat[node.selectedIndex-1]);
+                                        for (i=1, l=_cat.length; i<=l;i++){
+                                                (node.selectedIndex === i) ? node.classList.add("acolor"+i) : node.classList.remove("acolor"+i);        
+                                        };  
+                                }        
+                        };
+                        
+                        ui.setCat = function(event, node){
+                                cdbEdit.set("category", node.innerHTML) ;       
+                        };
+                        
                         ui.check = function(event, node){
                                 node.classList.remove("a-pressed");      
                         };
@@ -297,6 +347,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 if (cdbEdit.get("name") !== cdb.get("name") || cdbEdit.get("fileName") !== cdb.get("fileName") || cdbEdit.get("category") !== cdb.get("category") || cdbEdit.get("authors").join() !== cdb.get("authors").join()){
                                         update = true;
                                 }
+                                console.log(cdbEdit.toJSON(), update);
                                 return update;
                                 
                         };

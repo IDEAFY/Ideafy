@@ -334,11 +334,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                
                                if (_attachment.get("name") && _attachment.get("category")){
                                         aspinner.spin(node);
-                                console.log(_attachment.toJSON());
                                 _attachment.sync(Config.get("db"), id)
                                         .then(function(err){
                                                 if (err) console.log(err);
-                                                console.log(id, _attachment.toJSON());
+                                                _attachment.set("_id", id);
                                                 return _attachment.upload();
                                         })
                                         .then(function(){

@@ -367,7 +367,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 if (cdbEdit.get("fileName") !== cdb.get("fileName")) ui.deleteAttachmentFile(cdbEdit.get("fileName"));
                                 
                                 // exit edit interface
-                                ui.dom.querySelector("a-name").setAttribute("contentEditable", false);  
+                                ui.dom.querySelector(".a-name").setAttribute("contentEditable", false);  
                                 ui.dom.classList.remove("edit-a");
                                 
                                 // reset Edit store

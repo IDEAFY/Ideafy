@@ -537,7 +537,7 @@ font-size: 14px;
     -webkit-appearance : none;
     width: 40px;
     height: 40px;
-    visibility: hidden;
+    opacity: 0;
 }
 
 .attachment-screen .a-left{

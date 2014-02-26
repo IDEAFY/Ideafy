@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/utils", "Promise"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, Utils, Promise){
+define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/utils", "Promise", "lib/spin.min"],
+        function(Widget, Config, Store, CouchDBDocument, Model, Event, Utils, Promise, Spinner){
                 
                 function AddAttachmentConstructor(){
                        

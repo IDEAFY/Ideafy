@@ -446,8 +446,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                }
                                                else{
                                                         a_array.splice(idx, 1);
-                                                        parenCDB.set("attachments", a_array);
-                                                        cnosole.log(parentCDB.toJSON());
+                                                        parentCDB.set("attachments", a_array);
                                                         parentCDB.upload()
                                                         .then(function(){
                                                                 promise.fulfill();

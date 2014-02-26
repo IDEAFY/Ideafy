@@ -47,10 +47,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 var node = this;
                                                 switch(type){
                                                          case "file":
-                                                                node.innerHTML = _attachment.get("fileName");
+                                                                node.innerHTML = cdb.get("fileName");
                                                                 break;
                                                         default:
-                                                                node.innerHTML = _attachment.get("name");
+                                                                node.innerHTML = cdb.get("name");
                                                         break;
                                                 }        
                                         },
@@ -207,8 +207,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         
                                         cdb.set("fileName", fileName);
                                         cdb.set("docId", _id);
-                                        cdb.set("type", "file");
                                         if (!cdb.get("name")) cdb.set("name", fileName);
+                                        cdb.set("type", "file");
                                                                
                                         _reader.onloadend = function(e){
                                                 _fd.append("type", _type);

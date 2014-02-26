@@ -7,7 +7,7 @@
 
 define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min", "service/confirm", "service/utils"],
         function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner, Confirm, Utils){
-                function ActionBarConstructor($type, $parent, $data){
+                function ActionBarConstructor($type, $parent, $data, $callback){
                 
                         var buttons = new Store([]),
                             parentHeight = $parent.offsetHeight,
@@ -71,6 +71,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 switch(action){
                                         case "delete":
                                                 this.deleteItem().then(function(){
+                                                        $callabck && $callback("delete");
                                                         ui.hide();
                                                 });
                                                 break;

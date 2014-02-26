@@ -5,35 +5,19 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils", "Promise"],
-        function(Widget, Map, Model, Event, Config, Store, Spinner, Utils, Promise){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils", "Promise", "attach/add"],
+        function(Widget, Map, Model, Event, Place, Config, Store, Spinner, Utils, Promise, AddAttachment){
                 
                 return function newIdeaConstructor(){
                 
                         var _widget = new Widget(),
+                              _addAttachmentUI = new AddAttachment(),
                               _transport = Config.get("transport"),
-                              _uploadReq,
                               _languages = new Store(Config.get("userLanguages")),
                               _user = Config.get("user"),
-                              _cat = Config.get("cat"),
                               _store = new Store(Config.get("ideaTemplate")),
-                              _attachment = new Store({
-                                    custom : false,
-                                    category : "",
-                                    name : "",
-                                    type : "",
-                                    fileName : "",
-                                    authors : [_user.get("_id")],
-                                    authornames : _user.get("username"),
-                                    docId: "",
-                                    rating: null,
-                                    votes:[],
-                                    twocents:[],
-                                    uploaded: false
-                            }),
-                            _alist = new Store([]),
-                            _progress = new Store({"status": null}),
-                            _resetLang = function(){
+                              _alist = new Store([]),
+                              _resetLang = function(){
                                 // set language to the user's language by default
                                 var l = _user.get("lang").substring(0,2);
                                 _store.set("lang", l);
@@ -41,13 +25,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         (v.name === l) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
                                 });        
                             },
-                            _labels = Config.get("labels"),
-                            _error = new Store({"error": ""}),
-                            spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin(),
-                            aspinner = new Spinner({color:"#657b99", lines:8, length: 6, width: 3, radius:6, top: -2, left: -2}).spin();
+                              _labels = Config.get("labels"),
+                              _error = new Store({"error": ""}),
+                              spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
                             
                         _store.setTransport(_transport);
-                        _attachment.setTransport(_transport);
                         
                         // reset languages
                         _resetLang();
@@ -87,43 +69,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 this.innerHTML = res;
                                         }
                                 }),
-                                "attach": new Model(_attachment, {
-                                        show : function(bool){
-                                                (bool) ? this.setAttribute("style", "display:inline-block;") : this.setAttribute("style", "display:none;");
-                                        },
-                                        setContent : function(type){
-                                                var node = this;
-                                                switch(type){
-                                                         case "file":
-                                                                node.innerHTML = _attachment.get("fileName");
-                                                                break;
-                                                        default:
-                                                                node.innerHTML = _attachment.get("name");
-                                                        break;
-                                                }        
-                                        },
-                                        setName : function(name){
-                                                this.value = name;
-                                        },
-                                        resetCat : function(cat){
-                                                var node = this;
-                                                if (cat === "") {
-                                                        node.selectedIndex = 0;
-                                                        [1,2,3,4,5,6].forEach(function(val){
-                                                                node.classList.remove("acolor"+val);
-                                                                node.classList.add("acolor");
-                                                        });
-                                                }
-                                        }    
-                                }),
-                                "progress": new Model(_progress, {
-                                        showStatus : function(status){
-                                                (status) ? this.setAttribute("value", status) : this.setAttribute("value", 0) ;
-                                        },
-                                        showVal : function(status){
-                                                (status) ? this.innerHTML = status + "%" : this.innerHTML = "";
-                                        }    
-                                }),
                                 "alist": new Model(_alist, {
                                         setType : function(type){
                                                 var node = this;
@@ -156,6 +101,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 (selected) ? this.classList.add("selected") : this.classList.remove("selected");        
                                         } 
                                 }),
+                                "place" : new Place({"AddAttachment": _addAttachmentUI}),
                                 "labels" : new Model(_labels),
                                 "errormsg" : new Model(_error, {
                                         setError : function(error){
@@ -184,7 +130,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend" data-labels="bind:innerHTML, alegend"></legend><div class="attachments"><select class="acolor" data-newidea="bind:setAttachmentCat, attachments" data-attach="bind:resetCat, category" data-newideaevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-newideaevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-attach="bind:setName, name" data-newideaevent="listen: input, setName"><ul class="a-tools" data-attach="bind:show, category"><li class="toolbox-button"><div class="upload-button" name="upload" data-newideaevent="listen:mousedown, press; listen:mouseup, release"><input type="file" class="a-input" data-newideaevent="listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="importpic-button" name="import" data-newideaevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="drawingtool-button" name="drawing" data-newideaevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-newideaevent="listen:mousedown, press; listen: mousedown, aconfirm; listen:mouseup, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-newideaevent="listen:mousedown, press; listen:mousedown, acancel">&#10007</div></div></div><ul class="a-list" data-alist="foreach" style="display:none"><li data-alist="bind:setBg, category"><label class="a-type" data-alist="bind:setType, type"></label><label class="a-name" data-alist="bind:innerHTML, name"></label><div class="a-del" data-newideaevent="listen:mousedown, removeAttachment"></div></li></ul><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-newidea="bind: setWarning, visibility" data-newideaevent="listen:mousedown, closeWarning"><div data-labels="bind: innerHTML, publicwarning"></div><div class="close-warning"></div></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend" data-labels="bind:innerHTML, alegend"></legend><div data-place="place:AddAttachment"></div><ul class="a-list" data-alist="foreach" style="display:none"><li data-alist="bind:setBg, category"><label class="a-type" data-alist="bind:setType, type"></label><label class="a-name" data-alist="bind:innerHTML, name"></label><div class="a-del" data-newideaevent="listen:mousedown, removeAttachment"></div></li></ul><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-newidea="bind: setWarning, visibility" data-newideaevent="listen:mousedown, closeWarning"><div data-labels="bind: innerHTML, publicwarning"></div><div class="close-warning"></div></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
@@ -213,109 +159,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _widget.dom.querySelector(".idealang ul").classList.add("invisible");        
                         };
                         
-                        _widget.selectCat = function(event, node){
-                                var cats = Config.get("cat");
-                                // if "other" is selected display category input field, else set attachment category value
-                                if (node.value ===  node.lastChild.innerHTML){
-                                        _attachment.set("custom", true);
-                                        for (i=1, l=cats.length; i<=l;i++){
-                                                node.classList.remove("acolor"+i); 
-                                        };
-                                        node.classList.add("acolor");       
-                                }
-                                else{
-                                        node.classList.remove("acolor");
-                                        if (_error.get("error") === "noacat") _error.set("error", "");
-                                        _attachment.set("custom", false);
-                                        _attachment.set("category", cats[node.selectedIndex-1]);
-                                        for (i=1, l=cats.length; i<=l;i++){
-                                                (node.selectedIndex === i) ? node.classList.add("acolor"+i) : node.classList.remove("acolor"+i);        
-                                        };  
-                                } 
-                        };
-                        
-                        _widget.setCat = function(event, node){
-                                if (_error.get("error") === "noacat" && node.value) _error.set("error", "");
-                                _attachment.set("category", node.value);     
-                        };
-                        
-                        _widget.setName = function(event, node){
-                                if (_error.get("error") === "noaname" && node.value ) _error.set("error", "");
-                                _attachment.set("name", node.value);
-                        };
-                        
-                        _widget.check = function(event, node){
-                                node.parentNode.classList.remove("pressed");
-                        };
-                        
-                        _widget.uploadFile = function(event, node){
-                                var _reader = new FileReader(),
-                                       _fd = new FormData(),
-                                       _now = new Date(),
-                                       _id = _store.get("_id") || "I:"+_now.getTime(),
-                                       _url = '/upload',
-                                       _type = "afile",
-                                       _dir = "ideas/"+_id,
-                                       fileName = "";
-                               
-                               if (node.files && node.files.length){
-                                       fileName = node.files[0].name;
-                                        _store.set("_id", _id);
-                                        _widget.dom.querySelector(".a-preview").classList.remove("invisible");
-                                        
-                                        _attachment.set("fileName", fileName);
-                                        _attachment.set("docId", _id);
-                                        _attachment.set("type", "file");
-                                        if (!_attachment.get("name")) _attachment.set("name", fileName);
-                                                               
-                                        _reader.onloadend = function(e){
-                                                _fd.append("type", _type);
-                                                _fd.append("dir", _dir);
-                                                _fd.append("userfile", node.files[0]);
-                                                _fd.append("filename", fileName);
-                                                _uploadReq = Utils.uploadFile(_url, _fd, _progress, function(result){
-                                                        _attachment.set("uploaded", true);
-                                                });
-                                        };
-                                
-                                        _reader.readAsArrayBuffer(node.files[0]);
-                                }
-                        };
-                        
                         _widget.resetAttachment = function(){
-                                // unsync if applicable
-                                _attachment.unsync();
-                                
-                                // clear attachment
-                                _attachment.reset({
-                                        custom : false,
-                                        category : "",
-                                        name : "",
-                                        type : "",
-                                        fileName : "",
-                                        authors : [_user.get("_id")],
-                                        authornames : [_user.get("username")],
-                                        docId: "",
-                                        rating: null,
-                                        votes: [],
-                                        twocents: [],
-                                        uploaded: false
-                                });
-                                
-                                // release buttons
-                                _widget.dom.querySelector(".a-confirm").classList.remove("pressed");
-                                _widget.dom.querySelector(".a-cancel").classList.remove("pressed");
-                               
-                                // hide a-preview window
-                                _widget.dom.querySelector(".a-preview").classList.add("invisible");        
-                        };
-                        
-                        _widget.deleteAttachmentFile = function(fileName){
-                                return Utils.deleteAttachmentFile(_store.get("_id"), fileName);      
-                        };
-                        
-                        _widget.deleteAttachmentDoc = function(docId){
-                                return Utils.deleteAttachmentDoc(docId);        
+                                _addAttachmentUI.reset("new", "idea", _alist);
                         };
                         
                         _widget.removeAttachment = function(event, node){
@@ -323,73 +168,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                       docId = _alist.get(idx).docId;
                                 
                                 _alist.alter("splice", idx, 1);
-                                _widget.deleteAttachmentDoc(docId);
-                        };
-                        
-                        _widget.aconfirm = function(event, node){
-                                var now = new Date(),
-                                      id = "A:"+now.getTime();
-                                
-                                // Attachment needs a name and a category to be uploaded
-                               
-                               if (_attachment.get("name") && _attachment.get("category")){
-                                        aspinner.spin(node);
-                                _attachment.sync(Config.get("db"), id)
-                                        .then(function(err){
-                                                if (err) console.log(err);
-                                                return _attachment.upload();
-                                        })
-                                        .then(function(){
-                                                var custom = [];
-                                                
-                                                _user.get("categories") && (custom = _user.get("categories").concat());
-                                                
-                                                // add to attachment list
-                                                _alist.alter("unshift" , {
-                                                        docId : id,
-                                                        type : _attachment.get("type"),
-                                                        category : _attachment.get("category"),
-                                                        name : _attachment.get("name"),
-                                                        fileName : _attachment.get("fileName"),
-                                                        authornames : _attachment.get("authornames")
-                                                });
-                                                
-                                                // if user created a new custom category add it
-                                                if (_attachment.get("custom")){
-                                                        if (custom.indexOf(_attachment.get("category")) === -1){
-                                                                custom.push(_attachment.get("category"));
-                                                                _user.set("categories", custom);
-                                                                _user.upload();       
-                                                        }
-                                                }
-                               
-                                                // stop spinner
-                                                aspinner.stop(); 
-                                        
-                                                // reset attachment
-                                                _widget.resetAttachment();           
-                                        });
-                                }
-                                else if (!_attachment.get("name")){
-                                        _error.set("error", "noaname");       
-                                }
-                                else{
-                                        _error.set("error", "noacat");       
-                                }                                 
-                        };
-                        
-                        _widget.acancel = function(event, node){
-                                var file = _attachment.get("fileName");
-                                
-                                if (_uploadReq && _uploadReq.readyState !== 4){
-                                        _uploadReq.abort();
-                                        _progress.reset({status: ""});
-                                }
-                                
-                                _widget.deleteAttachmentFile(file);
-                                
-                                // reset attachment
-                                _widget.resetAttachment();   
+                                Utils.deleteAttachmentDoc(docId);
                         };
                         
                         _widget.toggleVisibility = function(event, node){
@@ -416,18 +195,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.clearAttachments = function(){
                                 // reset _attachment and delete file from server if applicable
-                                if (_attachment.get("fileName")) _widget.deleteAttachmentFile(_attachment.get("fileNname"));
-                                _widget.resetAttachment();
+                                if (_addAttachmentUI.get("fileName")) _addAttachmentUI.deleteAttachmentFile(_addAttachmentUI.get("fileNname"));
                                 
                                 // reset _alist
                                 if (_alist.getNbItems()){
                                         _alist.loop(function(v,i){
-                                                _widget.deleteAttachmentDoc(v.docId)
+                                                Utils.deleteAttachmentDoc(v.docId)
                                                 .then(function(){
                                                         delCount++;     
                                                 });
                                         });    
-                                }; 
+                                };
+                                
+                                _addAttachmentUI.reset(); 
                          };
                         
                         _widget.closePopup = function closePopup(){
@@ -435,16 +215,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // hide window
                                 document.getElementById("newidea-popup").classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
-                                
-                                // reset _attachment and delete file from server if applicable
-                                if (_attachment.get("fileName")) _widget.deleteAttachmentFile(_attachment.get("fileNname"));
-                                _widget.resetAttachment();
-                                
-                                // if upload request in progress abort it
-                                if (_uploadReq && _uploadReq.readyState !== 4){
-                                        _uploadReq.abort();
-                                        _progress.reset({status: ""});
-                                }
                                 
                                 // reset _store and _error
                                 _store.unsync();
@@ -457,7 +227,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _widget.dom.querySelector(".visibility-slider").value = 1;
                                 
                                 // hide flag list
-                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");        
+                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");
+                                
+                                // reset attachment UI and delete file from server if applicable
+                                if (_addAttachmentUI.getFilename()) _addAttachmentUI.deleteAttachmentFile(_addAttachment.getFileNname());
+                                _addAttachmentUI.reset("new", "idea", _alist);
+                                
+                                // if upload request in progress abort it
+                                _addAttachmentUI.abortReq();      
                         };
                         
                         _widget.resetError = function(event, node){
@@ -487,7 +264,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.upload = function(event, node){
                                 var now = new Date(),
-                                    id = _store.get("_id") || "I:"+now.getTime(),
+                                    id = _addAttachmentUI.getDocId() || "I:"+now.getTime(),
                                     att = _store.get("attachments") || [],
                                     timer;
                                     

@@ -123,6 +123,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         uploaded: false
                                 });
                                 
+                                console.log(cdb.toJSON());
+                                
+                                console.log("is dom defined?", ui.dom);
+                                
                                 // release buttons
                                 ui.dom.querySelector(".a-confirm").classList.remove("pressed");
                                 ui.dom.querySelector(".a-cancel").classList.remove("pressed");

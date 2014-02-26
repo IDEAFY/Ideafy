@@ -97,7 +97,10 @@ define(["OObject", "Amy/Control-plugin" ,
 				_detail.reset(_ideaList, _id);
 				// clear search field
 				_searchInput.set("search", "");
-				
+				// if an idea has been deleted make sure the highlighted idea is displayed
+                                _ideaList.watch("deleted", function(){
+                                            _detail.reset(_ideaList, _id);            
+                                });
 			};
 			
 			// function used to retrieve the currently highlighted idea in a list and display its details

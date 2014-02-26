@@ -91,6 +91,11 @@ define(["OObject", "Amy/Control-plugin" ,
 				    _id = event.target.getAttribute("data-listideas_id");
 				_detail.reset(_ideaList, _id);
 				
+				// if an idea has been deleted make sure the highlighted idea is displayed
+                                _ideaList.watch("deleted", function(){
+                                            _detail.reset(_ideaList, _id);            
+                                });
+				
 			};
 			
 			// function used to retrieve the currently highlighted idea in a list and display its details

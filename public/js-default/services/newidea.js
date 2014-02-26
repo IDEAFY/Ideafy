@@ -29,13 +29,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                               _error = new Store({"error": ""}),
                               spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
                             
-                        //_store.setTransport(_transport);
+                        _store.setTransport(_transport);
                         
                         // reset languages
                         _resetLang();
                         
                         // reset add attachment UI
-                        _addAttachmentUI.reset("new", "idea", _alist);
+                        //_addAttachmentUI.reset("new", "idea", _alist);
                         
                         _widget.plugins.addAll({
                                 "newidea" : new Model(_store, {

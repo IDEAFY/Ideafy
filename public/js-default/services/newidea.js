@@ -36,7 +36,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // reset add attachment UI
                        _addAttachmentUI = new AddAttachment();
-                       _addAttachmentUI.reset("new", "idea", _alist);
                        
                        console.log("after add attachment reset");
                         
@@ -129,6 +128,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
+                        _addAttachmentUI.reset("new", "idea", _alist);
                         
                         _widget.showLang = function(event, node){
                                 event.stopPropagation();

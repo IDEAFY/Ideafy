@@ -35,6 +35,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                               aspinner = new Spinner({color:"#657b99", lines:8, length: 6, width: 3, radius:6, top: -2, left: -2}).spin();
                         
                         cdb.setTransport(transport);
+                        
                         // define plugins and methods
                         ui.plugins.addAll({
                                 "labels" : new Model(_labels),

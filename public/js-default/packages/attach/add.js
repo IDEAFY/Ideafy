@@ -102,6 +102,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 parentType = $parentType;
                                 aList = $aList;
                                 
+                                console.log(parentDoc, parentType, aList, cdb);
+                                
                                 // unsync if applicable
                                 cdb.unsync();
                                 

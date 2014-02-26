@@ -426,14 +426,13 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                       a_id = cdb.get("_id"),
                                       fileName = cdb.get("fileName"),
                                       parentCDB = new CouchDBDocument();
-                                      console.log(cdb.toJSON(), choice);
                                 if (choice){
                                         // remove attachment from idea doc
                                         parentCDB.setTransport(transport);
                                         parentCDB.sync(Config.get("db"), doc)
                                         .then(function(){
                                                 var a_array = parentCDB.get("attachments").concat() || [],
-                                                      l = a_array.length, i, idx=-1,
+                                                      l = a_array.length, i, idx=null,
                                                       promise = new Promise();
                                                 for(i=0; i<l; i++){
                                                         if (a_array[i].docId === a_id){
@@ -442,7 +441,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         }
                                                 }
                                                
-                                               if (idx <0){
+                                               if (idx === null){
                                                        promise.reject("error: attachment not found");
                                                }
                                                else{
@@ -456,10 +455,12 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                return promise;       
                                         })
                                         .then(function(){
+                                                console.log("before calling remove");
                                                 // delete attachment doc from database
                                                 return cdb.remove();        
                                         })
                                         .then(function(){
+                                                console.log("remove successful");
                                                 // close popup and delete file form server
                                                 ui.close();
                                                 return Utils.deleteAttachmentFile(doc, fileName);  

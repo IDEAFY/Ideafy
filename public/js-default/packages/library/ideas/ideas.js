@@ -315,6 +315,10 @@ define(["OObject", "Amy/Control-plugin" ,
                                 });
                         });
                         
+                        _observer.watch("displayHighlightedIdea", function(){
+                                _widget.displayHighlightedIdea();
+                        });
+                        
                         //return
 			return _widget;
 		};

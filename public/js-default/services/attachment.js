@@ -124,7 +124,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 }),
                                 "edit": new Model(cdbEdit,{
                                         show : function(bool){
-                                                (bool) ? this.setAttribute("style", "display:inline-block;") : this.setAttribute("style", "display:none;");
+                                                (bool && ui.dom.classList.contains("edit-a")) ? this.setAttribute("style", "display:inline-block;") : this.setAttribute("style", "display:none;");
                                         },
                                         setSelectCat : function(cat){
                                                 var custom = user.get("categories") || [], arr, i, l, key, idx = null, node = this,

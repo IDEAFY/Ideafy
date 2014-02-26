@@ -11,7 +11,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                 return function newIdeaConstructor(){
                 
                         var _widget = new Widget(),
-                              _addAttachmentUI = new AddAttachment(),
+                              _addAttachmentUI,
                               _transport = Config.get("transport"),
                               _languages = new Store(Config.get("userLanguages")),
                               _user = Config.get("user"),
@@ -35,7 +35,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _resetLang();
                         
                         // reset add attachment UI
-                        _addAttachmentUI.reset("new", "idea", _alist);
+                       // _addAttachmentUI = new AddAttachment()
+                        //_addAttachmentUI.reset("new", "idea", _alist);
                         
                         _widget.plugins.addAll({
                                 "newidea" : new Model(_store, {

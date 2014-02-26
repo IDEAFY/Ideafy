@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/utils", "Promise"],
         function(Widget, Config, Store, CouchDBDocument, Model, Event, Utils, Promise){
                 
-                function AddAttachmentConstructor($type){
+                function AddAttachmentConstructor(){
                        
                         // declaration
                         var ui = this,
@@ -56,9 +56,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         setName : function(name){
                                                 this.value = name;
                                         },
-                                        resetCat : function(_cat){
+                                        resetCat : function(cat){
                                                 var node = this;
-                                                if (_cat === "") {
+                                                if (cat === "") {
                                                         node.selectedIndex = 0;
                                                         [1,2,3,4,5,6].forEach(function(val){
                                                                 node.classList.remove("acolor"+val);
@@ -66,7 +66,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         });
                                                 }
                                         },
-                                        setAttachmentCat : function(attachments){
+                                        setAttachmentCat : function(category){
                                                 var custom = user.get("categories") || [], arr, i, l, key,
                                                       res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
                                                 for (i=0, l=cats.length; i<l;i++){
@@ -93,7 +93,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "addevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class="add-attachments"><select class="acolor" data-attach="bind:setAttachmentCat, attachments" data-attach="bind:resetCat, category" data-addevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-addevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-attach="bind:setName, name" data-addevent="listen: input, setName"><ul class="a-tools" data-attach="bind:show, category"><li class="toolbox-button"><div class="upload-button" name="upload" data-addevent="listen:mousedown, press; listen:mouseup, release"><input type="file" class="a-input" data-addevent="listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="importpic-button" name="import" data-addevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button" style="display:none"></li><li><div class="drawingtool-button" name="drawing" data-addevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-addevent="listen:mousedown, press; listen: mousedown, aconfirm; listen:mouseup, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-addevent="listen:mousedown, press; listen:mousedown, acancel">&#10007</div></div></div>';
+                        ui.template = '<div class="add-attachments"><select class="acolor" data-attach="bind:setAttachmentCat, category; bind:resetCat, category" data-addevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-addevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-attach="bind:setName, name" data-addevent="listen: input, setName"><ul class="a-tools" data-attach="bind:show, category"><li class="toolbox-button"><div class="upload-button" name="upload" data-addevent="listen:mousedown, press; listen:mouseup, release"><input type="file" class="a-input" data-addevent="listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="importpic-button" name="import" data-addevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button" style="display:none"></li><li><div class="drawingtool-button" name="drawing" data-addevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-addevent="listen:mousedown, press; listen: mousedown, aconfirm; listen:mouseup, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-addevent="listen:mousedown, press; listen:mousedown, acancel">&#10007</div></div></div>';
                         
                         ui.reset = function reset($parentDoc, $parentType, $aList){
                                 

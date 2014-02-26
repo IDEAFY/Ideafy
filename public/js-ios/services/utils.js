@@ -9,10 +9,16 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
 	return {
 		formatDate : function(array){
 			var month = array[1] + 1;
-			if(month < 10) {
-				month = "0" + month;
-			}
-			return array[2] + "/" + month + "/" + array[0];
+               
+                        if (Config.get("user").get("lang").search("en") === 0){
+                                return month + "/" + array[2] + "/" + array[0];
+                        }
+                        else {
+                                if(month < 10) {
+                                        month = "0" + month;
+                                }
+                                return array[2] + "/" + month + "/" + array[0];
+                        }
 		},
 
 

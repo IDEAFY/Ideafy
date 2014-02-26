@@ -335,14 +335,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                if (_attachment.get("name") && _attachment.get("category")){
                                         aspinner.spin(node);
                                 _attachment.sync(Config.get("db"), id)
-                                        .then(function(){
-                                                return _attachment.upload();
-                                        }, function(err){
-                                                console.log(err);
+                                        .then(function(err){
+                                                if (err) console.log(err);
                                                 return _attachment.upload();
                                         })
                                         .then(function(){
-                                                var custom = _user.get("categories").concat() || [];
+                                                var custom = [];
+                                                
+                                                _user.get("categories") && (custom = _user.get("categories").concat());
                                                 
                                                 // add to attachment list
                                                 _alist.alter("unshift" , {
@@ -368,8 +368,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         
                                                 // reset attachment
                                                 _widget.resetAttachment();           
-                                        }, function(err){
-                                                console.log(err);
                                         });
                                 }
                                 else if (!_attachment.get("name")){

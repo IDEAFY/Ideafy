@@ -316,6 +316,7 @@ define(["OObject", "Amy/Control-plugin" ,
                         });
                         
                         _observer.watch("displayHighlightedIdea", function(){
+                                console.log("trigger received");
                                 _widget.displayHighlightedIdea();
                         });
                         

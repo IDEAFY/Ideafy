@@ -163,7 +163,10 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 
                 widget.actionCallback = function(action){
                         if (action && action === "delete"){
-                                Config.get("observer").notify("displayHighlightedIdea");
+                                widget.resetQuery($query)
+                                .then(function(){
+                                        Config.get("observer").notify("displayHighlightedIdea");
+                                });
                         }        
                 };
                 

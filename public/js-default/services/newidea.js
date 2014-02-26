@@ -440,6 +440,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 if (_attachment.get("fileName")) _widget.deleteAttachmentFile(_attachment.get("fileNname"));
                                 _widget.resetAttachment();
                                 
+                                // if upload request in progress abort it
+                                if (_uploadReq && _uploadReq.readyState !== 4){
+                                        _uploadReq.abort();
+                                        _progress.reset({status: ""});
+                                }
+                                
                                 // reset _store and _error
                                 _store.unsync();
                                 _store.reset(Config.get("ideaTemplate"));

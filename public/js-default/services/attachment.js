@@ -235,7 +235,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 // prevent multiple votes on the same idea -- if request fails or before database is updated 
                                 if (!_voted){
                                         _voted = true;
-                                        console.log(json);
                                         transport.request("Vote", json, function(result){
                                                 var ra = user.get("rated_a") || [];
                                                 if (result !== "ok"){
@@ -351,7 +350,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 if (cdbEdit.get("name") !== cdb.get("name") || cdbEdit.get("fileName") !== cdb.get("fileName") || cdbEdit.get("category") !== cdb.get("category") || cdbEdit.get("authors").join() !== cdb.get("authors").join()){
                                         update = true;
                                 }
-                                console.log(cdbEdit.toJSON(), update);
                                 return update;
                                 
                         };
@@ -360,7 +358,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 node.classList.remove("a-pressed");
                                 
                                 if (ui.checkUpdate()){
-                                        console.log("attachment doc and idea doc need to be updated....");
                                         
                                         // if attached file has changed, delete previous file
                                         if (cdb.get("fileName") !== cdbEdit.get("fileName")){

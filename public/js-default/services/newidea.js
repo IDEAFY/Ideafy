@@ -18,13 +18,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                               _store = new Store(Config.get("ideaTemplate")),
                               _alist = new Store([]),
                               _resetLang = function(){
-                                // set language to the user's language by default
-                                var l = _user.get("lang").substring(0,2);
-                                _store.set("lang", l);
-                                _languages.loop(function(v,i){
-                                        (v.name === l) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
-                                });        
-                            },
+                                        // set language to the user's language by default
+                                        var l = _user.get("lang").substring(0,2);
+                                        _store.set("lang", l);
+                                        _languages.loop(function(v,i){
+                                                (v.name === l) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
+                                        });        
+                              },
                               _labels = Config.get("labels"),
                               _error = new Store({"error": ""}),
                               spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
@@ -35,8 +35,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _resetLang();
                         
                         // reset add attachment UI
-                       // _addAttachmentUI = new AddAttachment()
-                        //_addAttachmentUI.reset("new", "idea", _alist);
+                        console.log("before initializing _addAttachment");
+                       _addAttachmentUI = new AddAttachment();
+                       console.log("after initializing _addAttachment");
+                       _addAttachmentUI.reset("new", "idea", _alist);
                         
                         _widget.plugins.addAll({
                                 "newidea" : new Model(_store, {
@@ -184,7 +186,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         _widget.clearAttachments = function(){
                                 // reset _attachment and delete file from server if applicable
-                                if (_addAttachmentUI.get("fileName")) _addAttachmentUI.deleteAttachmentFile(_addAttachmentUI.get("fileNname"));
+                                if (_addAttachmentUI.get("fileName")) Utils.deleteAttachmentFile(_addAttachmentUI.get("fileNname"));
                                 
                                 // reset _alist
                                 if (_alist.getNbItems()){
@@ -219,7 +221,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _widget.dom.querySelector(".idealang ul").classList.add("invisible");
                                 
                                 // reset attachment UI and delete file from server if applicable
-                                if (_addAttachmentUI.getFileName()) _addAttachmentUI.deleteAttachmentFile(_addAttachmentUI.getFileNname());
+                                if (_addAttachmentUI.getFileName()) Utils.deleteAttachmentFile(_addAttachmentUI.getFileNname());
                                 _addAttachmentUI.reset("new", "idea", _alist);
                                 
                                 // if upload request in progress abort it

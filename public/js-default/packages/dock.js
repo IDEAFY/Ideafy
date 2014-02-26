@@ -54,7 +54,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 				_notify.init();
 				
 				// initialize popups
-				//_newIdea = new NewIdea();
+				_newIdea = new NewIdea();
                                 _new2q = new New2Q();
                                 _tips = new Tips();
 			};

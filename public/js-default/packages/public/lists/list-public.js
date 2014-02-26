@@ -139,7 +139,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         }
                                 
                         if (!dom.classList.contains("mosaic") && !display){
-                                currentBar = new ActionBar("idea", node, _store.get(id).id, widget.actionCallback);
+                                currentBar = new ActionBar("idea", node, _store.get(id).id);
                                 frag = document.createDocumentFragment(); 
                                 currentBar.place(frag); // render action bar    
                                 node.appendChild(frag); // display action bar
@@ -147,12 +147,6 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         }
                 };
                 
-                widget.actionCallback = function(action){
-                        if (action && action === "delete"){
-                                widget.resetQuery($query);
-                        }        
-                };
-                                
                 widget.init = function init(){
                         var promise = new Promise(),
                             fav = _usr.get("public-favorites") || [],

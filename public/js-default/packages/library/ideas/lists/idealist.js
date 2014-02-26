@@ -153,21 +153,12 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         }
                                 
                         if (!dom.classList.contains("mosaic") && !display){
-                                currentBar = new ActionBar("idea", node, _store.get(id).id, widget.actionCallback);
+                                currentBar = new ActionBar("idea", node, _store.get(id).id);
                                 frag = document.createDocumentFragment(); 
                                 currentBar.place(frag); // render action bar    
                                 node.appendChild(frag); // display action bar
                                 display = true; // prevent from showing it multiple times
                         }
-                };
-                
-                widget.actionCallback = function(action){
-                        if (action && action === "delete"){
-                                widget.resetQuery($query)
-                                .then(function(){
-                                        Config.get("observer").notify("displayHighlightedIdea");
-                                });
-                        }        
                 };
                 
                 widget.init = function init(){

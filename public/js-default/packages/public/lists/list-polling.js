@@ -124,12 +124,18 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         }
                                 
                         if (!dom.classList.contains("mosaic") && !display){
-                                currentBar = new ActionBar("idea", node, _store.get(id).id);
+                                currentBar = new ActionBar("idea", node, _store.get(id).id, widget.actionCallback);
                                 frag = document.createDocumentFragment(); 
                                 currentBar.place(frag); // render action bar    
                                 node.appendChild(frag); // display action bar
                                 display = true; // prevent from showing it multiple times
                         }
+                };
+                
+                widget.actionCallback = function(action){
+                        if (action && action === "delete"){
+                                widget.resetQuery($query);
+                        }        
                 };
                 
                 this.init = function init(){

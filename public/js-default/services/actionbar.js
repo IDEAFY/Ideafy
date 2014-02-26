@@ -71,7 +71,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 switch(action){
                                         case "delete":
                                                 this.deleteItem().then(function(){
-                                                        $callabck && $callback("delete");
+                                                        $callback && $callback("delete");
                                                         ui.hide();
                                                 });
                                                 break;

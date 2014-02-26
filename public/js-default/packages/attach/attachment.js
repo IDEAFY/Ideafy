@@ -441,6 +441,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         }
                                                 }
                                                
+                                               console.log(idx), a_array;
                                                if (idx === null){
                                                        promise.reject("error: attachment not found");
                                                }

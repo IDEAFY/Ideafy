@@ -121,11 +121,11 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 });
                                 
                                 // release buttons
-                                _widget.dom.querySelector(".a-confirm").classList.remove("pressed");
-                                _widget.dom.querySelector(".a-cancel").classList.remove("pressed");
+                                ui.dom.querySelector(".a-confirm").classList.remove("pressed");
+                                ui.dom.querySelector(".a-cancel").classList.remove("pressed");
                                
                                 // hide a-preview window
-                                _widget.dom.querySelector(".a-preview").classList.add("invisible");
+                                ui.dom.querySelector(".a-preview").classList.add("invisible");
                         };
                         
                         ui.show = function(){
@@ -231,23 +231,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 return Utils.deleteAttachmentDoc(docId);        
                         };
                         
-                        ui.dellAll = function(){
-                                // reset _attachment and delete file from server if applicable
-                                if (cdb.get("fileName")) ui.deleteAttachmentFile(cdb.get("fileNname"));
-                                
-                                // reset _alist
-                                if (_alist.getNbItems()){
-                                        _alist.loop(function(v,i){
-                                                _widget.deleteAttachmentDoc(v.docId)
-                                                .then(function(){
-                                                        delCount++;     
-                                                });
-                                        });    
-                                };
-                                
-                                ui.reset();        
-                        };
-                        
                         ui.aconfirm = function(event, node){
                                 var now = new Date(),
                                       id = "A:"+now.getTime();
@@ -293,10 +276,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         });
                                 }
                                 else if (!cdb.get("name")){
-                                        _error.set("error", "noaname");       
+                                               
                                 }
                                 else{
-                                        _error.set("error", "noacat");       
+                                              
                                 }                                 
                         };
                         
@@ -308,7 +291,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 ui.deleteAttachmentFile(file);
                                 
                                 // reset attachment
-                                _ui.reset(parentDoc, parentType, aList);   
+                                ui.reset(parentDoc, parentType, aList);   
                         };
                         
                         ui.getDocId = function(){

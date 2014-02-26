@@ -707,7 +707,7 @@ font-size: 14px;
     background-position-y: 3px;
 }
 
-.attachment-screen .a-delete{
+.attachment-screen .a-delete, .idea-edit .a-delete{
     background-image: url('../img/library/25delete.png');
     background-size: cover;
 }

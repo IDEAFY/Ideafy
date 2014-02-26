@@ -5,7 +5,7 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise", "Place.plugin", "attachments/attachment"], 
+define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise", "Place.plugin", "attach/attachment"], 
 	function(Widget, Map, Store, CouchDBDocument, Model, Event, Config, Confirm, Promise, Place, Attachment){
 		return function LibraryEditConstructor($action){
 		//declaration

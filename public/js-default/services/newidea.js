@@ -11,7 +11,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                 return function newIdeaConstructor(){
                 
                         var _widget = new Widget(),
-                              _addAttachmentUI,
+                              _addAttachmentUI = new AddAttachment(),
                               _transport = Config.get("transport"),
                               _languages = new Store(Config.get("userLanguages")),
                               _user = Config.get("user"),
@@ -33,13 +33,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // reset languages
                         _resetLang();
-                        
-                        // reset add attachment UI
-                       _addAttachmentUI = new AddAttachment();
                        
-                       console.log("after add attachment reset");
-                        
-                        _widget.plugins.addAll({
+                       _widget.plugins.addAll({
                                 "newidea" : new Model(_store, {
                                         displayLang : function(lang){
                                                 var l=lang.substring(0,2);
@@ -128,6 +123,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
+                        
+                        // reset add attachment UI
                         _addAttachmentUI.reset("new", "idea", _alist);
                         
                         _widget.showLang = function(event, node){

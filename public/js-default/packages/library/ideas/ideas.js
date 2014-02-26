@@ -89,13 +89,18 @@ define(["OObject", "Amy/Control-plugin" ,
 			_widget.place(Map.get("ideas"));
 
 			_widget.selectStart = function(event){
-				//_detail.reset(_ideas.get(event.target.getAttribute("data-publicideas_id")));
-				//please don't do that
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
 				    _id = event.target.getAttribute("data-listideas_id");
+				    
 				_detail.reset(_ideaList, _id);
+				
 				// clear search field
 				_searchInput.set("search", "");
+				
+				// if an idea has been deleted make sure the highlighted idea is displayed
+				_ideaList.watch("deleted", function(){
+				            _detail.reset(_ideaList, _id);            
+				});
 				
 			};
 			

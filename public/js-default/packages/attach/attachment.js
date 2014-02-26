@@ -426,6 +426,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                       a_id = cdb.get("_id"),
                                       fileName = cdb.get("fileName"),
                                       parentCDB = new CouchDBDocument();
+                                      console.log(cdb.toJSON(), choice);
                                 if (choice){
                                         // remove attachment from idea doc
                                         parentCDB.setTransport(transport);

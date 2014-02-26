@@ -34,6 +34,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // reset languages
                         _resetLang();
                         
+                        // reset add attachment UI
+                        _addAttachmentUI.reset("new", "idea", _alist);
+                        
                         _widget.plugins.addAll({
                                 "newidea" : new Model(_store, {
                                         displayLang : function(lang){
@@ -52,21 +55,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         },
                                         setWarning : function(visibility){
                                                 (visibility === "public") ? this.classList.remove("invisible") : this.classList.add("invisible");
-                                        },
-                                        setAttachmentCat : function(attachments){
-                                                var custom = _user.get("categories") || [], arr, i, l, key,
-                                                      res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
-                                                for (i=0, l=_cat.length; i<l;i++){
-                                                        key = _cat[i];
-                                                        res+="<option>"+_labels.get(key)+"</option>";
-                                                }
-                                                if (custom.length){
-                                                        for (i=0, l=custom.length; i<l;i++){
-                                                                res+="<option>"+custom[i]+"</option>";
-                                                        }
-                                                }
-                                                res+="<option>"+_labels.get("other")+"</option>";
-                                                this.innerHTML = res;
                                         }
                                 }),
                                 "alist": new Model(_alist, {

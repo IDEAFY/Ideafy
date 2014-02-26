@@ -441,13 +441,13 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         }
                                                 }
                                                
-                                               console.log(idx), a_array;
                                                if (idx === null){
                                                        promise.reject("error: attachment not found");
                                                }
                                                else{
                                                         a_array.splice(idx, 1);
                                                         parenCDB.set("attachments", a_array);
+                                                        cnosole.log(parentCDB.toJSON());
                                                         parentCDB.upload()
                                                         .then(function(){
                                                                 promise.fulfill();

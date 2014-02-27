@@ -332,7 +332,7 @@ define(["OObject", "Amy/Control-plugin" ,
                         });
                         
                         // watch for view changes
-                        _stack.getStack.watch("StackChange", _widget.updateDisplay);
+                        _stack.getStack().onChange(_widget.updateDisplay);
                         
                         //return
 			return _widget;

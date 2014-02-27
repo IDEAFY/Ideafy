@@ -101,9 +101,11 @@ define(["OObject", "Amy/Control-plugin" ,
 			
 			// function to update display (list and detail views) after an event affecting the data
 			_widget.updateDisplay = function updateDisplay(){
-			        var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
-			              _ideaNode = _ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"),
-                                      _id = _ideaNode.getAttribute("data-listideas_id");
+			        var _ideaList, _ideaNode, _id;
+                                 
+                                 _ideaList = _stack.getStack().getCurrentScreen().getModel();
+                                 _ideaNode = _ideaList.dom.querySelector(".list-item.selected") || _ideaList.dom.querySelector("li[data-listideas_id='0']");
+                                 _id = _ideaNode.getAttribute("data-listideas_id");
                                  
                                  console.log(_ideaList, _ideaNode, _id);
                                  // if an idea has been deleted make sure the highlighted idea is displayed
@@ -113,7 +115,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 
                                 //if an idea has been added by user display this idea
                                 _ideaList.watch("added", function(val){
-                                        consoel.log(val);
+                                        console.log(val);
                                 });
                                            
 			};

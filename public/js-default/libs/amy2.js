@@ -331,7 +331,7 @@ define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools", "Observabl
 			};
 			
 			this.onChange = function onChange(callback){
-			             _observer.watch("StackChange", callback);
+			             return _observer.watch("StackChange", callback);
 			};
 		};
 

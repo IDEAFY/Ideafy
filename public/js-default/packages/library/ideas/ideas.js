@@ -16,6 +16,7 @@ define(["OObject", "Amy/Control-plugin" ,
                              _searchInput = new Store({"search": ""}),
                              _db = Config.get("db"),
                              _observer = Config.get("observer"),
+                             _stackObserver,
                              _radio = new Control(_widget),
                              _detail = new Detail(),
                              listDate, listRating, listSearch, listFav,
@@ -293,6 +294,13 @@ define(["OObject", "Amy/Control-plugin" ,
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
                         _stack.getStack().add("#list-fav", listFav);
+                        
+                        _stackObserver = _stack.getStack().getObserver();
+                        
+                        _stackObserver.watch("StackChange", function(wid){
+                                console.log(wid);
+                                _widget.updateDisplay();
+                        });
 			
 			listRating.init();
 			listDate.init()

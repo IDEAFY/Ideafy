@@ -330,8 +330,8 @@ define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools", "Observabl
 				ui.place(document.createDocumentFragment());
 			};
 			
-			this.onChange = function onChange(callback){
-			             return _observer.watch("StackChange", callback);
+			this.getObserver = function getObserver(){
+			             return _observer;
 			};
 		};
 

@@ -382,7 +382,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         // update database
                                         cdb.upload()
                                         .then(function(){
-                                                console.log("attachment upload ok");
                                                 return ui.updateParentDoc();
                                         })
                                         .then(function(){

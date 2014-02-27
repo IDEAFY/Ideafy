@@ -11,7 +11,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
 		//declaration
 			var _widget = new Widget(),
 			     _attachmentUI = new Attachment("idea"),
-			     _adAttachmentUI = new AddAttachment(),
+			     _addAttachmentUI = new AddAttachment(),
 			    _store = new CouchDBDocument(),  // the idea
                             _languages = new Store(Config.get("userLanguages")),
                              user = Config.get("user"),

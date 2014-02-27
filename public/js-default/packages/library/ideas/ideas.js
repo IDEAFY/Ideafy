@@ -104,18 +104,21 @@ define(["OObject", "Amy/Control-plugin" ,
 			        var _ideaList, _ideaNode, _id;
                                  
                                  _ideaList = _stack.getStack().getCurrentScreen().getModel();
-                                 _ideaNode = _ideaList.dom.querySelector(".list-item.selected") || _ideaList.dom.querySelector("li[data-listideas_id='0']");
-                                 _id = _ideaNode.getAttribute("data-listideas_id");
+                                 console.log(_ideaList);
                                  
-                                 console.log(_ideaList, _ideaNode, _id);
                                  // if an idea has been deleted make sure the highlighted idea is displayed
                                 _ideaList.watch("deleted", function(){
-                                            _detail.reset(_ideaList, _id);            
+                                        _ideaNode = _ideaList.dom.querySelector(".list-item.selected") || _ideaList.dom.querySelector("li[data-listideas_id='0']");
+                                        _id = _ideaNode.getAttribute("data-listideas_id");
+                                        _detail.reset(_ideaList, _id);            
                                 });
                                 
                                 //if an idea has been added by user display this idea
                                 _ideaList.watch("added", function(val){
                                         console.log(val);
+                                        _ideaNode = _ideaList.dom.querySelector(".list-item.selected") || _ideaList.dom.querySelector("li[data-listideas_id='0']");
+                                        _id = _ideaNode.getAttribute("data-listideas_id");
+                                        console.log(val, _ideaNode, _id);
                                 });
                                            
 			};

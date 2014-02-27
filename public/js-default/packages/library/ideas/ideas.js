@@ -89,7 +89,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			_widget.place(Map.get("ideas"));
 
 			_widget.selectStart = function(event){
-				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
+                               var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
 				    _id = event.target.getAttribute("data-listideas_id");
 				    
 				_detail.reset(_ideaList, _id);
@@ -101,12 +101,6 @@ define(["OObject", "Amy/Control-plugin" ,
 				_ideaList.watch("deleted", function(){
 				            _detail.reset(_ideaList, _id);            
 				});
-				
-				// if an idea has been added by author make sure it is displayed
-				_ideaList.watch("added", function(v, i){
-				            console.log(v, i);
-                                            _detail.reset(_ideaList, v);            
-                                });
 				
 			};
 			

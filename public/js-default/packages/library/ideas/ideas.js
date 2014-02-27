@@ -102,9 +102,9 @@ define(["OObject", "Amy/Control-plugin" ,
 				            _detail.reset(_ideaList, _id);            
 				});
 				
-				// if an idea has been added make sure it is displayed
+				// if an idea has been added by author make sure it is displayed
 				_ideaList.watch("added", function(val){
-				            console.log(val);
+				            console.log(val, _ideaList.get(val));
                                             _detail.reset(_ideaList, val._id);            
                                 });
 				

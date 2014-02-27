@@ -102,6 +102,12 @@ define(["OObject", "Amy/Control-plugin" ,
 				            _detail.reset(_ideaList, _id);            
 				});
 				
+				// if an idea has been added make sure it is displayed
+				_ideaList.watch("added", function(val){
+				            console.log(val);
+                                            _detail.reset(_ideaList, val._id);            
+                                });
+				
 			};
 			
 			// function used to retrieve the currently highlighted idea in a list and display its details

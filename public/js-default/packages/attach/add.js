@@ -169,7 +169,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.setName = function(event, node){
-                                ui.set("name", node.value);
+                                cdb.set("name", node.value);
                         };
                         
                         ui.check = function(event, node){

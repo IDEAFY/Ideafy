@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "Place.plugin", "service/utils", "service/confirm", "Promise"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, WriteTwocent, TwocentList, Place, Utils, Confirm, Promise){
+define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "Place.plugin", "service/utils", "service/confirm", "Promise", "lib/spin.min"],
+        function(Widget, Config, Store, CouchDBDocument, Model, Event, WriteTwocent, TwocentList, Place, Utils, Confirm, Promise, Spinner){
                 
                 function AttachmentConstructor($type){
                        
@@ -372,16 +372,17 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         cdb.set("authors", cdbEdit.get("authors"));
                                         cdb.set("authornames", cdbEdit.get("authornames"));
                                         
+                                        // hide edit interface
+                                        ui.dom.classList.remove("edit-a");
+                                        ui.dom.querySelector(".a-name").setAttribute("contentEditable", false);
+                                        ui.dom.querySelector(".a-preview").classList.add("invisible");
+                                        
+                                        ui.resetEdit(); 
+                                        
+                                        // update database
                                         cdb.upload()
                                         .then(function(){
                                                 return ui.updateParentDoc();
-                                        })
-                                        .then(function(){
-                                                ui.dom.classList.remove("edit-a");
-                                                ui.dom.querySelector(".a-name").setAttribute("contentEditable", false);
-                                                ui.dom.querySelector(".a-preview").classList.add("invisible");
-                                                // reset edit store
-                                                ui.resetEdit();                 
                                         });
                                 }
                                 

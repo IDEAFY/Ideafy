@@ -299,7 +299,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         })
                                         .then(function(){
                                                 if (_store.get("visibility") === "public"){
-                                                        Config.get("transport").request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "docTitle": _store.get("title")}, function(result){
+                                                        _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "docTitle": _store.get("title")}, function(result){
                                                                 if (result !== "ok") console.log(result);
                                                                 spinner.stop();
                                                                 node.classList.remove("invisible");

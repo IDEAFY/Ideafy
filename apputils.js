@@ -1028,10 +1028,11 @@ function AppUtils(){
                     userRewards = new _CouchDBDocument(),
                     scored = [];
                 
+                console.log(json);
                 _getDocAsAdmin(json.userid+"_rewards", userRewards)
                 .then(function(){
                         if (userRewards.get("scored")) scored = userRewards.get("scored");
-                        return getDocAsAdmin(json.userid, cdb);
+                        return _getDocAsAdmin(json.userid, cdb);
                 })
                 .then(function(){
                         var score = cdb.get("ip"),

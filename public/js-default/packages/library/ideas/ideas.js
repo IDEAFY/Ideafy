@@ -101,7 +101,8 @@ define(["OObject", "Amy/Control-plugin" ,
 			// function to update display (list and detail views) after an event affecting the data
 			_widget.updateDisplay = function updateDisplay(){
 			        var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
-                                      _id = event.target.getAttribute("data-listideas_id");
+			              _ideaNode = ideaList.dom.querySelector(".list-item.selected"),
+                                      _id = _ideaNode.getAttribute("data-listideas_id");
                                  
                                  // if an idea has been deleted make sure the highlighted idea is displayed
                                 _ideaList.watch("deleted", function(){

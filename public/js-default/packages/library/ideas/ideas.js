@@ -299,7 +299,6 @@ define(["OObject", "Amy/Control-plugin" ,
                         _stackObserver = _stack.getStack().getObserver();
                         
                         _stackObserver.watch("StackChange", function(wid){
-                                console.log(wid);
                                 _widget.updateDisplay();
                         });
 			

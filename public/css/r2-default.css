@@ -543,12 +543,14 @@ font-size: 14px;
 
 .attachment-screen .a-left{
     float: left;
-    width: 280px;
+    width: 270px;
+    padding-right: 10px;
 }
 
 .attachment-screen .a-name{
     padding-top: 10px;
     font-size: 14px;
+    overflow-x: hidden;
 }
 
 .attachment-screen.edit-a .a-name{

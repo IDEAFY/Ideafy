@@ -341,9 +341,6 @@ define(["OObject", "Amy/Control-plugin" ,
                                 });
                         });
                         
-                        // watch for view changes
-                        _stack.getStack().onChange(_widget.updateDisplay);
-                        
                         //return
 			return _widget;
 		};

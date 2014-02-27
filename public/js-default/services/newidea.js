@@ -15,6 +15,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                               _transport = Config.get("transport"),
                               _languages = new Store(Config.get("userLanguages")),
                               _user = Config.get("user"),
+                              _observer = Config.get("observer"),
                               _store = new Store(Config.get("ideaTemplate")),
                               _alist = new Store([]),
                               _resetLang = function(){
@@ -298,6 +299,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 return _store.upload();
                                         })
                                         .then(function(){
+                                                _observer.notify("NewIdea", id);
                                                 if (_store.get("visibility") === "public"){
                                                         _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "docTitle": _store.get("title")}, function(result){
                                                                 if (result !== "ok") console.log(result);

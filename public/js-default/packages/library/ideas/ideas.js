@@ -100,10 +100,9 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			// function to update display (list and detail views) after an event affecting the data
-			_widget.updateDisplay = function updateDisplay(){
-			        var _ideaListUI = _stack.getStack().getCurrentScreen(),
-			             _ideaList = _ideaListUI.getModel(),
-			             _ideaNode = _ideaListUI.dom.querySelector(".list-item.selected") || _ideaListUI.dom.querySelector("li[data-listideas_id='0']"),
+			_widget.updateDisplay = function updateDisplay(wid){
+			        var _ideaList = wid.getModel(),
+			             _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']"),
                                      _id;
                                      
                                  if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");
@@ -114,10 +113,16 @@ define(["OObject", "Amy/Control-plugin" ,
                                         else _detail.displayEmpty(_stack.getStack().getCurrentName());     
                                 });
                                 
-                                //if an idea has been added by user display this idea
-                                _ideaList.watch("added", function(val, idx){
-                                        console.log(val, idx);
-                                        console.log(val, _ideaNode, _id);
+                                _observer.watch("NewIdea", function(id){
+                                        var idx;
+                                        // get index of newly created idea in current list
+                                        _ideaList.loop(function(v,i){
+                                                if (v.id === id) idx = i;
+                                        });
+                                        if (_ideaNode) _ideaNode.classList.remove("selected");
+                                        wid.dom.querySelector("li[data-listideas_id='"+idx+"']").classList.add("selected");
+                                        _radio.init(idx);
+                                        _detail.reset(_ideaList, idx);
                                 });
                                            
 			};
@@ -302,7 +307,7 @@ define(["OObject", "Amy/Control-plugin" ,
                         _stackObserver = _stack.getStack().getObserver();
                         
                         _stackObserver.watch("StackChange", function(wid){
-                                _widget.updateDisplay();
+                                _widget.updateDisplay(wid);
                         });
 			
 			listRating.init();

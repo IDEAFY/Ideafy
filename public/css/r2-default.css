@@ -27,7 +27,7 @@ font-size: 14px;
     color: #657b99;
 }
 
-#newidea-popup .add-attachments. .add-attachments{
+#newidea-popup .add-attachments, .add-attachments{
     height: 50px;
     border-radius: 5px;
     border: 1px solid #657b99;
@@ -90,7 +90,7 @@ font-size: 14px;
     z-index: 10;
 }
 
-.attachments select{
+.attachments select, .add-attachments select{
     -webkit-appearance: none;
     width: 140px;
     padding-left: 5px;
@@ -106,7 +106,7 @@ font-size: 14px;
     font-size: 12px;  
 }
 
-.attachments .acolor{
+.attachments .acolor, .add-attachments .acolor{
     color: #404040;
     font-weight: normal;
 }
@@ -155,18 +155,18 @@ font-size: 14px;
     font-size: 12px;
 }
 
-#newidea-popup .custom-cat{
+#newidea-popup .custom-cat, .add-attachments .custom-cat{
     margin-left: 5px;
     width: 115px;
 }
 
-#newidea-popup .a-name{
+#newidea-popup .a-name, .add-attachments .a-name{
     display: block;
     margin-top: 5px;
     width: 270px;
 }
 
-#newidea-popup .a-tools{
+#newidea-popup .a-tools, .add-attachments .a-tools{
     display: none;
     height: 50px;
     width: 165px;
@@ -175,7 +175,7 @@ font-size: 14px;
     margin-top: -55px;    
 }
 
-#newidea-popup .a-tools .toolbox-button {
+#newidea-popup .a-tools .toolbox-button, .add-attachments .a-tools .toolbox-button {
     width: 30px;
     height: 50px;
     margin: 0px 8px;
@@ -183,32 +183,32 @@ font-size: 14px;
     display: inline-block;
 }
 
-#newidea-popup .a-tools .toolbox-button:first-child{
+#newidea-popup .a-tools .toolbox-button:first-child, .add-attachments .a-tools .toolbox-button:first-child{
    margin-left: 0px;
 }
 
-#newidea-popup .a-tools .toolbox-button:last-child{
+#newidea-popup .a-tools .toolbox-button:last-child, .add-attachments .a-tools .toolbox-button:last-child{
     margin-right: 0px;
 }
 
-#newidea-popup .a-tools .toolbox-button div{
+#newidea-popup .a-tools .toolbox-button div, .add-attachments .a-tools .toolbox-button div{
     width: 30px;
     height: 30px;
     border-radius: 15px;
     -webkit-box-shadow: 0px 1px 3px #404040;
 }
 
-#newidea-popup .a-tools .toolbox-button div.pressed{
+#newidea-popup .a-tools .toolbox-button div.pressed, .add-attachments .a-tools .toolbox-button div.pressed{
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6);
 }
 
-#newidea-popup .a-tools .toolbox-button legend{
+#newidea-popup .a-tools .toolbox-button legend, .add-attachments .a-tools .toolbox-button legend{
     margin-top: 5px;
     width: 30px;
     color: #cccccc;
 }
 
-#newidea-popup .a-input{
+#newidea-popup .a-input, .add-attachments .a-input{
     -webkit-appearance: none;
     width: 30px;
     height: 30px;
@@ -223,7 +223,7 @@ font-size: 14px;
     background-image: url('../img/r2/upload-picture.png');
 }
 
-#newidea-popup .a-preview{
+#newidea-popup .a-preview, .add-attachments .a-preview{
     width: 148px;
     height: 63px;
     position: relative;
@@ -235,7 +235,7 @@ font-size: 14px;
     text-align: center;
 }
 
-#newidea-popup .a-preview .a-content{
+#newidea-popup .a-preview .a-content, .add-attachments .a-preview .a-content{
     width: 100%;
     height: 40px;
     color: #292929;
@@ -244,13 +244,13 @@ font-size: 14px;
     overflow: hidden;  
 }
 
-#newidea-popup .uploadbar{
+#newidea-popup .uploadbar, .add-attachments .uploadbar{
     -webkit-appearance : none;
     height: 20px;
     width: 90%;
 }
 
-#newidea-popup .uploadval{
+#newidea-popup .uploadval, .add-attachments .uploadval{
     margin-top: -20px;
     width: 100%;
     line-height: 20px;
@@ -258,19 +258,19 @@ font-size: 14px;
     color: black;   
 }
 
-#newidea-popup .uploadbar::-webkit-progress-bar{
+#newidea-popup .uploadbar::-webkit-progress-bar, .add-attachments .uploadbar::-webkit-progress-bar{
     background-color: white;
     padding: 1px;
     border: 1px solid #657b99;
     border-radius: 3px;
 }
 
-#newidea-popup .uploadbar::-webkit-progress-value{
+#newidea-popup .uploadbar::-webkit-progress-value, .add-attachments .uploadbar::-webkit-progress-value{
     background-color: #657b99;
     border-radius: 3px;
 }
 
-#newidea-popup .a-button{
+#newidea-popup .a-button, .add-attachments .a-button{
     width: 25px;
     height: 25px;
     line-height: 25px;
@@ -281,21 +281,21 @@ font-size: 14px;
     margin-top: 2px;
 }
 
-#newidea-popup .a-button.pressed{
+#newidea-popup .a-button.pressed, .add-attachments .a-button.pressed{
     background: #ccc;
 }
 
-#newidea-popup .a-confirm{
+#newidea-popup .a-confirm, .add-attachments .a-confirm{
     color: #5F8F28;
     margin-left: 83px;
 }
 
-#newidea-popup .a-cancel{
+#newidea-popup .a-cancel, .add-attachments .a-confirm{
     color: red;
     margin-left: 15px;   
 }
 
-#newidea-popup .publicwarning{
+#newidea-popup .publicwarning, .idea-edit .publicwarning{
     height: 50px;
     width: 230px;
     background-image: url('../img/brainstorm/deedeetopright.png');
@@ -316,7 +316,7 @@ font-size: 14px;
     font-weight: bold;
 }
 
-#newidea-popup .close-warning{
+#newidea-popup .close-warning, .idea-edit .close-warning{
     width: 10px;
     height: 10px;
     background-image : url('../img/brainstorm/closeFrame.png');

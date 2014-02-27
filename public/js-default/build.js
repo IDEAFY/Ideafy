@@ -7,7 +7,7 @@
 
 /* deps load before main script??*/
 require.config({
-        waitSeconds: 60,
+        waitSeconds: 120,
         baseUrl : "js-default/packages",
         paths: {
                 lib : "../libs",

@@ -252,7 +252,7 @@ define("Amy/Control-plugin", ["Amy/Event-controller","Amy/DomUtils"],
 		};
 	}
 );
-define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools", "Observer"], 
+define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools", "Observable"], 
 	function Screens(Store, OObject, DomUtils, Tools, Observer) {
 		return function ScreensConstructor($uis, $default) {
 

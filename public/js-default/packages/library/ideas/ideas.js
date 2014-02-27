@@ -96,11 +96,23 @@ define(["OObject", "Amy/Control-plugin" ,
 				
 				// clear search field
 				_searchInput.set("search", "");
-				
-				// if an idea has been deleted make sure the highlighted idea is displayed
-				_ideaList.watch("deleted", function(){
-				            _detail.reset(_ideaList, _id);            
-				});
+			};
+			
+			// function to update display (list and detail views) after an event affecting the data
+			_widget.updateDisplay = function updateDisplay(){
+			        var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
+                                      _id = event.target.getAttribute("data-listideas_id");
+                                 
+                                 // if an idea has been deleted make sure the highlighted idea is displayed
+                                _ideaList.watch("deleted", function(){
+                                            _detail.reset(_ideaList, _id);            
+                                });
+                                
+                                //if an idea has been added by user display this idea
+                                _ideaList.watch("added", function(val){
+                                        consoel.log(val);
+                                });
+                                           
 			};
 			
 			// function used to retrieve the currently highlighted idea in a list and display its details
@@ -318,6 +330,9 @@ define(["OObject", "Amy/Control-plugin" ,
                                         });
                                 });
                         });
+                        
+                        // watch for view changes
+                        _stack.getStack.watch("StackChange", _widget.updateDisplay);
                         
                         //return
 			return _widget;

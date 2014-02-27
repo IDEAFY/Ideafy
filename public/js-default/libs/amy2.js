@@ -252,11 +252,12 @@ define("Amy/Control-plugin", ["Amy/Event-controller","Amy/DomUtils"],
 		};
 	}
 );
-define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools"], 
-	function Screens(Store, OObject, DomUtils, Tools) {
+define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools", "Observer"], 
+	function Screens(Store, OObject, DomUtils, Tools, Observer) {
 		return function ScreensConstructor($uis, $default) {
 
 			var _store = new Store($uis),
+			_observer = new Observer(),
 			_destination = $default,
 			_currentName = "",
 			_currentScreen = null;
@@ -277,6 +278,7 @@ define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools"],
 
 			this.setCurrentScreen = function setCurrentScreen(ui) {
 				_currentScreen = ui;
+				_observer.notify("StackChange", ui);
 			};
 
 			this.getCurrentScreen = function getCurrentScreen() {
@@ -326,6 +328,10 @@ define("Amy/Stack-service", ["Store", "OObject", "DomUtils", "Tools"],
 
 			this.hide = function hide(ui) {
 				ui.place(document.createDocumentFragment());
+			};
+			
+			this.watch = function watch(handler, callback){
+			             _observer.watch(handler, callback);
 			};
 		};
 

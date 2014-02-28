@@ -339,6 +339,10 @@ font-size: 14px;
     overflow: hidden;
 }
 
+.a-list li:nth-child(even){
+    background-color: rgba(154,217,222,0.3);
+}
+
 .a-list li > label, .a-list li > a, .a-list li > div{
     height: 30px;
     overflow: hidden;

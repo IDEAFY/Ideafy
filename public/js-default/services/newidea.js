@@ -207,7 +207,30 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 
                                 // reset _store and _error
                                 _store.unsync();
-                                _store.reset(Config.get("ideaTemplate"));
+                                _store.reset({
+                                        "title": "",
+                                        "sessionId": "",
+                                        "sessionReplay": false,
+                                        "authors": [],
+                                        "description": "",
+                                        "solution": "",
+                                        "creation_date": [],
+                                        "character": "",
+                                        "problem": "",
+                                        "lang": "en-us",
+                                        "context": "",
+                                        "techno": [],
+                                        "type": 6,
+                                        "sharedwith": [],
+                                        "modification_date": [],
+                                        "inspired_by": "",
+                                        "visibility": "private",
+                                        "votes": [],
+                                        "rating": "",
+                                        "authornames": "",
+                                        "twocents": [],
+                                        "attachments":[]
+                                });
                                 _resetLang();
                                 _error.reset({"error":""});
                                 _alist.reset([]);

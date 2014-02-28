@@ -162,8 +162,20 @@ font-size: 14px;
 
 #newidea-popup .a-name, .add-attachments .a-name{
     display: block;
-    margin-top: 6px;
+    margin-top: 8px;
     width: 270px;
+}
+
+#newidea-popup .a-desc, .add-attachments .a-desc{
+    height: 50px;
+    font-size: 11px;
+    line-height: 11px;
+    padding: 5px;
+    margin: 10px 0px;
+}
+
+textarea.a-desck::-webkit-input-placeholder{
+    font-size: 10px;
 }
 
 #newidea-popup .a-tools, .add-attachments .a-tools{

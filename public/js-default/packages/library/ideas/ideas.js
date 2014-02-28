@@ -114,14 +114,15 @@ define(["OObject", "Amy/Control-plugin" ,
                                 });
                                 
                                 _observer.watch("NewIdea", function(id){
-                                        var idx;
+                                        var idx, ideaElem;
                                         // get index of newly created idea in current list
                                         _ideaList.loop(function(v,i){
                                                 if (v.id === id) idx = i;
                                         });
                                         if (_ideaNode) _ideaNode.classList.remove("selected");
-                                        wid.dom.querySelector("li[data-listideas_id='"+idx+"']").classList.add("selected");
-                                        _radio.init(idx);
+                                        ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
+                                        ideaElem.classList.add("selected");
+                                        ideaElem.scrollIntoView();
                                         _detail.reset(_ideaList, idx);
                                 });
                                            

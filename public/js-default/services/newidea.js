@@ -299,8 +299,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 return _store.upload();
                                         })
                                         .then(function(){
-                                                _observer.notify("NewIdea", id);
                                                 if (_store.get("visibility") === "public"){
+                                                        _observer.notify("NewPublicIdea", id);
                                                         _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "docTitle": _store.get("title")}, function(result){
                                                                 if (result !== "ok") console.log(result);
                                                                 spinner.stop();
@@ -310,6 +310,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                         });       
                                                 }
                                                 else{
+                                                        _observer.notify("NewIdea", id);
                                                         spinner.stop();
                                                         node.classList.remove("invisible");
                                                         _widget.closePopup();

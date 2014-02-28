@@ -347,7 +347,10 @@ define(["OObject", "Amy/Control-plugin" ,
                                                 var wid =_stack.getStack().get(ui),
                                                       _ideaList = wid.getModel(),
                                                       _ideaNode, _id, idx, ideaElem;
-                                         
+                                                
+                                                
+                                                console.log(id, _ideaList.toJSON());
+                                                
                                                 if (wid === _stack.getStack().getCurrentScreen()){              
                                                         // get index of newly created idea in current list
                                                         _ideaList.loop(function(v,i){

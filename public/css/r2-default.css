@@ -167,7 +167,7 @@ font-size: 14px;
     width: 270px;
 }
 
-#newidea-popup .a-desc, .add-attachments .a-desc{
+.a-desc{
     height: 50px;
     font-size: 11px;
     line-height: 11px;

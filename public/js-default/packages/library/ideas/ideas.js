@@ -341,18 +341,21 @@ define(["OObject", "Amy/Control-plugin" ,
                                               _ideaList = wid.getModel(),
                                               _ideaNode, _id, idx, ideaElem;
                                          
-                                        if (wid === _stack.getStack().getCurrentScreen()){              
-                                                // get index of newly created idea in current list
-                                                _ideaList.loop(function(v,i){
-                                                        if (v.val._id === id) idx = i;
+                                        if (wid === _stack.getStack().getCurrentScreen()){
+                                                // watch for list update
+                                                _ideaList.watch("added", function(){             
+                                                        // get index of newly created idea in current list
+                                                        _ideaList.loop(function(v,i){
+                                                                if (v.val._id === id) idx = i;
+                                                        });
+                                                        console.log(idx, id, _ideaList.get(idx));
+                                                        if (_ideaNode) _ideaNode.classList.remove("selected");
+                                                        ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
+                                                        ideaElem.classList.add("selected");
+                                                        ideaElem.scrollIntoView();
+                                                        _radio.init(idx);
+                                                        _detail.reset(_ideaList, idx);
                                                 });
-                                                console.log(idx, id, _ideaList.get(idx));
-                                                if (_ideaNode) _ideaNode.classList.remove("selected");
-                                                ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
-                                                ideaElem.classList.add("selected");
-                                                ideaElem.scrollIntoView();
-                                                _radio.init(idx);
-                                                _detail.reset(_ideaList, idx);
                                         }
                                 });        
                         });

@@ -275,12 +275,6 @@ define(["OObject", "Amy/Control-plugin" ,
                         _stack.getStack().add("#list-fav", listFav);
 			_stack.getStack().add("#list-date", listDate);
 			
-			_stackObserver = _stack.getStack().getObserver();
-                        
-                        _stackObserver.watch("StackChange", function(wid){
-                                _widget.updateDisplay(wid);
-                        });
-			
 			// show public ideas sorted by most recent
 		        listRating.init();
 		        

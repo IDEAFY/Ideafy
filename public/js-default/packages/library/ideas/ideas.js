@@ -341,7 +341,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                               _ideaList = wid.getModel(),
                                               _ideaNode, _id, idx, ideaElem;
                                          
-                                        if (wid === _stack.getStack().getCurrentScreen()){
+                                        if (ui=== _stack.getStack().getCurrentName()){
                                                 // watch for list update
                                                 _ideaList.watch("added", function(){             
                                                         // get index of newly created idea in current list

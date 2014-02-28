@@ -341,17 +341,14 @@ define(["OObject", "Amy/Control-plugin" ,
                                               _ideaList = wid.getModel(),
                                               _ideaNode, _id, idx, ideaElem;
                                         
-                                        console.log(ui, id, _stack.getStack().getCurrentName(), _ideaList.toJSON(), _ideaList.toJSON().search(id));
-                                         
                                         if (ui === _stack.getStack().getCurrentName()){
                                                 // watch for list update
                                                 _ideaList.watch("added", function(){
-                                                        console.log("added element triggered");             
                                                         // get index of newly created idea in current list
                                                         _ideaList.loop(function(v,i){
                                                                 if (v.id === id) idx = i;
                                                         });
-                                                        console.log(idx, id, _ideaList.get(idx));
+                                                        _ideaNode = wid.dom.querySelector(".list-item.selected");
                                                         if (_ideaNode) _ideaNode.classList.remove("selected");
                                                         ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
                                                         ideaElem.classList.add("selected");

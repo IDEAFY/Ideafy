@@ -564,5 +564,6 @@
 	"noacat": "Missing attachment category",
 	"contrib": "Contributed by: ",
 	"rateit": "Rate it!",
-	"deleteattachment": "Are you sure you want to delete this attachment ?"
+	"deleteattachment": "Are you sure you want to delete this attachment ?",
+	"attachdescplaceholder" : "Enter a description of your attachment"
 }

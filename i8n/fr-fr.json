@@ -564,5 +564,6 @@
 	"noacat": "Catégorie de la pièce jointe manquante",
 	"contrib": "Contribution de: ",
 	"rateit": "Notez-le!",
-	"deleteattachment": "Êtes-vous sûr de vouloir supprimer cette pièce jointe ?"
+	"deleteattachment": "Êtes-vous sûr de vouloir supprimer cette pièce jointe ?",
+	"attachdescplaceholder" : "Décrivez votre pièce jointe"
 }

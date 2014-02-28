@@ -20,6 +20,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                     custom : false,
                                     category : "",
                                     name : "",
+                                    description:"",
                                     type : "",
                                     fileName : "",
                                     authors : [user.get("_id")],
@@ -94,7 +95,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "addevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class="add-attachments"><select class="acolor" data-attach="bind:setAttachmentCat, docId; bind:resetCat, category" data-addevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-addevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-attach="bind:setName, name" data-addevent="listen: input, setName"><ul class="a-tools" data-attach="bind:show, category"><li class="toolbox-button"><div class="upload-button" name="upload" data-addevent="listen:mousedown, press; listen:mouseup, release"><input type="file" class="a-input" data-addevent="listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="importpic-button" name="import" data-addevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="drawingtool-button" name="drawing" data-addevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-addevent="listen:mousedown, press; listen: mousedown, aconfirm; listen:mouseup, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-addevent="listen:mousedown, press; listen:mousedown, acancel">&#10007</div></div></div>';
+                        ui.template = '<div class="add-attachments"><select class="acolor" data-attach="bind:setAttachmentCat, docId; bind:resetCat, category" data-addevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-addevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-attach="bind:setName, name" data-addevent="listen: input, setName"><ul class="a-tools" data-attach="bind:show, category"><li class="toolbox-button"><div class="upload-button" name="upload" data-addevent="listen:mousedown, press; listen:mouseup, release"><input type="file" class="a-input" data-addevent="listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="importpic-button" name="import" data-addevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="drawingtool-button" name="drawing" data-addevent="listen:mousedown, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-addevent="listen:mousedown, press; listen: mousedown, aconfirm; listen:mouseup, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-addevent="listen:mousedown, press; listen:mousedown, acancel">&#10007</div></div><textarea class="description input" data-labels="bind:placeholder, attachdescplaceholder" data-attach="bind: value, description" data-attachevent="listen: input, updateDesc"></textarea></div>';
                         
                         ui.reset = function reset($parentDoc, $parentType, $aList){
                                 
@@ -110,6 +111,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         custom : false,
                                         category : "",
                                         name : "",
+                                        description: "",
                                         type : "",
                                         fileName : "",
                                         authors : [user.get("_id")],
@@ -170,6 +172,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         
                         ui.setName = function(event, node){
                                 cdb.set("name", node.value);
+                        };
+                        
+                        ui.updateDesc = function(event, node){
+                                cdb.set("description", node.value);      
                         };
                         
                         ui.check = function(event, node){

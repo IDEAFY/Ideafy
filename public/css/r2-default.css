@@ -175,6 +175,17 @@ font-size: 14px;
     margin: 10px 0px;
 }
 
+.attach-details .a-desc{
+    margin: 20px;
+    font-size: 14px;
+    line-height: 16px;
+    border: 1px solid #657b99;
+    border-radius: 5px;
+    min-height: 50px;
+    max-height: 100px;
+    overflow-y: scroll;
+}
+
 .edit-a .a-desc{
     margin: 20px;
     width: 620px;

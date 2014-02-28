@@ -336,19 +336,20 @@ define(["OObject", "Amy/Control-plugin" ,
                         
                        // when a new idea is created by the user 
                        _observer.watch("NewIdea", function(id){
-                                ["#list-date", "#list-rating", "#list-fav"].forEach(function(ui){
+                                ["#list-date", "#list-rating", "#list-fav", "#list-search"].forEach(function(ui){
                                         var wid =_stack.getStack().get(ui),
                                               _ideaList = wid.getModel(),
                                               _ideaNode, _id, idx, ideaElem;
                                         
                                         console.log(ui, id, _stack.getStack().getCurrentName(), _ideaList.toJSON(), _ideaList.toJSON().search(id));
                                          
-                                        if (ui=== _stack.getStack().getCurrentName()){
+                                        if (ui === _stack.getStack().getCurrentName()){
                                                 // watch for list update
-                                                _ideaList.watch("added", function(){             
+                                                _ideaList.watch("added", function(){
+                                                        console.log("added element triggered");             
                                                         // get index of newly created idea in current list
                                                         _ideaList.loop(function(v,i){
-                                                                if (v.val._id === id) idx = i;
+                                                                if (v.id === id) idx = i;
                                                         });
                                                         console.log(idx, id, _ideaList.get(idx));
                                                         if (_ideaNode) _ideaNode.classList.remove("selected");

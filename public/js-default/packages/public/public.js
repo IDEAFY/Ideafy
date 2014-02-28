@@ -342,7 +342,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                if (public){
                                        
                                        // display list of ideas by date and adjust filter buttons accordingly
-                                       if (_stack.getStack().getCurrentName() !== "#list-date") _widget.show("#list-date");
+                                       if (_stack.getStack().getCurrentName() !== "#list-date") _stack.getStack().show("#list-date");
                                        _btns.loop(function(v,i){
                                                 (v.name === "#list-date") ? _btns.update(i, "pushed", true) : _btns.update(i, "pushed", false);        
                                      });

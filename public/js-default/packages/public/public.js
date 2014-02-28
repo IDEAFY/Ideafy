@@ -91,12 +91,6 @@ define(["OObject", "Amy/Control-plugin" ,
 				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
 				    _id = event.target.getAttribute("data-listideas_id");
 				_detail.reset(_ideaList, _id);
-				
-				// if an idea has been deleted make sure the highlighted idea is displayed
-                                _ideaList.watch("deleted", function(){
-                                            _detail.reset(_ideaList, _id);            
-                                });
-				
 			};
 			
 			// function used to retrieve the currently highlighted idea in a list and display its details
@@ -342,27 +336,38 @@ define(["OObject", "Amy/Control-plugin" ,
                         
                        // when a new idea is created by the user 
                        _observer.watch("NewIdea", function(id, public){
+                               var _ideaList = listDate.getModel(),
+                                     _ideaNode, _id, idx, ideaElem;
+                               
                                if (public){
-                                        ["#list-date", "#list-rating", "#list-fav"].forEach(function(ui){
-                                                var wid =_stack.getStack().get(ui),
-                                                      _ideaList = wid.getModel(),
-                                                      _ideaNode, _id, idx, ideaElem;
-                                                
-                                                
-                                                console.log(id, _ideaList.toJSON());
-                                                
-                                                if (wid === _stack.getStack().getCurrentScreen()){              
-                                                        // get index of newly created idea in current list
-                                                        _ideaList.loop(function(v,i){
-                                                                if (v.val._id === id) idx = i;
-                                                        });
-                                                        if (_ideaNode) _ideaNode.classList.remove("selected");
-                                                        ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
-                                                        ideaElem.classList.add("selected");
-                                                        ideaElem.scrollIntoView();
-                                                        _radio.init(idx);
-                                                        _detail.reset(_ideaList, idx);
-                                                }
+                                       
+                                       if (_stack.getStack().getCurrentName() !== "#list-date") _widget.show("#list-date");
+                                       
+                                       // display spinner
+                                       _listSpinner.spin(document.getElementById("public-list"));            
+                                        
+                                        listDate.resetQuery()
+                                        .then(function(){             
+                                                // get index of newly created idea in current list
+                                                _ideaList.loop(function(v,i){
+                                                        if (v.id === id) idx = i;
+                                                });
+                                        
+                                                // remove current highlight
+                                                _ideaNode = wid.dom.querySelector(".list-item.selected");
+                                                if (_ideaNode) _ideaNode.classList.remove("selected");
+                                        
+                                                // focus on new idea
+                                                ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
+                                                ideaElem.classList.add("selected");
+                                                _radio.init(idx);
+                                                        
+                                                // display idea in the list and in the detail-view
+                                                ideaElem.scrollIntoView();
+                                                _detail.reset(_ideaList, idx);
+                                        
+                                                // stop the spinner
+                                                _listSpinner.stop();
                                         });
                                 }        
                         });

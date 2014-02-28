@@ -319,6 +319,64 @@ define(["OObject", "Amy/Control-plugin" ,
                                 });
                         });
                         
+                        /*
+                        * Manage idea related events
+                        */
+                       
+                       // When an idea is deleted by the author
+                       ["#list-date", "#list-rating", "#list-fav"].forEach(function(ui){
+                                var wid =_stack.getStack().get(ui),
+                                     _ideaList = wid.getModel(),
+                                     _ideaNode, _id;
+                                  
+                                  // only do it for the current UI   
+                                 _ideaList.watch("deleted", function(){
+                                         if (wid === _stack.getStack().getCurrentScreen()){
+                                                _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");
+                                                if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");
+                                                (_ideaList.getNbItems()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
+                                        } 
+                                 });
+                        });
+                        
+                       // when a new idea is created by the user 
+                       _observer.watch("NewIdea", function(id){
+                                ["#list-date", "#list-rating", "#list-fav", "#list-search"].forEach(function(ui){
+                                        var wid =_stack.getStack().get(ui),
+                                              _ideaList = wid.getModel(),
+                                              _ideaNode, _id, idx, ideaElem;
+                                        
+                                        if (ui === _stack.getStack().getCurrentName()){
+                                                // set Spinner
+                                                _listSpinner.spin(document.getElementById("idea-list"));
+                                                
+                                                // watch for list update
+                                                _ideaList.watch("added", function(){
+                                                        // get index of newly created idea in current list
+                                                        _ideaList.loop(function(v,i){
+                                                                if (v.id === id) idx = i;
+                                                        });
+                                                        
+                                                        // remove current highlight
+                                                        _ideaNode = wid.dom.querySelector(".list-item.selected");
+                                                        if (_ideaNode) _ideaNode.classList.remove("selected");
+                                                        
+                                                        // focus on new idea
+                                                        ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
+                                                        ideaElem.classList.add("selected");
+                                                        _radio.init(idx);
+                                                        
+                                                        // display idea in the list and in the detail-view
+                                                        ideaElem.scrollIntoView();
+                                                        _detail.reset(_ideaList, idx);
+                                                        
+                                                        // stop the spinner
+                                                        _listSpinner.stop();
+                                                });
+                                        }
+                                });        
+                        });
+                        
                         //return
 			return _widget;
 		};

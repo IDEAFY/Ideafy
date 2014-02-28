@@ -344,19 +344,28 @@ define(["OObject", "Amy/Control-plugin" ,
                                         if (ui === _stack.getStack().getCurrentName()){
                                                 // set Spinner
                                                 _listSpinner.spin(document.getElementById("idea-list"));
+                                                
                                                 // watch for list update
                                                 _ideaList.watch("added", function(){
                                                         // get index of newly created idea in current list
                                                         _ideaList.loop(function(v,i){
                                                                 if (v.id === id) idx = i;
                                                         });
+                                                        
+                                                        // remove current highlight
                                                         _ideaNode = wid.dom.querySelector(".list-item.selected");
                                                         if (_ideaNode) _ideaNode.classList.remove("selected");
+                                                        
+                                                        // focus on new idea
                                                         ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
                                                         ideaElem.classList.add("selected");
-                                                        ideaElem.scrollIntoView();
                                                         _radio.init(idx);
+                                                        
+                                                        // display idea in the list and in the detail-view
+                                                        ideaElem.scrollIntoView();
                                                         _detail.reset(_ideaList, idx);
+                                                        
+                                                        // stop the spinner
                                                         _listSpinner.stop();
                                                 });
                                         }

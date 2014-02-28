@@ -14,6 +14,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		//declaration
 			var _widget = new Widget(),
                                 _db = Config.get("db"),
+                                _observer = Config.get("observer"),
                                 _radio = new Control(_widget),
                                 _detail= new Detail(),
                                 _menu, listDate, listRating, listFav, listSearch,

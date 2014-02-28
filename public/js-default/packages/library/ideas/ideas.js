@@ -330,11 +330,14 @@ define(["OObject", "Amy/Control-plugin" ,
                                 var wid =_stack.getStack().get(ui),
                                      _ideaList = wid.getModel(),
                                      _ideaNode, _id;
-                                     
+                                  
+                                  // only do it for the current UI !!!!   
                                  _ideaList.watch("deleted", function(){
-                                        _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");
-                                        if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");
-                                        (_ideaList.getNbItems()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());  
+                                         if (wid === _stack.getStack().getCurrentScreen()){
+                                                _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");
+                                                if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");
+                                                (_ideaList.getNbItems()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
+                                        } 
                                  });
                         });
                         
@@ -344,17 +347,19 @@ define(["OObject", "Amy/Control-plugin" ,
                                         var wid =_stack.getStack().get(ui),
                                               _ideaList = wid.getModel(),
                                               _ideaNode, _id, idx, ideaElem;
-                                                      
-                                        // get index of newly created idea in current list
-                                        _ideaList.loop(function(v,i){
-                                                if (v.val._id === id) idx = i;
-                                        });
-                                        if (_ideaNode) _ideaNode.classList.remove("selected");
-                                        ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
-                                        ideaElem.classList.add("selected");
-                                        ideaElem.scrollIntoView();
-                                        _radio.init(idx);
-                                        _detail.reset(_ideaList, idx); 
+                                         
+                                        if (wid === _stack.getStack().getCurrentScreen()){              
+                                                // get index of newly created idea in current list
+                                                _ideaList.loop(function(v,i){
+                                                        if (v.val._id === id) idx = i;
+                                                });
+                                                if (_ideaNode) _ideaNode.classList.remove("selected");
+                                                ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
+                                                ideaElem.classList.add("selected");
+                                                ideaElem.scrollIntoView();
+                                                _radio.init(idx);
+                                                _detail.reset(_ideaList, idx);
+                                        }
                                 });        
                         });
                         

@@ -115,11 +115,11 @@ define(["OObject", "Amy/Control-plugin" ,
                                 });
                                 
                                 _observer.watch("NewIdea", function(id){
-                                        console.log("update called with: ", id);
+                                        console.log("update called with: ", id, _ideaList.toJSON());
                                         var idx, ideaElem;
                                         // get index of newly created idea in current list
                                         _ideaList.loop(function(v,i){
-                                                if (v.id === id) idx = i;
+                                                if (v.value._id === id) idx = i;
                                         });
                                         console.log(idx);
                                         _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");

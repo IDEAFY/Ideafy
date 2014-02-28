@@ -340,7 +340,7 @@ font-size: 14px;
 }
 
 .a-list li:nth-child(even){
-    background-color: rgba(154,217,222,0.3);
+    background-color: rgba(154,217,222,0.2);
 }
 
 .a-list li > label, .a-list li > a, .a-list li > div{
@@ -813,7 +813,7 @@ font-size: 14px;
 }
 
 
-.idea-edit .idealegend{
+.idea-edit .idealegend, .attachments .idealegend{
     font-family: Pacifico;
     font-size: 12px;
     color: #657B99;

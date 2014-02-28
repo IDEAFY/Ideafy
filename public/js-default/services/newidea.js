@@ -219,7 +219,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _widget.dom.querySelector(".idealang ul").classList.add("invisible");
                                 
                                 // reset attachment UI and delete file from server if applicable
-                                if (_addAttachmentUI.getFileName()) Utils.deleteAttachmentFile(_addAttachmentUI.getFileNname());
+                                if (_addAttachmentUI.getFileName()) Utils.deleteAttachmentFile(_addAttachmentUI.getFileName());
                                 _addAttachmentUI.reset("new", "idea", _alist);
                                 
                                 // if upload request in progress abort it

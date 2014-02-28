@@ -331,7 +331,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                      _ideaList = wid.getModel(),
                                      _ideaNode, _id;
                                   
-                                  // only do it for the current UI !!!!   
+                                  // only do it for the current UI   
                                  _ideaList.watch("deleted", function(){
                                          if (wid === _stack.getStack().getCurrentScreen()){
                                                 _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");

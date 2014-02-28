@@ -225,7 +225,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.deleteAttachmentFile = function(fileName){
-                                return Utils.deleteAttachmentFile(_store.get("_id"), fileName);      
+                                return Utils.deleteAttachmentFile(cdb.get("_id"), fileName);      
                         };
                         
                         ui.deleteAttachmentDoc = function(docId){

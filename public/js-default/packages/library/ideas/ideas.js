@@ -340,6 +340,8 @@ define(["OObject", "Amy/Control-plugin" ,
                                         var wid =_stack.getStack().get(ui),
                                               _ideaList = wid.getModel(),
                                               _ideaNode, _id, idx, ideaElem;
+                                        
+                                        console.log(ui, id, _stack.getStack().getCurrentName(), _ideaList.toJSON(), _ideaList.toJSON().search(id));
                                          
                                         if (ui=== _stack.getStack().getCurrentName()){
                                                 // watch for list update

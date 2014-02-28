@@ -342,6 +342,8 @@ define(["OObject", "Amy/Control-plugin" ,
                                               _ideaNode, _id, idx, ideaElem;
                                         
                                         if (ui === _stack.getStack().getCurrentName()){
+                                                // set Spinner
+                                                _listSpinner.spin(document.getElementById("idea-list"));
                                                 // watch for list update
                                                 _ideaList.watch("added", function(){
                                                         // get index of newly created idea in current list
@@ -355,6 +357,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                                         ideaElem.scrollIntoView();
                                                         _radio.init(idx);
                                                         _detail.reset(_ideaList, idx);
+                                                        _listSpinner.stop();
                                                 });
                                         }
                                 });        

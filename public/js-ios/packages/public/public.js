@@ -14,6 +14,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		//declaration
 			var _widget = new Widget(),
 				_db = Config.get("db"),
+				_observer = Config.get("observer"),
 				_radio = new Control(_widget),
 				_detail= new Detail(),
                                 _menu, listDate, listRating, listFav, listSearch,
@@ -316,6 +317,48 @@ define(["OObject", "Amy/Control-plugin" ,
                                         });
                                 });
 		        });
+		        
+		        // when a new idea is created by the user 
+                       _observer.watch("NewIdea", function(id, public){
+                               var _ideaList = listDate.getModel(),
+                                     _ideaNode, _id, idx, ideaElem;
+                               
+                               if (public){
+                                       
+                                       // display list of ideas by date and adjust filter buttons accordingly
+                                       if (_stack.getStack().getCurrentName() !== "#list-date") _stack.getStack().show("#list-date");
+                                       _btns.loop(function(v,i){
+                                                (v.name === "#list-date") ? _btns.update(i, "pushed", true) : _btns.update(i, "pushed", false);        
+                                     });
+                                       
+                                       // display spinner
+                                       _listSpinner.spin(document.getElementById("public-list"));            
+                                        
+                                        listDate.resetQuery()
+                                        .then(function(){             
+                                                // get index of newly created idea in current list
+                                                _ideaList.loop(function(v,i){
+                                                        if (v.id === id) idx = i;
+                                                });
+                                        
+                                                // remove current highlight
+                                                _ideaNode = listDate.dom.querySelector(".list-item.selected");
+                                                if (_ideaNode) _ideaNode.classList.remove("selected");
+                                        
+                                                // focus on new idea
+                                                ideaElem = listDate.dom.querySelector("li[data-listideas_id='"+idx+"']");
+                                                ideaElem.classList.add("selected");
+                                                _radio.init(idx);
+                                                        
+                                                // display idea in the list and in the detail-view
+                                                ideaElem.scrollIntoView();
+                                                _detail.reset(_ideaList, idx);
+                                        
+                                                // stop the spinner
+                                                _listSpinner.stop();
+                                        });
+                                }        
+                        });
 		        
                         //return
 			return _widget;

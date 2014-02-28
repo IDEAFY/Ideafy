@@ -16,7 +16,8 @@ require.config({
                 dashboard : "dashboard",
                 library : "library",
                 brainstorm : "brainstorm",
-                twocents : "twocents"
+                twocents : "twocents",
+                attachments : "attach"
         },
         deps: ["lib/socket.io.min", "lib/CouchDBTools.min","lib/Emily.min",  "lib/Olives.min", "lib/amy2", "lib/spin.min"]
         

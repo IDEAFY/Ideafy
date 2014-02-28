@@ -546,5 +546,23 @@
 	"pwdupdate": "Nouveau mot de passe",
 	"forgotpwd": "Mot de passe oublié?",
 	"temppwd": "Un mot de passe provisoire a été envoyé à ",
-	"failedpwdreset": "Un mot de passe provisoire vous a déjà été envoyé. Vérifiez votre boîte mail ou contactez " 
+	"failedpwdreset": "Un mot de passe provisoire vous a déjà été envoyé. Vérifiez votre boîte mail ou contactez "
+	"alegend": "Ajouter des pièces jointes",
+	"attachments": "Pièces jointes",
+	"filelbl": "Fichier",
+	"imagelbl": "Image",
+	"drawinglbl": "Dessin",
+	"choosecat": "Choisissez",
+	"bus": "Business model",
+	"mkt": "Marketing",
+	"notes": "Notes",
+	"arch": "Architecture",
+	"spec": "Spécifications",
+	"planning": "Planning",
+	"other": "Autre",
+	"noaname": "Nom de la pièce jointe manquant",
+	"noacat": "Catégorie de la pièce jointe manquante",
+	"contrib": "Contribution de: ",
+	"rateit": "Notez-le!",
+	"deleteattachment": "Êtes-vous sûr de vouloir supprimer cette pièce jointe ?"
 }

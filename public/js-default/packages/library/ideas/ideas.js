@@ -346,6 +346,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                                 _ideaList.loop(function(v,i){
                                                         if (v.val._id === id) idx = i;
                                                 });
+                                                console.log(idx, id, _ideaList.get(idx));
                                                 if (_ideaNode) _ideaNode.classList.remove("selected");
                                                 ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
                                                 ideaElem.classList.add("selected");

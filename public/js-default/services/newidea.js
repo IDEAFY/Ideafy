@@ -300,7 +300,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         })
                                         .then(function(){
                                                 if (_store.get("visibility") === "public"){
-                                                        _observer.notify("NewPublicIdea", id);
+                                                        _observer.notify("NewIdea", id, "public");
                                                         _transport.request("UpdateUIP", {"userid": _user.get("_id"), "type": _store.get("type"), "docId": id, "docTitle": _store.get("title")}, function(result){
                                                                 if (result !== "ok") console.log(result);
                                                                 spinner.stop();

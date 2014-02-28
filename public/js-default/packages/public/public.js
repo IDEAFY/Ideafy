@@ -98,36 +98,6 @@ define(["OObject", "Amy/Control-plugin" ,
 				
 			};
 			
-			// function to update display (list and detail views) after an event affecting the data
-                        _widget.updateDisplay = function updateDisplay(wid){
-                                var _ideaList = wid.getModel(),
-                                     _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']"),
-                                     _id;
-                                     
-                                 if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");
-                                 
-                                 // if an idea has been deleted make sure the highlighted idea is displayed
-                                _ideaList.watch("deleted", function(){
-                                        if (_ideaList.getNbItems()) _detail.reset(_ideaList, _id);
-                                        else _detail.displayEmpty(_stack.getStack().getCurrentName());     
-                                });
-                                
-                                _observer.watch("NewPublicIdea", function(id){
-                                        var idx, ideaElem;
-                                        // get index of newly created idea in current list
-                                        _ideaList.loop(function(v,i){
-                                                if (v.id === id) idx = i;
-                                        });
-                                        if (_ideaNode) _ideaNode.classList.remove("selected");
-                                        ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
-                                        ideaElem.classList.add("selected");
-                                        ideaElem.scrollIntoView();
-                                        _radio.init(idx);
-                                        _detail.reset(_ideaList, idx);
-                                });
-                                           
-                        };
-			
 			// function used to retrieve the currently highlighted idea in a list and display its details
 	               _widget.displayHighlightedIdea = function displayHighlightedIdea(){
 			     var ideaList, ideaNode, id;

@@ -358,11 +358,11 @@ define(["OObject", "Amy/Control-plugin" ,
                                                 });
                                         
                                                 // remove current highlight
-                                                _ideaNode = wid.dom.querySelector(".list-item.selected");
+                                                _ideaNode = listDate.dom.querySelector(".list-item.selected");
                                                 if (_ideaNode) _ideaNode.classList.remove("selected");
                                         
                                                 // focus on new idea
-                                                ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
+                                                ideaElem = listDate.dom.querySelector("li[data-listideas_id='"+idx+"']");
                                                 ideaElem.classList.add("selected");
                                                 _radio.init(idx);
                                                         

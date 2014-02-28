@@ -382,7 +382,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         // update database
                                         cdb.upload()
                                         .then(function(){
-                                                return ui.updateParentDoc();
+                                                return ui.updateParentDoc(cdb.get("docId"));
                                         })
                                         .then(function(){
                                                 console.log("idea upload ok");
@@ -475,15 +475,14 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 }     
                         };
                         
-                        ui.updateParentDoc = function(){
+                        ui.updateParentDoc = function(id){
                                 var promise = new Promise(),
                                       doc = new CouchDBDocument();
                                 
                                 doc.setTransport(transport);
-                                
-                                doc.sync(Config.get("db"), cdb.get("docId"))
+                                doc.sync(Config.get("db"), id)
                                 .then(function(){
-                                        var att = doc.get("attachments").concat() || [], idx, i, l = att.length;
+                                        var att = doc.get("attachments").concat(), idx, i, l = att.length;
                                         for (i=0;i<l;i++){
                                                 if (att[i].docId === cdb.get("_id")){
                                                         idx = i;
@@ -498,7 +497,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 fileName : cdb.get("fileName"),
                                                 authornames: cdb.get("authornames")
                                         });
-                                        
+                                        doc.set("attachments", att);
                                         return doc.upload();
                                 })
                                 .then(function(){

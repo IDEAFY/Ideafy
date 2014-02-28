@@ -550,7 +550,9 @@ font-size: 14px;
 .attachment-screen .a-name{
     padding-top: 10px;
     font-size: 14px;
-    overflow-x: hidden;
+    overflow: hidden;
+    line-height: 14px;
+    max-height: 28px;
 }
 
 .attachment-screen.edit-a .a-name{

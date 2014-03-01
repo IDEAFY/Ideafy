@@ -72,7 +72,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                                 }
                                                 else{
                                                         this.innerHTML = cat;
-                                                        this.setAttribute("sytle", "color: #404040");
+                                                        this.setAttribute("style", "color: #404040");
                                                 }
                                         },
                                         setType : function(type){

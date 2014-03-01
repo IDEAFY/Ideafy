@@ -214,7 +214,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         ui.dom.querySelector(".a-preview").classList.remove("invisible");
                                         
                                         cdb.set("fileName", fileName);
-                                        cdb.set("docId", parentDoc);
+                                        cdb.set("docId", _id);
                                         if (!cdb.get("name")) cdb.set("name", fileName);
                                         cdb.set("type", "file");
                                                                
@@ -233,7 +233,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.deleteAttachmentFile = function(fileName){
-                                return Utils.deleteAttachmentFile(cdb.get("_id"), fileName);      
+                                return Utils.deleteAttachmentFile(parentDoc, fileName);      
                         };
                         
                         ui.deleteAttachmentDoc = function(docId){
@@ -297,7 +297,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 
                                 ui.abortReq();
                                 
-                                ui.deleteAttachmentFile(parentDoc, file);
+                                ui.deleteAttachmentFile(file);
                                 
                                 // reset attachment
                                 ui.reset(parentDoc, parentType, aList);   

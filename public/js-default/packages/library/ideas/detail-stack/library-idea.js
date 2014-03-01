@@ -255,6 +255,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 return _store.sync(Config.get("db"), id);       
                         };
                         
+                        _widget.refresh = function(){
+                                _widget.getIdea(_store.get("_id"));        
+                        };
+                        
                         _widget.action = function(event, node){
                                 var name = node.getAttribute("href"),
                                     id = _store.get("_id"),

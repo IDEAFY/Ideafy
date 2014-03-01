@@ -63,6 +63,11 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./detail-s
                                              break;
                                         case "close":
                                              _stack.getStack().show("#library-ideadetail");
+                                             spinner.spin(_widget.dom);
+                                             _ideaDetail.refresh()
+                                             .then(function(){
+                                                     spinner.stop();
+                                             });
                                              break;
                                         default:
                                              _stack.getStack().show("#library-ideadetail");

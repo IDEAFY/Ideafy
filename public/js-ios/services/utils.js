@@ -6,6 +6,7 @@
  */ 
 
 define(["service/config", "Observable", "Promise", "LocalStore"], function(Config, Observable, Promise, LocalStore){
+        var Utils = this;
 	return {
 		formatDate : function(array){
 			var month = array[1] + 1;
@@ -20,6 +21,13 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                                 return array[2] + "/" + month + "/" + array[0];
                         }
 		},
+		
+		formatDateStamp : function(stamp){
+                        var date=new Date(stamp),
+                              array = [date.getFullYear(), date.getMonth()+1, date.getDate()];
+                        
+                        return Utils.formatDate(array);
+                },
 
 
 		/*

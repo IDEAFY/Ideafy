@@ -49,9 +49,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 (twocents && twocents.length) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         },
                                         setDate : function(id){
-                                                var stamp = parseInt(id.replace("A:", ""), 10),
-                                                      date = new Date(stamp);
-                                                this.innerHTML = date.toLocaleDateString();
+                                                var stamp = parseInt(id.replace("A:", ""), 10);
+                                                this.innerHTML = Utils.formatDateStamp(stamp);
                                         },
                                         setAuthors : function(names){
                                                 var res = "";

@@ -262,13 +262,16 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.action = function(event, node){
                                 var name = node.getAttribute("href"),
                                     id = _store.get("_id"),
-                                    fav, idx;
+                                    fav, idx,
+                                    favSpinner = new Spinner({color:"#FFFFFF", lines:8, length: 6, width: 3, radius:6, left: 3, top: 3});
                                 switch(name){
                                         case "#library-2cents":
                                                 _twocentWriteUI.reset(id);
                                                 _domWrite.classList.remove("invisible");
                                                 break;
                                         case "#library-favorites":
+                                                node.classList.add("favwait");
+                                                favSpinner.spin(node);
                                                 (user.get("library-favorites")) ? fav = user.get("library-favorites").concat() : fav = [];
                                                 
                                                 idx = fav.indexOf(id);
@@ -278,12 +281,16 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         user.set("library-favorites", fav);
                                                         user.upload()
                                                         .then(function(){
+                                                                favSpinner.stop();
+                                                                node.classList.remove("favwait");
                                                                 (idx>-1)?alert(_labels.get("removedfav")):alert(_labels.get("addedfav"));
                                                                 node.classList.toggle("unfav");
                                                         });
                                                 }
                                                 else {
                                                         alert(_labels.get("maxfavsize"));
+                                                        favSpinner.stop();
+                                                        node.classList.remove("favwait");
                                                 }
                                                 
                                                 break;

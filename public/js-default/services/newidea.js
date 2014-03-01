@@ -181,7 +181,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         _widget.clearAttachments = function(){
                                 // reset _attachment and delete file from server if applicable
-                                if (_addAttachmentUI.get("fileName")) Utils.deleteAttachmentFile(_addAttachmentUI.get("fileNname"));
+                                if (_addAttachmentUI.getFileName()) Utils.deleteAttachmentFile(_addAttachmentUI.getFileName());
                                 
                                 // reset _alist
                                 if (_alist.getNbItems()){

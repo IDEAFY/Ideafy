@@ -546,8 +546,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 var json={},
                       promise = new Promise();
                 
-                console.log(docId, fileName);
-                
                 if (docId.search("I:") === 0) json.type = "idea";
                 
                 json.docId = docId;

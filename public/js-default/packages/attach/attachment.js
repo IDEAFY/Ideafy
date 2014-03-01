@@ -43,9 +43,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 }
                                         },
                                         setDescription : function(desc){
-                                                console.log("checking desc");
-                                                console.log(this.classList.contains("a-edit"));
-                                                (desc || this.classList.contains("a-edit")) ? this.setAttribute("style", "display:block;") : this.setAttribute("style", "display:none;") ;      
+                                                if (desc) this.setAttribute("style", "display:block;")
+                                                else this.setAttribute("style", "display: none");     
                                         },
                                         displayTwocentList : function(twocents){
                                                 (twocents && twocents.length) ? this.classList.remove("invisible") : this.classList.add("invisible");
@@ -281,10 +280,19 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.edit = function(event, node){
+                                var   nameEl = ui.dom.querySelector(".a-name"),
+                                        descEl = ui.dom.querySelector(".a-desc");
+                                
                                 node.classList.remove("a-pressed");
                                 ui.dom.classList.add("edit-a");
-                                ui.dom.querySelector(".a-name").setAttribute("contentEditable", true);
-                                ui.dom.querySelector(".a-desc").setAttribute("contentEditable", true);   
+                                nameEl.setAttribute("contentEditable", true);
+                                descEl.setAttribute("contentEditable", true);
+                                
+                                // display description input and set placeholder if field was previously empty
+                                if (!cdb.get("description")) {
+                                        descEl.setAttribute("style", "display: block");
+                                        descEl.innerHTML = cdbEdit.get("descritpion");
+                                }
                         };
                         
                         ui.updateName = function(event, node){

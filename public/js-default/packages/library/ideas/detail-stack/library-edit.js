@@ -164,8 +164,9 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                         
                                         // reset add attachment UI
                                         _addAttachmentUI.reset(id, "idea", _alist);
-                                        _store.watchValue("attachments", function(val){
-                                                _alist.reset(val);        
+                                        _alist.watch("added", function(val){
+                                                console.log(val);
+                                                _addedAttachments.push(val.docId);        
                                         });
                                 });
                                 updateReplay = false;        

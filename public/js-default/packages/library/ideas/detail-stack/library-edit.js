@@ -160,7 +160,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                         _resetLang();
                                         
                                         // set attachment list
-                                        (_store.get("attachments")) ? _alist.reset(_store.get("attachments")) : _alist.reset([]);
+                                        (_store.get("attachments")) ? _alist.reset(_store.get("attachments").concat()) : _alist.reset([]);
                                         
                                         // reset add attachment UI
                                         _addAttachmentUI.reset(id, "idea", _alist);
@@ -222,10 +222,49 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                         
                         _widget.removeAttachment = function(event, node){
                                 var idx = node.getAttribute("data-alist_id"),
-                                      id = alist.get(idx).docId;
+                                      id = _alist.get(idx).docId;
                                  
                                 // add attachment id to the list of attachments to be removed (will be done upon edit confirmation)
-                                _removedAttachments.push(id);       
+                                _removedAttachments.push(id);
+                                node.classList.remove("pressed");       
+                        };
+                        
+                        /*
+                         * Apply changes made to attachments
+                         */
+                        _widget.manageAttachments = function(){
+                                var aA = _addedAttachments, rA = _removedAttachments;
+                                if (rA.length){
+                                        rA.forEach(function(attachment){
+                                                var idx1 = -1, idx2 = -1;
+                                                // check if attachment was just added
+                                                for (i=0; i<aA.length; i++){
+                                                        if (aA[i].docId === attachment.docId){
+                                                                idx1 = i;
+                                                                break;
+                                                        }                
+                                                }
+                                                if (idx1 > -1) aA.splice(idx1, 1);
+                                                
+                                                // remove attachment from idea
+                                                _alist.loop(function(val,idx){
+                                                        if (val.docId === attachment.docId){
+                                                                idx2 = idx;
+                                                                break;        
+                                                        }        
+                                                });
+                                                if (idx2 > -1) _alist.alter("splice", idx2, 1);
+                                                
+                                                // remove attachment from database
+                                                _addAttachmentUI.deleteAttachmentDoc(attachment.docId);
+                                        });                            
+                                }
+                                
+                                if (aA.length){
+                                        aA.forEach(function(attachment){
+                                                _alist.alter("push", attachment);
+                                        });
+                                }       
                         };
                         
                         _widget.zoom = function(event, node){
@@ -283,6 +322,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                         _error.set("error", "nosol");        
                                 }
                                 else{
+                                        _widget.manageAttachments();
                                         _store.set("modification_date", modDate);
                                         _store.upload().then(function(){
                                                 if (updateReplay){

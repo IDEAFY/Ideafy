@@ -167,10 +167,10 @@ font-size: 14px;
     width: 270px;
 }
 
-.a-desc{
+.a-desc, #newidea-popup .a-desc{
     height: 50px;
-    font-size: 11px;
-    line-height: 11px;
+    font-size: 12px;
+    line-height: 12px;
     padding: 5px;
     margin: 10px 0px;
 }

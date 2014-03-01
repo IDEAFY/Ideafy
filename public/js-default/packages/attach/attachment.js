@@ -404,7 +404,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.cancel = function(event, node){
-                                node.classList.remove("a-pressed");
+                                node && node.classList.remove("a-pressed");
                                 
                                 // if an upload request is in progress then cancel it
                                 if (_uploadReq && _uploadReq.readyState !== 4){

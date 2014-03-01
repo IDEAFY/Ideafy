@@ -45,7 +45,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         setDescription : function(desc){
                                                 if (desc) {
                                                         this.classList.remove("invisible");
-                                                        this.innerHTML = desc.replace(/\n/g, <br/>);
+                                                        this.innerHTML = desc.replace(/\n/g, "<br/>");
                                                 }
                                                 else this.classList.add("invisible");    
                                         },

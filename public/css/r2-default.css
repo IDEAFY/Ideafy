@@ -311,6 +311,7 @@ textarea.a-desc::-webkit-input-placeholder{
     -webkit-box-shadow: inset 0 -1px 7px #657b99;
     float: left;
     margin-top: 2px;
+    text-align: center;
 }
 
 #newidea-popup .a-button.pressed, .add-attachments .a-button.pressed{
@@ -319,12 +320,15 @@ textarea.a-desc::-webkit-input-placeholder{
 
 #newidea-popup .a-confirm, .add-attachments .a-confirm{
     color: #5F8F28;
-    margin-left: 83px;
+    position: absolute;
+    left: 350px;
+    z-index: 1000;
 }
 
-#newidea-popup .a-cancel, .add-attachments .a-confirm{
+#newidea-popup .a-cancel, .add-attachments .a-cancel{
     color: red;
-    margin-left: 15px;   
+    left: 385px;
+    z-index: 1000;
 }
 
 #newidea-popup .publicwarning, .idea-edit .publicwarning{

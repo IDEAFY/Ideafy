@@ -530,6 +530,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                                
                                 return promise;
                         };
+                        
+                        CDB = cdb;
                 }
                 
                 return function AttachmentFactory($type){

@@ -29,7 +29,6 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                         return Utils.formatDate(array);
                 },
 
-
 		/*
                  * A function used to format a duration in days, hours, min and secs from a number of milliseconds
                  */
@@ -530,6 +529,45 @@ define(["service/config", "Observable", "Promise", "LocalStore"], function(Confi
                         };
                         document.addEventListener("touchstart", listener, true);
                         return listener;      
-                }
+                },
+                
+                /*
+                * A function that deletes an attachment file from the server
+                */
+                deleteAttachmentFile : function(docId, fileName){
+                        var json={},
+                             promise = new Promise();
+                
+                        if (docId.search("I:") === 0) json.type = "idea";
+                
+                        json.docId = docId;
+                        json.file = fileName;
+                        Config.get("transport").request("DeleteAttachment", json, function(res){
+                                (res === "ok") ? promise.fulfill() : promise.reject() ;     
+                        });
+                        return promise;       
+                },
+        
+                /*
+                * A function that deletes an attachment document from the database
+                */
+                deleteAttachmentDoc : function(docId){
+                        var promise = new Promise(),
+                              cdb = new Store();
+                        cdb.setTransport(Config.get("transport"));
+                        cdb.sync(Config.get("db"), docId)
+                        .then(function(){
+                                var type = "", id = cdb.get("docId");
+                                if (id.search("I:") === 0) type = "idea";
+                                return Utils.deleteAttachmentFile(type, id, cdb.get("fileName"));       
+                        })
+                        .then(function(){
+                                return cdb.remove();
+                        })
+                        .then(function(){
+                                promise.fulfill();
+                        });
+                        return promise;        
+                }      
 	};
 });

@@ -21,6 +21,13 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	               return array[2] + "/" + month + "/" + array[0];
 	       }
 	};
+                
+        _utils.formatDateStamp = function(stamp){
+                        var date=new Date(stamp),
+                              array = [date.getFullYear(), date.getMonth()+1, date.getDate()];
+                        
+                        return _utils.formatDate(array);
+                },
 
         /*
         * A function used to format a duration in days, hours, min and secs from a number of milliseconds
@@ -569,7 +576,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                         promise.fulfill();
                 });
                 return promise;        
-        };;
+        };
         
         return _utils;
 });

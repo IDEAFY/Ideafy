@@ -214,6 +214,12 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
+                                        // set attachment list
+                                        (_store.get("attachments")) ? _alist.reset(_store.get("attachments")) : _alist.reset([]);
+                                        _store.watchValue("attachments", function(val){
+                                                _alist.reset(val);        
+                                        });
+                                        
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                         _voted = false;
                                         _twocentWriteUI.reset(_store.get("_id"));

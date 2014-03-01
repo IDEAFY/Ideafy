@@ -406,9 +406,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         cdb.upload()
                                         .then(function(){
                                                 return ui.updateParentDoc(cdb.get("docId"));
-                                        })
-                                        .then(function(){
-                                                console.log("idea upload ok");
                                         });
                                 }
                                 

@@ -485,7 +485,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 return cdb.remove();        
                                         })
                                         .then(function(){
-                                                console.log("remove successful");
                                                 // close popup and delete file form server
                                                 ui.close();
                                                 return Utils.deleteAttachmentFile(doc, fileName);  

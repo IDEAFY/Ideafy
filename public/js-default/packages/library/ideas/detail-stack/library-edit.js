@@ -235,14 +235,12 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                          */
                         _widget.manageAttachments = function(){
                                 var aA = _addedAttachments, rA = _removedAttachments;
-                                console.log(aA);
-                                console.log(rA);
                                 if (rA.length){
                                         rA.forEach(function(attachment){
                                                 var idx1 = -1, idx2 = -1;
                                                 // check if attachment was just added
                                                 for (i=0; i<aA.length; i++){
-                                                        if (aA[i].docId === attachment.docId){
+                                                        if (aA[i].docId === attachment){
                                                                 idx1 = i;
                                                                 break;
                                                         }                
@@ -251,7 +249,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                                 
                                                 // remove attachment from idea
                                                 _alist.loop(function(val,idx){
-                                                        if (val.docId === attachment.docId){
+                                                        if (val.docId === attachment){
                                                                 idx2 = idx;        
                                                         }        
                                                 });
@@ -266,7 +264,9 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                         aA.forEach(function(attachment){
                                                 _alist.alter("push", attachment);
                                         });
-                                }       
+                                }
+                                
+                                _store.set("attachments", JSON.parse(_alist.toJSON()));    
                         };
                         
                         _widget.zoom = function(event, node){

@@ -495,7 +495,7 @@ textarea.a-desc::-webkit-input-placeholder{
     margin-top: 5px;
 }
 
-#attach-twocents .avatar, #attach-writetwocents .avatar{
+.attach-twocents .avatar, .attach-writetwocents .avatar{
     width: 30px;
     height: 30px;
     border-radius: 15px;

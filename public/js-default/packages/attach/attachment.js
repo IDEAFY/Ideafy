@@ -207,6 +207,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 ui.resetEdit();       
                                         }
                                 }, function(err){console.log(err);});
+                                
+                                CDB = cdb;
                         };
                         
                         ui.resetEdit = function(){
@@ -530,8 +532,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                                
                                 return promise;
                         };
-                        
-                        CDB = cdb;
                 }
                 
                 return function AttachmentFactory($type){

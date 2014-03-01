@@ -256,7 +256,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         };
                         
                         _widget.refresh = function(){
-                                _widget.getIdea(_store.get("_id"));        
+                                return _widget.getIdea(_store.get("_id"));        
                         };
                         
                         _widget.action = function(event, node){

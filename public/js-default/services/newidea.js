@@ -202,6 +202,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 document.getElementById("newidea-popup").classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
                                 
+                                
+                                // reset attachment UI and delete file from server if applicable
+                                if (_addAttachmentUI.getFileName()) Utils.deleteAttachmentFile(_store.get("_id"), _addAttachmentUI.getFileName());
+                                _widget.resetAttachment();
+                                
+                                // if upload request in progress abort it
+                                _addAttachmentUI.abortReq();
+                                
                                 // reset _store and _error
                                 _store.unsync();
                                 _store.reset({
@@ -237,13 +245,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 
                                 // hide flag list
                                 _widget.dom.querySelector(".idealang ul").classList.add("invisible");
-                                
-                                // reset attachment UI and delete file from server if applicable
-                                if (_addAttachmentUI.getFileName()) Utils.deleteAttachmentFile(_addAttachmentUI.getFileName());
-                                _widget.resetAttachment();
-                                
-                                // if upload request in progress abort it
-                                _addAttachmentUI.abortReq();      
+                                      
                         };
                         
                         _widget.resetError = function(event, node){

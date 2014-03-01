@@ -214,7 +214,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         ui.dom.querySelector(".a-preview").classList.remove("invisible");
                                         
                                         cdb.set("fileName", fileName);
-                                        cdb.set("docId", _id);
+                                        cdb.set("docId", parentDoc);
                                         if (!cdb.get("name")) cdb.set("name", fileName);
                                         cdb.set("type", "file");
                                                                
@@ -297,7 +297,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 
                                 ui.abortReq();
                                 
-                                ui.deleteAttachmentFile(file);
+                                ui.deleteAttachmentFile(parentDoc, file);
                                 
                                 // reset attachment
                                 ui.reset(parentDoc, parentType, aList);   

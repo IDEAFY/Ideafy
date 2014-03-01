@@ -321,7 +321,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.zoom = function(event, node){
                                 var idx = node.getAttribute("data-alist_id");
                                 _attachmentUI.reset(_alist.get(idx).docId);
-                                document.querySelector("#cache").classList.add("appear");      
+                                document.querySelector(".cache").classList.add("appear");      
                         };
                         
                         _widget.vote = function(event, node){

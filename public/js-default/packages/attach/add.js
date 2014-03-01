@@ -150,12 +150,18 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.selectCat = function(event, node){
-                                // if "other" is selected display category input field, else set attachment category value
-                                if (node.value ===  node.lastChild.innerHTML){
-                                        cdb.set("custom", true);
-                                        for (i=1, l=cats.length; i<=l;i++){
-                                                node.classList.remove("acolor"+i); 
-                                        };
+                                // if "other" is selected display category input field, if custom category is selected remove color, else set attachment category value
+                                if (node.selectedIndex > cats.length){
+                                        if (node.value ===  node.lastChild.innerHTML){
+                                                cdb.set("custom", true);
+                                        }
+                                        else{
+                                                cdb.set("custom", false);
+                                                for (i=1, l=cats.length; i<=l;i++){
+                                                        node.classList.remove("acolor"+i); 
+                                                };
+                                                cdb.set("category", node.value);
+                                        }
                                         node.classList.add("acolor");       
                                 }
                                 else{

@@ -121,10 +121,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
                         
-                        // reset add attachment UI
-                        _addAttachmentUI.reset("new", "idea", _alist);
-                        
-                        _widget.showLang = function(event, node){
+                       _widget.showLang = function(event, node){
                                 event.stopPropagation();
                                 event.preventDefault();
                                 _widget.dom.querySelector(".idealang ul").classList.remove("invisible");        
@@ -243,7 +240,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 
                                 // reset attachment UI and delete file from server if applicable
                                 if (_addAttachmentUI.getFileName()) Utils.deleteAttachmentFile(_addAttachmentUI.getFileName());
-                                _addAttachmentUI.reset("new", "idea", _alist);
+                                _widget.resetAttachment();
                                 
                                 // if upload request in progress abort it
                                 _addAttachmentUI.abortReq();      
@@ -342,6 +339,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         });
                                 }
                         };
+                        
+                        _widget.resetAttachment();
                         
                         ["added", "updated", "deleted"].forEach(function(val){
                                 _alist.watch(val, function(){

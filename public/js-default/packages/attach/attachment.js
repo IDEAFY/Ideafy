@@ -43,7 +43,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 }
                                         },
                                         setDescription : function(desc){
-                                                (!desc && !this.classList.contains("a-edit")) ? this.setAttribute("style", "display:none") : this.setAttribute("style", "display:block") ;      
+                                                console.log(desc, this.classList.contains("a-edit"));
+                                                (desc || this.classList.contains("a-edit")) ? this.setAttribute("style", "display:block") : this.setAttribute("style", "display:none") ;      
                                         },
                                         displayTwocentList : function(twocents){
                                                 (twocents && twocents.length) ? this.classList.remove("invisible") : this.classList.add("invisible");

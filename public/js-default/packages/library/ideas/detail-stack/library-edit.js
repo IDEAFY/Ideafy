@@ -236,11 +236,11 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                         _widget.manageAttachments = function(){
                                 var aA = _addedAttachments, rA = _removedAttachments;
                                 if (rA.length){
-                                        rA.forEach(function(attachment){
+                                        rA.forEach(function(attachment_id){
                                                 var idx1 = -1, idx2 = -1;
                                                 // check if attachment was just added
                                                 for (i=0; i<aA.length; i++){
-                                                        if (aA[i].docId === attachment){
+                                                        if (aA[i] === attachment_id){
                                                                 idx1 = i;
                                                                 break;
                                                         }                
@@ -249,24 +249,20 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                                 
                                                 // remove attachment from idea
                                                 _alist.loop(function(val,idx){
-                                                        if (val.docId === attachment){
+                                                        if (val.docId === attachment_id){
                                                                 idx2 = idx;        
                                                         }        
                                                 });
                                                 if (idx2 > -1) _alist.alter("splice", idx2, 1);
                                                 
                                                 // remove attachment from database
-                                                _addAttachmentUI.deleteAttachmentDoc(attachment.docId);
+                                                _addAttachmentUI.deleteAttachmentDoc(attachment_id);
                                         });                            
                                 }
                                 
-                                if (aA.length){
-                                        aA.forEach(function(attachment){
-                                                _alist.alter("push", attachment);
-                                        });
-                                }
-                                
-                                _store.set("attachments", JSON.parse(_alist.toJSON()));    
+                                if (aA.length || rA.length){
+                                        _store.set("attachments", JSON.parse(_alist.toJSON()));
+                                }    
                         };
                         
                         _widget.zoom = function(event, node){

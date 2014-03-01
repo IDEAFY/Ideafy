@@ -68,7 +68,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         });
                                                 }
                                         },
-                                        setAttachmentCat : function(docId){
+                                        setAttachmentCat : function(uploaded){
                                                 if (!uploaded){
                                                         var custom = user.get("categories") || [], arr, i, l, key,
                                                                 res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";

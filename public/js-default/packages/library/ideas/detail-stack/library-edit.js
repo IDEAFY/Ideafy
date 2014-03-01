@@ -249,8 +249,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                                 // remove attachment from idea
                                                 _alist.loop(function(val,idx){
                                                         if (val.docId === attachment.docId){
-                                                                idx2 = idx;
-                                                                break;        
+                                                                idx2 = idx;        
                                                         }        
                                                 });
                                                 if (idx2 > -1) _alist.alter("splice", idx2, 1);

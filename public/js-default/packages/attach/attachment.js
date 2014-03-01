@@ -45,7 +45,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         setDescription : function(desc){
                                                 if (desc && desc !== "\n") {
                                                         this.classList.remove("invisible");
-                                                        this.innerHTML = desc.replace(/\n/g, "<br/>");
+                                                        this.innerHTML = desc;
                                                 }
                                                 else this.classList.add("invisible");    
                                         },
@@ -302,7 +302,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.updateDesc = function(event, node){
-                                cdbEdit.set("description", node.innerHTML.replace(/<br\s*[\/]?>/gi, "\n"));        
+                                cdbEdit.set("description", node.innerText);        
                         };
                         
                         ui.selectCat = function(event, node){

@@ -235,6 +235,8 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                          */
                         _widget.manageAttachments = function(){
                                 var aA = _addedAttachments, rA = _removedAttachments;
+                                console.log(aA);
+                                console.log(rA);
                                 if (rA.length){
                                         rA.forEach(function(attachment){
                                                 var idx1 = -1, idx2 = -1;

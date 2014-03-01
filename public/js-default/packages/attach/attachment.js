@@ -43,7 +43,11 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 }
                                         },
                                         setDescription : function(desc){
-                                                (desc) ? this.classList.remove("invisible") : this.classList.add("invisible");    
+                                                if (desc) {
+                                                        this.classList.remove("invisible");
+                                                        this.innerHTML = desc;
+                                                }
+                                                else this.classList.add("invisible");    
                                         },
                                         displayTwocentList : function(twocents){
                                                 (twocents && twocents.length) ? this.classList.remove("invisible") : this.classList.add("invisible");

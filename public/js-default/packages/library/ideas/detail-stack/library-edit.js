@@ -226,6 +226,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                  
                                 // add attachment id to the list of attachments to be removed (will be done upon edit confirmation)
                                 _removedAttachments.push(id);
+                                _alist.alter("splice", idx, 1);
                                 node.classList.remove("pressed");       
                         };
                         

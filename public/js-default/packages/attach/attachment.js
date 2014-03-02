@@ -184,7 +184,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         
                         ui.reset = function reset(id){
                                 // complete UI build (twocents) and display
-                                var _domWrite = ui.dom.querySelector(".attach-writetwocents");
+                                var _domWrite = ui.dom.querySelector("#attach-writetwocents");
                                 
                                 _twocentWriteUI.reset(id);
                                 _attachmentTwocentListUI.reset(id);
@@ -277,7 +277,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         };
                         
                         ui.displayWriteTwocent = function(event, node){
-                                ui.dom.querySelector(".attach-writetwocents").classList.remove("invisible");
+                                ui.dom.querySelector("#attach-writetwocents").classList.remove("invisible");
                                 node.classList.remove("a-pressed");
                         };
                         

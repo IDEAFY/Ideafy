@@ -70,14 +70,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 cancel();
                         }
                         else{
-                                switch(view){
-                                        case "attach":
-                                                document.querySelector(".attach-writetwocents".classList.add("invisible"));
-                                                break;
-                                        default:
-                                                document.getElementById(view+"-writetwocents").classList.add("invisible");
-                                                break;
-                                };
+                                document.getElementById(view+"-writetwocents").classList.add("invisible");
                         }
                 };
                 
@@ -96,14 +89,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         else{
                                                 // hide write interface
                                                 if (editTC === "new"){
-                                                        switch(view){
-                                                                case "attach":
-                                                                        document.querySelector(".attach-writetwocents").classList.add("invisible");
-                                                                        break;
-                                                                default:
-                                                                        document.getElementById(view+"-writetwocents").classList.add("invisible");
-                                                                        break;
-                                                                }
+                                                        document.getElementById(view+"-writetwocents").classList.add("invisible");
                                                 }
                                                 else{
                                                         cancel();

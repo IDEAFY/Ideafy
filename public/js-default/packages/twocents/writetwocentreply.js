@@ -58,7 +58,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                         this.cancel = function(event, node){
                                 node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
                                 // reset reply message
-                                reply.reset(replyTemplate);
+                                reply.reset({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0});
                                 // hide twocent writing interface
                                 (cancel) ? cancel():$parent.classList.add("invisible");
                         };
@@ -85,7 +85,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                                                 else{
                                                         // hide writing interface
                                                         $parent.classList.add("invisible");
-                                                        
                                                 }              
                                         });
                                 }

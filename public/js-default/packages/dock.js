@@ -35,8 +35,8 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			_widget.setDisplay = function(){
 			     var W = window.innerWidth,
 			           H = window.innerHeight,
-			           w = _widget.dom.clientWidth,
-			           h = _widget.dom.clientHeight;
+			           w = _widget.dom.clientWidth || 1024,
+			           h = _widget.dom.clientHeight || 748;
 			           
 			     if (W>w) _widget.dom.setAttribute("style", "left:50%; margin-left:-"+ w/2 +";");
 			     if (H>h) _widget.dom.setAttribute("style", "top:50%; margin-top:-"+ h/2 +";");

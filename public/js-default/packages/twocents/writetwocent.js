@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/utils"],
-        function(Widget, Config, ModelPlugin, EventPlugin, Store, Utils){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/utils", "lib/spin.min"],
+        function(Widget, Config, ModelPlugin, EventPlugin, Store, Utils, Spinner){
                 
                 return function WriteTwocentConstructor($view){
                 
@@ -17,6 +17,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                     twocent = new Store({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": [now.getFullYear(), now.getMonth(), now.getDate()], "datemod": "", "plusones": 0, "replies": []}),
                     currentDoc,
                     cancel,
+                    publishSpinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: 0, left: 0}),
                     view = $view || "public",
                     editTC = "new", // to distinguish between new and edit mode
                     position=0; // to know which position to update
@@ -76,6 +77,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                 
                 ui.publish = function(event, node){
                         node.setAttribute("style", "-webkit-box-shadow: none; background: #8cab68;");
+                        publishSpinner.spin(node);
                         // message should not be empty (or do nothing)
                         if (twocent.get("message")){
                                 var     content = JSON.parse(twocent.toJSON()), json, type;
@@ -96,7 +98,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 }
                                                 //need to reset store
                                                 ui.reset(currentDoc);
-                                        }               
+                                        }
+                                        publishSpinner.stop();             
                                 }, ui);
                         }
                 };

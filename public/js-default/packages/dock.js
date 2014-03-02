@@ -37,6 +37,8 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			           H = window.innerHeight,
 			           w = _widget.dom.clientWidth || 1024,
 			           h = _widget.dom.clientHeight || 748;
+			         
+			     console.log(W, w);
 			           
 			     if (W>w) _widget.dom.setAttribute("style", "left:50%; margin-left:-"+ w/2 +"px;");
 			     if (H>h) _widget.dom.setAttribute("style", "top:50%; margin-top:-"+ h/2 +"px;");

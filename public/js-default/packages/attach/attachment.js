@@ -189,6 +189,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 _twocentWriteUI.reset(id);
                                 _attachmentTwocentListUI.reset(id);
                                 
+                                // reset voting
+                                _voted = false;
+                                
                                 ui.dom.classList.remove("invisible");
                                 _twocentWriteUI.place(_domWrite);
                                 

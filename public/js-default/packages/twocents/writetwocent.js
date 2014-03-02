@@ -100,7 +100,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 //need to reset store
                                                 ui.reset(currentDoc);
                                         }
-                                        node.setAttribute("style", "-webkit-box-shadow: none; background: #8cab68;");
+                                        node.setAttribute("style", "background: #8cab68;");
                                         publishSpinner.stop();             
                                 }, ui);
                         }

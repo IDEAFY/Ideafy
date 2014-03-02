@@ -70,13 +70,14 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         },
                                         setAttachmentCat : function(uploaded){
                                                 if (!uploaded){
-                                                        var custom = user.get("categories") || [], arr, i, l, key,
+                                                        var custom = [], arr, i, l, key,
                                                                 res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
-                                                                for (i=0, l=cats.length; i<l;i++){
-                                                                        key = cats[i];
-                                                                        res+="<option>"+_labels.get(key)+"</option>";
-                                                                }
-                                                                if (custom.length){
+                                                        if (user.get("categories")) custom = user.get("categories");
+                                                        for (i=0, l=cats.length; i<l;i++){
+                                                                key = cats[i];
+                                                                res+="<option>"+_labels.get(key)+"</option>";
+                                                        }
+                                                        if (custom.length){
                                                                 for (i=0, l=custom.length; i<l;i++){
                                                                         res+="<option>"+custom[i]+"</option>";
                                                                 }

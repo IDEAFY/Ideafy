@@ -66,6 +66,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                 "alist": new Model(_alist,{
                                         setCat : function(cat){
                                                 var cats = Config.get("cat"), colors = Config.get("catColors"), idx = cats.indexOf(cat);
+                                                
                                                 if (idx > -1) {
                                                         this.innerHTML = _labels.get(cat);
                                                         this.setAttribute("style", "color:" + colors[idx]);

@@ -59,6 +59,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                                 node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
                                 // hide twocent writing interface
                                 (cancel) ? cancel():$parent.classList.add("invisible");
+                                reply.set("message", "");
                         };
                 
                         this.publish = function(event, node){

@@ -76,9 +76,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                                         
                                         json = {docId: currentIdea, type: type, position: position, twocent: currentTwocent, reply: content};
                                         transport.request("WriteTwocent", json, function(result){
+                                                console.log(result);
                                                 node.setAttribute("style", "background: #8cab68;");
                                                 publishSpinner.stop(); 
-                                                console.log(result);
                                                 if (result !== "ok"){
                                                         alert(Config.get("labels").get("somethingwrong"));        
                                                 }

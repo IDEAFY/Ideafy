@@ -21,14 +21,9 @@
   	<link rel="stylesheet" href="css/r2-default.css">
   	<script type="text/javascript" charset="utf-8">
         function onLoad(){
-        	var app = document.createElement('script'), hRatio, wRatio;
+        	var app = document.createElement('script');
         	
-        	hRatio = window.innerHeight/748;
-        	wRatio = window.innerWidth/1024;
-        	
-        	(hRatio >= wRatio) ? document.body.setAttribute("style", "-webkit-transform : scale("+wRatio+");") : document.body.setAttribute("style", "-webkit-transform : scale("+hRatio+");");
-        	
-            app.setAttribute("data-main", "js-default/build");
+        	app.setAttribute("data-main", "js-default/build");
             app.setAttribute("src", "js-default/libs/require.js");
             document.head.appendChild(app);
         }

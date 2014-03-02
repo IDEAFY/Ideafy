@@ -129,6 +129,17 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			
 	       
                /*
+                * Set display scale
+                */
+                _widget.setDisplayScale = function(){
+                        var hRatio = _widget.dom.height / window.innerHeight,
+                              wRatio = _widget.dom.width / window.innerWidth;
+                         
+                        if (hRatio >= wRatio) _widget.dom.setAttribute("style", "-webkit-transfrom: scale("+wRatio+");");
+                        else  _widget.dom.setAttribute("style", "-webkit-transfrom: scale("+hRatio+");");    
+                };
+               
+               /*
                 * Watch for view changing events
                 */
                         

@@ -57,6 +57,9 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 				_newIdea = new NewIdea();
                                 _new2q = new New2Q();
                                 _tips = new Tips();
+                                
+                                // scale to fit window
+                                _widget.displayScale();
 			};
 			
 			/*

@@ -17,7 +17,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                     twocent = new Store({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": [now.getFullYear(), now.getMonth(), now.getDate()], "datemod": "", "plusones": 0, "replies": []}),
                     currentDoc,
                     cancel,
-                    publishSpinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: 0, left: 0}),
+                    publishSpinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 24}),
                     view = $view || "public",
                     editTC = "new", // to distinguish between new and edit mode
                     position=0; // to know which position to update
@@ -76,12 +76,13 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                 };
                 
                 ui.publish = function(event, node){
-                        node.setAttribute("style", "-webkit-box-shadow: none; background: #8cab68;");
-                        publishSpinner.spin(node);
+                        node.setAttribute("style", "-webkit-box-shadow: none; background: none;");
+                        
                         // message should not be empty (or do nothing)
                         if (twocent.get("message")){
                                 var     content = JSON.parse(twocent.toJSON()), json, type;
-                                        
+                                
+                                publishSpinner.spin(node);
                                 (editTC === "new") ? type = "new" : type = "edit";
                                 json = {docId: currentDoc, type: type, position: position, twocent: content};
                                 transport.request("WriteTwocent", json, function(result){
@@ -99,6 +100,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 //need to reset store
                                                 ui.reset(currentDoc);
                                         }
+                                        node.setAttribute("style", "-webkit-box-shadow: none; background: #8cab68;");
                                         publishSpinner.stop();             
                                 }, ui);
                         }

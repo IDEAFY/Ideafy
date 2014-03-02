@@ -172,7 +172,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "ser
                         
                         ui.reply = function(event, node){
                                 var position = node.getAttribute("data-twocents_id"),
-                                    parent = document.querySelector(".writePublicTwocentReply[data-twocents_id='"+position+"']"),
+                                    parent = ui.dom.querySelector(".writePublicTwocentReply[data-twocents_id='"+position+"']"),
                                     writeUI = new WriteTwocentReply(parent),
                                     frag = document.createDocumentFragment();
                                     
@@ -190,7 +190,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "ser
                                 var position = node.getAttribute("data-twocents_id"),
                                     replies = store.get(position).replies,
                                     name = node.getAttribute("name"),
-                                    dom = document.querySelector(".displayReplies[data-twocents_id='"+position+"']"); 
+                                    dom = ui.dom.querySelector(".displayReplies[data-twocents_id='"+position+"']"); 
                                        
                                 if (name === "show"){
                                         // show twocent replies

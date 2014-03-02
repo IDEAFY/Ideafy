@@ -80,7 +80,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "ser
                         
                         ui.reply = function(event, node){
                                 var id = node.getAttribute("data-reply_id"),
-                                    twocentParent = document.querySelector(".twocent[data-twocents_id='"+$tc+"']"),
+                                    twocentParent = ui.dom.parentNode,
                                     parent = twocentParent.querySelector(".writePublicTwocentReply[data-reply_id='"+id+"']"),
                                     frag = document.createDocumentFragment(),
                                     writeUI = new WriteTwocentReply(parent);

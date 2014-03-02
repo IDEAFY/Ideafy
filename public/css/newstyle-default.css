@@ -72,11 +72,10 @@ input::-webkit-file-upload-button{
     height:748px;
     overflow-y: hidden;
     overflow-x: hidden;
-    top: 50%;
-    left: 50%;
+    /*top: 50%;*/
     position: absolute;
-    margin-top: -374px;
-    margin-left: -512px;
+    /*margin-top: -374px;
+    margin-left: -512px;*/
 }
 
 #brainstorm{

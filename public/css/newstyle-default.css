@@ -74,6 +74,7 @@ input::-webkit-file-upload-button{
     overflow-x: hidden;
     /*top: 50%;*/
     position: absolute;
+    overflow: auto;
     /*margin-top: -374px;
     margin-left: -512px;*/
 }

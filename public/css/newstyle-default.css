@@ -937,7 +937,8 @@ ul.notify-list{
     background: white;
     top: 50%;
     margin-top: -240px;
-    left: 101%;
+    left: 0;
+    margin-left: -250px;
 }
 
 .help-doctor{

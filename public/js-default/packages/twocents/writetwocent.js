@@ -66,7 +66,19 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                 ui.cancel = function(event, node){
                         node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
                         // hide twocent writing interface -- currently does not work if it is in edit mode
-                        (cancel)?cancel(): document.getElementById(view+"-writetwocents").classList.add("invisible");
+                        if (cancel){
+                                cancel();
+                        }
+                        else{
+                                switch(view){
+                                        case "attach":
+                                                document.querySelector(".attach-writetwocents".classList.add("invisible"));
+                                                break;
+                                        default:
+                                                document.getElementById(view+"-writetwocents").classList.add("invisible");
+                                                break;
+                                };
+                        }
                 };
                 
                 ui.publish = function(event, node){
@@ -77,14 +89,25 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         
                                 (editTC === "new") ? type = "new" : type = "edit";
                                 json = {docId: currentDoc, type: type, position: position, twocent: content};
-                                console.log("publishing towcent :", json);
                                 transport.request("WriteTwocent", json, function(result){
                                         if (result !== "ok"){
                                                 alert(Config.get("labels").get("somethingwrong"));        
                                         }
                                         else{
                                                 // hide write interface
-                                                (editTC === "new")?document.getElementById(view+"-writetwocents").classList.add("invisible"):cancel();
+                                                if (editTC === "new"){
+                                                        switch(view){
+                                                                case "attach":
+                                                                        document.querySelector(".attach-writetwocents").classList.add("invisible");
+                                                                        break;
+                                                                default:
+                                                                        document.getElementById(view+"-writetwocents").classList.add("invisible");
+                                                                        break;
+                                                                }
+                                                }
+                                                else{
+                                                        cancel();
+                                                }
                                                 //need to reset store
                                                 ui.reset(currentDoc);
                                         }               

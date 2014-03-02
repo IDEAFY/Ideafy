@@ -938,10 +938,10 @@ function AppUtils(){
         
         // Commenting on ideas
         this.writeTwocent = function(json, onEnd) {
-                var cdb = new _CouchDBDocument();
+                var cdb = new _CouchDBDocument(), increment = 0, reason = "";
                 _getDocAsAdmin(json.docId, cdb)
                 .then(function(){
-                        var tc = cdb.get("twocents").concat(), increment = 0, reason = "";
+                        var tc = cdb.get("twocents").concat();
                         if (json.type === "new"){
                                 // new twocents are always appended at the top of the list
                                 tc.unshift(json.twocent);

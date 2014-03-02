@@ -362,8 +362,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         // update polling list
                                                         Config.get("observer").notify("update-polling");
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
-                                                        document.getElementById("cache").classList.remove("appear");
-                                                        document.getElementById("ratingPopup").classList.remove("appear1");
+                                                        document.getElementById("cache").classList.remove("appear1");
+                                                        document.getElementById("ratingPopup").classList.remove("appear");
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                                                 }
                                         });

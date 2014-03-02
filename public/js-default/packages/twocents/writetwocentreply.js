@@ -83,6 +83,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                                                 else{
                                                         // hide writing interface
                                                         $parent.classList.add("invisible");
+                                                        reply.set("message", "");
                                                 }              
                                         });
                                 }

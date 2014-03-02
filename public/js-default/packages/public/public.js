@@ -326,6 +326,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                   
                                   // only do it for the current UI   
                                  _ideaList.watch("deleted", function(){
+                                         console.log("deleted");
                                          if (wid === _stack.getStack().getCurrentScreen()){
                                                 _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");
                                                 if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");

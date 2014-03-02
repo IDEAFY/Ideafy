@@ -15,10 +15,11 @@
     width: 100%;
     position: absolute;
     text-align:center;
+    overflow: auto;
 }
 
 #login img{
-    margin-top: 147px;
+    margin-top: 40px;
 }
 
 #login-stack	{

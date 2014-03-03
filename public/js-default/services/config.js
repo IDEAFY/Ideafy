@@ -1,8 +1,8 @@
 /**
  * https://github.com/TAIAUT/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY
  */
 
 define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"], 
@@ -11,16 +11,16 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
         
         this.reset = function(){
                  
-                //_location = "http://37.153.97.128:3113"; 
-                _location = "http://8.19.34.68:1664";
+                _location = "http://37.153.97.128:3113"; 
+                //_location = "http://8.19.34.68:1664";
                 //_location = location.origin;
                 _version = "1.2.2";
                 _socket = io.connect(_location);
                 _transport = new Transport(_socket);
                 _user =  new CouchDBDocument();
                 _observer = new Observable();
-                _categories = ["bus", "mkt", "notes", "arch", "spec", "planning"],
-                _catColors = ["#9ac9cd", "#f27b3d", "#bd262c", "#5f8f28", "#657b99", "#a000a1"],
+                _categories = ["bus", "mkt", "notes", "arch", "spec", "planning"];
+                _catColors = ["#9ac9cd", "#f27b3d", "#bd262c", "#5f8f28", "#657b99", "#a000a1"];
                 _user.setTransport(_transport);
                 
                 _config.reset({
@@ -51,6 +51,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                                 "connections" : [],
                                 "taiaut_decks" : ["INT"],
                                 "custom_decks" : [],
+                                "categories": [],
                                 "active_deck": "INT",
                                 "occupation" : {
                                         "situation" : "",

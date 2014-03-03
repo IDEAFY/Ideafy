@@ -5,16 +5,19 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Store, Spinner){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils", "Promise", "attach/add"],
+        function(Widget, Map, Model, Event, Place, Config, Store, Spinner, Utils, Promise, AddAttachment){
                 
                 return function newIdeaConstructor(){
                 
                         var _widget = new Widget(),
-                            _store = new Store(Config.get("ideaTemplate")),
-                            _languages = new Store(Config.get("userLanguages")),
-                            _user = Config.get("user"),
-                            _resetLang = function(){
+                              _addAttachmentUI = new AddAttachment(),
+                              _store = new Store(Config.get("ideaTemplate")),
+                              _languages = new Store(Config.get("userLanguages")),
+                              _user = Config.get("user"),
+                              _transport = Config.get("transport"),
+                              _alist = new Store([]),
+                              _resetLang = function(){
                                 // set language to the user's language by default
                                 var l = _user.get("lang").substring(0,2);
                                 _store.set("lang", l);
@@ -22,12 +25,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         (v.name === l) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
                                 });        
                             },
-                            _labels = Config.get("labels"),
-                            _error = new Store({"error": ""}),
-                            spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
+                              _labels = Config.get("labels"),
+                              _error = new Store({"error": ""}),
+                              spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 340}).spin();
                             
                         // CouchDBStore setup    
-                        _store.setTransport(Config.get("transport"));
+                        _store.setTransport(_transport);
                         
                         // reset languages
                         _resetLang();
@@ -54,6 +57,29 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 (visibility === "public") ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         }
                                 }),
+                                "alist": new Model(_alist, {
+                                        setType : function(type){
+                                                var node = this;
+                                                switch(type){
+                                                        case "pic":
+                                                                break;
+                                                        case "drawing":
+                                                                break; 
+                                                        default:
+                                                                node.setAttribute("style",  "background-image:url('img/brainstorm/importDisable100.png');");
+                                                                break;
+                                                }
+                                        },
+                                        setBg : function(cat){
+                                                var colors = Config.get ("catColors"), node =this;
+                                                
+                                                node.setAttribute("style", "background-color: transparent;");
+                                                
+                                                Config.get("cat").forEach(function(val, idx){
+                                                        if (val === cat) node.setAttribute("style","background-color:"+ colors[idx]);
+                                                });
+                                        }       
+                                }),
                                 "select" : new Model (_languages, {
                                         setBg : function(name){
                                                 this.setAttribute("style", "background-image:url('img/flags/"+name+".png');");
@@ -63,6 +89,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 (selected) ? this.classList.add("selected") : this.classList.remove("selected");        
                                         } 
                                 }),
+                                "place" : new Place({"AddAttachment": _addAttachmentUI}),
                                 "labels" : new Model(_labels),
                                 "errormsg" : new Model(_error, {
                                         setError : function(error){
@@ -85,7 +112,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "newideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:touchstart, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: touchstart, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: touchstart, selectFlag; listen: touchend, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility"></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:touchstart, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: touchstart, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: touchstart, selectFlag; listen: touchend, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend" data-labels="bind:innerHTML, alegend"></legend><div data-place="place:AddAttachment"></div><ul class="a-list" data-alist="foreach" style="display:none"><li data-alist="bind:setBg, category"><label class="a-type" data-alist="bind:setType, type"></label><label class="a-name" data-alist="bind:innerHTML, name"></label><div class="a-del" data-newideaevent="listen:touchstart, removeAttachment"></div></li></ul><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-labels="bind: innerHTML, publicwarning" data-newidea="bind: setWarning, visibility" data-newideaevent="listen:mousedown, closeWarning"><div data-labels="bind: innerHTML, publicwarning"></div><div class="close-warning"></div></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("newidea-popup"));
@@ -111,6 +138,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _widget.dom.querySelector(".idealang ul").classList.add("invisible");        
                         };
                         
+                        _widget.resetAttachment = function(){
+                                _addAttachmentUI.reset("new", "idea", _alist);
+                        };
+                        
+                        _widget.removeAttachment = function(event, node){
+                                var idx = parseInt(node.getAttribute("data-alist_id"), 10),
+                                      docId = _alist.get(idx).docId;
+                                
+                                _alist.alter("splice", idx, 1);
+                                Utils.deleteAttachmentDoc(docId);
+                        };
+                        
                         _widget.toggleVisibility = function(event, node){
                                 if (node.value === "1"){
                                         _store.set("visibility", "private");
@@ -123,6 +162,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
                                 _widget.dom.querySelector(".publicwarning").classList.add("invisible");
+                        };
+                        
+                        _widget.closeWarning = function(event, node){
+                                node.parentNode.classList.add("invisible");        
                         };
                         
                         _widget.closePopup = function closePopup(){

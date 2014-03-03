@@ -1,8 +1,8 @@
 /**
  * https://github.com/TAIAUT/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY
  */
 
 define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"], 
@@ -14,11 +14,13 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                //_location = "http://8.19.34.68:1664";
                 _location = "http://37.153.96.26:1664"; // uncomment for app deployment
                 //_location = location.origin;
-                _version = "1.2.1";
+                _version = "1.2.2";
                 _socket = io.connect(_location);
                 _transport = new Transport(_socket);
                 _user =  new CouchDBDocument();
                 _observer = new Observable();
+                _categories = ["bus", "mkt", "notes", "arch", "spec", "planning"];
+                _catColors = ["#9ac9cd", "#f27b3d", "#bd262c", "#5f8f28", "#657b99", "#a000a1"];
                 
                 _user.setTransport(_transport);
                 
@@ -30,6 +32,8 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                         db : "ideafy",
                         user : _user,
                         observer : _observer,
+                        cat : _categories,
+                        catColors : _catColors,
                         polling_interval : 60000,
                         userTemplate : {
                                 "lastname" : "",
@@ -49,6 +53,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                                 "taiaut_decks" : ["INT"],
                                 "custom_decks" : [],
                                 "active_deck": "INT",
+                                "categories":[],
                                 "occupation" : {
                                         "situation" : "",
                                         "job" : "",

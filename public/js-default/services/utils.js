@@ -1,17 +1,19 @@
 /**
  * https://github.com/TAIAUT/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
- */ 
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY
+ */
 
 define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument"], function(Config, Observable, Promise, LocalStore, Transport, Store){
-        var _utils = {};
+        var _utils = {},
+              user = Config.get("user"),
+              transport = Config.get("transport");
 	
 	_utils.formatDate = function(array){
 	       var month = array[1] + 1;
 	       
-	       if (Config.get("user").get("lang").search("en") === 0){
+	       if (user.get("lang").search("en") === 0){
 	               return month + "/" + array[2] + "/" + array[0];
 	       }
 	       else {
@@ -303,23 +305,26 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         */
         _utils.checkSocketStatus = function(){
                 var sock = Config.get("socket"),
-                     obs = Config.get("observer"),
-                     usr = Config.get("user");
+                     obs = Config.get("observer");
                 // reconnect socket if not connected
                 if (!sock.socket.connected){
                         sock.socket.reconnect();
                         obs.notify("reconnect", "all");
                 }
                 // if socket is ok but user is offline reconnect user
-                else if (!usr.get("online")) obs.notify("reconnect", "user");              
+                else if (!user.get("online")) obs.notify("reconnect", "user");              
         };
                 
         /*
         * Disconnect the socket
         */
         _utils.disconnectSocket = function(){
-                Config.get("socket").socket.disconnect();
-                Config.get("observer").notify("disconnect");      
+                user.set("online", false);
+                user.upload()
+                .then(function(){
+                         Config.get("socket").socket.disconnect();
+                        Config.get("observer").notify("disconnect");        
+                });       
         };
                 
         /**
@@ -335,7 +340,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                    
                 // retrieve ideafy-data
                 local.sync("ideafy-data");
-                Config.get("transport").request("Lang", json, function(result) {
+                transport.request("Lang", json, function(result) {
                         if (result === "nok") {
                                 local.set("labels", Config.get("defaultLabels"));
                                 Config.set("lang", "en-us");
@@ -372,7 +377,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	       }
 	       else {
 		      avatars.set(id, "in progress");
-		      Config.get("transport").request("GetAvatar", {id: id}, function(result){
+		      transport.request("GetAvatar", {id: id}, function(result){
 		              if (result.error){
 		                      promise.reject();
 		              }
@@ -394,7 +399,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         };
                  
         _utils.getAvatarByFileName = function(filename, onEnd){
-                Config.get("transport").request("GetAvatar", {file: filename}, function(result){
+                transport.request("GetAvatar", {file: filename}, function(result){
                         onEnd(result);    
                 });         
         };
@@ -406,8 +411,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         * @Returns {Object} result the grade information in the user's language
         */
         _utils.getGrade = function(ip, onEnd){
-	       var transport = Config.get("transport"),
-	             user = Config.get("user"); 
 	       transport.request("GetGrade", {ip: ip, lang: user.get("lang")}, function(res){
 	               onEnd(res);        
 	       });
@@ -420,8 +423,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         * @Returns {Object} result the grade information in the user's language
         */
         _utils.getAchievements = function(userid, onEnd){
-                var transport = Config.get("transport"),
-                      user = Config.get("user");
                 transport.request("GetAchievements", {userid: userid, lang: user.get("lang")}, function(res){
                         onEnd(res);
                 });
@@ -434,8 +435,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         * @Returns {Object} result the user information (based on user privacy settings)
         */
         _utils.getUserDetails = function(userid, onEnd){
-                var transport = Config.get("transport");
-                       
                 transport.request("GetUserDetails", {userid: userid}, function(res){
                         onEnd(res);
                 });
@@ -445,7 +444,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         *  A function that extracts a list of all user contact ids from a user document
         */
         _utils.getUserContactIds = function(){
-                var res = [], contacts = Config.get("user").get("connections");
+                var res = [], contacts = user.get("connections").concat();
                 contacts.forEach(function(contact){
                         if (contact.type === "user") {res.push(contact.userid);}        
                 });
@@ -458,7 +457,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         * @Returns {Object} percentage and if applicable an array of string with the items that are missing
         */
         _utils.checkProfileCompletion = function(){
-                var user = Config.get("user"), labels = Config.get("labels"), res = {"percentage": 0, "missing":[]};
+                var labels = Config.get("labels"), res = {"percentage": 0, "missing":[]};
                 if (user.get("firstname") && user.get("lastname")){ res.percentage += 10; }
                 if (user.get("birthdate").length === 3){ res.percentage += 10; }
                 else { res.missing.push(labels.get("enterbirthdate")); }
@@ -550,7 +549,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 
                 json.docId = docId;
                 json.file = fileName;
-                Config.get("transport").request("DeleteAttachment", json, function(res){
+                transport.request("DeleteAttachment", json, function(res){
                         (res === "ok") ? promise.fulfill() : promise.reject() ;     
                 });
                 return promise;       
@@ -562,7 +561,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         _utils.deleteAttachmentDoc = function(docId){
                 var promise = new Promise(),
                       cdb = new Store();
-                cdb.setTransport(Config.get("transport"));
+                cdb.setTransport(transport);
                 cdb.sync(Config.get("db"), docId)
                 .then(function(){
                         var type = "", id = cdb.get("docId");

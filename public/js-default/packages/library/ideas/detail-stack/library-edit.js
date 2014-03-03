@@ -2,7 +2,7 @@
  * https://github.com/TAIAUT/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Copyright (c) 2014 IDEAFY
  */
 
 define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise", "Place.plugin", "attach/attachment", "attach/add"], 

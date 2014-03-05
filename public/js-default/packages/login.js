@@ -176,6 +176,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                         
                         _signupForm.signup = function signup(event, node){
                                 var email = _store.get("email"),
+                                      fn = _store.get("firstname"),
+                                      ln = _store.get("lastname"),
                                     password = _store.get("password"),
                                     pwdConfirm = _store.get("confirm-password");
                                 node.classList.remove("btn-ready");

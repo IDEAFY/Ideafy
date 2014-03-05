@@ -6,8 +6,8 @@
  */
 
 define(["OObject" ,"Amy/Stack-plugin", 
-        "service/map", "Event.plugin", "service/config", "Bind.plugin", "Store", "lib/spin.min", "Promise", "CouchDBDocument"],
-        function(Widget, Stack, Map, Event, Config, Model, Store, Spinner, Promise, CouchDBDocument){
+        "service/map", "Event.plugin", "service/config", "Bind.plugin", "Store", "lib/spin.min", "Promise", "CouchDBDocument", "service/confirm"],
+        function(Widget, Stack, Map, Event, Config, Model, Store, Spinner, Promise, CouchDBDocument, Confirm){
                 return function LoginConstructor($init, $reload, $local){
                 //declaration
                         var _login = new Widget(),
@@ -31,7 +31,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                              _db = Config.get("db"),
                              spinner,
                              loginSpinner = new Spinner({color:"#657B99", lines:10, length: 10, width: 8, radius:15, top: 270}).spin(),
-                             reload = false;  // boolean to differentiate between initial start and usbsequent logout/login
+                             reload = false,  // boolean to differentiate between initial start and usbsequent logout/login
+                             ConfirmUI;
                 
                 //setup && UI DEFINITIONS               
                          _login.plugins.addAll({
@@ -96,47 +97,20 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 }     
                         };
                         
-                        _signupForm.signup = function signup(event, node){
-                                var email = _store.get("email"),
-                                    password = _store.get("password"),
-                                    pwdConfirm = _store.get("confirm-password"),
-                                    fn = _store.get("firstname"),
-                                    ln = _store.get("lastname"),
-                                    promise = new Promise(),
-                                    user = new CouchDBDocument();
-                                node.classList.remove("btn-ready");
-                                // handle form errors
-                                if (email === "") {
-                                        _store.set("error", _labels.get("signupmissingemail"));
-                                }
-                                else if (password === "") {
-                                        _store.set("error", _labels.get("signupmissingpwd"));
-                                }
-                                else if (pwdConfirm === "") {
-                                        _store.set("error", _labels.get("signupmissingpwdok"));
-                                }
-                                else if (fn === "") {
-                                        _store.set("error", _labels.get("signupmissingfn"));
-                                }
-                                else if (ln === "") {
-                                        _store.set("error", _labels.get("signupmissingln"));
-                                }
-                                else {
-
-                                        // check if email address is valid -- in the future an activation mechanism should be envisioned to screen fake addresses
-                                        var userid = email.toLowerCase(), emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
-
-                                        if (!emailPattern.test(userid)) {
-                                                _store.set("error", _labels.get("signupinvalidemail"));
-                                        }
-                                        else {
-                                        // check if passwords match
-                                                if (password !== pwdConfirm) {
-                                                        _store.set("error", _labels.get("signuppwdnomatch"));
-                                                }
-                                                else {
-                                                // NO MISTAKES -- PROCEED TO SIGNUP
-                                                        loginSpinner.spin(_signupForm.dom);
+                        _signupForm.showEULA = function(event, node){
+                                if (!ConfirmUI){
+                                        ConfirmUI = new Confirm(_signupForm.dom, labels.get("deleteattachment"), _signupForm.completeSignup, "EULA");
+                                        ConfirmUI.hide();
+                                }       
+                        };
+                        
+                        _signupForm.completeSignup = function(){
+                                var fn = _store.get("firstname"),
+                                      ln = _store.get("lastname"),
+                                      promise = new Promise(),
+                                      user = new CouchDBDocument();
+                                
+                                loginSpinner.spin(_signupForm.dom);
                                                         _transport.request("Signup", {name : userid, password : password, fn : fn, ln: ln, lang: Config.get("lang")}, function(result) {
                                                                 if (result.signup === "ok") {
                                                                         // create user
@@ -197,7 +171,47 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         _store.set("email", "");
                                                                         loginSpinner.stop();
                                                                 }
-                                                        }, this);
+                                                        }, this);        
+                        };
+                        
+                        _signupForm.signup = function signup(event, node){
+                                var email = _store.get("email"),
+                                    password = _store.get("password"),
+                                    pwdConfirm = _store.get("confirm-password");
+                                node.classList.remove("btn-ready");
+                                // handle form errors
+                                if (email === "") {
+                                        _store.set("error", _labels.get("signupmissingemail"));
+                                }
+                                else if (password === "") {
+                                        _store.set("error", _labels.get("signupmissingpwd"));
+                                }
+                                else if (pwdConfirm === "") {
+                                        _store.set("error", _labels.get("signupmissingpwdok"));
+                                }
+                                else if (fn === "") {
+                                        _store.set("error", _labels.get("signupmissingfn"));
+                                }
+                                else if (ln === "") {
+                                        _store.set("error", _labels.get("signupmissingln"));
+                                }
+                                else {
+
+                                        // check if email address is valid -- in the future an activation mechanism should be envisioned to screen fake addresses
+                                        var userid = email.toLowerCase(), emailPattern = /^[a-z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+
+                                        if (!emailPattern.test(userid)) {
+                                                _store.set("error", _labels.get("signupinvalidemail"));
+                                        }
+                                        else {
+                                        // check if passwords match
+                                                if (password !== pwdConfirm) {
+                                                        _store.set("error", _labels.get("signuppwdnomatch"));
+                                                }
+                                                else {
+                                                        _signupForm.showEULA();
+                                                // NO MISTAKES -- PROCEED TO SIGNUP
+                                                        
                                                 }
                                         }
                                 }

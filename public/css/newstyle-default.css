@@ -73,7 +73,6 @@ input::-webkit-file-upload-button{
     overflow-x: hidden;
     /*top: 50%;*/
     position: relative;
-    overflow: auto;
     /*margin-top: -374px;
     margin-left: -512px;*/
 }
@@ -144,7 +143,6 @@ input::-webkit-file-upload-button{
         display: inline-block;
         font-size:4em;
         height: 1em;
-        line-height: 1;
         font-family: Ideafy;
         color: whitesmoke;
     }

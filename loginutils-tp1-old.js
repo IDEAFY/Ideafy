@@ -247,7 +247,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 
                 user.setTransport(_transport);
                 user.set("password", json.password);
-                user.set("name", json.name);
+                user.set("name", json.name.toLowerCase());
                 
                 user.login(json.name, json.password).then(function(result) {
                         
@@ -310,7 +310,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
         * User password reset
         */
         this.resetPassword = function(json, onEnd){
-                var user = json.user,
+                var user = json.user.toLowerCase(),
                       cdb = new _CouchDBDocument(),
                       generatePassword,
                       pwd;
@@ -318,11 +318,13 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                 generatePassword = function() {
                         var length = 8,
                               charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-                              retVal = "";
-                        for (var i = 0, n = charset.length; i < length; ++i) {
-                                retVal += charset.charAt(Math.floor(Math.random() * n));
+                              n = charset.length,
+                              i,
+                              ret = "";
+                        for (i = 0; i < n; ++i) {
+                                ret += charset.charAt(Math.floor(Math.random() * n));
                         }
-                         return retVal;
+                         return ret;
                 };
                 
                 _getDocAsAdmin(user, cdb)

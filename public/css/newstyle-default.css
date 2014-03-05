@@ -813,21 +813,18 @@ ul.notify-list{
 
 #newdeck-popup{
     height: 560px;
-    margin-top: -580px;
 }
 
 #new2q-popup{
     width: 560px;
     height: 320px;
     margin-left: -280px;
-    margin-top: -340px;
 }
 
 #new2c-popup{
     height: 320px;
     width: 650px;
     margin-left: -325px;
-    margin-top : -340px;
 }
 
 #new2q-popup .form textarea, #new2c-popup .form textarea{

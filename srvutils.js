@@ -287,7 +287,7 @@ function SrvUtils(){
          };
          
          /*
-         * Delete attachment from drive
+         * Retrieve attachment from drive
          */
         this.getAttachment = function(json, onEnd){
                 var _path = _contentPath+'/attachments/',

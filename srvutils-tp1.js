@@ -9,7 +9,9 @@
  * 
  */
 
-var fs = require("fs");
+var fs = require("fs"),
+      qs = require("querystring"),
+      mime = require("mime");
 
 function SrvUtils(){
 
@@ -26,13 +28,11 @@ function SrvUtils(){
                       _path = _contentPath+'/attachments/',
                       filename, // final name of the file on server
                       tempname, // temp name after file upload
-                      now,
-                      dataurl,
+                      dataurl, ins, outs,
                       dir;
             
                 if (type === 'postit' || type === 'deckpic' || type === 'cardpic'){
                         dir = req.body.dir;
-                        now = new Date();
                         filename = _path+dir+'/'+req.body.filename;
                         dataurl = req.body.dataString;
                                 
@@ -59,6 +59,47 @@ function SrvUtils(){
                                 }       
                         });
                 }
+                if (type === 'afile'){
+                        dir = req.body.dir;
+                        filename = _path+dir+'/'+req.body.filename;
+                        
+                        fs.exists(_path+dir, function(exists){
+                                if (!exists) {
+                                        fs.mkdir(_path+dir, 0777, function(err){
+                                                if (err) {throw(err);}
+                                                ins = fs.createReadStream(req.files.userfile.path);
+                                                outs = fs.createWriteStream(filename);
+                                                ins.pipe(outs);
+                                               
+                                               // delete tmp file when done
+                                                ins.once('end', function(){
+                                                        fs.unlink(req.files.userfile.path, function(err){
+                                                                console.log(err);
+                                                        });
+                                                        res.write("ok");
+                                                        res.end(); 
+                                                });
+                                        });
+                                }
+                                else {
+                                        fs.exists(filename, function(exists){
+                                                if (exists) fs.unlinkSync(filename);
+                                                ins = fs.createReadStream(req.files.userfile.path);
+                                                outs = fs.createWriteStream(filename);
+                                                ins.pipe(outs);
+                                                
+                                                // delete tmp file when done
+                                                ins.once('end', function(){
+                                                        fs.unlink(req.files.userfile.path, function(err){
+                                                                if (err) console.log(err);
+                                                        });
+                                                        res.write("ok");
+                                                        res.end(); 
+                                                });
+                                        });
+                                }       
+                        });
+                }
                 if (type === 'avatar'){
                         filename = _path+'avatars/'+req.body.filename;
                         dataurl = req.body.img;
@@ -79,6 +120,35 @@ function SrvUtils(){
                 }
         };
 
+        /*
+         * Upload function for avatars and various attachments
+         */
+        this.downloadFunc = function(req, res){
+                var query = req.url.replace('/?', ""),
+                      file = qs.parse(query),
+                      path = _contentPath+"/attachments/",
+                      rs, mimetype;
+                 
+                 switch(file.atype){
+                        case "idea":
+                                path += "ideas/";
+                                break;
+                        default:
+                                break;        
+                 };
+                 
+                 path += file.docid + "/" + file.file;
+                 fs.exists(path, function(exists){
+                        if (exists){
+                                mimetype = mime.lookup(file.file);
+                                res.setHeader('Content-disposition', 'attachment; filename=' + file.file);
+                                res.setHeader('Content-type', mimetype);
+                                rs = fs.createReadStream(path);
+                                rs.pipe(res);   
+                        }        
+                 });
+                       
+        };
         
         /*
         * CheckVersion handler : to test if client version is the most current one
@@ -119,8 +189,23 @@ function SrvUtils(){
                 var _path = __dirname+'/i8n/'+json.lang+'.json';
                 fs.exists(_path, function(exists){
                         if (exists){
+                                /*
                                 var labels=fs.readFile(_path, 'utf8', function(err, data){
                                         onEnd(JSON.parse(data));        
+                                });
+                                */
+                               var data="";
+                               var stream = fs.createReadStream(_path, {
+                                        'flags': 'r',
+                                        'encoding': 'utf8',
+                                        'mode': 0666,
+                                        'bufferSize': 4 * 1024
+                                });
+                                stream.on( "data", function(chunk) {
+                                        data+=chunk;
+                                });
+                                stream.on( "close",function() {
+                                        onEnd(JSON.parse(data));
                                 });
                         }
                         else{
@@ -168,21 +253,65 @@ function SrvUtils(){
          * Delete attachment from drive
          */
         this.deleteAttachment = function(json, onEnd){
-                var _path = _contentPath+'/attachments/';
+                var _path = _contentPath+'/attachments/',
+                      _dir;
                 
                 switch(json.type){
                         case "card":
                                 _path += "cards/";
+                                _dir = "";
                                 break;
+                        case "idea":
+                                _dir = _path + "ideas/"+ json.docId ;
+                                _path = _dir + "/";
                         default:
                                 break;
                 };
                 _path += json.file;
                 fs.exists(_path, function(exists){
                         if (exists){
-                                // need to delete all files first
+                                // delete file first
                                 fs.unlink(_path, function(err){
-                                        i(err) ? onEnd(err) : onEnd("ok");
+                                       if (err) onEnd(err);
+                                       else{
+                                               // if directory is empty, delete directory as well
+                                               if (_dir && !fs.readdirSync(_dir).length){
+                                                       fs.rmdirSync(_dir);
+                                               }
+                                               onEnd("ok");
+                                       } 
+                                });
+                        }
+                        else onEnd("file not found");
+                });
+         };
+         
+         /*
+         * Retrieve attachment from drive
+         */
+        this.getAttachment = function(json, onEnd){
+                var _path = _contentPath+'/attachments/',
+                      _dir, _data;
+                
+                switch(json.type){
+                        case "idea":
+                                _dir = _path + "ideas/"+ json.docId ;
+                                _path = _dir + "/";
+                        default:
+                                break;
+                };
+                _path += json.file;
+                fs.exists(_path, function(exists){
+                        var dest = __dirname + "/downloads/";
+                        if (exists){
+                                var rs = fs.createReadStream(path);
+                                
+                                 rs.on('data', function(chunk){
+                                        data += chunk;        
+                                });
+                                
+                                rs.on('close', function(){
+                                        onEnd(data);
                                 });
                         }
                         else onEnd("file not found");

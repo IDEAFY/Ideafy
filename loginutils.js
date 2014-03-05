@@ -216,39 +216,60 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
          */
         this.checkLogin = function(json, onEnd){
                 var cookieJSON = _cookie.parse(json.handshake.headers.cookie),
-                    sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0],
-                    cdb = new _CouchDBDocument(),
-                    user = new _CouchDBUser();
+                    sessionID ,
+                    cdb = new _CouchDBDocument();
+                    
+                if (cookieJSON["ideafy.sid"]) sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0];
                 
-                user.setTransport(_transport);
+                console.log("checklogin function");
                 // return false if document does not exist in database
                 _getDocAsAdmin(json.id, cdb).then(function(){
-                        _sessionStore.get(sessionID, function(err, session){
-                                var login = json.id, pwd;
-                                if(err){throw new Error(err);}
-                                else{
-                                        if (session.auth && session.auth.search(login) >-1) {
-                                                pwd = session.auth.replace(login+":", "");
-                                                user.set("name", login);
-                                                user.set("password", pwd);
-                                                user.login(login, pwd)
-                                                .then(function(result){
-                                                        var res = JSON.parse(result);
-                                                        console.log(res);
-                                                        cdb.set("sock", json.sock);
-                                                        cdb.set("online", true);
-                                                       _updateDocAsAdmin(json.id, cdb)
-                                                       .then(function(){
-                                                                onEnd({authenticated: true});        
-                                                        });        
-                                                }, function(result){
-                                                       onEnd({authenticated : false});        
-                                                });
-                                        }
-                                        else onEnd({authenticated : false});
-                                } 
-                        });
-                }, function(){onEnd({authenticated: false});});
+                        console.log(cdb.toJSON(), sessionID, _sessionStore);
+                        if (sessionID) {
+                                _sessionStore.get(sessionID, function(err, session){
+                                        console.log(err, session);
+                                        var login = json.id, pwd,
+                                              user = new _CouchDBUser();
+                                
+                                        if(err){throw new Error(err);}
+                                        else{
+                                                user.setTransport(_transport);
+                                                if (session.auth && session.auth.search(login) >-1) {
+                                                        pwd = session.auth.replace(login+":", "");
+                                                        user.set("name", login);
+                                                        user.set("password", pwd);
+                                                        console.log("before attempting to log in :", user.toJSON());
+                                                        user.login(login, pwd)
+                                                        .then(function(){
+                                                                console.log("login successful : ", user.toJSON());
+                                                                cdb.set("sock", json.sock);
+                                                                cdb.set("online", true);
+                                                                _updateDocAsAdmin(json.id, cdb)
+                                                                .then(function(){
+                                                                        console.log("update successful");
+                                                                        onEnd({authenticated: true});        
+                                                                });        
+                                                        },
+                                                        function(err){
+                                                                onEnd({authenticated : false});        
+                                                        });
+                                                }
+                                                else {
+                                                        console.log("no session auth and/or right login name not found");
+                                                        onEnd({authenticated : false});
+                                                }
+                                        } 
+                                });
+                        }
+                        else {
+                                console.log("no sessionID");
+                                onEnd({authenticated : false});
+                        }
+                },
+                function(){
+                        console.log("failed getdocasadmin");
+                        onEnd({authenticated: false});
+                });
         };
         
         /*
@@ -257,10 +278,9 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
         
         this.login = function(json, onEnd) {
                 var user = new _CouchDBUser();
-                
                 user.setTransport(_transport);
                 user.set("password", json.password);
-                user.set("name", json.name.toLowerCase());
+                user.set("name", json.name);
                 
                 user.login(json.name, json.password).then(function(result) {
                         
@@ -324,7 +344,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
         * User password reset
         */
         this.resetPassword = function(json, onEnd){
-                var user = json.user.toLowerCase(),
+                var user = json.user,
                       cdb = new _CouchDBDocument(),
                       generatePassword,
                       pwd;

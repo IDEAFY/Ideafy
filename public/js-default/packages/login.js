@@ -99,8 +99,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                         
                         _signupForm.showEULA = function(event, node){
                                 if (!ConfirmUI){
-                                        ConfirmUI = new Confirm(_signupForm.dom, labels.get("deleteattachment"), _signupForm.completeSignup, "EULA");
-                                        ConfirmUI.hide();
+                                        ConfirmUI = new Confirm(_signupForm.dom, _labels.get("deleteattachment"), _signupForm.completeSignup, "EULA");
+                                        ConfirmUI.show();
                                 }       
                         };
                         

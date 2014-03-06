@@ -111,7 +111,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         }
                                         else _EULA = "<h4>" + _eula.get("title") + "</h4></div>" + _eula.get("body") + "</div>";
                                         
-                                        console.log(_EULA);
+                                        console.log(_eula.toJSON(), _EULA, lang, _labels.toJSON());
                                         _labels.watchValue("language", function(val){
                                                 translation = _eula.get("translations")[val];
                                                 if (translation){

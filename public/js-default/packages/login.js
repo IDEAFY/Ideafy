@@ -129,13 +129,15 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 }       
                         };
                         
-                        _signupForm.completeSignup = function(){
+                        _signupForm.completeSignup = function(accept){
                                 var fn = _store.get("firstname"),
                                       ln = _store.get("lastname"),
+                                      userid = store.get("email").toLowerCase(),
                                       promise = new Promise(),
                                       user = new CouchDBDocument();
                                 
-                                loginSpinner.spin(_signupForm.dom);
+                                if (accept){
+                                        loginSpinner.spin(_signupForm.dom);
                                                         _transport.request("Signup", {name : userid, password : password, fn : fn, ln: ln, lang: Config.get("lang")}, function(result) {
                                                                 if (result.signup === "ok") {
                                                                         // create user
@@ -196,7 +198,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         _store.set("email", "");
                                                                         loginSpinner.stop();
                                                                 }
-                                                        }, this);        
+                                                        }, this);
+                                }      
                         };
                         
                         _signupForm.signup = function signup(event, node){

@@ -102,10 +102,6 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _signupForm.getEULA = function(){
                                 _eula.setTransport(_transport);
                                 
-                                console.log(_db, _transport, _eula);
-                                
-                                TEST = _eula;
-                                
                                 _eula.sync(_db, "EULA-PC")
                                 .then(function(){
                                         var lang = _labels.get("language"), translation;
@@ -367,13 +363,14 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 // display loading screen and initialize spinner
                                _stack.getStack().show("#loading-screen");
                                spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin(document.getElementById("loadingspin"));
-                               
-                               // retrieve EULA from DB
-                               _signupForm.getEULA();
-                        };
+                         };
                         
                         _login.setScreen = function setScreen(target){
                                 _stack.getStack().show(target);
+                                if (target === "#signup-screen"){
+                                        // retrieve EULA from DB
+                                        _signupForm.getEULA();        
+                                }
                         };
                         
                         _login.reset = function reset(signout){

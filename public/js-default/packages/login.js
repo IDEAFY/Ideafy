@@ -200,6 +200,9 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         loginSpinner.stop();
                                                                 }
                                                         }, this);
+                                }
+                                else{
+                                        ConfirmUI.hide();
                                 }      
                         };
                         

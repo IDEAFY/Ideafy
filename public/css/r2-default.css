@@ -30,15 +30,15 @@
     color: #404040;
 }
 
-.help-doctor.EULA{
+.EULA .help-doctor{
     display: none;
 }
 
-.confirm .option.EULA{
+.confirm.EULA .option{
     border-color:#657b99;
 }
 
-.confirm-question.EULA{
+.EULA .confirm-question{
     color: #404040;
     font-family: Helvetica;
 }

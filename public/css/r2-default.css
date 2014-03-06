@@ -38,7 +38,7 @@
     border-color:#657b99;
 }
 
-.EULA .confirm-question{
+.EULA .confirm-question, .EULA .confirm p{
     color: #404040;
     font-family: Helvetica;
 }

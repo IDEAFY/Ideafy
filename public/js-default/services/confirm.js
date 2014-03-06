@@ -55,7 +55,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.show = function show(){
                                 Map.get("cache").classList.add("appear");
-                                if ($class === "EULA") Map.get("cache").classList.add("EULA");
+                                if ($class === "EULA") {
+                                        Map.get("cache").classList.add("EULA");
+                                        _widget.dom.querySelector(".option.left").innerHTML = _labels.get("accept");
+                                        _widget.dom.querySelector(".option.right").innerHTML = _labels.get("reject");
+                                }
                                 _widget.dom.classList.remove("invisible");        
                         };
                         

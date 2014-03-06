@@ -565,5 +565,6 @@
 	"contrib": "Contributed by: ",
 	"rateit": "Rate it!",
 	"deleteattachment": "Are you sure you want to delete this attachment ?",
-	"attachdescplaceholder" : "Enter a description of your attachment"
+	"attachdescplaceholder" : "Enter a description of your attachment",
+	"EULArejected": "You must accept the license agreement prior to using the application"
 }

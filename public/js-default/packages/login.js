@@ -133,11 +133,12 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _signupForm.completeSignup = function(accept){
                                 var fn = _store.get("firstname"),
                                       ln = _store.get("lastname"),
-                                      userid = store.get("email").toLowerCase(),
+                                      userid = _store.get("email").toLowerCase(),
                                       promise = new Promise(),
                                       user = new CouchDBDocument();
                                 
                                 if (accept){
+                                        ConfirmUI.hide();
                                         loginSpinner.spin(_signupForm.dom);
                                                         _transport.request("Signup", {name : userid, password : password, fn : fn, ln: ln, lang: Config.get("lang")}, function(result) {
                                                                 if (result.signup === "ok") {
@@ -203,6 +204,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 }
                                 else{
                                         ConfirmUI.hide();
+                                        _store.set("error", _labels.get("EULArejected"));
                                 }      
                         };
                         

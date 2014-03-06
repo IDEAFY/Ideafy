@@ -38,6 +38,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.cancel = function(event, node){
                                 node && node.classList.remove("pressed");
                                 Map.get("cache").classList.remove("appear");
+                                if ($class === "EULA") Map.get("cache").classList.remove("EULA");
                                 _callback && _callback(false);
                         };
                         

@@ -100,13 +100,11 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _signupForm.getEULA = function(){
-                                var lang = _labels.get("language"), translation;
-                               
                                 _eula.setTransport(_transport);
                                 
                                 _eula.sync(_db, "EULA-PC")
                                 .then(function(){
-                                        console.log(_labels.toJSON(), lang, _eula.get("translations"))
+                                        var lang = _labels.get("language"), translation;
                                         if (_eula.get("translations")) translation = _eula.get("translations")[lang];
                                         if (translation){
                                                 _EULA = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";

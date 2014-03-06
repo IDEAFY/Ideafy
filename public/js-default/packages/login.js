@@ -32,7 +32,9 @@ define(["OObject" ,"Amy/Stack-plugin",
                              spinner,
                              loginSpinner = new Spinner({color:"#657B99", lines:10, length: 10, width: 8, radius:15, top: 270}).spin(),
                              reload = false,  // boolean to differentiate between initial start and usbsequent logout/login
-                             ConfirmUI;
+                             ConfirmUI,
+                             _eula = new CouchDBDocument(),
+                             _EULA;
                 
                 //setup && UI DEFINITIONS               
                          _login.plugins.addAll({
@@ -97,9 +99,32 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 }     
                         };
                         
+                        _signupForm.getEULA = function(){
+                                var lang = _labels.get("language"), translation;
+                                
+                                _eula.setTransport(_transport);
+                                
+                                _eula.sync(_db, "EULA-PC")
+                                .then(function(){
+                                        if (translation = _eula.get("translations")[lang]){
+                                                _EULA = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
+                                        }
+                                        else _EULA = "<h4>" + _eula.get("title") + "</h4></div>" + _eula.get("body") + "</div>";
+                                        
+                                        _labels.watchValue("language", function(val){
+                                                if (translation = _eula.get("translations")[val]){
+                                                _EULA = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
+                                                }
+                                                else _EULA = "<h4>" + _eula.get("title") + "</h4></div>" + _eula.get("body") + "</div>";        
+                                        });
+                                });
+                                
+                                        
+                        };
+                        
                         _signupForm.showEULA = function(event, node){
                                 if (!ConfirmUI){
-                                        ConfirmUI = new Confirm(_signupForm.dom, _labels.get("deleteattachment"), _signupForm.completeSignup, "EULA");
+                                        ConfirmUI = new Confirm(_signupForm.dom, _EULA, _signupForm.completeSignup, "EULA");
                                         ConfirmUI.show();
                                 }       
                         };
@@ -328,6 +353,9 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 // display loading screen and initialize spinner
                                _stack.getStack().show("#loading-screen");
                                spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin(document.getElementById("loadingspin"));
+                               
+                               // retrieve EULA from DB
+                               _signupForm.getEULA();
                         };
                         
                         _login.setScreen = function setScreen(target){

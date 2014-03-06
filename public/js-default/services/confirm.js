@@ -31,6 +31,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.ok = function(event, node){
                                 node.classList.remove("pressed");
                                 Map.get("cache").classList.remove("appear");
+                                if ($class === "EULA") Map.get("cache").classList.remove("EULA");
                                 _callback && _callback(true);    
                         };
                         
@@ -42,16 +43,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.close = function close(){
                                 Map.get("cache").classList.remove("appear");
+                                if ($class === "EULA") Map.get("cache").classList.remove("EULA");
                                 $parent && $parent.removeChild($parent.lastChild);       
                         };
                         
                         _widget.hide = function hide(){
                                 Map.get("cache").classList.remove("appear");
+                                if ($class === "EULA") Map.get("cache").classList.remove("EULA");
                                 _widget.dom.classList.add("invisible");        
                         };
                         
                         _widget.show = function show(){
                                 Map.get("cache").classList.add("appear");
+                                if ($class === "EULA") Map.get("cache").classList.add("EULA");
                                 _widget.dom.classList.remove("invisible");        
                         };
                         

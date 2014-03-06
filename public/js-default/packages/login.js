@@ -106,7 +106,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 
                                 _eula.sync(_db, "EULA-PC")
                                 .then(function(){
-                                        console.log(lang, _eula.get("translations"))
+                                        console.log(_labels.toJSON(), lang, _eula.get("translations"))
                                         if (_eula.get("translations")) translation = _eula.get("translations")[lang];
                                         if (translation){
                                                 _EULA = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
@@ -114,7 +114,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         else _EULA = "<h4>" + _eula.get("title") + "</h4></div>" + _eula.get("body") + "</div>";
                                         
                                         _labels.watchValue("language", function(val){
-                                                if (translation = _eula.get("translations")[val]){
+                                                translation = _eula.get("translations")[val];
+                                                if (translation){
                                                 _EULA = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
                                                 }
                                                 else _EULA = "<h4>" + _eula.get("title") + "</h4></div>" + _eula.get("body") + "</div>";        

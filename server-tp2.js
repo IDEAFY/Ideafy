@@ -23,10 +23,6 @@ var http = require("http"),
     qs = require("querystring"), 
     url = require("url"), 
     redirect = require('connect-redirection'), 
-    sessionStore = new RedisStore({
-        hostname : "10.224.0.27",
-        port : "6379"
-    }),
     wrap = require("./wrap"),
     srvutils = require("./srvutils.js"),
     apputils = require("./apputils.js"),
@@ -43,13 +39,13 @@ var srvUtils = new srvutils.SrvUtils(),
 // create reusable transport method (opens pool of SMTP connections)
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
-        host: "10.224.0.27",
-        secureConnection : true,
-        port : 587,
-        auth : {
-                user : "ideafy-taiaut",
-                pass : fs.readFileSync(".password", "utf8").trim()
-        }
+        host: "10.224.1.168",
+        //secureConnection : true,
+        port : 25//,
+        //auth : {
+        //        user : "ideafy",
+        //        pass : fs.readFileSync(".password", "utf8").trim()
+        //}
 });
 
 
@@ -57,8 +53,12 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
  *  APPLICATION CONFIGURATION
  ****************************************/
 
-var _db, _dbIP, _dbPort, cdbAdminCredentials, supportEmail, currentVersion, contentPath, badges;
-     
+var sessionStore, _db, _dbIP, _dbPort, cdbAdminCredentials, supportEmail, currentVersion, contentPath, badges;
+// redis connection
+sessionStore = new RedisStore({
+	hostname : "127.0.0.1",
+	port : "6379"
+});     
 // Name and IP address of the application database
 _db = "ideafy";
 _dbIP = "10.224.7.243";
@@ -66,11 +66,11 @@ _dbPort = 5984;
 // Database admin login
 cdbAdminCredentials = "admin:innovation4U";
 // mail sender & address
-mailSender = "IDEAFY <ideafy@taiaut.com>";
+mailSender = "IDEAFY <app@ideafy.com>";
 // email address fro application support
-supportEmail = "contact@taiaut.com";
+supportEmail = "contact@ideafy.com";
 // Application  client minimum version
-currentVersion = "1.1.7";
+currentVersion = "1.2.2";
 // Path where attachments are stored
 contentPath = "/shared";
 // Rules to grant special badges and achievements
@@ -84,7 +84,8 @@ badges;
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
         var transport = new Transport(olives.handlers),
             app = http.createServer(connect()
-                .use(connect.responseTime())
+                .use(connect.logger())
+								.use(connect.responseTime())
                 .use(redirect())
                 .use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
                 .use('/upload', srvUtils.uploadFunc)      
@@ -113,7 +114,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 0);                    // reduce logging
+        io.set('log level', 3);                    // reduce logging
         io.set("close timeout", 60);
         io.set("heartbeat interval", 25);
         

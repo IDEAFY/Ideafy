@@ -221,13 +221,10 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                     
                 if (cookieJSON["ideafy.sid"]) sessionID = cookieJSON["ideafy.sid"].split("s:")[1].split(".")[0];
                 
-                console.log("checklogin function");
                 // return false if document does not exist in database
                 _getDocAsAdmin(json.id, cdb).then(function(){
-                        console.log(cdb.toJSON(), sessionID, _sessionStore);
                         if (sessionID) {
                                 _sessionStore.get(sessionID, function(err, session){
-                                        console.log(err, session);
                                         var login = json.id, pwd,
                                               user = new _CouchDBUser();
                                 
@@ -238,15 +235,12 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                         pwd = session.auth.replace(login+":", "");
                                                         user.set("name", login);
                                                         user.set("password", pwd);
-                                                        console.log("before attempting to log in :", user.toJSON());
                                                         user.login(login, pwd)
                                                         .then(function(){
-                                                                console.log("login successful : ", user.toJSON());
                                                                 cdb.set("sock", json.sock);
                                                                 cdb.set("online", true);
                                                                 _updateDocAsAdmin(json.id, cdb)
                                                                 .then(function(){
-                                                                        console.log("update successful");
                                                                         onEnd({authenticated: true});        
                                                                 });        
                                                         },

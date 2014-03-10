@@ -1,14 +1,15 @@
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "service/utils"],
-        function(Widget, Store, ModelPlugin, EventPlugin, Config, Utils){
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "service/utils", "lib/spin.min"],
+        function(Widget, Store, ModelPlugin, EventPlugin, Config, Utils, Spinner){
                 
                 function WriteTwocentReplyConstructor($parent){
                         
                         var user = Config.get("user"),
                             transport = Config.get("transport"),
-                            currentIdea, currentTwocent, position, replyTo,
+                            currentDoc, currentTwocent, position, replyTo,
                             now = new Date(),
                             cancel,
+                            publishSpinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 24}),
                             replyTemplate = {"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0},
                             reply = new Store(replyTemplate);
                             
@@ -33,7 +34,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                                 var now = new Date();
                                 
                                 if ($id && $twocent) {
-                                        currentIdea = $id;
+                                        currentDoc = $id;
                                         currentTwocent = $twocent;
                                 }
                                 // is it a response to an existing reply?
@@ -46,7 +47,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                                         reply.set("datemod", [now.getFullYear(), now.getMonth(), now.getDate()]); // setting modification date
                                 }
                                 else {
-                                        reply.reset(replyTemplate);
+                                        reply.reset({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0});
                                         reply.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
                                         editTCR = "newreply";
                                 }
@@ -57,23 +58,26 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                         this.cancel = function(event, node){
                                 node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
                                 // reset reply message
-                                reply.reset(replyTemplate);
+                                reply.reset({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0});
                                 // hide twocent writing interface
                                 (cancel) ? cancel():$parent.classList.add("invisible");
                         };
                 
                         this.publish = function(event, node){
-                                node.setAttribute("style", "-webkit-box-shadow: none; background: #8cab68;");
+                                node.setAttribute("style", "-webkit-box-shadow: none; background: none;");
                                 // message should not be empty (or do nothing)
                                 if (reply.get("message")){
                                         var     content = JSON.parse(reply.toJSON()), json, type;
                                         
+                                        publishSpinner.spin(node);
                                         (editTCR === "newreply") ? type = editTCR : type = "editreply";
                                         // add @username at beginning of message if it's a reply to a reply
                                         if (replyTo) {content.message = "@ "+replyTo+" : "+content.message;}
                                         
-                                        json = {docId: currentIdea, type: type, position: position, twocent: currentTwocent, reply: content};
+                                        json = {docId: currentDoc, type: type, position: position, twocent: currentTwocent, reply: content};
                                         transport.request("WriteTwocent", json, function(result){
+                                                node.setAttribute("style", "background: #8cab68;");
+                                                publishSpinner.stop(); 
                                                 if (result !== "ok"){
                                                         alert(Config.get("labels").get("somethingwrong"));        
                                                 }

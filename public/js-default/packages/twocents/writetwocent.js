@@ -110,7 +110,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         node.setAttribute("style", "-webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6); background: #666666;");
                 };
               
-                PSPIN = publishSpinner;
                
                 return ui;
         };    

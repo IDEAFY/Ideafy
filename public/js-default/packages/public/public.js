@@ -270,7 +270,7 @@ define(["OObject", "Amy/Control-plugin" ,
                         _stack.getStack().add("#list-fav", listFav);
 			_stack.getStack().add("#list-date", listDate);
 			
-			// show public ideas sorted by most recent
+			// init public ideas sorted by most recent
 		        listRating.init();
 		        
 		        // init public ideas sorted by most recent then init public favorites

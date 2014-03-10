@@ -5,13 +5,17 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise"], 
-	function(Widget, Map, Store, CouchDBDocument, Model, Event, Config, Confirm, Promise){
+define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise", "Place.plugin", "attach/attachment", "attach/add"], 
+	function(Widget, Map, Store, CouchDBDocument, Model, Event, Config, Confirm, Promise, Place, Attachment, AddAttachment){
 		return function LibraryEditConstructor($action){
 		//declaration
 			var _widget = new Widget(),
+                             _attachmentUI = new Attachment("idea"),
+                             _addAttachmentUI = new AddAttachment(),
 			    _store = new CouchDBDocument(),  // the idea
 			    _languages = new Store(Config.get("userLanguages")),
+                             user = Config.get("user"),
+                             transport = Config.get("transport"),
 			    _resetLang = function(){
                                 _languages.loop(function(v,i){
                                         (_store.get("lang") && (v.name === _store.get("lang").substring(0,2))) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
@@ -19,10 +23,13 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                             },
 			    _labels = Config.get("labels"),
 			    _error = new Store({"error": ""}),
+                            _alist = new Store([]),
+                            _addedAttachments = [],
+                            _removedAttachments = [],
 			    updateReplay; // flag, set to true if sessionReplay option is modified
 		//setup
 	               
-                        _store.setTransport(Config.get("transport"));
+                        _store.setTransport(trasnport);
                         
 			_widget.plugins.addAll({
 			        "editlabel": new Model(_labels),
@@ -51,8 +58,58 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
 			                },
 			                setSessionReplay : function(replay){
 			                     (replay) ? this.innerHTML = _labels.get("disablereplaylbl") : this.innerHTML = _labels.get("enablereplaylbl");         
-			                }
+			                },
+                                        showAttachments : function(att){
+                                                (att && att.length) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                        }
 			        }),
+                                "alist": new Model(_alist,{
+                                        setCat : function(cat){
+                                                var cats = Config.get("cat"), colors = Config.get("catColors"), idx = cats.indexOf(cat);
+                                                
+                                                if (idx > -1) {
+                                                        this.innerHTML = _labels.get(cat);
+                                                        this.setAttribute("style", "color:" + colors[idx]);
+                                                }
+                                                else{
+                                                        this.innerHTML = cat;
+                                                        this.setAttribute("style", "color: #404040");
+                                                }
+                                        },
+                                        setType : function(type){
+                                                switch(type){
+                                                        default:
+                                                                this.setAttribute("style", "background-image: url(../img/r2/download.png)");
+                                                                break;
+                                                }
+                                        },
+                                        setRef : function(name){
+                                                var url =  Config.get("location")+"/downloads",
+                                                      idx = this.getAttribute("data-alist_id");
+                                                if (name){
+                                                        url += "?atype=idea&docid=" +  _store.get("_id")+ "&file=" + name;
+                                                        this.setAttribute("href", url);
+                                                }       
+                                        },
+                                        setRating : function (docId){
+                                                var cdb, node=this;
+                                                if (docId){
+                                                        cdb = new CouchDBDocument();
+                                                        cdb.setTransport(transport);
+                                                        cdb.sync(Config.get("db"), docId)
+                                                        .then(function(){
+                                                                var v = cdb.get("votes") || [],
+                                                                      l = v.length;
+                                                                if (l===0){
+                                                                        node.innerHTML = "";
+                                                                }
+                                                                else{
+                                                                        node.innerHTML = Math.round(v.reduce(function(x,y){return x+y;})/l*100)/100;
+                                                                }
+                                                        });
+                                                }
+                                        }
+                                }),
                                 "select" : new Model (_languages, {
                                         setBg : function(name){
                                                 if (name){
@@ -63,6 +120,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                                 (selected) ? this.classList.add("selected") : this.classList.remove("selected");        
                                         } 
                                 }),
+                                "place" : new Place({"AttachmentUI" : _attachmentUI, "AddAttachmentUI" : _addAttachmentUI}),
 			        "editevent" : new Event(_widget),
 			        "errormsg" : new Model(_error,{
 			                setError : function(error){
@@ -83,16 +141,34 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
 			        })
 			});
 			
-			_widget.template='<div class="idea-edit"><div class="header blue-dark"><span data-editlabel="bind:innerHTML, modifyidealbl"></span></div><form class="form"><div class="idealang"><div class="currentlang" data-editidea="bind: displayLang, lang" data-editevent="listen: touchstart, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-editevent="listen: touchstart, selectFlag; listen: touchend, setLang"></li></ul></div><p><input type="text" class="input" data-editidea="bind: value, title"></p><p><textarea class="description input" data-editidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-editidea="bind: value, solution"></textarea></p><div class="options"><div class="current-visibility" data-editidea="bind:setVisibleIcon, visibility"><span class="label" data-editlabel="bind:innerHTML,ideavisiblelbl"></span><span data-editlabel="bind:innerHTML, privatelbl" data-editidea="bind:setVisibility, visibility"></span></div><div class="edit-visibility" data-editidea="bind:hideVisibility, visibility"><span class="label" data-editlabel="bind:innerHTML,setideavisiblelbl"></span><div class="visibility public" data-editlabel="bind:innerHTML, publiclbl" data-editevent="listen:touchstart, editVisibility"></div></div></div><div class="options invisible" data-editidea="bind:setReplay, sessionId"><div class="current-visibility replay"><span class="label" data-editlabel="bind:innerHTML,ideafyreplaylbl"></span><span data-editlabel="bind:innerHTML, disabledreplaylbl" data-editidea="bind:setIdeafyStatus, sessionReplay"></span></div><div class="edit-visibility replay"><span class="label" data-editlabel="bind:innerHTML, ideafysetreplaylbl"></span><div class="toggle-replay" data-editidea = "bind: setSessionReplay, sessionReplay" data-editevent="listen:touchstart, press; listen:touchend, enableReplay" data-editlabel="bind:innerHTML, enablereplaylbl"></div></div></div><p class="submit"><label class="publish pressed-btn" data-editlabel="bind:innerHTML, publishlbl" data-editevent="listen:touchstart, press;listen:touchend, upload"></label><label class="cancel pressed-btn" data-editlabel="bind:innerHTML, cancellbl" data-editevent="listen:touchstart, press;listen:touchend, cancel"></label><label class="editerror" data-errormsg="bind:setError, error"></label></p></form></div>';
+			_widget.template='<div class="idea-edit"><div class="header blue-dark"><span data-editlabel="bind:innerHTML, modifyidealbl"></span></div><form class="form"><div class="idealang"><div class="currentlang" data-editidea="bind: displayLang, lang" data-editevent="listen: touchstart, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-editevent="listen: touchstart, selectFlag; listen: touchend, setLang"></li></ul></div><p><input type="text" class="input" data-editidea="bind: value, title"></p><p><textarea class="description input" data-editidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-editidea="bind: value, solution"></textarea></p><div class="options"><div class="current-visibility" data-editidea="bind:setVisibleIcon, visibility"><span class="label" data-editlabel="bind:innerHTML,ideavisiblelbl"></span><span data-editlabel="bind:innerHTML, privatelbl" data-editidea="bind:setVisibility, visibility"></span></div><div class="edit-visibility" data-editidea="bind:hideVisibility, visibility"><span class="label" data-editlabel="bind:innerHTML,setideavisiblelbl"></span><div class="visibility public" data-editlabel="bind:innerHTML, publiclbl" data-editevent="listen:touchstart, editVisibility"></div></div></div><div class="options invisible" data-editidea="bind:setReplay, sessionId"><div class="current-visibility replay"><span class="label" data-editlabel="bind:innerHTML,ideafyreplaylbl"></span><span data-editlabel="bind:innerHTML, disabledreplaylbl" data-editidea="bind:setIdeafyStatus, sessionReplay"></span></div><div class="edit-visibility replay"><span class="label" data-editlabel="bind:innerHTML, ideafysetreplaylbl"></span><div class="toggle-replay" data-editidea = "bind: setSessionReplay, sessionReplay" data-editevent="listen:touchstart, press; listen:touchend, enableReplay" data-editlabel="bind:innerHTML, enablereplaylbl"></div></div></div><p class="submit"><label class="publish pressed-btn" data-editlabel="bind:innerHTML, publishlbl" data-editevent="listen:touchstart, press;listen:touchend, upload"></label><label class="cancel pressed-btn" data-editlabel="bind:innerHTML, cancellbl" data-editevent="listen:touchstart, press;listen:touchend, cancel"></label><label class="editerror" data-errormsg="bind:setError, error"></label></p></form><div class="attachments"><legend class="idealegend" data-editlabel="bind:innerHTML, attachments"></legend><div class="toggleattach" data-editevent="listen: mousedown, toggleAttachments"></div><ul class="a-list" data-alist="foreach"><li><a class="a-type" data-alist="bind:setType, type; bind: setRef, fileName" data-editevent="listen: mousedown, press; listen: mouseup, release"></a><label class="a-name" data-alist="bind:innerHTML, name">Name</label><label class="a-cat" data-alist="bind:setCat, category"></label><label class="a-delete" data-editevent="listen:mousedown, press; listen:mouseup, removeAttachment"></label><label class="a-zoom" data-editevent="listen: mousedown, press; listen: mouseup, release; listen:mouseup, zoom"></label></li></ul><legend class="a-legend" data-editlabel="bind:innerHTML, alegend"></legend><div data-place="place: AddAttachmentUI"></div></div><div data-place="place: AttachmentUI"></div></div>';
 			
 			_widget.place(Map.get("library-edit"));
 
 
                         _widget.reset = function reset(id){
+                                //reset store
                                 _store.unsync();
                                 _store.reset();
+                                
+                                
+                                // reset attachment edits
+                                _addedAttachments = [];
+                                _removedAttachments = [];
+                                
                                 _store.sync(Config.get("db"), id)
-                                .then(_resetLang);
+                                .then(function(){
+                                        _resetLang();
+                                        
+                                        // set attachment list
+                                        (_store.get("attachments")) ? _alist.reset(_store.get("attachments").concat()) : _alist.reset([]);
+                                        
+                                        // reset add attachment UI
+                                        _addAttachmentUI.reset(id, "idea", _alist);
+                                        _alist.watch("added", function(idx, val){
+                                                _addedAttachments.push(val.docId);        
+                                        });
+                                });
                                 updateReplay = false;        
                         };
                         
@@ -127,6 +203,73 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");        
+                        };
+                        
+                        _widget.release = function(event, node){
+                                node.classList.remove("pressed");        
+                        };
+                        
+                        _widget.toggleAttachments = function(event, node){
+                                var list = _widget.dom.querySelector(".a-list");
+                                if (node.classList.contains("show")){
+                                        list.classList.remove("invisible");
+                                        node.classList.remove("show");
+                                }
+                                else{
+                                        list.classList.add("invisible");
+                                        node.classList.add("show");
+                                }
+                        };
+                        
+                        _widget.removeAttachment = function(event, node){
+                                var idx = node.getAttribute("data-alist_id"),
+                                      id = _alist.get(idx).docId;
+                                 
+                                // add attachment id to the list of attachments to be removed (will be done upon edit confirmation)
+                                _removedAttachments.push(id);
+                                _alist.alter("splice", idx, 1);
+                                node.classList.remove("pressed");       
+                        };
+                        
+                        /*
+                         * Apply changes made to attachments
+                         */
+                        _widget.manageAttachments = function(){
+                                var aA = _addedAttachments, rA = _removedAttachments;
+                                if (rA.length){
+                                        rA.forEach(function(attachment_id){
+                                                var idx1 = -1, idx2 = -1;
+                                                // check if attachment was just added
+                                                for (i=0; i<aA.length; i++){
+                                                        if (aA[i] === attachment_id){
+                                                                idx1 = i;
+                                                                break;
+                                                        }                
+                                                }
+                                                if (idx1 > -1) aA.splice(idx1, 1);
+                                                
+                                                // remove attachment from idea
+                                                _alist.loop(function(val,idx){
+                                                        if (val.docId === attachment_id){
+                                                                idx2 = idx;        
+                                                        }        
+                                                });
+                                                if (idx2 > -1) _alist.alter("splice", idx2, 1);
+                                                
+                                                // remove attachment from database
+                                                _addAttachmentUI.deleteAttachmentDoc(attachment_id);
+                                        });                            
+                                }
+                                
+                                if (aA.length || rA.length){
+                                        _store.set("attachments", JSON.parse(_alist.toJSON()));
+                                }    
+                        };
+                        
+                        _widget.zoom = function(event, node){
+                                var idx = node.getAttribute("data-alist_id");
+                                _attachmentUI.reset(_alist.get(idx).docId);
+                                document.querySelector(".cache").classList.add("appear");      
                         };
                         
                         _widget.enableReplay = function(event, node){
@@ -178,6 +321,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                         _error.set("error", "nosol");        
                                 }
                                 else{
+                                        _widget.manageAttachments();
                                         _store.set("modification_date", modDate);
                                         _store.upload().then(function(){
                                                 if (updateReplay){

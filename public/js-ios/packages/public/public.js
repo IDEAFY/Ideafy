@@ -90,11 +90,6 @@ define(["OObject", "Amy/Control-plugin" ,
 				    _id = event.target.getAttribute("data-listideas_id");
 				
 				_detail.reset(_ideaList,_id);
-				
-				// if an idea has been deleted make sure the highlighted idea is displayed
-                                _ideaList.watch("deleted", function(){
-                                            _detail.reset(_ideaList, _id);            
-                                });
 			};
 			
 			// function used to retrieve the currently highlighted idea in a list and display its details
@@ -317,6 +312,27 @@ define(["OObject", "Amy/Control-plugin" ,
                                         });
                                 });
 		        });
+
+                        /*
+                        * Manage idea related events
+                        */
+                       
+                       // When an idea is deleted by the author
+                       ["#list-date", "#list-rating", "#list-fav"].forEach(function(ui){
+                                var wid =_stack.getStack().get(ui),
+                                     _ideaList = wid.getModel(),
+                                     _ideaNode, _id;
+                                  
+                                  // only do it for the current UI   
+                                 _ideaList.watch("deleted", function(){
+                                         console.log("deleted");
+                                         if (wid === _stack.getStack().getCurrentScreen()){
+                                                _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");
+                                                if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");
+                                                (_ideaList.getNbItems()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
+                                        } 
+                                 });
+                        });
 		        
 		        // when a new idea is created by the user 
                        _observer.watch("NewIdea", function(id, public){

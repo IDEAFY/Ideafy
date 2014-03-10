@@ -13,26 +13,26 @@ define(["OObject", "Amy/Control-plugin" ,
 		return function IdeasConstructor(){
 		//declaration
 			var _widget = new Widget(),
-                             _searchInput = new Store({"search": ""}),
-                             _db = Config.get("db"),
-                             _observer = Config.get("observer"),
-                             _radio = new Control(_widget),
-                             _detail = new Detail(),
-                             listDate, listRating, listSearch, listFav,
-                             initldQuery, initlrQuery,
-                             _user = Config.get("user"),
-                             _labels = Config.get("labels"),
-                             _currentLang = _user.get("lang").substring(0,2),
-                             _btns = new Store([
+                              _searchInput = new Store({"search": ""}),
+                              _db = Config.get("db"),
+                              _observer = Config.get("observer"),
+                              _radio = new Control(_widget),
+                              _detail = new Detail(),
+                              listDate, listRating, listSearch, listFav,
+                              initldQuery, initlrQuery,
+                              _user = Config.get("user"),
+                              _labels = Config.get("labels"),
+                              _currentLang = _user.get("lang").substring(0,2),
+                              _btns = new Store([
                                         {name:"#list-fav", css:"byfav", pushed: false, lang:null},
                                         {name:"#list-date", css:"bydate", pushed: true, lang:null},
                                         {name:"#list-rating", css:"byrating", pushed: false, lang:null},
                                         {name:"#lang", css:"bylang", pushed: false, lang: _currentLang}
-                                ]),
-                             _languages = new Store([{name:"*"}]),
-                             _usrLg = Config.get("userLanguages"),
-                             _stack = new Stack(),
-                             _listSpinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
+                              ]),
+                              _languages = new Store([{name:"*"}]),
+                              _usrLg = Config.get("userLanguages"),
+                              _stack = new Stack(),
+                              _listSpinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
 
 		//setup
 		       

@@ -97,8 +97,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                                 else{
                                                         cancel();
                                                 }
-                                                //need to reset store
-                                                ui.reset(currentDoc);
                                         }
                                         node.setAttribute("style", "background: #8cab68;");
                                         publishSpinner.stop();             

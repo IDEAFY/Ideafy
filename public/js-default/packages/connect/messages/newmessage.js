@@ -188,6 +188,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                                 }
                                                 else{
                                                         sendInProgress = false;
+                                                        spinner.stop();
+                                                        node.classList.remove("invisible");
                                                 }
                                         });
                                 }    

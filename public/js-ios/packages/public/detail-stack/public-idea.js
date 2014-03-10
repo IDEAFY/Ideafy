@@ -5,11 +5,12 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin", "lib/spin.min"], 
-        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place, Spinner){
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin", "lib/spin.min", "attach/attachment"], 
+        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place, Spinner, Attachment){
                 return function PublicDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
+                             _attachmentUI = new Attachment("idea"),
                              _twocentWriteUI = new WriteTwocent(),
                              _publicTwocentList= new TwocentList("public"),
                              _labels = Config.get("labels"),
@@ -18,6 +19,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                              user = Config.get("user"),
                              transport = Config.get("transport"),
                              _store = new CouchDBDocument(),
+                             _alist = new Store([]),
                              _dom = Map.get("public-detail"),
                              _domWrite,
                              _obs = new Observable();
@@ -127,6 +129,57 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         }
                                                         this.classList.add("votes");
                                                 }               
+                                        },
+                                        showAttachments : function(att){
+                                                (att && att.length) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                        }
+                                }),
+                                "alist": new Model(_alist,{
+                                        setCat : function(cat){
+                                                var cats = Config.get("cat"), colors = Config.get("catColors"), idx = cats.indexOf(cat);
+                                                if (idx > -1) {
+                                                        this.innerHTML = _labels.get(cat);
+                                                        this.setAttribute("style", "color:" + colors[idx]);
+                                                }
+                                                else{
+                                                        this.innerHTML = cat;
+                                                        this.setAttribute("sytle", "color: #404040");
+                                                }
+                                        },
+                                        setType : function(type){
+                                                switch(type){
+                                                        default:
+                                                                this.setAttribute("style", "background-image: url(../img/r2/download.png)");
+                                                                break;
+                                                }
+                                        },
+                                        setRef : function(name){
+                                                var url =  Config.get("location")+"/downloads",
+                                                      idx = this.getAttribute("data-alist_id");
+                                                if (name){
+                                                        url += "?atype=idea&docid=" +  _store.get("_id")+ "&file=" + name;
+                                                        this.setAttribute("href", url);
+                                                }       
+                                        },
+                                        setRating : function (docId){
+                                                var cdb, node=this;
+                                                if (docId){
+                                                        cdb = new CouchDBDocument();
+                                                        cdb.setTransport(transport);
+                                                        cdb.sync(Config.get("db"), docId)
+                                                        .then(function(){
+                                                                var v = cdb.get("votes") || [],
+                                                                      l = v.length;
+                                                                if (l===0){
+                                                                        node.innerHTML = "";
+                                                                        node.parentNode.setAttribute("style", "display: none;");
+                                                                }
+                                                                else{
+                                                                        node.innerHTML = Math.round(v.reduce(function(x,y){return x+y;})/l*100)/100;
+                                                                        node.parentNode.setAttribute("style", "display: inline-block;");
+                                                                }
+                                                        });
+                                                }
                                         }
                                 }),
                                 "vote" : new Model(vote,{
@@ -136,11 +189,11 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
-                                "place" : new Place({"PublicTwocentUI": _publicTwocentList}),
+                                "place" : new Place({"PublicTwocentUI": _publicTwocentList, "AttachmentUI" : _attachmentUI}),
                                 "publicdetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, authors" data-publicdetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleFavEdit, authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, authors"></div><h2 data-publicdetail="bind:innerHTML,title"></h2><span class="date" data-publicdetail="bind:date, creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-publicdetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><legend class="idealegend" data-label="bind:innerHTML, principle"></legend><p class="ideap" data-publicdetail="bind:setDescription,description"></p><legend class="idealegend" data-label="bind:innerHTML, solution"></legend><p class="ideap" data-publicdetail="bind:setSolution,solution"></p></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,votes"></div><div class="publicButton" data-publicdetail="bind:toggleVoteButton, votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, twocents" data-place="place: PublicTwocentUI"></div></div>';
+                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, authors" data-publicdetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleFavEdit, authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, authors"></div><h2 data-publicdetail="bind:innerHTML,title"></h2><span class="date" data-publicdetail="bind:date, creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-publicdetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><legend class="idealegend" data-label="bind:innerHTML, principle"></legend><p class="ideap" data-publicdetail="bind:setDescription,description"></p><legend class="idealegend" data-label="bind:innerHTML, solution"></legend><p class="ideap" data-publicdetail="bind:setSolution,solution"></p><div class="attachments invisible" data-publicdetail="bind:showAttachments, attachments"><legend class="idealegend" data-label="bind:innerHTML, attachments"></legend><div class="toggleattach" data-publicdetailevent="listen: touchstart, toggleAttachments"></div><ul class="a-list" data-alist="foreach"><li><a class="a-type" data-alist="bind:setType, type; bind: setRef, fileName" data-publicdetailevent="listen: touchstart, press; listen: touchend, release"></a><label class="a-name" data-alist="bind:innerHTML, name">Name</label><label class="a-cat" data-alist="bind:setCat, category"></label><div class="a-rating"><a class="item-acorn"></a><label class="rating" data-alist="bind:setRating,docId"></label></div><label class="a-zoom" data-publicdetailevent="listen: touchstart, press; listen: touchend, release; listen:touchend, zoom"></label></li></ul></div></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,votes"></div><div class="publicButton" data-publicdetail="bind:toggleVoteButton, votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, twocents" data-place="place: PublicTwocentUI"></div><div data-place="place: AttachmentUI"></div></div>';
                 
                 //Public
                         _widget.showCache = function showCache(){
@@ -161,6 +214,12 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
+                                        // set attachment list
+                                        (_store.get("attachments")) ? _alist.reset(_store.get("attachments")) : _alist.reset([]);
+                                        _store.watchValue("attachments", function(val){
+                                                _alist.reset(val);        
+                                        });
+                                        
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                         _voted = false;
                                         _twocentWriteUI.reset(_store.get("_id"));
@@ -178,6 +237,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 _store.reset();
                                 
                                 return _store.sync(Config.get("db"), id);       
+                        };
+                        
+                        _widget.refresh = function(){
+                                return _widget.getIdea(_store.get("_id"));        
                         };
                         
                         _widget.action = function(event, node){
@@ -237,6 +300,28 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");        
+                        };
+                        
+                        _widget.release = function(event, node){
+                                node.classList.remove("pressed");
+                        };
+                        
+                        _widget.toggleAttachments = function(event, node){
+                                var list = _widget.dom.querySelector(".a-list");
+                                if (node.classList.contains("show")){
+                                        list.classList.remove("invisible");
+                                        node.classList.remove("show");
+                                }
+                                else{
+                                        list.classList.add("invisible");
+                                        node.classList.add("show");
+                                }
+                        };
+                        
+                        _widget.zoom = function(event, node){
+                                var idx = node.getAttribute("data-alist_id");
+                                _attachmentUI.reset(_alist.get(idx).docId);
+                                document.querySelector(".cache").classList.add("appear");      
                         };
                         
                         _widget.vote = function(event, node){

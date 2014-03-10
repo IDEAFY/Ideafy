@@ -5,13 +5,14 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin"], 
-        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place){
+define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin", "lib/spin.min", "attach/attachment"], 
+        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place, Spinner, Attachment){
                 return function IdeaDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
                              _libraryTwocentList = new TwocentList("library"),
                              _twocentWriteUI = new WriteTwocent("library"),
+                             _attachmentUI = new Attachment("idea"),
                              _labels = Config.get("labels"),
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,
@@ -19,6 +20,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                              transport = Config.get("transport"),
                              _store = new CouchDBDocument(),
                              _shareList = new Store([]),
+                             _alist = new Store([]),
                              _dom = Map.get("ideas-detail"),
                              _domWrite = Map.get("library-writetwocents"),
                              _obs = new Observable();
@@ -28,6 +30,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
                                 "ideadetail" : new Model(_store, {
+                                        // wait for idea to display UI
+                                        displayView : function(id){
+                                                (id) ? this.classList.remove("invisible") : this.classList.add("invisible");        
+                                        },
                                         // toggle header buttons right
                                         toggleFavEdit : function(authors){
                                             var node = this;
@@ -138,6 +144,57 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         (sharedwith.length === 1)?this.innerHTML = _labels.get("sharedwith")+"<b><u>"+1+_labels.get("ideafyer")+"</u></b>":this.innerHTML = _labels.get("sharedwith")+"<b><u>"+sharedwith.length+_labels.get("ideafyer")+"</u></b>";
                                                 }
                                                 else this.classList.add("invisible");
+                                        },
+                                        showAttachments : function(att){
+                                                (att && att.length) ? this.classList.remove("invisible") : this.classList.add("invisible");
+                                        }
+                                }),
+                                "alist": new Model(_alist,{
+                                        setCat : function(cat){
+                                                var cats = Config.get("cat"), colors = Config.get("catColors"), idx = cats.indexOf(cat);
+                                                if (idx > -1) {
+                                                        this.innerHTML = _labels.get(cat);
+                                                        this.setAttribute("style", "color:" + colors[idx]);
+                                                }
+                                                else{
+                                                        this.innerHTML = cat;
+                                                        this.setAttribute("sytle", "color: #404040");
+                                                }
+                                        },
+                                        setType : function(type){
+                                                switch(type){
+                                                        default:
+                                                                this.setAttribute("style", "background-image: url(../img/r2/download.png)");
+                                                                break;
+                                                }
+                                        },
+                                        setRef : function(name){
+                                                var url =  Config.get("location")+"/downloads",
+                                                      idx = this.getAttribute("data-alist_id");
+                                                if (name){
+                                                        url += "?atype=idea&docid=" +  _store.get("_id")+ "&file=" + name;
+                                                        this.setAttribute("href", url);
+                                                }       
+                                        },
+                                        setRating : function (docId){
+                                                var cdb, node=this;
+                                                if (docId){
+                                                        cdb = new CouchDBDocument();
+                                                        cdb.setTransport(transport);
+                                                        cdb.sync(Config.get("db"), docId)
+                                                        .then(function(){
+                                                                var v = cdb.get("votes") || [],
+                                                                      l = v.length;
+                                                                if (l===0){
+                                                                        node.innerHTML = "";
+                                                                        node.parentNode.setAttribute("style", "display: none;");
+                                                                }
+                                                                else{
+                                                                        node.innerHTML = Math.round(v.reduce(function(x,y){return x+y;})/l*100)/100;
+                                                                        node.parentNode.setAttribute("style", "display: inline-block;");
+                                                                }
+                                                        });
+                                                }
                                         }
                                 }),
                                 "share" : new Model(_shareList),
@@ -148,11 +205,11 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
-                                "place" : new Place({"LibraryTwocentUI" : _libraryTwocentList}),
+                                "place" : new Place({"LibraryTwocentUI" : _libraryTwocentList, "AttachmentUI" : _attachmentUI}),
                                 "ideadetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="library-idea"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleFavEdit, authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache" class="invisible"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, authors"></div><h2 data-ideadetail="bind:innerHTML,title"></h2><span class="date" data-ideadetail="bind:date, creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-ideadetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><legend class="idealegend" data-label="bind:innerHTML, principle"></legend><p class="ideap" data-ideadetail="bind:setDescription,description"></p><legend class="idealegend" data-label="bind:innerHTML, solution"></legend><p class="ideap" data-ideadetail="bind:setSolution,solution"></p></div><div class="detail-footer"><div class="sharedwith invisible" data-ideadetail="bind: setSharedWith, sharedwith" data-ideadetailevent="listen:touchstart, displayList"></div><div id="sharelist" class="autocontact invisible"><div class="autoclose" data-ideadetailevent="listen:touchstart,close"></div><ul data-share="foreach"><li data-share="bind:innerHTML, value.username"></li></ul></div><div class ="rateIdea" data-ideadetail="bind:hideRating, id"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,votes"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, twocents" data-place="place: LibraryTwocentUI"></div></div>';
+                        _widget.template='<div class="library-idea invisible" data-ideadetail="bind:displayView, _id"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleFavEdit, authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache" class="invisible"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, authors"></div><h2 data-ideadetail="bind:innerHTML,title"></h2><span class="date" data-ideadetail="bind:date, creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-ideadetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><legend class="idealegend" data-label="bind:innerHTML, principle"></legend><p class="ideap" data-ideadetail="bind:setDescription,description"></p><legend class="idealegend" data-label="bind:innerHTML, solution"></legend><p class="ideap" data-ideadetail="bind:setSolution,solution"></p><div class="attachments invisible" data-ideadetail="bind:showAttachments, attachments"><legend class="idealegend" data-label="bind:innerHTML, attachments"></legend><div class="toggleattach" data-ideadetailevent="listen: touchstart, toggleAttachments"></div><ul class="a-list" data-alist="foreach"><li><a class="a-type" data-alist="bind:setType, type; bind: setRef, fileName" data-ideadetailevent="listen: touchstart, press; listen: touchend, release"></a><label class="a-name" data-alist="bind:innerHTML, name">Name</label><label class="a-cat" data-alist="bind:setCat, category"></label><div class="a-rating"><a class="item-acorn"></a><label class="rating" data-alist="bind:setRating,docId"></label></div><label class="a-zoom" data-ideadetailevent="listen: touchstart, press; listen: touchend, release; listen:touchend, zoom"></label></li></ul></div></div><div class="detail-footer"><div class="sharedwith invisible" data-ideadetail="bind: setSharedWith, sharedwith" data-ideadetailevent="listen:touchstart, displayList"></div><div id="sharelist" class="autocontact invisible"><div class="autoclose" data-ideadetailevent="listen:touchstart,close"></div><ul data-share="foreach"><li data-share="bind:innerHTML, value.username"></li></ul></div><div class ="rateIdea" data-ideadetail="bind:hideRating, id"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,votes"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, twocents" data-place="place: LibraryTwocentUI"></div><div data-place="place: AttachmentUI"></div></div>';
                 
                 //library
                         _widget.showCache = function showCache(){
@@ -172,6 +229,12 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 
                                 // synchronize with idea
                                 _widget.getIdea(id).then(function(){
+                                        // set attachment list
+                                        (_store.get("attachments")) ? _alist.reset(_store.get("attachments")) : _alist.reset([]);
+                                        _store.watchValue("attachments", function(val){
+                                                _alist.reset(val);        
+                                        });
+                                        
                                         // when clicking on a new idea -- reset _voted param to false, idea store and pass idea's id to twocents
                                         _voted = false;
                                         _twocentWriteUI.reset(_store.get("_id"));
@@ -192,16 +255,24 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 return _store.sync(Config.get("db"), id);       
                         };
                         
+                        _widget.refresh = function(){
+                                return _widget.getIdea(_store.get("_id"));        
+                        };
+                        
                         _widget.action = function(event, node){
                                 var name = node.getAttribute("href"),
                                     id = _store.get("_id"),
-                                    fav, idx;
+                                    fav, idx,
+                                    favSpinner = new Spinner({color:"#FFFFFF", lines:8, length: 6, width: 3, radius:6, left: 3, top: 3});
                                 switch(name){
                                         case "#library-2cents":
                                                 _twocentWriteUI.reset(id);
                                                 _domWrite.classList.remove("invisible");
                                                 break;
                                         case "#library-favorites":
+                                        
+                                                node.classList.add("favwait");
+                                                favSpinner.spin(node);
                                                 (user.get("library-favorites")) ? fav = user.get("library-favorites").concat() : fav = [];
                                                 
                                                 idx = fav.indexOf(id);
@@ -211,12 +282,16 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         user.set("library-favorites", fav);
                                                         user.upload()
                                                         .then(function(){
+                                                                favSpinner.stop();
+                                                                node.classList.remove("favwait");
                                                                 (idx>-1)?alert(_labels.get("removedfav")):alert(_labels.get("addedfav"));
                                                                 node.classList.toggle("unfav");
                                                         });
                                                 }
                                                 else {
                                                         alert(_labels.get("maxfavsize"));
+                                                        favSpinner.stop();
+                                                        node.classList.remove("favwait");
                                                 }
                                                 
                                                 break;
@@ -232,6 +307,28 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");        
+                        };
+                        
+                        _widget.release = function(event, node){
+                                node.classList.remove("pressed");
+                        };
+                        
+                        _widget.toggleAttachments = function(event, node){
+                                var list = _widget.dom.querySelector(".a-list");
+                                if (node.classList.contains("show")){
+                                        list.classList.remove("invisible");
+                                        node.classList.remove("show");
+                                }
+                                else{
+                                        list.classList.add("invisible");
+                                        node.classList.add("show");
+                                }
+                        };
+                        
+                        _widget.zoom = function(event, node){
+                                var idx = node.getAttribute("data-alist_id");
+                                _attachmentUI.reset(_alist.get(idx).docId);
+                                document.querySelector(".cache").classList.add("appear");      
                         };
                         
                         _widget.vote = function(event, node){

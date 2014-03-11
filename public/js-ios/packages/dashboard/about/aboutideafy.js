@@ -15,7 +15,7 @@ define(["OObject", "service/config", "Bind.plugin", "Store"],
                             credits = new Store([
                                     {"name": labels.get("solene"), "contrib": labels.get("contribsolene")},
                                     {"name": labels.get("oliviers"), "contrib": labels.get("contribscherrer")},
-                                    {"name": labels.get("olivierw"), "contrib": labels.get("contribwietrich")},
+                                    //{"name": labels.get("olivierw"), "contrib": labels.get("contribwietrich")},
                                     {"name": labels.get("vincent"), "contrib": labels.get("contribvincent")}
                             ]);
                         

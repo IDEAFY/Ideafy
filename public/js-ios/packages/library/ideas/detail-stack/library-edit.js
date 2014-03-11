@@ -29,7 +29,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
 			    updateReplay; // flag, set to true if sessionReplay option is modified
 		//setup
 	               
-                        _store.setTransport(trasnport);
+                        _store.setTransport(transport);
                         
 			_widget.plugins.addAll({
 			        "editlabel": new Model(_labels),

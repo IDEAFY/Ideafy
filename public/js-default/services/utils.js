@@ -68,6 +68,19 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                                                 
                 return res;
         };
+        
+        /*
+         * Compute a time stamp from a date and/or time, adding time zone offset
+         */
+        _utils.computeTimeStamp = function(date, time){
+                var now = new Date(),
+                      offSet = now.getTimezoneOffset(),
+                      d = date ||now.getTime(),
+                      t = time || 0,
+                      stamp;
+                stamp = d+t+offSet;
+                return stamp;
+        };
 		
         /* 
         * A function to display an abtract in a list, stopping at the end of the first sentence or truncating it if it

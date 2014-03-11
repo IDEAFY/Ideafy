@@ -167,6 +167,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                         if (!message.get("object")){
                                                 error.set("errormsg", labels.get("entersubjectlbl"));
                                                 sendInProgress = false;
+                                                spinner.stop();
+                                                node.classList.remove("invisible");
                                         }
                                         // check recipients and send message if ok
                                         json.dest = [];

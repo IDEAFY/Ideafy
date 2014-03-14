@@ -11,8 +11,8 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
         
         this.reset = function(){
                  
-                //_location = "http://37.153.97.127:3113"; 
-                _location = "http://8.19.34.68:1664";
+                _location = "http://app.ideafy.com:1664"; 
+                //_location = "http://8.19.34.68:1664";
                 //_location = location.origin;
                 _version = "1.2.2";
                 _socket = io.connect(_location);

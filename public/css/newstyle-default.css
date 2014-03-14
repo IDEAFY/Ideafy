@@ -2458,7 +2458,8 @@ textarea.solution {
 /*ideas*/
 /*sessions*/
 #session-list{
-    width: 931px;
+    width: 920px;
+    overflow: hidden;
 }
 
 #session-list .confirm{
@@ -2570,6 +2571,7 @@ textarea.solution {
 .session-details ul{
     list-style: none;
     overflow-y: scroll;
+    overflow-x: hidden;
     height: 100%;
 }
 

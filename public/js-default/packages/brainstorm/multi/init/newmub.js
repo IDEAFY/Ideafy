@@ -56,7 +56,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         "idea" : [], //{"title" : "", "description" : "", "solution" : "", "visibility" : "private", "id" : "" }
                         "score" : "",
                         "chat" : [],
-                        "invited": []},
+                        "invited": [],
+                        "schedule":null},
                         scheduledTime = null,
                         scheduledDate = null,
                         spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 660}).spin();
@@ -111,6 +112,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                         else{
                                                 this.classList.add("invisible");
                                         }
+                                },
+                                setScheduleDate : function(schedule){
+                                        if (!schedule){
+                                                this.innerHTML = "today";               
+                                        }      
+                                },
+                                setScheduleTime : function(schedule){
+                                        if (!schedule){
+                                                this.innerHTML = "now";         
+                                        }        
                                 },
                                 setTitle : function(initiator){
                                         var _now = new Date();
@@ -180,7 +191,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                 "idea" : [], //{"title" : "", "description" : "", "solution" : "", "visibility" : "private", "id" : "" }
                                 "score" : "",
                                 "chat" : [],
-                                "invited": []};
+                                "invited": [],
+                                "scheduled":null};
                                 
                         session.reset(sessionTemplate);
                         // update user data
@@ -229,13 +241,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                 };
                 
                 widget.setSessionDate = function(event, node){
-                        console.log(node.value, node.valueAsNumber);
                         scheduledDate = node.valueAsNumber;
                         session.set("scheduled", Utils.computeTimeStamp(scheduledDate, scheduledTime));
                 };
                 
                 widget.setSessionTime = function(event, node){
-                        console.log(node.value, node.valueAsNumber);
+                        scheduledTime = node.valueAsNumber;
+                        session.set("scheduled", Utils.computeTimeStamp(scheduledDate, scheduledTime));
                 };
                 
                 widget.displayAutoContact = function(event, node){

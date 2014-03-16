@@ -51,6 +51,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.render();
+                        _widget.setDate();
                         
                 }
                         

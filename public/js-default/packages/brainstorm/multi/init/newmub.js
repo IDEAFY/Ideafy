@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/config", "Promise", "Store", "service/utils", "lib/spin.min"],
-        function(Widget, Model, Event, CouchDBDocument, Config, Promise, Store, Utils, Spinner){
+define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/config", "Promise", "Store", "service/utils", "lib/spin.min", "Place.plugin", "service/date", "service/time"],
+        function(Widget, Model, Event, CouchDBDocument, Config, Promise, Store, Utils, Spinner, Place, DateWidget, TimeWidget){
                 
            return function NewMUBConstructor($exit){
            
@@ -60,6 +60,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         "scheduled":null},
                         scheduledTime = null,
                         scheduledDate = null,
+                        dateUI = new DateWidget(),
+                        timeUI = new TimeWidget(),
                         spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 660}).spin();
                 
                 // reset languages
@@ -114,7 +116,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                         }
                                 },
                                 setScheduleDate : function(scheduled){
-                                        var today;
+                                        var today = new Date(),
+                                              field ;
                                         if (!scheduled){
                                                 this.value = today;               
                                         }      
@@ -149,6 +152,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                                 (selected)? this.classList.add("selected") : this.classList.remove("selected");
                                         }
                         }),
+                        "place" : new Place({"dateUI": dateUI, "timeUI": timeUI}),
                         "invited" : new Model(invited,{
                                 setSelected : function(selected){
                                                 (selected)? this.innerHTML = "&#10003;":this.innerHTML="";
@@ -158,7 +162,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         "newmubevent": new Event(widget)
                 });
                 
-                widget.template = '<div id="newmub"><div id="newmub-content"><form><div class="idealang"><div class="currentlang" data-newmub="bind: displayLang, lang" data-newmubevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newmubevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><label data-labels="bind:innerHTML, selectmode"></label><hr/><div class="select-mode"><select data-newmub="bind:initSessionMode, mode" data-newmubevent="listen:change, changeSessionMode"><option name="roulette" data-labels="bind:innerHTML, roulette"></option><option name="campfire" data-labels="bind:innerHTML, campfire"></option><option name="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="schedule-session invisible" data-newmub="bind:displaySchedule, mode"><label data-labels="bind:innerHTML, selectmode">Indiquez la date de la session</label><hr/><input type="text"placeholder="DD" data-newmub="bind:setScheduleDate, scheduled" data-newmubevent="listen: input, setSessionDate"><input type="text"placeholder="MM" data-newmub="bind:setScheduleDate, scheduled" data-newmubevent="listen: input, setSessionDate"><input type="text"placeholder="YYYY" data-newmub="bind:setScheduleDate, scheduled" data-newmubevent="listen: input, setSessionDate"><input type="text hrs" data-newmub="bind:setScheduleTime, scheduled" data-newmubevent="listen: input, setSessionTime">:<input type="text min" data-newmub="bind:setScheduleTime, scheduled" data-newmubevent="listen: input, setSessionTime"><input type="text ampm"placeholder="AM" data-newmub="bind:setScheduleTime, scheduled" data-newmubevent="listen: input, setSessionTime"></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label>Invitez les participants</label><hr/><div class="selectall" data-labels="bind:innerHTML, selectall" data-newmubevent="listen: mousedown, press; listen:mouseup, selectAll">Select all</div><input class="search" data-newmubevent="listen:mousedown, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="invitelistauto" class="autocontact invisible"><div class="autoclose" data-newmubevent="listen:mousedown,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-newmubevent="listen:mouseup, select"></li></ul></div><div class="invitecontactlist"><ul data-invited="foreach"><li class = "contact list-item" data-newmubevent="listen:mousedown, discardContact"><p class="contact-name" data-invited="bind:innerHTML, username"></p><div class="remove-contact"></div></li></ul></div></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" maxlength=60 readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: mousedown, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-newmub="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: mousedown, press; listen:mouseup, clear"></label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:mousedown, press; listen:mouseup, create"></label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
+                widget.template = '<div id="newmub"><div id="newmub-content"><form><div class="idealang"><div class="currentlang" data-newmub="bind: displayLang, lang" data-newmubevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newmubevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><label data-labels="bind:innerHTML, selectmode"></label><hr/><div class="select-mode"><select data-newmub="bind:initSessionMode, mode" data-newmubevent="listen:change, changeSessionMode"><option name="roulette" data-labels="bind:innerHTML, roulette"></option><option name="campfire" data-labels="bind:innerHTML, campfire"></option><option name="boardroom" data-labels="bind:innerHTML, boardroom"></option></select><span class="session-info" data-newmub="bind: setSessionInfo, mode"></span></div><div class="schedule-session invisible"><div data-place="place: dateUI"></div><div data-place="place:timeUI"></div></div><div class="invite-contacts invisible" data-newmub="bind:displayInvitations, mode"><label>Invitez les participants</label><hr/><div class="selectall" data-labels="bind:innerHTML, selectall" data-newmubevent="listen: mousedown, press; listen:mouseup, selectAll">Select all</div><input class="search" data-newmubevent="listen:mousedown, displayAutoContact; listen:input, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div id="invitelistauto" class="autocontact invisible"><div class="autoclose" data-newmubevent="listen:mousedown,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:highlight, selected" data-newmubevent="listen:mouseup, select"></li></ul></div><div class="invitecontactlist"><ul data-invited="foreach"><li class = "contact list-item" data-newmubevent="listen:mousedown, discardContact"><p class="contact-name" data-invited="bind:innerHTML, username"></p><div class="remove-contact"></div></li></ul></div></div><label data-labels="bind:innerHTML, quickstarttitle"></label><hr/><textarea class="session-title" maxlength=60 readonly="readonly" name="title" data-newmub="bind:value, title; bind: setTitle, initiator" data-newmubevent="listen: mousedown, removeReadonly"></textarea><label data-labels="bind:innerHTML, quickstartdesc"></label><hr/><textarea class="session-desc" name="description" data-newmub="bind:value, description" data-labels="bind: placeholder, quickstartdescplaceholder"></textarea></form><div class="newmub-footer"><p class="send"><label class="clear" data-labels="bind:innerHTML, clear" data-newmubevent="listen: mousedown, press; listen:mouseup, clear"></label><label class="create" data-labels="bind:innerHTML, create" data-newmubevent="listen:mousedown, press; listen:mouseup, create"></label><label class="editerror" data-errormsg="bind:innerHTML, errormsg"></label></p></div></div></div>';
                 
                 widget.place(document.getElementById("newmub"));
                 
@@ -240,16 +244,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         contactList.reset(user.get("connections"));
                         invited.reset([]);
                         session.set("mode", name);
-                };
-                
-                widget.setSessionDate = function(event, node){
-                        scheduledDate = node.valueAsNumber;
-                        session.set("scheduled", Utils.computeTimeStamp(scheduledDate, scheduledTime));
-                };
-                
-                widget.setSessionTime = function(event, node){
-                        scheduledTime = node.valueAsNumber;
-                        session.set("scheduled", Utils.computeTimeStamp(scheduledDate, scheduledTime));
                 };
                 
                 widget.displayAutoContact = function(event, node){

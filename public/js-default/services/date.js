@@ -25,6 +25,18 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                         }
                                                 }
                                                 this.innerHTML=res;
+                                        },
+                                        setMonth : function(m){
+                                                var res = "",
+                                                      months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+                                                
+                                                if (m){
+                                                        months.forEach(function(month){
+                                                               res += "<option>"+_labels.get(month)+"</option>";
+                                                        });
+                                                        this.innerHTML = res;
+                                                        this.selectedIndex = m-1;
+                                                }
                                         }
                                 }),
                                 "event" : new Event(this)

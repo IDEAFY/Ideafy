@@ -913,3 +913,7 @@ textarea.a-desc::-webkit-input-placeholder{
 #newmub .dateui select[name="year"]{
     width: 70px;     
 }
+
+.schedule-session{
+    margin-bottom: 10px;
+}

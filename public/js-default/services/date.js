@@ -30,7 +30,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "dateui"><select name="year" data-model="bind:setYear, year"></select><select name="month"></select><select name="day"></select></div>';
+                        _widget.template = '<div class = "dateui"><select name="day"></select><select name="month"></select><select name="year" data-model="bind:setYear, year"></select></div>';
                         
                         _widget.getDate= function(){
                                 return new Date([date.get("year"), date.get("month"), date.get("day")]);

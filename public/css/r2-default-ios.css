@@ -903,13 +903,3 @@ textarea.a-desc::-webkit-input-placeholder{
 .idea-edit .a-zoom{
     float: right;
 }
-
-.dateui select{
-    text-align: center;
-    height: 25px;
-    line-height: 25px;
-}
-
-.dateui select[name="year"]{
-    width: 70px;     
-}

@@ -904,12 +904,12 @@ textarea.a-desc::-webkit-input-placeholder{
     float: right;
 }
 
-.dateui select{
+#newmub .dateui select{
     text-align: center;
     height: 25px;
     line-height: 25px;
 }
 
-.dateui select[name="year"]{
+#newmub .dateui select[name="year"]{
     width: 70px;     
 }

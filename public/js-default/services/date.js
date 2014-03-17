@@ -51,7 +51,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                         (i<9) ? res+="<option>0"+(i+1)+"</option>" : res+="<option>"+(i+1)+"</option>";
                                                 }
                                                 this.innerHTML = res;
-                                                if (date.get("day") && (date.get("day") <= length)) this.selectedIndex=d-1;
+                                                if (date.get("day") && (date.get("day") <= length)) this.selectedIndex=date.get("day")-1;
                                                 else this.selectedIndex=0;
                                         },
                                         setDay : function(d){

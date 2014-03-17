@@ -35,14 +35,33 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                                res += "<option>"+_labels.get(month)+"</option>";
                                                         });
                                                         this.innerHTML = res;
-                                                        this.selectedIndex = m-1;
+                                                        this.selectedIndex = m;
                                                 }
+                                        },
+                                        setDays : function(m){
+                                                var length, res = "";
+                                                if (m === 1){
+                                                        (date.get("year")%4 === 0) ? length = 29 : length = 28;
+                                                }
+                                                else{
+                                                        ([3, 5, 8, 10].indexOf(m) > -1) ? length = 30 : length = 31;
+                                                }
+                                                console.log(length);
+                                                for (i=1;i<=length; i++){
+                                                        (i<9) ? res+="<option>0"+i+"</option>" : res+="<option>"+i+"</option>";
+                                                }
+                                                
+                                                if (date.get("day") && date.get("day") <= length) this.selectedIndex=d-1;
+                                                else this.selectedIndex=0;
+                                        },
+                                        setDay : function(d){
+                                                if (d) this.selectedIndex = d-1;        
                                         }
                                 }),
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "dateui"><select name="day"></select><select name="month" data-model="bind:setMonth, month"></select><select name="year" data-model="bind:setYear, year"></select></div>';
+                        _widget.template = '<div class = "dateui"><select name="day" data-model="bind:setDays, month; bind:setDay, day"></select><select name="month" data-model="bind:setMonth, month"></select><select name="year" data-model="bind:setYear, year"></select></div>';
                         
                         _widget.getDate= function(){
                                 return new Date([date.get("year"), date.get("month"), date.get("day")]);

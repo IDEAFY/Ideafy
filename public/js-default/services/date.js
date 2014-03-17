@@ -47,21 +47,18 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                         ([3, 5, 8, 10].indexOf(m) > -1) ? length = 30 : length = 31;
                                                 }
                                                 console.log(length);
-                                                for (i=1;i<=length; i++){
-                                                        (i<9) ? res+="<option>0"+i+"</option>" : res+="<option>"+i+"</option>";
+                                                for (i=0;i<length; i++){
+                                                        (i<9) ? res+="<option>0"+(i+1)+"</option>" : res+="<option>"+(i+1)+"</option>";
                                                 }
                                                 
                                                 if (date.get("day") && date.get("day") <= length) this.selectedIndex=d-1;
                                                 else this.selectedIndex=0;
-                                        },
-                                        setDay : function(d){
-                                                if (d) this.selectedIndex = d-1;        
                                         }
                                 }),
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "dateui"><select name="day" data-model="bind:setDays, month; bind:setDay, day"></select><select name="month" data-model="bind:setMonth, month"></select><select name="year" data-model="bind:setYear, year"></select></div>';
+                        _widget.template = '<div class = "dateui"><select name="day" data-model="bind:setDays, month"></select><select name="month" data-model="bind:setMonth, month"></select><select name="year" data-model="bind:setYear, year"></select></div>';
                         
                         _widget.getDate= function(){
                                 return new Date([date.get("year"), date.get("month"), date.get("day")]);

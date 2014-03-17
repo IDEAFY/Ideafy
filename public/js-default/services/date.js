@@ -61,7 +61,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "dateui"><select name="day" data-model="bind:setDays, month; bind:setDay, day"></select><select name="month" data-model="bind:setMonth, month"></select><select name="year" data-model="bind:setYear, year"></select></div>';
+                        _widget.template = '<div class = "dateui"><select name="day" data-model="bind:setDays, month; bind:setDay, day" data-event="listen: change, setDay"></select><select name="month" data-model="bind:setMonth, month" data-event="listen: change, setMonth"></select><select name="year" data-model="bind:setYear, year" data-event="listen: change, setYear"></select></div>';
                         
                         _widget.getDate= function(){
                                 return new Date([date.get("year"), date.get("month"), date.get("day")]);
@@ -79,6 +79,18 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 date.set("year", _year);  
                                 date.set("month", _month);
                                 date.set("day", _day);
+                        };
+                        
+                        _widget.setDay = function(event, node){
+                                date.set("day", node.value);        
+                        };
+                        
+                        _widget.setMonth = function(event, node){
+                                date.set("month", node.selectedIndex);        
+                        };
+                        
+                        _widget.setYear = function(event, node){
+                                date.set("year", node.value);  
                         };
                         
                         _widget.render();

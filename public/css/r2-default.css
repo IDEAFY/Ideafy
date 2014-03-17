@@ -918,6 +918,10 @@ textarea.a-desc::-webkit-input-placeholder{
     width: 110px;     
 }
 
+#newmub .dateui select[name="day"]{
+    width: 55px;     
+}
+
 .schedule-session{
     margin-bottom: 10px;
 }

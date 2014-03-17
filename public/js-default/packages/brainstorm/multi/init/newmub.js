@@ -530,7 +530,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         error.reset(tempError);        
                 });
                 
-                return widget;
-                   
+                DATEUI = dateUI;
+                return widget;   
            };
 });

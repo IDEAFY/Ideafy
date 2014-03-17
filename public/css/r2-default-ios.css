@@ -903,3 +903,21 @@ textarea.a-desc::-webkit-input-placeholder{
 .idea-edit .a-zoom{
     float: right;
 }
+
+#newmub .dateui select{
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+}
+
+#newmub .dateui select[name="year"]{
+    width: 70px;     
+}
+
+#newmub .dateui select[name="month"]{
+    width: 110px;     
+}
+
+.schedule-session{
+    margin-bottom: 10px;
+}

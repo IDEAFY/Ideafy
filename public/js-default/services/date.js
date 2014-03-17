@@ -82,7 +82,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.setDay = function(event, node){
-                                date.set("day", node.value);        
+                                date.set("day", parseInt(node.value));        
                         };
                         
                         _widget.setMonth = function(event, node){
@@ -90,7 +90,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.setYear = function(event, node){
-                                date.set("year", node.value);  
+                                date.set("year", parseInt(node.value));  
                         };
                         
                         _widget.render();

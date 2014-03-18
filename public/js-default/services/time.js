@@ -61,12 +61,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                          };
                         
                         _widget.setTime = function(event, node){
-                                if (node.selectedIndex === 1) time.set("hour", (time.get("hour")+12)); 
+                                (node.selectedIndex === 1) ? time.set("am", false) : time.set("am", true); 
                         };
                         
                         _widget.getTimestamp = function(){
-                                var offset = new Date().getTimezoneOffset();
-                                return (3600*time.get("hour") + 60*time.get("min") + offset)*1000;      
+                                var offset = new Date().getTimezoneOffset(),
+                                      h, m = time.get("min");
+                                      
+                                (time.get("am")) ? h = time.get("hour") : h=time.get("hour")+12;
+                                
+                                return (3600*h + 60*m + offset)*1000;      
                         };
                         
                         _widget.setTime= function(h,m,am){
@@ -74,8 +78,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                       _hour = h || now.getHours(),
                                       _min = m || now.getMinutes(),
                                       _am = am;
-                                time.set("hour", _year);  
-                                time.set("min", _month);
+                                time.set("hour", _hour);  
+                                time.set("min", _min);
                                 timee.set("am", _am);
                         };
                         

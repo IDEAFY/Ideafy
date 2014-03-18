@@ -104,7 +104,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                         var _eula = JSON.parse(result),
                                               lang = _labels.get("language"), 
                                               translation;
-                                        if (_eula.get.translations) translation = _eula.translations[lang];
+                                        if (_eula.translations) translation = _eula.translations[lang];
                                         if (translation){
                                                 _EULA = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
                                         }

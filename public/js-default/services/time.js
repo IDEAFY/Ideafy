@@ -45,6 +45,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 if (field === "hour"){ 
                                         console.log(n);
                                         if (n>23) node.innerHTML = time.get("field") || "00";
+                                        (n<12) ? _widget.dom.querySelector("select[name='am']").classList.remove("invisible") : _widget.dom.querySelector("select[name='am']").classList.add("invisible");;
                                 }
                                 // test for minutes
                                 if (field === "min"){

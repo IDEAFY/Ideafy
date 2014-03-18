@@ -204,6 +204,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
         olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
         olives.handlers.set("ShareDeck", appUtils.shareDeck);
+        olives.handlers.set("GetEULA", appUtils.getEULA);
         olives.handlers.set("GetFavList", appUtils.getFavList);
         olives.handlers.set("GetAvatar", appUtils.getAvatar);
         olives.handlers.set("GetUserDetails", appUtils.getUserDetails);

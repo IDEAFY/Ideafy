@@ -1028,7 +1028,6 @@ function AppUtils(){
                     userRewards = new _CouchDBDocument(),
                     scored = [];
                 
-                console.log(json);
                 _getDocAsAdmin(json.userid+"_rewards", userRewards)
                 .then(function(){
                         if (userRewards.get("scored")) scored = userRewards.get("scored");
@@ -1282,6 +1281,16 @@ function AppUtils(){
                                 });
                         }
                 });        
+        };
+        
+        /*
+         * Retrieve EULA for browser version
+         */
+        this.getEULA = function(json, onEnd){
+                var cdb = new _CouchDBDocument();
+                _getDocAsAdmin("EULA-PC", cdb).then(function(){
+                        onEnd(cdb.toJSON());
+                });
         };
         
 };

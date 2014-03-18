@@ -38,7 +38,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.check = function(event, node){
-                                event.preventDefault();
                                 var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
                                 // test for numbers
                                 if (!regex.test(n)) node.innerHTML = time.get("field") || "00";

@@ -22,7 +22,7 @@ var http = require("http"),
     path = require("path"), 
     qs = require("querystring"), 
     url = require("url"), 
-    redirect = require('connect-redirection'), 
+		redirect = require('connect-redirection'), 
     wrap = require("./wrap"),
     srvutils = require("./srvutils.js"),
     apputils = require("./apputils.js"),
@@ -37,17 +37,27 @@ var srvUtils = new srvutils.SrvUtils(),
       CDBAdmin = new cdbadmin.CDBAdmin();
   
 // create reusable transport method (opens pool of SMTP connections)
+/*
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
         host: "10.224.1.168",
-        //secureConnection : true,
-        port : 25//,
-        //auth : {
-        //        user : "ideafy",
-        //        pass : fs.readFileSync(".password", "utf8").trim()
-        //}
+        secureConnection : false,
+        port : 587,
+        auth : {
+                user : "ideafy",
+                pass : fs.readFileSync(".password", "utf8").trim()
+        }
+				//port: 25
 });
+*/
 
+var smtpTransport = nodemailer.createTransport("SMTP", {
+        service: "Gmail",
+        auth: {
+                user: "vincent@ideafy.com",
+                pass: "$Nor&Vin2014"
+        }
+});
 
 /****************************************
  *  APPLICATION CONFIGURATION
@@ -90,8 +100,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 .use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
                 .use('/upload', srvUtils.uploadFunc)      
                 .use(function(req, res, next) {
+												var ori = req.headers.origin || "http://app.ideafy.com";
+												res.setHeader("Access-Control-Allow-Origin", ori);
+  											res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
+												res.setHeader("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE,OPTIONS');
                         res.setHeader("Ideady Server", "node.js/" + process.versions.node);
                         res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
+												if ('OPTIONS' == req.method) {
+    												res.send(200);
+  											}
                         next();
                 })
                 .use(connect.cookieParser())
@@ -114,7 +131,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 3);                    // reduce logging
+        io.set('log level', 0);                    // reduce logging
         io.set("close timeout", 60);
         io.set("heartbeat interval", 25);
         

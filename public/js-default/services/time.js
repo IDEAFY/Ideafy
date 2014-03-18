@@ -29,7 +29,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:input, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");
@@ -38,18 +38,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.check = function(event, node){
+                                event.preventDefault();
                                 var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
                                 // test for numbers
-                                if (!regex.test(node.innerHTML)) event.preventDefault();
+                                if (!regex.test(n)) node.innerHTML = time.get("field") || "00";
                                 // test for hours
                                 if (field === "hour"){ 
                                         console.log(n);
-                                        if (n>23) event.preventDefault();
+                                        if (n>23) node.innerHTML = time.get("field") || "00";
                                 }
                                 // test for minutes
                                 if (field === "min"){
                                         console.log(n);
-                                        if (n>59) event.preventDefault();
+                                        if (n>59) node.innerHTML = time.get("field") || "00";
                                 }
                                 time.set(field, n);        
                         };

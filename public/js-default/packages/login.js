@@ -99,6 +99,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _signupForm.getEULA = function(){
+                                console.log("get EULA called");
                                 _transport.request("GetEULA", {}, function(result){
                                         var _eula = JSON.parse(result),
                                               lang = _labels.get("language"), 

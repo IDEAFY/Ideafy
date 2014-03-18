@@ -531,6 +531,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                 });
                 
                 DATEUI = dateUI;
+                TIMEUI = timeUI;
                 return widget;   
            };
 });

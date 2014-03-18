@@ -41,7 +41,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 var field = node.getAttribute("name"); 
                                 
                                 if (field === "hour"){
-                                        
+                                        console.log(event.keyCode);        
                                 }     
                         };
                         

@@ -29,7 +29,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:input, setTime"><input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:keypress, check; listen:input, setTime"></select><select name="am" class="invisible" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:input, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");
@@ -38,23 +38,29 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.check = function(event, node){
-                                var field = node.getAttribute("name"); 
-                                
-                                if (field === "hour"){
-                                        console.log(event.keyCode);        
-                                }     
+                                var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
+                                // test for numbers
+                                if (!regex.test(node.innerHTML)) event.preventDefault();
+                                // test for hours
+                                if (field === "hour"){ 
+                                        console.log(n);
+                                        if (n>23) event.preventDefault();
+                                }
+                                // test for minutes
+                                if (field === "min"){
+                                        console.log(n);
+                                        if (n>59) event.preventDefault();
+                                }
+                                time.set(field, n);        
                         };
                         
+                        _widget.format = function(event, node){
+                                var  n=node.value;
+                                if ( n<10) node.innerHTML = "0"+n;
+                         };
+                        
                         _widget.setTime = function(event, node){
-                                var field = node.getAttribute("name");
-                                switch(field){
-                                        case "hour":
-                                                break;
-                                        case "min":
-                                                break;
-                                        case "am" :
-                                                break;    
-                                };
+                                if (node.selectedIndex === 1) time.set("hour", (time.get("hour")+12)); 
                         };
                         
                         _widget.getTimestamp = function(){
@@ -66,9 +72,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                       _hour = h || now.getHours(),
                                       _min = m || now.getMinutes(),
                                       _am = am;
-                                date.set("hour", _year);  
-                                date.set("min", _month);
-                                date.set("am", _am);
+                                time.set("hour", _year);  
+                                time.set("min", _month);
+                                timee.set("am", _am);
                         };
                         
                         _widget.render();

@@ -1284,6 +1284,16 @@ function AppUtils(){
                 });        
         };
         
+        /*
+         * Retrieve EULA for browser version
+         */
+        this.getEULA = function(json, onEnd){
+                var cdb = new _CouchDBDocument();
+                _getDocAsAdmin("EULA-PC", cdb).then(function(){
+                        onEnd(cdb.toJSON());
+                });
+        };
+        
 };
 
 exports.AppUtils = AppUtils;

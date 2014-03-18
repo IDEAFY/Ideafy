@@ -33,7 +33,6 @@ define(["OObject" ,"Amy/Stack-plugin",
                              loginSpinner = new Spinner({color:"#657B99", lines:10, length: 10, width: 8, radius:15, top: 270}).spin(),
                              reload = false,  // boolean to differentiate between initial start and usbsequent logout/login
                              ConfirmUI,
-                             _eula = new CouchDBDocument(),
                              _EULA;
                 
                 //setup && UI DEFINITIONS               
@@ -100,28 +99,25 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _signupForm.getEULA = function(){
-                                _eula.setTransport(_transport);
-                                
-                                _eula.sync(_db, "EULA-PC")
-                                .then(function(){
-                                        var lang = _labels.get("language"), translation;
-                                        if (_eula.get("translations")) translation = _eula.get("translations")[lang];
+                                _transport.request("GetEULA", {}, function(result){
+                                        var _eula = JSON.parse(result),
+                                              lang = _labels.get("language"), 
+                                              translation;
+                                        if (_eula.get.translations) translation = _eula.translations[lang];
                                         if (translation){
                                                 _EULA = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
                                         }
-                                        else _EULA = "<h4>" + _eula.get("title") + "</h4></div>" + _eula.get("body") + "</div>";
+                                        else _EULA = "<h4>" + _eula.title + "</h4></div>" + _eula.body + "</div>";
                                         
-                                        console.log(_eula.toJSON(), _EULA, lang, _labels.toJSON());
                                         _labels.watchValue("language", function(val){
-                                                translation = _eula.get("translations")[val];
+                                                translation = _eula.translations[val];
                                                 if (translation){
                                                 _EULA = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
                                                 }
-                                                else _EULA = "<h4>" + _eula.get("title") + "</h4></div>" + _eula.get("body") + "</div>";        
+                                                else _EULA = "<h4>" + _eula.title + "</h4></div>" + _eula.body + "</div>";        
                                         });
+                                                        
                                 });
-                                
-                                        
                         };
                         
                         _signupForm.showEULA = function(event, node){

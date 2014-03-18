@@ -1028,7 +1028,6 @@ function AppUtils(){
                     userRewards = new _CouchDBDocument(),
                     scored = [];
                 
-                console.log(json);
                 _getDocAsAdmin(json.userid+"_rewards", userRewards)
                 .then(function(){
                         if (userRewards.get("scored")) scored = userRewards.get("scored");

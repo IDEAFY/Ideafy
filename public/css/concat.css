@@ -7956,12 +7956,12 @@ ol.ol3 {list-style-type: decimal}
 }
 
 .confirm.EULA{
-    width: 1024px;
-    height: 660px;
+    width: 944px;
+    height: 600px;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -330px;
+    margin-top: -320px;
     margin-left: -512px;
     background: white;
     border-radius: 10px;

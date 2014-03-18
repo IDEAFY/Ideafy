@@ -928,4 +928,10 @@ textarea.a-desc::-webkit-input-placeholder{
 
 .schedule-session{
     margin-bottom: 10px;
+    width: 100%;
+    height: 75px;
+}
+
+.timeui input{
+    width: 40px;
 }

@@ -29,12 +29,32 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="number" max=23 name="hour" data-model="bind:setHour, hour"><input type="number" max=59 name="minutes" data-model="bind:setMin, minutes"></select><select name="ampm" class="invisible"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:input, setTime"><input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:keypress, check; listen:input, setTime"></select><select name="am" class="invisible" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");
                                 (time.get("am")) ? h = time.get("hour") : h=time.get("hour")+12;
                                 return [h, m, 0];
+                        };
+                        
+                        _widget.check = function(event, node){
+                                var field = node.getAttribute("name"); 
+                                
+                                if (field === "hour"){
+                                        
+                                }     
+                        };
+                        
+                        _widget.setTime = function(event, node){
+                                var field = node.getAttribute("name");
+                                switch(field){
+                                        case "hour":
+                                                break;
+                                        case "min":
+                                                break;
+                                        case "am" :
+                                                break;    
+                                };
                         };
                         
                         _widget.getTimestamp = function(){

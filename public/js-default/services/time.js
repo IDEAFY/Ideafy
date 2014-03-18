@@ -16,14 +16,25 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
-                                "model" : new Model(time),
+                                "model" : new Model(time,{
+                                        setHour : function(h){
+                                                this.value = h;
+                                                if (h<10) this.innerHTML = "0"+h;     
+                                        },
+                                        setMin : function(m){
+                                                this.value = m;
+                                                if (m<10) this.innerHTML = "0"+m;    
+                                        }
+                                }),
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><select name="hour" data-model="bind:setHour, hour"></select><select name="minutes"></select><select name="day"></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="number" max=23 name="hour" data-model="bind:setHour, hour"><input type="number" max=59 name="minutes" data-model="bind:setMin, minutes"></select><select name="ampm" class="invisible"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
-                                return new Date([date.get("year"), date.get("month"), date.get("day")]);
+                                var h, m = time.get("min");
+                                (time.get("am")) ? h = time.get("hour") : h=time.get("hour")+12;
+                                return [h, m, 0)];
                         };
                         
                         _widget.getTimestamp = function(){

@@ -904,6 +904,10 @@ textarea.a-desc::-webkit-input-placeholder{
     float: right;
 }
 
+#newmub .dateui, #newmub .timeui{
+    float:left;
+}
+
 #newmub .dateui select{
     text-align: center;
     height: 25px;

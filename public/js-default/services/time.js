@@ -64,7 +64,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.getTimestamp = function(){
-                                
+                                var offset = new Date().getTimezoneOffset();
+                                return (3600*time.get("hour") + 60*time.get("min") + offset)*1000;      
                         };
                         
                         _widget.setTime= function(h,m,am){

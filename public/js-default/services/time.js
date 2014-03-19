@@ -24,48 +24,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:value, hour" data-event="listen:input, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:value, min" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" data-model="bind:displayAMPM, hour" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="number" maxlength=2 name="hour" data-model="bind:value, hour" data-event="listen:blur, format">:<input type="number" maxlength=2 name="min" data-model="bind:value, min" data-event="listen:blur, format"></select><select name="am" class="invisible" data-model="bind:displayAMPM, hour" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");
                                 (time.get("am")) ? h = time.get("hour") : h=time.get("hour")+12;
                                 return [h, m, 0];
-                        };
-                        
-                        _widget.check = function(event, node){
-                                var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
-                                console.log(n, regex.test(n));
-                                // test for numbers
-                                if (regex.test(n)){
-                                        // test for hours
-                                        if (field === "hour"){ 
-                                                console.log(n);
-                                                if (n<24) {
-                                                        time.set(field, parseInt(n));
-                                                        if (n<10) node.value = "0"+n;
-                                                }
-                                                else {
-                                                        node.value = "00";
-                                                        time.set(field, 0);
-                                                }
-                                        }
-                                        // test for minutes
-                                        if (field === "min"){
-                                                console.log(n);
-                                                if (n<60) {
-                                                        time.set(field, parseInt(n));
-                                                        if (n<10) node.value = "0"+n;
-                                                }
-                                                else {
-                                                        node.value = "00";
-                                                        time.set(field, 0);
-                                                }
-                                        }
-                                }
-                                else {
-                                        node.value = "00";
-                                        time.set(field, 0);
-                                }        
                         };
                         
                         _widget.format = function(event, node){

@@ -35,10 +35,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         _widget.format = function(event, node){
                                 var  n=node.value,
                                         field = node.getAttribute("name");
-                                if (!/[0-9]/.test(n)) time.set(field, 0);
+                                if (!/[0-9]/.test(n)) time.set(field, "00");
                                 if ( n<10) node.value = "0"+n;
-                                if (field === "hour" && n > 23) time.set(field, 0);
-                                if (field === "min" && n > 59) time.set(field, 0);
+                                if (field === "hour" && n > 23) time.set(field, "00");
+                                if (field === "min" && n > 59) time.set(field, "00");
                          };
                         
                         _widget.setAMPM = function(event, node){
@@ -64,8 +64,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 time.set("am", _am);
                         };
                         
+                        _widget.reset = function(){
+                                _widget.setTIme();
+                        };
+                        
                         _widget.render();
-                        _widget.setTime();
+                        _widget.reset();
                         
                 }
                         

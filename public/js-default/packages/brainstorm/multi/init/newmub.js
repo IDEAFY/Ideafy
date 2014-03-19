@@ -58,8 +58,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         "chat" : [],
                         "invited": [],
                         "scheduled":null},
-                        scheduledTime = null,
-                        scheduledDate = null,
                         dateUI = new DateWidget(),
                         timeUI = new TimeWidget(),
                         spinner = new Spinner({color:"#8cab68", lines:10, length: 8, width: 4, radius:8, top: -8, left: 660}).spin();
@@ -193,8 +191,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         session.set("initiator", {"id" : user.get("_id"), "username" : user.get("username"), "intro" : user.get("intro")});
                         
                         // reset scheduling, invitations, errors
-                        scheduledTime = null;
-                        scheduledDate = null;
+                        dateUI.reset();
+                        timeUI.reset();
                         invited.reset([]);
                         error.set("errormsg", "");
                         // reset contactList with all user connections
@@ -431,6 +429,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         // add invitees to session document
                         var cdb = new CouchDBDocument(),
                             now = new Date(),
+                            scheduled,
                             chatId, chat = session.get("chat") || [],
                             promise = new Promise();
                         
@@ -438,7 +437,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         session.set("_id", "S:MU:"+now.getTime());
                         
                         // complete session doc
-                        session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                        
+                        // check if session is scheduled (ie start date > now+10min)
+                        scheduled = dateUI.getDatestamp() + timeUI.getTimestamp();
+                        if ((schedule - now.getTime()) > 600000) session.set("shceduled", scheduled);
+                        session.set("date", dateUI.getDate());
                         
                         // add invited list if mode is boardroom or all user contacts if mode is campfire
                         if (session.get("mode") === "boardroom"){
@@ -471,16 +474,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                 return cdb.upload();      
                         })
                         .then(function(){
+                                var obs = Config.get("observer");
                                 if (cdb.get("mode") === "boardroom"){
                                         error.set("errormsg", labels.get("sendinginvites"));
                                         widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
-                                                Config.get("observer").notify("start-mu_session", cdb.get("_id"));
+                                                // if session is scheduled show session list else enter waiting room
+                                                (cdb.get("scheduled")) ? obs.notify("show-session", session) : obs.notify("start-mu_session", cdb.get("_id"));
                                                 promise.fulfill();
                                                 cdb.unsync();
                                         });
                                 }
                                 else {
-                                        Config.get("observer").notify("start-mu_session", cdb.get("_id"));
+                                        // if session is scheduled show session list else enter waiting room
+                                        (cdb.get("scheduled")) ? obs.notify("show-session", session) : obs.notify("start-mu_session", cdb.get("_id"));
                                         promise.fulfill();
                                         cdb.unsync();       
                                 }        
@@ -529,9 +535,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         error.reset({});
                         error.reset(tempError);        
                 });
-                
-                DATEUI = dateUI;
-                TIMEUI = timeUI;
                 return widget;   
            };
 });

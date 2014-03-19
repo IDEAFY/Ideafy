@@ -70,8 +70,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 return new Date([date.get("year"), date.get("month"), date.get("day")]);
                         };
                         
-                        _widget.getDateStamp = function(){
-                                
+                        _widget.getDatestamp = function(){
+                                return _widget.getDate().getTime();        
                         };
                         
                         _widget.setDate = function(y,m,d){
@@ -96,8 +96,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 date.set("year", parseInt(node.value));  
                         };
                         
+                        _widget.reset = function(y,m,d){
+                                var _y = y || null, _m = m || null; _d = d || null;
+                                _widget.setDate(_y, _m, _d);        
+                        };
+                        
                         _widget.render();
-                        _widget.setDate();
+                        _widget.reset();
                         
                 }
                         

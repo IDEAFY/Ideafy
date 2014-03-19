@@ -25,6 +25,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                         }
                                                 }
                                                 this.innerHTML=res;
+                                                this.selectedIndex=(y-current);
                                         },
                                         setMonth : function(m){
                                                 var res = "",
@@ -90,7 +91,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.setYear = function(event, node){
-                                console.log(parseInt(node.value));
                                 date.set("year", parseInt(node.value));  
                         };
                         

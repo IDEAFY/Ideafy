@@ -24,12 +24,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         setMin : function(m){
                                                 this.value = m;
                                                 if (m<10) this.innerHTML = "0"+m;    
+                                        },
+                                        displayAMPM : function(h){
+                                                (h <12) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         }
                                 }),
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" datas-model="bind:displayAMPM, hour" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");
@@ -42,12 +45,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 // test for numbers
                                 if (!regex.test(n)) time.set(field,0);
                                 else{
-                                        n = parseInt(n);
                                         // test for hours
                                         if (field === "hour"){ 
                                                 console.log(n);
                                                 if (n>23)  time.set(field, 0);
-                                                (n<12) ? _widget.dom.querySelector("select[name='am']").classList.remove("invisible") : _widget.dom.querySelector("select[name='am']").classList.add("invisible");;
                                         }
                                         // test for minutes
                                         if (field === "min"){

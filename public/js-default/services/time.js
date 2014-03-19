@@ -56,13 +56,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.check = function(event, node){
                                 var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
+                                console.log(n, regext.test(n));
                                 // test for numbers
                                 if (regex.test(n)){
                                         // test for hours
                                         if (field === "hour"){ 
                                                 console.log(n);
                                                 if (n<24) {
-                                                        time.set(field, n);
+                                                        time.set(field, parseInt(n));
                                                         if (n<10) node.value = "0"+n;
                                                 }
                                                 else {
@@ -74,7 +75,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         if (field === "min"){
                                                 console.log(n);
                                                 if (n<60) {
-                                                        time.set(field, n);
+                                                        time.set(field, parseInt(n));
                                                         if (n<10) node.value = "0"+n;
                                                 }
                                                 else {

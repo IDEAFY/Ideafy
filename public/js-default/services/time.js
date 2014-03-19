@@ -56,23 +56,33 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.check = function(event, node){
                                 event.preventDefault();
-                                console.log(event);
                                 var field = node.getAttribute("name"), n=event.target.value, regex=/[0-9]/;
                                 // test for numbers
                                 if (regex.test(n)){
                                         // test for hours
                                         if (field === "hour"){ 
                                                 console.log(n);
-                                                if (n<24)  time.set(field, n);
-                                                if (n<10) time.set(field, "0"+n);
+                                                if (n<24) {
+                                                        time.set(field, n);
+                                                        if (n<10) node.value = "0"+n;
+                                                }
+                                                else {
+                                                        node.value = "00";
+                                                        time.set(field, 0);
+                                                }
                                         }
                                         // test for minutes
                                         if (field === "min"){
                                                 console.log(n);
-                                                if (n<60) time.set(field, n);
-                                                if (n<10) time.set(field, "0"+n);
+                                                if (n<60) {
+                                                        time.set(field, n);
+                                                        if (n<10) node.value = "0"+n;
+                                                }
+                                                else {
+                                                        node.value = "00";
+                                                        time.set(field, 0);
+                                                }
                                         }
-                                        time.set(field, n);
                                 }        
                         };
                         

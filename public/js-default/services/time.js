@@ -18,12 +18,26 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "label" : new Model(_labels),
                                 "model" : new Model(time,{
                                         setHour : function(h){
-                                                this.value = h;
-                                                if (h<10) this.innerHTML = "0"+h;     
+                                                var now = new Date().getHours();
+                                                if (!h && h!==0){
+                                                        this.value = now;
+                                                        if (now<10) this.innerHTML = "0"+h;
+                                                        this.setAttribute("style", "color: #ccc;");
+                                                }
+                                                else{
+                                                        this.setAttribute("style", "color: #404040;");
+                                                }   
                                         },
                                         setMin : function(m){
-                                                this.value = m;
-                                                if (m<10) this.innerHTML = "0"+m;    
+                                                var now = new Date().getMinutes();
+                                                if (!m && m!==0){
+                                                        this.value = now;
+                                                        if (now<10) this.innerHTML = "0"+now;
+                                                        this.setAttribute("style", "color: #ccc;");
+                                                } 
+                                                else{
+                                                        this.setAttribute("style", "color: #404040;");
+                                                }  
                                         },
                                         displayAMPM : function(h){
                                                 (h <12) ? this.classList.remove("invisible") : this.classList.add("invisible");
@@ -43,19 +57,20 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         _widget.check = function(event, node){
                                 event.preventDefault();
                                 console.log(event);
-                                var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
+                                var field = node.getAttribute("name"), n=event.target.value, regex=/[0-9]/;
                                 // test for numbers
-                                if (!regex.test(n)) time.set(field,0);
-                                else{
+                                if (regex.test(n)){
                                         // test for hours
                                         if (field === "hour"){ 
                                                 console.log(n);
-                                                if (n>23)  time.set(field, 0);
+                                                if (n<24)  time.set(field, n);
+                                                if (n<10) time.set(field, "0"+n);
                                         }
                                         // test for minutes
                                         if (field === "min"){
                                                 console.log(n);
-                                                if (n>59) time.set(field, 0);
+                                                if (n<60) time.set(field, n);
+                                                if (n<10) time.set(field, "0"+n);
                                         }
                                         time.set(field, n);
                                 }        

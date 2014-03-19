@@ -26,6 +26,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                 }
                                                 else{
                                                         this.setAttribute("style", "color: #404040;");
+                                                        this.innerHTML = h;
                                                 }   
                                         },
                                         setMin : function(m){
@@ -37,6 +38,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                 } 
                                                 else{
                                                         this.setAttribute("style", "color: #404040;");
+                                                        this.innerHTML = m;
                                                 }  
                                         },
                                         displayAMPM : function(h){
@@ -46,7 +48,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" datas-model="bind:displayAMPM, hour" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" data-model="bind:displayAMPM, hour" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");

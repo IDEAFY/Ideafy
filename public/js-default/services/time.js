@@ -32,7 +32,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" datas-model="bind:displayAMPM, hour" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check"></select><select name="am" class="invisible" datas-model="bind:displayAMPM, hour" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");
@@ -53,16 +53,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         // test for minutes
                                         if (field === "min"){
                                                 console.log(n);
-                                                if (n>59) node.innerHTML = time.set(field, 0);
+                                                if (n>59) time.set(field, 0);
                                         }
                                         time.set(field, n);
                                 }        
                         };
-                        
-                        _widget.format = function(event, node){
-                                var  n=node.value;
-                                if ( n<10) node.innerHTML = "0"+n;
-                         };
                         
                         _widget.setTime = function(event, node){
                                 (node.selectedIndex === 1) ? time.set("am", false) : time.set("am", true); 

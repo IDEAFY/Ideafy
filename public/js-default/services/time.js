@@ -32,7 +32,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check"></select><select name="am" class="invisible" datas-model="bind:displayAMPM, hour" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" datas-model="bind:displayAMPM, hour" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");
@@ -41,6 +41,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.check = function(event, node){
+                                event.preventDefault();
+                                console.log(event);
                                 var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
                                 // test for numbers
                                 if (!regex.test(n)) time.set(field,0);
@@ -58,6 +60,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         time.set(field, n);
                                 }        
                         };
+                        
+                        _widget.format = function(event, node){
+                                var  n=node.value;
+                                if ( n<10) node.innerHTML = "0"+n;
+                         };
                         
                         _widget.setTime = function(event, node){
                                 (node.selectedIndex === 1) ? time.set("am", false) : time.set("am", true); 

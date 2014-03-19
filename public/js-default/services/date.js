@@ -18,24 +18,27 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "label" : new Model(_labels),
                                 "model" : new Model(date,{
                                         setYear : function(y){
-                                                var res = "", current = new Date().getFullYear();
-                                                if (y){
+                                                var res = "", current = new Date().getFullYear(), node = this;
+                                                if (!node.firstChild){
                                                         for (i=0; i<10; i++){
                                                                 res +="<option>"+(current+i)+"</option>";
                                                         }
+                                                        this.innerHTML=res;
                                                 }
-                                                this.innerHTML=res;
-                                                this.selectedIndex=(y-current);
+                                                if (y) this.selectedIndex=(y-current);
                                         },
                                         setMonth : function(m){
                                                 var res = "",
-                                                      months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+                                                      months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"],
+                                                      node = this;
                                                 
-                                                if (m){
+                                                if (!node.firstChild){
                                                         months.forEach(function(month){
                                                                res += "<option>"+_labels.get(month)+"</option>";
                                                         });
-                                                        this.innerHTML = res;
+                                                        this.innerHTML = res;        
+                                                }
+                                                if (m){
                                                         this.selectedIndex = m;
                                                 }
                                         },
@@ -47,7 +50,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                 else{
                                                         ([3, 5, 8, 10].indexOf(m) > -1) ? length = 30 : length = 31;
                                                 }
-                                                console.log(length);
                                                 for (i=0;i<length; i++){
                                                         (i<9) ? res+="<option>0"+(i+1)+"</option>" : res+="<option>"+(i+1)+"</option>";
                                                 }

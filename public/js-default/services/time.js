@@ -24,7 +24,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="number" maxlength=2 name="hour" data-model="bind:value, hour" data-event="listen:blur, format">:<input type="number" maxlength=2 name="min" data-model="bind:value, min" data-event="listen:blur, format"></select><select name="am" class="invisible" data-model="bind:displayAMPM, hour" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="number" maxlength=2 max="11" name="hour" data-model="bind:value, hour" data-event="listen:blur, format">:<input type="number" maxlength=2 max="59" name="min" data-model="bind:value, min" data-event="listen:blur, format"></select><select name="am" class="invisible" data-model="bind:displayAMPM, hour" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");

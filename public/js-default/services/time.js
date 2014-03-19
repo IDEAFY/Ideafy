@@ -17,30 +17,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
                                 "model" : new Model(time,{
-                                        setHour : function(h){
-                                                var now = new Date().getHours();
-                                                if (!h && h!==0){
-                                                        this.value = now;
-                                                        if (now<10) this.innerHTML = "0"+h;
-                                                        this.setAttribute("style", "color: #ccc;");
-                                                }
-                                                else{
-                                                        this.setAttribute("style", "color: #404040;");
-                                                        this.innerHTML = h;
-                                                }   
-                                        },
-                                        setMin : function(m){
-                                                var now = new Date().getMinutes();
-                                                if (!m && m!==0){
-                                                        this.value = now;
-                                                        if (now<10) this.innerHTML = "0"+now;
-                                                        this.setAttribute("style", "color: #ccc;");
-                                                } 
-                                                else{
-                                                        this.setAttribute("style", "color: #404040;");
-                                                        this.innerHTML = m;
-                                                }  
-                                        },
                                         displayAMPM : function(h){
                                                 (h <12) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                         }
@@ -48,7 +24,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" data-model="bind:displayAMPM, hour" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:value, hour" data-event="listen:input, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:value, min" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" data-model="bind:displayAMPM, hour" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");

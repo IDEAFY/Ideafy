@@ -65,7 +65,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.reset = function(){
-                                _widget.setTIme();
+                                _widget.setTime();
                         };
                         
                         _widget.render();

@@ -40,9 +40,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         _widget.check = function(event, node){
                                 var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
                                 // test for numbers
-                                if (!regex.test(n)) node.innerHTML = time.get("field") || "00";
+                                if (!regex.test(n)) time.set("field",0);
                                 else{
-                                        n = parseInt(n);
                                         // test for hours
                                         if (field === "hour"){ 
                                                 console.log(n);

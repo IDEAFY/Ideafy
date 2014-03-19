@@ -42,6 +42,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 // test for numbers
                                 if (!regex.test(n)) time.set(field,0);
                                 else{
+                                        n = parseInt(n);
                                         // test for hours
                                         if (field === "hour"){ 
                                                 console.log(n);

@@ -46,7 +46,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" datas-model="bind:displayAMPM, hour" data-event="listen: change, setTime"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><input type="text" maxlength=2 name="hour" data-model="bind:setHour, hour" data-event="listen:keypress, check; listen:blur, format">:<input type="text" maxlength=2 name="min" data-model="bind:setMin, minutes" data-event="listen:input, check; listen:blur, format"></select><select name="am" class="invisible" datas-model="bind:displayAMPM, hour" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");
@@ -56,7 +56,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.check = function(event, node){
                                 var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
-                                console.log(n, regext.test(n));
+                                console.log(n, regex.test(n));
                                 // test for numbers
                                 if (regex.test(n)){
                                         // test for hours
@@ -95,7 +95,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 if ( n<10) node.innerHTML = "0"+n;
                          };
                         
-                        _widget.setTime = function(event, node){
+                        _widget.setAMPM = function(event, node){
                                 (node.selectedIndex === 1) ? time.set("am", false) : time.set("am", true); 
                         };
                         
@@ -119,6 +119,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.render();
+                        _widget.setTime();
                         
                 }
                         

@@ -55,8 +55,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.check = function(event, node){
-                                event.preventDefault();
-                                var field = node.getAttribute("name"), n=event.target.value, regex=/[0-9]/;
+                                var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
                                 // test for numbers
                                 if (regex.test(n)){
                                         // test for hours
@@ -83,6 +82,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                         time.set(field, 0);
                                                 }
                                         }
+                                }
+                                else {
+                                        node.value = "00";
+                                        time.set(field, 0);
                                 }        
                         };
                         

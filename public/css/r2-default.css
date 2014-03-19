@@ -933,5 +933,9 @@ textarea.a-desc::-webkit-input-placeholder{
 }
 
 .timeui input{
-    width: 40px;
+    width: 30px;
+    line-height: 20px;
+    font-size: 14px;
+    text-align: center;
+    margin: 0 5px;
 }

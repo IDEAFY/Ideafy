@@ -41,18 +41,21 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 var field = node.getAttribute("name"), n=node.value, regex=/[0-9]/;
                                 // test for numbers
                                 if (!regex.test(n)) node.innerHTML = time.get("field") || "00";
-                                // test for hours
-                                if (field === "hour"){ 
-                                        console.log(n);
-                                        if (n>23) node.innerHTML = time.get("field") || "00";
-                                        (n<12) ? _widget.dom.querySelector("select[name='am']").classList.remove("invisible") : _widget.dom.querySelector("select[name='am']").classList.add("invisible");;
-                                }
-                                // test for minutes
-                                if (field === "min"){
-                                        console.log(n);
-                                        if (n>59) node.innerHTML = time.get("field") || "00";
-                                }
-                                time.set(field, n);        
+                                else{
+                                        n = parseInt(n);
+                                        // test for hours
+                                        if (field === "hour"){ 
+                                                console.log(n);
+                                                if (n>23) node.innerHTML = time.get("field") || "00";
+                                                (n<12) ? _widget.dom.querySelector("select[name='am']").classList.remove("invisible") : _widget.dom.querySelector("select[name='am']").classList.add("invisible");;
+                                        }
+                                        // test for minutes
+                                        if (field === "min"){
+                                                console.log(n);
+                                                if (n>59) node.innerHTML = time.get("field") || "00";
+                                        }
+                                        time.set(field, n);
+                                }        
                         };
                         
                         _widget.format = function(event, node){
@@ -80,7 +83,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                       _am = am;
                                 time.set("hour", _hour);  
                                 time.set("min", _min);
-                                timee.set("am", _am);
+                                time.set("am", _am);
                         };
                         
                         _widget.render();

@@ -54,7 +54,11 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/c
                 stack.getStack().add("list", muList);
                 stack.getStack().show("new");
                 
-                
+                // watch for events
+                Config.get("observer").watch("show-session", function(session){
+                        stack.getStack().show("list");
+                        widget.dom.querySelector("#muinitslider").value = 0;              
+                });
                 return widget;
                    
            };

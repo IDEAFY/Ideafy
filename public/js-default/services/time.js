@@ -28,7 +28,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");
-                                (time.get("am")) ? h = time.get("hour") : h=time.get("hour")+12;
+                                (time.get("am")) ? h = time.get("hour") : h=parseInt(time.get("hour"))+12;
                                 return [h, m, 0];
                         };
                         

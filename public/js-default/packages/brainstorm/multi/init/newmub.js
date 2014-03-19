@@ -433,7 +433,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         
                         // check if session is scheduled (ie start date > now+10min)
                         scheduled = dateUI.getDatestamp() + timeUI.getTimestamp();
-                        if ((scheduled - now.getTime()) > 600000) session.set("shceduled", scheduled);
+                        if ((scheduled - now.getTime()) > 600000) session.set("scheduled", scheduled);
                         session.set("date", dateUI.getDate());
                         
                         // add invited list if mode is boardroom or all user contacts if mode is campfire

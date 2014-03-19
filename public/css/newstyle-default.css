@@ -7267,10 +7267,10 @@ li.my2q{
 
 #newmub form{
     width: 851px;
-    height: 437px;
+    height: 427px;
     overflow-y: scroll;
     border-radius: 5px;
-    margin-top: 10px;
+    margin: 10px 0px;
 }
 
 #newmub-content hr, #mulist-content hr{

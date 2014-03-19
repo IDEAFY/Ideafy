@@ -933,9 +933,24 @@ textarea.a-desc::-webkit-input-placeholder{
 }
 
 .timeui input{
-    width: 30px;
+    width: 35px;
     line-height: 20px;
     font-size: 14px;
     text-align: center;
     margin: 0 5px;
+    border: none;
+    background: #e5e5e5;
+    border-radius: 3px;
+    -webkit-box-shadow: inset 0px 0px 3px #ccc;
+    height: 25px;
+    padding: 0;
+}
+
+.timeui select{
+    width: 40px;
+    background-size: 15px;
+    padding-right: 15px;
+    font-size: 12px;
+    height: 25px;
+    line-height: 25px;
 }

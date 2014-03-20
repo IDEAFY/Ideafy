@@ -915,15 +915,15 @@ textarea.a-desc::-webkit-input-placeholder{
 }
 
 #newmub .dateui select[name="year"]{
-    width: 70px;     
+    width: 80px;     
 }
 
 #newmub .dateui select[name="month"]{
-    width: 110px;     
+    width: 130px;     
 }
 
 #newmub .dateui select[name="day"]{
-    width: 55px;     
+    width: 70px;     
 }
 
 .schedule-session{
@@ -947,10 +947,11 @@ textarea.a-desc::-webkit-input-placeholder{
 }
 
 .timeui select{
-    width: 40px;
-    background-size: 15px;
-    padding-right: 15px;
-    font-size: 12px;
     height: 25px;
+    float: right;
+    width: 50px;
+    font-size: 12px;
+    background-size: 25px;
+    padding-right: 25px;
     line-height: 25px;
 }

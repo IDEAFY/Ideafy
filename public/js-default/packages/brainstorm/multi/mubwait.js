@@ -101,6 +101,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         confirmUI = new Confirm(document.body,null,null, "musession-confirm");
                      
                         widget.reset = function reset(sid){
+                                console.log("muwait reset function called with : ", sid);
                                 // clear previous UI (chat and main window)
                                 chatUI.clear();
                                 session.unsync();

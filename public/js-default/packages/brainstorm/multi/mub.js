@@ -23,8 +23,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 widget.place(document.getElementById("ideafy-multi"));
                 
                  widget.reset = function reset(sip){ 
-                         console.log("mub reset called with : ", sip);
-                        if (!sip){
+                         if (!sip){
                                 muInit.reset();
                                 stack.getStack().show("mubinit");        
                         }
@@ -49,7 +48,6 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                         
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), sid).then(function(){
-                                console.log(cdb.toJSON());
                                 var p = cdb.get("participants"), join = false;
                                 // if not already joined (rejoin possible)
                                 if (cdb.get("initiator").id === user.get("_id")) join = true;
@@ -73,7 +71,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                                         }); 
                                 }
                                 else{
-                                        if (cdb.get("step") === "mustart"){
+                                        if (!cdb.get("step") || cdb.get("step") === "mustart"){
                                                 muWait.reset(sid);
                                                 stack.getStack().show("mubwait");        
                                         }

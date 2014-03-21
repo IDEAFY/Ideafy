@@ -71,7 +71,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                                         }); 
                                 }
                                 else{
-                                        if (cdb.get("step") === "mustart"){
+                                        if (!cdb.get("step") || cdb.get("step") === "mustart"){
                                                 muWait.reset(sid);
                                                 stack.getStack().show("mubwait");        
                                         }

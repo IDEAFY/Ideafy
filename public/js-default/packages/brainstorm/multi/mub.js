@@ -50,6 +50,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                         cdb.sync(Config.get("db"), sid).then(function(){
                                 var p = cdb.get("participants"), join = false;
                                 // if not already joined (rejoin possible)
+                                if (cdb.get("initiator").id === user.get("_id")) join = true;
                                 p.forEach(function(participant){
                                         if (participant.id === user.get("_id")){
                                                 join = true;

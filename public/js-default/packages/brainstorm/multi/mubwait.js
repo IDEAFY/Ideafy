@@ -183,7 +183,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         };
                         
                         // initiator decides to cancel the session
-                        widget.cancelSession = function cancelSession(){
+                       widget.cancelSession = function cancelSession(){
                                 var countdown = 5000;
                                 if (!session.get("participants").length) {countdown = 2000;}
                                 widget.displayInfo("deleting", countdown).then(function(){
@@ -193,7 +193,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         };
                         
                         // display info popup
-                        widget.displayInfo = function displayInfo(message, timeout){
+                       widget.displayInfo = function displayInfo(message, timeout){
                                 var timer, infoUI = document.querySelector(".sessionmsg"),
                                     promise = new Promise(),
                                     clearInfo = function(){
@@ -232,7 +232,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 // if dest is specified (e.g. notify popup)
                                 if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
                                         confirmUI.hide();
-                                        //document.body.removeChild(document.querySelector(".confirm"));
+                                        document.body.removeChild(document.querySelector(".confirm"));
                                         $exit();
                                         Config.get("observer").notify("goto-screen", "#connect");
                                         document.removeEventListener("mousedown", exitListener.listener, true);   
@@ -244,7 +244,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
                                                 if (exitDest === name){
                                                         confirmUI.hide();
-                                                        //document.body.removeChild(document.querySelector(".confirm"));
+                                                        document.body.removeChild(document.querySelector(".confirm"));
                                                         $exit();
                                                         Config.get("observer").notify("goto-screen", name);
                                                         document.removeEventListener("mousedown", exitListener.listener, true);

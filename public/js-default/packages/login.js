@@ -130,6 +130,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _signupForm.completeSignup = function(accept){
                                 var fn = _store.get("firstname"),
                                       ln = _store.get("lastname"),
+                                      password = _store.get("password"),
                                       userid = _store.get("email").toLowerCase(),
                                       promise = new Promise(),
                                       user = new CouchDBDocument();

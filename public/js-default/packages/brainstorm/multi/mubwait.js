@@ -232,7 +232,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 // if dest is specified (e.g. notify popup)
                                 if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
                                         confirmUI.hide();
-                                        document.body.removeChild(document.querySelector(".confirm"));
+                                        //document.body.removeChild(document.querySelector(".confirm"));
                                         $exit();
                                         Config.get("observer").notify("goto-screen", "#connect");
                                         document.removeEventListener("mousedown", exitListener.listener, true);   
@@ -244,7 +244,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
                                                 if (exitDest === name){
                                                         confirmUI.hide();
-                                                        document.body.removeChild(document.querySelector(".confirm"));
+                                                        //document.body.removeChild(document.querySelector(".confirm"));
                                                         $exit();
                                                         Config.get("observer").notify("goto-screen", name);
                                                         document.removeEventListener("mousedown", exitListener.listener, true);

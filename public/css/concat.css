@@ -5363,7 +5363,6 @@ li.color-item{
 
 .messages input, .contacts input{
     margin-top: 10px;
-    margin-left: -70px;
 }
 
 .msglist, .contactlist{
@@ -6703,7 +6702,7 @@ li.my2q{
 
 .userachievements{
     background: #F2F2F2;
-    padding: 20px;
+    padding: 20px 10px;
     font-family: Pacifico;
     font-size: 14px;
     display: table-cell;
@@ -6713,6 +6712,8 @@ li.my2q{
 .userachievements .grade{
     color: #657B99;
     font-size:16px;
+    width: 100%;
+    text-align: center;
 }
 
 .userachievements .badges, #contactbadges .badges{

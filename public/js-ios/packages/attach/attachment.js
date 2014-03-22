@@ -108,6 +108,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 if (name){
                                                         url += "?atype=" + type + "&docid=" +  cdb.get("docId")+ "&file=" + name;
                                                         this.setAttribute("href", url);
+                                                        this.addEventListener("touchstart", Utils.showLinkInBrowser);
                                                 }     
                                         },
                                         showWriteTwocent : function(twocents){

@@ -823,6 +823,7 @@ function AppUtils(){
                 if (["US", "FR"].indexOf(lang.substr(3))>-1) {
                         Id = "I:WELCOME:"+lang.substr(3);
                 }
+                else Id = "I:WELCOME:US";
                 
                 _getDocAsAdmin(Id, cdb)
                 .then(function(){

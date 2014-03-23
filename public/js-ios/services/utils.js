@@ -579,9 +579,8 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 e.preventDefault();
                 var target = e.target,
                       location = target.getAttribute("href");
-                
-                window.open(location, "_system", "location = no");
-                              
+                      
+                window.open(encodeURI(location), "_system", "location = no");
         };   
 	
 	return _utils;

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBDocument", "service/utils"],
-        function(Widget, Config, Model, Event, Store, CouchDBDocument, Utils){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBDocument"],
+        function(Widget, Config, Model, Event, Store, CouchDBDocument){
                 return function SupportConstructor(){
                   
                         var support = new Widget(),
@@ -111,13 +111,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         
                         maintenanceCDB.watchValue("active", function(){
                                 support.setMaintenanceMSG(user.get("lang"));  
-                        });
-                        
-                        // add event listener to bypass in app browser when opening links
-                        
-                        var anchors = support.dom.getElementsByTagName("a");
-                        anchors.forEach(function(anchor){
-                                anchor.addEventListener("touchstart", Utils.showLinkInBrowser);        
                         });
                         
                         return support;      

@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "./aboutideafy", "./faq", "./userguide", "./tutorials", "./support", "./eula"],
-        function(Widget, Map, Model, Event, Stack, Config, Store, AboutIdeafy, FAQ, UserGuide, Tutorials, Support, EULA){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "./aboutideafy", "./faq", "./userguide", "./tutorials", "./support", "./eula", "service/utils"],
+        function(Widget, Map, Model, Event, Stack, Config, Store, AboutIdeafy, FAQ, UserGuide, Tutorials, Support, EULA, Utils){
                 
            return function AboutConstructor(){
                    
@@ -46,13 +46,21 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plug
                    
                    
                    aboutUI.show = function show(name){
-                           var id;
+                           var id, anchors;
                         aboutMenu.loop(function(v,i){
                                 aboutMenu.update(i, "currentUI", false);
                                 if (v.name === name) id = i;       
                         });
                         aboutMenu.update(id, "currentUI", true);
-                        aboutStack.getStack().show(aboutMenu.get(id).name);        
+                        aboutStack.getStack().show(name);
+                        
+                        if (name === "#support"){
+                                // add event listener to bypass in app browser when opening links
+                                anchors = aboutStack.getStack().get(name).dom.getElementsByTagName("a");
+                                anchors.forEach(function(anchor){
+                                        anchor.addEventListener("touchstart", Utils.showLinkInBrowser);        
+                                });
+                        }    
                    };
                    
                    //init stack

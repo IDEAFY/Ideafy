@@ -194,7 +194,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 // hide window
                                 document.getElementById("newidea-popup").classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
-                                document.getElementById("cache").classList.add("invisible");
                                 
                                 // reset attachment UI and delete file from server if applicable
                                 if (_addAttachmentUI.getFileName()) Utils.deleteAttachmentFile(_store.get("_id"), _addAttachmentUI.getFileName());

@@ -915,23 +915,24 @@ textarea.a-desc::-webkit-input-placeholder{
     margin-right: 5px;
     background: url('../img/decks/creationDate14.png') no-repeat center center;
     background-size: 25px;
+    float: left;
 }
 
-.dateui select{
+#newmub .dateui select{
     text-align: center;
     height: 25px;
     line-height: 25px;
 }
 
-.dateui select[name="year"]{
+#newmub .dateui select[name="year"]{
     width: 80px;     
 }
 
-.dateui select[name="month"]{
+#newmub .dateui select[name="month"]{
     width: 130px;     
 }
 
-.dateui select[name="day"]{
+#newmub .dateui select[name="day"]{
     width: 70px;     
 }
 

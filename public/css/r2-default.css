@@ -908,21 +908,30 @@ textarea.a-desc::-webkit-input-placeholder{
     float:left;
 }
 
-#newmub .dateui select{
+
+.dateui .dateicon{
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    background: url('../img/decks/creationDate14.png') no-repeat center center;
+    background-size: 25px;
+}
+
+.dateui select{
     text-align: center;
     height: 25px;
     line-height: 25px;
 }
 
-#newmub .dateui select[name="year"]{
+.dateui select[name="year"]{
     width: 80px;     
 }
 
-#newmub .dateui select[name="month"]{
+.dateui select[name="month"]{
     width: 130px;     
 }
 
-#newmub .dateui select[name="day"]{
+.dateui select[name="day"]{
     width: 70px;     
 }
 

@@ -909,13 +909,18 @@ textarea.a-desc::-webkit-input-placeholder{
 }
 
 
-.dateui .dateicon{
-    width: 25px;
-    height: 25px;
+.dateui .dateicon, .timeui .timeicon{
+    width: 20px;
+    height: 20px;
     margin-right: 5px;
-    background: url('../img/decks/creationDate14.png') no-repeat center center;
-    background-size: 25px;
+    background: url('../img/decks/creationDate14.png') no-repeat left top;
+    background-size: 20px;
     float: left;
+}
+
+.timeui .timeicon{
+
+    background: url('../img/decks/time.png') no-repeat center top;   
 }
 
 #newmub .dateui select{

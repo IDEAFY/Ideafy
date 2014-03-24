@@ -10,7 +10,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                 return function PublicDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
-                             _attachmentUI = new Attachment("idea"),
+                             _attachmentUI = Attachment,
                              _twocentWriteUI = new WriteTwocent(),
                              _publicTwocentList= new TwocentList("public"),
                              _labels = Config.get("labels"),
@@ -149,7 +149,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         setType : function(type){
                                                 switch(type){
                                                         default:
-                                                                this.setAttribute("style", "background-image: url(../img/r2/download.png)");
+                                                                this.setAttribute("style", "background-image: url('img/r2/download.png')");
                                                                 break;
                                                 }
                                         },
@@ -189,11 +189,11 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
-                                "place" : new Place({"PublicTwocentUI": _publicTwocentList, "AttachmentUI" : _attachmentUI}),
+                                "place" : new Place({"PublicTwocentUI": _publicTwocentList}),
                                 "publicdetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, authors" data-publicdetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleFavEdit, authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, authors"></div><h2 data-publicdetail="bind:innerHTML,title"></h2><span class="date" data-publicdetail="bind:date, creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-publicdetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><legend class="idealegend" data-label="bind:innerHTML, principle"></legend><p class="ideap" data-publicdetail="bind:setDescription,description"></p><legend class="idealegend" data-label="bind:innerHTML, solution"></legend><p class="ideap" data-publicdetail="bind:setSolution,solution"></p><div class="attachments invisible" data-publicdetail="bind:showAttachments, attachments"><legend class="idealegend" data-label="bind:innerHTML, attachments"></legend><div class="toggleattach" data-publicdetailevent="listen: touchstart, toggleAttachments"></div><ul class="a-list" data-alist="foreach"><li><a class="a-type" data-alist="bind:setType, type; bind: setRef, fileName" data-publicdetailevent="listen: touchstart, press; listen: touchend, release"></a><label class="a-name" data-alist="bind:innerHTML, name">Name</label><label class="a-cat" data-alist="bind:setCat, category"></label><div class="a-rating"><a class="item-acorn"></a><label class="rating" data-alist="bind:setRating,docId"></label></div><label class="a-zoom" data-publicdetailevent="listen: touchstart, press; listen: touchend, release; listen:touchend, zoom"></label></li></ul></div></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,votes"></div><div class="publicButton" data-publicdetail="bind:toggleVoteButton, votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, twocents" data-place="place: PublicTwocentUI"></div><div data-place="place: AttachmentUI"></div></div>';
+                        _widget.template='<div class="public-idea"><div class="header blue-dark"><a href="#public-2cents" data-publicdetail="bind: toggleTwocentShare, authors" data-publicdetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, publicdetailsheadertitle"></span><a href="#public-favorites" data-publicdetail="bind: toggleFavEdit, authors" data-publicdetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-publicdetail="bind:setAvatar, authors"></div><h2 data-publicdetail="bind:innerHTML,title"></h2><span class="date" data-publicdetail="bind:date, creation_date"></span><br><span class="author" data-publicdetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-publicdetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><legend class="idealegend" data-label="bind:innerHTML, principle"></legend><p class="ideap" data-publicdetail="bind:setDescription,description"></p><legend class="idealegend" data-label="bind:innerHTML, solution"></legend><p class="ideap" data-publicdetail="bind:setSolution,solution"></p><div class="attachments invisible" data-publicdetail="bind:showAttachments, attachments"><legend class="idealegend" data-label="bind:innerHTML, attachments"></legend><div class="toggleattach" data-publicdetailevent="listen: touchstart, toggleAttachments"></div><ul class="a-list" data-alist="foreach"><li><div class="a-type" name="download" data-alist="bind:setType, type; bind: setRef, fileName" data-publicdetailevent="listen: touchstart, press; listen: touchend, release"></div><label class="a-name" data-alist="bind:innerHTML, name">Name</label><label class="a-cat" data-alist="bind:setCat, category"></label><div class="a-rating"><a class="item-acorn"></a><label class="rating" data-alist="bind:setRating,docId"></label></div><label class="a-zoom" data-publicdetailevent="listen: touchstart, press; listen: touchend, release; listen:touchend, zoom"></label></li></ul></div></div><div class="detail-footer"><div class ="rateIdea"><a class="item-acorn"></a><div class="rating" data-publicdetail="bind:setRating,votes"></div><div class="publicButton" data-publicdetail="bind:toggleVoteButton, votes" name="vote" data-publicdetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-publicdetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="public-writetwocents" class="invisible" data-publicdetail="bind: displayWriteTwocent, authors"></div><div id="public-twocents" class="twocents" data-publicdetail="bind: displayTwocentList, twocents" data-place="place: PublicTwocentUI"></div></div>';
                 
                 //Public
                         _widget.showCache = function showCache(){
@@ -304,6 +304,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         
                         _widget.release = function(event, node){
                                 node.classList.remove("pressed");
+                                
+                                if (node.getAttribute("name") === "download") Utils.showLinkInBrowser(event);
                         };
                         
                         _widget.toggleAttachments = function(event, node){
@@ -320,8 +322,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         
                         _widget.zoom = function(event, node){
                                 var idx = node.getAttribute("data-alist_id");
-                                _attachmentUI.reset(_alist.get(idx).docId);
-                                document.querySelector(".cache").classList.add("appear");      
+                                Map.get("attachment-popup").classList.add("appear");
+                                Map.get("cache").classList.add("appear");   
+                                _attachmentUI.reset(_alist.get(idx).docId);    
                         };
                         
                         _widget.vote = function(event, node){

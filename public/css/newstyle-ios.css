@@ -28,11 +28,11 @@ html, body {
 }
 
 body{
+    /*top: 20px;*/
     height:748px;
     top: 20px;
     -webkit-box-shadow: 0px -5px 40px #292929;
     background-image: url('../img/bg.png');
-    /*background-position-y: 20px; */
     background-attachment: fixed;
 }
 
@@ -376,7 +376,16 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
 }
 
-#cache.appear{
+.cache{
+    position: absolute;
+    z-index: -1500;
+    opacity: 0;
+    background-image: -webkit-repeating-radial-gradient(circle, #808080, black);
+    width: 100%;
+    height: 100%;   
+}
+
+#cache.appear, .cache.appear{
     opacity: 0.9;
     z-index: 1500;
     -webkit-transition: opacity 0.7s linear;

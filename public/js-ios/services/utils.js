@@ -570,7 +570,18 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                         promise.fulfill();
                 });
                 return promise;        
-        };    
+        };
+        
+        /*
+        * A function to force url links to be shown in system browser
+        */
+        _utils.showLinkInBrowser = function(e){
+                e.preventDefault();
+                var target = e.target,
+                      location = target.getAttribute("href");
+                      
+                window.open(encodeURI(location), "_system", "location = no");
+        };   
 	
 	return _utils;
 });

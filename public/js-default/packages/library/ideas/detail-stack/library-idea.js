@@ -164,7 +164,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                         setType : function(type){
                                                 switch(type){
                                                         default:
-                                                                this.setAttribute("style", "background-image: url(../img/r2/download.png)");
+                                                                this.setAttribute("style", "background-image: url('../img/r2/download.png')");
                                                                 break;
                                                 }
                                         },

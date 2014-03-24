@@ -37,18 +37,25 @@ var srvUtils = new srvutils.SrvUtils(),
       CDBAdmin = new cdbadmin.CDBAdmin();
   
 // create reusable transport method (opens pool of SMTP connections)
+/*
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
         host: "10.224.1.168",
-        //secureConnection : true,
-        port : 25//,
-        //auth : {
-        //        user : "ideafy",
-        //        pass : fs.readFileSync(".password", "utf8").trim()
-        //}
+        secureConnection : false,
+        port : 587,
+        auth : {
+                user : "ideafy",
+                pass : fs.readFileSync(".password", "utf8").trim()
+       } 
 });
-
-
+*/
+var smtpTransport = nodemailer.createTransport("SMTP", {
+	service: "Gmail",
+	auth: {
+		user: "vincent@ideafy.com",
+		pass: "$Nor&Vin2014"
+	}
+});
 /****************************************
  *  APPLICATION CONFIGURATION
  ****************************************/
@@ -70,7 +77,7 @@ mailSender = "IDEAFY <app@ideafy.com>";
 // email address fro application support
 supportEmail = "contact@ideafy.com";
 // Application  client minimum version
-currentVersion = "1.2.2";
+currentVersion = "1.2.1";
 // Path where attachments are stored
 contentPath = "/shared";
 // Rules to grant special badges and achievements
@@ -88,7 +95,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
 		.use(connect.responseTime())
                 .use(redirect())
                 .use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
-                .use('/upload', srvUtils.uploadFunc)      
+                .use('/upload', srvUtils.uploadFunc)
+		.use('/downloads', srvUtils.downloadFunc)      
                 .use(function(req, res, next) {
                         res.setHeader("Ideady Server", "node.js/" + process.versions.node);
                         res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
@@ -114,7 +122,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 3);                    // reduce logging
+        io.set('log level', 0);                    // reduce logging
         io.set("close timeout", 60);
         io.set("heartbeat interval", 25);
         

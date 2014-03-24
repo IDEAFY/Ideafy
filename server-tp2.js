@@ -98,7 +98,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
 								.use(connect.responseTime())
                 .use(redirect())
                 .use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
-                .use('/upload', srvUtils.uploadFunc)      
+                .use('/upload', srvUtils.uploadFunc)
+								.use('/downloads', srvUtils.downloadFunc)     
                 .use(function(req, res, next) {
 												var ori = req.headers.origin || "http://app.ideafy.com";
 												res.setHeader("Access-Control-Allow-Origin", ori);

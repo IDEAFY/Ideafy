@@ -919,8 +919,8 @@ textarea.a-desc::-webkit-input-placeholder{
 }
 
 .timeui .timeicon{
-
-    background: url('../img/decks/time.png') no-repeat center top;   
+    background: url('../img/decks/time.png') no-repeat center top;
+    background-size: 20px;
 }
 
 #newmub .dateui select{

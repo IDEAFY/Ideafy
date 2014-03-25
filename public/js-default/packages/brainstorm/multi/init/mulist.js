@@ -286,7 +286,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 widget.filterList = function filterList(){
-                        var arr=[], query = document.getElementById("mulist-content").querySelector("input").value,
+                        var arr=[], query = widget.dom.querySelector("#mulist-content input").value,
                             promise = new Promise(), mode = "", lang = "";
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
@@ -366,11 +366,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 
                 widget.toggleList = function toggleList(list){
                         if (list !== currentList){
-                                document.getElementById(currentList).classList.add("invisible");
-                                document.getElementById(list).classList.remove("invisible");
+                                widget.dom.querySelector("#"+currentList).classList.add("invisible");
+                                widget.dom.querySelector("#"+list).classList.remove("invisible");
                                 currentList = list;
                         }
-                        spinner.spin(document.getElementById("mulistspinner"));
+                        spinner.spin(widget.dom.querySelector("#mulistspinner"));
                         widget.filterList().then(function(){
                                 spinner.stop();
                         });

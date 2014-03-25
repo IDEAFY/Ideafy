@@ -433,7 +433,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         
                         // check if session is scheduled (ie start date > now+10min)
                         scheduled = dateUI.getDatestamp() + timeUI.getTimestamp();
-                        console.log(scheduled, now.getTime(), dateUI.getDate(), timeUI.getTime());
                         if ((scheduled - now.getTime()) > 600000) session.set("scheduled", scheduled);
                         session.set("date", dateUI.getDate());
                         

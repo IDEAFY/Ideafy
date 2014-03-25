@@ -395,6 +395,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         muListOptions.set("lang", arr);     
                 });
                 
+                // if a new scheduled session was created display it
+                Config.get("observer").watch("show-session", function(session){
+                        widget.dom.querySelector("#mulist-content input").value = session.get("title");
+                        widget.toggleList("musearch");
+                });
+                
                 
                 return widget;
                    

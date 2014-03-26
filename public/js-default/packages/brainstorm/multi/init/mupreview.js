@@ -57,7 +57,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 var time, now;
                                                 if (scheduled){
                                                         time = new Date(scheduled);
-                                                        this.innerHTML = time.toLocaleTimeString();
+                                                        now = new Date();
+                                                        if ((time.getTime() - now.getTime()) <= 300000) this.innerHTML = labels.get("now");
+                                                        else this.innerHTML = time.toLocaleTimeString();
                                                 }
                                         },
                                         setAvatar : function setAvatar(id){

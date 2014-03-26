@@ -970,3 +970,26 @@ textarea.a-desc::-webkit-input-placeholder{
     padding-right: 25px;
     line-height: 25px;
 }
+
+#mupreview .datetime{
+    width: 100%;
+    height: 20px;
+}
+
+#mupreview .date, #mupreview .time{
+    float: left;
+    background-image: url('img/decks/creationDate14.png');
+    background-position: left top;
+    padding-left: 20px;
+    background-size: 15px;
+    background-repeat: no-repeat;
+    color: #ccc;
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+}
+
+#mupreview .time{
+    margin-left: 10px;
+    background-image: url('img/decks/time.png');
+}

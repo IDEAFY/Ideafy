@@ -105,6 +105,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 document.getElementById("mupreview").classList.remove("invisible");
                                 muCDB.sync(Config.get("db"), sid).then(function(){
                                         participants.reset(muCDB.get("participants"));
+                                        console.mlog(muCDB.toJSON());
                                 }) ;
                         };
                         

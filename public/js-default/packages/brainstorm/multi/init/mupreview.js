@@ -47,19 +47,27 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         setDate : function(scheduled){
                                                 var date, now;
                                                 if (scheduled){
+                                                        this.setAttribute("style", "display:inline-block");
                                                         date = new Date(scheduled);
                                                         now = new Date();
                                                         if (date.getDate() === now.getDate()) this.innerHTML = labels.get("today");
                                                         else this.innerHTML = date.toLocaleDateString();
-                                                }        
+                                                }
+                                                else{
+                                                         this.setAttribute("style", "display:none");
+                                                }
                                         },
                                         setTime : function(scheduled){
                                                 var time, now;
                                                 if (scheduled){
+                                                         this.setAttribute("style", "display:inline-block");
                                                         time = new Date(scheduled);
                                                         now = new Date();
                                                         if ((time.getTime() - now.getTime()) <= 300000) this.innerHTML = labels.get("now");
-                                                        else this.innerHTML = time.toLocaleTimeString().replace(/:\d\d /, '');
+                                                        else this.innerHTML = time.toLocaleTimeString().replace(/:\d\d /, ' ');
+                                                }
+                                                else{
+                                                         this.setAttribute("style", "display:none");
                                                 }
                                         },
                                         setAvatar : function setAvatar(id){

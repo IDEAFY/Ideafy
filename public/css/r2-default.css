@@ -992,4 +992,5 @@ textarea.a-desc::-webkit-input-placeholder{
 #mupreview .time{
     margin-left: 10px;
     background-image: url('../img/decks/time.png');
+    background-size:17px;
 }

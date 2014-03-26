@@ -41,6 +41,25 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         this.setAttribute("contenteditable", false);        
                                                 }
                                         },
+                                        showDate : function(scheduled){
+                                                (scheduled) ? this.classList.remove("invisible") : this.classList.add("invisible");        
+                                        },
+                                        setDate : function(scheduled){
+                                                var date, now;
+                                                if (scheduled){
+                                                        date = new Date(scheduled);
+                                                        now = new Date();
+                                                        if (date.getDate() === now.getDate()) this.innerHTML = labels.get("today");
+                                                        else this.innerHTML = date.toLocaleDateString();
+                                                }        
+                                        },
+                                        setTime : function(scheduled){
+                                                var time, now;
+                                                if (scheduled){
+                                                        time = new Date(scheduled);
+                                                        this.innerHTML = time.toLocaleTimeString();
+                                                }
+                                        },
                                         setAvatar : function setAvatar(id){
                                                 var frag, ui;
                                                 this.setAttribute("style", "background:none;");
@@ -70,7 +89,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
-                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button" data-labels="bind:innerHTML, joinbutton" data-previewevent="listen: mousedown, press; listen:mouseup, join"></div><div class="infopreview invisible" data-info="bind:innerHTML, msg"></div></div></div>';
+                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button" data-labels="bind:innerHTML, joinbutton" data-previewevent="listen: mousedown, press; listen:mouseup, join"></div><div class="infopreview invisible" data-info="bind:innerHTML, msg"></div></div></div>';
                        
                         muPreviewUI.reset = function reset(sid){
                                 document.getElementById("mupreview").classList.remove("invisible");

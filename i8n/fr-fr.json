@@ -567,5 +567,6 @@
 	"deleteattachment": "Êtes-vous sûr de vouloir supprimer cette pièce jointe ?",
 	"attachdescplaceholder" : "Décrivez votre pièce jointe",
 	"EULArejected": "Vous devez accepter la licence avant d'utiliser l'application",
-	"schedulesession" : "Date et heure de la session"
+	"schedulesession" : "Date et heure de la session",
+	"today" : "Aujourd'hui"
 }

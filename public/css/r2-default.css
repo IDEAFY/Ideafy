@@ -978,7 +978,7 @@ textarea.a-desc::-webkit-input-placeholder{
 
 #mupreview .date, #mupreview .time{
     float: left;
-    background-image: url('img/decks/creationDate14.png');
+    background-image: url('../img/decks/creationDate14.png');
     background-position: left top;
     padding-left: 20px;
     background-size: 15px;
@@ -991,5 +991,5 @@ textarea.a-desc::-webkit-input-placeholder{
 
 #mupreview .time{
     margin-left: 10px;
-    background-image: url('img/decks/time.png');
+    background-image: url('../img/decks/time.png');
 }

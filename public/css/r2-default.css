@@ -1002,3 +1002,7 @@ textarea.a-desc::-webkit-input-placeholder{
     border-right: 1px solid #CCC;
     font-size: 12px;
 }
+
+.mulistheader .mudate{
+    font-size: 16px;
+}

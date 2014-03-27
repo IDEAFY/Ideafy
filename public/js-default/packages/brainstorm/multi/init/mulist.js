@@ -88,7 +88,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 },
                                 setDate : function(scheduled){
                                         var now, sched;
-                                        console.log(scheduled);
                                         if (scheduled){
                                                 now = new Date();
                                                 sched = new Date(scheduled);
@@ -129,7 +128,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 },
                                 setDate : function(scheduled){
                                         var now, sched;
-                                        console.log(scheduled);
                                         if (scheduled){
                                                 now = new Date();
                                                 sched = new Date(scheduled);

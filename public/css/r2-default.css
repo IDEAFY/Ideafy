@@ -996,3 +996,7 @@ textarea.a-desc::-webkit-input-placeholder{
     background-image: url('../img/decks/time_transparent.png');
     background-size:17px;
 }
+
+.mudate{
+    width: 40px;
+}

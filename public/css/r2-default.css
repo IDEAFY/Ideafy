@@ -999,4 +999,5 @@ textarea.a-desc::-webkit-input-placeholder{
 
 .mudate{
     width: 40px;
+    border-right: 1px solid #CCC;
 }

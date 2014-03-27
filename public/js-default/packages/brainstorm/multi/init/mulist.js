@@ -88,6 +88,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 },
                                 setdate : function(scheduled){
                                         var now, sched;
+                                        console.log(scheduled);
                                         if (scheduled){
                                                 now = new Date();
                                                 sched = new Date(scheduled);
@@ -125,6 +126,20 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                         this.setAttribute("style", "background-image:url('img/brainstorm/roulette-green.png');");
                                                         break;        
                                         }        
+                                },
+                                setdate : function(scheduled){
+                                        var now, sched;
+                                        console.log(scheduled);
+                                        if (scheduled){
+                                                now = new Date();
+                                                sched = new Date(scheduled);
+                                                if (now.getDate() === sched.getDate()){
+                                                        if ((sched.getTime() - now.getTime()) <= 300000) this.innerHTML = labels.get("now");
+                                                        else this.innerHTML = labels.get("today");
+                                                }
+                                                else this.innerHTML = sched.toLocaleDateString();        
+                                        }
+                                        else this.innerHTML = labels.get("now"); 
                                 },
                                 setLang : function(lang){
                                         var l = lang.substring(0,2);

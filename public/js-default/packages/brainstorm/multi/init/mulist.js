@@ -86,7 +86,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                         break;        
                                         }
                                 },
-                                setdate : function(scheduled){
+                                setDate : function(scheduled){
                                         var now, sched;
                                         console.log(scheduled);
                                         if (scheduled){
@@ -127,7 +127,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                         break;        
                                         }        
                                 },
-                                setdate : function(scheduled){
+                                setDate : function(scheduled){
                                         var now, sched;
                                         console.log(scheduled);
                                         if (scheduled){

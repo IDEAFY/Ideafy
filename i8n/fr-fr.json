@@ -568,5 +568,6 @@
 	"attachdescplaceholder" : "Décrivez votre pièce jointe",
 	"EULArejected": "Vous devez accepter la licence avant d'utiliser l'application",
 	"schedulesession" : "Date et heure de la session",
-	"today" : "Aujourd'hui"
+	"today" : "Aujourd'hui",
+	"now" : "Maintenant"
 }

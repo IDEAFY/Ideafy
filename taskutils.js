@@ -40,10 +40,17 @@ function TaskUtils(){
         };
         
         this.checkConnections = function checkConnections(){
-                var listSockets = function(){
-                        console.log("number of sockets used : ", Object.keys(_io.connected).length, "socket names : ", JSON.stringify(Object.keys(_io.connected)));        
+                var checkSockets = function(){
+                        var cdbSocks = new _CouchDBView(),
+                              nb = Object.keys(_io.connected).length,
+                              list = Object.keys(_io.connected);
+                              
+                        _getViewAsAdmin("users", "sockets", null, cdbSocks)
+                        .then(function(){
+                                console.log(cdbSocks.toJSON());        
+                        });       
                 };
-                setInterval(listSockets, 5000);
+                setInterval(checkSockets, 5000);
                         
         };
         

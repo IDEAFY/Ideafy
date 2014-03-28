@@ -21,7 +21,7 @@ function TaskUtils(){
                 _Promise = Promise;
         };
         
-        this.setFunctions = function(cdbAdmin, comUTils){
+        this.setFunctions = function(cdbAdmin, comUtils){
                 _updateUserIP = cdbAdmin.updateUserIP;
                 _updateDocAsAdmin = cdbAdmin.updateDoc;
                 _getDocAsAdmin = cdbAdmin.getDoc;

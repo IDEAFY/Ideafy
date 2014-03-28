@@ -123,10 +123,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         // we need lots of sockets
         http.globalAgent.maxSockets = Infinity;
         
-        setInterval(function(){
-                console.log("number of sockets used : ", Object.keys(io.connected).length, "socket names : ", JSON.stringify(Object.keys(io.connected)));
-        }, 60000);
-        
         // register transport
         olives.registerSocketIO(io);
         

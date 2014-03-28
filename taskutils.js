@@ -43,10 +43,10 @@ function TaskUtils(){
                 var listSockets = function(_io){
                         console.log("number of sockets used : ", Object.keys(_io.connected).length, "socket names : ", JSON.stringify(Object.keys(_io.connected)));        
                 };
-                setInterval(listSockets, 60000);
+                setInterval(listSockets, 5000);
                         
         };
         
 };
 
-exports.taskutils = TaskUtils;
+exports.TaskUtils = TaskUtils;

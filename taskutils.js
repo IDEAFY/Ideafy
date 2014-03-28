@@ -47,7 +47,18 @@ function TaskUtils(){
                               
                         _getViewAsAdmin("users", "sockets", null, cdbSocks)
                         .then(function(){
-                                console.log(cdbSocks.toJSON());        
+                                cdbSocks.loop(function(v,i){
+                                        var cdb = new _CouchDBDocument();
+                                        if (list.indexOf(v.key) <0){
+                                                _getDocAsAdmin(v.id, cdb)
+                                                .then(function(){
+                                                        if (cdb.get("online")){
+                                                                cdb.set("online", false);
+                                                                _updateDocAsAdmin(v.id, cdb);
+                                                        }        
+                                                });
+                                        }        
+                                });
                         });       
                 };
                 setInterval(checkSockets, 5000);

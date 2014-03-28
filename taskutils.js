@@ -35,12 +35,12 @@ function TaskUtils(){
         
         this.initTasks = function(io){
                 _io = io;
-                console.log(_io);
+                
                 this.checkConnections();
         };
         
-        this.checkConnections = function checkConnections(_io){
-                var listSockets = function(_io){
+        this.checkConnections = function checkConnections(){
+                var listSockets = function(){
                         console.log("number of sockets used : ", Object.keys(_io.connected).length, "socket names : ", JSON.stringify(Object.keys(_io.connected)));        
                 };
                 setInterval(listSockets, 5000);

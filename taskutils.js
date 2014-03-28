@@ -57,7 +57,16 @@ function TaskUtils(){
                                                                 _updateDocAsAdmin(v.id, cdb);
                                                         }        
                                                 });
-                                        }        
+                                        }
+                                        else{
+                                                _getDocAsAdmin(v.id, cdb)
+                                                .then(function(){
+                                                        if (!cdb.get("online")){
+                                                                cdb.set("online", true);
+                                                                _updateDocAsAdmin(v.id, cdb);
+                                                        }        
+                                                });        
+                                        }       
                                 });
                         });       
                 };

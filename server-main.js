@@ -94,6 +94,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 .use(function(req, res, next) {
                         res.setHeader("Ideady Server", "node.js/" + process.versions.node);
                         res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
+                        req.on("error", function(err){
+                                console.log(err);
+                        });
                         next();
                 })
                 .use(connect.cookieParser())

@@ -91,6 +91,7 @@ function TaskUtils(){
                                 console.log(sessions.toJSON());
                                 sessions.loop(function(v,i){
                                         var cdb = new _CouchDBDocument();
+                                        console.log((v.value.status === 'waiting' && ((now - v.key) > 3600000)));
                                         if (v.value.status === 'waiting' && ((now - v.key) > 3600000)){
                                                 _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){

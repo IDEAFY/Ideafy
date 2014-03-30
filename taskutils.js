@@ -94,7 +94,7 @@ function TaskUtils(){
                                         if (v.value.status === 'waiting' && (now - v.key) > 3600000){
                                                 _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){
-                                                        return _removeDocAsAdmin(v.id);
+                                                        return _removeDocAsAdmin(v.id, cdb);
                                                 });
                                         }
                                 });    
@@ -107,7 +107,7 @@ function TaskUtils(){
                 .then(function(){
                         
                         // delete expired sessions from database, ie scheduled sessions that have not been started on time by initiator
-                        setInterval(deleteExpiredSessions, 120000);
+                        setInterval(deleteExpiredSessions, 1200000);
                                         
                 });
                 

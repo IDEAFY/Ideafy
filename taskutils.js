@@ -88,7 +88,7 @@ function TaskUtils(){
                 var sessions = new _CouchDBView(),
                       deleteExpiredSessions = function(cdb){
                                 var now = new Date().getTime();
-                                cdb.loop(function(v,i){
+                                sessions.loop(function(v,i){
                                         if (v.value.status === 'waiting' && (now - v.value.scheduled) > 3600000){
                                                 _removeDocAsAdmin(v.id)
                                                 .then(function(){

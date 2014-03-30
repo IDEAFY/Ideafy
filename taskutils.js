@@ -88,12 +88,12 @@ function TaskUtils(){
                 var sessions = new _CouchDBView(),
                       deleteExpiredSessions = function(cdb){
                                 var now = new Date().getTime();
-                                console.log(sessions.toJSON());
                                 sessions.loop(function(v,i){
+                                        var cdb = new _CouchDBDocument();
                                         if (v.value.status === 'waiting' && (now - v.key) > 3600000){
-                                                _removeDocAsAdmin(v.id)
+                                                _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){
-                                                        console.log("improvement : notify initiator ?", v.id);
+                                                        return _removeDocAsAdmin(v.id);
                                                 });
                                         }
                                 });    

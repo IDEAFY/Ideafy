@@ -109,6 +109,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 participants.reset([]);
                                 
                                 // create listener
+                                exitDest = null;
                                 exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
                                 // get session info
@@ -152,7 +153,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(target){
-                                exitDest = target.getAttribute("href") || target;
+                                exitDest = existDest || target.getAttribute("href") || target;
                                 // href exists it is one of the nav options else probably a notify message (or future use)
                                 confirmUI.show();       
                         };

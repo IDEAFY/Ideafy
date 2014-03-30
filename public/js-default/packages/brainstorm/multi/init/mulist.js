@@ -245,7 +245,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         }
                         cdb.sync(db, "library", view, query).then(function(){
                                 cdb.loop(function(v,i){
-                                        arr.unshift(v);
+                                        var now = new Date();
+                                        // do not display sessions more than 15 min older than scheduled date
+                                        if (!v.value.scheduled || ((now - v.value.scheduled) <= 900000)) arr.unshift(v);
                                 });
                                 promise.fulfill();
                                 cdb.unsync();

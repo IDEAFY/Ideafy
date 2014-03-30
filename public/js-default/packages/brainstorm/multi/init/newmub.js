@@ -470,7 +470,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                 var obs = Config.get("observer");
                                 if (cdb.get("mode") === "boardroom"){
                                         error.set("errormsg", labels.get("sendinginvites"));
-                                        widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title")).then(function(){
+                                        widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title"), cdb.get("scheduled")).then(function(){
                                                 // if session is scheduled show session list else enter waiting room
                                                 (cdb.get("scheduled")) ? obs.notify("show-session", session) : obs.notify("start-mu_session", cdb.get("_id"));
                                                 promise.fulfill();
@@ -487,7 +487,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         return promise;
                 };
                 
-                widget.sendInvites = function sendInvites(idlist, sid, stitle){
+                widget.sendInvites = function sendInvites(idlist, sid, stitle, ssched){
                         var promise = new Promise(),
                             now = new Date(),
                             json = {
@@ -504,6 +504,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                 "signature" : "",
                                 "docId" : sid,
                                 "docTitle": stitle,
+                                "scheduled": ssched,
                                 "dest" : idlist
                                 };
                         

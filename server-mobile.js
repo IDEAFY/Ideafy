@@ -23,10 +23,6 @@ var http = require("http"),
     qs = require("querystring"), 
     url = require("url"), 
     redirect = require('connect-redirection'), 
-    sessionStore = new RedisStore({
-        hostname : "127.0.0.1",
-        port : "6379"
-    }),
     wrap = require("./wrap"),
     srvutils = require("./srvutils.js"),
     apputils = require("./apputils.js"),
@@ -43,38 +39,49 @@ var srvUtils = new srvutils.SrvUtils(),
       CDBAdmin = new cdbadmin.CDBAdmin();
   
 // create reusable transport method (opens pool of SMTP connections)
+/*
 var smtpTransport = nodemailer.createTransport("SMTP", {
         // mail sent by Ideafy,
-        host: "smtp.gmail.com",
-        secureConnection : true,
-        port : 465,
+        host: "10.224.1.168",
+        secureConnection : false,
+        port : 587,
         auth : {
-                user : "vincent.weyl@gmail.com",
-                pass : "$Nor&Vin2012"
-        }
+                user : "ideafy",
+                pass : fs.readFileSync(".password", "utf8").trim()
+       } 
 });
-
-
+*/
+var smtpTransport = nodemailer.createTransport("SMTP", {
+	service: "Gmail",
+	auth: {
+		user: "vincent@ideafy.com",
+		pass: "$Nor&Vin2014"
+	}
+});
 /****************************************
  *  APPLICATION CONFIGURATION
  ****************************************/
 
-var _db, _dbIP, _dbPort, cdbAdminCredentials, supportEmail, currentVersion, contentPath, badges;
-     
+var sessionStore, _db, _dbIP, _dbPort, cdbAdminCredentials, supportEmail, currentVersion, contentPath, badges;
+// redis connection
+sessionStore = new RedisStore({
+	hostname : "127.0.0.1",
+	port : "6379"
+});     
 // Name and IP address of the application database
 _db = "ideafy";
-_dbIP = "127.0.0.1";
+_dbIP = "10.224.7.243";
 _dbPort = 5984;
 // Database admin login
 cdbAdminCredentials = "admin:innovation4U";
 // mail sender & address
-mailSender = "IDEAFY <ideafy@taiaut.com>";
+mailSender = "IDEAFY <app@ideafy.com>";
 // email address fro application support
-supportEmail = "contact@taiaut.com";
+supportEmail = "contact@ideafy.com";
 // Application  client minimum version
-currentVersion = "1.2.0";
+currentVersion = "1.2.3";
 // Path where attachments are stored
-contentPath = __dirname;
+contentPath = "/shared";
 // Rules to grant special badges and achievements
 badges;
 
@@ -86,11 +93,11 @@ badges;
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
         var transport = new Transport(olives.handlers),
             app = http.createServer(connect()
-                .use(connect.responseTime())
+		.use(connect.responseTime())
                 .use(redirect())
-                .use(connect.bodyParser({ uploadDir:contentPath+'/upload', keepExtensions: true }))
+                .use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
                 .use('/upload', srvUtils.uploadFunc)
-                .use('/downloads', srvUtils.downloadFunc)   
+		.use('/downloads', srvUtils.downloadFunc)      
                 .use(function(req, res, next) {
                         res.setHeader("Ideady Server", "node.js/" + process.versions.node);
                         res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
@@ -107,7 +114,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 path : "/"
                         }
                 }))
-                .use(connect.static(__dirname + "/public"))).listen(1664),
+                .use(connect.static(__dirname + "/public"))).listen(3113),
                 io = socketIO.listen(app, {
                         log : true
                 });
@@ -185,7 +192,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
         olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
         olives.handlers.set("ShareDeck", appUtils.shareDeck);
-        olives.handlers.set("GetEULA", appUtils.getEULA);
         olives.handlers.set("GetFavList", appUtils.getFavList);
         olives.handlers.set("GetAvatar", appUtils.getAvatar);
         olives.handlers.set("GetUserDetails", appUtils.getUserDetails);

@@ -313,6 +313,7 @@ function ComUtils(){
                         if (json.type === "INV") {
                                 message.docId = json.docId;
                                 message.docTitle = json.docTitle;
+                                if (json.scheduled) message.scheduled = json.scheduled;
                         }
 
                         // send message to all recipients

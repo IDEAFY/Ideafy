@@ -131,8 +131,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                                 }
                                         };
                                         
-                                        
-                                        // step 1 init confirmation UI
+                                        // init confirmation UI content
                                         if (session.get("initiator").id === user.get("_id")){
                                                 confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        
                                         }
@@ -232,6 +231,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         widget.goToScreen = function goToScreen(){
                                 var id;
                                 // if dest is specified (e.g. notify popup)
+                                console.log(exitDest);
                                 if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
                                         confirmUI.hide();
                                         document.body.removeChild(document.querySelector(".confirm"));

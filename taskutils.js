@@ -90,7 +90,7 @@ function TaskUtils(){
                                 var now = new Date().getTime();
                                 console.log(sessions.toJSON());
                                 sessions.loop(function(v,i){
-                                        if (v.value.status === 'waiting' && (now - v.value.scheduled) > 3600000){
+                                        if (v.value.status === 'waiting' && (now - v.key) > 3600000){
                                                 _removeDocAsAdmin(v.id)
                                                 .then(function(){
                                                         console.log("improvement : notify initiator ?", v.id);

@@ -108,29 +108,30 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 session.reset({});
                                 participants.reset([]);
                                 
-                                // create confirmation UI
-                                confirmCallBack = function(decision){
-                                        if (!decision){
-                                                confirmUI.hide();
-                                        }
-                                        else{
-                                                user.set("sessionInProgress", "");
-                                                user.upload();
-                                                if (session.get("initiator").id === user.get("_id")){
-                                                        widget.cancelSession();
-                                                }
-                                                else {
-                                                        widget.leaveSession();
-                                                }
-                                        }
-                                };
-                                
                                 // create listener
                                 exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
                                 // get session info
                                 session.sync(Config.get("db"), sid).then(function(){
                                         // manage exit event
+                                        // create confirmation UI
+                                        confirmCallBack = function(decision){
+                                                if (!decision){
+                                                        confirmUI.hide();
+                                                }
+                                                else{
+                                                        user.set("sessionInProgress", "");
+                                                        user.upload();
+                                                        if (session.get("initiator").id === user.get("_id")){
+                                                                widget.cancelSession();
+                                                        }
+                                                        else {
+                                                                widget.leaveSession();
+                                                        }
+                                                }
+                                        };
+                                        
+                                        
                                         // step 1 init confirmation UI
                                         if (session.get("initiator").id === user.get("_id")){
                                                 confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        

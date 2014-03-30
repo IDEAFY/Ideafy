@@ -86,12 +86,10 @@ function TaskUtils(){
          */
         this.checkSessions = function checkSessions(){
                 var sessions = new _CouchDBView(),
-                      deleteExpiredSessions = function(cdb){
+                      deleteExpiredSessions = function(){
                                 var now = new Date().getTime();
-                                console.log(sessions.toJSON());
                                 sessions.loop(function(v,i){
                                         var cdb = new _CouchDBDocument();
-                                        console.log((v.value.status === 'waiting' && ((now - v.key) > 3600000)));
                                         if (v.value.status === 'waiting' && ((now - v.key) > 3600000)){
                                                 _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){
@@ -99,22 +97,28 @@ function TaskUtils(){
                                                 });
                                         }
                                 });    
-                      };
-                
-                
-                sessions.reset([]);
-                
-                _getViewAsAdmin("scheduler", "sessions", null, sessions)
-                .then(function(){
+                      },
+                      manageSessions = function(){
+                                sessions.reset([]);
+                                 
+                                // fetch scheduled sessions from database (status waiting and scheduled not null)
+                                _getViewAsAdmin("scheduler", "sessions", null, sessions)
+                                .then(function(){
                         
-                        // delete expired sessions from database, ie scheduled sessions that have not been started on time by initiator
-                        setInterval(deleteExpiredSessions, 12000);
+                                        // delete expired sessions from database, ie scheduled sessions that have not been started on time by initiator
+                                        deleteExpiredSessions();
                                         
-                });
-                
-                
+                                        // notify initiator and participants of sessions about to start (<5min)
+                                        
+                                        // notify initiator and participants of sessions starting in one hour
+                                        
+                                        // notify initiator and participants of sessions starting the next day
+                                        
+                                });
+                       };
+                      
+                setInterval(manageSessions, 30000);
         };
-        
 };
 
 exports.TaskUtils = TaskUtils;

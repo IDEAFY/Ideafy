@@ -39,6 +39,10 @@ function TaskUtils(){
                 this.checkConnections();
         };
         
+        /*
+         * Check active sockets against users marked as online in the database
+         * Solve discrepancies if any
+         */
         this.checkConnections = function checkConnections(){
                 var checkSockets = function(){
                         var cdbSocks = new _CouchDBView(),
@@ -71,7 +75,39 @@ function TaskUtils(){
                         });       
                 };
                 setInterval(checkSockets, 5000);
+        };
+        
+        /*
+         * Session management
+         * Manage notifications for scheduled sessions
+         * Delete sessions if they are over 1hour past the scheduled time
+         */
+        this.checkSessions = function checkSessions(){
+                var sessions = new _CouchDBView(),
+                      deleteExpiredSessions = function(cdb){
+                                var now = new Date().getTime();
+                                cdb.loop(function(v,i){
+                                        if (v.value.status === 'waiting' && (now - v.value.scheduled) > 3600000){
+                                                _removeDocAsAdmin(v.id)
+                                                .then(function(){
+                                                        console.log("improvement : notify initiator ?", v.id);
+                                                });
+                                        }
+                                });    
+                      };
+                
+                
+                sessions.reset([]);
+                
+                _getViewAsAdmin("scheduler", "sessions", null, sessions)
+                .then(function(){
                         
+                        // delete expired sessions from database, ie scheduled sessions that have not been started on time by initiator
+                        setInterval(deleteExpiredSessions, 120000);
+                                        
+                });
+                
+                
         };
         
 };

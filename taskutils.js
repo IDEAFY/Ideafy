@@ -88,10 +88,10 @@ function TaskUtils(){
                 var sessions = new _CouchDBView(),
                       deleteExpiredSessions = function(cdb){
                                 var now = new Date().getTime();
+                                console.log(sessions.toJSON());
                                 sessions.loop(function(v,i){
                                         var cdb = new _CouchDBDocument();
-                                        console.log(v.value.status, v.key, now-v.key);
-                                        if (v.value.status === 'waiting' && (now - v.key) > 3600000){
+                                        if (v.value.status === 'waiting' && ((now - v.key) > 3600000)){
                                                 _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){
                                                         return _removeDocAsAdmin(v.id, cdb);
@@ -107,7 +107,7 @@ function TaskUtils(){
                 .then(function(){
                         
                         // delete expired sessions from database, ie scheduled sessions that have not been started on time by initiator
-                        setInterval(deleteExpiredSessions, 1200000);
+                        setInterval(deleteExpiredSessions, 12000);
                                         
                 });
                 

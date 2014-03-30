@@ -37,6 +37,8 @@ function TaskUtils(){
                 _io = io;
                 
                 this.checkConnections();
+                
+                this.checkSessions();
         };
         
         /*

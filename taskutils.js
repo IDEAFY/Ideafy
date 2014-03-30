@@ -106,7 +106,7 @@ function TaskUtils(){
                 .then(function(){
                         
                         // delete expired sessions from database, ie scheduled sessions that have not been started on time by initiator
-                        setInterval(deleteExpiredSessions, 120000);
+                        setInterval(deleteExpiredSessions, 12000);
                                         
                 });
                 

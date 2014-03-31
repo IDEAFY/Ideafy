@@ -134,15 +134,15 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                         switch(type){
                                 case "replyall":
                                         (msg.ccList) ? msgReply.set("toList", msg.username.concat(", "+msg.ccList)) : msgReply.set("toList", msg.username);
-                                        (msg.object.search("Re :") !== 0)  ? msgReply.set("object", "Re : "+msg.object) : msgReply.set("object", msg.object);
+                                        (msg.object && msg.object.search("Re :") !== 0)  ? msgReply.set("object", "Re : "+msg.object) : msgReply.set("object", msg.object);
                                         break;
                                 case "forward" :
                                         msgReply.set("toList", "");
-                                        (msg.object.search("Fwd :") !== 0) ? msgReply.set("object", "Fwd : "+msg.object) : msgReply.set("object", msg.object);
+                                        (msg.object && msg.object.search("Fwd :") !== 0) ? msgReply.set("object", "Fwd : "+msg.object) : msgReply.set("object", msg.object);
                                         break;
                                 default:
                                         msgReply.set("toList", msg.username);
-                                        (msg.object.search("Re :") !== 0) ? msgReply.set("object", "Re : "+msg.object) : msgReply.set("object", msg.object);
+                                        (msg.object && msg.object.search("Re :") !== 0) ? msgReply.set("object", "Re : "+msg.object) : msgReply.set("object", msg.object);
                                         break;
                         }
                         msgReply.set("message", msg);

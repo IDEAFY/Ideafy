@@ -63,7 +63,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.innerHTML = message.get("username") + labels.get("senttc");
                                                         break;
                                                 case "REF":
-                                                        this.innerHTML = messages.get(id).username + labels.get("joinedideafy");
+                                                        this.innerHTML = message.get(id).username + labels.get("joinedideafy");
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("object");

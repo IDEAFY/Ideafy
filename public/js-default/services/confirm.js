@@ -24,8 +24,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.template = '<div class = "confirm"><div class="help-doctor"></div><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-confirmevent="listen:mousedown, press; listen:mouseup, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-confirmevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl">Cancel</div></div>';
                         
                         _widget.press = function(event, node){
-                                event.stopPropagation();
                                 node.classList.add("pressed");
+                                event.stopPropagation();
                         };
                         
                         _widget.ok = function(event, node){

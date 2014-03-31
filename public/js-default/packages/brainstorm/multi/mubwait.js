@@ -109,8 +109,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 participants.reset([]);
                                 
                                 // create listener
-                                exitDest = null;
-                                exitListener.listener = Utils.exitListener("mubwait", widget.leave);
+                                //exitDest = null;
+                                //exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
                                 // get session info
                                 session.sync(Config.get("db"), sid).then(function(){

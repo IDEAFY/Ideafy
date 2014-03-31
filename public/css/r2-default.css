@@ -1006,3 +1006,8 @@ textarea.a-desc::-webkit-input-placeholder{
 .mulistheader .mudate{
     font-size: 16px;
 }
+
+#mubwait .exit-brainstorm{
+    margin-top: 100px;
+    margin-right: 20px;
+}

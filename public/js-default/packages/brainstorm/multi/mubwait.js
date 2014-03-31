@@ -151,6 +151,15 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 });
                         };
                         
+                        widget.press = function(event,node){
+                                node.classList.add("press");        
+                        };
+                        
+                        widget.exit = function(event, node){
+                                node.classList.remove("pressed");
+                                $exit();   
+                        };
+                        
                         // initiator or a participant decides to leave the waiting room
                         widget.leave = function leave(target){
                                 exitDest = exitDest || target.getAttribute("href") || target;
@@ -232,7 +241,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         widget.goToScreen = function goToScreen(){
                                 var id;
                                 // if dest is specified (e.g. notify popup)
-                                console.log(exitDest);
                                 if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
                                         confirmUI.hide();
                                         document.body.removeChild(document.querySelector(".confirm"));

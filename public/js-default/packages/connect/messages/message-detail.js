@@ -63,7 +63,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.innerHTML = message.get("username") + labels.get("senttc");
                                                         break;
                                                 case "REF":
-                                                        this.innerHTML = message.get(id).username + labels.get("joinedideafy");
+                                                        this.innerHTML = message.get("username") + labels.get("joinedideafy");
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("object");
@@ -97,7 +97,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         else {this.classList.add("invisible");}
                                 },
                                 showOptions : function(type){
-                                        ((type.search("CX")>-1) || (type === "2Q+") || (type === "INV")) ? this.classList.add("invisible") : this.classList.remove("invisible");        
+                                        ((type.search("CX")>-1) || (type === "2Q+") || (type === "INV") || (type === "REF")) ? this.classList.add("invisible") : this.classList.remove("invisible");        
                                 },
                                 setToList : function(toList){
                                         (toList) ? this.innerHTML = toList : this.innerHTML = labels.get("melbl");        

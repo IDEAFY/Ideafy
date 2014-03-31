@@ -18,8 +18,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                             labels = Config.get("labels"),
                             chatUI = new Chat(),
                             confirmUI, confirmCallBack,
-                            exitListener = {"listener": null},
-                            exitDest,
                             spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 269, top: 306}).spin();
                         
                         session.setTransport(Config.get("transport"));
@@ -87,7 +85,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 mubwaitevent : new Event(widget)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:mousedown, help"></div><div class="exit-brainstorm" data-progressevent="listen: mousedown, press; listen:mouseup, exit"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-labels="bind:innerHTML, startbutton" data-model="bind: showStartButton, participants" data-mubwaitevent="listen: mousedown, press; listen:mouseup, start"></div><div class="exit-brainstorm" data-mubwaitevent="listen: mousedown, press; listen:mouseup, exit"></div></form><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></span></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:mousedown, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-labels="bind:innerHTML, startbutton" data-model="bind: showStartButton, participants" data-mubwaitevent="listen: mousedown, press; listen:mouseup, start"></div><div class="exit-brainstorm" data-mubwaitevent="listen: mousedown, press; listen:mouseup, exit"></div></form><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></span></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         
@@ -101,16 +99,11 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         confirmUI = new Confirm(document.body,null,null, "musession-confirm");
                      
                         widget.reset = function reset(sid){
-                                console.log("muwait reset function called with : ", sid);
                                 // clear previous UI (chat and main window)
                                 chatUI.clear();
                                 session.unsync();
                                 session.reset({});
                                 participants.reset([]);
-                                
-                                // create listener
-                                //exitDest = null;
-                                //exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                 
                                 // get session info
                                 session.sync(Config.get("db"), sid).then(function(){
@@ -152,20 +145,15 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         };
                         
                         widget.press = function(event,node){
-                                node.classList.add("press");
-                                event.stopPropagation();      
+                                node.classList.add("press");    
                         };
                         
                         widget.exit = function(event, node){
+                                var now = new Date().getTime(),
+                                      sched = session.get("scheduled") || null;
                                 node.classList.remove("pressed");
-                                $exit();   
-                        };
-                        
-                        // initiator or a participant decides to leave the waiting room
-                        widget.leave = function leave(target){
-                                exitDest = exitDest || target.getAttribute("href") || target;
-                                // href exists it is one of the nav options else probably a notify message (or future use)
-                                confirmUI.show();       
+                                if (sched && (sched - now) > 300000) $exit();
+                                else confirmUI.show();
                         };
                         
                         // participant decides to leave session
@@ -191,7 +179,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         session.reset({});        
                                 }); 
                                 // no need to wait for upload result to leave session
-                                widget.goToScreen();             
+                                $exit();
+                                confirmUI.hide();           
                         };
                         
                         // initiator decides to cancel the session
@@ -200,7 +189,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 if (!session.get("participants").length) {countdown = 2000;}
                                 widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
-                                        widget.goToScreen();    
+                                        $exit();
+                                        confirmUI.hide();
                                 });        
                         };
                         
@@ -236,35 +226,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         });        
                                 }
                                 return promise;
-                        };
-                        
-                        // switch screen to destination if user confirms exit
-                        widget.goToScreen = function goToScreen(){
-                                var id;
-                                // if dest is specified (e.g. notify popup)
-                                if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
-                                        confirmUI.hide();
-                                        document.body.removeChild(document.querySelector(".confirm"));
-                                        $exit();
-                                        Config.get("observer").notify("goto-screen", "#connect");
-                                        document.removeEventListener("mousedown", exitListener.listener, true);   
-                                        id = exitDest.getAttribute("data-notify_id");
-                                        observer.notify("display-message", parseInt(id, 10));     
-                                }
-                                // handle clicks on nav bar
-                                else {
-                                        ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
-                                                if (exitDest === name){
-                                                        confirmUI.hide();
-                                                        document.body.removeChild(document.querySelector(".confirm"));
-                                                        $exit();
-                                                        Config.get("observer").notify("goto-screen", name);
-                                                        document.removeEventListener("mousedown", exitListener.listener, true);
-                                                }
-                                        });
-                                }
-                                participants.reset([]);
-                                session.reset({});
                         };
                         
                         // handle edit events
@@ -380,4 +341,4 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                 
                 };
         
-})
+});

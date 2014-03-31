@@ -152,7 +152,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         };
                         
                         widget.press = function(event,node){
-                                node.classList.add("press");        
+                                node.classList.add("press");
+                                event.stopPropagation();      
                         };
                         
                         widget.exit = function(event, node){

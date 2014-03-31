@@ -60,8 +60,9 @@ function TaskUtils(){
                                                 .then(function(){
                                                         if (cdb.get("online")){
                                                                 cdb.set("online", false);
-                                                                _updateDocAsAdmin(v.id, cdb);
-                                                        }        
+                                                        }
+                                                        cdb.set("sock", null);
+                                                        _updateDocAsAdmin(v.id, cdb);        
                                                 });
                                         }
                                         else{

@@ -5272,17 +5272,16 @@ li.color-item{
 }
 
 .msg, .contact{
-    padding: 10px;
+    padding-top: 10px;
     text-align: left;
-    min-height: 50px;
+    min-height: 60px;
+    height: 60px;
     overflow: hidden; 
 }
 
 .msg .actionbar, .contact .actionbar{
     margin-left: -10px;
     border: 1px solid rgba(0,0,0,0.8);
-    float: none;
-    position: absolute;
 }
 
 .msg:first-child, .contact:first-child{
@@ -5298,7 +5297,7 @@ li.color-item{
     font-style: italic;
     font-size: 14px;
     color: #4D4D4D;
-    min-height: 30px;
+    height: 30px;
 }
 
 .msg-author, .msg-subject, .contact-name, .contact-intro{

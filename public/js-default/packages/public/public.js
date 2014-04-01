@@ -324,7 +324,8 @@ define(["OObject", "Amy/Control-plugin" ,
                                      _ideaList = wid.getModel(),
                                      _ideaNode, _id;
                                   
-                                  // only do it for the current UI   
+                                  // only do it for the current UI
+                                  /*
                                  _ideaList.watch("deleted", function(){
                                          console.log("deleted");
                                          if (wid === _stack.getStack().getCurrentScreen()){
@@ -333,6 +334,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                                 (_ideaList.getNbItems()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
                                         } 
                                  });
+                                 */
                         });
                         
                        // when a new idea is created by the user 

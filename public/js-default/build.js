@@ -20,7 +20,7 @@ require.config({
                 twocents : "twocents",
                 attachments : "attach"
         },
-        deps: ["lib/socket.io.min", "lib/CouchDBTools.min","lib/Emily.min",  "lib/Olives.min", "lib/amy2", "lib/spin.min"]
+        deps: ["lib/socket.io.min", "lib/CouchDBTools","lib/Emily.min",  "lib/Olives.min", "lib/amy2", "lib/spin.min"]
         
 });
 

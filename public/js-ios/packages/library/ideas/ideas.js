@@ -149,7 +149,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 _currentLang = lang;
                                 
                                 // set Spinner
-                                _listSpinner.spin(document.getElementById("idea-list"));
+                                _listSpinner.spin(_widget.dom.querySelector("#idea-list"));
                                 
                                 // set flag in filter button
                                 _btns.loop(function(v,i){
@@ -162,7 +162,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                         var st = _stack.getStack();
                                         st.get(name).setLang(lang)
                                         .then(function(){
-                                                if (st.getCurrentName() === name) _listSpinner.stop();
+                                                _listSpinner.stop();
                                                 if (st.getCurrentName() === name && st.get(name).getModel().getNbItems() === 0){
                                                         _detail.displayEmpty(name);
                                                 }

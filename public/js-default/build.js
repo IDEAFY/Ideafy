@@ -7,7 +7,7 @@
 
 /* deps load before main script??*/
 require.config({
-        waitSeconds: 120,
+        waitSeconds: 60,
         baseUrl : "js-default/packages",
         paths: {
                 lib : "../libs",
@@ -20,7 +20,7 @@ require.config({
                 twocents : "twocents",
                 attachments : "attach"
         },
-        deps: ["lib/socket.io.min", "lib/CouchDBTools.min","lib/Emily.min",  "lib/Olives.min", "lib/amy2", "lib/spin.min"]
+        deps: ["lib/socket.io.min", "lib/CouchDBTools","lib/Emily.min",  "lib/Olives.min", "lib/amy2", "lib/spin.min"]
         
 });
 

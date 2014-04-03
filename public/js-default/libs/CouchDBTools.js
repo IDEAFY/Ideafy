@@ -379,7 +379,16 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
 						return false;
 					}
 
-					json = JSON.parse(changes);
+					var json;
+                                        
+                                        try{
+                                                json = JSON.parse(changes);        
+                                        }
+                                        catch (e){
+                                                json = null;
+                                                console.error(e, "ERROR IN COUCHDBDOC LISTEN data : ", changes);
+                                        }
+                                        if (!json) return false;
 
 					// The document is the modified document is the current one
 					if (json.id == _syncInfo.document &&
@@ -669,10 +678,19 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
 						return false;
 					}
 
-					var json = JSON.parse(changes),
-						action;
-
-					// reducedView is known on the first get view
+					var json, action;
+                                        
+                                        try{
+                                                json = JSON.parse(changes);        
+                                        }
+                                        catch (e){
+                                                json = null;
+                                                console.error(e, "ERROR IN VIEW DOC LISTEN data : ", changes);
+                                        }
+                                        
+                                        if (!json) return false;
+                                        
+                                        // reducedView is known on the first get view
 					if (_syncInfo.reducedView) {
 						action = "updateReduced";
 					} else {
@@ -967,7 +985,7 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 					}
 					catch (e){
 					        json = null;
-					        console.error(e, "data : ", changes);
+					        console.error(e, "ERROR IN BULK DOC LISTEN data : ", changes);
 					}
                                         if (!json) return false;
 					else if (json.changes[0].rev.search("1-") == 0) {

@@ -299,6 +299,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 _user.watchValue("settings", function(s){
                                         var l = s.contentLang;
                                         if (l === "all") l ="*";
+                                        console.log("language setting : ", l);
                                         if(l && l !== _currentLang){
                                                  _currentLang =l;
                                                 

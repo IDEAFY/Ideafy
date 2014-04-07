@@ -108,15 +108,16 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 showCXRbtn : function(type){
                                         var cx, id;
                                         this.classList.add("invisible");
-                                        if (type == "CXR"){
+                                        if (type === "CXR"){
                                                 cx = user.get("connections");
                                                 id = message.get("author");
                                                 for (i=0; i<cx.length; i++){
+                                                        console.log(cx[i], userid);
                                                         if (cx[i].userid && cx[i].userid === userid){
                                                                 this.classList.remove("invisible");
                                                                 break;
                                                         }         
-                                                }    
+                                                }   
                                         }     
                                 },
                                 showDocBtn : function(type){

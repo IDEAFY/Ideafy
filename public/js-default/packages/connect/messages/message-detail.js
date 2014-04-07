@@ -111,6 +111,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         if (type == "CXR"){
                                                 cx = user.get("connections").join();
                                                 id = message.get("author");
+                                                console.log(type, cx, id);
                                                 if (cx.search(id) < 0)  this.classList.remove("invisible");      
                                         }     
                                 },

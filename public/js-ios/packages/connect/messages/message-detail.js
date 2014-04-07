@@ -113,10 +113,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 id = message.get("author");
                                                 for (i=0; i<cx.length; i++){
                                                         if (cx[i].userid && cx[i].userid === userid){
-                                                                this.classList.remove("invisible");
                                                                 break;
                                                         }         
-                                                }    
+                                                }
+                                                this.classList.remove("invisible");    
                                         }       
                                 },
                                 showDocBtn : function(type){

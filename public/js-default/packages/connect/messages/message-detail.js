@@ -108,6 +108,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 showCXRbtn : function(type){
                                         var cx, id;
                                         this.classList.add("invisible");
+                                        console.log(type);
                                         if (type === "CXR"){
                                                 cx = user.get("connections");
                                                 id = message.get("author");

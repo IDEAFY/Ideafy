@@ -371,7 +371,10 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
 						descending: true
 					}
 				},
-				function (changes) {
+				function (changes, arg1, arg2) {
+				        console.log(changes);
+				        arg1&&console.log(arg1);
+				        arg2&&console.log(arg2);
 					var json;
 					// Should I test for this very special case (heartbeat?)
 					// Or do I have to try catch for any invalid json?

@@ -319,7 +319,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 }
                                                 break;
                                         case "message":
-                                                 var arr = user.get("notifications"), i,
+                                                 var arr = user.get("notifications").concat(), i,
                                                      index;
                         
                                                 for (i=0, l=arr.length; i<l; i++){

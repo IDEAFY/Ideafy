@@ -223,7 +223,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 };
                 
                 msgDetailUI.acceptCXR = function(event, node){
-                        var contacts = user.get("connections"), news = user.get("news")|| [], pos = 0, now = new Date(), date=[now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
+                        var contacts = user.get("connections").concat(), news = user.get("news").concat()|| [], pos = 0, now = new Date(), date=[now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
                         node.classList.remove("pushed");
                         // add contact info to user's connections -- insert in proper alphabetical position of last name
                         for (i=0,l=contacts.length;i<l;i++){
@@ -269,6 +269,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 cxrConfirm.set("response", "YES");
                                 //send response
                                 transport.request("Notify", json, function(result){
+                                        console.log(json, result);
                                         if (JSON.parse(result)[0].res === "ok"){
                                                 // delete this message, confirmation popup, return to default page
                                                 setTimeout(function(){

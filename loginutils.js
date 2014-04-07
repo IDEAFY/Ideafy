@@ -116,11 +116,6 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                         else {
                                                 session.auth = json.name + ":" + json.password;
                                                 _sessionStore.set(sessionID, session);
-                                                onEnd({
-                                                        signup : "ok",
-                                                        db : _db,
-                                                        message: json.name + " successfully signed up"
-                                                });
                                                 
                                                 // send confirmation Email
                                                 _sendSignupEmail(json.name, json.password, json.lang);
@@ -156,7 +151,14 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                         "scored":[],
                                                         "type": 11
                                                 });
-                                                _createDocAsAdmin(json.name+"_rewards", rewards);
+                                                _createDocAsAdmin(json.name+"_rewards", rewards)
+                                                .then(function(){
+                                                        onEnd({
+                                                                signup : "ok",
+                                                                db : _db,
+                                                                message: json.name + " successfully signed up"
+                                                        });
+                                                });
                                                 
                                                 // check for referrals and update accordingly
                                                 _checkInvited(json.name, function(result){

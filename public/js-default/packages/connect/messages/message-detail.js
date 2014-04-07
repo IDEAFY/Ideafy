@@ -5,8 +5,8 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, Avatar, Utils, Reply){
+define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply", "lib/spin.min"],
+        function(Widget, Config, Store, CouchDBDocument, Model, Event, Avatar, Utils, Reply, Spinner){
                 
            return function MessageDetailConstructor($close){
            
@@ -106,7 +106,13 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         (ccList)?this.classList.remove("invisible"):this.classList.add("invisible");
                                 },
                                 showCXRbtn : function(type){
-                                        (type === "CXR")?this.classList.remove("invisible"):this.classList.add("invisible");        
+                                        var cx, id;
+                                        this.classList.add("invisible");
+                                        if (type == "CXR"){
+                                                cx = JSON.parse(user.get("connections"));
+                                                id = message.get("author");
+                                                if (cx.search(id) < 0)  this.classList.remove("invisible");      
+                                        }     
                                 },
                                 showDocBtn : function(type){
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        

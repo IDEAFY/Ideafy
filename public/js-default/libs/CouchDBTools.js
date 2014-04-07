@@ -973,7 +973,10 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 					path: "/" + _syncInfo.database + "/_changes",
 					query: _syncInfo.query
 				},
-				function (changes) {
+				function (changes, arg1, arg2) {
+				        console.log(changes);
+                                        arg1&&console.log("arg1 :",arg1);
+                                        arg2&&console.log(arg2);
 					var json;
 					// Should I test for this very special case (heartbeat?)
 					// Or do I have to try catch for any invalid json?

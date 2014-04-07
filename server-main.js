@@ -114,8 +114,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 0);                    // reduce logging
-        io.set("close timeout", 60);
+        io.set('log level', 3);                    // reduce logging
+        io.set("close timeout", 300);
         io.set("heartbeat interval", 25);
         
         // we need lots of sockets

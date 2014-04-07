@@ -109,7 +109,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         var cx, id;
                                         this.classList.add("invisible");
                                         if (type == "CXR"){
-                                                cx = JSON.parse(user.get("connections"));
+                                                cx = user.get("connections").join();
                                                 id = message.get("author");
                                                 if (cx.search(id) < 0)  this.classList.remove("invisible");      
                                         }     
@@ -204,7 +204,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         break;
                                 case "deletemsg":
                                         options.classList.add("invisible");
-                                        msgDetailUI.deletemsg(message.toJSON());
+                                        msgDetailUI.deletemsg(message);
                                         $close("#defaultPage");
                                         break;
                                 default:
@@ -215,10 +215,11 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 
                 msgDetailUI.deletemsg = function deletemsg(msg){
                         var arr = user.get("notifications").concat(),
+                            userid = msg.get("author"),
                             index;
                         
                         for (i=0, l=arr.length; i<l; i++){
-                                if (JSON.stringify(arr[i]) === msg){
+                                if (arr[i].userid === userid){
                                         index = i;
                                         break;
                                 }
@@ -279,7 +280,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         if (JSON.parse(result)[0].res === "ok"){
                                                 // delete this message, confirmation popup, return to default page
                                                 setTimeout(function(){
-                                                        msgDetailUI.deletemsg(message.toJSON());
+                                                        msgDetailUI.deletemsg(message);
                                                         $close("#defaultPage");
                                                 }, 1000);
                                                 
@@ -313,7 +314,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 if (JSON.parse(result)[0].res === "ok"){
                                         // delete this message, confirmation popup, return to default page
                                         setTimeout(function(){
-                                                msgDetailUI.deletemsg(message.toJSON());
+                                                msgDetailUI.deletemsg(message);
                                                 $close("#defaultPage");
                                         }, 1500);
                                                 

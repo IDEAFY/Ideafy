@@ -110,7 +110,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         this.classList.add("invisible");
                                         if (type == "CXR"){
                                                 cx = user.get("connections");
-                                                id = message.get("author");
+                                                userid = message.get("author");
                                                 for (i=0; i<cx.length; i++){
                                                         if (cx[i].userid && cx[i].userid === userid){
                                                                 break;

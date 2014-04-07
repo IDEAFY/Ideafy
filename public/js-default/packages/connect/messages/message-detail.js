@@ -111,7 +111,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         console.log(type);
                                         if (type === "CXR"){
                                                 cx = user.get("connections");
-                                                id = message.get("author");
+                                                userid = message.get("author");
                                                 
                                                 for (i=0; i<cx.length; i++){
                                                         console.log(cx[i], userid);

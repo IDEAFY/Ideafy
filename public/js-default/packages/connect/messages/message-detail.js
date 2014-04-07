@@ -224,7 +224,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                             index;
                         
                         for (i=0, l=arr.length; i<l; i++){
-                                if (arr[i].userid === userid){
+                                if (arr[i].userid && arr[i].userid === userid){
                                         index = i;
                                         break;
                                 }

@@ -106,7 +106,18 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         (ccList)?this.classList.remove("invisible"):this.classList.add("invisible");
                                 },
                                 showCXRbtn : function(type){
-                                        (type === "CXR")?this.classList.remove("invisible"):this.classList.add("invisible");        
+                                        var cx, id;
+                                        this.classList.add("invisible");
+                                        if (type == "CXR"){
+                                                cx = user.get("connections");
+                                                id = message.get("author");
+                                                for (i=0; i<cx.length; i++){
+                                                        if (cx[i].userid && cx[i].userid === userid){
+                                                                this.classList.remove("invisible");
+                                                                break;
+                                                        }         
+                                                }    
+                                        }       
                                 },
                                 showDocBtn : function(type){
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        
@@ -214,7 +225,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                             index;
                         
                         for (i=0, l=arr.length; i<l; i++){
-                                if (JSON.stringify(arr[i]) === msg){
+                                if (arr[i].userid && arr[i].userid === msg.get("author")){
                                         index = i;
                                         break;
                                 }
@@ -274,7 +285,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         if (JSON.parse(result)[0].res === "ok"){
                                                 // delete this message, confirmation popup, return to default page
                                                 setTimeout(function(){
-                                                        msgDetailUI.deletemsg(message.toJSON());
+                                                        msgDetailUI.deletemsg(message);
                                                         $close("#defaultPage");
                                                 }, 1000);
                                                 
@@ -308,7 +319,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 if (JSON.parse(result)[0].res === "ok"){
                                         // delete this message, confirmation popup, return to default page
                                         setTimeout(function(){
-                                                msgDetailUI.deletemsg(message.toJSON());
+                                                msgDetailUI.deletemsg(message);
                                                 $close("#defaultPage");
                                         }, 1500);
                                                 

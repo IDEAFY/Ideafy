@@ -14,7 +14,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                     msgReplyUI = new Reply(),
                     message = new Store(),
                     cxrConfirm = new Store({"response":""}),
-                    cxrSpinner = new Spinner({color:"#cccccc", lines:10, length: 8, width: 4, radius:8, top: 0, left: 0}).spin(),
+                    cxrSpinner = new Spinner({color:"#cccccc", lines:10, length: 8, width: 4, radius:8, top: -2, left: -10}).spin(),
                     labels = Config.get("labels"),
                     user = Config.get("user"),
                     observer = Config.get("observer"),
@@ -241,6 +241,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 msgDetailUI.acceptCXR = function(event, node){
                         var contacts = user.get("connections").concat(), news = user.get("news").concat()|| [], pos = 0, now = new Date(), date=[now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
                         node.classList.remove("pushed");
+                        // prevent user from clicking on rejectCXR
+                        node.nextSibling.classList.add("invisible");
                         cxrSpinner.spin(node);
                         // add contact info to user's connections -- insert in proper alphabetical position of last name
                         for (i=0,l=contacts.length;i<l;i++){

@@ -371,10 +371,7 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
 						descending: true
 					}
 				},
-				function (changes, arg1, arg2) {
-				        console.log(changes);
-				        arg1&&console.log(arg1);
-				        arg2&&console.log(arg2);
+				function (changes) {
 					var json;
 					// Should I test for this very special case (heartbeat?)
 					// Or do I have to try catch for any invalid json?
@@ -973,10 +970,7 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 					path: "/" + _syncInfo.database + "/_changes",
 					query: _syncInfo.query
 				},
-				function (changes, arg1, arg2) {
-				        console.log(changes);
-                                        arg1&&console.log("arg1 :",arg1);
-                                        arg2&&console.log(arg2);
+				function (changes) {
 					var json;
 					// Should I test for this very special case (heartbeat?)
 					// Or do I have to try catch for any invalid json?

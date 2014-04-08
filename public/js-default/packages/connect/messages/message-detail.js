@@ -14,6 +14,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                     msgReplyUI = new Reply(),
                     message = new Store(),
                     cxrConfirm = new Store({"response":""}),
+                    cxrSpinner = new Spinner({color:"#cccccc", lines:10, length: 8, width: 4, radius:8, top: 0, left: 0}).spin(),
                     labels = Config.get("labels"),
                     user = Config.get("user"),
                     observer = Config.get("observer"),
@@ -240,6 +241,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 msgDetailUI.acceptCXR = function(event, node){
                         var contacts = user.get("connections").concat(), news = user.get("news").concat()|| [], pos = 0, now = new Date(), date=[now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
                         node.classList.remove("pushed");
+                        node.classList.add("invisible");
+                        cxrSpinner.spin(node);
                         // add contact info to user's connections -- insert in proper alphabetical position of last name
                         for (i=0,l=contacts.length;i<l;i++){
                                 // check if contact is of type user or group first
@@ -301,6 +304,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 msgDetailUI.rejectCXR = function(event, node){
                         var json, now=new Date();
                         node.classList.remove("pushed");
+                        node.classList.add("invisible");
+                        cxrSpinner.spin(node);
                         cxrConfirm.set("response", "NO");
                         //notify sender of rejection
                         json = {
@@ -320,6 +325,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                       //send response
                         transport.request("Notify", json, function(result){
                                 if (JSON.parse(result)[0].res === "ok"){
+                                        cxrSpinner.stop();
                                         // delete this message, confirmation popup, return to default page
                                         setTimeout(function(){
                                                 msgDetailUI.deletemsg(message);
@@ -378,6 +384,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 }
                         }
                 };
+                
+                CSPI = cxrSpinner;
                 
                 return msgDetailUI;
             };      

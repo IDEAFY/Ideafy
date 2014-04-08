@@ -200,8 +200,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 "share" : new Model(_shareList),
                                 "vote" : new Model(vote,{
                                         setIcon : function(active){
-                                                var styleActive = "background: url('img/public/activeIdeaVote.png') no-repeat center center;",
-                                                    styleInactive = "background: url('img/public/rateForList.png') no-repeat center center;";
+                                                var styleActive = "background: url('img/public/activeIdeaVote.png') no-repeat center center; background-size: contain;",
+                                                    styleInactive = "background: url('img/public/rateForList.png') no-repeat center center; background-size: contain;";
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
@@ -337,7 +337,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.vote = function(event, node){
                                 if (!_voted){
                                         //display voting popup
-                                        document.getElementById("cache").classList.add("appear1");
                                         document.getElementById("ratingPopup").classList.add("appear");
                                 }
                                 node.classList.remove("pressed");
@@ -371,7 +370,6 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         alert(Config.get("labels").get("thankyou"));
                                                         
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
-                                                        document.getElementById("cache").classList.remove("appear1");
                                                         document.getElementById("ratingPopup").classList.remove("appear");
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                                                 }

@@ -254,12 +254,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         var lb = document.getElementById("leaderboard"), pc = document.getElementById("profile-content");
                         
                        if (node.value == 1){
+                                stats.set("view", "leaderboard");
                                 if (LB) LB.refresh();
                                 else {
                                         LB = new Leaderboard();
                                         LB.init(lb);
                                 }
-                                stats.set("view", "leaderboard");
                         }
                         else stats.set("view", "info");
                    };

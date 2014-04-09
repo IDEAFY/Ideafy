@@ -79,6 +79,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                                 leaderboard.refresh();
                         });
                         
+                        
+                        LSPI = spinner;
                         return leaderboard;
                         
                 };

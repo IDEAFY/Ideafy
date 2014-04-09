@@ -22,6 +22,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	 */
 	_utils.isOnline = function(userid){
 	       var online = false;
+	       console.log(onlineUsers.toJSON());
 	       onlineUsers.loop(function(v,i){
 	               if (v.key === userid) online = true;
 	       });

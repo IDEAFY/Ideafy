@@ -37,6 +37,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         // INIT
                         // check if user is online -- perform check every 30 seconds
+                        Utils.isOnline(_id) ? _store.set("online", true) : _store.set("online", false);
+                        
                         setInterval(function(){
                                 Utils.isOnline(_id) ? _store.set("online", true) : _store.set("online", false);
                         }, 30000);

@@ -1,16 +1,6 @@
 #login{
-    /*background-image: -webkit-gradient(radial, center center, 0, center center, 212, from(#aeb9bf), to(#4d5d72));
-    background-image: -webkit-radial-gradient(center center, cover, #aeb9bf, #4d5d72);*/
-   background: #aeb9bf; /* Old browsers */
-    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
-    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNhZWI5YmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGQ1ZDcyIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyZWN0IHg9Ii01MCIgeT0iLTUwIiB3aWR0aD0iMTAxIiBoZWlnaHQ9IjEwMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-    background: -moz-radial-gradient(center, ellipse cover, #aeb9bf 0%, #4d5d72 100%); /* FF3.6+ */
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#aeb9bf), color-stop(100%,#4d5d72)); /* Chrome,Safari4+ */
-    background: -webkit-radial-gradient(center, ellipse cover, #aeb9bf 0%,#4d5d72 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-radial-gradient(center, ellipse cover, #aeb9bf 0%,#4d5d72 100%); /* Opera 12+ */
-    background: -ms-radial-gradient(center, ellipse cover, #aeb9bf 0%,#4d5d72 100%); /* IE10+ */
-    background: radial-gradient(ellipse at center, #aeb9bf 0%,#4d5d72 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aeb9bf', endColorstr='#4d5d72',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
+    background: url('img/total/TIDE-logo-.jpg') no-repeat center center;
+    background-size: cover;
     height: 100%;
     width: 100%;
     position: absolute;

@@ -56,12 +56,13 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                         });
                         
                         leaderboard.init = function init($dom){
+                                console.log("init", $dom);
                                 spinner.spin($dom);
                                 leaders.setTransport(Config.get("transport"));
                                 leaders.sync(Config.get("db"), "users", "_view/leaderboard", {limit:100, descending: true}).then(function(){
                                         leaderboard.place($dom);
                                         spinner.stop();
-                                        //leaders.unsync();
+                                        leaders.unsync();
                                 });
                         };
                         
@@ -69,7 +70,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                                 leaders.reset([]);
                                 spinner.spin(leaderboard.dom);
                                 leaders.sync(Config.get("db"), "users", "_view/leaderboard", {limit:100, descending: true}).then(function(){
-                                        leaderboard.place($dom);
                                         spinner.stop();
                                         leaders.unsync();
                                 });            

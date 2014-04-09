@@ -77,7 +77,7 @@ function TaskUtils(){
                                 });
                         });       
                 };
-                setInterval(checkSockets, 5000);
+                setInterval(checkSockets, 15000);
         };
         
         /*
@@ -118,7 +118,7 @@ function TaskUtils(){
                                 });
                        };
                       
-                setInterval(manageSessions, 30000);
+                setInterval(manageSessions, 45000);
         };
 };
 

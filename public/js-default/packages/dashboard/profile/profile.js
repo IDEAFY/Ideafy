@@ -258,7 +258,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 LB = new Leaderboard();
                                 LB.init(lb);
                         }
-                        (node.value == 1) ? stats.set("view", "leaderboard"):stats.set("view", "info");
+                        if (node.value == 1){
+                                LB.refresh();
+                                stats.set("view", "leaderboard");
+                        }
+                        else stats.set("view", "info");
                    };
                    
                    profileUI.edit = function(event, node){

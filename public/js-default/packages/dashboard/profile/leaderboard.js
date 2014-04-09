@@ -5,13 +5,14 @@
  * Copyright (c) 2012-2013 TAIAUT
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView", "service/utils", "service/avatar"],
-        function(Widget, Config, Model, Event, CouchDBView, Utils, Avatar){
+define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView", "service/utils", "service/avatar", "lib/spin.min"],
+        function(Widget, Config, Model, Event, CouchDBView, Utils, Avatar, Spinner){
                 
                 return function LeaderboardConstructor(){
                         
                         var leaderboard = new Widget(),
-                            leaders = new CouchDBView([]);
+                            leaders = new CouchDBView([]),
+                            spinner = new Spinner({color:"#9ac9cd", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
                         
                         leaderboard.template = '<div><ul data-leaders="foreach"><li class="leader" data-leaders="bind:setSpotLight, value.userid"><div data-leaders="bind:setAvatar, value.userid"></div><div class="username" data-leaders="bind:innerHTML, value.username"></div><div class="distinction" data-leaders="bind:setDistinction, value.ip"></div><div class="grade" data-leaders="bind:setGrade, value.ip"></div><div class="score" data-leaders="bind: setScore, value.ip"></div></li></ul></div>';
                         
@@ -55,16 +56,27 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                         });
                         
                         leaderboard.init = function init($dom){
+                                spinner.spin($dom);
                                 leaders.setTransport(Config.get("transport"));
                                 leaders.sync(Config.get("db"), "users", "_view/leaderboard", {limit:100, descending: true}).then(function(){
                                         leaderboard.place($dom);
+                                        spinner.stop();
+                                        leaders.unsync();
                                 });
                         };
                         
-                         Config.get("observer").watch("reconnect", function(){
-                                leaders.unsync();
+                        leaderboard.refresh = function(){
                                 leaders.reset([]);
-                                leaders.sync(Config.get("db"), "users", "_view/leaderboard", {limit:100, descending: true});
+                                spinner.spin(leaderboard.dom);
+                                leaders.sync(Config.get("db"), "users", "_view/leaderboard", {limit:100, descending: true}).then(function(){
+                                        leaderboard.place($dom);
+                                        spinner.stop();
+                                        leaders.unsync();
+                                });            
+                        };
+                        
+                         Config.get("observer").watch("reconnect", function(){
+                                leaderboard.refresh();
                         });
                         
                         return leaderboard;

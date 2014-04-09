@@ -1,0 +1,149 @@
+#login{
+    /*background-image: -webkit-gradient(radial, center center, 0, center center, 212, from(#aeb9bf), to(#4d5d72));
+    background-image: -webkit-radial-gradient(center center, cover, #aeb9bf, #4d5d72);*/
+   background: #aeb9bf; /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNhZWI5YmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGQ1ZDcyIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyZWN0IHg9Ii01MCIgeT0iLTUwIiB3aWR0aD0iMTAxIiBoZWlnaHQ9IjEwMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-radial-gradient(center, ellipse cover, #aeb9bf 0%, #4d5d72 100%); /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#aeb9bf), color-stop(100%,#4d5d72)); /* Chrome,Safari4+ */
+    background: -webkit-radial-gradient(center, ellipse cover, #aeb9bf 0%,#4d5d72 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-radial-gradient(center, ellipse cover, #aeb9bf 0%,#4d5d72 100%); /* Opera 12+ */
+    background: -ms-radial-gradient(center, ellipse cover, #aeb9bf 0%,#4d5d72 100%); /* IE10+ */
+    background: radial-gradient(ellipse at center, #aeb9bf 0%,#4d5d72 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aeb9bf', endColorstr='#4d5d72',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    text-align:center;
+    overflow: auto;
+}
+
+#login img{
+    margin-top: 40px;
+}
+
+#login-stack	{
+	margin:30px auto 0 auto;
+	width:410px;
+}
+
+.login-fields{
+	width:410px;
+	border-radius: 5px;
+	background: white;
+	-webkit-box-shadow: 0 0 10px rgba(37, 64, 102, 0.2), inset 0 0 6px 1px rgba(0, 0, 0, 0.4);
+    margin-bottom:30px;
+}
+
+#login-form input {
+    height:60px;
+}
+
+#signup-form input {
+    height:45px;
+}
+
+.login-fields input {
+	background:none;
+	width:375px;
+	outline:0;
+	margin:0;
+	border:0;
+	padding-left:30px;
+
+	font-size:14px;
+	color:#AEB9BF;
+}
+
+.login-fields input:nth-child(n+2) {
+	border-top:1px solid #E6E6E6;
+}
+
+.login-button, #signup-button {
+	display:inline-block;
+	border-radius: 5px;
+	font-weight: bold;
+}
+.login-button {
+	margin-bottom:20px;
+    font-size: 14px;
+    line-height: 40px;
+    color: #4D4D4D;
+    width: 400px;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #cccccc), color-stop(100%, #e6e6e6));
+    -webkit-box-shadow: 0 0 3px rgba(37, 64, 102, 0.5);
+}
+
+.pressed {
+	-webkit-box-shadow:inset 0 0 5px 1px rgba(0,0,0,0.6);
+	background:#666666;
+}
+
+.login-button.pressed{
+    color: white;
+    border: 1px inset #CCCCCC;
+    height: 38px;
+    line-height: 38px;
+    text-shadow: 2px 2px 2px black;
+}
+
+#login-form p.login-error{
+	height:154px;
+	line-height:77px;
+}
+
+#signup-form .login-error {
+	margin-bottom:10px;
+    height:40px;
+}
+
+
+.login-error {
+	display: block;
+	font-size: 13px;
+    font-weight: bold;
+    color: white;
+    line-height: 1.3em;
+    height: 77px;
+}
+
+#signup-button {
+	width: 270px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #E6E6E6;
+    -webkit-box-shadow: 0 0 1px 1px rgba(37,64,102, 0.6);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #8c9aa8), color-stop(100%, #707e8e));
+}
+
+#signup-button.pressed{    
+    color: black;
+    border: 1px inset #CCCCCC;
+    text-shadow: 2px 2px 2px white;    
+}
+
+.pressed-btn{
+    opacity: 0.7;
+    -webkit-transition: opacity 3s linear;
+}
+
+.btn-ready{
+    opacity: 1;
+    color: black;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #e5e5e5), color-stop(100%, #e6e6e6))
+}
+
+.loginvisible{
+    display: none;
+}
+
+.forgotpwd{
+    font-size: 12px;
+    color: #404040;
+}
+
+.forgotpwd.pressed{
+    color: white;
+    background: transparent;
+    -webkit-box-shadow: none;
+}

@@ -61,7 +61,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                                 leaders.sync(Config.get("db"), "users", "_view/leaderboard", {limit:100, descending: true}).then(function(){
                                         leaderboard.place($dom);
                                         spinner.stop();
-                                        leaders.unsync();
+                                        //leaders.unsync();
                                 });
                         };
                         

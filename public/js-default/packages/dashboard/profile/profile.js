@@ -253,13 +253,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    profileUI.switchLeaderboard = function(event, node){
                         var lb = document.getElementById("leaderboard"), pc = document.getElementById("profile-content");
                         
-                        // init Leaderboard
-                        if (!LB){
-                                LB = new Leaderboard();
-                                LB.init(lb);
-                        }
-                        if (node.value == 1){
-                                LB.refresh();
+                       if (node.value == 1){
+                                if (LB) LB.refresh();
+                                else {
+                                        LB = new Leaderboard();
+                                        LB.init(lb);
+                                }
                                 stats.set("view", "leaderboard");
                         }
                         else stats.set("view", "info");

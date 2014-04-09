@@ -14,7 +14,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	/*
 	 *  Synchronize with view of online users (to display presence status)
 	 */
-	onlinceUsers.setTransport(transport);
+	onlineUsers.setTransport(transport);
 	onlineUsers.sync(Config.get("db"), "users", "_view/online");
 	
 	/*

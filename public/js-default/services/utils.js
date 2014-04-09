@@ -5,10 +5,28 @@
  * Copyright (c) 2014 IDEAFY
  */
 
-define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument"], function(Config, Observable, Promise, LocalStore, Transport, Store){
+define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument", "CouchDBView"], function(Config, Observable, Promise, LocalStore, Transport, Store, CouchDBView){
         var _utils = {},
               user = Config.get("user"),
-              transport = Config.get("transport");
+              transport = Config.get("transport"),
+              onlineUsers = new CouchDBView();
+	
+	/*
+	 *  Synchronize with view of online users (to display presence status)
+	 */
+	onlinceUsers.setTransport(transport);
+	onlineUsers.sync(Config.get("db"), "users", "_view/online");
+	
+	/*
+	 *  A function to return presence status of a given user
+	 */
+	_utils.isOnline = function(userid){
+	       var online = false;
+	       onlineUsers.loop(function(v,i){
+	               if (v.key === userid) online = true;
+	       });
+	       return online;
+	};
 	
 	_utils.formatDate = function(array){
 	       var month = array[1] + 1;

@@ -35,18 +35,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         // set template
                         this.template='<div class="avatar" data-avatar="bind: setStyle, img; bind: setStatus, online"></div>';
                         
-                        // init
-                        // check if user is online
-                        _cdb.sync(Config.get("db"), "users", "_view/online", {key: '"'+_id+'"'})
-                        .then(function(){
-                                (_cdb.get(0)) ? _store.set("online", true) : _store.set("online", false);       
-                        });
-                        // watch for updates
-                        ["added", "deleted", "updated"].forEach(function(change){
-                                _cdb.watch(change, function(){
-                                        (_cdb.get(0)) ? _store.set("online", true) : _store.set("online", false);
-                                });
-                        });
+                        // INIT
+                        // check if user is online -- perform check every 30 seconds
+                        setInterval(function(){
+                                Utils.isOnline(_id) ? _store.set("online", true) : _store.set("online", false);
+                        }, 30000);
                         
                         if ($array.length>1) {
                                 _store.set("img", "img/avatars/deedee6.png");

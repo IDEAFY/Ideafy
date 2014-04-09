@@ -82,7 +82,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                         }
                                         else{
                                                 this.innerHTML = " ";
-                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png');");
+                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png');background-size: contain;");
                                         }
                                 }
                            }),
@@ -94,7 +94,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                         }
                                         else{
                                                 this.innerHTML = " ";
-                                                this.setAttribute("style", "background-image:url('img/flags/"+name+".png');");
+                                                this.setAttribute("style", "background-image:url('img/flags/"+name+".png'); background-size: contain;");
                                         }
                                 } 
                            }),

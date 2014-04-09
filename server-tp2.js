@@ -28,12 +28,14 @@ var http = require("http"),
     apputils = require("./apputils.js"),
     comutils = require("./comutils.js"),
     loginutils = require("./loginutils.js"),
+    taskutils = require("./taskutils.js"),
     cdbadmin = require("./cdbadmin.js");
     
 var srvUtils = new srvutils.SrvUtils(),
       appUtils = new apputils.AppUtils(),
       comUtils = new comutils.ComUtils(),
       loginUtils = new loginutils.LoginUtils(),
+      taskUtils = new taskutils.TaskUtils(),
       CDBAdmin = new cdbadmin.CDBAdmin();
   
 // create reusable transport method (opens pool of SMTP connections)
@@ -95,6 +97,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         var transport = new Transport(olives.handlers),
             app = http.createServer(connect()
                 .use(connect.logger())
+								.use(connect.compress())
 								.use(connect.responseTime())
                 .use(redirect())
                 .use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
@@ -138,10 +141,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         
         // we need lots of sockets
         http.globalAgent.maxSockets = Infinity;
-        
-        setInterval(function(){
-                console.log("number of sockets used : ", Object.keys(io.connected).length, "socket names : ", JSON.stringify(Object.keys(io.connected)));
-        }, 60000);
         
         // register transport
         olives.registerSocketIO(io);
@@ -220,6 +219,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("SendTwocent", appUtils.sendTwocent);
         olives.handlers.set("UpdateUIP", appUtils.updateUIP);
         olives.handlers.set("UpdateSessionScore", appUtils.updateSessionScore);
+        
+        // scheduled tasks
+        taskUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
+        taskUtils.setFunctions(CDBAdmin, comUtils);
+        
+        taskUtils.initTasks(io);
         
         // disconnection events
         io.sockets.on("connection", function(socket){

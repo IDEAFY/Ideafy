@@ -1290,6 +1290,7 @@ function AppUtils(){
         this.getEULA = function(json, onEnd){
                 var cdb = new _CouchDBDocument();
                 _getDocAsAdmin("EULA-PC", cdb).then(function(){
+												console.log(cdb.toJSON());
                         onEnd(cdb.toJSON());
                 });
         };

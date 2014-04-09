@@ -150,7 +150,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 _currentLang = lang;
                                 
                                 // set Spinner
-                                _listSpinner.spin(document.getElementById("idea-list"));
+                                _listSpinner.spin(_widget.dom.querySelector("#idea-list"));
                                 
                                 // set flag in filter button
                                 _btns.loop(function(v,i){
@@ -163,7 +163,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                         var st = _stack.getStack();
                                         st.get(name).setLang(lang)
                                         .then(function(){
-                                                if (st.getCurrentName() === name) _listSpinner.stop();
+                                                _listSpinner.stop();
                                                 if (st.getCurrentName() === name && st.get(name).getModel().getNbItems() === 0){
                                                         _detail.displayEmpty(name);
                                                 }
@@ -244,15 +244,16 @@ define(["OObject", "Amy/Control-plugin" ,
                         
 			// INIT
 			
-			// create db queries based on default language
-                        if (_user.get("settings").contentLang) {
-                                _currentLang = _user.get("settings").contentLang;
-                                if (_currentLang === "all") _currentLang = "*";
-                                _btns.loop(function(v,i){
-                                        if (v.name==="#lang") _btns.update(i, "lang", _currentLang);
-                                });
-                        }
+			// get user preferred language for content
+			(_user.get("settings").contentLang) ? _currentLang = _user.get("settings").contentLang : _currentLang = _user.get("lang").substring(0,2); 
+                        if (_currentLang === "all") _currentLang = "*";
                         
+                        // update lang button
+                        _btns.loop(function(v,i){
+                                        if (v.name==="#lang") _btns.update(i, "lang", _currentLang);
+                        });
+                        
+                        // create db queries based on default language
                         if (_currentLang === "*"){
                                 initldQuery = {key: '"'+_user.get("_id")+'"', descending: true};
                                 initlrQuery = {endkey: '[0,"'+_user.get("_id")+'"]', startkey: '[0,"'+_user.get("_id")+'",{},{}]', descending: true};
@@ -275,8 +276,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			_stack.getStack().add("#list-search", listSearch);
                         _stack.getStack().add("#list-fav", listFav);
                         
-                        listRating.init();
-			listDate.init()
+                        listDate.init(_currentLang)
                         .then(function(){
                               _stack.getStack().show("#list-date");
                               (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
@@ -295,24 +295,27 @@ define(["OObject", "Amy/Control-plugin" ,
                                         }       
                                 });
                                 
-                                // watch for default language filter changes
+                                // watch for default language filter changes in settings
                                 _user.watchValue("settings", function(s){
-                                        if(!s.contentLang)  _currentLang = _user.get("lang").substring(0,2);
-                                        else if (s.contentLang === "all"){
-                                                _currentLang = "*";
+                                        var l = s.contentLang;
+                                        if (l === "all") l ="*";
+                                        if(l && l !== _currentLang){
+                                                 _currentLang =l;
+                                                
+                                                //update buttons
+                                                _btns.loop(function(v,i){
+                                                        if (v.name==="#lang") _btns.update(i, "lang", _currentLang);
+                                                });
+                                                
+                                                // refresh all lists
+                                                ["#list-date", "#list-rating", "#list-fav"].forEach(function(ui){
+                                                        _stack.getStack().get(ui).setLang(_currentLang);        
+                                                });
                                         }
-                                        else{
-                                                _currentLang = s.contentLang;
-                                        }
-                                
-                                        _btns.loop(function(v,i){
-                                                if (v.name==="#lang") _btns.update(i, "lang", _currentLang);
-                                        });
-                                        ["#list-date", "#list-rating", "#list-fav"].forEach(function(ui){
-                                                _stack.getStack().get(ui).setLang(_currentLang);        
-                                        });
                                 });
                         });
+                        listRating.init(_currentLang);
+                        
                         
                        /*
                         * Manage idea related events
@@ -324,7 +327,8 @@ define(["OObject", "Amy/Control-plugin" ,
                                      _ideaList = wid.getModel(),
                                      _ideaNode, _id;
                                   
-                                  // only do it for the current UI   
+                                  // only do it for the current UI 
+                                  /* 
                                  _ideaList.watch("deleted", function(){
                                          if (wid === _stack.getStack().getCurrentScreen()){
                                                 _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");
@@ -332,6 +336,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                                 (_ideaList.getNbItems()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
                                         } 
                                  });
+                                 */
                         });
                         
                        // when a new idea is created by the user 

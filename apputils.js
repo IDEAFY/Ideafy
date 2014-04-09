@@ -823,6 +823,7 @@ function AppUtils(){
                 if (["US", "FR"].indexOf(lang.substr(3))>-1) {
                         Id = "I:WELCOME:"+lang.substr(3);
                 }
+                else Id = "I:WELCOME:US";
                 
                 _getDocAsAdmin(Id, cdb)
                 .then(function(){
@@ -1028,7 +1029,6 @@ function AppUtils(){
                     userRewards = new _CouchDBDocument(),
                     scored = [];
                 
-                console.log(json);
                 _getDocAsAdmin(json.userid+"_rewards", userRewards)
                 .then(function(){
                         if (userRewards.get("scored")) scored = userRewards.get("scored");

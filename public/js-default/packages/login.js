@@ -99,7 +99,6 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _signupForm.getEULA = function(){
-                                console.log("get EULA called");
                                 _transport.request("GetEULA", {}, function(result){
                                         var _eula = JSON.parse(result),
                                               lang = _labels.get("language"), 
@@ -124,13 +123,14 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _signupForm.showEULA = function(event, node){
                                 if (!ConfirmUI){
                                         ConfirmUI = new Confirm(_signupForm.dom, _EULA, _signupForm.completeSignup, "EULA");
-                                        ConfirmUI.show();
-                                }       
+                                }
+                               ConfirmUI.show();   
                         };
                         
                         _signupForm.completeSignup = function(accept){
                                 var fn = _store.get("firstname"),
                                       ln = _store.get("lastname"),
+                                      password = _store.get("password"),
                                       userid = _store.get("email").toLowerCase(),
                                       promise = new Promise(),
                                       user = new CouchDBDocument();

@@ -5363,7 +5363,6 @@ li.color-item{
 
 .messages input, .contacts input{
     margin-top: 10px;
-    margin-left: -70px;
 }
 
 .msglist, .contactlist{
@@ -5372,15 +5371,15 @@ li.color-item{
 }
 
 .msg, .contact{
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
     text-align: left;
-    min-height: 50px;
+    min-height: 60px;
+    height: 60px;
     overflow: hidden; 
 }
 
 .msg .actionbar, .contact .actionbar{
-    margin-left: -10px;
-    position: absolute;
+    position: relative;
     border: 1px solid rgba(0,0,0,0.8);
 }
 
@@ -5397,7 +5396,7 @@ li.color-item{
     font-style: italic;
     font-size: 14px;
     color: #4D4D4D;
-    min-height: 30px;
+    height: 30px;
 }
 
 .msg-author, .msg-subject, .contact-name, .contact-intro{
@@ -6703,7 +6702,7 @@ li.my2q{
 
 .userachievements{
     background: #F2F2F2;
-    padding: 20px;
+    padding: 20px 10px;
     font-family: Pacifico;
     font-size: 14px;
     display: table-cell;
@@ -6713,6 +6712,8 @@ li.my2q{
 .userachievements .grade{
     color: #657B99;
     font-size:16px;
+    width: 100%;
+    text-align: center;
 }
 
 .userachievements .badges, #contactbadges .badges{

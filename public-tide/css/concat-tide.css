@@ -20,7 +20,7 @@ html, body, ul {
 html, body {
   font-family:arial;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  background:rgba(0,0,0,0.35) url('../img/total/TIDE-logo-.jpg') no-repeat center center;
+  background:rgba(0,0,0,0.35) url('../img/total/TIDE-LOGIN-BACKGROUND-.jpg') no-repeat center center;
   background-size: cover;
   overflow: auto;
   width: 100%;

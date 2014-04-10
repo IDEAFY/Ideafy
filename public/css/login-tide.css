@@ -8,6 +8,11 @@
     overflow: auto;
 }
 
+#login textarea::-webkit-input-placeholder, #login input::-webkit-input-placeholder{
+    font-size: 14px;
+    color: #4d9ccf;
+}
+
 #login-stack	{
 	margin:30px auto 0 auto;
 	width:410px;
@@ -93,6 +98,7 @@
 }
 
 .signup-button {
+    display: block;
 	width: 270px;
     line-height: 30px;
     font-size: 12px;

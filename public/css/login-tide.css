@@ -99,9 +99,10 @@
     color: #E6E6E6;
     -webkit-box-shadow: 0 0 1px 1px #e5e5e5;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4d9ccf), color-stop(100%, #004a94));
+    margin: 0 auto;
     }
 
-#signup-button.pressed{    
+.signup-button.pressed{    
     color: black;
     border: 1px inset #CCCCCC;
     text-shadow: 2px 2px 2px white;    

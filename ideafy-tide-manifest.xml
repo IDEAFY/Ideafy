@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
-<service_bundle type="manifest" name="ideafy">
-  <service name="site/ideafy" type="service" version="1">
+<service_bundle type="manifest" name="ideafy-tide">
+  <service name="site/ideafy-tide" type="service" version="1">
 
     <create_default_instance enabled="true"/>
 

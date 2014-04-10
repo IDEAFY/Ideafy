@@ -41,17 +41,16 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plug
                    aboutUI.changeDisplay = function changeDisplay(event, node){
                         var id = node.getAttribute("data-aboutmenu_id");
                         
-                        aboutUI.show(aboutMenu.get(id).name);       
+                        aboutUI.show(aboutMenu.get(id).name, id);       
                    };
                    
                    
-                   aboutUI.show = function show(name){
-                           var id;
-                        aboutMenu.loop(function(v,i){
-                                aboutMenu.update(i, "currentUI", false);
-                                if (v.name === name) id = i;       
+                   aboutUI.show = function show(name, id){
+                         aboutMenu.loop(function(v,i){
+                                aboutMenu.update(i, "currentUI", false);;       
                         });
                         aboutMenu.update(id, "currentUI", true);
+                        if (name === "#support") aboutStack.getStack().get(name).refresh();
                         aboutStack.getStack().show(aboutMenu.get(id).name);        
                    };
                    

@@ -50,6 +50,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 }
                                         });
                                         
+                                        _cdb.unsync();
+                                        
                                         if (firstStart){
                                                 _tip.reset(_allTips.get(0));
                                         }

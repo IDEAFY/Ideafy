@@ -30,7 +30,8 @@ define(["OObject", "service/config", "Bind.plugin", "CouchDBDocument", "Store"],
                                        else {
                                                model.set("title", cdb.get("translations")[lang].title);
                                                model.set("body", cdb.get("translations")[lang].body);
-                                        }      
+                                        }
+                                        cdb.unsync();   
                                 });
                         };
                 

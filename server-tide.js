@@ -109,7 +109,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 path : "/"
                         }
                 }))
-                .use(connect.static(__dirname + "/public"))).listen(1665),
+                .use(connect.static(__dirname + "/public-tide"))).listen(1665),
                 io = socketIO.listen(app, {
                         log : true
                 });

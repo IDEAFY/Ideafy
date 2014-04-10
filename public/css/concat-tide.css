@@ -158,11 +158,11 @@ input::-webkit-file-upload-button{
 
 /* utils */
 .blue-light {
-  background:#9ac9cd;
+  background:#db0536;
 }
 
 .blue-dark {
-  background:#657B99;
+  background:#004a94;
 }
 
 .header, .list h3, .detail-header h2, #contactdetails h2, #deckview .deckheader h2{
@@ -203,7 +203,7 @@ input::-webkit-file-upload-button{
     padding: 20px 20px 20px 80px;
     background: 
     white;
-    border: 1px solid #657B99;
+    border: 1px solid #004a94;
     border-radius: 5px;
     line-height: 25px;
     background-image: url('../img/avatars/doctordeedee.png');
@@ -301,7 +301,7 @@ input::-webkit-file-upload-button{
 }
 
 .list-item.selected {
-  /* background-image:-webkit-linear-gradient(top, #88A5CC 0%, #657B99 80%);*/
+  /* background-image:-webkit-linear-gradient(top, #88A5CC 0%, #004a94 80%);*/
   background-image:-webkit-linear-gradient(top, #f2f2f2 0%, #d4d4d4 80%); 
   -webkit-box-shadow:inset 0 0 5px 1px rgba(0,0,0,0.3);
 }
@@ -646,7 +646,7 @@ ul.notify-list{
 }
 
 .notify-name{
-    color: #9ac9cd;
+    color: #db0536;
 }
 
 /* Dock submenus */
@@ -865,7 +865,7 @@ ul.notify-list{
 }
 
 #newidea-popup .visibility-input div{
-    background: #657B99;
+    background: #004a94;
     width: 180px;
     height:30px;
     border-radius: 15px;
@@ -905,7 +905,7 @@ ul.notify-list{
 #newdeck-popup .importbutton{
     width: 150px;
     height: 30px;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     background: #f5f5f5;
     border-radius: 5px;
     line-height: 30px;
@@ -964,9 +964,9 @@ ul.notify-list{
 }
 
 .help-screen, .tip-screen{
-    color: #657B99;
+    color: #004a94;
     font-family: Helvetica;
-    border: 1px solid #657B99;
+    border: 1px solid #004a94;
     padding: 30px;
     border-radius: 10px;
     max-height: 340px;
@@ -1015,7 +1015,7 @@ ul.notify-list{
 }
 
 .confirm, #mubwait .sessionmsg, #musession .sessionmsg{
-    -webkit-box-shadow: 0px 0px 5px 2px #657B99;
+    -webkit-box-shadow: 0px 0px 5px 2px #004a94;
     z-index: 2000;
     background: black;
     margin-top: 5px;
@@ -1060,9 +1060,9 @@ ul.notify-list{
 }
 
 .confirm.importcard-confirm p{
-    color: #657b99;
+    color: #004a94;
     height: 180px;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     padding: 10px;
     border-radius: 5px;
     overflow-y: scroll;
@@ -1140,7 +1140,7 @@ ul.notify-list{
 
 #newidea-popup .option.pressed, .confirm .option.pressed, #new2q-popup .option.pressed, #newdeck-popup .option.pressed, .confirm.importcard-confirm .option.pressed{
     background: #94A3B8;
-    border: 1px solid #657B99;
+    border: 1px solid #004a94;
 }
 
 #newidea-popup .left, #new2q-popup .left, #newdeck-popup .left{
@@ -1181,7 +1181,7 @@ ul.notify-list{
     width: 144px;
     padding: 5px;
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 5px #657b99;
+    -webkit-box-shadow: 0px 0px 5px #004a94;
     margin-left: 413px;
     height: auto;
     margin-top: 0px;
@@ -1216,7 +1216,7 @@ ul.notify-list{
     margin-top: -28px;
     width: 440px;
     height: 30px;
-    /*background:-webkit-linear-gradient(left,#657b99 0,rgba(101,123,153,0.7) 25%,rgba(101,123,153,0.7)75%,#657b99 100%);*/
+    /*background:-webkit-linear-gradient(left,#004a94 0,rgba(101,123,153,0.7) 25%,rgba(101,123,153,0.7)75%,#004a94 100%);*/
     background: white;
     line-height: 30px;
     position: absolute;
@@ -1271,7 +1271,7 @@ ul.notify-list{
 }
 
 .idealang li.selected{
-    -webkit-box-shadow: inset 0px 0px 5px #657b99;
+    -webkit-box-shadow: inset 0px 0px 5px #004a94;
     border-radius: 0px;
 }
 
@@ -1342,7 +1342,7 @@ ul.notify-list{
     width: 90px;
     height: 40px;
     border-radius: 20px;
-    background: #657B99;
+    background: #004a94;
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
     background-image: url('../img/brainstorm/privateforslider.png');
     background-repeat: no-repeat;
@@ -1392,7 +1392,7 @@ ul.notify-list{
 }
 
 .mosaic li.list-item:nth-child(7n){
-    border-left: 10px solid #657B99;
+    border-left: 10px solid #004a94;
 }
 
 .mosaic li.list-item:nth-child(7n+1){
@@ -1400,7 +1400,7 @@ ul.notify-list{
 }
 
 .mosaic li.list-item:nth-child(7n+2){
-    border-left: 10px solid #9AC9CD;   
+    border-left: 10px solid #db0536;   
 }
 
 .mosaic li.list-item:nth-child(7n+3){
@@ -1705,7 +1705,7 @@ ul.notify-list{
 .detail-body .idealegend{
     font-family: Pacifico;
     font-size: 12px;
-    color: #657B99;
+    color: #004a94;
     margin-top: 15px;    
 }
 
@@ -1760,7 +1760,7 @@ ul.notify-list{
     font-weight: bold;
     color: white;
     margin-left: 5px;
-    background: #657B99; 
+    background: #004a94; 
   }
   
 .pressed{
@@ -1776,7 +1776,7 @@ ul.notify-list{
     background: white;
     padding: 3px;
     text-align: center;
-    border: 1px dashed #657b99;
+    border: 1px dashed #004a94;
     border-radius: 5px;
 }
  
@@ -2088,7 +2088,7 @@ textarea.solution {
 
 .idea-share .selectall, #newmub .selectall, .deck-share .selectall{
     float: right;
-    background: #657B99;
+    background: #004a94;
     color: white;
     border-radius: 5px;
     height : 25px;
@@ -2104,7 +2104,7 @@ textarea.solution {
 
 .idea-share .form legend, .deck-share .form legend{
     width: 100%;
-    color: #657b99;
+    color: #004a94;
     font-size: 16px;
     padding-bottom: 3px;
     margin-top: 10px;
@@ -2294,7 +2294,7 @@ textarea.solution {
 
 .twocentAuthor{
     margin-left: 10px;
-    color: #657B99;
+    color: #004a94;
     font-weight: bold;
 }
 
@@ -2363,7 +2363,7 @@ textarea.solution {
     line-height: 14px;
     font-family: Pacifico;
     font-size: 14px;
-    color: #657B99;
+    color: #004a94;
     margin-left: 10px;
     border-bottom: 1px solid #CCCCCC;
     padding-bottom:4px;
@@ -2748,7 +2748,7 @@ textarea.solution {
 
 #decklist .item-footer .author{
     display: inline-block;
-    color: #657b99;
+    color: #004a94;
     font-weight: bold;
     height: 30px;
     min-width: 30px;
@@ -3152,7 +3152,7 @@ textarea.solution {
 
 #card_creation .importcard .importlist ul{
     margin-top: 3x;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     height: 480px;
     width: 218px;
     overflow-y: scroll;
@@ -3176,7 +3176,7 @@ textarea.solution {
 
 #card_creation .importcard .importlist li.selected{
     font-weight: bold;
-    background-color: #9ac9cd;
+    background-color: #db0536;
 }
 
 #card_creation .importcard button.addremove{
@@ -3241,7 +3241,7 @@ textarea.solution {
     border-radius: 5px;
     width: 110px;
     color: white;
-    background: #657b99;
+    background: #004a94;
 }
 
 #card_creation .editcard .takepic{
@@ -3257,10 +3257,10 @@ textarea.solution {
 
 #card_creation .contentTitle{
     font-size: 18px;
-    border-bottom: 1px solid #657b99;
+    border-bottom: 1px solid #004a94;
     padding-bottom: 3px;
     display: block;
-    color: #657b99;
+    color: #004a94;
 }
 
 #card_creation .enterdyknow{
@@ -3300,7 +3300,7 @@ textarea.solution {
     width: 295px;
     margin-left: 0px;
     margin-top: 20px;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     border-radius: 5px;
     padding: 5px;
 }
@@ -3405,7 +3405,7 @@ textarea.solution {
 #card_creation .editchar .cd-contentarea legend{
     width: 100%;
     font-family: Pacifico;
-    color: #657b99;
+    color: #004a94;
     border-bottom: 1px solid #cccccc;
     margin-top: 5px;
 }
@@ -3483,7 +3483,7 @@ textarea.solution {
     width: auto;
     min-width: 65px;
     font-size: 14px;
-    background: #9ac9cd;
+    background: #db0536;
     background-image: url('../img/brainstorm/greybell.png');
     background-repeat: no-repeat;
     background-position: 30px 10px;
@@ -3652,7 +3652,7 @@ textarea.solution {
     top: 0px;
     margin-left: 15px;
     z-index: 1000;
-    background: #9ac9cd;
+    background: #db0536;
     background-position: left center;
     background-repeat: no-repeat;
     background-size: 20px auto ;
@@ -3731,7 +3731,7 @@ textarea.solution {
 
 .whiteboard .defaultcontent{
     display: inline-block;
-    color: #657B99;
+    color: #004a94;
     font-size: 14px;
     font-family: Helvetica;
     width: 567px;
@@ -4079,7 +4079,7 @@ textarea.solution {
     width: 190px;
     margin-top: 20px;
     disaply: block;
-    color: #657B99;
+    color: #004a94;
     font-family: Pacifico;
     font-size: 14px;
     border-bottom: 2px solid #AEB9BF;
@@ -4467,7 +4467,7 @@ li.color-item{
 }
 
 #muidea .sessionvote legend{
-    color: #657b99;
+    color: #004a94;
     font-weight: bold;
 }
 
@@ -4534,7 +4534,7 @@ li.color-item{
 
 #quickstart .quickstart-form label{
     font-family: Pacifico;
-    color: #657B99;
+    color: #004a94;
     font-size: 14px;
     letter-spacing: 1px;
 }
@@ -5041,7 +5041,7 @@ li.color-item{
 }
 
 .enterTitle::-webkit-input-placeholder, .enterDesc::-webkit-input-placeholder, .enterSol::-webkit-input-placeholder{
-    color: #657B99;
+    color: #004a94;
 }
 
 .enterTitle{
@@ -5132,7 +5132,7 @@ li.color-item{
     background: #F2F2F2;
     border: 1px dashed #CCCCCC;
     border-radius: 5px;
-    color: #657B99;
+    color: #004a94;
     font-family: Pacifico;    
 }
 
@@ -5440,7 +5440,7 @@ li.color-item{
     width: 400px;
     height: 150px;
     font-size: 18px;
-    color: #657b99;
+    color: #004a94;
     line-height: 25px;
     font-family: Helvetica;
     padding-top: 25px;
@@ -5764,7 +5764,7 @@ li.color-item{
     font-size: 12px;
     font-style: italic;
     padding: 5px;
-    border: 1px dashed #657B99;
+    border: 1px dashed #004a94;
 }
 
 .signature{
@@ -5912,7 +5912,7 @@ li.color-item{
 }
 
 .addcontactform{
-    color: #657b99;
+    color: #004a94;
     margin-left: 100px;
 }
 
@@ -5920,7 +5920,7 @@ li.color-item{
     width:100%;
     padding-bottom: 5px;
     font-family: Pacifico;
-    color: #657b99;
+    color: #004a94;
     border-bottom: 1px solid #cccccc;
     margin-top: 15px;
 }
@@ -5963,7 +5963,7 @@ li.color-item{
 
 #addcontact .contactinvite{
     padding: 10px;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     border-radius: 5px;
     background: #fafafa;
     line-height: 150%;    
@@ -6070,7 +6070,7 @@ li.color-item{
     padding: 10px;
     font-size: 16px;
     font-family: Helvetica;
-    border : 1px solid #657B99;
+    border : 1px solid #004a94;
     border-radius: 5px;
     background: white;
 }
@@ -6208,8 +6208,8 @@ li.color-item{
 
 #mtc-list legend{
     font-family: Pacifico;
-    color: #657B99;    
-    border-bottom: 1px solid #657B99;
+    color: #004a94;    
+    border-bottom: 1px solid #004a94;
     margin-left: 20px;
     margin-bottom: 10px;
     width: 261px;
@@ -6425,7 +6425,7 @@ li.color-item{
 }
 
 .userdetails .cd-contentarea p{
-    border-top: 1px solid #657b99;
+    border-top: 1px solid #004a94;
     font-size: 12px;
 }
 
@@ -6435,7 +6435,7 @@ li.color-item{
 }
 
 .userdetails .cd-contentarea p.fb{
-    border-top: 1px solid #657b99;
+    border-top: 1px solid #004a94;
     background: url('../img/profile/fb.png') no-repeat;
     background-size: contain;    
 }
@@ -6456,7 +6456,7 @@ li.color-item{
 }
 
 .userdetails .contentTitle{
-    color: #657B99;
+    color: #004a94;
 }
 
 .userdetails .cd-introlbl{
@@ -6464,7 +6464,7 @@ li.color-item{
 }
 
 .userdetails legend, .edituserdetails .addtlinfo legend{
-    border-bottom: 1px solid #657b99;
+    border-bottom: 1px solid #004a94;
 }
 
 
@@ -6520,7 +6520,7 @@ li.color-item{
 
 .mystats legend, .recentactivity legend, .edituserdetails .addtlinfo legend, #contactdetails legend{
     font-family: Pacifico;
-    color: #657B99;    
+    color: #004a94;    
 }
 
 li.innerbar{
@@ -6535,7 +6535,7 @@ li.innerbar{
 }
 
 .mystats th, .mystats td, .contactstats th, .contactstats td{
-    border-bottom: 2px solid #657b99;
+    border-bottom: 2px solid #004a94;
 }
 
 .mystats th, .contactstats th{
@@ -6553,21 +6553,21 @@ li.innerbar{
 }
 
 .myids th{
-    color: #657B99;
+    color: #004a94;
 }
 
 li.myids{
-    background: #657B99;
+    background: #004a94;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
 }
 
 .myss th{
-    color: #9ac9cd;
+    color: #db0536;
 }
 
 li.myss{
-    background: #9ac9cd;
+    background: #db0536;
 }
 
 .myctcts th{
@@ -6696,7 +6696,7 @@ li.my2q{
     font-size: 14px;
     padding-left: 65px;
     font-family: pacifico;
-    color: #657B99;
+    color: #004a94;
     line-height: 70px;
 }
 
@@ -6710,7 +6710,7 @@ li.my2q{
 }
 
 .userachievements .grade{
-    color: #657B99;
+    color: #004a94;
     font-size:16px;
     width: 100%;
     text-align: center;
@@ -6763,7 +6763,7 @@ li.my2q{
 }
 
 #leaderboard li.userleader{
-    background: #9AC9CD;
+    background: #db0536;
 }
 
 #leaderboard li{
@@ -6995,7 +6995,7 @@ li.my2q{
 #changeavatar .uploadprogress{
     float: none;
     height: 15px;
-    background: #657B99;
+    background: #004a94;
     -webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.3);
     margin-right: 20px;
     border-radius: 3px;
@@ -7051,7 +7051,7 @@ li.my2q{
 #dashboard-about .aboutcontent{
     padding: 10px 20px;
     margin: 20px;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     border-radius: 5px;
     width: 851px;
     height: 550px;
@@ -7184,7 +7184,7 @@ li.my2q{
 #userguidetoc li{
     margin-left: 20px;
     text-decoration: underline;
-    color: #657B99;
+    color: #004a94;
 }
 
 .aboutcontent .backtotop{
@@ -7200,7 +7200,7 @@ li.my2q{
 #muinitsliderlbl{
     width: 240px;
     height: 120px;
-    background: #657B99;
+    background: #004a94;
     color: white;
     font-family: Helvetica;
     font-size: 18px;
@@ -7259,7 +7259,7 @@ li.my2q{
 
 #newmub-content, #mulist-content{
     padding: 0px 20px 20px 20px;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     border-radius: 5px;
     width: 851px;
     height: 472px;
@@ -7280,7 +7280,7 @@ li.my2q{
 
 #newmub form > label, #mulist legend{
     font-family: Pacifico;
-    color: #657B99;
+    color: #004a94;
     font-size: 20px;
     letter-spacing: 1px;
     display: block;
@@ -7427,7 +7427,7 @@ li.my2q{
     left: 50%;
     margin-left:-200px;
     top: 240px;
-    background: #9ac9cd;
+    background: #db0536;
     text-align: center;
 }
 
@@ -7491,7 +7491,7 @@ li.my2q{
 
 #mubwait .mubdesc label, #mubwait .mubroster label, #mupreview .mubdesc label, #mupreview .mubroster label, #mustart .mubdesc label, #mustart .mubroster label{
     font-family: Helvetica;
-    color: #657B99;
+    color: #004a94;
     font-size: 14px;
     padding-top: 5px;
 }
@@ -7623,7 +7623,7 @@ li.my2q{
     width: 144px;
     padding: 5px;
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 5px #657b99;
+    -webkit-box-shadow: 0px 0px 5px #004a94;
     margin-top: 40px;
     margin-left: 60px;
 }
@@ -7646,7 +7646,7 @@ li.my2q{
     border: 1px solid #cccccc;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    background: #657B99;
+    background: #004a94;
 }
 
 .noresult{
@@ -7660,7 +7660,7 @@ li.my2q{
 }
 
 #mulistall li.pressed, #musearch li.pressed, #mulistall li:nth-child(even).pressed, #musearch li:nth-child(even).pressed{
-    background: #9AC9CD;
+    background: #db0536;
     color: white;
 }
 
@@ -7831,8 +7831,8 @@ li.my2q{
 }
 
 #muwrapup .togglechat.flashing{
-    background: #657b99;
-    -webkit-box-shadow: 0px 0px 2px #657b99;
+    background: #004a94;
+    -webkit-box-shadow: 0px 0px 2px #004a94;
     background-image: url('../img/brainstorm/doctordeedee87x85.png');
     background-size: contain;
     background-repeat: no-repeat;
@@ -7840,7 +7840,7 @@ li.my2q{
 
 .mubchat .chatread{
     background: white;
-    border: 1px dashed #657B99;
+    border: 1px dashed #004a94;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     padding: 10px;
@@ -7976,7 +7976,7 @@ ol.ol3 {list-style-type: decimal}
 }
 
 .confirm.EULA .option{
-    border-color:#657b99;
+    border-color:#004a94;
 }
 
 .EULA .confirm-question, .confirm.EULA p{
@@ -8001,13 +8001,13 @@ font-size: 14px;
 }
 
 #newidea-popup .a-legend{
-    color: #657b99;
+    color: #004a94;
 }
 
 #newidea-popup .add-attachments, .add-attachments{
     height: 60px;
     border-radius: 5px;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     padding: 10px 5px;
     overflow: auto;
 }
@@ -8090,7 +8090,7 @@ font-size: 14px;
 }
 
 .acolor1{
-    color: #9ac9cd; 
+    color: #db0536; 
     font-weight: bold;    
 }
 
@@ -8110,7 +8110,7 @@ font-size: 14px;
 }
 
 .acolor5{
-    color: #657b99; 
+    color: #004a94; 
     font-weight: bold;
 }
 
@@ -8156,7 +8156,7 @@ font-size: 14px;
     margin: 20px;
     font-size: 14px;
     line-height: 16px;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     border-radius: 5px;
     min-height: 50px;
     max-height: 100px;
@@ -8270,12 +8270,12 @@ textarea.a-desc::-webkit-input-placeholder{
 #newidea-popup .uploadbar::-webkit-progress-bar, .add-attachments .uploadbar::-webkit-progress-bar{
     background-color: white;
     padding: 1px;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     border-radius: 3px;
 }
 
 #newidea-popup .uploadbar::-webkit-progress-value, .add-attachments .uploadbar::-webkit-progress-value{
-    background-color: #657b99;
+    background-color: #004a94;
     border-radius: 3px;
 }
 
@@ -8285,7 +8285,7 @@ textarea.a-desc::-webkit-input-placeholder{
     line-height: 25px;
     border-radius: 5px;
     background: white;
-    -webkit-box-shadow: inset 0 -1px 7px #657b99;
+    -webkit-box-shadow: inset 0 -1px 7px #004a94;
     float: left;
     margin-top: 2px;
     text-align: center;
@@ -8339,7 +8339,7 @@ textarea.a-desc::-webkit-input-placeholder{
 }
 
 #ideas-detail .a-list, #public-detail .a-list{
-    border-top: 1px solid #657b99;
+    border-top: 1px solid #004a94;
     padding-top: 2px;
     overflow-y: auto;
 }
@@ -8436,7 +8436,7 @@ textarea.a-desc::-webkit-input-placeholder{
     margin-top: -330px;
     margin-left: -330px;
     border-radius: 5px;
-    -webkit-box-shadow: inset 0px 0px 15px #657b99;
+    -webkit-box-shadow: inset 0px 0px 15px #004a94;
 }
 
 .attachment-screen .close-popup{
@@ -8500,7 +8500,7 @@ textarea.a-desc::-webkit-input-placeholder{
 .attachment-screen .attach-header{
     width: 100%;
     height: 36px;
-    background: #657b99;
+    background: #004a94;
     color: white;
     font-family: pacifico;
     font-size: 16px;
@@ -8742,7 +8742,7 @@ textarea.a-desc::-webkit-input-placeholder{
     top: 20%;
     left: 0;
     width: 550px;
-    background: #657b99;
+    background: #004a94;
     color: black;
     text-align: center;
     padding: 40px;
@@ -8810,12 +8810,12 @@ textarea.a-desc::-webkit-input-placeholder{
 .attachment-screen.edit-a  .uploadbar::-webkit-progress-bar{
     background-color: white;
     padding: 1px;
-    border: 1px solid #657b99;
+    border: 1px solid #004a94;
     border-radius: 3px;
 }
 
 .attachment-screen.edit-a  .uploadbar::-webkit-progress-value{
-    background-color: #657b99;
+    background-color: #004a94;
     border-radius: 3px;
 }
 
@@ -8828,7 +8828,7 @@ textarea.a-desc::-webkit-input-placeholder{
 .idea-edit .idealegend, .attachments .a-legend{
     font-family: Pacifico;
     font-size: 12px;
-    color: #657B99;
+    color: #004a94;
     margin-top: 15px;  
 }
 

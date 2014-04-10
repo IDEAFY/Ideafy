@@ -18,11 +18,11 @@
 }
 
 .login-fields{
-	width:410px;
-	border-radius: 5px;
-	background: white;
-	-webkit-box-shadow: 0 0 10px rgba(37, 64, 102, 0.2), inset 0 0 6px 1px rgba(0, 0, 0, 0.4);
-    margin-bottom:30px;
+    width: 410px;
+    border-radius: 10px;
+    background: white;
+    -webkit-box-shadow: inset 0 0 3px 2px #004a94;
+    margin-bottom: 30px;
 }
 
 #login-form input {
@@ -40,13 +40,12 @@
 	margin:0;
 	border:0;
 	padding-left:30px;
-
-	font-size:14px;
-	color:#AEB9BF;
+    font-size:14px;
+	color:#004a94;
 }
 
 .login-fields input:nth-child(n+2) {
-	border-top:1px solid #E6E6E6;
+	border-top:1px solid #004a94;
 }
 
 .login-button, #signup-button {
@@ -58,7 +57,7 @@
 	margin-bottom:20px;
     font-size: 14px;
     line-height: 40px;
-    color: #4D4D4D;
+    color: #004a94;
     width: 400px;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #cccccc), color-stop(100%, #e6e6e6));
     -webkit-box-shadow: 0 0 3px rgba(37, 64, 102, 0.5);
@@ -120,7 +119,7 @@
 .btn-ready{
     opacity: 1;
     color: black;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #e5e5e5), color-stop(100%, #e6e6e6))
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #4d9ccf), color-stop(100%, #4d9ccf));
 }
 
 .loginvisible{

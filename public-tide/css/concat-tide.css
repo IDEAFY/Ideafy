@@ -537,12 +537,12 @@ input::-webkit-file-upload-button{
 .deedee {
   width:99px;
   height:100px;
-  background:url('../img/littleGreyDeeDee.png') no-repeat center center;
+  background:url('../img/total/TIDE-BALL-ONLY.png') no-repeat center center;
   background-size:40%;
 }
 
 .deedee.orange{
-    background:url('../img/littleOrangeDeeDee.png') no-repeat center center;
+    background:none;
     background-size:40%;
 }
 

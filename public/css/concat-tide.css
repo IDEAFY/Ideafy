@@ -18,9 +18,10 @@ html, body, ul {
 }
 
 html, body {
-  font-family:Helvetica;
+  font-family:arial;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  background:rgba(0,0,0,0.35) url('../img/bg.png') repeat;
+  background:rgba(0,0,0,0.35) url('../img/total/TIDE-logo-.jpg') no-repeat center center;
+  background-size: cover;
   overflow: auto;
   width: 100%;
   height: 100%;
@@ -44,7 +45,7 @@ textarea{
 }
 
 textarea, input{
-    font-family: Helvetica;
+    font-family: arial;
 }
 
 .overflow {
@@ -73,6 +74,7 @@ input::-webkit-file-upload-button{
     overflow-x: hidden;
     /*top: 50%;*/
     position: relative;
+    -webkit-box-shadow: 0px 0px 3px #004a94;
     /*margin-top: -374px;
     margin-left: -512px;*/
 }
@@ -173,6 +175,7 @@ input::-webkit-file-upload-button{
 /* may be improve the .idea-edit .form input.input */
 .header, .header .option, .idea-edit .form input.input {
   height:36px;
+  line-height: 36px;
 }
 
 .header {
@@ -378,7 +381,7 @@ input::-webkit-file-upload-button{
 
 .item-footer .rating {
     display:inline-block;
-    font-family:Helvetica;
+    font-family:arial;
     font-size:12px;
     color:#B3B3B3;
   }
@@ -555,7 +558,7 @@ input::-webkit-file-upload-button{
     display: inline-block;
     line-height: 25px;
     text-align: center;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 12px;
     color: white;
 }
@@ -965,7 +968,7 @@ ul.notify-list{
 
 .help-screen, .tip-screen{
     color: #004a94;
-    font-family: Helvetica;
+    font-family: arial;
     border: 1px solid #004a94;
     padding: 30px;
     border-radius: 10px;
@@ -1066,7 +1069,7 @@ ul.notify-list{
     padding: 10px;
     border-radius: 5px;
     overflow-y: scroll;
-    font-family: helvetica;
+    font-family: arial;
     text-align: justify;
 }
 
@@ -1130,7 +1133,7 @@ ul.notify-list{
 
 .confirm.importcard-confirm .option{
     margin-top: 10px;
-    font-family: Helvetica;
+    font-family: arial;
 }
 
 .confirm .option.pressed{
@@ -1693,7 +1696,7 @@ ul.notify-list{
     display: inline;
     margin-left: 2px;
     font-size: 14px;
-    font-family:Helvetica;
+    font-family:arial;
     color: black;
 }
 
@@ -1742,7 +1745,7 @@ ul.notify-list{
   
 #public-detail .rateIdea .rating, #ideas-detail .rateIdea .rating{
     float: left;
-    font-family: Helvetica;
+    font-family: arial;
     margin-right: 5px;
     font-size: 13px;
     line-height: 20px; 
@@ -1755,7 +1758,7 @@ ul.notify-list{
     text-align: center;
     border-radius: 5px;
     line-height: 20px;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 12px;
     font-weight: bold;
     color: white;
@@ -1794,7 +1797,7 @@ ul.notify-list{
     line-height: 20px;
     font-size: 10px;
     font-style:italic;
-    font-family: Helvetica;
+    font-family: arial;
     float: left; 
 }
 
@@ -1930,7 +1933,7 @@ textarea.solution {
 }
 
 .edit-visibility span, .current-visibility span{
-    font-family: Helvetica;
+    font-family: arial;
 }
 /* may be create a class button ...they are label to stay in p*/
 
@@ -1949,7 +1952,7 @@ textarea.solution {
 .submit .editerror{
     width: 50%;
     font-size: 10px;
-    font-family: Helvetica;
+    font-family: arial;
     color: #4D4D4D;
 }
 
@@ -2156,7 +2159,7 @@ textarea.solution {
 #public-twocents, #library-twocents, #connect-twocents{
     width: 628px;
     overflow-y: scroll;
-    font-family: Helvetica;
+    font-family: arial;
 }
 
 .twocentList li:nth-child(even){
@@ -2186,7 +2189,7 @@ textarea.solution {
     border-radius: 0;
     height: 150px;
     overflow-y: scroll;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 12px;
     color: #808080;
     /*background-image: -webkit-gradient(linear, center top, center bottom, from(white 74%), to(#e5e5e5))*/
@@ -2225,19 +2228,19 @@ textarea.solution {
 .writeTwocent .twocentContext .userlbl, .writeTwocent .twocentContext .creadatelbl, .writeTwocent .twocentContext .moddatelbl{
     margin-left: 20px;
     font-size: 12px;
-    font-family: Helvetica;
+    font-family: arial;
 }
 
 .writeTwocent .twocentContext .userlbl{
     color: #F27B3D;
-    font-family: Helvetica;
+    font-family: arial;
 }
 
 .writeTwocent .twocentPublish, .writeTwocent .twocentCancel, .sendmail, .cancelmail, .edituserdetails label.updateprofile, .edituserdetails label.cancelprofile, .aboutcontent .cancel, .aboutcontent .send{
     height: 26px;
     width: 92px;
     border-radius: 5px;
-    font-family: Helvetica;
+    font-family: arial;
     font-weight: bold;
     font-size: 12px;
     line-height: 26px;
@@ -2289,7 +2292,7 @@ textarea.solution {
 .twocentAuthor, .twocent .commentLabel{
     float: left;
     font-size: 14px;
-    font-family:Helvetica
+    font-family:arial
 }
 
 .twocentAuthor{
@@ -2862,7 +2865,7 @@ textarea.solution {
     line-height: 20px;
     color: #404040;
     text-align: center;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 12px;
 }
 
@@ -2933,7 +2936,7 @@ textarea.solution {
 #deckview .deckdetails{
     background: none;
     padding: 0;
-    font-family: Helvetica;
+    font-family: arial;
     -webkit-box-shadow: none;
 }
 
@@ -3145,7 +3148,7 @@ textarea.solution {
 
 #card_creation .importcard .importlist legend{
     margin: 0 auto;
-    font-family: helvetica;
+    font-family: arial;
     font-size: 12px;
     color: #a0a0a0;
 }
@@ -3582,7 +3585,7 @@ textarea.solution {
     padding-right: 20px;
     float: left;
     color: #B3B3B3;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 12px;
     height: 34px;
     line-height: 34px;
@@ -3733,7 +3736,7 @@ textarea.solution {
     display: inline-block;
     color: #004a94;
     font-size: 14px;
-    font-family: Helvetica;
+    font-family: arial;
     width: 567px;
     margin-left: 75px;
     margin-top: 100px;
@@ -3860,7 +3863,7 @@ textarea.solution {
 }
 
 #importbuttons label{
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 14px;
     color: #292929;    
 }
@@ -3888,7 +3891,7 @@ textarea.solution {
     padding-left: 5px;
     padding-right: 5px;
     background: white;
-    font-family: Helvetica;
+    font-family: arial;
     color: #292929;
     text-align: center;
     border: 1px solid #E6E6E6;
@@ -3919,7 +3922,7 @@ textarea.solution {
 .import .uploadprogress{
     float: right;
     margin-right: 5px;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: small;
     color: #292929;
 }
@@ -4143,7 +4146,7 @@ textarea.solution {
         border-bottom-left-radius: 10px;
         text-align:center;
         color:white;
-        font-family: Helvetica;
+        font-family: arial;
         font-size:10px;
         -webkit-box-shadow: 0 0 5px 1px gray;
 }
@@ -4460,7 +4463,7 @@ li.color-item{
     margin-top: 15px;
     border-color: #4D4D4D;
     float: right;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 14px;
     width: 70px;
     margin-right: 15px;
@@ -4702,7 +4705,7 @@ li.color-item{
 }
 
 .card.tech .cardtitle{
-    font-family: Helvetica;
+    font-family: arial;
 }
 
 /*default cards in case picture is missing */
@@ -4813,7 +4816,7 @@ li.color-item{
     padding-left: 15px;
     padding-right: 15px;
     color: white;
-    font-family: Helvetica;
+    font-family: arial;
     line-height: 30px;
     font-size: 16px;
 }
@@ -4860,7 +4863,7 @@ li.color-item{
     width: 158px;
     float: left;
     margin-left: 15px;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 12px;
     height: 87px;
 }
@@ -5022,7 +5025,7 @@ li.color-item{
 
 .writeup{
     padding: 20px 20px 10px 20px;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 12px;
 }
 
@@ -5214,7 +5217,7 @@ li.color-item{
 }
 
 #quickwrapup .storycontent .content, #quickwrapup .ideacontent .content, #muwrapup .storycontent .content, #muwrapup .ideacontent .content{
-    font-family: Helvetica;
+    font-family: arial;
     border-top: 1px solid #CCCCCC;
     margin-top: 5px;
     padding: 5px;
@@ -5442,7 +5445,7 @@ li.color-item{
     font-size: 18px;
     color: #004a94;
     line-height: 25px;
-    font-family: Helvetica;
+    font-family: arial;
     padding-top: 25px;
 }
 
@@ -5646,7 +5649,7 @@ li.color-item{
     width: 50px;
     text-align: left;
     border: 1px solid #CCCCCC;
-    font-family: helvetica;
+    font-family: arial;
     color: #404040;
     font-size: 12px;
 }
@@ -6069,7 +6072,7 @@ li.color-item{
     margin-top: 300px;
     padding: 10px;
     font-size: 16px;
-    font-family: Helvetica;
+    font-family: arial;
     border : 1px solid #004a94;
     border-radius: 5px;
     background: white;
@@ -6192,7 +6195,7 @@ li.color-item{
     height:40px;
     margin-left: 80px;
     font-style: italic;
-    font-family: helvetica;
+    font-family: arial;
     font-size: 14px;
     font-weight: bold;
 }
@@ -6370,7 +6373,7 @@ li.color-item{
 
 .userdetails blockquote{
     text-align: center;
-    font-family:Helvetica;
+    font-family:arial;
     font-size:14px;
     color: #808080;
     -webkit-margin-after: 0px;
@@ -6548,7 +6551,7 @@ li.innerbar{
 .mystats td, .contactstats td{
     width: 10%;
     text-align: right;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 12px;
 }
 
@@ -6617,7 +6620,7 @@ li.my2q{
 }
 
 .newsdate{
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 14px;
     color: #808080;
     text-align: center;
@@ -6830,7 +6833,7 @@ li.my2q{
 
 .edituserdetails label{
     color: #292929;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 14px;
 }
 
@@ -6839,7 +6842,7 @@ li.my2q{
     margin-top: 3px;
     margin-bottom: 10px;
     color: #666666;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 14px;
 }
 
@@ -6880,7 +6883,7 @@ li.my2q{
     border: 1px solid #CCC;
     text-align: center;
     color: #292929;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 14px;   
 }
 
@@ -7087,7 +7090,7 @@ li.my2q{
 .aboutcontent p, .aboutcontent ul{
     line-height: 25px;
     font-size: 18px;
-    font-family: Helvetica;
+    font-family: arial;
     text-align: justify;
     color: #404040;
     margin-top: 10px;
@@ -7116,7 +7119,7 @@ li.my2q{
 }
 
 .settingmodule ul{
-    font-family: Helvetica;
+    font-family: arial;
     color: #404040;
     font-size: 14px;
     margin-top: 5px;  
@@ -7202,7 +7205,7 @@ li.my2q{
     height: 120px;
     background: #004a94;
     color: white;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 18px;
     font-weight: bold;
     text-align: center;
@@ -7287,7 +7290,7 @@ li.my2q{
 }
 
 #newmub label.editerror{
-    font-family: Helvetica;
+    font-family: arial;
     color: black;
     letter-spacing: 0px;
 }
@@ -7311,7 +7314,7 @@ li.my2q{
     background-position: left center;
     background-repeat: no-repeat;
     padding-left: 20px;
-    font-family: helvetica;
+    font-family: arial;
     font-size: 14px;
     color: #404040;
 }
@@ -7333,7 +7336,7 @@ li.my2q{
     height: 26px;
     width: 92px;
     border-radius: 5px;
-    font-family: Helvetica;
+    font-family: arial;
     font-weight: bold;
     font-size: 14px;
     line-height: 26px;
@@ -7432,7 +7435,7 @@ li.my2q{
 }
 
 #mubwait .sessionmsg span, #musession .sessionmsg span{
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 18px;
     line-height: 40px;
     color: #4D4D4D;
@@ -7451,14 +7454,14 @@ li.my2q{
 .musession-confirm p, #session-list .confirm p{
     color: #4D4D4D;
     margin: 50px;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 18px;
 }
 
 .musession-confirm .option,  #session-list .confirm .option{
     border-color: #4D4D4D;
     float: right;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 14px;
     width: 70px;
     margin-top: -30px;
@@ -7490,7 +7493,7 @@ li.my2q{
 }
 
 #mubwait .mubdesc label, #mubwait .mubroster label, #mupreview .mubdesc label, #mupreview .mubroster label, #mustart .mubdesc label, #mustart .mubroster label{
-    font-family: Helvetica;
+    font-family: arial;
     color: #004a94;
     font-size: 14px;
     padding-top: 5px;
@@ -7504,7 +7507,7 @@ li.my2q{
     padding: 15px;
     width: 255px;
     font-size: 14px;
-    font-family: Helvetica;
+    font-family: arial;
     text-align: justify;
     color: #404040;
     overflow-y: scroll;
@@ -7981,7 +7984,7 @@ ol.ol3 {list-style-type: decimal}
 
 .EULA .confirm-question, .confirm.EULA p{
     color: #404040;
-    font-family: Helvetica;
+    font-family: arial;
 }
 
 /* Idea Attachments */
@@ -8080,7 +8083,7 @@ font-size: 14px;
     border-radius: 5px;
     line-height: 28px;
     border: 1px solid #CCC;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 12px;  
 }
 
@@ -8317,7 +8320,7 @@ textarea.a-desc::-webkit-input-placeholder{
     padding: 10px 30px 5px 40px;
     float: left;
     margin-top: -78px;
-    font-family: helvetica;
+    font-family: arial;
     font-size: 12px;
     color: #404040;
     position: absolute;
@@ -8395,7 +8398,7 @@ textarea.a-desc::-webkit-input-placeholder{
 
 .a-list .rating{
     color: #404040;
-    font-family: helvetica;
+    font-family: arial;
     font-size: 14px;
     margin-left: 5px;
 }
@@ -8629,7 +8632,7 @@ textarea.a-desc::-webkit-input-placeholder{
     border-radius: 5px;
     line-height: 28px;
     border: 1px solid #CCC;
-    font-family: Helvetica;
+    font-family: arial;
     font-size: 12px;
 }
 

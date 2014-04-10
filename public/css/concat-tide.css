@@ -54,8 +54,8 @@ textarea, input{
 }
 
 @font-face {  
-  font-family: pacifico ;  
-  src: url('../fonts/Pacifico.ttf') format("truetype");  
+  font-family: museo ;  
+  src: url('../fonts/museo700.ttf') format("truetype");  
 } 
 
 textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
@@ -166,7 +166,7 @@ input::-webkit-file-upload-button{
 }
 
 .header, .list h3, .detail-header h2, #contactdetails h2, #deckview .deckheader h2{
-  font-family:pacifico;
+  font-family:museo;
   letter-spacing:1px;
 }
 
@@ -603,7 +603,7 @@ input::-webkit-file-upload-button{
 }
 
 .notify-header{
-    font-family: Pacifico;
+    font-family: museo;
     background: #333333;
     color: white;
     text-align: center;
@@ -681,7 +681,7 @@ ul.notify-list{
 }
 
 .menu-item a{
-    font-family: Pacifico;
+    font-family: museo;
     padding-left: 60px;
     height: 36px;
     line-height: 36px;
@@ -870,7 +870,7 @@ ul.notify-list{
     height:30px;
     border-radius: 15px;
     color: white;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 14px;
     margin: -33px auto;
     line-height: 30px;
@@ -974,7 +974,7 @@ ul.notify-list{
 }
 
 .help-screen h2, .settingmodule legend{
-    font-family: pacifico;    
+    font-family: museo;    
 }
 
 .tip-screen .next-button{
@@ -988,7 +988,7 @@ ul.notify-list{
 .tip-screen legend{
     margin-top: -20px;
     margin-left: 10px;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 20px;
 }
 
@@ -1041,7 +1041,7 @@ ul.notify-list{
 .confirm p{
     text-align: left;
     color: white;
-    font-family: Pacifico;
+    font-family: museo;
     line-height: 20px;
     margin-top: 10px;
     font-size: 16px;
@@ -1117,7 +1117,7 @@ ul.notify-list{
 .confirm .option{
     display: inline-block;
     width: 60px;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 12px;
     border-color: white;
     margin: 5px;
@@ -1703,7 +1703,7 @@ ul.notify-list{
 }
 
 .detail-body .idealegend{
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 12px;
     color: #004a94;
     margin-top: 15px;    
@@ -1925,7 +1925,7 @@ textarea.solution {
 }
 
 .edit-visibility .label, .current-visibility .label{
-    font-family: Pacifico;
+    font-family: museo;
     line-height: 30px;
 }
 
@@ -2020,7 +2020,7 @@ textarea.solution {
 
 .attachment-header h2{
     margin-left:75px;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 18px;
     line-height: 20px;
     margin-bottom: 10px;
@@ -2361,7 +2361,7 @@ textarea.solution {
 .repliesButton, .editnotes{
     height: 18px;
     line-height: 14px;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 14px;
     color: #004a94;
     margin-left: 10px;
@@ -2687,7 +2687,7 @@ textarea.solution {
     text-align: left;
     padding-left: 10px;
     width: 220px;
-    font-family: Pacifico;
+    font-family: museo;
 }
 
 .session-item .avatarlist ul{
@@ -2720,7 +2720,7 @@ textarea.solution {
 .session-score{
     width: 145px;
     color: #666666;
-    font-family: Pacifico;
+    font-family: museo;
     text-align: center;
 }
 
@@ -3103,7 +3103,7 @@ textarea.solution {
 #card_creation .create_header label{
     margin-left:10px;
     margin-right: 10px;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 18px;
     height: 80px;
     line-height: 80px;
@@ -3404,7 +3404,7 @@ textarea.solution {
 
 #card_creation .editchar .cd-contentarea legend{
     width: 100%;
-    font-family: Pacifico;
+    font-family: museo;
     color: #004a94;
     border-bottom: 1px solid #cccccc;
     margin-top: 5px;
@@ -3511,7 +3511,7 @@ textarea.solution {
     border-radius: 5px;
     -webkit-box-shadow: 0px 5px 5px 0px rgba(23,41,48,0.4);
     background: white;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 16px;
     letter-spacing: 1px;
     color: #4D4D4D;
@@ -3969,7 +3969,7 @@ textarea.solution {
 .postit textarea{
     font-size: 16px;
     text-align: center;       
-    font-family: Pacifico;
+    font-family: museo;
     color: #4D4D4D;
     border: none;
     background: transparent;
@@ -4021,7 +4021,7 @@ textarea.solution {
 }
 
 .wb-item.postit{
-    font-family: Pacifico;
+    font-family: museo;
     overflow-y: scroll;
     text-align: center;
 }
@@ -4080,7 +4080,7 @@ textarea.solution {
     margin-top: 20px;
     disaply: block;
     color: #004a94;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 14px;
     border-bottom: 2px solid #AEB9BF;
 }
@@ -4398,7 +4398,7 @@ li.color-item{
     width: 100px;
     padding: 0px;
     text-align: center;
-    font-family: Pacifico;
+    font-family: museo;
     margin-top: 15px;
     line-height: 15px;
     color: #808080;
@@ -4533,7 +4533,7 @@ li.color-item{
 }
 
 #quickstart .quickstart-form label{
-    font-family: Pacifico;
+    font-family: museo;
     color: #004a94;
     font-size: 14px;
     letter-spacing: 1px;
@@ -4683,7 +4683,7 @@ li.color-item{
 .card .cardtitle{
     font-size: 14px;
     line-height: 14px;
-    font-family: Pacifico;
+    font-family: museo;
     color: #808080;
     word-wrap: break-word;
     background: none;
@@ -4820,7 +4820,7 @@ li.color-item{
 
 .cd-header.story{
     height:72px;
-    fomt-family: Pacifico;
+    fomt-family: museo;
 }
 
 .cd-header span, .close-popup{
@@ -4943,7 +4943,7 @@ li.color-item{
 }
 
 .cd-contentarea .contentTitle{
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 14px;
     color: #4D4D4D;
 }
@@ -5133,7 +5133,7 @@ li.color-item{
     border: 1px dashed #CCCCCC;
     border-radius: 5px;
     color: #004a94;
-    font-family: Pacifico;    
+    font-family: museo;    
 }
 
 #quickwrapup .congrats .messagetitle, #muwrapup .congrats .messagetitle{
@@ -5179,7 +5179,7 @@ li.color-item{
 
 #quickwrapup .storyheader, #quickwrapup .storytitle, #quickwrapup .ideaheader, #quickwrapup .ideatitle, #muwrapup .storyheader, #muwrapup .storytitle, #muwrapup .ideaheader, #muwrapup .ideatitle{
     color: white;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 16px;
     text-overflow: ellipsis;        
 }
@@ -5208,7 +5208,7 @@ li.color-item{
 
 #quickwrapup .storycontent .summaryheader, #quickwrapup .ideacontent .summaryheader, #muwrapup .storycontent .summaryheader, #muwrapup .ideacontent .summaryheader{
     text-align: left;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 14px;
     height: 25px;
 }
@@ -5244,7 +5244,7 @@ li.color-item{
     display: block;
     text-align: left;
     line-height:20px;
-    font-family: Pacifico;
+    font-family: museo;
     color: #808080;
     font-size: 16px;
     width: 80px;
@@ -5305,7 +5305,7 @@ li.color-item{
 }
 
 #quickwrapup .sessioncards legend, #muwrapup .sessioncards legend{
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 14px;
     margin: 0 auto;
     color: #666666;
@@ -5429,7 +5429,7 @@ li.color-item{
     background-position: center;
     text-align: center;
     line-height: 200px;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 24px;
     color: #404040;
     overflow-y: hidden;
@@ -5700,7 +5700,7 @@ li.color-item{
 }
 
 .form legend, #msgreply .subject{
-    font-family: pacifico;
+    font-family: museo;
     font-size: 12px;
 }
 
@@ -5849,7 +5849,7 @@ li.color-item{
 }
 
 #contactdetails .contactbadges label{
-    font-family: Pacifico;
+    font-family: museo;
     font-size: small;
 }
 
@@ -5893,7 +5893,7 @@ li.color-item{
     background-image: url('../img/connect/bg-note.jpg');
     background-size: cover;
     padding-left: 35px;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: large;
     color: #292929;
 }
@@ -5919,7 +5919,7 @@ li.color-item{
 #addcontact legend, #addgroup legend, .userdetails legend, .edituserdetails .addtlinfo legend, #groupdetails legend, .aboutcontent legend{
     width:100%;
     padding-bottom: 5px;
-    font-family: Pacifico;
+    font-family: museo;
     color: #004a94;
     border-bottom: 1px solid #cccccc;
     margin-top: 15px;
@@ -6207,7 +6207,7 @@ li.color-item{
 }
 
 #mtc-list legend{
-    font-family: Pacifico;
+    font-family: museo;
     color: #004a94;    
     border-bottom: 1px solid #004a94;
     margin-left: 20px;
@@ -6363,7 +6363,7 @@ li.color-item{
 }
 
 .userdetails h2{
-    font-family: Pacifico;
+    font-family: museo;
     text-align:center;
     margin: -20px 15px -20px 0;
 }
@@ -6519,7 +6519,7 @@ li.color-item{
 
 
 .mystats legend, .recentactivity legend, .edituserdetails .addtlinfo legend, #contactdetails legend{
-    font-family: Pacifico;
+    font-family: museo;
     color: #004a94;    
 }
 
@@ -6541,7 +6541,7 @@ li.innerbar{
 .mystats th, .contactstats th{
     width: 90%;
     text-align: left;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 12px;
 }
 
@@ -6642,7 +6642,7 @@ li.my2q{
 }
 
 .newsinfo{
-    font-family: Pacifico;
+    font-family: museo;
     color: black;
 }
 
@@ -6678,7 +6678,7 @@ li.my2q{
     line-height: 30px;
     right: 97px;
     color: white;
-    font-family: Pacifico;
+    font-family: museo;
     text-align: center;
 }
 
@@ -6695,7 +6695,7 @@ li.my2q{
     background-size: 40px;
     font-size: 14px;
     padding-left: 65px;
-    font-family: pacifico;
+    font-family: museo;
     color: #004a94;
     line-height: 70px;
 }
@@ -6703,7 +6703,7 @@ li.my2q{
 .userachievements{
     background: #F2F2F2;
     padding: 20px 10px;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 14px;
     display: table-cell;
     width: 263px;
@@ -6787,7 +6787,7 @@ li.my2q{
 #leaderboard .username{
     color: #292929;
     font-size: 16px;
-    font-family: Pacifico;
+    font-family: museo;
     line-height: 60px;
     margin-left: 5px;
     width: 583px;
@@ -6800,7 +6800,7 @@ li.my2q{
 }
 
 #leaderboard .score{
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 21px;
     text-align: center;
     line-height: 60px;
@@ -7018,7 +7018,7 @@ li.my2q{
 
 .comingsoon{
     color: gray;
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 48px;
     display: table-cell;
     width: 630px;
@@ -7110,7 +7110,7 @@ li.my2q{
 }
 
 .aboutcontent .contribution{
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 16px;
     color: #808080;    
 }
@@ -7279,7 +7279,7 @@ li.my2q{
 }
 
 #newmub form > label, #mulist legend{
-    font-family: Pacifico;
+    font-family: museo;
     color: #004a94;
     font-size: 20px;
     letter-spacing: 1px;
@@ -7475,7 +7475,7 @@ li.my2q{
 #mubwait .mubwait-title, #mupreview .mubwait-title, #mustart .mubwait-title{
     font-size: 20px;
     text-align: center;
-    font-family: Pacifico;
+    font-family: museo;
     color: #4D4D4D;
     font-weight: bold;
     border-bottom: 1px solid #cccccc;
@@ -8502,7 +8502,7 @@ textarea.a-desc::-webkit-input-placeholder{
     height: 36px;
     background: #004a94;
     color: white;
-    font-family: pacifico;
+    font-family: museo;
     font-size: 16px;
     text-align: center;
 }
@@ -8826,7 +8826,7 @@ textarea.a-desc::-webkit-input-placeholder{
 
 
 .idea-edit .idealegend, .attachments .a-legend{
-    font-family: Pacifico;
+    font-family: museo;
     font-size: 12px;
     color: #004a94;
     margin-top: 15px;  

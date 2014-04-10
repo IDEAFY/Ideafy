@@ -22,6 +22,7 @@ var http = require("http"),
     path = require("path"), 
     qs = require("querystring"), 
     url = require("url"), 
+    st = require("st"),
     redirect = require('connect-redirection'), 
     sessionStore = new RedisStore({
         hostname : "127.0.0.1",
@@ -79,6 +80,9 @@ contentPath = __dirname;
 badges;
 
 
+// Mount the static directory to be cached
+var mount = st({path: __dirname + '/public', url: '/public'});
+
 /*****************************
  *  APPLICATION SERVER
  ******************************/
@@ -92,12 +96,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 .use(redirect())
                 .use(connect.bodyParser({ uploadDir:contentPath+'/upload', keepExtensions: true }))
                 .use('/upload', srvUtils.uploadFunc)
-                .use('/downloads', srvUtils.downloadFunc)   
-                .use(function(req, res, next) {
-                        res.setHeader("Ideady Server", "node.js/" + process.versions.node);
-                        res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
-                        next();
-                })
+                .use('/downloads', srvUtils.downloadFunc)
                 .use(connect.cookieParser())
                 .use(connect.session({
                         secret : "olives&vin2012AD",
@@ -108,7 +107,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 httpOnly : true,
                                 path : "/"
                         }
-                }))
+                }))   
+                .use(function(req, res, next) {
+                        res.setHeader("Ideady Server", "node.js/" + process.versions.node);
+                        res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
+                        next();
+                })
                 .use(connect.static(__dirname + "/public"))).listen(1664),
                 io = socketIO.listen(app, {
                         log : true

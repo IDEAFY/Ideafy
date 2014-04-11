@@ -22,7 +22,8 @@ var http = require("http"),
     path = require("path"), 
     qs = require("querystring"), 
     url = require("url"), 
-    redirect = require('connect-redirection'), 
+    redirect = require('connect-redirection'),
+    st = require('st'),
     sessionStore = new RedisStore({
         hostname : "127.0.0.1",
         port : "6379"
@@ -54,6 +55,8 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
         }
 });
 
+// setup cache for static file
+var mount = st({ path: __dirname + '/public-tide', url: '/' });
 
 /****************************************
  *  APPLICATION CONFIGURATION
@@ -90,6 +93,17 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 .use(connect.compress())
                 .use(connect.responseTime())
                 .use(redirect())
+                .use(connect.cookieParser())
+                .use(connect.session({
+                        secret : "olives&vin2012AD",
+                        key : "ideafy.sid",
+                        store : sessionStore,
+                        cookie : {
+                                maxAge : 864000000,
+                                httpOnly : true,
+                                path : "/"
+                        }
+                }))
                 .use(connect.bodyParser({ uploadDir:contentPath+'/upload', keepExtensions: true }))
                 .use('/upload', srvUtils.uploadFunc)
                 .use('/downloads', srvUtils.downloadFunc)   
@@ -105,18 +119,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                         next();
                 })
-                .use(connect.cookieParser())
-                .use(connect.session({
-                        secret : "olives&vin2012AD",
-                        key : "ideafy.sid",
-                        store : sessionStore,
-                        cookie : {
-                                maxAge : 864000000,
-                                httpOnly : true,
-                                path : "/"
-                        }
-                }))
-                .use(connect.static(__dirname + "/public-tide"))).listen(1665),
+                .use(mount)).listen(1665),
                 io = socketIO.listen(app, {
                         log : true
                 });

@@ -32,7 +32,8 @@ define(["OObject", "service/config", "CouchDBView", "Bind.plugin", "Event.plugin
                                 cdb.loop(function(v,i){
                                         if (v.value.default_lang === lang || !v.value.translations[lang]) {faqlist.alter("push", v.value);}
                                         else {faqlist.alter("push", v.value.translations[lang]);}
-                                });      
+                                });
+                                cdb.unsync();    
                         });
                 };
                 

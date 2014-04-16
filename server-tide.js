@@ -28,7 +28,6 @@ var http = require("http"),
         hostname : "127.0.0.1",
         port : "6379"
     }),
-    wrap = require("./wrap"),
     srvutils = require("./srvutils.js"),
     apputils = require("./apputils.js"),
     comutils = require("./comutils.js"),
@@ -104,9 +103,6 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 path : "/"
                         }
                 }))
-                .use(connect.bodyParser({ uploadDir:contentPath+'/upload', keepExtensions: true }))
-                .use('/upload', srvUtils.uploadFunc)
-                .use('/downloads', srvUtils.downloadFunc)   
                 .use(function(req, res, next) {
                         var ori = req.headers.origin || "http://tide.ideafy.com";
                         res.setHeader("Access-Control-Allow-Origin", ori);
@@ -119,6 +115,9 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         }
                         next();
                 })
+                .use(connect.bodyParser({ uploadDir:contentPath+'/upload', keepExtensions: true }))
+                .use('/upload', srvUtils.uploadFunc)
+                .use('/downloads', srvUtils.downloadFunc)
                 .use(mount)).listen(1665),
                 io = socketIO.listen(app, {
                         log : true

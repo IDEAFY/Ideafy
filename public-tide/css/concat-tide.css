@@ -4032,7 +4032,9 @@ textarea.solution {
 .inner-postit{
     height: 120px;
     overflow-y:scroll;
-    line-height:25px;
+    line-height:20px;
+    font-size: 14px;
+    width: 100%;
     padding: 5px 3px 10px 3px;
     
 }
@@ -5184,7 +5186,9 @@ li.color-item{
     color: white;
     font-family: museo;
     font-size: 16px;
-    text-overflow: ellipsis;        
+    text-overflow: ellipsis;
+    height: 30px;
+    padding-left: 25px;       
 }
 
 #quickwrapup .storyheader, #quickwrapup .ideaheader, #muwrapup .storyheader, #muwrapup .ideaheader{

@@ -110,7 +110,10 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 
                                 // set user connection status
                                 _user.set("online", true);
-                                _user.upload();       
+                                _user.upload()
+                                .then(function(){
+                                        console.log("user upload successful -- dock init");
+                                });       
 
 			};
 			

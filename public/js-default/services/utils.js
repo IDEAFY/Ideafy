@@ -16,7 +16,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	_utils.isOnline = function(userid, online){
 	       var onlineUsers = new CouchDBView(), promise = new Promise();
 	       
-	       onlineUsers.setTransport(tranport);
+	       onlineUsers.setTransport(transport);
 	       
 	       console.log(userid, online);
                onlineUsers.sync(Config.get("db"), "users", "_view/online", {key: '"'+userid+'"'})

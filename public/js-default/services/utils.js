@@ -24,6 +24,8 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	               promise.fulfill();
 	               onlineUsers.unsync();
 	       });
+	       
+	       return promise;
 	};
 	
 	_utils.formatDate = function(array){

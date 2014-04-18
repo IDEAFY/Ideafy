@@ -18,8 +18,10 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	       
 	       onlineUsers.setTransport(tranport);
 	       
+	       console.log(userid, online);
                onlineUsers.sync(Config.get("db"), "users", "_view/online", {key: '"'+userid+'"'})
 	       .then(function(){
+	               console.log(onlineUsers.toJSON());
 	               (onlineUsers.getNbItems()) ? online = true : online = false;
 	               promise.fulfill();
 	               onlineUsers.unsync();

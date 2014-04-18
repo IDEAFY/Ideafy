@@ -13,7 +13,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         var _store = new Store({"img":"", "online": false}),
                             _avatars = Config.get("avatars"),
                             _cdb = new CouchDBView([]),
-                            _id = $array[0]; 
+                            _id = $array[0],
+                            bool = false; 
                         
                         // setup
                         _cdb.setTransport(Config.get("transport"));
@@ -37,10 +38,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         // INIT
                         // check if user is online -- perform check every 30 seconds
-                        Utils.isOnline(_id) ? _store.set("online", true) : _store.set("online", false);
+                        Utils.isOnline(_id, bool).then(function(){
+                                 _store.set("online", bool);
+                        });
                         
                         setInterval(function(){
-                                Utils.isOnline(_id) ? _store.set("online", true) : _store.set("online", false);
+                                Utils.isOnline(_id, bool).then(function(){
+                                        _store.set("online", bool);
+                                });
                         }, 30000);
                         
                         if ($array.length>1) {

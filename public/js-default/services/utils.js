@@ -8,25 +8,22 @@
 define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument", "CouchDBView"], function(Config, Observable, Promise, LocalStore, Transport, Store, CouchDBView){
         var _utils = {},
               user = Config.get("user"),
-              transport = Config.get("transport"),
-              onlineUsers = new CouchDBView();
-	
-	/*
-	 *  Synchronize with view of online users (to display presence status)
-	 */
-	onlineUsers.setTransport(transport);
-	onlineUsers.sync(Config.get("db"), "users", "_view/online");
+              transport = Config.get("transport");
 	
 	/*
 	 *  A function to return presence status of a given user
 	 */
-	_utils.isOnline = function(userid){
-	       var online = false;
-	       if (onlineUsers.getNBItems()) onlineUsers.loop(function(v,i){
-	               console.log(onlineUsers.toJSON());
-	               if (v.key === userid) online = true;
+	_utils.isOnline = function(userid, online){
+	       var onlineUsers = new CouchDBView(), promise = new Promise();
+	       
+	       onlineUsers.setTransport(tranport);
+	       
+               onlineUsers.sync(Config.get("db"), "users", "_view/online", {key: '"'+userid+'"'})
+	       .then(function(){
+	               (onlineUsers.getNbItems()) ? online = true : online = false;
+	               promise.fulfill();
+	               onlineUsers.unsync();
 	       });
-	       return online;
 	};
 	
 	_utils.formatDate = function(array){

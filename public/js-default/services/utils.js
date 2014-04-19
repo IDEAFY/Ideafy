@@ -21,6 +21,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	       onlineUsers.sync(Config.get("db"), "users", "_view/online", {key: '"'+userid+'"'})
 	       .then(function(){
 	               (onlineUsers.getNbItems()) ? online = true : online = false;
+	               if (online) console.log(userid, online);
 	               promise.fulfill();
 	               onlineUsers.unsync();
 	       });

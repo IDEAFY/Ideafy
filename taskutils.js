@@ -53,6 +53,7 @@ function TaskUtils(){
                               
                         _getViewAsAdmin("users", "sockets", null, cdbSocks)
                         .then(function(){
+                                console.log(cdbSocks.toJSON());
                                 cdbSocks.loop(function(v,i){
                                         var cdb = new _CouchDBDocument();
                                         if (list.indexOf(v.key) <0){

@@ -80,7 +80,7 @@ function CDBAdmin(){
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
                         auth: _cdbAdminCredentials,
-                        agent: false,
+                        // agent: false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -109,7 +109,7 @@ function CDBAdmin(){
                         method : "GET",
                         path:"/"+_db+"/"+docId,
                         auth: _cdbAdminCredentials,
-                        agent: false,
+                        // agent: false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -138,7 +138,7 @@ function CDBAdmin(){
                         method : "PUT",
                         path:"/"+_db+"/"+docId,
                         auth: _cdbAdminCredentials,
-                        agent: false,
+                        // agent: false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"
@@ -166,18 +166,19 @@ function CDBAdmin(){
          * @returns {Promise} promise : the result of the query (fulfilled or rejected depending on the result)
          */
         getView = function(design, view, query, cdbStore){
-                var promise = new _Promise();
-                _transport.request("CouchDB", {
-                        method : "GET",
-                        path:"/"+_db+"/_design/"+design+"/_view/"+view,
-                        query: query,
-                        auth: _cdbAdminCredentials,
-                        agent: false,
-                        headers: {
-                                "Content-Type": "application/json",
-                                "Connection": "close"
-                        }
-                }, function (res) {
+                var promise = new _Promise(),
+                      options = {
+                                method : "GET",
+                                path:"/"+_db+"/_design/"+design+"/_view/"+view,
+                                auth: _cdbAdminCredentials,
+                                // agent: false,
+                                headers: {
+                                        "Content-Type": "application/json",
+                                        "Connection": "close"
+                                }
+                        };
+                if (query) options.query = query;
+                _transport.request("CouchDB", options, function (res) {
                         var json = JSON.parse(res);
                         if (json.rows) {
                                 cdbStore.reset(json.rows);
@@ -206,7 +207,7 @@ function CDBAdmin(){
                 options.port = _dbPort;
                 options.method = "POST";
                 options.auth = _cdbAdminCredentials;
-                options.agent = false;
+                // options.agent = false;
                 options.path = "/"+_db+"/_design/"+design+"/_view/"+view;
                 options.headers = {
                         "Content-Type" : "application/json"
@@ -256,7 +257,7 @@ function CDBAdmin(){
                         path:"/"+_db+"/"+docId,
                         auth: _cdbAdminCredentials,
                         query: {rev: cdbStore.get("_rev")},
-                        agent: false,
+                        // agent: false,
                         headers: {
                                 "Content-Type": "application/json",
                                 "Connection": "close"

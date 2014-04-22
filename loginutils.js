@@ -243,6 +243,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                                 cdb.set("online", true);
                                                                 _updateDocAsAdmin(json.id, cdb)
                                                                 .then(function(){
+                                                                        console.log("login ok", cdb.get("_id"), cdb.get("_rev"), cdb.get("online"), cdb.get("sock"));
                                                                         onEnd({authenticated: true});        
                                                                 });        
                                                         },
@@ -303,6 +304,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                         return _updateDocAsAdmin(json.name, cdb);
                                                 })
                                                 .then(function(){
+                                                        console.log("login ok", cdb.get("_id"), cdb.get("_rev"), cdb.get("online"), cdb.get("sock"));
                                                         onEnd({
                                                                 login : "ok",
                                                                 db : _db,

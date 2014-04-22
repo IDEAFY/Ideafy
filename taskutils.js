@@ -59,6 +59,7 @@ function TaskUtils(){
                                         console.log(list.indexOf(v.key));
                                         var cdb = new _CouchDBDocument();
                                         if (list.indexOf(v.key) <0){
+                                                console.log("user socket not found in list of active sockets");
                                                 _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){
                                                         if (cdb.get("online")){
@@ -70,11 +71,15 @@ function TaskUtils(){
                                                 });
                                         }
                                         else{
+                                                console.log("user socket found in list of active sockets - make sure user status is online");
                                                 _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){
                                                         if (!cdb.get("online")){
                                                                 cdb.set("online", true);
-                                                                _updateDocAsAdmin(v.id, cdb);
+                                                                _updateDocAsAdmin(v.id, cdb)
+                                                                .then(function(){
+                                                                        console.log(cdb.toJSON());
+                                                                });
                                                         }  
                                                 });        
                                         }       

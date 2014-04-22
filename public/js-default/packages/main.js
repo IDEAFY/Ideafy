@@ -31,6 +31,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 if (_local.get("db") && _local.get("db") !== _db){
                         _db = _local.get("db");
                 }
+                console.log("before user sync in body.init");
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin"))
                 .then(function() {

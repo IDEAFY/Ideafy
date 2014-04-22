@@ -13,14 +13,14 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	/*
 	 *  A function to return presence status of a given user
 	 */
-	_utils.isOnline = function(userid, online){
+	_utils.isOnline = function(userid, cdb){
 	       var onlineUsers = new CouchDBView(), promise = new Promise();
 	       
 	       onlineUsers.setTransport(transport);
 	       
 	       onlineUsers.sync(Config.get("db"), "users", "_view/online", {key: '"'+userid+'"'})
 	       .then(function(){
-	               (onlineUsers.getNbItems()) ? online = true : online = false;
+	               (onlineUsers.getNbItems()) ? cdb.set("online", true) : cdb.set("online", false);
 	               if (online) console.log(userid, online);
 	               promise.fulfill();
 	               onlineUsers.unsync();

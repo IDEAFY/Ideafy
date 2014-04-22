@@ -64,6 +64,7 @@ function TaskUtils(){
                                                         if (cdb.get("online")){
                                                                 cdb.set("online", false);
                                                         }
+                                                        console.log("setting sock to null for ", v.id);
                                                         cdb.set("sock", null);
                                                         _updateDocAsAdmin(v.id, cdb);        
                                                 });

@@ -27,7 +27,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                 }
                                         },
                                         setStatus : function(online){
-                                                console.log("status change", _id, online);
+                                                var date = new Date().getTime();
+                                                console.log("status change", _id, online, date);
                                                 (online)?this.classList.add("online"):this.classList.remove("online");
                                         }
                                 }),

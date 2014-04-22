@@ -395,19 +395,22 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    };
                    
                    profileUI.cleanOldNews = function cleanOldNew(){
-                        var now = new Date(), n = user.get("news"), i, then,
+                        var now = new Date(), n = user.get("news"), l = n.length, i, then,
                             promise = new Promise();
-                        if (n.length){
-                                for (i = n.length-1; i>=0; i--){
+                        if (l){
+                                for (i = l-1; i>=0; i--){
                                         then = new Date(n[i].date[0],n[i].date[1],n[i].date[2]);
                                         if (now.getTime()-then.getTime() > 1296000000){
                                                 n.splice(i, 1);
                                         }       
                                 }
-                                user.set("news", n);
-                                user.upload().then(function(){
-                                        promise.fulfill();
-                                });
+                                if (n.length !== l) {
+                                        user.set("news", n);
+                                        user.upload().then(function(){
+                                                promise.fulfill();
+                                        });
+                                }
+                                else promise.fulfill();
                         }
                         return promise;
                    };

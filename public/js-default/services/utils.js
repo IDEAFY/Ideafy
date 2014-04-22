@@ -351,12 +351,8 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         * Disconnect the socket
         */
         _utils.disconnectSocket = function(){
-                user.set("online", false);
-                user.upload()
-                .then(function(){
-                         Config.get("socket").socket.disconnect();
-                        Config.get("observer").notify("disconnect");        
-                });       
+                Config.get("socket").socket.disconnect();
+                Config.get("observer").notify("disconnect");      
         };
                 
         /**

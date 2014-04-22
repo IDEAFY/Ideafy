@@ -303,7 +303,6 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                         return _updateDocAsAdmin(json.name, cdb);
                                                 })
                                                 .then(function(){
-                                                        console.log(cdb.toJSON());
                                                         onEnd({
                                                                 login : "ok",
                                                                 db : _db,

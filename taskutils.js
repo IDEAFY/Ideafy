@@ -76,6 +76,7 @@ function TaskUtils(){
                                                 .then(function(){
                                                         if (!cdb.get("online")){
                                                                 cdb.set("online", true);
+                                                                console.log("update doc as admin");
                                                                 _updateDocAsAdmin(v.id, cdb)
                                                                 .then(function(){
                                                                         console.log(cdb.toJSON());

@@ -61,6 +61,7 @@ function TaskUtils(){
                                         if (list.indexOf(v.key) <0){
                                                 _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){
+                                                        console.log("setting offline to false and erasing socket");
                                                         if (cdb.get("online")){
                                                                 cdb.set("online", false);
                                                         }
@@ -74,7 +75,7 @@ function TaskUtils(){
                                                         if (!cdb.get("online")){
                                                                 cdb.set("online", true);
                                                                 _updateDocAsAdmin(v.id, cdb);
-                                                        }        
+                                                        }  
                                                 });        
                                         }       
                                 });

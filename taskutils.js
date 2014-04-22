@@ -50,11 +50,11 @@ function TaskUtils(){
                         var cdbSocks = new _CouchDBView(),
                               nb = Object.keys(_io.connected).length,
                               list = Object.keys(_io.connected);
-                              
+                        console.log("Check connections ", list);      
                         _getViewAsAdmin("users", "sockets", null, cdbSocks)
                         .then(function(){
                                 console.log(cdbSocks.toJSON());
-                                cdbSocks.loop(function(v,i){
+                                if (cdbSocks.getNbItems()) cdbSocks.loop(function(v,i){
                                         var cdb = new _CouchDBDocument();
                                         if (list.indexOf(v.key) <0){
                                                 _getDocAsAdmin(v.id, cdb)

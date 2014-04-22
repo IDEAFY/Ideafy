@@ -1270,6 +1270,8 @@ function AppUtils(){
         this.setOffline = function(socket){
                 var cdbView = new _CouchDBView(),
                       cdbDoc = new _CouchDBDocument();
+                      
+                 console.log("setoffline called", socket.id);
                         
                 _getViewAsAdmin("users", "sockets", {key: '"'+socket.id+'"'}, cdbView)
                 .then(function(){

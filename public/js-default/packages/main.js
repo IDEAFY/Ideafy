@@ -34,7 +34,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin"))
                 .then(function() {
-                        console.log("body init -- after login : ", _user.get("online"), _user.get("sock"), _user.get("lastCX").toLocaleString());
+                        console.log("body init -- after login : ", _user.get("online"), _user.get("sock"), _user.get("lastCX").toLocaleDateString());
                         var lblUpdate = new Promise();
                         // set uid for future queries
                         Config.set("uid", '"' + _user.get("_id") + '"');
@@ -87,7 +87,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin"))
                 .then(function() {
-                        console.log("body init reload -- after login : ", _user.get("online"), _user.get("sock"), _user.get("lastCX").toLocaleString());
+                        console.log("body init reload -- after login : ", _user.get("online"), _user.get("sock"), _user.get("lastCX").toLocaleDateString());
                         var lblUpdate = new Promise();
                         // set uid for future queries
                         Config.set("uid", '"' + _user.get("_id") + '"');

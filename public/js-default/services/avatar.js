@@ -45,7 +45,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         setInterval(function(){
                                 Utils.isOnline(_id, bool).then(function(){
-                                        if (_store.get("online") !== bool) _store.set("online", bool);
+                                        if (_store.get("online") !== bool) 10e6deth
+                                        _store.set("online", bool);
                                 });
                         }, 30000);
                         

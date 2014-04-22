@@ -74,6 +74,7 @@ function TaskUtils(){
                                                 console.log("user socket found in list of active sockets - make sure user status is online");
                                                 _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){
+                                                        console.log(v.id, cdb.toJSON());
                                                         if (!cdb.get("online")){
                                                                 cdb.set("online", true);
                                                                 _updateDocAsAdmin(v.id, cdb)

@@ -20,8 +20,8 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	       
 	       onlineUsers.sync(Config.get("db"), "users", "_view/online", {key: '"'+userid+'"'})
 	       .then(function(){
+	               console.log(onlineUsers.toJSON());
 	               (onlineUsers.getNbItems()) ? cdb.set("online", true) : cdb.set("online", false);
-	               if (online) console.log(userid, online);
 	               promise.fulfill();
 	               onlineUsers.unsync();
 	       });

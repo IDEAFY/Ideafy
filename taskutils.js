@@ -56,6 +56,7 @@ function TaskUtils(){
                                 console.log(cdbSocks.toJSON());
                                 if (cdbSocks.getNbItems()) cdbSocks.loop(function(v,i){
                                         console.log(v, i);
+                                        console.log(list.indexOf(v.key));
                                         var cdb = new _CouchDBDocument();
                                         if (list.indexOf(v.key) <0){
                                                 _getDocAsAdmin(v.id, cdb)

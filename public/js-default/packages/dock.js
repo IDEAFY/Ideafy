@@ -50,7 +50,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			        
 			        _widget.setDisplay();
 			        
-			        /*_public = new Public();
+			        _public = new Public();
 			        console.log("public ok");
 			        _library = new Library();
 			        console.log("library ok");
@@ -59,9 +59,9 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			        _connect = new Connect();
 			        console.log("connect ok");
 			        _dashboard = new Dashboard();
-			        console.log("dashboard ok");*/
+			        console.log("dashboard ok");
 			        
-			        /*_stack.getStack().add("#public", _public);
+			        _stack.getStack().add("#public", _public);
 				_stack.getStack().add("#library", _library);
 				_stack.getStack().add("#brainstorm", _brainstorm);
 				_stack.getStack().add("#connect", _connect);
@@ -72,7 +72,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 				// initialize popups
 				_newIdea = new NewIdea();
                                 _new2q = new New2Q();
-                                _tips = new Tips();*/
+                                _tips = new Tips();
 			};
 			
 			/*

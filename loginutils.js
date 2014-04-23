@@ -243,7 +243,6 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                                 cdb.set("online", true);
                                                                 _updateDocAsAdmin(json.id, cdb)
                                                                 .then(function(){
-                                                                        console.log("login ok", cdb.get("_id"), cdb.get("_rev"), cdb.get("online"), cdb.get("sock"));
                                                                         onEnd({authenticated: true});        
                                                                 });        
                                                         },
@@ -252,19 +251,16 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                         });
                                                 }
                                                 else {
-                                                        console.log("no session auth and/or right login name not found");
                                                         onEnd({authenticated : false});
                                                 }
                                         } 
                                 });
                         }
                         else {
-                                console.log("no sessionID");
                                 onEnd({authenticated : false});
                         }
                 },
                 function(){
-                        console.log("failed getdocasadmin");
                         onEnd({authenticated: false});
                 });
         };
@@ -304,7 +300,6 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                         return _updateDocAsAdmin(json.name, cdb);
                                                 })
                                                 .then(function(){
-                                                        console.log("login ok", cdb.get("_id"), cdb.get("_rev"), cdb.get("online"), cdb.get("sock"));
                                                         onEnd({
                                                                 login : "ok",
                                                                 db : _db,

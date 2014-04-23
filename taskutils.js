@@ -50,38 +50,26 @@ function TaskUtils(){
                         var cdbSocks = new _CouchDBView(),
                               nb = Object.keys(_io.connected).length,
                               list = Object.keys(_io.connected);
-                        console.log("Check connections ", list);      
                         _getViewAsAdmin("users", "sockets", null, cdbSocks)
                         .then(function(){
-                                console.log(cdbSocks.toJSON());
                                 if (cdbSocks.getNbItems()) cdbSocks.loop(function(v,i){
-                                        console.log(v, i);
-                                        console.log(list.indexOf(v.key));
                                         var cdb = new _CouchDBDocument();
                                         if (list.indexOf(v.key) <0){
-                                                console.log("user socket not found in list of active sockets");
                                                 _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){
                                                         if (cdb.get("online")){
                                                                 cdb.set("online", false);
                                                         }
-                                                        console.log("setting sock to null for ", v.id);
                                                         cdb.set("sock", null);
                                                         _updateDocAsAdmin(v.id, cdb);        
                                                 });
                                         }
                                         else{
-                                                console.log("user socket found in list of active sockets - make sure user status is online");
                                                 _getDocAsAdmin(v.id, cdb)
                                                 .then(function(){
-                                                        console.log(cdb.get("online"), cdb.toJSON());
                                                         if (!cdb.get("online")){
                                                                 cdb.set("online", true);
-                                                                console.log("update doc as admin");
-                                                                _updateDocAsAdmin(v.id, cdb)
-                                                                .then(function(){
-                                                                        console.log(cdb.toJSON());
-                                                                });
+                                                                _updateDocAsAdmin(v.id, cdb);
                                                         }  
                                                 });        
                                         }       

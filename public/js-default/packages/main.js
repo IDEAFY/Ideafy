@@ -34,7 +34,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin"))
                 .then(function() {
-                        console.log(_user.get("online"), _user.get("sock"));
                         var lblUpdate = new Promise();
                         // set uid for future queries
                         Config.set("uid", '"' + _user.get("_id") + '"');
@@ -223,8 +222,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         // resync user document upon socket reconnection
         Config.get("observer").watch("reconnect", function(option){
-                console.log("reconnect called", option);
-                console.log(Config.get("socket").socket.sessionid);
                 _local.sync("ideafy-data");
                 if (option === "all"){
                         checkServerStatus()

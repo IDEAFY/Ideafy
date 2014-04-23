@@ -73,7 +73,7 @@ mailSender = "IDEAFY <ideafy@taiaut.com>";
 // email address fro application support
 supportEmail = "contact@taiaut.com";
 // Application  client minimum version
-currentVersion = "1.2.0";
+currentVersion = "1.2.3";
 // Path where attachments are stored
 contentPath = __dirname;
 // Rules to grant special badges and achievements

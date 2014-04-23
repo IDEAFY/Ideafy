@@ -11,7 +11,8 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
               transport = Config.get("transport");
 	
 	/*
-	 *  A function to return presence status of a given user
+	 *  A function to set presence status of a given user
+	 * Returns a promise
 	 */
 	_utils.isOnline = function(userid, cdb){
 	       var onlineUsers = new CouchDBView(), promise = new Promise();
@@ -20,7 +21,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	       
 	       onlineUsers.sync(Config.get("db"), "users", "_view/online", {key: '"'+userid+'"'})
 	       .then(function(){
-	               console.log(onlineUsers.toJSON());
 	               (onlineUsers.getNbItems()) ? cdb.set("online", true) : cdb.set("online", false);
 	               promise.fulfill();
 	               onlineUsers.unsync();

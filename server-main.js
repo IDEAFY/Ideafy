@@ -12,18 +12,19 @@
 // Required middleware
 var http = require("http"), 
     socketIO = require("socket.io"),
-    connect = require("connect"), 
+    connect = require("connect"),
+    serveStatic = require('serve-static'), 
     olives = require("olives"),
     CouchDBTools = require("couchdb-emily-tools"),
     cookie = require("cookie"), 
     RedisStore = require("connect-redis")(connect), 
     nodemailer = require("nodemailer"), 
-    fs = require("fs"),
-    path = require("path"), 
-    qs = require("querystring"), 
-    url = require("url"), 
+//    fs = require("fs"),
+//    path = require("path"), 
+//     qs = require("querystring"), 
+ //   url = require("url"), 
 //    st = require("st"),
-    redirect = require('connect-redirection'), 
+//    redirect = require('connect-redirection'), 
     sessionStore = new RedisStore({
         hostname : "127.0.0.1",
         port : "6379"
@@ -113,7 +114,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
                         next();
                 })
-                .use(connect.static(__dirname + "/public"))).listen(1664),
+                //.use(connect.static(__dirname + "/public"))).listen(1664),
+                .use(serveStatic("public", {'index':['index.html']}))).listen(1664),
                 io = socketIO.listen(app, {
                         log : true
                 });

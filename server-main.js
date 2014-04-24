@@ -22,7 +22,7 @@ var http = require("http"),
     path = require("path"), 
     qs = require("querystring"), 
     url = require("url"), 
-    st = require("st"),
+//    st = require("st"),
     redirect = require('connect-redirection'), 
     sessionStore = new RedisStore({
         hostname : "127.0.0.1",
@@ -81,7 +81,7 @@ badges;
 
 
 // Mount the static directory to be cached
-var mount = st({path: __dirname + '/public', url: '/public'});
+// var mount = st({path: __dirname + '/public', url: '/public'});
 
 /*****************************
  *  APPLICATION SERVER

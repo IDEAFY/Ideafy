@@ -94,7 +94,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 //.use(connect.logger())
                 .use(connect.compress())
                 .use(connect.responseTime())
-                .use(redirect())
+                //.use(redirect())
                 .use(connect.bodyParser({ uploadDir:contentPath+'/upload', keepExtensions: true }))
                 .use('/upload', srvUtils.uploadFunc)
                 .use('/downloads', srvUtils.downloadFunc)

@@ -90,7 +90,7 @@ var mount = st({path: __dirname + '/public', url: '/', index: true, index: 'inde
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
         var transport = new Transport(olives.handlers),
             app = http.createServer(connect()
-                //.use(connect.logger())
+                .use(connect.logger())
                 .use(connect.compress())
                 .use(connect.responseTime())
                 //.use(redirect())

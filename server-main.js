@@ -81,7 +81,7 @@ badges;
 
 
 // Mount the static directory to be cached
-var mount = st({path: __dirname + '/public', url: '/public'});
+var mount = st({path: __dirname + '/public', url: '/public', index: true; index: 'index.html'});
 
 /*****************************
  *  APPLICATION SERVER

@@ -13,7 +13,6 @@
 var http = require("http"), 
     socketIO = require("socket.io"),
     connect = require("connect"),
-    serveStatic = require('serve-static'), 
     olives = require("olives"),
     CouchDBTools = require("couchdb-emily-tools"),
     cookie = require("cookie"), 
@@ -115,7 +114,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         next();
                 })
                 //.use(connect.static(__dirname + "/public"))).listen(1664),
-                .use(serveStatic("public", {'index':['index.html']}))).listen(1664),
+                .use(mount())).listen(1664),
                 io = socketIO.listen(app, {
                         log : true
                 });

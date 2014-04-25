@@ -114,7 +114,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                         next();
                 })
                 //.use(connect.static(__dirname + "/public"))).listen(1664),
-                .use(mount())).listen(1664),
+                .use(mount)).listen(1664),
                 io = socketIO.listen(app, {
                         log : true
                 });

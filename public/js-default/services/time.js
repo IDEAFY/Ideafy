@@ -49,7 +49,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 var offset = new Date().getTimezoneOffset(),
                                       h, m = time.get("min");
                                       
-                                (time.get("am")) ? h = time.get("hour") : h=time.get("hour")+12;
+                                (time.get("am")) ? h = parseInt(time.get("hour"), 10) : h = parseInt(time.get("hour"), 10) + 12;
                                 
                                 return (3600*h + 60*m + offset)*1000;      
                         };

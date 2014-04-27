@@ -47,7 +47,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.getTimestamp = function(){
                                 var offset = new Date().getTimezoneOffset(),
-                                      h, m = time.get("min");
+                                      h, m = parseInt(time.get("min"), 10);
                                       
                                 (time.get("am")) ? h = parseInt(time.get("hour"), 10) : h = parseInt(time.get("hour"), 10) + 12;
                                 

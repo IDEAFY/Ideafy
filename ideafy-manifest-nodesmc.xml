@@ -26,7 +26,8 @@
     <exec_method
       type="method"
       name="start"
-			exec="newtask -p node /home/admin/local/bin/node /home/admin/Ideafy/server-main.js"
+      		exec="/opt/local/bin/node  /home/admin/Ideafy/server-main.js" 
+			<!-- exec="newtask -p node /home/admin/local/bin/node /home/admin/Ideafy/server-main.js" -->
       timeout_seconds="60"/>
 
     <exec_method

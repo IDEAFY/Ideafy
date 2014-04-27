@@ -87,6 +87,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                         }
                                 },
                                 setDate : function(scheduled){
+                                        console.log(scheduled);
                                         var now, sched;
                                         if (scheduled){
                                                 now = new Date();

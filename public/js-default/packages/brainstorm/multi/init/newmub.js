@@ -433,8 +433,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         
                         // check if session is scheduled (ie start date > now+10min)
                         scheduled = dateUI.getDatestamp() + timeUI.getTimestamp();
-                        console.log(dateUI.getDatestamp(), timeUI.getTimestamp())
-                        if ((scheduled - now.getTime()) > 600000) session.set("scheduled", scheduled);
+                        session.set("scheduled", scheduled);
+                        if ((scheduled - now.getTime()) > 600000) session.set("status", "scheduled");
                         session.set("date", dateUI.getDate());
                         
                         // add invited list if mode is boardroom or all user contacts if mode is campfire
@@ -480,7 +480,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                 }
                                 else {
                                         // if session is scheduled show session list else enter waiting room
-                                        (cdb.get("scheduled")) ? obs.notify("show-session", session) : obs.notify("start-mu_session", cdb.get("_id"));
+                                        (cdb.get("status") === "scheduled") ? obs.notify("show-session", session) : obs.notify("start-mu_session", cdb.get("_id"));
                                         promise.fulfill();
                                         cdb.unsync();       
                                 }        

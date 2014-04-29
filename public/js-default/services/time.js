@@ -12,7 +12,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                 
                         var _widget = this,
                               _labels = Config.get("labels"),
-                              time = new Store({"hour":"", "min":"", "am":true});
+                              time = new Store({"hour": 0, "min":0, "am":true});
                         
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
@@ -47,7 +47,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.getTimestamp = function(){
                                 var offset = new Date().getTimezoneOffset(),
-                                      h, m = parseInt(time.get("min"), 10);
+                                      h, m = parseInt(time.get("min"), 10) || 0;
                                       
                                 (time.get("am")) ? h = parseInt(time.get("hour"), 10) : h = parseInt(time.get("hour"), 10) + 12;
                                 

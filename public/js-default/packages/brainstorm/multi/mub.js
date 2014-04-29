@@ -48,7 +48,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                         
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), sid).then(function(){
-                                var p = cdb.get("participants"), join = false;
+                                /* var p = cdb.get("participants"), join = false;
                                 // if not already joined (rejoin possible)
                                 if (cdb.get("initiator").id === user.get("_id")) join = true;
                                 p.forEach(function(participant){
@@ -70,7 +70,9 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                                                 alert("failed to join session");
                                         }); 
                                 }
+                                
                                 else{
+                                        */
                                         if (!cdb.get("step") || cdb.get("step") === "mustart"){
                                                 muWait.reset(sid);
                                                 stack.getStack().show("mubwait");        
@@ -79,7 +81,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                                                 widget.startSession(sid);        
                                         }
                                         
-                                }               
+                                //}               
                         }, function(error){
                                 console.log(error);
                                 alert("failed to join session");

@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/config", "Promise", "Store", "./init/newmub", "./init/mulist"],

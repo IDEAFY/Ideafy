@@ -1,10 +1,8 @@
-
-
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "service/utils", "Promise"], 

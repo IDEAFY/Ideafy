@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Authors: Vincent Weyl <vincent.weyl@taiaut.com> - Olivier Wietrich <Olivier.Wietrich@taiaut.com
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", 

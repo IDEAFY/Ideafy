@@ -1,3 +1,9 @@
+/**
+ * https://github.com/IDEAFY/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
+ */
 
 define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "service/config", "twocents/writetwocentreply", "service/avatar"],
         function(Widget, Store, ModelPlugin, EventPlugin, Utils, Config, WriteTwocentReply, Avatar){

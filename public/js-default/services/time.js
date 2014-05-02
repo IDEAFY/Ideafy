@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
- * Copyright (c) 2014 TAIAUT
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils"],

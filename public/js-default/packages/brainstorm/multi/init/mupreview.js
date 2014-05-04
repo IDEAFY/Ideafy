@@ -173,7 +173,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 // hide window
                                 muPreviewUI.dom.classList.add("invisible");
                                 muCDB.unsync();
-                                muCDB.reset();
+                                muCDB.reset({});
                                 refreshList();               
                         };
                         

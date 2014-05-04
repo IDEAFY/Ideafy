@@ -88,6 +88,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                       parts = muCDB.get("participants") || [],
                                                       now = new Date().getTime(), sched = new Date(scheduled).getTime();
                                               
+                                              console.log(leader, usr, now, sched);
+                                              
                                               // reset name attribute (used to trigger appropriate action)
                                                if (this.hasAttribute("name")) this.removeAttribute("name");
                                                

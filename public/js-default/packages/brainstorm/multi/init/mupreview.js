@@ -86,7 +86,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 var usr = user.get("_id"),
                                                       leader = muCDB.get("initiator").id,
                                                       parts = muCDB.get("participants") || [],
-                                                      now = new Date().getTime(), sched = new Date(scheduled).getTime();
+                                                      sched = muCDB.get("sdcheduled") || 0;
+                                                      now = new Date().getTime(), sched = new Date(sched).getTime();
                                               
                                               console.log(leader, usr, now, sched);
                                               

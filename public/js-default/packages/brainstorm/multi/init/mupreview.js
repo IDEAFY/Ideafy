@@ -89,8 +89,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                       sched = muCDB.get("scheduled") || 0;
                                                       now = new Date().getTime(), sched = new Date(sched).getTime();
                                               
-                                              console.log(leader, usr, now, sched);
-                                              
                                               // reset name attribute (used to trigger appropriate action)
                                                if (this.hasAttribute("name")) this.removeAttribute("name");
                                                
@@ -156,11 +154,22 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         }
                                 }),
-                                "info" : new Model(info),
+                                "info" : new Model(info, {
+                                        showMsg : function(msg){
+                                                if (msg){
+                                                        this.innerHTML = msg;
+                                                        this.classList.remove("invisible");        
+                                                }
+                                                else{
+                                                        this.classList.add("invisible");
+                                                        this.innerHTML = "";
+                                                }
+                                        }
+                                }),
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
-                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime invisible" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-model="bind:showJoinButton, status" data-previewevent="listen: mousedown, press; listen:mouseup, action"></div><div class="infopreview invisible" data-info="bind:innerHTML, msg"></div></div></div>';
+                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime invisible" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-model="bind:showJoinButton, status" data-previewevent="listen: mousedown, press; listen:mouseup, action"></div><div class="infopreview invisible" data-info="bind:showMsg, msg"></div></div></div>';
                        
                         muPreviewUI.reset = function reset(sid){
                                 document.getElementById("mupreview").classList.remove("invisible");

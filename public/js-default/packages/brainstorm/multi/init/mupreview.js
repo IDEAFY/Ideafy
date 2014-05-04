@@ -84,11 +84,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         },
                                         showJoinButton : function(status){
                                                 var usr = user.get("_id"),
-                                                      leader = muCDB.get("initiator"),
+                                                      leader = muCDB.get("initiator").id,
                                                       parts = muCDB.get("participants") || [],
                                                       now = new Date().getTime(), sched = new Date(scheduled).getTime();
-                                              
-                                              console.log(leader, usdr, sched, now);
                                               
                                               // reset name attribute (used to trigger appropriate action)
                                                if (this.hasAttribute("name")) this.removeAttribute("name");

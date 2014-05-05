@@ -61,7 +61,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                       _am = am;
                                 time.set("hour", _hour);  
                                 time.set("min", _min);
-                                time.set("am", _am);
+                                (hour > 11) ? time.set("am", false) : time.set("am", true);
                         };
                         
                         _widget.reset = function(){

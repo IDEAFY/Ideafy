@@ -64,10 +64,19 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.setTime= function(h,m,am){
                                 var now = new Date(),
+                                      lang = user.get("lang"),
                                       _hour = h || now.getHours(),
                                       _min = m || now.getMinutes(),
                                       _am = am;
-                                time.set("hour", _hour);  
+                                
+                                switch (lang){
+                                        case 'fr-fr':
+                                                time.set("hour", _hour);
+                                                break;
+                                        default:
+                                                (_hour <12) ? time.set("hour", _hour) : time.set("hour", _hour%12);
+                                                break;
+                                } 
                                 time.set("min", _min);
                                 (_hour > 11) ? time.set("am", false) : time.set("am", true);
                         };

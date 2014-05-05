@@ -7474,7 +7474,7 @@ li.my2q{
 }
 
 #mupreview .contentarea{
-    height: 390px;
+    height: 410px;
 }
 
 #mubwait .mubwait-title, #mupreview .mubwait-title, #mustart .mubwait-title{
@@ -7773,14 +7773,15 @@ li.my2q{
     top: 189px;
     left: 139px;
     background: white;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 #mupreview .infopreview{
-    margin: 20px auto;
+    margin: 10px auto;
     text-align: center;
     color: #292929;
     font-weight: bold;
+    font-size: 13px;
 }
 
 #mupreview .close{

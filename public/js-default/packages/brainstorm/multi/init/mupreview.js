@@ -227,8 +227,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 else {
                                         // if current user is the session's initiator, he can open the session up to 15 minutes before scheduled start
                                         if (leader === usr){
-                                                console.log("leader !");
-                                                if (status !== "waiting") node.classList.add("invisible");
+                                                if (status !== "waiting" && status !== 'scheduled') node.classList.add("invisible");
                                                 else{
                                                         // allow leader to open waiting room 15 minutes before start
                                                         if ((sched - now) < 900000) {

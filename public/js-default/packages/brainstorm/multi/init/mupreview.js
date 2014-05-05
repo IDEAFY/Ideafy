@@ -207,6 +207,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                       leader = muCDB.get("initiator").id,
                                       sched = muCDB.get("scheduled") || 0;
                                       now = new Date().getTime(), sched = new Date(sched).getTime(); 
+                                 
+                                 console.log(status, parts);
                                       
                                 // reset name attribute (used to trigger appropriate action)
                                 if (node.hasAttribute("name")) node.removeAttribute("name");

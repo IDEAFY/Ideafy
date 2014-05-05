@@ -127,6 +127,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                         }        
                                 },
                                 setDate : function(scheduled){
+                                        console.log(scheduled, muSearch.toJSON());
                                         var now, sched;
                                         if (scheduled){
                                                 now = new Date();

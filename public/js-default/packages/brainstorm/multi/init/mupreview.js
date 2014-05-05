@@ -83,62 +83,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         },
                                         showJoinButton : function(status){
-                                                var usr = user.get("_id"),
-                                                      leader = muCDB.get("initiator").id,
-                                                      parts = muCDB.get("participants") || [],
-                                                      sched = muCDB.get("scheduled") || 0;
-                                                      now = new Date().getTime(), sched = new Date(sched).getTime();
-                                              
-                                              // reset name attribute (used to trigger appropriate action)
-                                               if (this.hasAttribute("name")) this.removeAttribute("name");
-                                               
-                                               if (status === "in progress") info.set("msg", labels.get("sessionstarted"));
-                                               else if (status === "deleted"){
-                                                        info.set("msg", labels.get("sessiondeleted"));
-                                                        muCDB.unsync();
-                                               }
-                                               else {
-                                                        if (leader === usr){
-                                                                if (status !== "scheduled") this.classList.add("invisible");
-                                                                else{
-                                                                        // allow leader to open waiting room 15 minutes before start
-                                                                        if ((sched - now) < 900000) {
-                                                                                this.innerHTML = labels.get("openbutton");
-                                                                                this.setAttribute("name", "open");
-                                                                                this.classList.remove("invisible");
-                                                                                info.set("msg", labels.get("opennow"));
-                                                                        }
-                                                                        else {
-                                                                                this.classList.add("invisible");
-                                                                                info.set("msg", labels.get("openfifteen"));
-                                                                        }
-                                                                }       
-                                                        }
-                                                        else if (parts.indexOf(usr) > -1){
-                                                                if (status === "waiting"){
-                                                                        this.innerHTML = labels.get("enterbutton");
-                                                                        this.setAttribute("name", "enter");
-                                                                        this.classList.remove("invisible");
-                                                                        info.set("msg", labels.get("enternow"));       
-                                                                }
-                                                                else {
-                                                                        this.classList.add("invisible");
-                                                                        info.set("msg", labels.get("enterfifteen"));
-                                                                }      
-                                                        }
-                                                        else{
-                                                                if (parts.length < 3 && status === "scheduled"){
-                                                                        this.innerHTML = labels.get("joinbutton");
-                                                                        this.setAttribute("name", "join");
-                                                                        this.classList.remove("invisible");
-                                                                        info.set("msg", labels.get("joinnow"));
-                                                                }
-                                                                else {
-                                                                        this.classList.add("invisible");
-                                                                        info.set("msg", labels.get("sessionfull"));
-                                                                }
-                                                        }      
-                                                }
+                                                muPreviewUI.displayJoinButton(this, status, muCDB.get("participants"));
+                                        },
+                                        updateJoinButton : function(parts){
+                                                // update store for list UI
+                                                participants.reset(parts);
+                                                muPreviewUI.displayJoinButton(this, muCDB.get("status"), parts);
                                         }
                                 }),
                                 "participant" : new Model(participants, {
@@ -169,7 +119,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
-                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime invisible" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-model="bind:showJoinButton, status" data-previewevent="listen: mousedown, press; listen:mouseup, action"></div><div class="infopreview invisible" data-info="bind:showMsg, msg"></div></div></div>';
+                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime invisible" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-model="bind:showJoinButton, status; bind: updateJoinButton, participants" data-previewevent="listen: mousedown, press; listen:mouseup, action"></div><div class="infopreview invisible" data-info="bind:showMsg, msg"></div></div></div>';
                        
                         muPreviewUI.reset = function reset(sid){
                                 document.getElementById("mupreview").classList.remove("invisible");
@@ -252,24 +202,73 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 refreshList = callback;        
                         };
                         
-                        // watch for new participants
-                        muCDB.watchValue("participants", function(arr){
-                                var mup = document.getElementById("mupreview"),
-                                    join = mup.querySelector(".start-button"),
-                                    inf = mup.querySelector(".infopreview");
-                                participants.reset(arr);
-                                if (arr.length < 3 && muCDB.get("status") === "waiting"){
-                                        join.classList.remove("invisible");
-                                        info.set("msg", labels.get("joinnow"));
+                        muPreviewUI.displayJoinButton = function(node, status, parts){
+                                var usr = user.get("_id"),
+                                      leader = muCDB.get("initiator").id,
+                                      sched = muCDB.get("scheduled") || 0;
+                                      now = new Date().getTime(), sched = new Date(sched).getTime(); 
+                                      
+                                // reset name attribute (used to trigger appropriate action)
+                                if (node.hasAttribute("name")) node.removeAttribute("name");
+                                
+                                // if session is in progress display a message (it currently should not appear in any list)               
+                                if (status === "in progress") info.set("msg", labels.get("sessionstarted"));
+                                
+                                // if session is in progress display a message (it currently should not appear in any list) 
+                                else if (status === "deleted"){
+                                        info.set("msg", labels.get("sessiondeleted"));
+                                        muCDB.unsync();
                                 }
+                                
+                                // other cases
                                 else {
-                                        if (arr.length === 3 && muCDB.get("status") === "waiting"){
-                                                join.classList.add("invisible");
-                                                info.set("msg", labels.get("sessionfull"));
+                                        // if current user is the session's initiator, he can open the session up to 15 minutes before scheduled start
+                                        if (leader === usr){
+                                                if (status !== "scheduled") node.classList.add("invisible");
+                                                else{
+                                                        // allow leader to open waiting room 15 minutes before start
+                                                        if ((sched - now) < 900000) {
+                                                                node.innerHTML = labels.get("openbutton");
+                                                                node.setAttribute("name", "open");
+                                                                node.classList.remove("invisible");
+                                                                info.set("msg", labels.get("opennow"));
+                                                        }
+                                                        else {
+                                                                node.classList.add("invisible");
+                                                                info.set("msg", labels.get("openfifteen"));
+                                                        }
+                                                }       
                                         }
-                                        join.classList.add("invisible");
-                                }
-                        });
+                                        
+                                        // else check if current user is already a participant
+                                        else if (parts.indexOf(usr) > -1){
+                                                if (status === "waiting"){
+                                                        node.innerHTML = labels.get("enterbutton");
+                                                        node.setAttribute("name", "enter");
+                                                        node.classList.remove("invisible");
+                                                        info.set("msg", labels.get("enternow"));       
+                                                }
+                                                else {
+                                                        node.classList.add("invisible");
+                                                        info.set("msg", labels.get("enterfifteen"));
+                                                }      
+                                        }
+                                        
+                                        // if user has not yet opted to join the session he can do so if it is not already full
+                                        else{
+                                                if (parts.length < 3 && status === "scheduled"){
+                                                        node.innerHTML = labels.get("joinbutton");
+                                                        node.setAttribute("name", "join");
+                                                        node.classList.remove("invisible");
+                                                        info.set("msg", labels.get("joinnow"));
+                                                }
+                                                else {
+                                                        node.classList.add("invisible");
+                                                        info.set("msg", labels.get("sessionfull"));
+                                                }
+                                        }      
+                                }            
+                        };
                         
                         return muPreviewUI;       
                 };

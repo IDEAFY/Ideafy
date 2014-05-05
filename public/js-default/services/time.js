@@ -19,7 +19,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "label" : new Model(_labels),
                                 "model" : new Model(time, {
                                         setAMPM : function(am){
-                                                (am) ? this.setSelectedIndex(0) : this.setSelectedIndex(1);
+                                                (am) ? this.seAttribute("selectedIndex", 0) : this.setAttribute("selectedIndex",1);
                                         }        
                                 }),
                                 "user" : new Model(user, {

@@ -1025,3 +1025,8 @@ textarea.a-desc::-webkit-input-placeholder{
 #mubwait .exit-brainstorm{
     margin-top: 10px;
 }
+
+#mubwait .contact{
+    min-height: 40px;
+    height: 40px;
+}

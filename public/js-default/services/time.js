@@ -16,7 +16,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                               time = new Store({"hour": 0, "min":0, "am":true});
                         
                         _widget.plugins.addAll({
-                                "label" : new Model(_labels),
+                                "label" : new Model(_labels, {
+                                        setInputLabel : function(lbl){
+                                                this.innerHTML = _labels.get(lbl);
+                                        }
+                                }),
                                 "model" : new Model(time, {
                                         setAMPM : function(am){
                                                 (am) ? this.selectedIndex = 0 : this.selectedIndex=1;
@@ -36,7 +40,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><div class="timeicon"></div><input type="number" maxlength="2" max="23" name="hour" data-model="bind:value, hour" data-event="listen:blur, format">:<input type="number" maxlength="2" max="59" name="min" data-model="bind:value, min" data-event="listen:blur, format"></select><select name="am" class="invisible" data-model="bind:setAMPM, am" data-user="bind:displayAMPM, lang" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select></div>';
+                        _widget.template = '<div class = "timeui"><div class="timeicon"></div><input type="number" maxlength="2" max="23" name="hour" data-model="bind:value, hour" data-event="listen:blur, format">:<input type="number" maxlength="2" max="59" name="min" data-model="bind:value, min" data-event="listen:blur, format"></select><select name="am" class="invisible" data-model="bind:setAMPM, am" data-user="bind:displayAMPM, lang" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select><input class="now" type="checkbox" checked=true data-labels="bind:setInputLabel, now" data-event="listen: change, updateNow"></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");
@@ -51,6 +55,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 if ( n<10 && n.length<2) node.value = "0"+n;
                                 if (field === "hour" && n > 23) time.set(field, "00");
                                 if (field === "min" && n > 59) time.set(field, "00");
+                                
+                                // uncheck now button
+                                _widget.dom.querySelector(".now").setAttribute("checked", false);
                          };
                         
                         _widget.setAMPM = function(event, node){
@@ -83,6 +90,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                                 (_hour <12) ? time.set("hour", _hour) : time.set("hour", _hour%12);
                                                 break;
                                 }
+                        };
+                        
+                        _widget.updateNow = function(event, node){
+                                if (node.checked) _widget.reset();        
                         };
                         
                         _widget.reset = function(){

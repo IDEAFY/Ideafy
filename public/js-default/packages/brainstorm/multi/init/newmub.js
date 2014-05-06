@@ -223,11 +223,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                 };
                 
                 widget.showDTUI = function(event, node){
-                        widget.dom.querySelector(".dateandtime").classList.remove("invisible");
+                        widget.dom.querySelector(".dateandtime").setAttribute("style", "display: inline-block;");
                 };
                 
                 widget.hideDTUI = function(event, node){
-                        widget.dom.querySelector(".dateandtime").classList.add("invisible");
+                        widget.dom.querySelector(".dateandtime").setAttribute("style", "display: none;");
                         dateUI.reset();
                         timeUI.reset();     
                 };

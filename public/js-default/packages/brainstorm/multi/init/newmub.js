@@ -184,8 +184,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         session.set("initiator", {"id" : user.get("_id"), "username" : user.get("username"), "intro" : user.get("intro")});
                         
                         // reset scheduling, invitations, errors
-                        dateUI.reset();
-                        timeUI.reset();
                         widget.hideDTUI();
                         invited.reset([]);
                         error.set("errormsg", "");
@@ -225,13 +223,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                 };
                 
                 widget.showDTUI = function(event, node){
-                        dateUI.dom.classList.remove("invisible");
-                        timeUI.dom.classList.remove("invisible");
+                        widget.dom.querySelector(".dateandtime").classList.remove("invisible");
                 };
                 
                 widget.hideDTUI = function(event, node){
-                        dateUI.dom.classList.add("invisible");
-                        timeUI.dom.classList.add("invisible");       
+                        widget.dom.querySelector(".dateandtime").classList.add("invisible");
+                        dateUI.reset();
+                        timeUI.reset();     
                 };
                 
                 widget.displayAutoContact = function(event, node){

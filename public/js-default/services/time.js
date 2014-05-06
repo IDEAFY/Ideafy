@@ -19,7 +19,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "label" : new Model(_labels),
                                 "model" : new Model(time, {
                                         setAMPM : function(am){
-                                                (am) ? this.setAttribute("selectedIndex", 0) : this.setAttribute("selectedIndex",1);
+                                                (am) ? this.selectedIndex = 0 : this.selectedIndex=1;
                                         }        
                                 }),
                                 "user" : new Model(user, {
@@ -74,6 +74,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                       _am = am;
                                 
                                 time.set("min", _min);
+                                console.log(_hour);
                                 (_hour > 11) ? time.set("am", false) : time.set("am", true);
                                 switch (lang){
                                         case 'fr-fr':

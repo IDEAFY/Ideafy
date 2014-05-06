@@ -73,8 +73,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                       _min = m || now.getMinutes(),
                                       _am = am;
                                 
-                                time.set("min", _min);
-                                console.log(_hour);
+                                (_min<10) ? time.set("min", "0"+_min) : time.set("min", _min);
                                 (_hour > 11) ? time.set("am", false) : time.set("am", true);
                                 switch (lang){
                                         case 'fr-fr':

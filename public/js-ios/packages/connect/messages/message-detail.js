@@ -6,7 +6,7 @@
  */
 
 define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply", "lib/spin.min"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, Avatar, Utils, Repl, Spinner){
+        function(Widget, Config, Store, CouchDBDocument, Model, Event, Avatar, Utils, Reply, Spinner){
                 
            return function MessageDetailConstructor($close){
            
@@ -107,18 +107,20 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         (ccList)?this.classList.remove("invisible"):this.classList.add("invisible");
                                 },
                                 showCXRbtn : function(type){
-                                        var cx, id;
+                                        var cx, userid;
                                         this.classList.add("invisible");
-                                        if (type == "CXR"){
+                                        if (type === "CXR"){
                                                 cx = user.get("connections");
                                                 userid = message.get("author");
+                                                
                                                 for (i=0; i<cx.length; i++){
                                                         if (cx[i].userid && cx[i].userid === userid){
                                                                 break;
-                                                        }         
+                                                        }
                                                 }
-                                                this.classList.remove("invisible");    
-                                        }       
+                                                
+                                                this.classList.remove("invisible");   
+                                        }        
                                 },
                                 showDocBtn : function(type){
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        
@@ -212,7 +214,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         break;
                                 case "deletemsg":
                                         options.classList.add("invisible");
-                                        msgDetailUI.deletemsg(message.toJSON());
+                                        msgDetailUI.deletemsg(message);
                                         $close("#defaultPage");
                                         break;
                                 default:

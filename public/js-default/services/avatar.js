@@ -39,6 +39,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         // check if user is online
                         _cdb.sync(Config.get("db"), "users", "_view/online", {key: '"'+_id+'"'})
                         .then(function(){
+                                console.log(cdb.toJSON());
                                 (_cdb.get(0)) ? _store.set("online", true) : _store.set("online", false);       
                         });
                         // watch for updates

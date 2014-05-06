@@ -576,5 +576,6 @@
 	"EULArejected": "You must accept the license agreement prior to using the application",
 	"schedulesession" : "Set session date and time",
 	"today" : "Today",
-	"now" : "Now"
+	"now" : "Now",
+	"schedule": "Schedule"
 }

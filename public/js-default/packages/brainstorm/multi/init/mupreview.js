@@ -178,7 +178,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 else{
                                                         parts.push(user.get("_id"));
                                                         muCDB.set("participants", parts);
-                                                        muCDB.upload();
+                                                        muCDB.upload()
+                                                        .then(function(){
+                                                                // if it is an immediate session and/or status === waiting join right away
+                                                                if (muCDB.get("status") === "waiting") muPreviewUI.enter();
+                                                                else spinner.stop();
+                                                        });
                                                 }
                                                 break;  
                                         default:

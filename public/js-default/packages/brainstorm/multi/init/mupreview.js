@@ -156,7 +156,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         muCDB.set("status", "waiting");
                                                         muCDB.upload()
                                                         .then(function(){
-                                                                muPreviewUI.join();         
+                                                                muPreviewUI.enter();         
                                                         });
                                                 }
                                                 else{
@@ -165,7 +165,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 break;
                                         case "enter":
                                                 if (parts.indexOf(user.get("_id")) > -1){
-                                                        muPreviewUI.join();
+                                                        muPreviewUI.enter();
                                                 }
                                                 else{
                                                         console.log("Error: operation not permitted for ", user.get('_id'));
@@ -178,10 +178,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 else{
                                                         parts.push(user.get("_id"));
                                                         muCDB.set("participants", parts);
-                                                        muCDB.upload()
-                                                        .then(function(){
-                                                                muPreviewUI.join();         
-                                                        });
+                                                        muCDB.upload();
                                                 }
                                                 break;  
                                         default:
@@ -189,7 +186,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 };
                         };
                         
-                        muPreviewUI.join = function join(){
+                        muPreviewUI.enter = function enter(){
                                 Config.get("observer").notify("join-musession", muCDB.get("_id"));
                                 setTimeout(function(){
                                         spinner.stop();
@@ -209,9 +206,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                       sched = muCDB.get("scheduled") || 0;
                                       now = new Date().getTime(), sched = new Date(sched).getTime(); 
                                  
-                                 console.log(status, parts);
-                                      
-                                // reset name attribute (used to trigger appropriate action)
+                                 // reset name attribute (used to trigger appropriate action)
                                 if (node.hasAttribute("name")) node.removeAttribute("name");
                                 
                                 // if session is in progress display a message (it currently should not appear in any list)               
@@ -274,7 +269,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         };
                         
                         
-                        INF = info;
                         return muPreviewUI;       
                 };
         });

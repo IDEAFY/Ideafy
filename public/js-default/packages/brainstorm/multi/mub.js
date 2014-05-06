@@ -124,8 +124,6 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                         stack.getStack().show("mubwait");
                 });
                 
-                
-                MUBSTACK = stack;
                 return widget;
                    
            };

@@ -16,11 +16,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                               time = new Store({"hour": 0, "min":0, "am":true});
                         
                         _widget.plugins.addAll({
-                                "label" : new Model(_labels, {
-                                        setInputLabel : function(lbl){
-                                                this.innerHTML = _labels.get(lbl);
-                                        }
-                                }),
+                                "label" : new Model(_labels),
                                 "model" : new Model(time, {
                                         setAMPM : function(am){
                                                 (am) ? this.selectedIndex = 0 : this.selectedIndex=1;
@@ -40,7 +36,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 "event" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "timeui"><div class="timeicon"></div><input type="number" maxlength="2" max="23" name="hour" data-model="bind:value, hour" data-event="listen:blur, format"><span>:</span><input type="number" maxlength="2" max="59" name="min" data-model="bind:value, min" data-event="listen:blur, format"></select><select name="am" class="invisible" data-model="bind:setAMPM, am" data-user="bind:displayAMPM, lang" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select><input class="now" type="checkbox" checked=true data-event="listen: change, updateNow"><label data-label="bind:setInputLabel, now"></label></div>';
+                        _widget.template = '<div class = "timeui"><div class="timeicon"></div><input type="number" maxlength="2" max="23" name="hour" data-model="bind:value, hour" data-event="listen:blur, format"><span>:</span><input type="number" maxlength="2" max="59" name="min" data-model="bind:value, min" data-event="listen:blur, format"></select><select name="am" class="invisible" data-model="bind:setAMPM, am" data-user="bind:displayAMPM, lang" data-event="listen: change, setAMPM"><option>AM</option><option>PM</option></select><input class="now" type="checkbox" checked=true data-event="listen: change, updateNow"><span data-label="bind:innerHTML, now"></span></div>';
                         
                         _widget.getTime= function(){
                                 var h, m = time.get("min");

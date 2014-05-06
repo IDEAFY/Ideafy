@@ -966,7 +966,7 @@ textarea.a-desc::-webkit-input-placeholder{
     float: left;
 }
 
-.timeui select{
+.timeui select, #newmub .timeui select{
     height: 25px;
     float: left;
     width: 50px;

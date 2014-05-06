@@ -278,8 +278,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         return session.upload();
                                 })
                                 .then(function(){
-                                        // unsync session & remove exit listener
-                                        document.removeEventListener("mousedown", exitListener.listener, true);
                                         session.unsync();
                                         spinner.stop();
                                         node.classList.remove("invisible");
@@ -318,13 +316,10 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
                                         widget.displayInfo(labels.get("canceledbyleader"), 2000).then(function(){
                                                 session.unsync();
-                                                $exit();
-                                                document.removeEventListener("mousedown", exitListener.listener, true);      
+                                                $exit();     
                                         });
                                 }
                                 if (value === "in progress" && session.get("initiator").id !== user.get("_id")){
-                                        // unsync session & remove exit listener
-                                        document.removeEventListener("mousedown", exitListener.listener, true);
                                         session.unsync();
                                         $start(session.get("_id"));
                                         session.reset({});

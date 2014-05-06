@@ -176,7 +176,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         console.log("Error session already full and/or user already a participant");
                                                 }
                                                 else{
-                                                        parts.push(user.get("_id"));
+                                                        parts.push({id:user.get("_id"), intro:user.get("intro"), username:user.get("username")});
                                                         muCDB.set("participants", parts);
                                                         muCDB.upload()
                                                         .then(function(){

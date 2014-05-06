@@ -964,6 +964,8 @@ textarea.a-desc::-webkit-input-placeholder{
 
 .timeui span{
     float: left;
+    height: 30px;
+    line-height: 25px;
 }
 
 .timeui select, #newmub .timeui select{
@@ -974,6 +976,11 @@ textarea.a-desc::-webkit-input-placeholder{
     background-size: 25px;
     padding-right: 25px;
     line-height: 25px;
+}
+
+.timeui select.now{
+    -webkit-box-shadow: none;
+    width: 15px;
 }
 
 #mupreview .datetime{

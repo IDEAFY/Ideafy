@@ -183,8 +183,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         session.set("deck", user.get("active_deck"));
                         session.set("initiator", {"id" : user.get("_id"), "username" : user.get("username"), "intro" : user.get("intro")});
                         
-                        // reset scheduling, invitations, errors
+                        // reset scheduling and radio checkbox, invitations, errors
                         widget.hideDTUI();
+                        widget.dom.querySelector("input[name='schedule']").checked = true;
                         invited.reset([]);
                         error.set("errormsg", "");
                         // reset contactList with all user connections

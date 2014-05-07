@@ -549,3 +549,42 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 return _widget;
            };    
         });
+ 
+/*
+ * ALSO SHOULD REGULARLY CHECK IF LEADER IS STILL CONNECTED....
+ */ 
+        
+/*
+ * CODE TO USE TO HANDLE EXIT FROM BRAINSTORMING SESSION
+ * // create listener
+                                exitListener.listener = Utils.exitListener("mubwait", widget.leave);
+                                
+                                // get session info
+                                session.sync(Config.get("db"), sid).then(function(){
+                                        // manage exit event
+                                        // step 1 init confirmation UI
+                                        if (session.get("initiator").id === user.get("_id")){
+                                                confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        
+                                        }
+                                        else {
+                                                confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
+                                        }
+                                        // reset participants store
+                                        participants.reset(session.get("participants")); 
+                                        
+                                        // reset chatUI
+                                        chatUI.reset(session.get("chat")[0]);
+                                        
+                                        // set as session in progress
+                                        user.set("sessionInProgress", {id: sid, type: "musession", mode:"join"});
+                                        user.upload();
+                                });
+                        };
+                        
+                        // initiator or a participant decides to leave the waiting room
+                        widget.leave = function leave(target){
+                                exitDest = target.getAttribute("href") || target;
+                                // href exists it is one of the nav options else probably a notify message (or future use)
+                                confirmUI.show();       
+                        };
+ */

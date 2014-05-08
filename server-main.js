@@ -90,10 +90,9 @@ var mount = st({path: __dirname + '/public/', index: true, index: 'index.html'})
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
         var transport = new Transport(olives.handlers),
             app = http.createServer(connect()
-                .use(connect.logger())
+                //.use(connect.logger())
                 .use(connect.compress())
                 .use(connect.responseTime())
-                //.use(redirect())
                 .use(connect.bodyParser({ uploadDir:contentPath+'/upload', keepExtensions: true }))
                 .use('/upload', srvUtils.uploadFunc)
                 .use('/downloads', srvUtils.downloadFunc)

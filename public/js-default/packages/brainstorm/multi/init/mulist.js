@@ -91,7 +91,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                         if (scheduled){
                                                 now = new Date();
                                                 sched = new Date(scheduled);
-                                                if (now.getDate() === sched.getDate()){
+                                                if (now.toDateString() === sched.toDateString()){
                                                         if ((sched.getTime() - now.getTime()) <= 300000) this.innerHTML = labels.get("now");
                                                         else this.innerHTML = labels.get("today");
                                                 }
@@ -133,7 +133,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                         if (scheduled){
                                                 now = new Date();
                                                 sched = new Date(scheduled);
-                                                if (now.getDate() === sched.getDate()){
+                                                if (now.toDateString() === sched.toDateString()){
                                                         if ((sched.getTime() - now.getTime()) <= 300000) this.innerHTML = labels.get("now");
                                                         else this.innerHTML = labels.get("today");
                                                 }

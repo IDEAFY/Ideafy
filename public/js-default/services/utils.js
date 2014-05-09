@@ -558,7 +558,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                         }
                         
                         // else allow touch events to display/close the notification list and do nothing if event target is an empty place in the dock
-                        if (e.target.classList.contains("deedee") || e.target.classList.contains("notify-header") || e.target.classList.contains("exit-brainstorm") && e.target.classList.contains("dock-item")){
+                        if (e.target.classList.contains("deedee") || e.target.classList.contains("notify-header") || e.target.classList.contains("exit-brainstorm") || e.target.classList.contains("dock-item")){
                                 e.stopPropagation();
                                 callback(e.target);        
                         }       

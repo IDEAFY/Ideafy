@@ -258,7 +258,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         // switch screen to destination if user confirms exit
                         widget.goToScreen = function goToScreen(){
                                 var id;
-                                
+                                console.log("exit destination :", exitDest);
                                 confirmUI.hide();
                                 document.body.removeChild(document.querySelector(".confirm"));
                                 $exit();

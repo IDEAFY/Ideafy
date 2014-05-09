@@ -206,13 +206,10 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                        widget.cancelSession = function cancelSession(){
                                 var countdown = 5000;
                                 
-                                // remove event listener
-                                document.removeEventListener(exitListener.listener);
-                                
                                 // if there are no participants, exit and delete right away
+                                
                                 if (!session.get("participants").length) {
-                                        confirmUI.hide();
-                                        $exit;
+                                        widget.goToScreen();
                                         // cancel chat and delete session
                                         chatUI.cancel();
                                         session.remove();
@@ -220,8 +217,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 
                                 else widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
-                                        $exit();
-                                        confirmUI.hide();
+                                        widget.goToScreen();
                                 });        
                         };
                         
@@ -257,6 +253,33 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         });        
                                 }
                                 return promise;
+                        };
+                        
+                        // switch screen to destination if user confirms exit
+                        widget.goToScreen = function goToScreen(){
+                                var id;
+                                
+                                confirmUI.hide();
+                                document.body.removeChild(document.querySelector(".confirm"));
+                                $exit();
+                                document.removeEventListener("mousedown", exitListener.listener, true); 
+                                
+                                // if dest is specified (e.g. notify popup)
+                                if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
+                                        Config.get("observer").notify("goto-screen", "#connect");  
+                                        id = exitDest.getAttribute("data-notify_id");
+                                        observer.notify("display-message", parseInt(id, 10));     
+                                }
+                                // handle clicks on nav bar
+                                else {
+                                        ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
+                                                if (exitDest === name){
+                                                        Config.get("observer").notify("goto-screen", name);
+                                                }
+                                        });
+                                }
+                                participants.reset([]);
+                                session.reset({});
                         };
                         
                         // handle edit events

@@ -212,8 +212,16 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         widget.goToScreen();
                                         // cancel chat and delete session
                                         chatUI.cancel();
-                                        session.remove();
-                                }
+                                        
+                                        console.log("session removal");
+                                        
+                                        session.remove()
+                                        .then(function(res){
+                                                console.log("session remove result : ", res);
+                                        },
+                                        function(err){
+                                                console.log("session removal error: ", err)
+                                        });
                                 
                                 else widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
@@ -278,8 +286,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                                 }
                                         });
                                 }
-                                participants.reset([]);
-                                session.reset({});
                         };
                         
                         // handle edit events

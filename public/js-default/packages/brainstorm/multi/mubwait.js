@@ -222,7 +222,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         function(err){
                                                 console.log("session removal error: ", err)
                                         });
-                                
+                                }
                                 else widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
                                         widget.goToScreen();

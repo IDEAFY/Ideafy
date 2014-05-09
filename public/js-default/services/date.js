@@ -71,7 +71,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.getDatestamp = function(){
-                                return _widget.getDate().getTime();        
+                                return new Date(_widget.getDate()).getTime();        
                         };
                         
                         _widget.setDate = function(y,m,d){

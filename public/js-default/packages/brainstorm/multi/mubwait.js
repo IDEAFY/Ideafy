@@ -209,12 +209,16 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 // remove event listener
                                 document.removeEventListener(exitListener.listener);
                                 
+                                // if there are no participants, exit and delete right away
                                 if (!session.get("participants").length) {
                                         confirmUI.hide();
                                         $exit;
+                                        // cancel chat and delete session
+                                        chatUI.cancel();
                                         session.remove();
                                 }
-                                widget.displayInfo("deleting", countdown).then(function(){
+                                
+                                else widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
                                         $exit();
                                         confirmUI.hide();

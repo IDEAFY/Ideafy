@@ -205,7 +205,11 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         // initiator decides to cancel the session
                        widget.cancelSession = function cancelSession(){
                                 var countdown = 5000;
-                                if (!session.get("participants").length) {countdown = 2000;}
+                                if (!session.get("participants").length) {
+                                        confirmUI.hide();
+                                        $exit;
+                                        session.remove();
+                                }
                                 widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
                                         $exit();

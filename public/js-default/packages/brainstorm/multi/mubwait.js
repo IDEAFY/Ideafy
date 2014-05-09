@@ -18,6 +18,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                             labels = Config.get("labels"),
                             chatUI = new Chat(),
                             confirmUI, confirmCallBack,
+                            exitListener = {"listener": null},
+                            exitDest,
                             spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 269, top: 306}).spin();
                         
                         session.setTransport(Config.get("transport"));
@@ -107,7 +109,9 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 
                                 // get session info
                                 session.sync(Config.get("db"), sid).then(function(){
+                                        
                                         // manage exit event
+                                        
                                         // create confirmation UI
                                         confirmCallBack = function(decision){
                                                 if (!decision){
@@ -124,6 +128,9 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                                         }
                                                 }
                                         };
+                                        
+                                        // activate exit listener
+                                        exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                         
                                         // init confirmation UI content
                                         if (session.get("initiator").id === user.get("_id")){
@@ -154,6 +161,18 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 node.classList.remove("pressed");
                                 if (sched && (sched - now) > 300000) $exit();
                                 else confirmUI.show();
+                        };
+                        
+                        /*
+                         *  Function called by event listener
+                         * If it's an immediate session or a scheduled session about to begin then display confirmation popup
+                         */
+                        
+                        widget.leave = function leave(target){
+                                var now = new Date().getTime();
+                                exitDest = target.getAttribute("href") || target;
+                                // href exists it is one of the nav options else probably a notify message (or future use)
+                                if (!session.get("schedule") ||((session.get("schedule") - now) < 300000) ) confirmUI.show();
                         };
                         
                         // participant decides to leave session

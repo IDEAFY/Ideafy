@@ -172,7 +172,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 var now = new Date().getTime();
                                 exitDest = target.getAttribute("href") || target;
                                 // href exists it is one of the nav options else probably a notify message (or future use)
-                                if (!session.get("schedule") ||((session.get("schedule") - now) < 300000) ) confirmUI.show();
+                                if (!session.get("schedule") ||((session.get("schedule") - now) < 300000)) confirmUI.show();
                         };
                         
                         // participant decides to leave session

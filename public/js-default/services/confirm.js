@@ -45,7 +45,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.close = function close(){
                                 Map.get("cache").classList.remove("appear");
                                 if ($class === "EULA") Map.get("cache").classList.remove("EULA");
-                                $parent && $parent.removeChild($parent.lastChild);       
+                                if ($class === "musession-confirm") _widget.dom.classList.add("invisible");
+                                else $parent && $parent.removeChild($parent.lastChild);       
                         };
                         
                         _widget.hide = function hide(){

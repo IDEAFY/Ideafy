@@ -97,9 +97,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 document.getElementById("help-popup").classList.add("appear");
                          };
                         
-                        // create confirmation UI
-                        confirmUI = new Confirm(document.body,null,null, "musession-confirm");
-                     
                         widget.reset = function reset(sid){
                                 // clear previous UI (chat and main window)
                                 chatUI.clear();
@@ -113,6 +110,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         // manage exit event
                                         
                                         // create confirmation UI
+                                        confirmUI = new Confirm(document.body,null,null, "musession-confirm");
+                                        
                                         confirmCallBack = function(decision){
                                                 if (!decision){
                                                         confirmUI.hide();
@@ -193,13 +192,14 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         return chatUI.leave();
                                 })
                                 .then(function(){
-                                        //widget.goToScreen();
+                                        widget.goToScreen();
                                         session.unsync();
                                         session.reset({});        
                                 }); 
                                 // no need to wait for upload result to leave session
                                 $exit();
-                                confirmUI.hide();           
+                                // remove confirm UI if present
+                                document.querySelector(".confirm") && document.body.removeChild(document.querySelector(".confirm"));           
                         };
                         
                         // initiator decides to cancel the session
@@ -210,6 +210,10 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 
                                 if (!session.get("participants").length) {
                                         widget.goToScreen();
+                                        
+                                        // remove confirm UI if present
+                                        document.querySelector(".confirm") && document.body.removeChild(document.querySelector(".confirm")); 
+                                        
                                         // cancel chat and delete session
                                         chatUI.cancel();
                                         
@@ -225,6 +229,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 }
                                 else widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
+                                        // remove confirm UI if present
+                                        document.querySelector(".confirm") && document.body.removeChild(document.querySelector(".confirm")); 
                                         widget.goToScreen();
                                 });        
                         };
@@ -267,8 +273,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         widget.goToScreen = function goToScreen(){
                                 var id;
                                 console.log("exit destination :", exitDest);
-                                confirmUI.hide();
-                                // document.body.removeChild(document.querySelector(".confirm"));
                                 $exit();
                                 document.removeEventListener("mousedown", exitListener.listener, true); 
                                 
@@ -316,8 +320,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         
                         widget.start = function(event, node){
                                 var now = new Date(), chat = session.get("chat");
-                                // remove confirmUI if any
-                                document.body.removeChild(document.querySelector(".confirm"));
                                 // notify session start in chat window
                                 chatUI.conclude("start");
                                 node.classList.add("invisible");

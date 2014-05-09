@@ -1025,6 +1025,7 @@ textarea.a-desc::-webkit-input-placeholder{
 #mubwait .exit-brainstorm{
     position: absolute;
     left: 715px;
+    margin-top: -60px;
 }
 
 #mubwait .contact{

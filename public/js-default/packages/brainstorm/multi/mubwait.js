@@ -205,6 +205,10 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         // initiator decides to cancel the session
                        widget.cancelSession = function cancelSession(){
                                 var countdown = 5000;
+                                
+                                // remove event listener
+                                document.removeEventListener(exitListener.listener);
+                                
                                 if (!session.get("participants").length) {
                                         confirmUI.hide();
                                         $exit;

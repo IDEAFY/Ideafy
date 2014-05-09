@@ -260,7 +260,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 var id;
                                 console.log("exit destination :", exitDest);
                                 confirmUI.hide();
-                                document.body.removeChild(document.querySelector(".confirm"));
+                                // document.body.removeChild(document.querySelector(".confirm"));
                                 $exit();
                                 document.removeEventListener("mousedown", exitListener.listener, true); 
                                 

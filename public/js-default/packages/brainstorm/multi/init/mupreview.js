@@ -101,9 +101,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 var frag, ui;
                                                 this.setAttribute("style", "background:none;");
                                                 frag = document.createDocumentFragment();
-                                                ui = new Avatar([id]);
-                                                ui.place(frag);
-                                                (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
+                                                
+                                                if (id){
+                                                        ui = new Avatar([id]);
+                                                        ui.place(frag);
+                                                        (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
+                                                }
                                         },
                                         setIntro : function(intro){
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";

@@ -267,6 +267,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         
                                         // if user has not yet opted to join the session he can do so if it is not already full
                                         else{
+                                                console.log(parts, status, ((parts.length < 3) && ( (status === "scheduled") || (status === "waiting"))));
                                                 if ((parts.length < 3) && ( (status === "scheduled") || (status === "waiting"))){
                                                         node.innerHTML = labels.get("joinbutton");
                                                         node.setAttribute("name", "join");

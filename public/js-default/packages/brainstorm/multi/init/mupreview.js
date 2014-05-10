@@ -215,6 +215,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         };
                         
                         muPreviewUI.displayJoinButton = function(node, status, parts){
+                                console.log("displayJoinButton", node, status, parts);
+                                console.log(muCDB.toJSON());
                                 var usr = user.get("_id"),
                                       leader = muCDB.get("initiator").id,
                                       sched = muCDB.get("scheduled") || 0;

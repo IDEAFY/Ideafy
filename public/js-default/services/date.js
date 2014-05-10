@@ -89,6 +89,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.setMonth = function(event, node){
+                                console.log("month changed :", node.selectedIndex);
                                 date.set("month", node.selectedIndex);        
                         };
                         

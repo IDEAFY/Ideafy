@@ -71,7 +71,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.getDatestamp = function(){
-                                return new Date(_widget.getDate()).getTime();        
+                                var d;
+                                d = date.get("year") + '/' + date.get("month") + '/' + date.get("day");
+                                return new Date(d).getTime();        
                         };
                         
                         _widget.setDate = function(y,m,d){
@@ -89,7 +91,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         };
                         
                         _widget.setMonth = function(event, node){
-                                console.log("month changed :", node.selectedIndex);
                                 date.set("month", node.selectedIndex);        
                         };
                         

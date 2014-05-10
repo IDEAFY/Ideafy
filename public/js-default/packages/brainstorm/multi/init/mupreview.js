@@ -91,6 +91,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 console.log("participants updated ", parts);
                                                 participants.reset(parts);
                                                 muPreviewUI.displayJoinButton(node, muCDB.get("status"), parts);
+                                        },
+                                        displayCancel : function(leader){
+                                                (leader.id === user.get("_id")) ? this.innerHTML = '&#10007' : this.innerHTML = "";
                                         }
                                 }),
                                 "participant" : new Model(participants, {
@@ -121,7 +124,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
-                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime invisible" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-model="bind:showJoinButton, status; bind: updateJoinButton, participants" data-previewevent="listen: mousedown, press; listen:mouseup, action"></div><div class="infopreview invisible" data-info="bind:showMsg, msg"></div></div></div>';
+                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime invisible" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div><div class="cancelcession" data-model = "bind: displayCancel, initiator" data-previewevent="listen: click, cancelsession">&#10007</div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-model="bind:showJoinButton, status; bind: updateJoinButton, participants" data-previewevent="listen: mousedown, press; listen:mouseup, action"></div><div class="infopreview invisible" data-info="bind:showMsg, msg"></div></div></div>';
                        
                         muPreviewUI.reset = function reset(sid){
                                 document.getElementById("mupreview").classList.remove("invisible");
@@ -247,7 +250,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         }
                                         
                                         // else check if current user is already a participant
-                                        else if (parts.indexOf(usr) > -1){
+                                        else if (parts.toJSON().search(usr) > -1){
                                                 if (status === "waiting"){
                                                         node.innerHTML = labels.get("enterbutton");
                                                         node.setAttribute("name", "enter");
@@ -274,6 +277,20 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 }
                                         }      
                                 }            
+                        };
+                        
+                        /*
+                         *  Function called to cancel a scheduled session
+                         */
+                        muPreviewUI.cancelsession = function(event, node){
+                                // display confirmation UI
+                                
+                                console.log("canceling");
+                                
+                                // notify participants if any
+                                
+                                // remove from database
+                                
                         };
                         
                         

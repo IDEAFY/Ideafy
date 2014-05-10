@@ -1004,6 +1004,7 @@ textarea.a-desc::-webkit-input-placeholder{
     height: 20px;
     line-height: 20px;
     color: #404040;
+    margin-left: 10px;
 }
 
 #mupreview .time{
@@ -1031,4 +1032,9 @@ textarea.a-desc::-webkit-input-placeholder{
 #mubwait .contact, #mupreview .contact{
     min-height: 40px;
     height: 40px;
+}
+
+#mupreview .cancelsession{
+    color: red;
+    margin-right: 10px;
 }

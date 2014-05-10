@@ -100,9 +100,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         setAvatar : function setAvatar(id){
                                                 var frag, ui;
                                                 this.setAttribute("style", "background:none;");
-                                                frag = document.createDocumentFragment();
                                                 
                                                 if (id){
+                                                        frag = document.createDocumentFragment();
                                                         ui = new Avatar([id]);
                                                         ui.place(frag);
                                                         (!this.hasChildNodes())?this.appendChild(frag):this.replaceChild(frag, this.firstChild);
@@ -259,7 +259,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         }
                                         
                                         // else check if current user is already a participant
-                                        else if (parts.toJSON().search(usr) > -1){
+                                        else if (parts.join().search(usr) > -1){
                                                 if (status === "waiting"){
                                                         node.innerHTML = labels.get("enterbutton");
                                                         node.setAttribute("name", "enter");

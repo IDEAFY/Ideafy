@@ -216,6 +216,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                       leader = muCDB.get("initiator").id,
                                       sched = muCDB.get("scheduled") || 0;
                                       now = new Date().getTime();
+                               
+                               console.log("displayJoinButton", node, status, parts);
                                       
                                if (sched) sched = new Date(sched).getTime(); 
                                  

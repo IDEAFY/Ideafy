@@ -1028,7 +1028,7 @@ textarea.a-desc::-webkit-input-placeholder{
     margin-top: -60px;
 }
 
-#mubwait .contact{
+#mubwait .contact, #mupreview .contact{
     min-height: 40px;
     height: 40px;
 }

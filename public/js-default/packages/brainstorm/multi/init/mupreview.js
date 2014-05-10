@@ -180,6 +180,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         muCDB.set("participants", parts);
                                                         muCDB.upload()
                                                         .then(function(){
+                                                                // reset participants model
+                                                                participants.reset(muCDB.get("participants"));
                                                                 // if it is an immediate session and/or status === waiting join right away
                                                                 if (muCDB.get("status") === "waiting") muPreviewUI.enter();
                                                                 else spinner.stop();

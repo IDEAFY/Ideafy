@@ -51,7 +51,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         this.setAttribute("style", "display:inline-block");
                                                         date = new Date(scheduled);
                                                         now = new Date();
-                                                        if (date.getDate() === now.getDate()) this.innerHTML = labels.get("today");
+                                                        if (date.toDateString() === now.toDateString()) this.innerHTML = labels.get("today");
                                                         else this.innerHTML = date.toLocaleDateString();
                                                 }
                                                 else{
@@ -88,6 +88,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         updateJoinButton : function(parts){
                                                 var node =this;
                                                 // update store for list UI
+                                                console.log("participants updated ", parts);
                                                 participants.reset(parts);
                                                 muPreviewUI.displayJoinButton(node, muCDB.get("status"), parts);
                                         }

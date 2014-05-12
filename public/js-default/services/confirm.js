@@ -48,7 +48,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _widget.dom.classList.add("invisible");        
                         };
                         
-                        _widget.show = function show(){
+                        _widget.show = function show($class){
+                                // make sure the UI is displayed with the proper class
+                                if ($class && !_widget.dom.classList.contains($class)){
+                                        _class && _widget.dom.classList.remove(_class);
+                                        _class = $class;
+                                        $widget.dom.classList.add($class);
+                                }
+                                
                                 Map.get("cache").classList.add("appear");
                                 if (_class === "EULA") {
                                         Map.get("cache").classList.add("EULA");

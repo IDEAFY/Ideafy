@@ -133,7 +133,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                                 Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
                                         }
                                         else {
-                                                Confirm.reset(labels.get("participantleave"), confirmCallBack);        
+                                                Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
                                         }
                                         // reset participants store
                                         participants.reset(session.get("participants")); 
@@ -156,7 +156,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                       sched = session.get("scheduled") || null;
                                 node.classList.remove("pressed");
                                 if (sched && (sched - now) > 300000) $exit();
-                                else Confirm.show();
+                                else Confirm.show("musession-confirm");
                         };
                         
                         /*
@@ -168,7 +168,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 var now = new Date().getTime();
                                 exitDest = target.getAttribute("href") || target;
                                 // href exists it is one of the nav options else probably a notify message (or future use)
-                                if (!session.get("scheduled") ||((session.get("scheduled") - now) < 300000)) Confirm.show();
+                                if (!session.get("scheduled") ||((session.get("scheduled") - now) < 300000)) Confirm.show("musession-confirm");
                         };
                         
                         // participant decides to leave session

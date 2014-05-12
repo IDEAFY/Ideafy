@@ -135,7 +135,9 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         // uis declaration
         _dock = new Dock();
+        console.log("dock ok");
         _login = new Login(_body.init, _body.reload, _local);
+        console.log("login ok");
         
         
         // Widget definition
@@ -147,7 +149,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         _body.template = '<div data-stack="destination" data-event="selector:.pressed-btn, mousedown, press; selector:.pressed-btn, mouseup, release"><div data-place="place:login"></div><div id="cache"></div><div data-place="place:confirm"></div></div>';
         
-        _body.alive(Map.get("body"));
+        _body.alive(document.body);
         
         // INITIALIZATION
         

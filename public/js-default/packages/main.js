@@ -147,7 +147,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 "place": new Place({confirm: Confirm, login: _login})
         });
         
-        _body.template = '<div data-stack="destination" data-event="selector:.pressed-btn, mousedown, press; selector:.pressed-btn, mouseup, release"><div data-place="place:login"></div><div id="cache"></div><div data-place="place:confirm"></div></div>';
+        _body.template = '<div data-stack="destination"><div data-place="place:login"></div><div id="cache"></div><div data-place="place:confirm"></div></div>';
         
         _body.alive(document.body);
         
@@ -255,5 +255,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         return _user.upload();
                 }              
         });
+        
+        MAIN = _body;
         
 }); 

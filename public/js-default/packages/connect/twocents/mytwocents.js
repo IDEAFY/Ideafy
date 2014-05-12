@@ -5,8 +5,8 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "./mtc-stack", "./twoqlist", "Store"],
-        function(Widget, Map, Config, Model, UIPlugin, Delegate, Stack, Control, MTCDetailStack, TwoQList, Store){
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "./mtc-stack", "./twoqlist", "Store", "service/new2q"],
+        function(Widget, Map, Config, Model, UIPlugin, Delegate, Stack, Control, MTCDetailStack, TwoQList, Store, New2Q){
                 
                 return function MyTwocentsConstructor(){
                         
@@ -88,8 +88,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         
                         // ask a twoquestion
                         myTwocentUI.plus = function(){
-                                Map.get("new2q-popup").classList.add("appear");
-                                Map.get("cache").classList.add("appear");        
+                                New2Q.reset();      
                         };
                         
                         // manage button events

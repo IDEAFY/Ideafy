@@ -100,17 +100,26 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _widget.dom.querySelector(".description").blur();
                         };
                         
-                        _widget.closePopup = function closePopup(){
-                                // hide window
-                                document.getElementById("new2q-popup").classList.remove("appear");
-                                document.getElementById("cache").classList.remove("appear");
+                        _widget.reset = function(){
+                                
+                                Map.get("cache").classList.add("appear");
+                                
                                 // reset _store and _error
                                 _store.unsync();
                                 _store.reset(Config.get("TQTemplate"));
                                 _resetLang();
                                 _error.reset({"error":""});
                                 // hide flag list
-                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");     
+                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");
+                                 
+                                _wdiget.dom.classList.add("appear");       
+                        };
+                        
+                        _widget.closePopup = function closePopup(){
+                                // hide window
+                                document.getElementById("new2q-popup").classList.remove("appear");
+                                document.getElementById("cache").classList.remove("appear");
+                                    
                         };
                         
                         _widget.cancel = function(event, node){

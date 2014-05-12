@@ -11,7 +11,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                 return function ConfirmConstructor(){
                 
                         var _labels = Config.get("labels"),
-                                _widget = new OObject(),
+                                _widget = new Widget(),
                                 _content = new Store({"question":""}),
                                 _callback, _class;
                         

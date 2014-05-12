@@ -45,7 +45,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.hide = function hide(){
                                 Map.get("cache").classList.remove("appear");
                                 if (_class === "EULA") Map.get("cache").classList.remove("EULA");
-                                _class && _widget.dom.classList.remove(_class);
                                 _widget.dom.classList.add("invisible");        
                         };
                         
@@ -61,9 +60,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.reset = function reset($question, $callback, $class){
+                                // reset previous class if any
+                                _class && _widget.dom.classList.remove(_class);
+                                
+                                // set parameters
                                 _content.set("question", $question);
                                 _callback = $callback;
                                 _class = $class;
+                                
+                                // applying new class if any
                                 _class && _widget.dom.classList.add(_class);      
                         };
                         

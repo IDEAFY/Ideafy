@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
         function(Widget, Map, Model, Event, Config, Store){
                 
-                return new function ConfirmConstructor(){
+                return function ConfirmConstructor(){
                 
                         var _labels = Config.get("labels"),
                                 _widget = new Widget(),
@@ -66,8 +66,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _class = $class;
                                 _class && _widget.dom.classList.add(_class);      
                         };
-                        
-                        _widget.alive(Map.get("confirm-popup"));
                         
                         return _widget;
 

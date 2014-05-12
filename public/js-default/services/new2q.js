@@ -70,9 +70,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createquestion"></span><div class="close-popup" data-new2qevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-new2q="bind: displayLang, lang" data-new2qevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-new2qevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><p><textarea class="description input" data-labels="bind:placeholder, questionplaceholder" data-new2q="bind: value, question; bind: setLength, type" data-new2qevent="listen:input, checkLength"></textarea></p><div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-new2qevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
-                        _widget.render();
-                        _widget.place(Map.get("new2q-popup"));
-                        
                         _widget.showLang = function(event, node){
                                 event.stopPropagation();
                                 event.preventDefault();

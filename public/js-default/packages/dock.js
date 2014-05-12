@@ -13,7 +13,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 
 		//declaration
 			var _widget = new Widget(),
-			    _newIdea, _new2q, _tips, _notify = new Notify(),
+			    _newIdea, _new2q, _new2c, _tips, _notify = new Notify(), _confirm,
 			    _public, _library, _brainstorm, _connect, _dashboard,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),
@@ -25,10 +25,10 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			_widget.plugins.addAll({
 				"dockstack" : _stack,
 				"dockcontrol" : _control,
-				"place" : new Place({"notify":_notify})
+				"place" : new Place({"notify":_notify, "newidea": _newIdea, "new2q": _new2q, "new2c": _new2c, "tips": _tips, "confirm": _confirm})
 			});
 			
-			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,mousedown,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div id="notify" data-place="place:notify"></div></div>';
+			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,mousedown,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div id="notify" data-place="place:notify"></div><div id="newidea-popup" data-place="place:notify"></div><div id="new2q-popup" data-place="place:notify"></div><div id="new2c-popup"></div><div id="help-popup"></div><div id = "tip-popup"></div><div id = "confirm-popup"></div></div>';
 			
 			_widget.place(Map.get("dock"));
 			
@@ -72,7 +72,9 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 				// initialize popups
 				_newIdea = new NewIdea();
                                 _new2q = new New2Q();
+                                _new2q = new New2C();
                                 _tips = new Tips();
+                                _confirm = new Confirm();
 			};
 			
 			/*

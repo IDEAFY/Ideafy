@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
         function(Widget, Map, Model, Event, Config, Store){
                 
-                return new function new2CConstructor(){
+                return function new2CConstructor(){
                 
                         var _widget = new Widget(),
                             _dest = new Store({"userid":"", "username":""}),
@@ -35,7 +35,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.template = '<div><div class = "header blue-dark"><span data-dest="bind: setHeader, username"></span><div class="close-popup" data-new2cevent="listen:mousedown, cancel"></div></div><form class="form"><p><textarea class="description input" data-labels="bind:placeholder, twocentplaceholder" data-new2c="bind: value, message"></textarea></p><div><span class="errormsg" data-errormsg="bind:innerHTML, error"></span><div class="sendmail" data-new2cevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, sendlbl"></div></div></form></div>';
                         
                         _widget.render();
-                        _widget.place(Map.get("new2c-popup"));
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");

@@ -21,7 +21,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "confirmevent" : new Event(this)
                         });
                         
-                        _widget.template = '<div class = "confirm"><div class="help-doctor"></div><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-confirmevent="listen:mousedown, press; listen:mouseup, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-confirmevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl">Cancel</div></div>';
+                        _widget.template = '<div class = "confirm invisible"><div class="help-doctor"></div><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-confirmevent="listen:mousedown, press; listen:mouseup, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-confirmevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl">Cancel</div></div>';
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
@@ -68,13 +68,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.alive(Map.get("confirm-popup"));
-                        
-                        if ($question){
-                                _content.set("question", $question);
-                        }
-                        else{
-                                _widget.hide();
-                        }
 
                 };
         });

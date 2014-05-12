@@ -798,15 +798,17 @@ textarea.a-desc::-webkit-input-placeholder{
 }
 
 .a-delconfirm{
-    top: 20%;
-    left: 0;
+    top: 50%;
+    left: 50%;
     width: 550px;
     background: #657b99;
     color: black;
     text-align: center;
     padding: 40px;
     -webkit-box-shadow: inset 0px 0px 1px 15px white;
-    margin: 0px 15px;
+    margin-top: -60px;
+    margin-left: -315px;
+    border-radius: 20px;
 }
 
 .a-delconfirm .help-doctor{

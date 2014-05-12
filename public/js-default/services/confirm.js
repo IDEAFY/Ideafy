@@ -18,7 +18,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
                                 "confirm" : new Model(_content),
-                                "confirmevent" : new Event(this)
+                                "confirmevent" : new Event(_widget)
                         });
                         
                         _widget.template = '<div  id="confirm-popup" class = "confirm invisible"><div class="help-doctor"></div><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-confirmevent="listen:mousedown, press; listen:mouseup, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-confirmevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl">Cancel</div></div>';

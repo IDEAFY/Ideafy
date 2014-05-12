@@ -352,7 +352,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _stack.getStack().add("#maintenance-screen", _serverdown);
                         _stack.getStack().add("#nointernet", _internetdown);
                         
-                        _login.alive(Map.get("login"));
+                        _login.place(Map.get("login"));
                         
                         // Initialization
                         _login.init = function init(){

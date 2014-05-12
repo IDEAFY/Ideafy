@@ -130,7 +130,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         
                                         // init confirmation UI content
                                         if (session.get("initiator").id === user.get("_id")){
-                                                Confirm.reset(labels.get("leaderleave"), confirmCallBack);        
+                                                Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
                                         }
                                         else {
                                                 Confirm.reset(labels.get("participantleave"), confirmCallBack);        

@@ -26,8 +26,6 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                 console.log("help ok");
                 _notify= new Notify();
                 console.log("notify ok");
-                _newIdea = new NewIdea();
-                 console.log("newidea ok");
                 _new2q = new New2Q();
                 console.log("new2q ok");
                 _new2c = new New2C();
@@ -42,7 +40,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			_widget.plugins.addAll({
 				"dockstack" : _stack,
 				"dockcontrol" : _control,
-				"place" : new Place({"notify":_notify, "newidea": _newIdea, "new2q": _new2q, "new2c": _new2c, "help": _help, "tips": _tips, "confirm": _confirm})
+				"place" : new Place({"notify":_notify, "newidea": NewIdea, "new2q": _new2q, "new2c": _new2c, "help": _help, "tips": _tips, "confirm": _confirm})
 			});
 			
 			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,mousedown,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div data-place="place:notify"></div><div data-place="place:newidea"></div><div data-place="place:new2q"></div><div data-place="place:new2c"></div><div data-place="place:help"></div><div data-place="place:tips"></div><div data-place="place:confirm"></div></div>';

@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils", "Promise", "attach/add"],
         function(Widget, Map, Model, Event, Place, Config, Store, Spinner, Utils, Promise, AddAttachment){
                 
-                return function newIdeaConstructor(){
+                return new function newIdeaConstructor(){
                 
                         var _widget = new Widget(),
                               _addAttachmentUI = new AddAttachment(),

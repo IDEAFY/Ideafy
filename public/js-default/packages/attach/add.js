@@ -72,18 +72,29 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 if (!uploaded){
                                                         var custom = [], arr, i, l, key,
                                                                 res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
-                                                        if (user.get("categories")) custom = user.get("categories");
+                                                        
                                                         for (i=0, l=cats.length; i<l;i++){
-                                                                key = cats[i];
-                                                                res+="<option>"+_labels.get(key)+"</option>";
-                                                        }
-                                                        if (custom.length){
-                                                                for (i=0, l=custom.length; i<l;i++){
-                                                                        res+="<option>"+custom[i]+"</option>";
-                                                                }
-                                                        }
-                                                        res+="<option>"+_labels.get("other")+"</option>";
+                                                                        key = cats[i];
+                                                                        res+="<option>"+_labels.get(key)+"</option>";
+                                                        };
+                                                        
                                                         this.innerHTML = res;
+                                                        
+                                                        user.watchValue("categories", function(){
+                                                                res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
+                                                                if (user.get("categories")) custom = user.get("categories");
+                                                                for (i=0, l=cats.length; i<l;i++){
+                                                                        key = cats[i];
+                                                                        res+="<option>"+_labels.get(key)+"</option>";
+                                                                }
+                                                                if (custom.length){
+                                                                        for (i=0, l=custom.length; i<l;i++){
+                                                                                res+="<option>"+custom[i]+"</option>";
+                                                                        }
+                                                                }
+                                                                res+="<option>"+_labels.get("other")+"</option>";
+                                                                this.innerHTML = res;        
+                                                        });
                                                 }
                                         }   
                                 }),

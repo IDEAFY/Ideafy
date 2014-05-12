@@ -25,9 +25,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                             vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                             _voted = false;
                        
-                       CONFAT = Confirm;
-                        
-                        cdb.setTransport(transport);
+                       cdb.setTransport(transport);
                         // define plugins and methods
                         ui.plugins.addAll({
                                 "labels" : new Model(labels),

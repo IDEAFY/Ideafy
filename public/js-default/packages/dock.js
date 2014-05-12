@@ -219,8 +219,6 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 }           
                         });
                         
-                        CONF = _confirm;
-                        
 		//return
 			return _widget;
 

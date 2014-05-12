@@ -68,6 +68,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.alive(Map.get("confirm-popup"));
+                        
+                        return _widget;
 
                 };
         });

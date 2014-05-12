@@ -112,7 +112,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // hide flag list
                                 _widget.dom.querySelector(".idealang ul").classList.add("invisible");
                                  
-                                _wdiget.dom.classList.add("appear");       
+                                _widget.dom.classList.add("appear");       
                         };
                         
                         _widget.closePopup = function closePopup(){

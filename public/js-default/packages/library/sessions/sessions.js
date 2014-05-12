@@ -26,7 +26,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   _currentSearch = "", // the current search, if empty _sessionData is used
                   _sessionsCDB = new CouchDBView(),
                   spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10, top: 330}).spin(),
-                  confirmUI, confirmCallback;
+                  confirmCallback;
                   
               
               // setup
@@ -269,17 +269,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 return promise;
                              },
                              // confirmation window invoked with question and callback
-                            confirmUI, question = _labels.get("deletereplay"), confirmCallback = function(decision){
+                            question = _labels.get("deletereplay"), confirmCallback = function(decision){
                                         if (decision){
                                                 spinner.spin(document.getElementById("sessionlistspinner"));
                                                 // remove session from database
                                                 removeFromDB(_sid).then(function(){
                                                         spinner.stop();
-                                                        confirmUI.close();
+                                                        Confirm.hide();
                                                 });   
                                         }
                                         else{
-                                                confirmUI.close();        
+                                                Confirm.hide();        
                                         }
                                 };
                         
@@ -290,8 +290,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // if sessionReplay is enabled display confirmation UI
                         if (_sessions.get(_id).replayIdeas && _sessions.get(_id).replayIdeas.length ){
                                 spinner.stop();
-                                confirmUI = new Confirm(document.getElementById("session-list"), question, confirmCallback);
-                                confirmUI.show();        
+                                Confirm.reset(question, confirmCallback);
+                                Confirm.show();        
                         }
                         else {
                                 removeFromDB(_sid).then(function(){

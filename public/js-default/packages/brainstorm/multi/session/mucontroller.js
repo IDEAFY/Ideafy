@@ -31,7 +31,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                     _session = new CouchDBDocument(),
                     _sessionData = new Store(),
                     info = new Store({"msg":""}),
-                    confirmUI, confirmCallBack,
+                    confirmCallBack,
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
                 // progress bar setup
@@ -99,7 +99,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         }       
                                 }
                                 else {
-                                        confirmUI.show();
+                                        Confirm.show();
                                 }
                         }
                	};
@@ -138,8 +138,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 // notify current chat interface
                                 currentUI.getChatUI().leave();
                                 _session.unsync();
-                                confirmUI.hide();
-                                document.body.removeChild(document.querySelector(".confirm"));
+                                Confirm.hide();
                         }); 
                        // reset sessionInProgress in user doc
                         _user.set("sessionInProgress", "");
@@ -167,8 +166,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 promise.fulfill();
                             };
                                 
-                        confirmUI.hide();
-                        document.body.removeChild(document.querySelector(".confirm"));
+                        Confirm.hide();
                         infoUI.classList.remove("invisible");
                         timer = setInterval(function(){
                                 switch(message){
@@ -299,10 +297,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 
                                 if (!replay){
                                         // init exit confirmation UI
-                                        confirmUI = new Confirm(document.body, null, null, "musession-confirm");
                                         confirmCallBack = function(decision){
                                                 if (!decision){
-                                                        confirmUI.hide();
+                                                        Confirm.hide();
                                                 }
                                                 else{
                                                         if (_session.get("initiator").id === _user.get("_id")){
@@ -315,10 +312,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         };
                                         // init confirmation UI
                                         if (_session.get("initiator").id === _user.get("_id")){
-                                                confirmUI.reset(_labels.get("leaderleave"), confirmCallBack);        
+                                                Confirm.reset(_labels.get("leaderleave"), confirmCallBack);        
                                         }
                                         else {
-                                                confirmUI.reset(_labels.get("participantleave"), confirmCallBack);        
+                                                Confirm.reset(_labels.get("participantleave"), confirmCallBack);        
                                         }
                                 }
                                 
@@ -355,9 +352,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         // reset local session data
                         _sessionData.reset();
                         
-                        // remove confirm UI if present
-                        document.querySelector(".confirm") && document.body.removeChild(document.querySelector(".confirm")); 
-                           
                         // reset progress bar
                         _steps.reset([
                                 {name: "mustart", label: _labels.get("quickstepstart"), currentStep: false, status:"done"},
@@ -540,7 +534,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 })
                                 .then(function(){
                                         $exit();
-                                        document.body.removeChild(document.querySelector(".confirm"));
                                 });
                         }                
                 });
@@ -564,10 +557,10 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         // manage exit event
                                         // step 1 init confirmation UI
                                         if (session.get("initiator").id === user.get("_id")){
-                                                confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        
+                                                Confirm.reset(labels.get("leaderleave"), confirmCallBack);        
                                         }
                                         else {
-                                                confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
+                                                Confirm.reset(labels.get("participantleave"), confirmCallBack);        
                                         }
                                         // reset participants store
                                         participants.reset(session.get("participants")); 
@@ -585,6 +578,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         widget.leave = function leave(target){
                                 exitDest = target.getAttribute("href") || target;
                                 // href exists it is one of the nav options else probably a notify message (or future use)
-                                confirmUI.show();       
+                                Confirm.show();       
                         };
  */

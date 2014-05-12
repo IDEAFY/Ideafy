@@ -23,8 +23,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                             user = Config.get("user"),
                             _cat = Config.get("cat"),
                             vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
-                            _voted = false,
-                            ConfirmUI;
+                            _voted = false;
                         
                         cdb.setTransport(transport);
                         // define plugins and methods
@@ -195,11 +194,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 
                                 ui.dom.classList.remove("invisible");
                                 _twocentWriteUI.place(_domWrite);
-                                
-                                if (!ConfirmUI){
-                                        ConfirmUI = new Confirm(ui.dom, labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
-                                        ConfirmUI.hide();
-                                }
                                 
                                 // retrieve attachment document form database
                                 cdb.unsync();
@@ -442,8 +436,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         
                         ui.confirmDelete = function(event, node){
                                 node.classList.remove("a-pressed");
-                                ConfirmUI.reset(labels.get("deleteattachment"), ui.deleteAttachment);
-                                ConfirmUI.show();
+                                Confirm.reset(labels.get("deleteattachment"), ui.deleteAttachment);
+                                Confirm.show();
                         };
                         
                         ui.deleteAttachmentFile = function(fileName){
@@ -495,7 +489,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         });
                                 }
                                 else{
-                                        ConfirmUI.hide();                
+                                        Confirm.hide();                
                                 }     
                         };
                         

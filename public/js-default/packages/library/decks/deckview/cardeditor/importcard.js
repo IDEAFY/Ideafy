@@ -19,8 +19,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                     selectedDeck = new Store([]), // deck to import cards from
                     deletedCards = [], // cards that will be removed from database
                     deckId,
-                    model = new Store(),
-                    confirmUI;
+                    model = new Store();
                     
                 
                 importCard.template = '<div class="importcard"><div class="importfrom"><label data-label="bind:innerHTML, importfrom"></label><select data-model="bind:setDecks, decks" data-importevent="listen: change, updateSelect"></select></div><div class="importlist"><legend data-label="bind:innerHTML, seldeck"></legend><ul name="selected" data-selected="foreach"><li name="selected" data-selected="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: mouseup , toggleSelect"></li></ul></div><div class="importarea"><button class="addremove invisible" data-model="bind: setVisible, sel; bind: setDirection, direction" data-importevent="listen: mouseup , addRemoveSelected">Add/remove</button><button class="invisible" data-label="bind:innerHTML, selall" data-model="bind:setVisible, sel" data-importevent="listen: mouseup , selectAll"></button><button class="invisible" data-label="bind:innerHTML, clearsel" data-model="bind: setVisible, sel" data-importevent="listen: mouseup , clearSelected">Clear selection</button></div><div class="importlist"><legend data-label="bind:innerHTML, workdeck"></legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: mouseup , toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:mousedown, press; listen:mouseup , cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:mousedown, press; listen:mouseup , upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
@@ -243,7 +242,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         warningMSG += card.title+", ";
                                 });
                                 warningMSG = warningMSG.slice(0, -2);
-                                confirmUI = new Confirm(document.body, labels.get("delcardwarning")+warningMSG, function(decision){
+                                Confirm.reset(labels.get("delcardwarning")+warningMSG, function(decision){
                                         if (decision){
                                                 currentDeck.delAll(toRemove);
                                                 importCard.clearSelection("current");
@@ -252,8 +251,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                                         deletedCards.push(card.id);
                                                 });
                                         }
-                                        document.body.removeChild(document.querySelector(".confirm"));
-                                        Map.get("cache").classList.remove("appear");
+                                        Confirm.hide();
                                 }, "importcard-confirm");
                         }
                         else{

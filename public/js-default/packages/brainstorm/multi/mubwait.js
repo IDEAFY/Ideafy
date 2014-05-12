@@ -16,8 +16,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                             info = new Store({"msg":""}),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
-                            chatUI = new Chat(),
-                            confirmUI, confirmCallBack,
+                            chatUI = new Chat(),confirmCallBack,
                             exitListener = {"listener": null},
                             exitDest,
                             spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 269, top: 306}).spin();
@@ -109,12 +108,9 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         
                                         // manage exit event
                                         
-                                        // create confirmation UI
-                                        confirmUI = new Confirm(document.body,null,null, "musession-confirm");
-                                        
                                         confirmCallBack = function(decision){
                                                 if (!decision){
-                                                        confirmUI.hide();
+                                                        confirm.hide();
                                                 }
                                                 else{
                                                         user.set("sessionInProgress", "");
@@ -133,10 +129,10 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         
                                         // init confirmation UI content
                                         if (session.get("initiator").id === user.get("_id")){
-                                                confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        
+                                                confirm.reset(labels.get("leaderleave"), confirmCallBack);        
                                         }
                                         else {
-                                                confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
+                                                confirm.reset(labels.get("participantleave"), confirmCallBack);        
                                         }
                                         // reset participants store
                                         participants.reset(session.get("participants")); 
@@ -159,7 +155,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                       sched = session.get("scheduled") || null;
                                 node.classList.remove("pressed");
                                 if (sched && (sched - now) > 300000) $exit();
-                                else confirmUI.show();
+                                else confirm.show();
                         };
                         
                         /*
@@ -171,7 +167,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 var now = new Date().getTime();
                                 exitDest = target.getAttribute("href") || target;
                                 // href exists it is one of the nav options else probably a notify message (or future use)
-                                if (!session.get("schedule") ||((session.get("schedule") - now) < 300000)) confirmUI.show();
+                                if (!session.get("schedule") ||((session.get("schedule") - now) < 300000)) confirm.show();
                         };
                         
                         // participant decides to leave session
@@ -246,8 +242,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                             promise.fulfill();
                                     };
                                 
-                                confirmUI.hide();
-                                document.body.removeChild(document.querySelector(".confirm"));
+                                confirm.hide();
                                 infoUI.classList.remove("invisible");
                                 timer = setInterval(function(){
                                                 if (message !== "deleting") {info.set("msg", message);}
@@ -272,7 +267,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         // switch screen to destination if user confirms exit
                         widget.goToScreen = function goToScreen(){
                                 var id;
-                                console.log("exit destination :", exitDest);
                                 $exit();
                                 document.removeEventListener("mousedown", exitListener.listener, true); 
                                 

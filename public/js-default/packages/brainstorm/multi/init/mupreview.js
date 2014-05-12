@@ -5,8 +5,8 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "lib/spin.min"],
-        function(Widget, Config, CouchDBDocument, Store, Model, Event, Avatar, Utils, Spinner){
+define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "lib/spin.min", "service/confirm"],
+        function(Widget, Config, CouchDBDocument, Store, Model, Event, Avatar, Utils, Spinner, Confirm){
                 
                 return function MUPreviewConstructor(){
                         
@@ -215,15 +215,11 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         };
                         
                         muPreviewUI.displayJoinButton = function(node, status, parts){
-                                console.log("displayJoinButton", node, status, parts);
-                                console.log(muCDB.toJSON());
                                 var usr = user.get("_id"),
                                       leader = muCDB.get("initiator").id,
                                       sched = muCDB.get("scheduled") || 0;
                                       now = new Date().getTime();
                                
-                               console.log("displayJoinButton", node, status, parts);
-                                      
                                if (sched) sched = new Date(sched).getTime(); 
                                  
                                  // reset name attribute (used to trigger appropriate action)
@@ -274,7 +270,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         
                                         // if user has not yet opted to join the session he can do so if it is not already full
                                         else{
-                                                console.log(parts, status, ((parts.length < 3) && ( (status === "scheduled") || (status === "waiting"))));
                                                 if ((parts.length < 3) && ( (status === "scheduled") || (status === "waiting"))){
                                                         node.innerHTML = labels.get("joinbutton");
                                                         node.setAttribute("name", "join");
@@ -289,6 +284,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 }            
                         };
                         
+                        
+                                
                         /*
                          *  Function called to cancel a scheduled session
                          */

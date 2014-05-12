@@ -249,13 +249,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         scope.hide();
                                                 }
                                                 else{
-							document.getElementById("cache").classList.add("appear");
-                                                        confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
+							Confirm.reset(labels.get("deldeckwarning"), function(decision){
                                                                 var spinner = new Spinner({lines:10, length: 20, width: 8, radius:10}).spin();
                                                                 if (!decision) {
+                                                                        Confirm.hide();
                                                                         scope.hide();
                                                                 }
                                                                 else{
+                                                                        Confirim.hide();
                                                                         spinner.spin(document.getElementById("deckview"));
                                                                         document.getElementById("cache").classList.add("appear");
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
@@ -314,8 +315,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 });
                                                                         }
                                                                 }
-                                                                document.body.removeChild(document.querySelector(".confirm"));
                                                         }, "importcard-confirm");
+                                                        Confirm.show();
                                                 }
                                                 break;
                                         case "message":

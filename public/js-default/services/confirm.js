@@ -8,12 +8,12 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
         function(Widget, Map, Model, Event, Config, Store){
                 
-                function ConfirmConstructor($parent, $question, $onDecision, $class){
+                return function ConfirmConstructor(){
                 
                         var _labels = Config.get("labels"),
                                 _widget = this,
-                                _content = new Store({"question":$question}),
-                                _callback = $onDecision;
+                                _content = new Store({"question":""}),
+                                _callback, _class;
                         
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
@@ -31,48 +31,43 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.ok = function(event, node){
                                 node.classList.remove("pressed");
                                 Map.get("cache").classList.remove("appear");
-                                if ($class === "EULA") Map.get("cache").classList.remove("EULA");
+                                if (_class === "EULA") Map.get("cache").classList.remove("EULA");
                                 _callback && _callback(true);    
                         };
                         
                         _widget.cancel = function(event, node){
                                 node && node.classList.remove("pressed");
                                 Map.get("cache").classList.remove("appear");
-                                if ($class === "EULA") Map.get("cache").classList.remove("EULA");
+                                if (_class === "EULA") Map.get("cache").classList.remove("EULA");
                                 _callback && _callback(false);
-                        };
-                        
-                        _widget.close = function close(){
-                                Map.get("cache").classList.remove("appear");
-                                if ($class === "EULA") Map.get("cache").classList.remove("EULA");
-                                if ($class === "musession-confirm") _widget.dom.classList.add("invisible");
-                                else $parent && $parent.removeChild($parent.lastChild);       
                         };
                         
                         _widget.hide = function hide(){
                                 Map.get("cache").classList.remove("appear");
-                                if ($class === "EULA") Map.get("cache").classList.remove("EULA");
+                                if (_class === "EULA") Map.get("cache").classList.remove("EULA");
+                                _class && _widget.dom.classList.remove(_class);
                                 _widget.dom.classList.add("invisible");        
                         };
                         
                         _widget.show = function show(){
                                 Map.get("cache").classList.add("appear");
-                                if ($class === "EULA") {
+                                if (_class === "EULA") {
                                         Map.get("cache").classList.add("EULA");
                                         _widget.dom.querySelector(".option.left").innerHTML = _labels.get("accept");
                                         _widget.dom.querySelector(".option.right").innerHTML = _labels.get("reject");
                                 }
-                                _widget.dom.classList.remove("invisible");        
+                                _widget.dom.classList.remove("invisible");
+                                setTimeout(function(){_widget.close;}, 15000);      
                         };
                         
-                        _widget.reset = function reset(question, callback){
-                                _content.set("question", question);
-                                _callback = callback;       
+                        _widget.reset = function reset($question, $callback, $class){
+                                _content.set("question", $question);
+                                _callback = $callback;
+                                _class = $class;
+                                _class && _widget.dom.classList.add(_class);      
                         };
                         
-                        _widget.render();
-                        $parent && _widget.place($parent);
-                        $class && _widget.dom.classList.add($class);
+                        _widget.alive(Map.get("confirm-popup"));
                         
                         if ($question){
                                 _content.set("question", $question);
@@ -80,13 +75,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         else{
                                 _widget.hide();
                         }
-                        
-                        setTimeout(function(){_widget.close;}, 15000);
-                        
-                }
-                        
-                return function ConfirmFactory($parent, $question, $onDecision, $class){
-                        ConfirmConstructor.prototype = new Widget();
-                        return new ConfirmConstructor($parent, $question, $onDecision, $class);
+
                 };
         });

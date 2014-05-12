@@ -32,7 +32,6 @@ define(["OObject" ,"Amy/Stack-plugin",
                              spinner,
                              loginSpinner = new Spinner({color:"#657B99", lines:10, length: 10, width: 8, radius:15, top: 270}).spin(),
                              reload = false,  // boolean to differentiate between initial start and usbsequent logout/login
-                             ConfirmUI,
                              _EULA;
                 
                 //setup && UI DEFINITIONS               
@@ -121,10 +120,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         _signupForm.showEULA = function(event, node){
-                                if (!ConfirmUI){
-                                        ConfirmUI = new Confirm(_signupForm.dom, _EULA, _signupForm.completeSignup, "EULA");
-                                }
-                               ConfirmUI.show();   
+                               Confirm.reset(_EULA, _signupForm.completeSignup, "EULA");
+                               Confirm.show();   
                         };
                         
                         _signupForm.completeSignup = function(accept){
@@ -136,7 +133,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                       user = new CouchDBDocument();
                                 
                                 if (accept){
-                                        ConfirmUI.hide();
+                                        Confirm.hide();
                                         loginSpinner.spin(_signupForm.dom);
                                                         _transport.request("Signup", {name : userid, password : password, fn : fn, ln: ln, lang: Config.get("lang")}, function(result) {
                                                                 if (result.signup === "ok") {
@@ -201,7 +198,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                         }, this);
                                 }
                                 else{
-                                        ConfirmUI.hide();
+                                        Confirm.hide();
                                         _store.set("error", _labels.get("EULArejected"));
                                 }      
                         };

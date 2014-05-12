@@ -7,9 +7,9 @@
 
 define(["OObject", "Amy/Control-plugin" ,
 	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
-	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Store", "lib/spin.min"], 
+	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Store", "lib/spin.min", "service/newidea"], 
 	function(Widget, Control, Model, Place, Delegate, Map, 
-		Config, Detail, Utils, List, Polling, Stack, Menu, Store, Spinner){
+		Config, Detail, Utils, List, Polling, Stack, Menu, Store, Spinner, NewIdea){
 		return function PublicConstructor(){
 		//declaration
 			var _widget = new Widget(),
@@ -180,7 +180,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			_widget.plus = function(){
-			        Map.get("newidea-popup").classList.add("appear");
+			        NewIdea.reset();
 			        Map.get("cache").classList.add("appear");        
 			};
 			

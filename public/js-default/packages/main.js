@@ -9,9 +9,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
     function(Widget, LocalStore, Map, Stack, Model, Place, Event, Dock, Login, Config, Utils, Promise, Confirm) {
         
         //declaration
-        var _body = new Widget(), _stack = new Stack({
-                "#login" : _login
-        }), _dock = new Dock(),
+        var _body = new Widget(), _stack = new Stack({}), _dock = new Dock(),
         _login = new Login(_body.init, _body.reload, _local),
         _local = new LocalStore(),
         updateLabels = Utils.updateLabels,
@@ -139,6 +137,8 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         _login = new Login(_body.init, _body.reload, _local);
         console.log("login ok");
         
+        // add login to the stack
+        _stack.getStack().add("#login", _login);
         
         // Widget definition
         
@@ -257,5 +257,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         });
         
         MAIN = _body;
+        STACK = _stack;
         
 }); 

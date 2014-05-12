@@ -188,8 +188,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			_widget.plus = function(){
-			        NewIdea.reset();
-			        Map.get("cache").classList.add("appear");        
+			        NewIdea.reset();       
 			};
 			
 			_widget.search = function (event, node){

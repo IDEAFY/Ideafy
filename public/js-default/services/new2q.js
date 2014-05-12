@@ -29,7 +29,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _store.setTransport(Config.get("transport"));
                         
                         // reset languages
-                        _resetLang();
+                        _user.watchValue("lang", function(){
+                                _resetLang();
+                        });
                         
                         _widget.plugins.addAll({
                                 "new2q" : new Model(_store, {

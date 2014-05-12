@@ -7,8 +7,8 @@
 
 define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"public/public", "library/library", "brainstorm/brainstorm", "connect/connect", "dashboard/dashboard",
-	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips"], 
-	function(Widget, Place, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){
+	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips", "service/confirm"], 
+	function(Widget, Place, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips, Confirm){
 		return function DockConstructor(){
 
 		//declaration

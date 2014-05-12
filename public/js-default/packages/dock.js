@@ -30,8 +30,6 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			
 			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,mousedown,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div data-place="place:notify"></div><div data-place="place:newidea"></div><div data-place="place:new2q"></div><div data-place="place:new2c"></div><div data-place="place:help"></div><div data-place="place:tips"></div><div data-place="place:confirm"></div></div>';
 			
-			_widget.place(Map.get("dock"));
-			
 			_widget.setDisplay = function(){
 			     var W = window.innerWidth,
 			           H = window.innerHeight,
@@ -50,6 +48,25 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			        
 			        _widget.setDisplay();
 			        
+			        // initialize popups
+                                _help = new Help();
+                                console.log("help ok");
+                                 _notify= new Notify();
+                                 console.log("notify ok");
+                                _newIdea = new NewIdea();
+                                console.log("newidea ok");
+                                _new2q = new New2Q();
+                                console.log("new2q ok");
+                                _new2q = new New2C();
+                                console.log("new2c ok");
+                                _tips = new Tips();
+                                console.log("tips ok");
+                                _confirm = new Confirm();
+                                console.log("confirm ok");
+                                
+                                // place dock - no need to wait for stack widgets to be initialized
+                                _widget.place(Map.get("dock"));
+			        
 			        _public = new Public();
 			        console.log("public ok");
 			        _library = new Library();
@@ -67,22 +84,6 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 				_stack.getStack().add("#connect", _connect);
 				_stack.getStack().add("#dashboard", _dashboard);
 				
-				// initialize popups
-				_help = new Help();
-				console.log("help ok");
-				 _notify= new Notify();
-				 console.log("notify ok");
-				_newIdea = new NewIdea();
-				console.log("newidea ok");
-                                _new2q = new New2Q();
-                                console.log("new2q ok");
-                                _new2q = new New2C();
-                                console.log("new2c ok");
-                                _tips = new Tips();
-                                console.log("tips ok");
-                                _confirm = new Confirm();
-                                console.log("confirm ok");
-                                
                                 // init notification engine
                                 _notify.init();
 			};

@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
         function(Widget, Map, Model, Event, Config, Store){
                 
-                return function new2CConstructor(){
+                return new function new2CConstructor(){
                 
                         var _widget = new Widget(),
                             _dest = new Store({"userid":"", "username":""}),

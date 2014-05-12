@@ -550,7 +550,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         _utils.exitListener = function(id, callback){
                 var listener = function(e){
                         var element;
-                        console.log(e.target);
                         for (element = e.target; element; element = element.parentNode) {
                                 if (element.id === id) {
                                         return;

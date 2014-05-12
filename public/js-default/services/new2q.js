@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "Promise", "lib/spin.min"],
         function(Widget, Map, Model, Event, Config, Store, Promise, Spinner){
                 
-                return function new2QConstructor(){
+                return new function new2QConstructor(){
                 
                         var _widget = new Widget(),
                             _store = new Store(Config.get("TQTemplate")),

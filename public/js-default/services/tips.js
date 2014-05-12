@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView"],
         function(Widget, Map, Model, Event, Config, Store, CouchDBView){
                 
-                return function TipsConstructor($firstStart){
+                return new function TipsConstructor($firstStart){
                 
                         var _widget = new Widget(),
                             _labels = Config.get("labels"),

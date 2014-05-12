@@ -26,7 +26,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			_widget.plugins.addAll({
 				"dockstack" : _stack,
 				"dockcontrol" : _control,
-				"place" : new Place({"notify":_notify, "newidea": NewIdea, "new2q": New2Q, "new2c": New2C, "help": Help, "tips": Tips, "confirm": Confirm})
+				"place" : new Place({"notify":_notify, "newidea": NewIdea, "new2q": New2Q, "new2c": New2C, "help": Help, "tips": Tips})
 			});
 			
 			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,mousedown,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div data-place="place:notify"></div><div data-place="place:newidea"></div><div data-place="place:new2q"></div><div data-place="place:new2c"></div><div data-place="place:help"></div><div data-place="place:tips"></div></div>';

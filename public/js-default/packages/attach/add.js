@@ -71,14 +71,15 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         setAttachmentCat : function(uploaded){
                                                 if (!uploaded){
                                                         var custom = [], arr, i, l, key,
-                                                                res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
+                                                                res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>",
+                                                                node =this;
                                                         
                                                         for (i=0, l=cats.length; i<l;i++){
                                                                         key = cats[i];
                                                                         res+="<option>"+_labels.get(key)+"</option>";
                                                         };
                                                         
-                                                        this.innerHTML = res;
+                                                        node.innerHTML = res;
                                                         
                                                         user.watchValue("categories", function(){
                                                                 res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
@@ -93,7 +94,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                                         }
                                                                 }
                                                                 res+="<option>"+_labels.get("other")+"</option>";
-                                                                this.innerHTML = res;        
+                                                                node.innerHTML = res;        
                                                         });
                                                 }
                                         }   

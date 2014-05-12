@@ -30,7 +30,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                  console.log("newidea ok");
                 _new2q = new New2Q();
                 console.log("new2q ok");
-                _new2q = new New2C();
+                _new2c = new New2C();
                 console.log("new2c ok");
                 _tips = new Tips();
                 console.log("tips ok");

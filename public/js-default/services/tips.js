@@ -31,7 +31,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "tipevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class="help-doctor"></div><div class="close-tip" data-tipevent="listen:mousedown, close"></div><div class="tip-screen"><legend data-tip="bind:setTitle, id"></legend><p data-tip = "bind: innerHTML, body"></p><div class="next-button" data-labels = "bind: innerHTML, nextbutton" data-tipevent="listen: mousedown, press; listen:mouseup, next"></div></div><div class="tip-footer"><input type="checkbox" data-tipevent="listen: change, doNotShow"><label data-labels="bind: innerHTML, notips"></label></div></div>';
+                        _widget.template = '<div id="tip-popup"><div class="help-doctor"></div><div class="close-tip" data-tipevent="listen:mousedown, close"></div><div class="tip-screen"><legend data-tip="bind:setTitle, id"></legend><p data-tip = "bind: innerHTML, body"></p><div class="next-button" data-labels = "bind: innerHTML, nextbutton" data-tipevent="listen: mousedown, press; listen:mouseup, next"></div></div><div class="tip-footer"><input type="checkbox" data-tipevent="listen: change, doNotShow"><label data-labels="bind: innerHTML, notips"></label></div></div>';
                         
                         
                         _widget.init = function init(firstStart){

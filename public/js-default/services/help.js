@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
         function(Widget, Map, Model, Event, Config, Store){
                 
-                return new function HelpConstructor(){
+                return function HelpConstructor(){
                 
                         var _widget = new Widget(),
                             _labels = Config.get("labels"),
@@ -19,7 +19,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "helpevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class="help-doctor"></div><div class="close-help" data-helpevent="listen:mousedown, closeHelp"></div><div class="help-screen" data-help="bind:innerHTML,html"></div></div>';
+                        _widget.template = '<div id="help-popup"><div class="help-doctor"></div><div class="close-help" data-helpevent="listen:mousedown, closeHelp"></div><div class="help-screen" data-help="bind:innerHTML,html"></div></div>';
                         
                         _widget.render();
                         _widget.place(Map.get("help-popup"));

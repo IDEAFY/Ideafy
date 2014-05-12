@@ -7,13 +7,13 @@
 
 define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"public/public", "library/library", "brainstorm/brainstorm", "connect/connect", "dashboard/dashboard",
-	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips", "service/confirm"], 
-	function(Widget, Place, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips, Confirm){
+	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips"], 
+	function(Widget, Place, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){
 		return function DockConstructor(){
 
 		//declaration
 			var _widget = new Widget(),
-			    _newIdea, _new2q, _tips, _notify = new Notify(), _confirm = new Confirm(),
+			    _newIdea, _new2q, _tips, _notify = new Notify(),
 			    _public, _library, _brainstorm, _connect, _dashboard,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),

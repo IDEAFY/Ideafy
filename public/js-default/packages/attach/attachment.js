@@ -436,7 +436,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         
                         ui.confirmDelete = function(event, node){
                                 node.classList.remove("a-pressed");
-                                Confirm.reset(labels.get("deleteattachment"), ui.deleteAttachment);
+                                Confirm.reset(labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
                                 Confirm.show();
                         };
                         

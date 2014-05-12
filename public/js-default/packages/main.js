@@ -149,7 +149,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         _body.template = '<div><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div></div>';
         
-        _body.alive(document.body);
+        _body.place(document.body);
         
         // INITIALIZATION
         

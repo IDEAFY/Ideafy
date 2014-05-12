@@ -168,7 +168,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 var now = new Date().getTime();
                                 exitDest = target.getAttribute("href") || target;
                                 // href exists it is one of the nav options else probably a notify message (or future use)
-                                if (!session.get("scheduled") ||((session.get("scheduled") - now) < 300000)) confirm.show();
+                                if (!session.get("scheduled") ||((session.get("scheduled") - now) < 300000)) Confirm.show();
                         };
                         
                         // participant decides to leave session
@@ -196,7 +196,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 // no need to wait for upload result to leave session
                                 $exit();
                                 // remove confirm UI if present
-                                document.querySelector(".confirm") && document.body.removeChild(document.querySelector(".confirm"));           
+                                Confirm.hide();           
                         };
                         
                         // initiator decides to cancel the session
@@ -209,12 +209,10 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         widget.goToScreen();
                                         
                                         // remove confirm UI if present
-                                        document.querySelector(".confirm") && document.body.removeChild(document.querySelector(".confirm")); 
+                                        Confirm.hide(); 
                                         
                                         // cancel chat and delete session
                                         chatUI.cancel();
-                                        
-                                        console.log("session removal");
                                         
                                         session.remove()
                                         .then(function(res){
@@ -227,7 +225,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 else widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
                                         // remove confirm UI if present
-                                        document.querySelector(".confirm") && document.body.removeChild(document.querySelector(".confirm")); 
+                                        Confirm.hide();
                                         widget.goToScreen();
                                 });        
                         };
@@ -243,7 +241,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                             promise.fulfill();
                                     };
                                 
-                                confirm.hide();
+                                Confirm.hide();
                                 infoUI.classList.remove("invisible");
                                 timer = setInterval(function(){
                                                 if (message !== "deleting") {info.set("msg", message);}

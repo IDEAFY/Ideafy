@@ -256,7 +256,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                         scope.hide();
                                                                 }
                                                                 else{
-                                                                        Confirim.hide();
+                                                                        Confirm.hide();
                                                                         spinner.spin(document.getElementById("deckview"));
                                                                         document.getElementById("cache").classList.add("appear");
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field

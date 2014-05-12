@@ -39,6 +39,8 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "loginstack" : _stack
                         });
                         
+                        _login.template = '<div id="login"><img src="img/logoLogInPage-beta.png"><div class = "spinner waiting"></div><div id="login-stack" data-loginstack="destination"></div></div>';
+                        
                         
                         // loading UI
                         _loading.plugins.add("label", new Model(_labels));
@@ -350,7 +352,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _stack.getStack().add("#maintenance-screen", _serverdown);
                         _stack.getStack().add("#nointernet", _internetdown);
                         
-                        _login.alive(Map.get("login"));
+                        //_login.alive(Map.get("login"));
                         
                         // Initialization
                         _login.init = function init(){

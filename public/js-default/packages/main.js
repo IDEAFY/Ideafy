@@ -5,22 +5,25 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "service/utils", "Promise"], 
-    function(Widget, LocalStore, Map, Stack, Model, Event, Dock, Login, Config, Utils, Promise) {
+require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "service/utils", "Promise", "service/confirm"], 
+    function(Widget, LocalStore, Map, Stack, Model, Place, Event, Dock, Login, Config, Utils, Promise, Confirm) {
         
         //declaration
-        var _body = new Widget(), _login = null, _stack = new Stack({
+        var _body = new Widget(), _stack = new Stack({
                 "#login" : _login
-        }), _dock = new Dock(), _local = new LocalStore(), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user"), _currentVersion;
+        }), _dock = new Dock(),
+        _login = new Login(_body.init, _body.reload, _local),
+        _local = new LocalStore(),
+        updateLabels = Utils.updateLabels,
+        checkServerStatus = Utils.checkServerStatus, 
+        _labels = Config.get("labels"), _db = Config.get("db"), 
+        _transport = Config.get("transport"), _user = Config.get("user"), _currentVersion;
 
         _currentVersion = Config.get("version");
         
-        //setup
-        _body.plugins.addAll({
-                "stack" : _stack
-        });
+        // SETUP
         
-        //logic
+        // init logic
         _body.init = function init(firstStart) {
                 
                 // add dock UI to the stack
@@ -77,6 +80,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 });      
         };
         
+        // init after exit and re-entry
         _body.reload = function reload(firstStart) {
                 _user.unsync();
                 _user.reset();
@@ -129,15 +133,26 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 });      
         };
         
+        // uis declaration
+        _dock = new Dock();
+        _login = new Login(_body.init, _body.reload, _local);
+        
+        
+        // Widget definition
+        
+        _body.plugins.addAll({
+                "stack" : _stack,
+                "place": new Place({confirm: Confirm, login: _login})
+        });
+        
+        _body.template = '<div data-stack="destination" data-event="selector:.pressed-btn, mousedown, press; selector:.pressed-btn, mouseup, release"><div data-place="place:login"></div><div id="cache"></div><div data-place="place:confirm"></div></div>';
+        
         _body.alive(Map.get("body"));
         
         // INITIALIZATION
         
         // retrieve local data
         _local.sync("ideafy-data");
-        _login = new Login(_body.init, _body.reload, _local);
-        
-        document.querySelector(".spinner").classList.add("invisible");
         
         _stack.getStack().show("#login");
         _stack.getStack().setCurrentScreen(_login);

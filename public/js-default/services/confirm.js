@@ -8,7 +8,7 @@
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
         function(Widget, Map, Model, Event, Config, Store){
                 
-                return function ConfirmConstructor(){
+                return new function ConfirmConstructor(){
                 
                         var _labels = Config.get("labels"),
                                 _widget = new Widget(),

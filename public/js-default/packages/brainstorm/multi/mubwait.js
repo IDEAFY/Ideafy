@@ -16,7 +16,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                             info = new Store({"msg":""}),
                             user = Config.get("user"),
                             labels = Config.get("labels"),
-                            chatUI = new Chat(),confirmCallBack,
+                            chatUI = new Chat(),
+                            confirmCallBack,
                             exitListener = {"listener": null},
                             exitDest,
                             spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 269, top: 306}).spin();
@@ -110,7 +111,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         
                                         confirmCallBack = function(decision){
                                                 if (!decision){
-                                                        confirm.hide();
+                                                        Confirm.hide();
                                                 }
                                                 else{
                                                         user.set("sessionInProgress", "");
@@ -129,10 +130,10 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         
                                         // init confirmation UI content
                                         if (session.get("initiator").id === user.get("_id")){
-                                                confirm.reset(labels.get("leaderleave"), confirmCallBack);        
+                                                Confirm.reset(labels.get("leaderleave"), confirmCallBack);        
                                         }
                                         else {
-                                                confirm.reset(labels.get("participantleave"), confirmCallBack);        
+                                                Confirm.reset(labels.get("participantleave"), confirmCallBack);        
                                         }
                                         // reset participants store
                                         participants.reset(session.get("participants")); 
@@ -155,7 +156,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                       sched = session.get("scheduled") || null;
                                 node.classList.remove("pressed");
                                 if (sched && (sched - now) > 300000) $exit();
-                                else confirm.show();
+                                else Confirm.show();
                         };
                         
                         /*
@@ -167,7 +168,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 var now = new Date().getTime();
                                 exitDest = target.getAttribute("href") || target;
                                 // href exists it is one of the nav options else probably a notify message (or future use)
-                                if (!session.get("schedule") ||((session.get("schedule") - now) < 300000)) confirm.show();
+                                if (!session.get("scheduled") ||((session.get("scheduled") - now) < 300000)) confirm.show();
                         };
                         
                         // participant decides to leave session

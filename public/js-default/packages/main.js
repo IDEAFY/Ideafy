@@ -74,6 +74,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         document.getElementById("splash").classList.add("invisible");
                         _dock.init();
                         _login.stopSpinner();
+                        _body.dom.classList.add("main");
                         _stack.getStack().show("#dock");
                         _dock.start(firstStart);        
                 });      
@@ -127,6 +128,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 .then(function(){
                         _dock.reset();
                         _login.stopSpinner();
+                        _body.dom.classList.add("main");
                         _stack.getStack().show("#dock");
                         _dock.start(firstStart);        
                 });      
@@ -146,9 +148,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 "place": new Place({confirm: Confirm})
         });
         
-        _body.template = '<div><div id="splash"><div id="banner"></div></div><div class = "spinner waiting"></div><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div></div>';
-        
-        // <div class = "spinner waiting"></div>
+        _body.template = '<div><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div></div>';
         
         _body.place(document.body);
         
@@ -224,6 +224,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 
                 _stack.getStack().add("#login", _login);
                 _login.reset(true);
+                _body.dom.classList.remove("main");
                 _stack.getStack().show("#login");
                 _stack.getStack().setCurrentScreen(_login);
                 _login.setScreen("#login-screen");

@@ -136,7 +136,7 @@ input::-webkit-file-upload-button{
     
     #splash{
         text-align: center;
-        background-repeat: no-repeat;
+        background: white;
         width: 100%;
         height: 100%;
         display: block;
@@ -149,6 +149,10 @@ input::-webkit-file-upload-button{
     
     #banner{
         background-image: url('../img/ideafy.png');
+        height: 305px;
+        width: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
     }
 
     .spinner{
@@ -161,7 +165,7 @@ input::-webkit-file-upload-button{
         font-size:4em;
         height: 1em;
         font-family: Ideafy;
-        color: whitesmoke;
+        color: #657b99;
     }
 
     @-webkit-keyframes myRotate {

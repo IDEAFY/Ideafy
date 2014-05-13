@@ -146,7 +146,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 "place": new Place({confirm: Confirm})
         });
         
-        _body.template = '<div><div id="splash"><div id="banner"></div></div><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div></div>';
+        _body.template = '<div><div id="splash"><div id="banner"></div></div><div class = "spinner waiting"></div><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div></div>';
         
         // <div class = "spinner waiting"></div>
         

@@ -157,7 +157,7 @@ input::-webkit-file-upload-button{
         background-repeat: no-repeat;
     }
 
-    .spinner{
+    #apploading{
         background: url('../img/appicon.png') no-repeat center center;
         background-size: contain;
         width: 60px;

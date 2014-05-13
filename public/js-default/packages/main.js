@@ -71,7 +71,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         return loadAvatar;
                 })
                 .then(function(){
-                        document.getElementById("splash").classList.add("invisible");
                         _dock.init();
                         _login.stopSpinner();
                         document.getElementById("main").classList.add("main");
@@ -157,6 +156,10 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         // retrieve local data
         _local.sync("ideafy-data");
         
+        // stop apploading
+        document.removeChild(document.getElementById("appwaiting"));
+        
+        // display login screen
         _stack.getStack().show("#login");
         _stack.getStack().setCurrentScreen(_login);
         

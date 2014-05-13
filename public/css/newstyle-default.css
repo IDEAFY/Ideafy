@@ -21,7 +21,7 @@ body {
   font-family:Helvetica;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   overflow: auto;
-  background: white;
+  background: #f6f6f6;
   background-image: url('../img/ideafy.png');
   background-position: top center;
   background-size: 100% 305px;

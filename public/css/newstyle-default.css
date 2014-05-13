@@ -237,7 +237,7 @@ input::-webkit-file-upload-button{
     border-top:1px solid #E6E6E6;
 }
 
-.login-button, #signup-button {
+.login-button, .signup-button {
     display:inline-block;
     border-radius: 5px;
     font-weight: bold;

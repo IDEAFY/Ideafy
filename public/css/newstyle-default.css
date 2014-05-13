@@ -158,16 +158,11 @@ input::-webkit-file-upload-button{
     }
 
     .spinner{
+        background: url('../img/appicon.png') no-repeat center center;
+        background-size: contain;
+        width: 60px;
+        height: 60px;
         -webkit-animation: myRotate 1s linear infinite;
-    }
-    
-    .waiting:before{
-        content: "\e000";
-        display: inline-block;
-        font-size:4em;
-        height: 1em;
-        font-family: Ideafy;
-        color: #657b99;
     }
 
     @-webkit-keyframes myRotate {

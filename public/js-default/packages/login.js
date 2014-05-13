@@ -39,7 +39,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "loginstack" : _stack
                         });
                         
-                        _login.template = '<div id="login"><img src="img/logoLogInPage-beta.png"><div class = "spinner waiting"></div><div id="login-stack" data-loginstack="destination"></div></div>';
+                        _login.template = '<div id="login"><div id="login-stack" data-loginstack="destination"></div></div>';
                         
                         
                         // loading UI

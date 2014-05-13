@@ -27,14 +27,6 @@ html, body {
   z-index: -15;
 }
 
-#login{
-   background: #657b99;
-    background-image: url('../img/logoLogInPage-beta.png');
-    background-position: bottom right;
-    background-size: 200px;
-    background-repeat: no-repeat;
-}
-
 ::-webkit-any-link:hover, ::-webkit-any-link:active {
     cursor: pointer;
 }
@@ -149,10 +141,14 @@ input::-webkit-file-upload-button{
         height: 100%;
         display: block;
         position: fixed;
-        background-image: url('../img/logoLogInPage-beta.png'); */
-        background-position: bottom right; */
-        background-size: 150px; */
-        background-repeat: no-repeat; */
+        background-image: url('../img/logoLogInPage-beta.png');
+        background-position: bottom right;
+        background-size: 150px;
+        background-repeat: no-repeat;
+    }
+    
+    #banner{
+        background-image: url('../img/ideafy.png');
     }
 
     .spinner{
@@ -184,6 +180,11 @@ input::-webkit-file-upload-button{
     position: absolute;
     text-align:center;
     overflow: auto;
+    background: #657b99;
+    background-image: url('../img/logoLogInPage-beta.png');
+    background-position: bottom right;
+    background-size: 150px;
+    background-repeat: no-repeat;
 }
 
 #login-stack    {

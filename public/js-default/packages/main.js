@@ -134,9 +134,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         // uis declaration
         _dock = new Dock();
-        console.log("dock ok");
         _login = new Login(_body.init, _body.reload, _local);
-        console.log("login ok");
         
         // add login to the stack
         _stack.getStack().add("#login", _login);
@@ -145,10 +143,10 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         _body.plugins.addAll({
                 "stack" : _stack,
-                "place": new Place({confirm: Confirm, login: _login})
+                "place": new Place({confirm: Confirm})
         });
         
-        _body.template = '<div><div id="splash"></div><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div></div>';
+        _body.template = '<div><div id="splash"><div id="banner"></div></div><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div></div>';
         
         // <div class = "spinner waiting"></div>
         

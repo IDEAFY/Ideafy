@@ -147,7 +147,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 "place": new Place({confirm: Confirm, login: _login})
         });
         
-        _body.template = '<div><div class="splash"><img src="img/logoLogInPage-beta.png"><div class = "spinner waiting"></div></div><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div></div>';
+        _body.template = '<div><div class="splash"><div class = "spinner waiting"></div></div><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div></div>';
         
         _body.place(document.body);
         

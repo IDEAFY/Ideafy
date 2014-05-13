@@ -162,6 +162,11 @@ input::-webkit-file-upload-button{
         background-size: contain;
         width: 60px;
         height: 60px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -30px;
+        margin-left: -30px;
         -webkit-animation: myRotate 1s linear infinite;
     }
 

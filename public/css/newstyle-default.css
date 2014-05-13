@@ -32,16 +32,7 @@ html, body {
 }
 
 #splash, #login{
-   background: #aeb9bf; /* Old browsers */
-    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
-    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNhZWI5YmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNGQ1ZDcyIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyZWN0IHg9Ii01MCIgeT0iLTUwIiB3aWR0aD0iMTAxIiBoZWlnaHQ9IjEwMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-    background: -moz-radial-gradient(center, ellipse cover, #aeb9bf 0%, #4d5d72 100%); /* FF3.6+ */
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#aeb9bf), color-stop(100%,#4d5d72)); /* Chrome,Safari4+ */
-    background: -webkit-radial-gradient(center, ellipse cover, #aeb9bf 0%,#4d5d72 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-radial-gradient(center, ellipse cover, #aeb9bf 0%,#4d5d72 100%); /* Opera 12+ */
-    background: -ms-radial-gradient(center, ellipse cover, #aeb9bf 0%,#4d5d72 100%); /* IE10+ */
-    background: radial-gradient(ellipse at center, #aeb9bf 0%,#4d5d72 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aeb9bf', endColorstr='#4d5d72',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
+   background: #657b99;
     background-image: url('../img/logoLogInPage-beta.png');
     background-position: bottom right;
     background-size: 200px;
@@ -209,7 +200,7 @@ input::-webkit-file-upload-button{
     width:410px;
     border-radius: 5px;
     background: white;
-    -webkit-box-shadow: 0 0 10px rgba(37, 64, 102, 0.2), inset 0 0 6px 1px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 0 5px 1px #0B173B, inset 0 0 6px 1px #657b99;
     margin-bottom:30px;
 }
 
@@ -228,13 +219,16 @@ input::-webkit-file-upload-button{
     margin:0;
     border:0;
     padding-left:30px;
-
     font-size:14px;
-    color:#AEB9BF;
+    color:#darkblue;
+}
+
+.login-fields input::-webkit-input-placeholder{
+    color: #657b99;
 }
 
 .login-fields input:nth-child(n+2) {
-    border-top:1px solid #E6E6E6;
+    border-top:1px solid #657b99;
 }
 
 .login-button, .signup-button {
@@ -248,13 +242,13 @@ input::-webkit-file-upload-button{
     line-height: 40px;
     color: #4D4D4D;
     width: 400px;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #cccccc), color-stop(100%, #e6e6e6));
-    -webkit-box-shadow: 0 0 3px rgba(37, 64, 102, 0.5);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #81bef7), color-stop(100%, #e6e6e6));
+    -webkit-box-shadow: 0 0 3px #0B173B;
 }
 
 .pressed {
     -webkit-box-shadow:inset 0 0 5px 1px rgba(0,0,0,0.6);
-    background:#666666;
+    background:#0B173B;
 }
 
 .login-button.pressed{

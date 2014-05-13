@@ -28,6 +28,7 @@ html, body {
  background-image: url('../img/logoLogInPage-beta.png');
  background-position: bottom right;
  background-size: 200px;
+ background-repeat: no-repeat;
 }
 
 #splash, #login{
@@ -41,6 +42,10 @@ html, body {
     background: -ms-radial-gradient(center, ellipse cover, #aeb9bf 0%,#4d5d72 100%); /* IE10+ */
     background: radial-gradient(ellipse at center, #aeb9bf 0%,#4d5d72 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aeb9bf', endColorstr='#4d5d72',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
+    background-image: url('../img/logoLogInPage-beta.png');
+    background-position: bottom right;
+    background-size: 200px;
+    background-repeat: no-repeat;
 }
 
 ::-webkit-any-link:hover, ::-webkit-any-link:active {

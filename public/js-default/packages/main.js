@@ -22,6 +22,14 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         // SETUP
         
         // init logic
+        _body.startDock = function(firstStart){
+                document.getElementById("cache").classList.remove("appear");
+                document.getElementById("main").classList.add("main");
+                document.getElementById("logo").classList.remove("invisible");
+                _stack.getStack().show("#dock");
+                _dock.start(firstStart);         
+        };
+        
         _body.init = function init(firstStart) {
                 
                 // add dock UI to the stack
@@ -127,14 +135,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         _login.stopSpinner();
                         _body.startDock(firstStart);        
                 });      
-        };
-        
-        _body.startDock = function(firstStart){
-                document.getElementById("cache").classList.remove("appear");
-                document.getElementById("main").classList.add("main");
-                document.getElementById("logo").classList.remove("invisible");
-                _stack.getStack().show("#dock");
-                _dock.start(firstStart);         
         };
         
         // uis declaration

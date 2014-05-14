@@ -22,7 +22,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         // SETUP
         
         // init logic
-        _body.startDock = function(firstStart){
+        _body.startDock = function startDock(firstStart){
                 document.getElementById("cache").classList.remove("appear");
                 document.getElementById("main").classList.add("main");
                 document.getElementById("logo").classList.remove("invisible");

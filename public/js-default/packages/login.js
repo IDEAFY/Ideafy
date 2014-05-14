@@ -134,7 +134,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 _signupForm.completeSignup(true);        
                         };
                         
-                        _signupForm.rejecttEULA = function(event, node){
+                        _signupForm.rejectEULA = function(event, node){
                                 node.classList.remove("pressed");
                                 _signupForm.completeSignup(false);        
                         };

@@ -153,6 +153,9 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         _body.place(document.body);
         
+        // making sure Map contains the proper cache element
+        Map.set("cache", document.getElementById("cache"));
+        
         // INITIALIZATION
         
         // retrieve local data

@@ -23,7 +23,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         
         // init logic
         _body.startDock = function startDock(firstStart){
-                document.getElementById("cache").classList.remove("appear");
                 document.getElementById("main").classList.add("main");
                 document.getElementById("logo").classList.remove("invisible");
                 _stack.getStack().show("#dock");
@@ -229,13 +228,18 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 _local.set("userAvatar", "");
                 _local.sync("ideafy-data");
                 
+                // reset login UI
                 _stack.getStack().add("#login", _login);
                 _login.reset(true);
+                
+                // hide dock and cache
                 _body.dom.classList.remove("main");
+                document.getElementById("cache").classList.remove("appear");
+                
+                // show loogin screen
                 _stack.getStack().show("#login");
                 _stack.getStack().setCurrentScreen(_login);
                 _login.setScreen("#login-screen");
-                document.getElementById("cache").classList.remove("appear");
         });
         
         // attempt to reconnect socket if required in case of user actions

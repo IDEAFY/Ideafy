@@ -149,12 +149,9 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 "place": new Place({confirm: Confirm})
         });
         
-        _body.template = '<div id="main"><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div><div id="logo" class="invisible"></div></div>';
+        _body.template = '<div id="main"><div data-stack="destination"></div><div data-place="place:confirm"></div><div id="logo" class="invisible"></div></div>';
         
         _body.place(document.body);
-        
-        // making sure Map contains the proper cache element
-        Map.set("cache", document.getElementById("cache"));
         
         // INITIALIZATION
         
@@ -265,8 +262,5 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         return _user.upload();
                 }              
         });
-        
-        MAIN = _body;
-        STACK = _stack;
         
 }); 

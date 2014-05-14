@@ -31,20 +31,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.ok = function(event, node){
                                 node.classList.remove("pressed");
                                 document.getElementById("cache").classList.remove("appear");
-                                if (_class === "EULA") document.getElementById("cache").classList.remove("EULA");
                                 _callback && _callback(true);    
                         };
                         
                         _widget.cancel = function(event, node){
                                 node && node.classList.remove("pressed");
                                 document.getElementById("cache").classList.remove("appear");
-                                if (_class === "EULA") document.getElementById("cache").classList.remove("EULA");
                                 _callback && _callback(false);
                         };
                         
                         _widget.hide = function hide(){
                                 document.getElementById("cache").classList.remove("appear");
-                                if (_class === "EULA") document.getElementById("cache").classList.remove("EULA");
                                 _widget.dom.classList.add("invisible");        
                         };
                         
@@ -57,11 +54,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }
                                 
                                 document.getElementById("cache").classList.add("appear");
-                                if (_class === "EULA") {
-                                        document.getElementById("cache").classList.add("EULA");
-                                        _widget.dom.querySelector(".option.left").innerHTML = _labels.get("accept");
-                                        _widget.dom.querySelector(".option.right").innerHTML = _labels.get("reject");
-                                }
                                 _widget.dom.classList.remove("invisible");
                                 setTimeout(function(){_widget.close;}, 15000);      
                         };

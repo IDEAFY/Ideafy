@@ -23,7 +23,6 @@ define(["Store"], function(Store){
 		"help-popup" : document.getElementById("help-popup"),
 		"tip-popup" : document.getElementById("tip-popup"),
                 "confirm-popup" : document.getElementById("confirm-popup"),
-		"cache" : document.getElementById("cache"),
 		"public" : document.getElementById("public"),
 		        "public-menu" : document.getElementById("public-menu"),
 			"public-detail" : document.getElementById("public-detail"),

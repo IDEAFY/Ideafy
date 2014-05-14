@@ -33,9 +33,6 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			
 			_widget.place(Map.get("dock"));
 			
-			// making sure Map contains the proper cache element
-                        Map.set("cache", document.getElementById("cache"));
-			
 			_widget.setDisplay = function(){
 			     var W = window.innerWidth,
 			           H = window.innerHeight,

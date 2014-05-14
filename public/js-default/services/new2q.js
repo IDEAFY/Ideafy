@@ -102,7 +102,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.reset = function(){
                                 
-                                Map.get("cache").classList.add("appear");
+                                document.getElementById("cache").classList.add("appear");
                                 
                                 // reset _store and _error
                                 _store.unsync();

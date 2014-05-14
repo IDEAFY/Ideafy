@@ -28,7 +28,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.closeHelp = function(event, node){
                                 // hide window
                                 _widget.dom.classList.remove("appear");
-                                Map.get("cache").classList.remove("appear");
+                                document.getElementById("cache").classList.remove("appear");
                         };
                         
                         return _widget;

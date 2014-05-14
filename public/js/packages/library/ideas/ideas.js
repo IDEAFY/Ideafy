@@ -76,7 +76,7 @@ define(["Olives/OObject", "Amy/Control-plugin" ,
 			
 			this.plus = function(){
 			        Map.get("newidea-popup").classList.add("appear");
-			        Map.get("cache").classList.add("appear");        
+			        document.getElementById("cache").classList.add("appear");        
 			};
 			
 			this.search = function (event, node){

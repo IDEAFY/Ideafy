@@ -237,7 +237,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         });
                 
                         if (warning.length){
-                                Map.get("cache").classList.add("appear");
+                                document.getElementById("cache").classList.add("appear");
                                 warning.forEach(function(card){
                                         warningMSG += card.title+", ";
                                 });

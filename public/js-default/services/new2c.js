@@ -43,7 +43,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.closePopup = function closePopup(){
                                 // hide window
                                 _widget.dom.classList.remove("appear");
-                                Map.get("cache").classList.remove("appear");
+                                document.getElementById("cache").classList.remove("appear");
                                 // reset _store, _dest and _error
                                 _store.reset();
                                 _dest.reset();
@@ -53,7 +53,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.reset = function reset($contact){
                                 contact = $contact;
                                 _widget.dom.classList.add("appear");
-                                Map.get("cache").classList.add("appear");  
+                                document.getElementById("cache").classList.add("appear");  
                                 _dest.set("userid", contact.userid);
                                 _dest.set("username", contact.username);
                                 _store.reset({

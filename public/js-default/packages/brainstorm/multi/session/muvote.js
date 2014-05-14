@@ -204,7 +204,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.close = function hide(){
-                                Map.get("cache").classList.remove("votingcache");
+                                document.getElementById("cache").classList.remove("votingcache");
                                 _widget.dom.classList.add("invisible");
                                 _session = null;        
                         };
@@ -214,7 +214,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.show = function show(){
-                                Map.get("cache").classList.add("votingcache");
+                                document.getElementById("cache").classList.add("votingcache");
                                 _widget.dom.classList.remove("invisible");        
                         };
                         
@@ -258,7 +258,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                     spinner.spin(_widget.dom.querySelector("#muvotespinner"));
                                                     setTimeout(function(){
                                                                 spinner.stop();
-                                                                Map.get("cache").classList.remove("votingcache");
+                                                                document.getElementById("cache").classList.remove("votingcache");
                                                                 _onEnd && _onEnd(result);
                                                         }, 5000);
                                                     

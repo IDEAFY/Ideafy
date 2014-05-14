@@ -31,6 +31,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                     _session = new CouchDBDocument(),
                     _sessionData = new Store(),
                     info = new Store({"msg":""}),
+                    exitListener,
                     confirmCallBack,
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
@@ -362,11 +363,25 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 {name: "muwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
                         ]);
                         
+                        // if not in replay mode activate the exit listener
+                        // activate exit listener
+                        if (!replay) exitListener.listener = Utils.exitListener("musession", _widget.leave);
+                                        
                         // retrieve session document and launch   
                         if (sid){
                                 _widget.retrieveSession(sid, replay);
                         } 
                    };
+                   
+                _widget.leave = function(){
+                        // init confirmation UI content
+                        if (_session.get("initiator").id === _user.get("_id")){
+                                Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
+                        }
+                        else {
+                                Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
+                        }        
+                };
                    
                 _widget.prev = function prev(currentName){
                         var _id;

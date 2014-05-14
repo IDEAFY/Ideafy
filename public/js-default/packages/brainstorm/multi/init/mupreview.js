@@ -88,7 +88,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         updateJoinButton : function(parts){
                                                 var node =this;
                                                 // update store for list UI
-                                                console.log("participants updated ", parts);
                                                 participants.reset(parts);
                                                 muPreviewUI.displayJoinButton(node, muCDB.get("status"), parts);
                                         },
@@ -255,7 +254,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         }
                                         
                                         // else check if current user is already a participant
-                                        else if (parts.join().search(usr) > -1){
+                                        else if (JSON.stringify(parts).search(usr) > -1){
                                                 if (status === "waiting"){
                                                         node.innerHTML = labels.get("enterbutton");
                                                         node.setAttribute("name", "enter");

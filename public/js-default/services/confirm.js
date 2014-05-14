@@ -50,7 +50,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 if ($class && !_widget.dom.classList.contains($class)){
                                         _class && _widget.dom.classList.remove(_class);
                                         _class = $class;
-                                        $widget.dom.classList.add($class);
+                                        _widget.dom.classList.add($class);
                                 }
                                 
                                 document.getElementById("cache").classList.add("appear");

@@ -93,7 +93,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                 sched = new Date(scheduled);
                                                 if (now.toDateString() === sched.toDateString()){
                                                         if ((sched.getTime() - now.getTime()) <= 300000) this.innerHTML = labels.get("now");
-                                                        else this.innerHTML = labels.get("today");
+                                                        else this.innerHTML = sched.toLocaleTimeString();
                                                 }
                                                 else {
                                                         this.innerHTML = Utils.formatDate([sched.getFullYear(), sched.getMonth(), sched.getDate()]);
@@ -137,7 +137,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                 sched = new Date(scheduled);
                                                 if (now.toDateString() === sched.toDateString()){
                                                         if ((sched.getTime() - now.getTime()) <= 300000) this.innerHTML = labels.get("now");
-                                                        else this.innerHTML = labels.get("today");
+                                                        else this.innerHTML = sched.toLocaleTimeString();
                                                 }
                                                 else {
                                                         this.innerHTML = Utils.formatDate([sched.getFullYear(), sched.getMonth(), sched.getDate()]);

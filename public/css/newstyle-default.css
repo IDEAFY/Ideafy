@@ -140,12 +140,12 @@ input::-webkit-file-upload-button{
     
     .main{
         text-align: center;
-        background: white;
+        background: rgba(128,128,128,0.9);
         width: 100%;
         height: 100%;
         display: block;
         position: fixed;
-        background-image: url('../img/bg2.png');
+        background-image: url('../img/bg.png');
         background-repeat: repeat;
     }
     
@@ -164,6 +164,18 @@ input::-webkit-file-upload-button{
         top: 50%;
         margin-top: -30px;
         -webkit-animation: move 3s linear infinite;
+    }
+    
+    #logo{
+        position: fixed;
+        top: 100%;
+        left: 100%;
+        margin-left: -150px;
+        margin-top: -50px;
+        background: url('../img/logoLogInPage-beta') no-repeat center center;
+        background-size: cover;
+        width: 150px;
+        height: 50px;
     }
 
 @keyframes move {

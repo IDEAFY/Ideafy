@@ -74,6 +74,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         _dock.init();
                         _login.stopSpinner();
                         document.getElementById("main").classList.add("main");
+                        document.getElementById("logo").classList.remove("invisible");
                         _stack.getStack().show("#dock");
                         _dock.start(firstStart);        
                 });      
@@ -128,6 +129,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                         _dock.reset();
                         _login.stopSpinner();
                         document.getElementById("main").classList.add("main");
+                        document.getElementById("logo").classList.remove("invisible");
                         _stack.getStack().show("#dock");
                         _dock.start(firstStart);        
                 });      
@@ -147,7 +149,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 "place": new Place({confirm: Confirm})
         });
         
-        _body.template = '<div id="main"><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div></div>';
+        _body.template = '<div id="main"><div data-stack="destination"></div><div id="cache"></div><div data-place="place:confirm"></div></div><div id="logo" class="invisible"></div></div>';
         
         _body.place(document.body);
         

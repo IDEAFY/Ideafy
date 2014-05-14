@@ -159,18 +159,26 @@ input::-webkit-file-upload-button{
 
     #apploading{
         background: url('../img/appicon.png') no-repeat center center;
-        background-size: contain;
-        width: 60px;
-        height: 60px;
+        background-size: 60px 60px;
         position: absolute;
         top: 50%;
-        left: 50%;
         margin-top: -30px;
-        margin-left: -30px;
-        -webkit-animation: myRotate 1s linear infinite;
+        -webkit-animation: move 3s linear infinite;
     }
 
-    @-webkit-keyframes myRotate {
+@keyframes move {
+  from {
+    margin-left: 0%;
+    width: 100%; 
+  }
+
+  to {
+    margin-left: 100%;
+    width: 300%;
+  }
+}
+
+/*    @-webkit-keyframes myRotate {
         from {
             -webkit-transform:rotate(0);
         }
@@ -178,6 +186,7 @@ input::-webkit-file-upload-button{
             -webkit-transform:rotate(360deg);
         }
     }
+*/
     
 /* LOGIN */
 #login{

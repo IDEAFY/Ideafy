@@ -158,10 +158,9 @@ input::-webkit-file-upload-button{
     }
 
     #apploading{
-        background: url('../img/appicon.png') no-repeat center center;
-        width: 60px;
+        /*background: url('../img/appicon.png') no-repeat center center;*/
+       width: 60px;
         height: 60px;
-        background-size: contain;
         position: absolute;
         top: 50%;
         margin-top: -30px;
@@ -170,12 +169,21 @@ input::-webkit-file-upload-button{
          -webkit-animation-iteration-count: infinite;
     }
     
+    #apploading:before{
+        content: "\e000";
+        display: inline-block;
+        font-size: 4em;
+        line-height: 60px;
+        font-family: Ideafy;
+        color: #657b99;
+    }
+    
     @-webkit-keyframes slideout {
     from {
-        left: 0;
+        left: 25%;
     }
     to {
-        left: 100%;
+        left: 75%;
     }
     }
     

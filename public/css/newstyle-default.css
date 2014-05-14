@@ -215,10 +215,10 @@ input::-webkit-file-upload-button{
     position: absolute;
     text-align:center;
     overflow: auto;
-    background-image: url('../img/logoLogInPage-beta.png');
+/*    background-image: url('../img/logoLogInPage-beta.png');
     background-position: bottom right;
     background-size: 150px;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;*/
 }
 
 #login-stack    {

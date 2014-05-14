@@ -73,10 +73,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 .then(function(){
                         _dock.init();
                         _login.stopSpinner();
-                        document.getElementById("main").classList.add("main");
-                        document.getElementById("logo").classList.remove("invisible");
-                        _stack.getStack().show("#dock");
-                        _dock.start(firstStart);        
+                        _body.startDock(firstStart);        
                 });      
         };
         
@@ -128,11 +125,16 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 .then(function(){
                         _dock.reset();
                         _login.stopSpinner();
-                        document.getElementById("main").classList.add("main");
-                        document.getElementById("logo").classList.remove("invisible");
-                        _stack.getStack().show("#dock");
-                        _dock.start(firstStart);        
+                        _body.startDock(firstStart);        
                 });      
+        };
+        
+        _body.startDock = function(firstStart){
+                document.getElementById("cache").classList.remove("appear");
+                document.getElementById("main").classList.add("main");
+                document.getElementById("logo").classList.remove("invisible");
+                _stack.getStack().show("#dock");
+                _dock.start(firstStart);         
         };
         
         // uis declaration

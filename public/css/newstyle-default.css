@@ -159,11 +159,13 @@ input::-webkit-file-upload-button{
 
     #apploading{
         background: url('../img/appicon.png') no-repeat center center;
-        background-size: 60px 60px;
+        width: 60px;
+        height: 60px;
+        background-size: contain;
         position: absolute;
         top: 50%;
         margin-top: -30px;
-        -webkit-animation: move 3s linear infinite;
+        -webkit-animation: slideout 2s infinite;
     }
     
     #logo{
@@ -178,15 +180,13 @@ input::-webkit-file-upload-button{
         height: 50px;
     }
 
-@keyframes move {
+@keyframes slideout {
   from {
     margin-left: 0%;
-    width: 100%; 
   }
 
   to {
     margin-left: 100%;
-    width: 300%;
   }
 }
 

@@ -157,7 +157,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         _local.sync("ideafy-data");
         
         // stop apploading
-        document.body.removeChild(document.getElementById("appwaiting"));
+        document.getElementById("appwaiting").classList.add("invisible");
         
         // display login screen
         _stack.getStack().show("#login");

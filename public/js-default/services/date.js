@@ -72,7 +72,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.getDatestamp = function(){
                                 var d;
-                                d = date.get("year") + '/' + date.get("month") + '/' + date.get("day");
+                                d = date.get("year") + '/' + ( parseInt(date.get("month"), 10) + 1 ) + '/' + date.get("day");
                                 return new Date(d).getTime();        
                         };
                         

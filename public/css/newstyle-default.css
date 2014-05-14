@@ -165,7 +165,7 @@ input::-webkit-file-upload-button{
         top: 50%;
         margin-top: -30px;
         -webkit-animation-name: slideout;
-        -webkit-animation-duration: 2s;
+        -webkit-animation-duration: 3s;
          -webkit-animation-iteration-count: infinite;
     }
     
@@ -179,12 +179,14 @@ input::-webkit-file-upload-button{
     }
     
     @-webkit-keyframes slideout {
-    from {
-        left: 25%;
-    }
-    to {
-        left: 75%;
-    }
+        from {
+            left: 25%;
+            -webkit-transform:rotate(0);
+        }
+        to {
+            left: 75%;
+            -webkit-transform:rotate(360deg);
+        }
     }
     
     #logo{

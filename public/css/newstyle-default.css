@@ -170,27 +170,26 @@ input::-webkit-file-upload-button{
          -webkit-animation-iteration-count: infinite;
     }
     
+    @-webkit-keyframes slideout {
+    from {
+        left: 0;
+    }
+    to {
+        left: 100%;
+    }
+    }
+    
     #logo{
         position: fixed;
         top: 100%;
         left: 100%;
         margin-left: -150px;
         margin-top: -50px;
-        background: url('../img/logoLogInPage-beta') no-repeat center center;
+        background: url('../img/logoLogInPage-beta.png') no-repeat center center;
         background-size: cover;
         width: 150px;
         height: 50px;
     }
-
-@keyframes slideout {
-  from {
-    left: 0;
-  }
-
-  to {
-    left: 100%;
-  }
-}
 
 /*    @-webkit-keyframes myRotate {
         from {

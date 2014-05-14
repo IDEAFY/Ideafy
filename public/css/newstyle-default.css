@@ -203,6 +203,7 @@ input::-webkit-file-upload-button{
         background-size: cover;
         width: 150px;
         height: 50px;
+        z-index: -15;
     }
 
 /*    @-webkit-keyframes myRotate {

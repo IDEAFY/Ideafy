@@ -263,7 +263,7 @@ input::-webkit-file-upload-button{
     border:0;
     padding-left:30px;
     font-size:14px;
-    color:#darkblue;
+    color:darkblue;
 }
 
 .login-fields input::-webkit-input-placeholder{

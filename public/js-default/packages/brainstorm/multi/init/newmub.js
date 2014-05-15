@@ -5,8 +5,8 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/config", "Promise", "Store", "service/utils", "lib/spin.min", "Place.plugin", "service/date", "service/time"],
-        function(Widget, Model, Event, CouchDBDocument, Config, Promise, Store, Utils, Spinner, Place, DateWidget, TimeWidget){
+define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/config", "Promise", "Store", "service/utils", "lib/spin.min", "Place.plugin", "service/date", "service/time", "dashboard/profile/calendar"],
+        function(Widget, Model, Event, CouchDBDocument, Config, Promise, Store, Utils, Spinner, Place, DateWidget, TimeWidget, Calendar){
                 
            return function NewMUBConstructor($exit){
            
@@ -481,6 +481,21 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         })
                         .then(function(){
                                 var obs = Config.get("observer");
+                                
+                                // add session to user calendar
+                                if (session.get("scheduled")){
+                                        Calendar.add({date: cdb.get("scheduled"), type: "MU", docId: cdb.get("_id"), info:"scheduled"})
+                                        .then(function(){
+                                                console.log("calendar upload ok");
+                                        });
+                                }
+                                else{
+                                        Calendar.add({date: now.getTime(), type: "MU", docId: cdb.get("_id"), info:"started"})
+                                        .then(function(){
+                                                console.log("calendar upload ok");
+                                        });
+                                }
+                                
                                 if (cdb.get("mode") === "boardroom"){
                                         error.set("errormsg", labels.get("sendinginvites"));
                                         widget.sendInvites(cdb.get("invited"), cdb.get("_id"), cdb.get("title"), cdb.get("scheduled")).then(function(){

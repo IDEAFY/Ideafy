@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "Store", "Promise", "Bind.plugin", "Event.plugin", "service/utils"],
         function(Widget, Config, Store, Promise, Model, Event, Utils){
                 
-                return function CalendarConstructor(){
+                return new function CalendarConstructor(){
                         
                         var calendar= new Widget(),
                               cal = new Store([]),

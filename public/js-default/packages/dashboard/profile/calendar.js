@@ -20,7 +20,7 @@ define(["OObject", "service/config", "Store", "Promise", "Bind.plugin", "Event.p
                         calendar.plugins.addAll({
                                 "labels": new Model(labels),
                                 "model": new Model(cal),
-                                "calevent": new Event(leaderboard)
+                                "calevent": new Event(calendar)
                         });
                         
                         /*
@@ -46,6 +46,10 @@ define(["OObject", "service/config", "Store", "Promise", "Bind.plugin", "Event.p
                                
                                user.set("cal", _cal);
                                return user.upload();
+                        };
+                        
+                        calendar.init = function(){
+                                CAL = this;
                         };
 
 

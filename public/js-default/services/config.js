@@ -52,6 +52,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                                 "taiaut_decks" : ["INT"],
                                 "custom_decks" : [],
                                 "categories": [],
+                                "calendar": [],
                                 "active_deck": "INT",
                                 "occupation" : {
                                         "situation" : "",

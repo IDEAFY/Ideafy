@@ -5,8 +5,8 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils", "./leaderboard", "./editprofile", "Promise"],
-        function(Widget, Map, Model, Event, Config, Store, Utils, Leaderboard, EditProfile, Promise){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils", "./leaderboard", "./editprofile", "./calendar", "Promise"],
+        function(Widget, Map, Model, Event, Config, Store, Utils, Leaderboard, EditProfile, Calendar, Promise){
                 
            return function ProfileConstructor(){
 
@@ -437,6 +437,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    };
                    
                    profileUI.init();
+                   Calendar.init();
+                   
                    return profileUI;
            };    
         });

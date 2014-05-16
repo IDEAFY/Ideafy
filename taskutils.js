@@ -85,17 +85,16 @@ function TaskUtils(){
          * Delete sessions if they are over 1hour past the scheduled time
          */
         this.checkSessions = function checkSessions(){
-                var sessions = new _CouchDBView(),
-                      deleteExpiredSessions = function(){
-                                var now = new Date().getTime();
-                                sessions.loop(function(v,i){
-                                        var cdb = new _CouchDBDocument();
-                                        if (v.value.status === 'waiting' && ((now - v.key) > 3600000)){
-                                                _getDocAsAdmin(v.id, cdb)
-                                                .then(function(){
-                                                        return _removeDocAsAdmin(v.id, cdb);
-                                                });
-                                        }
+                var deleteExpiredSessions = function(){
+                                var now = new Date().getTime(),
+                                      query = {startkey:"", endkey:"", descending: false},
+                                      sessions = new _CouchDBView();
+                                
+                                _getViewAsAdmin("scheduler", "cleanupSessions", query, sessions)     
+                                .then(function(){
+                                        sessions.loop(function(v,i){
+                                                
+                                        });
                                 });    
                       },
                       manageSessions = function(){
@@ -105,9 +104,6 @@ function TaskUtils(){
                                 _getViewAsAdmin("scheduler", "sessions", null, sessions)
                                 .then(function(){
                         
-                                        // delete expired sessions from database, ie scheduled sessions that have not been started on time by initiator
-                                        deleteExpiredSessions();
-                                        
                                         // notify initiator and participants of sessions about to start (<5min)
                                         
                                         // notify initiator and participants of sessions starting in one hour

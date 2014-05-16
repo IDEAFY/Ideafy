@@ -269,4 +269,11 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 }              
         });
         
+        // check disconnect time out on client side
+        var jetzt = new Date().getTime();
+        Config.get("socket").on('disconnect', function(){
+                var maintenant = new Date.getTime();
+                alert(maintenant - jetzt);        
+        });
+        
 }); 

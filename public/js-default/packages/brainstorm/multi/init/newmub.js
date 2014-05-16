@@ -484,16 +484,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                 
                                 // add session to user calendar
                                 if (session.get("scheduled")){
-                                        Calendar.add({date: cdb.get("scheduled"), type: "MU", docId: cdb.get("_id"), info:"scheduled"})
-                                        .then(function(){
-                                                console.log("calendar upload ok");
-                                        });
+                                        Calendar.add({date: cdb.get("scheduled"), type: "MU", docId: cdb.get("_id"), info:"scheduled"});;
                                 }
                                 else{
-                                        Calendar.add({date: now.getTime(), type: "MU", docId: cdb.get("_id"), info:"started"})
-                                        .then(function(){
-                                                console.log("calendar upload ok");
-                                        });
+                                        Calendar.add({date: now.getTime(), type: "MU", docId: cdb.get("_id"), info:"started"});;
                                 }
                                 
                                 if (cdb.get("mode") === "boardroom"){

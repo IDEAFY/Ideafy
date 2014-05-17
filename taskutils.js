@@ -112,7 +112,11 @@ function TaskUtils(){
                                                                 
                                                                 _updateDocAsAdmin(v.id, session)
                                                                 .then(function(){
+                                                                        console.log("session doc updted");
                                                                         return _removeDocAsAdmin(v.id, session);
+                                                                })
+                                                                .then(function(){
+                                                                        console.log("session doc removed");    
                                                                 });
                                                                 
                                                                 _getDocAsAdmin(chatId, chatDoc)

@@ -112,8 +112,8 @@ function TaskUtils(){
                                                                 
                                                                 _updateDocAsAdmin(v.id, session)
                                                                 .then(function(){
-                                                                        console.log("session doc updated");
-                                                                        return _removeDocAsAdmin(v.id, session);
+                                                                        console.log("session doc updated :", session.toJSON());
+                                                                        return _removeDocAsAdmin(session.get("_id"), session);
                                                                 })
                                                                 .then(function(){
                                                                         console.log("session doc removed");    

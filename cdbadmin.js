@@ -89,7 +89,7 @@ function CDBAdmin(){
                 }, function (res) {
                         var json = JSON.parse(res);
                         if (json.ok) {
-                                cdbStore.reset(json);
+                                cdbStore.set("_rev", json.rev);
                                 promise.fulfill();
                         } else {
                                 promise.reject();

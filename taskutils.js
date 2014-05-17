@@ -109,23 +109,16 @@ function TaskUtils(){
                                                         .then(function(){
                                                                 session.set("status", "deleted");
                                                                 chatId = session.get("chat")[0];
-                                                                console.log(chatId);
-                                                                return _updateDocAsAdmin(v.id, session);
-                                                        })
-                                                        .then(function(){
-                                                                console.log("session updated");
-                                                                return _getDocAsAdmin(chatId, chatDoc);
-                                                        })
-                                                        .then(function(){
-                                                                console.log(chatDoc.toJSON());
-                                                                return _removeDocAsAdmin(chatId, chatDoc);        
-                                                        })
-                                                        .then(function(){
-                                                                console.log("chat document removed");
-                                                                return _removeDocAsAdmin(v.id, session);
-                                                        })
-                                                        .then(function(){
-                                                                console.log(v.id + " session removed");
+                                                                
+                                                                _updateDocAsAdmin(v.id, session)
+                                                                .then(function(){
+                                                                        return _removeDocAsAdmin(v.id, session);
+                                                                });
+                                                                
+                                                                _getDocAsAdmin(chatId, chatDoc)
+                                                                .then(function(){
+                                                                        return _removeDocAsAdmin(chatId, chatDoc);        
+                                                                });
                                                         });
                                                 });
                                         }

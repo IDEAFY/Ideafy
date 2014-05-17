@@ -87,14 +87,14 @@ function TaskUtils(){
         this.checkSessions = function checkSessions(){
                 var deleteExpiredSessions = function(){
                                 var now = new Date().getTime(),
-                                      query = {startkey:"", endkey:"", descending: false},
+                                      start = 1325404800000, // 01/01/2012,
+                                      end = now - (3600000), // one hour ago
+                                      query = {startkey:start, endkey:end, descending: false},
                                       sessions = new _CouchDBView();
                                 
                                 _getViewAsAdmin("scheduler", "cleanupSessions", query, sessions)     
                                 .then(function(){
-                                        sessions.loop(function(v,i){
-                                                
-                                        });
+                                        console.log(sessions.toJSON());
                                 });    
                       },
                       manageSessions = function(){
@@ -113,7 +113,7 @@ function TaskUtils(){
                                 });
                        };
                       
-                setInterval(manageSessions, 45000);
+                setInterval(deleteExpiredSessions, 300000);
         };
 };
 

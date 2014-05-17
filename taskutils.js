@@ -112,11 +112,14 @@ function TaskUtils(){
                                                                 
                                                                 _updateDocAsAdmin(v.id, session)
                                                                 .then(function(){
-                                                                        console.log("session doc updted");
+                                                                        console.log("session doc updated");
                                                                         return _removeDocAsAdmin(v.id, session);
                                                                 })
                                                                 .then(function(){
                                                                         console.log("session doc removed");    
+                                                                },
+                                                                function(){
+                                                                        console.log("error : unable to clean up session : ", session.get("_id"), v.id, session.get("_rev"));
                                                                 });
                                                                 
                                                                 _getDocAsAdmin(chatId, chatDoc)
@@ -143,7 +146,7 @@ function TaskUtils(){
                                 });
                        };
                       
-                setInterval(deleteExpiredSessions, 300000);
+                setInterval(deleteExpiredSessions, 30000);
         };
 };
 

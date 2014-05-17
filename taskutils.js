@@ -102,12 +102,13 @@ function TaskUtils(){
                                         if (sessions.getNbItems()){
                                                 sessions.loop(function(v,i){
                                                         var session = new _CouchDBDocument(),
-                                                                chatId = session.get("chat")[0],
+                                                                chatId,
                                                                 chatDoc = new _CouchDBDocument();
                                                               
                                                         _getDocAsAdmin(v.id, session)
                                                         .then(function(){
                                                                 session.set("status", "deleted");
+                                                                chatId = session.get("chat")[0];
                                                                 return _updateDocAsAdmin(v.id, session);
                                                         })
                                                         .then(function(){

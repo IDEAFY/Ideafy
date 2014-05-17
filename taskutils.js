@@ -112,6 +112,7 @@ function TaskUtils(){
                                                         })
                                                         .then(function(){
                                                                 return _getDocAsAdmin(chatId, chatDoc);
+                                                        })
                                                         .then(function(){
                                                                 return _removeDocAsAdmin(chatId, chatDoc);        
                                                         })

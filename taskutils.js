@@ -95,11 +95,35 @@ function TaskUtils(){
                                 _getViewAsAdmin("scheduler", "cleanupSessions", query, sessions)     
                                 .then(function(){
                                         console.log(sessions.toJSON());
+                                        
+                                        // for each session -- set status to deleted
+                                        // upload then remove chat document
+                                        // remove session document
+                                        if (sessions.getNbItems()){
+                                                sessions.loop(function(v,i){
+                                                        var session = new _CouchDBDocument(),
+                                                                chatId = session.get("chat")[0],
+                                                                chatDoc = new _CouchDBDocument();
+                                                              
+                                                        _getDocAsAdmin(v.id, session)
+                                                        .then(function(){
+                                                                session.set("status", "deleted");
+                                                                return _updateDocAsAdmin(v.id, session);
+                                                        })
+                                                        .then(function(){
+                                                                return _getDocAsAdmin(chatId, chatDoc);
+                                                        .then(function(){
+                                                                return _removeDocAsAdmin(chatId, chatDoc);        
+                                                        })
+                                                        .then(function(){
+                                                                return _removeDocAsAdmin(v.value, session);
+                                                        });
+                                                });
+                                        }
                                 });    
                       },
                       manageSessions = function(){
-                                sessions.reset([]);
-                                 
+                                
                                 // fetch scheduled sessions from database (status waiting and scheduled not null)
                                 _getViewAsAdmin("scheduler", "sessions", null, sessions)
                                 .then(function(){

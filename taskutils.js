@@ -122,6 +122,19 @@ function TaskUtils(){
                                         }
                                 });    
                       },
+                      notifySessions = function(){
+                                var cdbView = new CouchDBView(),
+                                      now = new Date().getTime(),
+                                      query  = {startkey:[], endkey:[], descending: false};
+                                      
+                                 // build query
+                                 query.startkey = [8, now];
+                                 query.endkey = [8, now+24*3600*1000];
+                                 _getViewsAdmin("scheduler", "all", query, cdbView)
+                                 .then(function(){
+                                        console.log(cdbView.toJSON());        
+                                 });  
+                      },
                       manageSessions = function(){
                                 
                                 // fetch scheduled sessions from database (status waiting and scheduled not null)
@@ -138,6 +151,7 @@ function TaskUtils(){
                        };
                       
                 setInterval(deleteExpiredSessions, 900000);
+                setInterval(notifySessions, 60000);
         };
 };
 

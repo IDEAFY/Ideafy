@@ -94,8 +94,6 @@ function TaskUtils(){
                                 
                                 _getViewAsAdmin("scheduler", "cleanupSessions", query, sessions)     
                                 .then(function(){
-                                        console.log(sessions.toJSON());
-                                        
                                         // for each session -- set status to deleted
                                         // upload then remove chat document
                                         // remove session document
@@ -112,14 +110,7 @@ function TaskUtils(){
                                                                 
                                                                 _updateDocAsAdmin(v.id, session)
                                                                 .then(function(){
-                                                                        console.log("session doc updated :", session.toJSON());
                                                                         return _removeDocAsAdmin(session.get("_id"), session);
-                                                                })
-                                                                .then(function(){
-                                                                        console.log("session doc removed");    
-                                                                },
-                                                                function(){
-                                                                        console.log("error : unable to clean up session : ", session.get("_id"), v.id, session.get("_rev"));
                                                                 });
                                                                 
                                                                 _getDocAsAdmin(chatId, chatDoc)
@@ -146,7 +137,7 @@ function TaskUtils(){
                                 });
                        };
                       
-                setInterval(deleteExpiredSessions, 30000);
+                setInterval(deleteExpiredSessions, 900000);
         };
 };
 

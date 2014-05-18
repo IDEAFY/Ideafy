@@ -577,5 +577,7 @@
 	"schedulesession" : "Set session date and time",
 	"today" : "Today",
 	"now" : "Now",
-	"schedule": "Schedule"
+	"schedule": "Schedule",
+	"scheduled": "Scheduled",
+	"deleted": "Canceled"
 }

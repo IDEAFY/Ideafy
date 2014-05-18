@@ -577,5 +577,7 @@
 	"schedulesession" : "Date et heure de la session",
 	"today" : "Aujourd'hui",
 	"now" : "Maintenant",
-	"schedule": "Planifier"
+	"schedule": "Planifier",
+	"scheduled": "Programmée",
+	"deleted": "Annulée"
 }

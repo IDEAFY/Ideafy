@@ -125,11 +125,14 @@ function TaskUtils(){
                       notifySessions = function(){
                                 var cdbView = new _CouchDBView(),
                                       now = new Date().getTime(),
+                                      startkey, endkey,
                                       query  = {startkey:[], endkey:[], descending: false};
                                       
                                  // build query
-                                 query.startkey = '[now,8]';
-                                 query.endkey = '[now+24*3600*1000,8]';
+                                 startkey = [now,8];
+                                 endkey = [now+24*3600*1000,8];
+                                 query.startkey = "'" + startkey + "'";
+                                 query.endkey = "'" + endkey + "'";
                                  console.log(query);
                                  _getViewAsAdmin("scheduler", "all", query, cdbView)
                                  .then(function(res){

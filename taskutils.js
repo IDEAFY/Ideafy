@@ -123,7 +123,7 @@ function TaskUtils(){
                                 });    
                       },
                       notifySessions = function(){
-                                var cdbView = new CouchDBView(),
+                                var cdbView = new _CouchDBView(),
                                       now = new Date().getTime(),
                                       query  = {startkey:[], endkey:[], descending: false};
                                       

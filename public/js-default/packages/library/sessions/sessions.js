@@ -109,7 +109,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 this.innerHTML = _labels.get("deleted");
                                                                 break;
                                                         default:
-                                                                this.innerHTML = _lables.get("inprogress");
+                                                                this.innerHTML = _labels.get("inprogress");
                                                                 break;
                                                 }
                                         }

@@ -130,6 +130,7 @@ function TaskUtils(){
                                  // build query
                                  query.startkey = [8, now];
                                  query.endkey = [8, now+24*3600*1000];
+                                 console.log(query);
                                  _getViewAsAdmin("scheduler", "all", query, cdbView)
                                  .then(function(){
                                         console.log(cdbView.toJSON());        

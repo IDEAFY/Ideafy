@@ -180,7 +180,6 @@ function CDBAdmin(){
                         };
                 if (query) options.query = query;
                 _transport.request("CouchDB", options, function (res) {
-                        console.log(res);
                         var json = JSON.parse(res);
                         if (json.rows) {
                                 cdbStore.reset(json.rows);

@@ -122,84 +122,104 @@ function TaskUtils(){
                                         }
                                 });    
                       },
+                      
+                      notifySession = function(sid, notice){
+                                var cdb = new _CouchDBDocument();
+                                
+                                // get session from database
+                                _getDocAsAdmin(sid, cdb)
+                                .then(function(){
+                                         var notify = false, now, creation, type, leader, parts, dest, date;
+                                        
+                                        creation = cdb.get("_id").split("S:MU:")[1]; // gets document creation timestamp
+                                        
+                                        // check if notification is required (ie not already notified and created before notification delay)
+                                        if (notice === "day"  && ((cdb.get("scheduled") - creation) > 24*3600000)){
+                                                type = "MUD-";
+                                                (cdb.get("notif") && cdb.get("notif").day) ? notify = false : notify = true;
+                                        }
+                                        if (notice === "quarter" && ((cdb.get("scheduled") - creation) > 900000)){
+                                                type = "MUQ-";
+                                                (cdb.get("notif") && cdb.get("notif").quarter) ? notify = false : notify = true;
+                                        }
+                                        
+                                        // if check ok proceed to notify leader and participants
+                                        if (notify){
+                                                leader = cdb.get("initiator").id;
+                                                parts = cdb.get("participants") || [];
+                                                dest = [leader];
+                                                now = new Date();
+                                                date = [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
+                                                json = {
+                                                        "type" : type,
+                                                        "status" : "unread",
+                                                        "date" : date,
+                                                        "author" : "IDEAFY",
+                                                        "username" : "Ideafy",
+                                                        "firstname" : "",
+                                                        "toList" : "",
+                                                        "ccList" : "",
+                                                        "object" : "",
+                                                        "body" : "",
+                                                        "signature" : "",
+                                                        "docId" : sid,
+                                                        "docTitle" : cdb.get("title"),
+                                                        "scheduled" : cdb.get("scheduled")
+                                                };
+                                                                
+                                                for (i=0; i<parts.length; i++){
+                                                        dest.push(parst[i].id);
+                                                }
+                                                                
+                                                json.dest = dest;
+                                                                
+                                                _notify(json, function(result){
+                                                        if (result){
+                                                                console.log(result);
+                                                                var notif = session.get("notif") || {};
+                                                                notif[notice] = true;
+                                                                cdb.set("notif", notif);
+                                                                return _updateDocAsAdmin(sid, cdb);
+                                                        }        
+                                                });        
+                                        }
+                                        else{
+                                                console.log("notification not required for : ", sid, "\n", cdb.get("notif"));
+                                        }
+                                });
+                                        
+                      },
+                      
                       notifySessions = function(){
                                 var cdbView = new _CouchDBView(),
                                       now = new Date().getTime(),
-                                      query24  = {startkey:[], endkey:[], descending: false}, // notify a day before session starts
-                                      query15 = {startkey:[], endkey:[], descending: false}; // notify 15 minutes before session starts
+                                      query24  = {startkey:'['+ now +',8]', endkey:'', descending: false}, // notify a day before session starts
+                                      query15 = {startkey:'['+ now +',8]', endkey:'', descending: false}; // notify 15 minutes before session starts
                                       
                                  // build query
-                                 query24.startkey = '['+ now +',8]';
-                                 query15.startkey = '['+ now +',8]';
                                  query24.endkey = '['+ (now+24*3600*1000) +',8]';
                                  query15.endkey = '['+ (now+900*1000) +',8]';
                                  
                                  [query24, query15].forEach(function(query){
                                          _getViewAsAdmin("scheduler", "notif", query, cdbView)
                                         .then(function(res){
-                                                var notice = "", type = "";
+                                                var notice = "";
                                                 console.log(cdbView.toJSON());
                                                 
                                                 if (query === query24) {
                                                         notice = "day";
-                                                        type = "MUD-";
                                                 }
                                                 if (query === query15) {
                                                         notice = "quarter";
-                                                        type = "MUQ-";
                                                 }
                                                 
                                                 cdbView.loop(function(v, i){
-                                                        var session, now, date ;
-                                                        
-                                                        console.log(query, notice, type);
-                                                        if (!v.value.[notice]){
-                                                                session = new _CouchDBDocument();
-                                                                _getDocAsAdmin(v.id, session)
-                                                                .then(function(){
-                                                                        var leader = session.get("initiator").id,
-                                                                              parts = session.get("participants"),
-                                                                              dest = [leader],
-                                                                              now = new Date(),
-                                                                              date = [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
-                                                                             json = {
-                                                                                        "type" : type,
-                                                                                        "status" : "unread",
-                                                                                        "date" : date,
-                                                                                        "author" : "IDEAFY",
-                                                                                        "username" : "Ideafy",
-                                                                                        "firstname" : "",
-                                                                                        "toList" : "",
-                                                                                        "ccList" : "",
-                                                                                        "object" : "",
-                                                                                        "body" : "",
-                                                                                        "signature" : "",
-                                                                                        "docId" : v.id,
-                                                                                        "docTitle" : session.get("title"),
-                                                                                        "scheduled" : session.get("scheduled")
-                                                                                };
-                                                                
-                                                                        for (i=0; i<parts.length; i++){
-                                                                                dest.push(parst[i].id);
-                                                                        }
-                                                                
-                                                                        json.dest = dest;
-                                                                
-                                                                        _notify(json, function(result){
-                                                                                if (result){
-                                                                                        console.log(result);
-                                                                                        var notif = session.get("notif") || {};
-                                                                                        notif[notice] = true;
-                                                                                        session.set("notif", notif);
-                                                                                        return _updateDocAsAdmin(session.get('_id'), session);
-                                                                                }        
-                                                                        });
-                                                                });
-                                                        });
-                                                }   
+                                                        notifySession(v.id, notice);        
+                                                });   
                                         });
                                 });  
                       },
+                      
                       manageSessions = function(){
                                 
                                 // fetch scheduled sessions from database (status waiting and scheduled not null)

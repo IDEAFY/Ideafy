@@ -168,14 +168,13 @@ function TaskUtils(){
                                                 };
                                                                 
                                                 for (i=0; i<parts.length; i++){
-                                                        dest.push(parst[i].id);
+                                                        dest.push(parts[i].id);
                                                 }
                                                                 
                                                 json.dest = dest;
                                                                 
                                                 _notify(json, function(result){
                                                         if (result){
-                                                                console.log(result);
                                                                 var notif = cdb.get("notif") || {};
                                                                 notif[notice] = true;
                                                                 cdb.set("notif", notif);

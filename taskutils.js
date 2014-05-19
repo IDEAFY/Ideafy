@@ -176,7 +176,7 @@ function TaskUtils(){
                                                 _notify(json, function(result){
                                                         if (result){
                                                                 console.log(result);
-                                                                var notif = session.get("notif") || {};
+                                                                var notif = cdb.get("notif") || {};
                                                                 notif[notice] = true;
                                                                 cdb.set("notif", notif);
                                                                 return _updateDocAsAdmin(sid, cdb);
@@ -184,7 +184,7 @@ function TaskUtils(){
                                                 });        
                                         }
                                         else{
-                                                console.log("notification not required for : ", sid, "\n", cdb.get("notif"));
+                                                console.log("notification not required for : ", sid, "\n", notify, cdb.get("notif"));
                                         }
                                 });
                                         

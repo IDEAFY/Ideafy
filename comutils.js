@@ -310,7 +310,7 @@ function ComUtils(){
                                 message.docType = json.type;
                         }
                 
-                        if (json.type === "INV") {
+                        if (json.type === "INV" || json.type === "MUD-") {
                                 message.docId = json.docId;
                                 message.docTitle = json.docTitle;
                                 if (json.scheduled) message.scheduled = json.scheduled;

@@ -130,12 +130,48 @@ function TaskUtils(){
                                  // build query
                                  query.startkey = '['+ now +',8]';
                                  query.endkey = '['+ (now+24*3600*1000) +',8]';
-                                 console.log(query);
-                                 _getViewAsAdmin("scheduler", "all", query, cdbView)
+                                 _getViewAsAdmin("scheduler", "notif", query, cdbView)
                                  .then(function(res){
-                                         console.log(res);
-                                        console.log(cdbView.toJSON());        
-                                 });  
+                                        console.log(cdbView.toJSON());
+                                        cdbView.loop(function(v, i){
+                                                var session, now, date ;
+                                                
+                                                if (!v.value.day){
+                                                        session = new _CouchDBDocument();
+                                                        _getDocAsAdmin(v.id, session)
+                                                        .then(function(){
+                                                                var leader = session.get("initiator").id,
+                                                                      parts = session.get("participants"),
+                                                                      dest = [leader],
+                                                                      now = new Date(),
+                                                                      date = [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                                                      json = {
+                                                                                "type" : "MUD-",
+                                                                                "status" : "unread",
+                                                                                "date" : date,
+                                                                                "author" : "IDEAFY",
+                                                                                "username" : "Ideafy",
+                                                                                "firstname" : "",
+                                                                                "toList" : "",
+                                                                                "ccList" : "",
+                                                                                "object" : "",
+                                                                                "body" : "",
+                                                                                "signature" : "",
+                                                                                "docId" : v.id,
+                                                                                "docTitle" : session.get("title"),
+                                                                                "scheduled" : session.get("scheduled")
+                                                                        };
+                                                                
+                                                                for (i=0, i<parts,length, i++){
+                                                                        dest.push(parst[i].id);
+                                                                }
+                                                                
+                                                                json.dest = dest;
+                                                                
+                                                        });
+                                                }   
+                                        });
+                                });  
                       },
                       manageSessions = function(){
                                 

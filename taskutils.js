@@ -162,12 +162,21 @@ function TaskUtils(){
                                                                                 "scheduled" : session.get("scheduled")
                                                                         };
                                                                 
-                                                                for (i=0, i<parts,length, i++){
+                                                                for (i=0; i<parts.length; i++){
                                                                         dest.push(parst[i].id);
                                                                 }
                                                                 
                                                                 json.dest = dest;
                                                                 
+                                                                _notify(json, function(result){
+                                                                        if (result){
+                                                                                console.log(result);
+                                                                                var notif = session.get("notif") || {};
+                                                                                notif.day = true;
+                                                                                session.set("notif", notif);
+                                                                                return _updateDocAsAdmin(session.get('_id'), session);
+                                                                        }        
+                                                                });
                                                         });
                                                 }   
                                         });

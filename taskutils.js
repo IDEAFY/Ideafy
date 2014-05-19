@@ -125,57 +125,75 @@ function TaskUtils(){
                       notifySessions = function(){
                                 var cdbView = new _CouchDBView(),
                                       now = new Date().getTime(),
-                                      query  = {startkey:[], endkey:[], descending: false};
+                                      query24  = {startkey:[], endkey:[], descending: false}, // notify a day before session starts
+                                      query15 = {startkey:[], endkey:[], descending: false}; // notify 15 minutes before session starts
                                       
                                  // build query
-                                 query.startkey = '['+ now +',8]';
-                                 query.endkey = '['+ (now+24*3600*1000) +',8]';
-                                 _getViewAsAdmin("scheduler", "notif", query, cdbView)
-                                 .then(function(res){
-                                        console.log(cdbView.toJSON());
-                                        cdbView.loop(function(v, i){
-                                                var session, now, date ;
+                                 query24.startkey = '['+ now +',8]';
+                                 query15.startkey = '['+ now +',8]';
+                                 query24.endkey = '['+ (now+24*3600*1000) +',8]';
+                                 query15.endkey = '['+ (now+900*1000) +',8]';
+                                 
+                                 [query24, query15].forEach(function(query){
+                                         _getViewAsAdmin("scheduler", "notif", query, cdbView)
+                                        .then(function(res){
+                                                var notice = "", type = "";
+                                                console.log(cdbView.toJSON());
                                                 
-                                                if (!v.value.day){
-                                                        session = new _CouchDBDocument();
-                                                        _getDocAsAdmin(v.id, session)
-                                                        .then(function(){
-                                                                var leader = session.get("initiator").id,
-                                                                      parts = session.get("participants"),
-                                                                      dest = [leader],
-                                                                      now = new Date(),
-                                                                      date = [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
-                                                                      json = {
-                                                                                "type" : "MUD-",
-                                                                                "status" : "unread",
-                                                                                "date" : date,
-                                                                                "author" : "IDEAFY",
-                                                                                "username" : "Ideafy",
-                                                                                "firstname" : "",
-                                                                                "toList" : "",
-                                                                                "ccList" : "",
-                                                                                "object" : "",
-                                                                                "body" : "",
-                                                                                "signature" : "",
-                                                                                "docId" : v.id,
-                                                                                "docTitle" : session.get("title"),
-                                                                                "scheduled" : session.get("scheduled")
-                                                                        };
+                                                if (query === query24) {
+                                                        notice = "day";
+                                                        type = "MUD-";
+                                                }
+                                                if (query === query15) {
+                                                        notice = "quarter";
+                                                        type = "MUQ-";
+                                                }
+                                                
+                                                cdbView.loop(function(v, i){
+                                                        var session, now, date ;
+                                                        
+                                                        console.log(query, notice, type);
+                                                        if (!v.value.[notice]){
+                                                                session = new _CouchDBDocument();
+                                                                _getDocAsAdmin(v.id, session)
+                                                                .then(function(){
+                                                                        var leader = session.get("initiator").id,
+                                                                              parts = session.get("participants"),
+                                                                              dest = [leader],
+                                                                              now = new Date(),
+                                                                              date = [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                                                             json = {
+                                                                                        "type" : type,
+                                                                                        "status" : "unread",
+                                                                                        "date" : date,
+                                                                                        "author" : "IDEAFY",
+                                                                                        "username" : "Ideafy",
+                                                                                        "firstname" : "",
+                                                                                        "toList" : "",
+                                                                                        "ccList" : "",
+                                                                                        "object" : "",
+                                                                                        "body" : "",
+                                                                                        "signature" : "",
+                                                                                        "docId" : v.id,
+                                                                                        "docTitle" : session.get("title"),
+                                                                                        "scheduled" : session.get("scheduled")
+                                                                                };
                                                                 
-                                                                for (i=0; i<parts.length; i++){
-                                                                        dest.push(parst[i].id);
-                                                                }
+                                                                        for (i=0; i<parts.length; i++){
+                                                                                dest.push(parst[i].id);
+                                                                        }
                                                                 
-                                                                json.dest = dest;
+                                                                        json.dest = dest;
                                                                 
-                                                                _notify(json, function(result){
-                                                                        if (result){
-                                                                                console.log(result);
-                                                                                var notif = session.get("notif") || {};
-                                                                                notif.day = true;
-                                                                                session.set("notif", notif);
-                                                                                return _updateDocAsAdmin(session.get('_id'), session);
-                                                                        }        
+                                                                        _notify(json, function(result){
+                                                                                if (result){
+                                                                                        console.log(result);
+                                                                                        var notif = session.get("notif") || {};
+                                                                                        notif[notice] = true;
+                                                                                        session.set("notif", notif);
+                                                                                        return _updateDocAsAdmin(session.get('_id'), session);
+                                                                                }        
+                                                                        });
                                                                 });
                                                         });
                                                 }   

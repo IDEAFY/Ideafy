@@ -417,9 +417,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 widget.showPreview = function showPreview(id){
                         // display search window with session id
                         if (currentList !== "musearch"){
-                                widget.dom.querySelector("#mulistall).classList.add("invisible");
+                                widget.dom.querySelector("#mulistall").classList.add("invisible");
                                 widget.dom.querySelector("#musearch").classList.remove("invisible");
-                                currentList = "musewarch";
+                                currentList = "musearch";
                         }
                         spinner.spin(widget.dom.querySelector("#mulistspinner"));
                         widget.filterListid).then(function(){

@@ -47,7 +47,8 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                              _submenu.toggleActive(false);
                         };
                         _widget.exitSession = function exitSession(){
-                                _stack.getStack().show("menu");        
+                                _stack.getStack().show("menu");
+                                Config.get("observer").notify("session-exited");     
                         };
                         
                         _widget.reset = function reset(){

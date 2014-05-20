@@ -435,6 +435,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         widget.toggleList("musearch");
                 });
                 
+                // a session was exited - refresh the list
+                Config.get('observer').watch("session-exited", function(){
+                        console.log("session exited");
+                        widget.refreshList();
+                });
+                
                 
                 return widget;
                    

@@ -80,14 +80,18 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         },
                                         setIntro : function(intro){
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
+                                        },
+                                        setPresent : function(present){
+                                                (present) ? this.setAttribute("style", "opacity: 1;") : this.setAttribute("style", "opcacity: 0.5;");
                                         }
+                                        
                                 }),
                                 info: new Model(info),
                                 place : new Place({"chat": chatUI}),
                                 mubwaitevent : new Event(widget)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:mousedown, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-labels="bind:innerHTML, startbutton" data-model="bind: showStartButton, participants" data-mubwaitevent="listen: mousedown, press; listen:mouseup, start"></div></form><div class="exit-brainstorm" data-mubwaitevent="listen: mousedown, press; listen:mouseup, exit"></div><div class="sessionmsg invisible"><span data-info="bind:innerHTML, msg"></span></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:mousedown, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact" data-participant="bind:setPresent, present"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-labels="bind:innerHTML, startbutton" data-model="bind: showStartButton, participants" data-mubwaitevent="listen: mousedown, press; listen:mouseup, start"></div></form><div class="exit-brainstorm" data-mubwaitevent="listen: mousedown, press; listen:mouseup, exit"></div><div class="sessionmsg invisible"><span data-info="bind:innerHTML, msg"></span></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         
@@ -167,37 +171,42 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         widget.leave = function leave(target){
                                 var now = new Date().getTime();
                                 exitDest = target.getAttribute("href") || target;
-                                // href exists it is one of the nav options else probably a notify message (or future use)
+                                // href exists it is one of the nav options else probably a notify message or future use
                                 if (!session.get("scheduled") ||((session.get("scheduled") - now) < 300000)) Confirm.show("musession-confirm");
                         };
                         
                         // participant decides to leave session
-                        widget.leaveSession = function leaveSession(){
+                        
+                        
+                        widget.leaveSession = function leaveSession() {
                                 var p = session.get("participants"), i;
-                                
-                                for (i=p.length-1; i>=0; i--){
-                                        if (p[i].id === user.get("_id")){
-                                               p.splice(i, 1);
-                                               break; 
+
+                                for ( i = p.length - 1; i >= 0; i--) {
+                                         if (p[i].id === user.get("_id")) {
+                                                p.splice(i, 1);
+                                                break;
                                         }
                                 }
+                                
                                 session.set("participants", p);
+                                
                                 // set session status to waiting as it may have been "full" before participant left
-                                session.set("status", "waiting"); 
-                                session.upload()
-                                .then(function(){
+                                session.set("status", "waiting");
+                                
+                                session.upload().then(function() {
                                         return chatUI.leave();
                                 })
-                                .then(function(){
+                                .then(function() {
                                         widget.goToScreen();
                                         session.unsync();
-                                        session.reset({});        
-                                }); 
+                                        session.reset({});
+                                });
                                 // no need to wait for upload result to leave session
                                 $exit();
                                 // remove confirm UI if present
-                                Confirm.hide();           
-                        };
+                                Confirm.hide();
+                        }; 
+
                         
                         // initiator decides to cancel the session
                        widget.cancelSession = function cancelSession(){
@@ -385,7 +394,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         
                         // watch participant changes (new participant, departure etc.)
                         session.watchValue("participants", function(array){
-                                participants.reset(array);        
+                               participants.reset(array);        
                         });
                         
                         return widget;

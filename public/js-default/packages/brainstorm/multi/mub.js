@@ -48,17 +48,23 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                         
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), sid).then(function(){
-                                /* var p = cdb.get("participants"), join = false;
-                                // if not already joined (rejoin possible)
+                                var p = cdb.get("participants").concat(), join = false;
+                                
                                 if (cdb.get("initiator").id === user.get("_id")) join = true;
-                                p.forEach(function(participant){
-                                        if (participant.id === user.get("_id")){
-                                                join = true;
+                                
+                                else {
+                                        p.forEach(function(part){
+                                                if (part.id === user.get("_id")){
+                                                        join = true;
+                                                        part.present = true;
+                                                        cdb.set("participants", p);
+                                                        cdb.upload();
+                                                }
                                         }        
                                 });
                                 
                                 if (!join){
-                                        p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro")});
+                                        p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro"), "present": true});
                                         cdb.set("participants", p);
                                         // set session to full if there are 3 participants + leader
                                         if (p.length === 3) {cdb.set("status", "full");}

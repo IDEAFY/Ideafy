@@ -47,8 +47,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         _widget.format = function(event, node){
                                 var  n=node.value,
                                         field = node.getAttribute("name");
-                                if (!/[0-9]/.test(n)) time.set(field, "00");
-                                if ( n<10 && n.length<2) node.value = "0"+n;
+                                if (isNaN(n)) time.set(field, "00");
+                                else if ( n<10 && n.length<2) node.value = "0"+n;
                                 if (field === "hour" && n > 23) time.set(field, "00");
                                 if (field === "min" && n > 59) time.set(field, "00");
                          };

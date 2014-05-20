@@ -77,7 +77,6 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                                 }
                                 
                                 else{
-                                        */
                                         if (!cdb.get("step") || cdb.get("step") === "mustart"){
                                                 muWait.reset(sid);
                                                 stack.getStack().show("mubwait");        
@@ -86,7 +85,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                                                 widget.startSession(sid);        
                                         }
                                         
-                                //}               
+                                }               
                         }, function(error){
                                 console.log(error);
                                 alert("failed to join session");

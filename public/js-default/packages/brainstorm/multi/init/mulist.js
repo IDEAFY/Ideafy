@@ -422,7 +422,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 currentList = "musearch";
                         }
                         spinner.spin(widget.dom.querySelector("#mulistspinner"));
-                        widget.filterListid).then(function(){
+                        widget.filterListid(id).then(function(){
                                 spinner.stop();
                         });
                         // display pop up

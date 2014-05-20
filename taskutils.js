@@ -203,8 +203,6 @@ function TaskUtils(){
                                          _getViewAsAdmin("scheduler", "notif", query, cdbView)
                                         .then(function(res){
                                                 var notice = "";
-                                                console.log(cdbView.toJSON());
-                                                
                                                 if (query === query24) {
                                                         notice = "day";
                                                 }

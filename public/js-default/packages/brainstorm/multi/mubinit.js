@@ -49,6 +49,12 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/c
                         muList.reset();
                 };
                 
+                widget.showPreview = function showPreview(id){
+                        muList.showPreview(id);
+                        stack.getStack().show("list");
+                        widget.dom.querySelector("#muinitslider").value = 0; 
+                };
+                
                 // init
                 stack.getStack().add("new", newMub);
                 stack.getStack().add("list", muList);

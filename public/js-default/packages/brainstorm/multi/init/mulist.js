@@ -319,8 +319,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         });
                 };
                 
-                widget.filterList = function filterList(){
-                        var arr=[], query = widget.dom.querySelector("#mulist-content input").value,
+                widget.filterList = function filterList($query){
+                        var arr=[], query = $query || widget.dom.querySelector("#mulist-content input").value,
                             promise = new Promise(), mode = "", lang = "";
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
@@ -414,6 +414,21 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         widget.toggleList(currentList);
                 };
                 
+                widget.showPreview = function showPreview(id){
+                        // display search window with session id
+                        if (currentList !== "musearch"){
+                                widget.dom.querySelector("#mulistall).classList.add("invisible");
+                                widget.dom.querySelector("#musearch").classList.remove("invisible");
+                                currentList = "musewarch";
+                        }
+                        spinner.spin(widget.dom.querySelector("#mulistspinner"));
+                        widget.filterListid).then(function(){
+                                spinner.stop();
+                        });
+                        // display pop up
+                        muPreviewUI.reset(id);        
+                };
+                
                 
                 // init
                 
@@ -437,7 +452,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 
                 // a session was exited - refresh the list
                 Config.get('observer').watch("session-exited", function(){
-                        console.log("session exited");
                         widget.refreshList();
                 });
                 

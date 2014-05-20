@@ -127,6 +127,11 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                       var sip ={type: "musession", id: sid, mode:"join"};
                       _widget.selectScreen(sip.type, sip);
                 });
+                
+                Config.get("observer").watch("show-mupreview", function(sid){
+                        var sip ={type: "musession", id: sid, mode:"preview"};
+                      _widget.selectScreen(sip.type, sip);
+                });
 		
 		//return
 			return _widget;

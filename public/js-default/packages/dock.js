@@ -204,6 +204,19 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 }        
                         });
                         
+                        // display session preview (prior to join)
+                        _observer.watch("show-mupreview", function(sid){
+                                var prev = document.querySelector(".dock-item.selected"),
+                                    bs = document.querySelector(".dock-item[href='#brainstorm']");
+                                
+                                // this event can be called from and outside of the brainstorm UI -- we only need to change views if it's called from outside
+                                if (_stack.getStack().getCurrentName() !== "#brainstorm") {
+                                        _stack.getStack().show("#brainstorm");
+                                        _control.radioClass(bs, prev, "selected");
+                                        _control.init(bs);
+                                }        
+                        });
+                        
                         // goToScreen event (used when exiting multi-user sessions)
                         _observer.watch("goto-screen", function(name){
                                 var prev = document.querySelector(".dock-item.selected"),

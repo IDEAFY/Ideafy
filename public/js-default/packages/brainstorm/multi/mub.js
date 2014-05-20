@@ -30,6 +30,9 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                         else if (sip.mode === "join"){
                                 widget.join(sip.id);        
                         }
+                        else if (sip.mode === "preview"){
+                                widget.showPreview(sip.id);
+                        }
                         else{
                                 widget.replayMUSession(sip.id);
                         }      
@@ -39,6 +42,12 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 widget.replayMUSession = function replayMUSession(id){
                         muController.reset(id, true);
                         stack.getStack().show("musession");       
+                };
+                
+                // displaying a session preview
+                widget.showPreview = function showPreview(id){
+                        muInit.showPreview(id);
+                        stack.getStack().show("mubinit");        
                 };
                 
                 // joining an existing session
@@ -115,6 +124,9 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 else {
                         if ($sip.mode === "join"){
                                 widget.join($sip.id);        
+                        }
+                        else if ($sip.mode === "preview"){
+                                widget.showPreview($sip.id);
                         }
                         else{
                                 widget.replayMUSession($sip.id);

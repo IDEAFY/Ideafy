@@ -60,8 +60,8 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                                                         cdb.set("participants", p);
                                                         cdb.upload();
                                                 }
-                                        }        
-                                });
+                                        });        
+                                }
                                 
                                 if (!join){
                                         p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro"), "present": true});

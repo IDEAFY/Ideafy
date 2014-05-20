@@ -117,6 +117,12 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                                         case "REF":
                                                                 this.innerHTML = msgList.get(id).username + labels.get("joinedideafy");
                                                                 break;
+                                                        case "MUD-":
+                                                                this.innerHTML = labels.get("muinaday");
+                                                                break;
+                                                        case "MUQ-":
+                                                                this.innerHTML = labels.get("mufifteen");
+                                                                break;
                                                         default :
                                                                 this.innerHTML = msgList.get(id).object;
                                                 }        

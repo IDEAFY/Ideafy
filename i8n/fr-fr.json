@@ -579,5 +579,7 @@
 	"now" : "Maintenant",
 	"schedule": "Planifier",
 	"scheduled": "Programmée",
-	"deleted": "Annulée"
+	"deleted": "Annulée",
+	"muinaday" : "Vous avez une session Ideafy programmée demain",
+	"mufifteen" : "Votre session Ideafy session démarre dans 15 minutes"
 }

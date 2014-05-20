@@ -579,5 +579,7 @@
 	"now" : "Now",
 	"schedule": "Schedule",
 	"scheduled": "Scheduled",
-	"deleted": "Canceled"
+	"deleted": "Canceled",
+	"muinaday" : "You have an Ideafy session scheduled for tomorrow",
+	"mufifteen" : "Your Ideafy session will start in 15 minutes"
 }

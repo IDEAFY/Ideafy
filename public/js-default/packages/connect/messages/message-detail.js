@@ -66,6 +66,12 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 case "REF":
                                                         this.innerHTML = message.get("username") + labels.get("joinedideafy");
                                                         break;
+                                                case "MUD-":
+                                                        this.innerHTML = labels.get("muinaday");
+                                                        break;
+                                                case "MUQ-":
+                                                        this.innerHTML = labels.get("mufifteen");
+                                                        break;
                                                 default :
                                                         this.innerHTML = message.get("object");
                                         }        

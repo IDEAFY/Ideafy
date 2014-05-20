@@ -82,7 +82,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         },
                                         setPresent : function(present){
-                                                (present) ? this.setAttribute("style", "opacity: 1;") : this.setAttribute("style", "opcacity: 0.5;");
+                                                (present) ? this.setAttribute("style", "opacity: 1;") : this.setAttribute("style", "opacity: 0.4;");
                                         }
                                         
                                 }),

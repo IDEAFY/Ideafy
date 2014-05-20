@@ -52,16 +52,15 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                                 
                                 if (cdb.get("initiator").id === user.get("_id")) join = true;
                                 
-                                else {
-                                        p.forEach(function(part){
+                                else p.forEach(function(part){
                                                 if (part.id === user.get("_id")){
                                                         join = true;
                                                         part.present = true;
                                                         cdb.set("participants", p);
                                                         cdb.upload();
+                                                        break;
                                                 }
-                                        });        
-                                }
+                                        });
                                 
                                 if (!join){
                                         p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro"), "present": true});

@@ -58,7 +58,6 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                                                         part.present = true;
                                                         cdb.set("participants", p);
                                                         cdb.upload();
-                                                        break;
                                                 }
                                         });
                                 

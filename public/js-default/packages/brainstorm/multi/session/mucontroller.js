@@ -31,7 +31,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                     _session = new CouchDBDocument(),
                     _sessionData = new Store(),
                     info = new Store({"msg":""}),
-                    exitListener,
+                    exitListener = {"listener": null},
                     confirmCallBack,
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    

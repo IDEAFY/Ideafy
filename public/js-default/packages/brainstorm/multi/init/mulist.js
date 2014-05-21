@@ -325,11 +325,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 widget.filterList = function filterList($query){
-                        console.log($query);
                         var arr=[], query = $query || widget.dom.querySelector("#mulist-content input").value,
                             promise = new Promise(), mode = "", lang = "";
                         
-                        console.log("filterlist query : ", query);
+                        console.log("filterlist query : ", query, currentList);
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
                         if (muListOptions.get("selectedLang") !== "all"){lang = muListOptions.get("selectedLang");}
@@ -423,6 +422,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 widget.showPreview = function showPreview(id){
+                        var query = id.replace(/:/g, '%40');
                         // display search window with session id
                         if (currentList !== "musearch"){
                                 widget.dom.querySelector("#mulistall").classList.add("invisible");
@@ -431,7 +431,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         }
                         spinner.spin(widget.dom.querySelector("#mulistspinner"));
                         
-                        widget.filterList(id.replace(/:/g, '%40')).then(function(){
+                        widget.filterList(query).then(function(){
                                 spinner.stop();
                         });
                         

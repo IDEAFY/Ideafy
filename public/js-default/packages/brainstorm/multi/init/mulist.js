@@ -160,7 +160,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 widget.reset = function reset(){
                        currentList = "mulistall";
                        // init spinner
-                       spinner.spin(document.getElementById("mulistspinner"));
+                       spinner.spin(widget.dom.querySelector("#mulistspinner"));
                        // reset options
                        muListOptions.set("selectedLang", "all");
                        muListOptions.set("selectedMode", "allmodes");
@@ -325,6 +325,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 widget.filterList = function filterList($query){
+                        console.log($query);
                         var arr=[], query = $query || widget.dom.querySelector("#mulist-content input").value,
                             promise = new Promise(), mode = "", lang = "";
                         
@@ -422,7 +423,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 widget.showPreview = function showPreview(id){
-                        console.log("mulist show preview : ", id);
+                        console.log("mulist show preview : ", id, currentList);
+                        
                         // display search window with session id
                         if (currentList !== "musearch"){
                                 widget.dom.querySelector("#mulistall").classList.add("invisible");
@@ -432,6 +434,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         spinner.spin(widget.dom.querySelector("#mulistspinner"));
                         
                         if (id) id =  id.replace(/:/g, '%40');
+                        console.log(id, "before filter");
                         widget.filterListid(id).then(function(){
                                 spinner.stop();
                         });

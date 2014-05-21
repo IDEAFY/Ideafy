@@ -307,6 +307,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 // retrieve session and start brainstorming   
                 _widget.retrieveSession = function retrieveSession(sid, replay){
+                        console.log("retrieve session called ", sid);
                         spinner.spin(document.getElementById("brainstorm"));
                            
                         // connect to couchdb and retrieve session
@@ -363,6 +364,17 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            });
                    };
                    
+                   
+                _widget.leave = function leave(){
+                        // init confirmation UI content
+                        if (_session.get("initiator").id === _user.get("_id")){
+                                Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
+                        }
+                        else {
+                                Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
+                        }        
+                };
+                   
                 _widget.reset = function reset(sid, replay){
                            
                         // unsync session
@@ -390,16 +402,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _widget.retrieveSession(sid, replay);
                         } 
                    };
-                   
-                _widget.leave = function leave(){
-                        // init confirmation UI content
-                        if (_session.get("initiator").id === _user.get("_id")){
-                                Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
-                        }
-                        else {
-                                Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
-                        }        
-                };
                    
                 _widget.prev = function prev(currentName){
                         var _id;

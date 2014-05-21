@@ -344,6 +344,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 .then(function(){
                                         console.log("session successfully uploaded");
                                         console.log(session.toJSON());
+                                        // remove exitListener
+                                        document.removeEventListener("mousedown", exitListener.listener, true); 
                                         session.unsync();
                                         spinner.stop();
                                         node.classList.remove("invisible");

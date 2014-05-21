@@ -131,9 +131,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 Confirm.hide();
                         }
                         else{
-                                user.set("sessionInProgress", "");
-                                user.upload();
-                                if (session.get("initiator").id === user.get("_id")){
+                                _user.set("sessionInProgress", "");
+                                _user.upload();
+                                if (_session.get("initiator").id === user.get("_id")){
                                         _widget.cancelSession();
                                 }
                                 else {

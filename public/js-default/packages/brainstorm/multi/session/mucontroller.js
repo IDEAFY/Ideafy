@@ -391,7 +391,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         } 
                    };
                    
-                _widget.leave = function(){
+                _widget.leave = function leave(){
                         // init confirmation UI content
                         if (_session.get("initiator").id === _user.get("_id")){
                                 Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        

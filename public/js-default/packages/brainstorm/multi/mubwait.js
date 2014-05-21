@@ -342,6 +342,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         return session.upload();
                                 })
                                 .then(function(){
+                                        console.log("session successfully uploaded");
+                                        console.log(session.toJSON());
                                         session.unsync();
                                         spinner.stop();
                                         node.classList.remove("invisible");

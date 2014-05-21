@@ -342,6 +342,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 
                 msgDetailUI.gotoSession = function(event, node){
                         node.classList.remove("pushed");
+                        console.log(message.get("docId"));
                         Config.get("observer").notify("show-mupreview", message.get("docId"));               
                 };
                 

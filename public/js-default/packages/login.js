@@ -49,11 +49,11 @@ define(["OObject" ,"Amy/Stack-plugin",
                         
                         // maintenance UI
                         _serverdown.plugins.add("label", new Model(_labels));
-                        _serverdown.template = '<div id="serverdown"><p data-label="bind: innerHTML, maintenancemessage"></p><div id="loadingspin"></div></div>';
+                        _serverdown.template = '<div id="serverdown"><p data-label="bind: innerHTML, maintenancemessage"></p></div>';
                         
                         // no connection UI
                         _internetdown.plugins.add("label", new Model(_labels));
-                        _internetdown.template = '<div id="nointernt"><p data-label="bind: innerHTML, nointernet"></p><div id="loadingspin"></div></div>';
+                        _internetdown.template = '<div id="nointernt"><p data-label="bind: innerHTML, nointernet"></p></div>';
                         
                         // signup form
                         _signupForm.plugins.addAll({

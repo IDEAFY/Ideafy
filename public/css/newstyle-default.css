@@ -426,6 +426,9 @@ input::-webkit-file-upload-button{
     background-size: 60px;
     background-repeat: no-repeat;
     background-position: 20px center;
+    vertical-align: middle;
+    display: table-cell;
+    height: 80px;
 }
 
 #loadingspin{

@@ -82,7 +82,8 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
                                         },
                                         setPresent : function(present){
-                                                (present) ? this.setAttribute("style", "opacity: 1;") : this.setAttribute("style", "opacity: 0.4;");
+                                                var idx = this.getAttribute("data-participant_id") || 0;
+                                                (present || (user.get("_id") === participants.get(idx).id) ) ? this.setAttribute("style", "opacity: 1;") : this.setAttribute("style", "opacity: 0.4;");
                                         }
                                         
                                 }),

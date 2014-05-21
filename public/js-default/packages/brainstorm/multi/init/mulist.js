@@ -422,7 +422,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 currentList = "musearch";
                         }
                         spinner.spin(widget.dom.querySelector("#mulistspinner"));
-                        widget.filterListid(id).then(function(){
+                        widget.filterListid(id.replace(/:/g, '%40')).then(function(){
                                 spinner.stop();
                         });
                         // display pop up
@@ -455,6 +455,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         widget.refreshList();
                 });
                 
+                MULISTSPI = spinner;
                 
                 return widget;
                    

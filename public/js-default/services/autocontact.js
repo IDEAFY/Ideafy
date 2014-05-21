@@ -30,7 +30,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.template = '<div class = "autocontact"><div class="autoclose" data-select="listen:mousedown,close"></div><ul data-auto="foreach"><li data-auto="bind:innerHTML, username; bind:setType, type; bind:setSelected, selected" data-select="listen:mousedown, select"></li></ul></div>';
                         
                         _widget.init = function init(){
-                                var arr = _user.get("connections"), usernames = [], currentList = [], types = {};
+                                var arr = _user.get("connections").concat(), usernames = [], currentList = [], types = {};
                                 // reset _contactList
                                 _contactList.reset([]);
                                 

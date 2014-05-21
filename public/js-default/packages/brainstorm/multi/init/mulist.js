@@ -216,13 +216,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 cdb.loop(function(v,i){
                                         console.log(v);
                                         var add = false;
-                                        if (v.fields.mode === "roulette"){
+                                        if (v.fields.mode === "roulette" && v.score > 0.66){
                                                 add = true;
                                         }
-                                        else if (v.fields.mode === "campfire" && (v.fields.initiator === user.get("username") || contacts.search(v.fields.initiator) > -1)){
+                                        else if (v.fields.mode === "campfire" && v.score > 0.66 && (v.fields.initiator === user.get("username") || contacts.search(v.fields.initiator) > -1)){
                                                 add =true;
                                         }
-                                        else if (v.fields.mode === "boardroom" && (v.fields.initiator === user.get("username") || v.fields.invited.search(user.get("_id"))>-1)){
+                                        else if (v.fields.mode === "boardroom" && v.score > 0.66 && (v.fields.initiator === user.get("username") || v.fields.invited.search(user.get("_id"))>-1)){
                                                 add = true;
                                         }
                                         if (add){
@@ -420,6 +420,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 widget.refreshList = function refreshList(){
+                        if (!widget.dom.querySelector("#mulist-content input").value) currentList = "mulistall";
                         widget.toggleList(currentList);
                 };
                 

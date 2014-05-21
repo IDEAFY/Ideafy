@@ -422,6 +422,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 widget.showPreview = function showPreview(id){
+                        console.log("mulist show preview : ", id);
                         // display search window with session id
                         if (currentList !== "musearch"){
                                 widget.dom.querySelector("#mulistall").classList.add("invisible");
@@ -432,6 +433,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         widget.filterListid(id.replace(/:/g, '%40')).then(function(){
                                 spinner.stop();
                         });
+                        
+                        console.log("before muPreview reset");
+                        
                         // display pop up
                         muPreviewUI.reset(id);        
                 };

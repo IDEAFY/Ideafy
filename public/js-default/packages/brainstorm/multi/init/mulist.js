@@ -434,6 +434,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         spinner.spin(widget.dom.querySelector("#mulistspinner"));
                         
                         widget.filterList(id).then(function(){
+                                widget.dom.querySelector("#mulist-content input").value = muSearch.get(0).fields.title;
                                 spinner.stop();
                         });
                         

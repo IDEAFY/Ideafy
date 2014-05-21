@@ -213,6 +213,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         cdb.setTransport(transport);
                         cdb.sync("_fti/local/"+db, "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
                                 cdb.loop(function(v,i){
+                                        console.log(v);
                                         var add = false;
                                         if (v.fields.mode === "roulette"){
                                                 add = true;
@@ -220,7 +221,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                         else if (v.fields.mode === "campfire" && contacts.indexOf(v.fields.initiator.id) > -1){
                                                 add =true;
                                         }
-                                        else if (v.fields.mode === "boardroom" && v.fields.invited.search(user.get("_id"))>-1){
+                                        else if (v.fields.mode === "boardroom" && (v.fields.initiator === user.get("username") || v.fields.invited.search(user.get("_id")))>-1){
                                                 add = true;
                                         }
                                         if (add){
@@ -263,6 +264,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 
                 widget.search = function(event, node){
                         // reset previous search if any
+                        console.log(node.value);
                         if (event.keyCode === 13){
                                 if (node.value === ""){
                                         widget.toggleList("mulistall");
@@ -322,6 +324,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 widget.filterList = function filterList($query){
                         var arr=[], query = $query || widget.dom.querySelector("#mulist-content input").value,
                             promise = new Promise(), mode = "", lang = "";
+                        
+                        console.log("filterlist query : ", query);
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
                         if (muListOptions.get("selectedLang") !== "all"){lang = muListOptions.get("selectedLang");}

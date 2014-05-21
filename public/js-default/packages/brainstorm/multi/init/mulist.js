@@ -267,7 +267,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 
                 widget.search = function(event, node){
                         // reset previous search if any
-                        console.log(node.value);
                         if (event.keyCode === 13){
                                 if (node.value === ""){
                                         widget.toggleList("mulistall");
@@ -328,6 +327,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         var arr=[], query = $query || widget.dom.querySelector("#mulist-content input").value,
                             promise = new Promise(), mode = "", lang = "";
                         
+                        
+                        // escape : characters in query
+                        query = query.replace(/:/g, '\:');
                         console.log("filterlist query : ", query, currentList);
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
@@ -422,7 +424,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 };
                 
                 widget.showPreview = function showPreview(id){
-                        var query = id.replace(/:/g, '%40');
                         // display search window with session id
                         if (currentList !== "musearch"){
                                 widget.dom.querySelector("#mulistall").classList.add("invisible");
@@ -431,7 +432,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         }
                         spinner.spin(widget.dom.querySelector("#mulistspinner"));
                         
-                        widget.filterList(query).then(function(){
+                        widget.filterList(id).then(function(){
                                 spinner.stop();
                         });
                         

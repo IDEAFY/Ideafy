@@ -344,11 +344,15 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 .then(function(){
                                         console.log("session successfully uploaded");
                                         console.log(session.toJSON());
-                                        // remove exitListener
-                                        document.removeEventListener("mousedown", exitListener.listener, true); 
+                                        
                                         session.unsync();
                                         spinner.stop();
                                         node.classList.remove("invisible");
+                                        
+                                        // remove exitListener
+                                        document.removeEventListener("mousedown", exitListener.listener, true); 
+                                        
+                                        // start session
                                         $start(session.get("_id"));        
                                 });
                         };
@@ -384,12 +388,15 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
                                         session.unsync();
                                         widget.displayInfo(labels.get("canceledbyleader"), 2000).then(function(){
-                                                document.removeEventListener(exitListener.listener);
+                                                // remove exitListener
+                                                document.removeEventListener("mousedown", exitListener.listener, true); 
                                                 $exit();     
                                         });
                                 }
                                 if (value === "in progress" && session.get("initiator").id !== user.get("_id")){
                                         session.unsync();
+                                        // remove exitListener
+                                        document.removeEventListener("mousedown", exitListener.listener, true); 
                                         $start(session.get("_id"));
                                         session.reset({});
                                         participants.reset([]);

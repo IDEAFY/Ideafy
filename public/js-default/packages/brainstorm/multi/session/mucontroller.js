@@ -5,8 +5,8 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBDocument", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin", "service/confirm"],
-        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBDocument, Config, Promise, Store, Spinner, Place, Confirm){
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBDocument", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin", "service/confirm", "service/utils"],
+        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBDocument, Config, Promise, Store, Spinner, Place, Confirm, Utils){
                 
            return function MUControllerConstructor($exit){
                    
@@ -124,6 +124,24 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    };
                    
                 // initiator or a participant decides to leave the waiting room
+                
+                // manage exit event : init confirm callback
+                confirmCallBack = function confirmCallback(decision){
+                        if (!decision){
+                                Confirm.hide();
+                        }
+                        else{
+                                user.set("sessionInProgress", "");
+                                user.upload();
+                                if (session.get("initiator").id === user.get("_id")){
+                                        _widget.cancelSession();
+                                }
+                                else {
+                                        _widget.leaveSession();
+                                }
+                        }
+                };
+                
                 // participant decides to leave session
                 _widget.leaveSession = function leaveSession(){
                         var p = _session.get("participants"), i, currentUI = _stack.getStack().get(_session.get("step"));

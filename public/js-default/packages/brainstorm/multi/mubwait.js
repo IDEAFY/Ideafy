@@ -112,34 +112,9 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 // get session info
                                 session.sync(Config.get("db"), sid).then(function(){
                                         
-                                        // manage exit event
-                                        
-                                        confirmCallBack = function(decision){
-                                                if (!decision){
-                                                        Confirm.hide();
-                                                }
-                                                else{
-                                                        user.set("sessionInProgress", "");
-                                                        user.upload();
-                                                        if (session.get("initiator").id === user.get("_id")){
-                                                                widget.cancelSession();
-                                                        }
-                                                        else {
-                                                                widget.leaveSession();
-                                                        }
-                                                }
-                                        };
-                                        
                                         // activate exit listener
                                         exitListener.listener = Utils.exitListener("mubwait", widget.leave);
                                         
-                                        // init confirmation UI content
-                                        if (session.get("initiator").id === user.get("_id")){
-                                                Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
-                                        }
-                                        else {
-                                                Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
-                                        }
                                         // reset participants store
                                         participants.reset(session.get("participants")); 
                                         
@@ -172,13 +147,37 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         widget.leave = function leave(target){
                                 var now = new Date().getTime();
                                 exitDest = target.getAttribute("href") || target;
+                                
+                                // init confirmation UI content
+                                if (session.get("initiator").id === user.get("_id")){
+                                        Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
+                                }
+                                else {
+                                        Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
+                                }
+                                
                                 // href exists it is one of the nav options else probably a notify message or future use
                                 if (!session.get("scheduled") ||((session.get("scheduled") - now) < 300000)) Confirm.show("musession-confirm");
                         };
                         
+                        // manage exit event : init confirm callback
+                        confirmCallBack = function confirmCallback(decision){
+                                if (!decision){
+                                        Confirm.hide();
+                                }
+                                else{
+                                        user.set("sessionInProgress", "");
+                                        user.upload();
+                                        if (session.get("initiator").id === user.get("_id")){
+                                                widget.cancelSession();
+                                        }
+                                        else {
+                                                widget.leaveSession();
+                                        }
+                                }
+                        };
+                        
                         // participant decides to leave session
-                        
-                        
                         widget.leaveSession = function leaveSession() {
                                 var p = session.get("participants"), i;
 

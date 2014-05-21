@@ -163,7 +163,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         muCDB.set("status", "waiting");
                                                         muCDB.upload()
                                                         .then(function(){
-                                                                muPreviewUI.enter();         
+                                                                // notify participants session is starting
+                                                                
+                                                                muPreviewUI.enter();
                                                         });
                                                 }
                                                 else{
@@ -189,6 +191,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         .then(function(){
                                                                 // reset participants model
                                                                 participants.reset(muCDB.get("participants"));
+                                                                // notify leader and other participants
+                                                                
                                                                 // if it is an immediate session and/or status === waiting join right away
                                                                 if (muCDB.get("status") === "waiting") muPreviewUI.enter();
                                                                 else spinner.stop();
@@ -207,7 +211,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         muPreviewUI.dom.classList.add("invisible");
                                         muCDB.unsync();
                                         muCDB.reset();
-                                }, 5000);        
+                                }, 3000);        
                         };
                         
                         muPreviewUI.init = function init(callback){
@@ -291,6 +295,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                          */
                         muPreviewUI.cancelsession = function(event, node){
                                 // display confirmation UI
+                                
+                                // cancel participation or cancel session depending on user
                                 
                                 console.log("canceling");
                                 

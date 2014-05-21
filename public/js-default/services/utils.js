@@ -562,7 +562,8 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 var listener = function(e){
                         var element;
                         for (element = e.target; element; element = element.parentNode) {
-                                if (element.id === id) {
+                                if (element.id && element.id === id) {
+                                        console.log(id, element.id);
                                         return;
                                 }
                         }

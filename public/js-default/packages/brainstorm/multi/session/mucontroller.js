@@ -309,7 +309,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 _widget.retrieveSession = function retrieveSession(sid, replay){
                         
                         var promise = new Promise();
-                        console.log("retrieve session called ", sid);
+                        console.log("retrieve session called ", sid, replay);
                         spinner.spin(document.getElementById("brainstorm"));
                            
                         // connect to couchdb and retrieve session
@@ -348,9 +348,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         promise.fulfill();
                                         _stack.getStack().show(step);
                                 }
-                                
-                                return promise;
                            });
+                           return promise;
                    };
                    
                    

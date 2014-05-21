@@ -307,6 +307,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 // retrieve session and start brainstorming   
                 _widget.retrieveSession = function retrieveSession(sid, replay){
+                        
+                        var promise = new Promise();
                         console.log("retrieve session called ", sid);
                         spinner.spin(document.getElementById("brainstorm"));
                            
@@ -314,30 +316,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         _session.reset({});
                         _session.sync(_db, sid).then(function(){
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
-                                
-                                if (!replay){
-                                        // init exit confirmation UI
-                                        confirmCallBack = function(decision){
-                                                if (!decision){
-                                                        Confirm.hide();
-                                                }
-                                                else{
-                                                        if (_session.get("initiator").id === _user.get("_id")){
-                                                                _widget.cancelSession();
-                                                        }
-                                                        else {
-                                                                _widget.leaveSession();
-                                                        }
-                                                }
-                                        };
-                                        // init confirmation UI
-                                        if (_session.get("initiator").id === _user.get("_id")){
-                                                Confirm.reset(_labels.get("leaderleave"), confirmCallBack);        
-                                        }
-                                        else {
-                                                Confirm.reset(_labels.get("participantleave"), confirmCallBack);        
-                                        }
-                                }
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
@@ -355,12 +333,23 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 
                                 if (replay){
                                         spinner.stop();
+                                        promise.fulfill();
                                         _stack.getStack().show("muwrapup");
                                 }
                                 else{
+                                        // init confirmation UI
+                                        if (_session.get("initiator").id === _user.get("_id")){
+                                                Confirm.reset(_labels.get("leaderleave"), confirmCallBack);        
+                                        }
+                                        else {
+                                                Confirm.reset(_labels.get("participantleave"), confirmCallBack);        
+                                        }
                                         spinner.stop();
+                                        promise.fulfill();
                                         _stack.getStack().show(step);
                                 }
+                                
+                                return promise;
                            });
                    };
                    
@@ -393,13 +382,14 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 {name: "muwrapup", label: _labels.get("quickstepwrapup"), currentStep: false, status:null}
                         ]);
                         
-                        // if not in replay mode activate the exit listener
-                        // activate exit listener
-                        if (!replay) exitListener.listener = Utils.exitListener("musession", _widget.leave);
                                         
                         // retrieve session document and launch   
                         if (sid){
-                                _widget.retrieveSession(sid, replay);
+                                _widget.retrieveSession(sid, replay)
+                                .then(function(){
+                                        // if not in replay mode activate the exit listener
+                                        if (!replay) exitListener.listener = Utils.exitListener("musession", _widget.leave);
+                                });     
                         } 
                    };
                    
@@ -572,6 +562,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 });
                         }                
                 });
+                
+                
+                MUC = _widget;
                    
                 // return
                 return _widget;

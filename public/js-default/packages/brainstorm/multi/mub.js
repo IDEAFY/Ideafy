@@ -46,6 +46,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 
                 // displaying a session preview
                 widget.showPreview = function showPreview(id){
+                        console.log("mub show preview :", id);
                         muInit.showPreview(id);
                         stack.getStack().show("mubinit");        
                 };
@@ -117,6 +118,8 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 stack.getStack().add("mubinit", muInit);
                 stack.getStack().add("mubwait", muWait);
                 stack.getStack().add("musession", muController);
+                
+                console.log($sip);
                 
                 if (!$sip){
                         stack.getStack().show("mubinit");

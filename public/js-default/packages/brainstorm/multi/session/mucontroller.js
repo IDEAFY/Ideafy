@@ -389,6 +389,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 .then(function(){
                                         // if not in replay mode activate the exit listener
                                         if (!replay) exitListener.listener = Utils.exitListener("musession", _widget.leave);
+                                        console.log("exitListener : ", exitListener);
                                 });     
                         } 
                    };
@@ -565,6 +566,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 
                 MUC = _widget;
+                EXIT = exitListener;
+                UT = Utils;
                    
                 // return
                 return _widget;

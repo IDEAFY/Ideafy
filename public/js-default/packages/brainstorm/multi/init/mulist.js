@@ -23,7 +23,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                     _languages = new Store([{name:"*"}]),
                     _usrLg = Config.get("userLanguages"),
                     currentList = "mulistall",
-                    contacts = Utils.getUserContactIds(), // array of user ids
+                    contacts, // array of user names
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 6, radius:10, top: 200}).spin();
                 
                 // build languages & flags
@@ -212,16 +212,17 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         var promise = new Promise(), cdb = new CouchDBView();
                         cdb.setTransport(transport);
                         cdb.sync("_fti/local/"+db, "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
+                                contacts = Utils.getContactUsernames().join();
                                 cdb.loop(function(v,i){
                                         console.log(v);
                                         var add = false;
                                         if (v.fields.mode === "roulette"){
                                                 add = true;
                                         }
-                                        else if (v.fields.mode === "campfire" && contacts.indexOf(v.fields.initiator.id) > -1){
+                                        else if (v.fields.mode === "campfire" && (v.fields.initiator === user.get("username") || contacts.search(v.fields.initiator) > -1)){
                                                 add =true;
                                         }
-                                        else if (v.fields.mode === "boardroom" && (v.fields.initiator === user.get("username") || v.fields.invited.search(user.get("_id")))>-1){
+                                        else if (v.fields.mode === "boardroom" && (v.fields.initiator === user.get("username") || v.fields.invited.search(user.get("_id"))>-1)){
                                                 add = true;
                                         }
                                         if (add){
@@ -230,6 +231,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                         if (v.fields.mode.search(filter.mode)>-1 && v.fields.lang.search(filter.lang)>-1) {arr.push(v);}
                                                 }
                                         }
+                                }, function(err){
+                                        alert(err);
                                 });
                                 promise.fulfill();
                         });

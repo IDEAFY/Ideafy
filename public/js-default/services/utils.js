@@ -478,6 +478,17 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 });
                 return res;
         };
+        
+        /*
+        *  A function that extracts a list of all contact usernames from a user document
+        */
+        _utils.getContactUsernames = function(){
+                var res = [], contacts = user.get("connections").concat();
+                contacts.forEach(function(contact){
+                        if (contact.type === "user") {res.push(contact.username);}        
+                });
+                return res;
+        };
                 
         /*
         * A function to check if user profile is completed

@@ -14,6 +14,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                             _avatars = Config.get("avatars"),
                             _cdb = new CouchDBView([]),
                             _id = $array[0],
+                            interval,
                             bool = false; 
                         
                         // setup
@@ -40,7 +41,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         // check if user is online -- perform check every 30 seconds
                         Utils.isOnline(_id, _store);
                         
-                        setInterval(function(){
+                        interval = setInterval(function(){
                                 Utils.isOnline(_id, _store);
                         }, 30000);
                         
@@ -74,6 +75,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         _store.set("img", _avatars.get(_id));
                                 });
                         }
+                        
+                        Config.get("observer").watch("signout", function(){
+                                clearInterval(interval);
+                        });
                              
                 }
                 

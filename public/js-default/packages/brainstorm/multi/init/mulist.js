@@ -435,7 +435,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         
                         if (id) id =  id.replace(/:/g, '%40');
                         console.log(id, "before filter");
-                        widget.filterListid(id).then(function(){
+                        widget.filterList(id).then(function(){
                                 spinner.stop();
                         });
                         

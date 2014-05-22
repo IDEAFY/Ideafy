@@ -466,7 +466,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 $session.set("idea", [cdbId]);
                                                 $session.upload()
                                                 .then(function(success){
-                                                        console.log("idea updated in CouchDB");
                                                         return true;
                                                 }, function(err){
                                                         console.log("failed to update idea", err);

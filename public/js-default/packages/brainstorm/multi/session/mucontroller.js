@@ -80,7 +80,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         else{
                                 if (_session.get("step") === "muwrapup"){
                                         if (_session.get("initiator").id === _user.get("_id")){
-                                                muWrapup.getChatUI().setMsg("end")
+                                                muWrapup.getChatUI().setMessage("end")
                                                 .then(function(){
                                                         // reset sessionInProgress in user doc
                                                         _user.set("sessionInProgress", "");
@@ -152,7 +152,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 // leader or participant decides to leave at the end of a session
                 _widget.exitSession = function exitSession(){
                         if (_session.get("initiator").id === _user.get("_id")){
-                                muWrapup.getChatUI().setMsg("end")
+                                muWrapup.getChatUI().setMessage("end")
                                 .then(function(){
                                         // reset sessionInProgress in user doc
                                         _user.set("sessionInProgress", "");

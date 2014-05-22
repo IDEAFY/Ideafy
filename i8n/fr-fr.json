@@ -458,6 +458,8 @@
 	"participantleave": "Êtes-vous sûr de vouloir quitter? Vous ne pourrez plus rejoindre la session et ne serez crédité d'aucun résultat (score, qualité de co-auteur, etc.) de cette session",
 	"leaderleave": "Êtes-vous sûr de vouloir annuler cette session? Elle va prendre fin pour tous les participants.",
 	"canceledbyleader" : "La session a été annulée par son leader: au revoir",
+	"participantexit": "Êtes-vous sûr de vouloir quitter?",
+	"leaderexit": "Êtes-vous sûr de vouloir quitter et terminer la session?",
 	"participantsleft" : "Tous les participants ont quitté la session: elle est annulée",
 	"waitingroomlbl": "Salle d'attente",
 	"joinedsession": "<i>Vous avez rejoint cette session.</i>",

@@ -457,6 +457,8 @@
 	"selectsession": "Select a session",
 	"participantleave": "Are you sure you want to leave? You will not be able to re-join nor will you get credited for any outcome  of the session",
 	"leaderleave": "Are you sure you want to cancel this session? This will end it for all participants.",
+	"participantexit": "Are you sure you want to leave?",
+	"leaderexit": "Are you sure you want to leave? This will end the session for all participants.",
 	"canceledbyleader" : "Session canceled by leader: ending now",
 	"participantsleft" : "All participants have left: the session is canceled",
 	"waitingroomlbl": "Waiting room",

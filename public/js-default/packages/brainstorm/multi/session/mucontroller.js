@@ -88,6 +88,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 })
                                                 .then(function(){
                                                         $exit();
+                                                        document.removeEventListener("mousedown", exitListener.listener, true); 
                                                 });
                                         }
                                         else{
@@ -95,7 +96,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 // reset sessionInProgress in user doc
                                                 _user.set("sessionInProgress", "");
                                                 _user.upload().then(function(){
-                                                        $exit();        
+                                                        $exit();
+                                                        document.removeEventListener("mousedown", exitListener.listener, true);       
                                                 }); 
                                         }       
                                 }
@@ -131,18 +133,68 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 Confirm.hide();
                         }
                         else{
-                                _user.set("sessionInProgress", "");
-                                _user.upload();
-                                if (_session.get("initiator").id === user.get("_id")){
-                                        _widget.cancelSession();
+                                if (_session.get("step") !== "muwrapup"){
+                                        _user.set("sessionInProgress", "");
+                                        _user.upload();
+                                        if (_session.get("initiator").id === user.get("_id")){
+                                                _widget.cancelSession();
+                                        }
+                                        else {
+                                                _widget.leaveSession();
+                                        }
                                 }
-                                else {
-                                        _widget.leaveSession();
+                                else{
+                                        _widget.exitSession();
                                 }
                         }
                 };
                 
-                // participant decides to leave session
+                // leader or participant decides to leave at the end of a session
+                _widget.exitSession = function exitSession(){
+                        if (_session.get("initiator").id === _user.get("_id")){
+                                muWrapup.getChatUI().setMsg("end")
+                                .then(function(){
+                                        // reset sessionInProgress in user doc
+                                        _user.set("sessionInProgress", "");
+                                        return _user.upload();      
+                                })
+                                .then(function(){
+                                        _widget.goToScreen();
+                                });
+                        }
+                        else{
+                                muWrapup.getChatUI().leave();
+                                // reset sessionInProgress in user doc
+                                _user.set("sessionInProgress", "");
+                                _user.upload().then(function(){
+                                        $exit();        
+                                }); 
+                        } 
+                };
+                
+                // switch screen to destination if user confirms exit
+                _widget.goToScreen = function goToScreen(){
+                        var id;
+                        $exit();
+                        document.removeEventListener("mousedown", exitListener.listener, true); 
+                                
+                        // if dest is specified (e.g. notify popup)
+                        if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
+                                Config.get("observer").notify("goto-screen", "#connect");  
+                                id = exitDest.getAttribute("data-notify_id");
+                                observer.notify("display-message", parseInt(id, 10));     
+                        }
+                        // handle clicks on nav bar
+                        else {
+                                ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
+                                        if (exitDest === name){
+                                                Config.get("observer").notify("goto-screen", name);
+                                        }
+                                });
+                        }
+                };
+                
+                // participant decides to leave session in progress
                 _widget.leaveSession = function leaveSession(){
                         var p = _session.get("participants"), i, currentUI = _stack.getStack().get(_session.get("step"));
                         
@@ -353,13 +405,15 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    
                 _widget.leave = function leave(){
-                        // init confirmation UI content
+                        var lbl = "";
+                        // init confirmation UI content depending on step
                         if (_session.get("initiator").id === _user.get("_id")){
-                                Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
+                                (_session.get("step") === "muwrapup") ? lbl = labels.get("leaderexit") : lbl = labels.get("leaderleave");
                         }
-                        else {
-                                Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
+                        else{
+                                (_session.get("step") === "muwrapup") ? lbl = labels.get("participantexit") : lbl = labels.get("participantleave");      
                         }
+                        Confirm.reset(lbl, confirmCallBack, "musession-confirm");                        
                         Confirm.show();      
                 };
                    
@@ -562,11 +616,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }                
                 });
                 
-                
-                MUC = _widget;
-                EXIT = exitListener;
-                UT = Utils;
-                   
                 // return
                 return _widget;
            };    
@@ -575,38 +624,3 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
 /*
  * ALSO SHOULD REGULARLY CHECK IF LEADER IS STILL CONNECTED....
  */ 
-        
-/*
- * CODE TO USE TO HANDLE EXIT FROM BRAINSTORMING SESSION
- * // create listener
-                                exitListener.listener = Utils.exitListener("mubwait", widget.leave);
-                                
-                                // get session info
-                                session.sync(Config.get("db"), sid).then(function(){
-                                        // manage exit event
-                                        // step 1 init confirmation UI
-                                        if (session.get("initiator").id === user.get("_id")){
-                                                Confirm.reset(labels.get("leaderleave"), confirmCallBack);        
-                                        }
-                                        else {
-                                                Confirm.reset(labels.get("participantleave"), confirmCallBack);        
-                                        }
-                                        // reset participants store
-                                        participants.reset(session.get("participants")); 
-                                        
-                                        // reset chatUI
-                                        chatUI.reset(session.get("chat")[0]);
-                                        
-                                        // set as session in progress
-                                        user.set("sessionInProgress", {id: sid, type: "musession", mode:"join"});
-                                        user.upload();
-                                });
-                        };
-                        
-                        // initiator or a participant decides to leave the waiting room
-                        widget.leave = function leave(target){
-                                exitDest = target.getAttribute("href") || target;
-                                // href exists it is one of the nav options else probably a notify message (or future use)
-                                Confirm.show();       
-                        };
- */

@@ -214,7 +214,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                        // reset sessionInProgress in user doc
                         _user.set("sessionInProgress", "");
                         _user.upload().then(function(){
-                                $exit();        
+                                $exit();
+                                document.removeEventListener("mousedown", exitListener.listener, true);       
                         });          
                    };
                         
@@ -223,6 +224,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         var countdown = 5000; // better to pick a high number and cancel earlier if all actions are finished
                         _widget.displayInfo("deleting", countdown).then(function(){
                                 $exit();
+                                document.removeEventListener("mousedown", exitListener.listener, true);
                         });      
                 };
                         

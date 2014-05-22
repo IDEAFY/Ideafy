@@ -309,7 +309,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 _widget.retrieveSession = function retrieveSession(sid, replay){
                         
                         var promise = new Promise();
-                        console.log("retrieve session called ", sid, replay);
                         spinner.spin(document.getElementById("brainstorm"));
                            
                         // connect to couchdb and retrieve session
@@ -360,7 +359,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         }
                         else {
                                 Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
-                        }        
+                        }
+                        Confirm.show();      
                 };
                    
                 _widget.reset = function reset(sid, replay){
@@ -388,7 +388,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 .then(function(){
                                         // if not in replay mode activate the exit listener
                                         if (!replay) exitListener.listener = Utils.exitListener("musession", _widget.leave);
-                                        console.log("exitListener : ", exitListener);
                                 });     
                         } 
                    };

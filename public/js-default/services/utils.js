@@ -563,7 +563,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                         var element;
                         for (element = e.target; element; element = element.parentNode) {
                                 if (element.id && element.id === id) {
-                                        console.log(id, element.id);
                                         return;
                                 }
                         }
@@ -574,6 +573,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                                 callback(e.target);        
                         }       
                 };
+                
                 document.addEventListener("mousedown", listener, true);
                 return listener;      
         };

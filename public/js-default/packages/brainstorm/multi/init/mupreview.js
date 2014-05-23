@@ -367,8 +367,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 muCDB.set("status", 'deleted');
                                                 muCDB.upload()
                                                 .then(function(){
-                                                        // notify participants
-                                                        muPreviewUI.notify("cancel");
+                                                        // notify registered participants
+                                                        if (muCDB.get("participants").length) muPreviewUI.notify("cancel");
                                                         return muCDB.remove();        
                                                 })
                                                 .then(function(){

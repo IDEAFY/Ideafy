@@ -153,7 +153,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         };
                         
                         muPreviewUI.notify = function notify(type){
-                                console.log("entering notify : ", type);
                                 var json = {}, now = new Date(), date, dest, leader = muCDB.get("initiator").id, parts = muCDB.get("participants") || [], partIds = [];
                                 
                                 date = [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
@@ -172,10 +171,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         "signature" : "",
                                         "docId" : muCDB.get("_id"),
                                         "docTitle" : muCDB.get("title"),
-                                        "scheduled" : cdb.get("scheduled")        
+                                        "scheduled" : muCDB.get("scheduled")        
                                 };
-                                
-                                console.log(json);
                                 
                                 for (i=0; i<parts.length; i++){
                                         partIds.push(parts[i].id);

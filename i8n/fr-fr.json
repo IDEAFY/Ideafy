@@ -587,5 +587,7 @@
 	"ideafy" : "Ideafy",
 	"snamed" : "La session intitulée",
 	"stomorrow": "est prévue demain à ",
-	"sfifteen": "démarre dans 15 minutes"
+	"sfifteen": "démarre dans 15 minutes",
+	"partcancel": "Êtes-vous sûr de vouloir annuler votre participation?",
+	"delsession": "Êtes-vous sûr de vouloir supprimer votre session?"
 }

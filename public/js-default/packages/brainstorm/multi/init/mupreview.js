@@ -377,7 +377,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         }
                                         Confirm.hide();
                                 };
-                                Confirm.reset("Are you sure you want to delete this session?", confirmCallback);
+                                Confirm.reset(labels.get("delsession"), confirmCallback, "musession-confirm");
                                 Confirm.show();
                         };
                         
@@ -401,7 +401,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         }
                                         Confirm.hide();
                                 };
-                                Confirm.reset("Are you sure you want to cancel your participation?", confirmCallback);
+                                Confirm.reset(labels.get("partcancel"), confirmCallback, "musession-confirm");
                                 Confirm.show();    
                         };
                         

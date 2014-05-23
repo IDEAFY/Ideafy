@@ -134,6 +134,10 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                                 setStyle : function(status){
                                         (status === "unread") ? this.setAttribute("style", "font-weight: bold;") : this.setAttribute("style", "font-weight: normal;");
                                 },
+                                setFirstname : function(firstname){
+                                        if (firstname) this.innerHTML = firstname;
+                                        else this.innerHTML = labels.get("ideafy");        
+                                },
                                 setAvatar : function(author){
                                         var _frag, _ui, node = this;
                                         if (author){
@@ -147,7 +151,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                         "notifyevent" : new Event(notifyPopup)
                 });
                 
-                notifyPopup.template = '<div class="invisible"><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:mousedown, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:mousedown, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
+                notifyPopup.template = '<div class="invisible"><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:mousedown, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:mousedown, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:setFirstname, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
                 
                 notifyPopup.closePopup = function closePopup(event, node){
                         notifyPopup.dom.classList.add("invisible");        

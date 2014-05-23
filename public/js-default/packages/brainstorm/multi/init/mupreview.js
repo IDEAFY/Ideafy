@@ -154,12 +154,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         
                         muPreviewUI.notify = function notify(type){
                                 console.log("entering notify : ", type);
-                                var json = {}, now = new Date(), dest, leader = muCDB.get("initiator").id, parts = muCDB.get("participants") || [], partIds = [];
+                                var json = {}, now = new Date(), date, dest, leader = muCDB.get("initiator").id, parts = muCDB.get("participants") || [], partIds = [];
+                                
+                                date = [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
                                 
                                 // set common parameters
                                 json = {
                                         "status" : "unread",
-                                        "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                        "date" : date,
                                         "author" : user.get("_id"),
                                         "username" : user.get("username"),
                                         "firstname" : user.get("firstname"),

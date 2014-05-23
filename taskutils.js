@@ -182,9 +182,6 @@ function TaskUtils(){
                                                         }        
                                                 });        
                                         }
-                                        else{
-                                                console.log("notification not required for : ", sid, "\n", notify, cdb.get("notif"));
-                                        }
                                 });
                                         
                       },

@@ -371,11 +371,13 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 muCDB.set("status", 'deleted');
                                                 muCDB.upload()
                                                 .then(function(){
+                                                        console.log("upload successful");
                                                         // notify registered participants
                                                         if (muCDB.get("participants").length) muPreviewUI.notify("cancel");
                                                         return muCDB.remove();        
                                                 })
                                                 .then(function(){
+                                                        console.log("remove successful");
                                                        muPreviewUI.closePreview();
                                                 }, function(err){console.log(err);});
                                         }

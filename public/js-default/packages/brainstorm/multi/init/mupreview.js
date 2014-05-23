@@ -13,13 +13,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         var muPreviewUI = new Widget(),
                               labels = Config.get("labels"),
                               user = Config.get("user"),
+                              transport = Config.get("transport"),
                               muCDB =  new CouchDBDocument(),
                               info = new Store({"msg":""}),
                               participants = new Store([]),
                               spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 269, top: 306}).spin(),
                               refreshList; // callback function when closing the preview window
                         
-                        muCDB.setTransport(Config.get("transport"));
+                        muCDB.setTransport(transport);
                         
                         muPreviewUI.plugins.addAll({
                                 "labels" : new Model(labels),
@@ -109,6 +110,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         },
                                         setIntro : function(intro){
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
+                                        },
+                                        showCancel : function(id){
+                                                (id === user.get('_id')) ? this.classList.remove("invisible") : this.classList.add("invisible");        
                                         }
                                 }),
                                 "info" : new Model(info, {
@@ -126,7 +130,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
-                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime invisible" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div><div class="cancelcession" data-model = "bind: displayCancel, initiator" data-previewevent="listen: click, cancelsession">&#10007</div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-model="bind:showJoinButton, status; bind: updateJoinButton, participants" data-previewevent="listen: mousedown, press; listen:mouseup, action"></div><div class="infopreview invisible" data-info="bind:showMsg, msg"></div></div></div>';
+                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime invisible" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div><div class="cancelsession" data-model = "bind: displayCancel, initiator" data-previewevent="listen: mousedown, cancelsession">&#10007</div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p><div class="cancelsession invisible" data-participant="bind:showCancel, id" data-previewevent="listen: mousedown, cancelparticipation">&#10007</div></li></ul></div><div class="start-button invisible" data-model="bind:showJoinButton, status; bind: updateJoinButton, participants" data-previewevent="listen: mousedown, press; listen:mouseup, action"></div><div class="infopreview invisible" data-info="bind:showMsg, msg"></div></div></div>';
                        
                         muPreviewUI.reset = function reset(sid){
                                 muPreviewUI.dom.classList.remove("invisible");
@@ -146,6 +150,27 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         
                         muPreviewUI.press = function press(event, node){
                                 node.classList.add("pressed");        
+                        };
+                        
+                        muPreviewUI.notify = function(type){
+                                
+                                var json, now, dest;
+                                
+                                // new participant / cancel participant / cancel session
+                                
+                                switch(type){
+                                        case "newpart":
+                                                break;
+                                        case "partleave":
+                                                break;
+                                        case "cancel":
+                                                break;
+                                        default:
+                                                break;
+                                }
+                                
+                                
+                                        
                         };
                         
                         muPreviewUI.action = function action(event, node){
@@ -305,6 +330,10 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 // remove from database
                                 
                         };
+                        
+                        /*
+                         * A participant decides to leave a scheduled session
+                         */
                         
                         
                         return muPreviewUI;       

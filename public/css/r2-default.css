@@ -1037,6 +1037,8 @@ textarea.a-desc::-webkit-input-placeholder{
 }
 
 #mupreview .cancelsession{
+    float: right;
     color: red;
     margin-right: 10px;
 }
+

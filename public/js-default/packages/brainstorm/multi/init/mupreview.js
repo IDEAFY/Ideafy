@@ -153,7 +153,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         };
                         
                         muPreviewUI.notify = function notify(type){
-                                
+                                console.log("entering notify : ", type);
                                 var json = {}, now = new Date(), dest, leader = muCDB.get("initiator").id, parts = muCDB.get("participants") || [], partIds = [];
                                 
                                 // set common parameters
@@ -172,6 +172,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         "docTitle" : muCDB.get("title"),
                                         "scheduled" : cdb.get("scheduled")        
                                 };
+                                
+                                console.log(json);
                                 
                                 for (i=0; i<parts.length; i++){
                                         partIds.push(parts[i].id);
@@ -192,9 +194,15 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 json.type = "SCANCEL";
                                                 json.dest = partIds;
                                                 break;
+                                        case "start":
+                                                json.type = "SSTART";
+                                                json.dest = partIds;
+                                                break;
                                         default:
                                                 break;
                                 }
+                                
+                                console.log("before request : ", json);
                                 
                                 transport.request("Notify", json, function(result){
                                         console.log(result);
@@ -216,8 +224,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         muCDB.set("status", "waiting");
                                                         muCDB.upload()
                                                         .then(function(){
-                                                                // notify participants session is starting
-                                                                muPreviewUI.notify("newpart");
+                                                                // if scheduled, notify participants session is starting
+                                                                if (muCDB.get("scheduled")) muPreviewUI.notify("start");
                                                                 muPreviewUI.enter();
                                                         });
                                                 }

@@ -412,7 +412,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 Confirm.show();    
                         };
                         
-                        
+                        MUCDB = muCDB;
                         return muPreviewUI;       
                 };
         });

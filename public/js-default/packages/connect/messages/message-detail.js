@@ -92,7 +92,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.innerHTML = labels.get("referral");
                                                         break;
                                                 case "MUD-":
-                                                        this.innerHTML = "The session named" + "<b> " + message.get("docTitle") + "</b> " + "is set for tomorrow at " + new Date(message.get("scheduled")).toLocaleTimeString() + ".<br/><br/>";
+                                                        this.innerHTML = "The session named" + '<b> "' + message.get("docTitle") + '"</b> ' + "is set for tomorrow at " + new Date(message.get("scheduled")).toLocaleTimeString() + ".<br/><br/>";
                                                         break;
                                                 case "MUQ-":
                                                         this.innerHTML = "The session named" + "<b> " + message.get("docTitle") + "</b> " + "will start in fifteen minutes" + ".<br/><br/>"

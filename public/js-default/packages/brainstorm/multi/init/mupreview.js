@@ -368,6 +368,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                        muPreviewUI.closePreview();
                                                 });
                                         }
+                                        Confirm.hide();
                                 };
                                 Confirm.reset("Are you sure you want to delete this session?", confirmCallback);
                                 Confirm.show();
@@ -391,6 +392,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         muPreviewUI.notify("partleave");      
                                                 });
                                         }
+                                        Confirm.hide();
                                 };
                                 Confirm.reset("Are you sure you want to cancel your participation?", confirmCallback);
                                 Confirm.show();    

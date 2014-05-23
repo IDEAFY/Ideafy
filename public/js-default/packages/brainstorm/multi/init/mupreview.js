@@ -141,6 +141,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         };
                         
                         muPreviewUI.closePreview = function closePreview(event, node){
+                                console.log("closing preview window");
                                 // hide window
                                 muPreviewUI.dom.classList.add("invisible");
                                 muCDB.unsync();
@@ -373,7 +374,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 })
                                                 .then(function(){
                                                        muPreviewUI.closePreview();
-                                                });
+                                                }, function(err){console.log(err);});
                                         }
                                         Confirm.hide();
                                 };

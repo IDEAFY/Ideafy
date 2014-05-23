@@ -59,6 +59,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.reset = function reset($question, $callback, $class){
+                                
                                 // reset previous class if any
                                 _class && _widget.dom.classList.remove(_class);
                                 

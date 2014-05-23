@@ -366,6 +366,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 
                                 // display confirmation UI
                                 var confirmCallback = function(decision){
+                                        console.log(decision);
                                         if (decision){
                                                 // remove session from database
                                                 muCDB.set("status", 'deleted');

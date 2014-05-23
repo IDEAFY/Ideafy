@@ -91,6 +91,12 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 case "REF":
                                                         this.innerHTML = labels.get("referral");
                                                         break;
+                                                case "MUD-":
+                                                        this.innerHTML = labels.get("muinaday");
+                                                        break;
+                                                case "MUQ-":
+                                                        this.innerHTML = labels.get("mufifteen");
+                                                        break;
                                                 default :
                                                         this.innerHTML = message.get("body").replace(/\n/g, "<br>");
                                                         break;

@@ -120,6 +120,12 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                                                         case "REF":
                                                                 this.innerHTML = messages.get(id).username + labels.get("joinedideafy");
                                                                 break;
+                                                        case "MUD-":
+                                                                this.innerHTML = labels.get("muinaday");
+                                                                break;
+                                                        case "MUQ-":
+                                                                this.innerHTML = labels.get("mufifteen");
+                                                                break;
                                                         default :
                                                                 this.innerHTML = messages.get(id).object;
                                                 }

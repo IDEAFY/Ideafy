@@ -95,7 +95,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.innerHTML = labels.get("snamed") + '<b> "' + message.get("docTitle") + '"</b> ' + labels.get("stomorrow")  + new Date(message.get("scheduled")).toLocaleTimeString() + ".<br/><br/>";
                                                         break;
                                                 case "MUQ-":
-                                                        this.innerHTML = labels.get("snamed") + "<b> " + message.get("docTitle") + "</b> " + labels.get("sfifteen") + ".<br/><br/>";
+                                                        this.innerHTML = labels.get("snamed") + '<b>"'  + message.get("docTitle") + '"</b> ' + labels.get("sfifteen") + ".<br/><br/>";
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("body").replace(/\n/g, "<br>");

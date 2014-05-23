@@ -1042,3 +1042,7 @@ textarea.a-desc::-webkit-input-placeholder{
     margin-right: 10px;
 }
 
+#mupreview .cancelpart{
+    margin-top: -40px;
+}
+

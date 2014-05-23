@@ -130,13 +130,13 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 "previewevent" : new Event(muPreviewUI)      
                         });
                         
-                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime invisible" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div><div class="cancelsession" data-model = "bind: displayCancel, initiator" data-previewevent="listen: mousedown, cancelsession">&#10007</div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p><div class="cancelsession invisible" data-participant="bind:showCancel, id" data-previewevent="listen: mousedown, cancelparticipation">&#10007</div></li></ul></div><div class="start-button invisible" data-model="bind:showJoinButton, status; bind: updateJoinButton, participants" data-previewevent="listen: mousedown, press; listen:mouseup, action"></div><div class="infopreview invisible" data-info="bind:showMsg, msg"></div></div></div>';
+                        muPreviewUI.template = '<div id="mupreview" class="invisible"><div class="cache"></div><div class="contentarea"><div class="close" data-previewevent="listen:mousedown, closePreview"></div><div class="mubwait-title" name="title" data-model="bind:setTitle, title"></div><div class="datetime invisible" data-model="bind:showDate, scheduled"><div class="date" data-model="bind: setDate, scheduled"></div><div class="time" data-model="bind:setTime, scheduled"></div><div class="cancelsession" data-model = "bind: displayCancel, initiator" data-previewevent="listen: mousedown, cancelSession">&#10007</div></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p><div class="cancelsession cancelpart invisible" data-participant="bind:showCancel, id" data-previewevent="listen: mousedown, cancelPart">&#10007</div></li></ul></div><div class="start-button invisible" data-model="bind:showJoinButton, status; bind: updateJoinButton, participants" data-previewevent="listen: mousedown, press; listen:mouseup, action"></div><div class="infopreview invisible" data-info="bind:showMsg, msg"></div></div></div>';
                        
                         muPreviewUI.reset = function reset(sid){
                                 muPreviewUI.dom.classList.remove("invisible");
                                 
                                 muCDB.sync(Config.get("db"), sid).then(function(){
-                                        participants.reset(muCDB.get("participants"));
+                                        participants.reset(muCDB.get("participants").concat());
                                 }) ;
                         };
                         
@@ -152,25 +152,53 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 node.classList.add("pressed");        
                         };
                         
-                        muPreviewUI.notify = function(type){
+                        muPreviewUI.notify = function notify(type){
                                 
-                                var json, now, dest;
+                                var json = {}, now = new Date(), dest, leader = muCDB.get("initiator").id, parts = muCDB.get("participants") || [], partIds = [];
+                                
+                                // set common parameters
+                                json = {
+                                        "status" : "unread",
+                                        "date" : [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()],
+                                        "author" : "IDEAFY",
+                                        "username" : "Ideafy",
+                                        "firstname" : "",
+                                        "toList" : "",
+                                        "ccList" : "",
+                                        "object" : "",
+                                        "body" : "",
+                                        "signature" : "",
+                                        "docId" : muCDB.get("_id"),
+                                        "docTitle" : muCDB.get("title"),
+                                        "scheduled" : cdb.get("scheduled")        
+                                };
+                                
+                                for (i=0; i<parts.length; i++){
+                                        partIds.push(parts[i].id);
+                                }
                                 
                                 // new participant / cancel participant / cancel session
                                 
                                 switch(type){
                                         case "newpart":
+                                                json.type = "MUP+";
+                                                json.dest = [leader].concat(partIds);
                                                 break;
                                         case "partleave":
+                                                json.type = "MUP-";
+                                                json.dest = [leader].concat(partIds);
                                                 break;
                                         case "cancel":
+                                                json.type = "SCANCEL";
+                                                json.dest = partIds;
                                                 break;
                                         default:
                                                 break;
                                 }
                                 
-                                
-                                        
+                                transport.request("Notify", json, function(result){
+                                        console.log(result);
+                                });
                         };
                         
                         muPreviewUI.action = function action(event, node){
@@ -189,7 +217,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         muCDB.upload()
                                                         .then(function(){
                                                                 // notify participants session is starting
-                                                                
+                                                                muPreviewUI.notify("newpart");
                                                                 muPreviewUI.enter();
                                                         });
                                                 }
@@ -217,6 +245,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                                 // reset participants model
                                                                 participants.reset(muCDB.get("participants"));
                                                                 // notify leader and other participants
+                                                                
+                                                                // if it is a scheduled session notify leader and other participants
+                                                                if (muCDB.get("scheduled")) muPreviewUI.notify("newpart");
                                                                 
                                                                 // if it is an immediate session and/or status === waiting join right away
                                                                 if (muCDB.get("status") === "waiting") muPreviewUI.enter();
@@ -313,27 +344,55 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 }            
                         };
                         
-                        
+                        /*
+                         *  Confirmation callback
+                         */
                                 
                         /*
                          *  Function called to cancel a scheduled session
                          */
-                        muPreviewUI.cancelsession = function(event, node){
+                        muPreviewUI.cancelSession = function(event, node){
+                                
                                 // display confirmation UI
-                                
-                                // cancel participation or cancel session depending on user
-                                
-                                console.log("canceling");
-                                
-                                // notify participants if any
-                                
-                                // remove from database
-                                
+                                var confirmCallback = function(decision){
+                                        if (decision){
+                                                // remove session from database
+                                                muCDB.set("status", 'deleted');
+                                                muCDB.upload()
+                                                .then(function(){
+                                                        // notify participants
+                                                        muPreviewUI.notify("cancel");
+                                                        return muCDB.remove();        
+                                                })
+                                                .then(function(){
+                                                       muPreviewUI.closePreview();
+                                                });
+                                        }
+                                };
+                                Confirm.reset("Are you sure you want to delete this session?", confirmCallback);
                         };
                         
                         /*
                          * A participant decides to leave a scheduled session
                          */
+                        muPreviewUI.cancelPart = function(event, node){
+                                var idx = node.getAttribute("data-participant_id"), parts = muCDB.get("participants").concat();
+                                // display confirmation UI
+                                var confirmCallback = function(decision){
+                                        if (decision){
+                                                // remove participant from participant store and session store
+                                                participants.alter("splice", idx, 1);
+                                                parts.splice(idx, 1);
+                                                muCDB.set("participants", parts);
+                                                muCDB.upload()
+                                                .then(function(){
+                                                        // notify participants
+                                                        muPreviewUI.notify("partleave");      
+                                                });
+                                        }
+                                };
+                                Confirm.reset("Are you sure you want to cancel your participation?", confirmCallback);        
+                        };
                         
                         
                         return muPreviewUI;       

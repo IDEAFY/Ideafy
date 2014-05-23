@@ -149,7 +149,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 console.log(muPreviewUI.dom);
                                 muCDB.unsync();
                                 muCDB.reset({});
-                                refreshlist && refreshList();               
+                                refreshList && refreshList();               
                         };
                         
                         muPreviewUI.press = function press(event, node){
@@ -373,12 +373,12 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 .then(function(){
                                                         console.log("upload successful");
                                                         // notify registered participants
-                                                        if (muCDB.get("participants").length) muPreviewUI.notify("cancel");
+                                                        // if (muCDB.get("participants").length) muPreviewUI.notify("cancel");
                                                         return muCDB.remove();        
                                                 })
                                                 .then(function(){
                                                         console.log("remove successful");
-                                                       muPreviewUI.closePreview();
+                                                       // muPreviewUI.closePreview();
                                                 }, function(err){console.log(err);});
                                         }
                                         Confirm.hide();

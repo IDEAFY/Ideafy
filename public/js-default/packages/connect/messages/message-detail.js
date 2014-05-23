@@ -92,7 +92,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.innerHTML = labels.get("referral");
                                                         break;
                                                 case "MUD-":
-                                                        this.innerHTML = "The session named " + message.get("docTitle") + "is set for tomorrow at " + new Date(message.get("scheduled")).toLocaleTimeString();
+                                                        this.innerHTML = "The session named" + "<b> " + message.get("docTitle") + "</b> " + "is set for tomorrow at " + new Date(message.get("scheduled")).toLocaleTimeString() + "\n\n" + labels.get("clicktoview");
                                                         break;
                                                 case "MUQ-":
                                                         this.innerHTML = labels.get("mufifteen");
@@ -359,7 +359,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         message.reset(msg);
                         msgReplyUI.reset(msg, "reply");
                         // check if message type is a session invite and if so check session status
-                        if (message.get("type") === "INV"){
+                        if (message.get("type") === "INV" || (message.get("type").search("MU") > -1)){
                                 message.set("sessionStatus", null);
                                 msgDetailUI.checkSessionStatus(message.get("docId"));
                         }

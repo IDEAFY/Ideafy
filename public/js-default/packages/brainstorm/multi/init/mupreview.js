@@ -136,7 +136,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 muPreviewUI.dom.classList.remove("invisible");
                                 
                                 muCDB.sync(Config.get("db"), sid).then(function(){
-                                        participants.reset(muCDB.get("participants").concat());
+                                        muCDB.watchValue("participants", function(){
+                                                participants.reset(muCDB.get("participants").concat());        
+                                        });
                                 }) ;
                         };
                         
@@ -144,9 +146,10 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 console.log("closing preview window");
                                 // hide window
                                 muPreviewUI.dom.classList.add("invisible");
+                                console.log(muPreviewUI.dom);
                                 muCDB.unsync();
                                 muCDB.reset({});
-                                refreshList();               
+                                refreshlist && refreshList();               
                         };
                         
                         muPreviewUI.press = function press(event, node){

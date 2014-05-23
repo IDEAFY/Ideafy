@@ -330,7 +330,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         
                         // escape : characters in query - used in doc._id
                         query = query.replace(/:/g, '\\:');
-                        console.log("filterlist query : ", query, currentList);
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
                         if (muListOptions.get("selectedLang") !== "all"){lang = muListOptions.get("selectedLang");}

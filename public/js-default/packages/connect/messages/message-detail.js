@@ -92,10 +92,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.innerHTML = labels.get("referral");
                                                         break;
                                                 case "MUD-":
-                                                        this.innerHTML = "The session named" + "<b> " + message.get("docTitle") + "</b> " + "is set for tomorrow at " + new Date(message.get("scheduled")).toLocaleTimeString() + "\n\n" + labels.get("clicktoview");
+                                                        this.innerHTML = "The session named" + "<b> " + message.get("docTitle") + "</b> " + "is set for tomorrow at " + new Date(message.get("scheduled")).toLocaleTimeString() + ".<br/><br/>";
                                                         break;
                                                 case "MUQ-":
-                                                        this.innerHTML = labels.get("mufifteen");
+                                                        this.innerHTML = "The session named" + "<b> " + message.get("docTitle") + "</b> " + "will start in fifteen minutes" + ".<br/><br/>"
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("body").replace(/\n/g, "<br>");
@@ -348,7 +348,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 
                 msgDetailUI.gotoSession = function(event, node){
                         node.classList.remove("pushed");
-                        console.log(message.get("docId"));
                         Config.get("observer").notify("show-mupreview", message.get("docId"));               
                 };
                 

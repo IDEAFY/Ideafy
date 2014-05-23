@@ -584,5 +584,8 @@
 	"deleted": "Canceled",
 	"muinaday" : "You have an Ideafy session scheduled for tomorrow",
 	"mufifteen" : "Your Ideafy session will start in 15 minutes",
-	"ideafy" : "Ideafy"
+	"ideafy" : "Ideafy",
+	"snamed" : "The session named",
+	"stomorrow": "is set for tomorrow at",
+	"sfifteen": "will start in 15 minutes"
 }

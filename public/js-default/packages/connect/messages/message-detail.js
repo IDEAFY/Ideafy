@@ -92,10 +92,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.innerHTML = labels.get("referral");
                                                         break;
                                                 case "MUD-":
-                                                        this.innerHTML = "The session named" + '<b> "' + message.get("docTitle") + '"</b> ' + "is set for tomorrow at " + new Date(message.get("scheduled")).toLocaleTimeString() + ".<br/><br/>";
+                                                        this.innerHTML = labels.get("snamed") + '<b> "' + message.get("docTitle") + '"</b> ' + labels.get("stomorrow")  + new Date(message.get("scheduled")).toLocaleTimeString() + ".<br/><br/>";
                                                         break;
                                                 case "MUQ-":
-                                                        this.innerHTML = "The session named" + "<b> " + message.get("docTitle") + "</b> " + "will start in fifteen minutes" + ".<br/><br/>"
+                                                        this.innerHTML = labels.get("snamed") + "<b> " + message.get("docTitle") + "</b> " + labels.get("sfifteen") + ".<br/><br/>";
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("body").replace(/\n/g, "<br>");
@@ -110,7 +110,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         else {this.classList.add("invisible");}
                                 },
                                 showOptions : function(type){
-                                        ((type.search("CX")>-1) || (type === "2Q+") || (type === "INV") || (type === "REF") || (type === "MUD-") || (type === "MUQ-")) ? this.classList.add("invisible") : this.classList.remove("invisible");        
+                                        ((type.search("CX")>-1) || (type === "2Q+") || (type === "INV") || (type === "REF") || (type.search("MU") > -1)) ? this.classList.add("invisible") : this.classList.remove("invisible");        
                                 },
                                 setToList : function(toList){
                                         (toList) ? this.innerHTML = toList : this.innerHTML = labels.get("melbl");        

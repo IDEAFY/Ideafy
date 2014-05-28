@@ -438,7 +438,7 @@ function ComUtils(){
                                         "Content-Type": "application/json"
                                 }
                         };
-                _transport.request("CouchDB", options, function (changes) {
+                _transport.listen("CouchDB", options, function (changes) {
                         var json, cdb;
                         if (changes == "\n") {
                                 return false;

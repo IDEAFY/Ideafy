@@ -12,6 +12,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
 
                         var _store = new Store({"img":"", "online": false}),
                             _avatars = Config.get("avatars"),
+                            _transport = Config.get("transport"),
+                            _online = Utils.online,
                             _cdb = new CouchDBView([]),
                             _id = $array[0],
                             interval,
@@ -38,13 +40,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         this.template='<div class="avatar" data-avatar="bind: setStyle, img; bind: setStatus, online"></div>';
                         
                         // INIT
-                        // check if user is online -- perform check every 30 seconds
-                        Utils.isOnline(_id, _store);
                         
-                        interval = setInterval(function(){
-                                Utils.isOnline(_id, _store);
-                        }, 30000);
+                        // subscribe to presence information for this user
+                        _transport.listen("Presence", {}, function(presenceData){
+                                if (presenceData.id === _id) _store.set("online", presenceData.online);
+                        });
                         
+                        // get picture
                         if ($array.length>1) {
                                 _store.set("img", "img/avatars/deedee6.png");
                         }

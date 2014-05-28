@@ -8,26 +8,8 @@
 define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument", "CouchDBView"], function(Config, Observable, Promise, LocalStore, Transport, Store, CouchDBView){
         var _utils = {},
               user = Config.get("user"),
-              transport = Config.get("transport");
-	
-	/*
-	 *  A function to set presence status of a given user
-	 * Returns a promise
-	 */
-	_utils.isOnline = function(userid, cdb){
-	       var onlineUsers = new CouchDBView(), promise = new Promise();
-	       
-	       onlineUsers.setTransport(transport);
-	       
-	       onlineUsers.sync(Config.get("db"), "users", "_view/online", {key: '"'+userid+'"'})
-	       .then(function(){
-	               (onlineUsers.getNbItems()) ? cdb.set("online", true) : cdb.set("online", false);
-	               promise.fulfill();
-	               onlineUsers.unsync();
-	       });
-	       
-	       return promise;
-	};
+              transport = Config.get("transport"),
+              socket = Config.get("socket");
 	
 	_utils.formatDate = function(array){
 	       var month = array[1] + 1;
@@ -616,6 +598,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 });
                 return promise;        
         };
-        
+      
         return _utils;
 });

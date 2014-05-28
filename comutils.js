@@ -8,27 +8,32 @@
  * Copyright (c) 2013-2014 TAIAUT
  * 
  */
+
+var follow = require('follow');
         
 function ComUtils(){
         
-        var _smtpTransport, _supportEmail,
-                _CouchDBDocument, _Store,
-                _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP;
+        var _db, _smtpTransport, _supportEmail, _mailSender,
+                _CouchDBDocument, _CouchDBView, _Store,
+                _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP, _getViewAsAdmin;
  
-        this.setVar = function(smtpTransport, supportEmail, mailSender){
+        this.setVar = function(db, smtpTransport, supportEmail, mailSender){
+                _db = db;
                 _smtpTransport = smtpTransport;
                 _supportEmail = supportEmail;
                 _mailSender = mailSender;
         };
         
-        this.setConstructors = function(CouchDBDocument, Store){
+        this.setConstructors = function(CouchDBDocument, CouchDBView, Store){
                 _CouchDBDocument = CouchDBDocument;
+                _CouchDBView = CouchDBView;
                 _Store = Store;
         };
         
         this.setFunctions = function(CDBAdmin, checkInvited, addInvited){
                 _getDocAsAdmin = CDBAdmin.getDoc;
                 _updateDocAsAdmin = CDBAdmin.updateDoc;
+                _getViewAsAdmin = CDBAdmin.getView;
                 _updateUserIP = CDBAdmin.updateUserIP;        
                 _checkInvited = checkInvited;
                 _addInvited = addInvited;
@@ -416,7 +421,50 @@ function ComUtils(){
                         }        
                 });  
         };
-       
+
+        // get presence updates from couchdb
+        this.sendPresenceUpdates = function(json, onEnd, onData){
+                var options = {
+                                method : "GET",
+                                feed : "continuous",
+                                heartbeat: 60000,
+                                path:"/"+_db+"/_changes",
+                                auth: _cdbAdminCredentials,
+                                // agent: false,
+                                headers: {
+                                        "Content-Type": "application/json"
+                                }
+                        };
+                _transport.request("CouchDB", options, function (changes) {
+                        var json, cdb;
+                        if (changes == "\n") {
+                                return false;
+                        }
+                        else{
+                                try{
+                                        json = JSON.parse(changes);        
+                                }
+                                catch (e){
+                                        json = null;
+                                        console.error(e, "error parsing change feed -- presence update");
+                                }
+                                
+                                if (json && json.id){
+                                        cdb = new _CouchDBDocument();
+                                        _getDocAsAdmin(json.id, cdb)
+                                        .then(function(){
+                                                // check if doc is of user type and if so emit presence status
+                                                if (cdb.get("type") && cdb.get("type") === 7){
+                                                        onData({id: json.id, online: json.online});
+                                                }
+                                        });
+                                }
+                        }
+                });
+                
+                
+                        
+        };
 };
 
 exports.ComUtils = ComUtils;

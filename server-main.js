@@ -176,13 +176,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("ResetPWD", loginUtils.resetPassword);
         
         // communication utilities (mail and application notifications)
-        comUtils.setVar(smtpTransport, supportEmail, mailSender);
-        comUtils.setConstructors(CouchDBDocument, Store);
+        comUtils.setVar(_db, smtpTransport, supportEmail, mailSender);
+        comUtils.setConstructors(CouchDBDocument, CouchDBView, Store);
         comUtils.setFunctions(CDBAdmin, checkInvited, addInvited);
         olives.handlers.set("SendMail", comUtils.sendMail);
         olives.handlers.set("Support", comUtils.support);
         olives.handlers.set("Notify", comUtils.notify);
         olives.handlers.set("Invite", comUtils.invite);
+        olives.handlers.set("Presence", comUtils.sendPresenceUpdates);
         
         // application utilities and handlers
         appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);

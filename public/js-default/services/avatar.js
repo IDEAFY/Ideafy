@@ -43,7 +43,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         
                         // Manage presence status
-                        _cdb.sync(Config.get("db"), "_design/users", "_view/online", {key: '"'+_id+'"'})
+                        _cdb.sync(Config.get("db"), "users", "_view/online", {key: '"'+_id+'"'})
                         .then(function(){
                                 if (_cdb.getNbItems()) _store.set("online", true);
                                 

@@ -13,15 +13,16 @@ var follow = require('follow');
         
 function ComUtils(){
         
-        var _db, _smtpTransport, _supportEmail, _mailSender,
+        var _db, _smtpTransport, _supportEmail, _mailSender, transport,
                 _CouchDBDocument, _CouchDBView, _Store,
                 _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP, _getViewAsAdmin;
  
-        this.setVar = function(db, smtpTransport, supportEmail, mailSender){
+        this.setVar = function(db, smtpTransport, supportEmail, mailSender, transport){
                 _db = db;
                 _smtpTransport = smtpTransport;
                 _supportEmail = supportEmail;
                 _mailSender = mailSender;
+                _transport = transport;
         };
         
         this.setConstructors = function(CouchDBDocument, CouchDBView, Store){
@@ -450,7 +451,7 @@ function ComUtils(){
                                         json = null;
                                         console.error(e, "error parsing change feed -- presence update");
                                 }
-                                
+                                console.log(json);
                                 if (json && json.id){
                                         cdb = new _CouchDBDocument();
                                         _getDocAsAdmin(json.id, cdb)

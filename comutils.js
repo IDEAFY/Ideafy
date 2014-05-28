@@ -429,6 +429,8 @@ function ComUtils(){
                                 feed : "continuous",
                                 heartbeat: 60000,
                                 path:"/"+_db+"/_changes",
+                                filter: "_view",
+                                view: "users/online",
                                 auth: _cdbAdminCredentials,
                                 // agent: false,
                                 headers: {

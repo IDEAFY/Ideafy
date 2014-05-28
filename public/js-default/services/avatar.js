@@ -41,9 +41,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         // INIT
                         
-                        // subscribe to presence information for this user
-                        _transport.listen("Presence", {}, function(presenceData){
-                                if (presenceData.id === _id) _store.set("online", presenceData.online);
+                        
+                        // Manage presence status
+                        _cdb.sync(Config.get("db"), "_design/users", "_view/online", {key: '"'+_id+'"'})
+                        .then(function(){
+                                if (_cdb.getNbItems()) _store.set("online", true);
+                                
+                                // subscribe to presence information for this user
+                                _transport.listen("Presence", {}, function(presenceData){
+                                        if (presenceData.id === _id) _store.set("online", presenceData.online);
+                                });
                         });
                         
                         // get picture

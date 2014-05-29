@@ -48,10 +48,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 if (_cdb.getNbItems()) _store.set("online", true);
                                 
                                 // subscribe to presence information for this user
-                                _transport.listen("Presence", {}, function(data){
-                                        console.log("listen : ", data);
-                                        // if (data.presenceData.id === _id) _store.set("online", data.presenceData.online);
+                                // if (data.presenceData.id === _id) _store.set("online", data.presenceData.online);
+                                
+                                Config.get("socket").on("Presence", function(data){
+                                        console.log(data);
                                 });
+                                
                         });
                         
                         // get picture

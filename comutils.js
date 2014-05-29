@@ -433,9 +433,8 @@ function ComUtils(){
                                 eventId: Date.now() + Math.floor(Math.random()*1e6),
                                 presenceData: ({id:id, online: status})
                               };
-                console.log("before transport emit, presence change for : ", id);
                 _io.sockets.emit("Presence", reqData, function(res){
-                        console.log(res);
+                        console.log("socket emit callback: ", res);
                 });   
         };
         

@@ -23,8 +23,9 @@ body {
   overflow: auto;
   background: #f6f6f6;
   height: 100%;
-  height: 100%;
+  width: 100%;
   background-image: url('../img/ideafy59.jpg');
+  background-repeat: no-repeat;
   background-size: cover;
   z-index: -15;
 }

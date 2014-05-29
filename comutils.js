@@ -427,21 +427,14 @@ function ComUtils(){
                 });  
         };
         
-        _updatePresence = function(id){
-                var cdb = new _CouchDBView();
-                      
-                
-                _getViewAsAdmin("users", "online", {key: '"'+id+'"'}, cdb)
-                .then(function(){
-                        var reqData = {
-                                        eventId: Date.now() + Math.floor(Math.random()*1e6),
-                                        presenceData: ""
+        _updatePresence = function(id, status){
+                var reqData = {
+                                eventId: Date.now() + Math.floor(Math.random()*1e6),
+                                presenceData: ({id:id, online: status})
                               };
-                              
-                        (cdb.getNbItems()) ? reqData.presenceData = {id: id, online: true} : reqData.presenceData = {id:id, online: false};
-                        
-                        console.log("beofre transport emit, presence change for : ", id);
-                        _transport.emit("Presence", reqData);
+                console.log("before transport emit, presence change for : ", id);
+                _transport.emit("Presence", reqData, function(res){
+                        console.log(res);
                 });   
         };
         
@@ -454,12 +447,8 @@ function ComUtils(){
                       feed = new follow.Feed(options);
                       
                  feed.db = 'http://' + _dbInfo.credentials + '@' + _dbInfo.ip + ':' + _dbInfo.port + '/' + _dbInfo.name;
-                 console.log(feed.db);
                  
                  feed.filter = function(doc, req){
-                         // req.query is the parameters from the _changes request and also feed.query_params.
-                        console.log('Filtering for query: ' + JSON.stringify(req.query));
-
                        if (doc.type === 7) return true;
                        else return false;
                  };
@@ -467,7 +456,7 @@ function ComUtils(){
                  feed.on('change', function(change) {
                         console.log('Doc ' + change.id + ' in change ' + change.seq + ' is neither stinky nor ugly.');
                         console.log(change.doc.online);
-                        _updatePresence(change.id);
+                        _updatePresence(change.id, change.doc.online);
                 });
 
                 feed.on('error', function(er) {

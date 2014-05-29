@@ -212,7 +212,10 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         taskUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
         taskUtils.setFunctions(CDBAdmin, comUtils);
         
+        
+        // initialize tasks and presence
         taskUtils.initTasks(io);
+        comUtils.initPresence();
         
         // disconnection events
         io.sockets.on("connection", function(socket){

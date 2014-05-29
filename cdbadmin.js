@@ -7,7 +7,7 @@ var fs = require("fs"),
 
 function CDBAdmin(){
         
-        var _Promise, _CouchDBDocument, _transport, _db, _dbIP, _dbPort,
+        var _Promise, _CouchDBDocument, _transport, _db, _dbIP, _dbPort, _cdbAdminCredentials,
             updateUserIP, updateDoc, getDoc, createDoc, getView, removeDoc;
         
         this.setVar = function(db, dbIP, dbPort, credentials, transport){
@@ -21,6 +21,14 @@ function CDBAdmin(){
         this.setConstructors = function(Promise, CouchDBDocument){
                 _Promise = Promise; 
                 _CouchDBDocument = CouchDBDocument;      
+        };
+        
+        /*
+         * Get db parameters
+         */
+        
+        this.getDB = function getDB(){
+                return {'ip':_dbIP, 'port':_dbPort, 'name':_db, 'credentials': _cdbAdminCredentials};      
         };
         
         /*

@@ -13,7 +13,7 @@ var follow = require('follow');
         
 function ComUtils(){
         
-        var _db, _smtpTransport, _supportEmail, _mailSender, transport,
+        var _db, _smtpTransport, _supportEmail, _mailSender, transport, _dbInfo,
                 _CouchDBDocument, _CouchDBView, _Store,
                 _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP, _getViewAsAdmin,
                 _updatePresence;
@@ -39,6 +39,9 @@ function ComUtils(){
                 _updateUserIP = CDBAdmin.updateUserIP;        
                 _checkInvited = checkInvited;
                 _addInvited = addInvited;
+                
+                // full db info for presence feed
+                _dbInfo = CDBAdmin.getDB();
         };
         
         // Sending email messages from Ideafy
@@ -444,18 +447,37 @@ function ComUtils(){
         
         this.initPresence = function initPresence(){
                 var options = {
-                                method : "GET",
-                                feed : "continuous",
                                 heartbeat: 20000,
                                 since: 200,
-                                path:"/"+_db+"/_changes",
-                                auth: _cdbAdminCredentials,
-                                // agent: false,
-                                headers: {
-                                        "Content-Type": "application/json"
-                                }
-                        };
-                        
+                                include_docs: true
+                      },
+                      feed = new follow.Feed(options);
+                      
+                 feed.db = 'http://' + _dbInfo.credentials + '@' + _dbInfo.ip + ':' + _dbInfo.port + '/' + _dbInfo.name;
+                 console.log(feed.db);
+                 
+                 feed.filter = function(doc, req){
+                         // req.query is the parameters from the _changes request and also feed.query_params.
+                        console.log('Filtering for query: ' + JSON.stringify(req.query));
+
+                       if (doc.type === 7) return true;
+                       else return false;
+                 };
+                 
+                 feed.on('change', function(change) {
+                        console.log('Doc ' + change.id + ' in change ' + change.seq + ' is neither stinky nor ugly.');
+                        console.log(change.doc.online);
+                        _updatePresence(change.id);
+                });
+
+                feed.on('error', function(er) {
+                        console.error('Since Follow always retries on errors, this must be serious');
+                        throw er;
+                });
+
+                feed.follow();     
+                
+                /*        
                 _transport.listen("CouchDB", options, function (changes) {
                         var json, cdb;
                         if (changes == "\n") {
@@ -476,6 +498,7 @@ function ComUtils(){
                                 }
                         }
                 });
+                */
         };
 
         // get presence updates from couchdb

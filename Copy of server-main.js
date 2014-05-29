@@ -14,6 +14,8 @@ var http = require("http"),
     socketIO = require("socket.io"),
     connect = require("connect"),
     olives = require("olives"),
+    srvTransport = require('socketio-transport').Server,
+    CliTransport = require("socketio-transport").Client,
     CouchDBTools = require("couchdb-emily-tools"),
     cookie = require("cookie"), 
     RedisStore = require("connect-redis")(connect), 
@@ -87,9 +89,8 @@ var mount = st({path: __dirname + '/public/', index: true, index: 'index.html'})
  *  APPLICATION SERVER
  ******************************/
 
-CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
-        var transport = new Transport(olives.handlers),
-            app = http.createServer(connect()
+CouchDBTools.requirejs(["CouchDBUser", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
+        var app = http.createServer(connect()
                 //.use(connect.logger())
                 .use(connect.compress())
                 .use(connect.responseTime())
@@ -116,7 +117,8 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                 .use(mount)).listen(1664),
                 io = socketIO.listen(app, {
                         log : true
-                });
+                }),
+                transport = new CliTransport(io);
                 
         // Socket.io configuration
         io.enable('browser client minification');  // send minified client
@@ -130,7 +132,7 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         http.globalAgent.maxSockets = Infinity;
         
         // register transport
-        olives.registerSocketIO(io);
+        srvTransport(io, olives.handlers);
         
         // couchdb config update (session authentication)
         //olives.config.update("CouchDB", "sessionStore", sessionStore);

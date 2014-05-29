@@ -446,7 +446,8 @@ function ComUtils(){
                 var options = {
                                 method : "GET",
                                 feed : "continuous",
-                                heartbeat: 60000,
+                                heartbeat: 20000,
+                                since: 200,
                                 path:"/"+_db+"/_changes",
                                 auth: _cdbAdminCredentials,
                                 // agent: false,

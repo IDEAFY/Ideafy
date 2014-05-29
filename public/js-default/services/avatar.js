@@ -47,11 +47,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         .then(function(){
                                 if (_cdb.getNbItems()) _store.set("online", true);
                                 
-                                // subscribe to presence information for this user
-                                // if (data.presenceData.id === _id) _store.set("online", data.presenceData.online);
-                                
                                 Config.get("socket").on("Presence", function(data){
-                                        console.log(data);
+                                        if (data.presenceData.id === _id) _store.set("online", data.presenceData.online);
                                 });
                                 
                         });

@@ -433,7 +433,7 @@ function ComUtils(){
                                 presenceData: ({id:id, online: status})
                               };
                 console.log("before transport emit, presence change for : ", id);
-                _transport.emit("Presence", reqData, function(res){
+                _transport.getSocket().emit("Presence", reqData, function(res){
                         console.log(res);
                 });   
         };

@@ -87,7 +87,7 @@ var mount = st({path: __dirname + '/public/', index: true, index: 'index.html'})
  *  APPLICATION SERVER
  ******************************/
 
-CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
+CouchDBTools.requirejs(["CouchDBUser", "SocketIOTransport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
         var transport = new Transport(olives.handlers),
             app = http.createServer(connect()
                 //.use(connect.logger())

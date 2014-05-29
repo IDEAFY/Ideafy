@@ -479,7 +479,7 @@ function ComUtils(){
 
         // get presence updates from couchdb
         this.sendPresenceUpdates = function(payload, onEnd, onData){
-                console.log(payload, onEnd, onData);        
+                      
         };
 };
 

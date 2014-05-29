@@ -14,7 +14,7 @@ var http = require("http"),
     socketIO = require("socket.io"),
     connect = require("connect"),
     olives = require("olives"),
-    Transport = require('socketio-transport').Server,
+    transport = require('socketio-transport').Server,
     CouchDBTools = require("couchdb-emily-tools"),
     cookie = require("cookie"), 
     RedisStore = require("connect-redis")(connect), 
@@ -130,7 +130,7 @@ CouchDBTools.requirejs(["CouchDBUser", "CouchDBDocument", "CouchDBView", "CouchD
         http.globalAgent.maxSockets = Infinity;
         
         // register transport
-        Transport(io, olives.handlers);
+        transport(io, olives.handlers);
         
         // couchdb config update (session authentication)
         //olives.config.update("CouchDB", "sessionStore", sessionStore);

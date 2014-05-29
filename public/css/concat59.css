@@ -23,6 +23,9 @@ body {
   overflow: auto;
   background: #f6f6f6;
   height: 100%;
+  height: 100%;
+  background-image: url('../img/ideafy59.jpg');
+  background-size: cover;
   z-index: -15;
 }
 
@@ -146,7 +149,7 @@ input::-webkit-file-upload-button{
     }
     
     .main{
-        background: rgba(128,128,128,0.9);
+        background: rgba(128,128,128,0.7);
         width: 100%;
         height: 100%;
         display: block;

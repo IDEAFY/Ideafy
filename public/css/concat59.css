@@ -157,15 +157,6 @@ input::-webkit-file-upload-button{
         position: fixed;
     }
     
-    #banner{
-        background-image: url('../img/ideafy.png');
-        height: 305px;
-        width: 100%;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-    }
-
     #apploading{
         /*background: url('../img/appicon.png') no-repeat center center;*/
        width: 60px;
@@ -184,7 +175,7 @@ input::-webkit-file-upload-button{
         font-size: 2em;
         line-height: 60px;
         font-family: Ideafy;
-        color: #657b99;
+        color: #06b7fc;
     }
     
     @-webkit-keyframes slideout {

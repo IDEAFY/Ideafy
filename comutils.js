@@ -16,7 +16,7 @@ function ComUtils(){
         var _db, _smtpTransport, _supportEmail, _mailSender, transport,
                 _CouchDBDocument, _CouchDBView, _Store,
                 _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP, _getViewAsAdmin,
-                _updatePresence, _emitPresenceUpdates;
+                _updatePresence;
  
         this.setVar = function(db, smtpTransport, supportEmail, mailSender, transport){
                 _db = db;
@@ -424,19 +424,20 @@ function ComUtils(){
                 });  
         };
         
-        _emitPresenceUpdates = function(json, onEnd, onData){
-                onData(json);        
-        };
-        
         _updatePresence = function(id){
                 var cdb = new _CouchDBView();
+                      
                 
                 _getViewAsAdmin("users", "online", {key: '"'+id+'"'}, cdb)
                 .then(function(){
-                        if (cdb.getNbItems()){
-                                _emitPresenceUpdates({id: id, online: true});        
-                        }
-                        else _emitPresenceUpdates({id:id, online: false});
+                        var reqData = {
+                                        eventId: Date.now() + Math.floor(Math.random()*1e6),
+                                        data: ""
+                              };
+                              
+                        (cdb.getNbItems()) ? reqData.data = {id: id, online: true} : reqData.data = {id:id, online: false};
+                        
+                        _transport.emit("Presence", reqData);
                 });   
         };
         
@@ -477,7 +478,9 @@ function ComUtils(){
         };
 
         // get presence updates from couchdb
-        this.sendPresenceUpdates = _emitPresenceUpdates;
+        this.sendPresenceUpdates = function(payload, onEnd, onData){
+                console.log(payload, onEnd, onData);        
+        };
 };
 
 exports.ComUtils = ComUtils;

@@ -375,7 +375,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                         console.log("upload successful");
                                                         // notify registered participants
                                                         // if (muCDB.get("participants").length) muPreviewUI.notify("cancel");
-                                                        return muCDB.remove();        
+                                                        // return muCDB.remove();        
                                                 })
                                                 .then(function(){
                                                         console.log("remove successful");

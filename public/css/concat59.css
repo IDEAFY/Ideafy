@@ -223,6 +223,20 @@ input::-webkit-file-upload-button{
     background-repeat: no-repeat;*/
 }
 
+.squirrel{
+    width: 200px;
+    height: 200px;
+    float: right;
+    background-image: url('../img/ideafy59-squirrel.png');
+    background-size: contain;
+    left: 50%;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 50%;
+    margin-top: -100px;
+    margin-left: -100px;
+}
+
 #login-stack    {
     margin-top: -110px;
     width: 410px;
@@ -256,8 +270,9 @@ input::-webkit-file-upload-button{
     margin:0;
     border:0;
     padding-left:30px;
-    font-size:14px;
+    font-size:16px;
     color:#07789b;
+    opacity: 0.8;
 }
 
 .login-fields input::-webkit-input-placeholder{

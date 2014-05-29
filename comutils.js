@@ -437,6 +437,7 @@ function ComUtils(){
                               
                         (cdb.getNbItems()) ? reqData.presenceData = {id: id, online: true} : reqData.presenceData = {id:id, online: false};
                         
+                        console.log("beofre transport emit, presence change for : ", id);
                         _transport.emit("Presence", reqData);
                 });   
         };
@@ -456,7 +457,6 @@ function ComUtils(){
                         
                 _transport.listen("CouchDB", options, function (changes) {
                         var json, cdb;
-                        console.log(changes);
                         if (changes == "\n") {
                                 return false;
                         }

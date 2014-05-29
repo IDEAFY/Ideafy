@@ -13,7 +13,7 @@ var follow = require('follow');
         
 function ComUtils(){
         
-        var _db, _smtpTransport, _supportEmail, _mailSender, transport, _dbInfo,
+        var _db, _smtpTransport, _supportEmail, _mailSender, transport, _dbInfo, _io,
                 _CouchDBDocument, _CouchDBView, _Store,
                 _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP, _getViewAsAdmin,
                 _updatePresence;
@@ -434,7 +434,7 @@ function ComUtils(){
                               };
                 console.log("before transport emit, presence change for : ", id);
                 console.log(_transport);
-                _transport.getSocket().emit("Presence", reqData, function(res){
+                _io.sockets.emit("Presence", reqData, function(res){
                         console.log(res);
                 });   
         };

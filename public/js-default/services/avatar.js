@@ -48,9 +48,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 if (_cdb.getNbItems()) _store.set("online", true);
                                 
                                 // subscribe to presence information for this user
-                                _transport.listen("Presence", {}, function(presenceData){
-                                        console.log("listen : ", presenceData);
-                                        if (presenceData.id === _id) _store.set("online", presenceData.online);
+                                _transport.listen("Presence", {}, function(data){
+                                        console.log("listen : ", data.presenceData);
+                                        if (data.presenceData.id === _id) _store.set("online", data.presenceData.online);
                                 });
                         });
                         

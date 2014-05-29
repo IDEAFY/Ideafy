@@ -432,10 +432,10 @@ function ComUtils(){
                 .then(function(){
                         var reqData = {
                                         eventId: Date.now() + Math.floor(Math.random()*1e6),
-                                        data: ""
+                                        presenceData: ""
                               };
                               
-                        (cdb.getNbItems()) ? reqData.data = {id: id, online: true} : reqData.data = {id:id, online: false};
+                        (cdb.getNbItems()) ? reqData.presenceData = {id: id, online: true} : reqData.presenceData = {id:id, online: false};
                         
                         _transport.emit("Presence", reqData);
                 });   

@@ -15,7 +15,8 @@ function ComUtils(){
         
         var _db, _smtpTransport, _supportEmail, _mailSender, transport,
                 _CouchDBDocument, _CouchDBView, _Store,
-                _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP, _getViewAsAdmin;
+                _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP, _getViewAsAdmin,
+                _updatePresence, _emitPresenceUpdates;
  
         this.setVar = function(db, smtpTransport, supportEmail, mailSender, transport){
                 _db = db;
@@ -422,22 +423,36 @@ function ComUtils(){
                         }        
                 });  
         };
-
-        // get presence updates from couchdb
-        this.sendPresenceUpdates = function(json, onEnd, onData){
+        
+        _emitPresenceUpdates = function(json, onEnd, onData){
+                onData(json);        
+        };
+        
+        _updatePresence = function(id){
+                var cdb = new _CouchDBView();
+                
+                _getViewAsAdmin("users", "online", {key: '"'+id+'"'}, cdb)
+                .then(function(){
+                        if (cdb.getNbItems()){
+                                _emitPresenceUpdates({id: id, online: true});        
+                        }
+                        else _emitPresenceUpdates({id:id, online: false});
+                });   
+        };
+        
+        this.initPresence = function initPresence(){
                 var options = {
                                 method : "GET",
                                 feed : "continuous",
                                 heartbeat: 60000,
                                 path:"/"+_db+"/_changes",
-                                filter: "_view",
-                                view: "users/online",
                                 auth: _cdbAdminCredentials,
                                 // agent: false,
                                 headers: {
                                         "Content-Type": "application/json"
                                 }
                         };
+                        
                 _transport.listen("CouchDB", options, function (changes) {
                         var json, cdb;
                         if (changes == "\n") {
@@ -451,23 +466,17 @@ function ComUtils(){
                                         json = null;
                                         console.error(e, "error parsing change feed -- presence update");
                                 }
-                                console.log(json);
-                                if (json && json.id){
-                                        cdb = new _CouchDBDocument();
-                                        _getDocAsAdmin(json.id, cdb)
-                                        .then(function(){
-                                                // check if doc is of user type and if so emit presence status
-                                                if (cdb.get("type") && cdb.get("type") === 7){
-                                                        onData({id: json.id, online: json.online});
-                                                }
-                                        });
+                                
+                                if (json && json.id && json.id.search("@") > -1){
+                                        console.log(json.id);
+                                        _updatePresence(json.id);
                                 }
                         }
                 });
-                
-                
-                        
         };
+
+        // get presence updates from couchdb
+        this.sendPresenceUpdates = _emitPresenceUpdates;
 };
 
 exports.ComUtils = ComUtils;

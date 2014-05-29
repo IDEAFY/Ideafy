@@ -49,6 +49,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                 
                                 // subscribe to presence information for this user
                                 _transport.listen("Presence", {}, function(presenceData){
+                                        console.log("listen : ", presenceData);
                                         if (presenceData.id === _id) _store.set("online", presenceData.online);
                                 });
                         });

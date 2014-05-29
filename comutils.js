@@ -455,6 +455,7 @@ function ComUtils(){
                         
                 _transport.listen("CouchDB", options, function (changes) {
                         var json, cdb;
+                        console.log(changes);
                         if (changes == "\n") {
                                 return false;
                         }

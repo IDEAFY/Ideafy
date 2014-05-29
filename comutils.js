@@ -18,12 +18,13 @@ function ComUtils(){
                 _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP, _getViewAsAdmin,
                 _updatePresence;
  
-        this.setVar = function(db, smtpTransport, supportEmail, mailSender, transport){
+        this.setVar = function(db, smtpTransport, supportEmail, mailSender, transport, io){
                 _db = db;
                 _smtpTransport = smtpTransport;
                 _supportEmail = supportEmail;
                 _mailSender = mailSender;
                 _transport = transport;
+                _io = io;
         };
         
         this.setConstructors = function(CouchDBDocument, CouchDBView, Store){
@@ -433,7 +434,6 @@ function ComUtils(){
                                 presenceData: ({id:id, online: status})
                               };
                 console.log("before transport emit, presence change for : ", id);
-                console.log(_transport);
                 _io.sockets.emit("Presence", reqData, function(res){
                         console.log(res);
                 });   

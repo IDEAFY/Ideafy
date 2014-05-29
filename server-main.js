@@ -14,7 +14,8 @@ var http = require("http"),
     socketIO = require("socket.io"),
     connect = require("connect"),
     olives = require("olives"),
-    transport = require('socketio-transport').Server,
+    srvTransport = require('socketio-transport').Server,
+    CliTransport = require("socketio-transport").Client,
     CouchDBTools = require("couchdb-emily-tools"),
     cookie = require("cookie"), 
     RedisStore = require("connect-redis")(connect), 
@@ -116,7 +117,8 @@ CouchDBTools.requirejs(["CouchDBUser", "CouchDBDocument", "CouchDBView", "CouchD
                 .use(mount)).listen(1664),
                 io = socketIO.listen(app, {
                         log : true
-                });
+                }),
+                transport = new CliTransport(io);
                 
         // Socket.io configuration
         io.enable('browser client minification');  // send minified client

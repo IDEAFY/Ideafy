@@ -132,7 +132,7 @@ CouchDBTools.requirejs(["CouchDBUser", "CouchDBDocument", "CouchDBView", "CouchD
         http.globalAgent.maxSockets = Infinity;
         
         // register transport
-        transport(io, olives.handlers);
+        srvTransport(io, olives.handlers);
         
         // couchdb config update (session authentication)
         //olives.config.update("CouchDB", "sessionStore", sessionStore);

@@ -151,8 +151,6 @@ input::-webkit-file-upload-button{
         height: 100%;
         display: block;
         position: fixed;
-        background-image: url('../img/bg.png');
-        background-repeat: repeat;
     }
     
     #banner{
@@ -244,7 +242,7 @@ input::-webkit-file-upload-button{
     width:410px;
     border-radius: 5px;
     background: white;
-    -webkit-box-shadow: 0 0 3px 3px #657b99;
+    -webkit-box-shadow: 0 0 3px 3px #06b7fc;
     margin-bottom:30px;
 }
 
@@ -264,15 +262,15 @@ input::-webkit-file-upload-button{
     border:0;
     padding-left:30px;
     font-size:14px;
-    color:darkblue;
+    color:07789b;
 }
 
 .login-fields input::-webkit-input-placeholder{
-    color: #657b99;
+    color: #06b7fc;
 }
 
 .login-fields input:nth-child(n+2) {
-    border-top:1px solid #657b99;
+    border-top:1px solid #07789b;
 }
 
 .login-button, .signup-button {

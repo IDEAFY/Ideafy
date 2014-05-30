@@ -146,7 +146,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 console.log("closing preview window");
                                 // hide window
                                 muPreviewUI.dom.classList.add("invisible");
-                                console.log(muPreviewUI.dom);
                                 muCDB.unsync();
                                 muCDB.reset({});
                                 refreshList && refreshList();               
@@ -368,20 +367,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 var confirmCallback = function(decision){
                                         console.log(decision);
                                         if (decision){
-                                                // remove session from database
                                                 muCDB.set("status", 'deleted');
                                                 console.log("before muCDB upload");
                                                 muCDB.upload()
                                                 .then(function(){
-                                                        console.log("upload successful");
+                                                        console.log("upload successful", muCDB.toJSON());
                                                         // notify registered participants
                                                         // if (muCDB.get("participants").length) muPreviewUI.notify("cancel");
-                                                        return muCDB.remove();        
-                                                }, function(err){console.log(err);})
-                                                .then(function(){
-                                                        console.log("remove successful");
-                                                       // muPreviewUI.closePreview();
-                                                }, function(err){console.log(err);});
+                                                });
                                         }
                                         Confirm.hide();
                                 };

@@ -214,7 +214,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         cdb.sync("_fti/local/"+db, "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
                                 contacts = Utils.getContactUsernames().join();
                                 cdb.loop(function(v,i){
-                                        console.log(v);
                                         var add = false;
                                         if (v.fields.mode === "roulette" && v.score > 0.66){
                                                 add = true;

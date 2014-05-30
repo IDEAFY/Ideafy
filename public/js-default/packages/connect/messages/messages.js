@@ -123,6 +123,18 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                                                         case "MUQ-":
                                                                 this.innerHTML = labels.get("mufifteen");
                                                                 break;
+                                                        case "MUP+":
+                                                                this.innerHTML = labels.get("newpart");
+                                                                break;
+                                                        case "MUP-":
+                                                                this.innerHTML = labels.get("partleft");
+                                                                break;
+                                                        case "SCANCEL":
+                                                                this.innerHTML = labels.get("scancel");
+                                                                break;
+                                                        case "SSTART":
+                                                                this.innerHTML = labels.get("sstart");
+                                                                break;
                                                         default :
                                                                 this.innerHTML = msgList.get(id).object;
                                                 }        

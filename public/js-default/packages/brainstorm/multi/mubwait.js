@@ -288,7 +288,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 document.removeEventListener("mousedown", exitListener.listener, true); 
                                 
                                 // if dest is specified (e.g. notify popup)
-                                if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
+                                if (exitDest && exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
                                         Config.get("observer").notify("goto-screen", "#connect");  
                                         id = exitDest.getAttribute("data-notify_id");
                                         observer.notify("display-message", parseInt(id, 10));     

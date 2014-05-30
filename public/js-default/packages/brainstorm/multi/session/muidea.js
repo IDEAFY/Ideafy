@@ -318,9 +318,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // Method called when closing a popup -- passed as a parameter to the popup constructor
                         _widget.closePopup = function closePopup(){
-                                var cardPopup = _tools.get("cardpopup");
-                                cardPopup[_currentPopup] = false;
-                                _tools.set("cardpopup", cardPopup);
+                                _tools.set("cardpopup", {"scenario":false, "techs":[false, false, false]});
                                 _currentPopup = "";    
                         };
                         

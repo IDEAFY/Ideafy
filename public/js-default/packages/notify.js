@@ -126,6 +126,18 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                                                         case "MUQ-":
                                                                 this.innerHTML = labels.get("mufifteen");
                                                                 break;
+                                                        case "MUP+":
+                                                                this.innerHTML = "New session participant";
+                                                                break;
+                                                        case "MU-":
+                                                                this.innerHTML = "Canceled participation";
+                                                                break;
+                                                        case "SCANCEL":
+                                                                this.innerHTML = "Canceled session";
+                                                                break;
+                                                        case "SSTART":
+                                                                this.innerHTML = "Your session is now open";
+                                                                break;
                                                         default :
                                                                 this.innerHTML = messages.get(id).object;
                                                 }

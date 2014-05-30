@@ -127,16 +127,16 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                                                                 this.innerHTML = labels.get("mufifteen");
                                                                 break;
                                                         case "MUP+":
-                                                                this.innerHTML = "New session participant";
+                                                                this.innerHTML = labels.get("newpart");
                                                                 break;
-                                                        case "MU-":
-                                                                this.innerHTML = "Canceled participation";
+                                                        case "MUP-":
+                                                                this.innerHTML = labels.get("partleft");
                                                                 break;
                                                         case "SCANCEL":
-                                                                this.innerHTML = "Canceled session";
+                                                                this.innerHTML = labels.get("scancel");
                                                                 break;
                                                         case "SSTART":
-                                                                this.innerHTML = "Your session is now open";
+                                                                this.innerHTML = labels.get("sstart");
                                                                 break;
                                                         default :
                                                                 this.innerHTML = messages.get(id).object;

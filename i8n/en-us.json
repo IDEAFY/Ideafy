@@ -589,5 +589,9 @@
 	"stomorrow": "is set for tomorrow at ",
 	"sfifteen": "will start in 15 minutes",
 	"partcancel": "Are you sure you want to cancel your participation?",
-	"delsession": "Are you sure you want to delete this session?"
+	"delsession": "Are you sure you want to delete this session?",
+	"newpart": "New participant",
+	"partleft": "A participant left",
+	"scancel": "Session canceled",
+	"sstart": "Session is now open"
 }

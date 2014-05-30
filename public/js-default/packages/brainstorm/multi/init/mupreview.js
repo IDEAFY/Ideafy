@@ -370,13 +370,14 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         if (decision){
                                                 // remove session from database
                                                 muCDB.set("status", 'deleted');
+                                                console.log("before muCDB upload");
                                                 muCDB.upload()
                                                 .then(function(){
                                                         console.log("upload successful");
                                                         // notify registered participants
                                                         // if (muCDB.get("participants").length) muPreviewUI.notify("cancel");
-                                                        // return muCDB.remove();        
-                                                })
+                                                        return muCDB.remove();        
+                                                }, function(err){console.log(err);})
                                                 .then(function(){
                                                         console.log("remove successful");
                                                        // muPreviewUI.closePreview();

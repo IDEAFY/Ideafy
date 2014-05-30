@@ -454,8 +454,6 @@ function ComUtils(){
                  };
                  
                  feed.on('change', function(change) {
-                        console.log('Doc ' + change.id + ' in change ' + change.seq + ' is neither stinky nor ugly.');
-                        console.log(change.doc.online);
                         _updatePresence(change.id, change.doc.online);
                 });
 

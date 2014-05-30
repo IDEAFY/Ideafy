@@ -136,7 +136,16 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                       sched = session.get("scheduled") || null;
                                 node.classList.remove("pressed");
                                 if (sched && (sched - now) > 300000) $exit();
-                                else Confirm.show("musession-confirm");
+                                else {
+                                        // init confirmation UI content
+                                        if (session.get("initiator").id === user.get("_id")){
+                                                Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
+                                        }
+                                        else {
+                                                Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
+                                        }
+                                        Confirm.show("musession-confirm");
+                                }
                         };
                         
                         /*

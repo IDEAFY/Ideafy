@@ -570,7 +570,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _user.upload();
                                 _widget.displayInfo(_labels.get("canceledbyleader"), 2000).then(function(){
                                         _session.unsync();
-                                        $exit();     
+                                        $exit();
+                                        document.removeEventListener("mousedown", exitListener.listener, true); 
                                 });
                         }    
                 });

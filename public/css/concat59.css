@@ -5047,7 +5047,6 @@ li.color-item{
 
 .cd-header.story{
     height:72px;
-    fomt-family: Pacifico;
 }
 
 .cd-header span, .close-popup{
@@ -5198,13 +5197,14 @@ li.color-item{
     background-position: left center;
     background-size: 16px 14px;
     padding-left: 20px;
+    font-family: pacifico;
 }
 
 .storytitle span{
     width: auto;
     max-width: 200px;
     height: 30px;
-    overflow: scroll;
+    overflow: auto;
     font-size: 14px;
 }
 

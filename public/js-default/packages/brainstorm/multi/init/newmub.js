@@ -480,15 +480,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                                 return cdb.upload();      
                         })
                         .then(function(){
-                                var obs = Config.get("observer");
-                                
                                 // add session to user calendar
                                 if (session.get("scheduled")){
-                                        Calendar.add({date: cdb.get("scheduled"), type: "MU", docId: cdb.get("_id"), info:"scheduled"});;
+                                        return Calendar.add({date: cdb.get("scheduled"), type: "MU", docId: cdb.get("_id"), info:"scheduled"});
                                 }
                                 else{
-                                        Calendar.add({date: now.getTime(), type: "MU", docId: cdb.get("_id"), info:"started"});;
+                                        return Calendar.add({date: now.getTime(), type: "MU", docId: cdb.get("_id"), info:"started"});
                                 }
+                        })
+                        .then(function(){
+                                var obs = Config.get("observer");
                                 
                                 if (cdb.get("mode") === "boardroom"){
                                         error.set("errormsg", labels.get("sendinginvites"));

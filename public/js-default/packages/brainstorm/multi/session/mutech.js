@@ -304,10 +304,10 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                                         // update drawStatus by removing the card drawn
                                                         drawStatus.set("count", newCount); 
                                                 });
-                                                _techDisplay.set("left", _techs.length);
                                                 // increment number of cards drawn and remove card from deck
                                                 _drawnCards++;
                                                 _techs.splice(idx, 1);
+                                                _techDisplay.set("left", _techs.length);
                                         });
                                         
                                         // watch drawStatus -- if empty then all cards have been successfully drawn, fulffil promise
@@ -331,7 +331,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                                 else{
                                         promise.fulfill();
                                 }
-                                DRS = drawStatus;
+                                
                                 return promise;
                         };
                         

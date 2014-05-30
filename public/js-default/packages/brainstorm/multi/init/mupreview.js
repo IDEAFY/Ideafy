@@ -301,7 +301,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 // if session is in progress display a message (it currently should not appear in any list) 
                                 else if (status === "deleted"){
                                         info.set("msg", labels.get("sessiondeleted"));
-                                        muCDB.unsync();
                                 }
                                 
                                 // other cases
@@ -367,13 +366,17 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 var confirmCallback = function(decision){
                                         console.log(decision);
                                         if (decision){
-                                                muCDB.set("status", 'deleted');
+                                                muCDB.set("status", "deleted");
                                                 console.log("before muCDB upload");
                                                 muCDB.upload()
                                                 .then(function(){
                                                         console.log("upload successful", muCDB.toJSON());
                                                         // notify registered participants
-                                                        // if (muCDB.get("participants").length) muPreviewUI.notify("cancel");
+                                                        if (muCDB.get("participants").length) muPreviewUI.notify("cancel");
+                                                        return muCDB.remove();
+                                                })
+                                                .then(function(){
+                                                        console.log("remove successful");
                                                 });
                                         }
                                         Confirm.hide();

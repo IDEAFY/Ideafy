@@ -243,6 +243,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // zoom on selected card
                         _widget.zoom = function(event, node){
+                                event.stopPropagation();
                                 var type, id;
                                 if (node.getAttribute("name") === "scenario") type="scenario";
                                 else{

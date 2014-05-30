@@ -72,6 +72,18 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 case "MUQ-":
                                                         this.innerHTML = labels.get("mufifteen");
                                                         break;
+                                                case "MUP+":
+                                                        this.innerHTML = labels.get("newpart");
+                                                        break;
+                                                case "MUP-":
+                                                        this.innerHTML = labels.get("partleft");
+                                                        break;
+                                                case "SCANCEL":
+                                                        this.innerHTML = labels.get("scancel");
+                                                        break;
+                                                case "SSTART":
+                                                        this.innerHTML = labels.get("sstart");
+                                                        break;
                                                 default :
                                                         this.innerHTML = message.get("object");
                                         }        
@@ -96,6 +108,18 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         break;
                                                 case "MUQ-":
                                                         this.innerHTML = labels.get("snamed") + '<b> "'  + message.get("docTitle") + '"</b> ' + labels.get("sfifteen") + ".<br/><br/>";
+                                                        break;
+                                                 case "MUP+":
+                                                        this.innerHTML = message.get("username") + " has registered to " + "the session " + '<b> "'  + message.get("docTitle") + '"</b>.';
+                                                        break;
+                                                case "MUP-":
+                                                        this.innerHTML = message.get("username") + " will no longer take part in " + "the session " + '<b> "'  + message.get("docTitle") + '"</b>.'; 
+                                                        break;
+                                                case "SCANCEL":
+                                                        this.innerHTML = "The session" +  '<b> "' + message.get("docTitle") + '"</b> ' + "was canceled by organizer" + ".";
+                                                        break;
+                                                case "SSTART":
+                                                        this.innerHTML = "The session" +  '<b> "' + message.get("docTitle") + '"</b> ' + "is now open" + ".";
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("body").replace(/\n/g, "<br>");

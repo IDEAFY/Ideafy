@@ -110,16 +110,16 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.innerHTML = labels.get("snamed") + '<b> "'  + message.get("docTitle") + '"</b> ' + labels.get("sfifteen") + ".<br/><br/>";
                                                         break;
                                                  case "MUP+":
-                                                        this.innerHTML = message.get("username") + " has registered to " + "the session " + '<b> "'  + message.get("docTitle") + '"</b>.';
+                                                        this.innerHTML = message.get("username") + labels.get("justreg") + labels.get("snamed").toLowercase() + ' <b> "'  + message.get("docTitle") + '"</b>.';
                                                         break;
                                                 case "MUP-":
-                                                        this.innerHTML = message.get("username") + " will no longer take part in " + "the session " + '<b> "'  + message.get("docTitle") + '"</b>.'; 
+                                                        this.innerHTML = message.get("username") + labels.get("unreg") + labels.get("snamed").toLowercase() + ' <b> "'  + message.get("docTitle") + '"</b>.'; 
                                                         break;
                                                 case "SCANCEL":
-                                                        this.innerHTML = "The session" +  '<b> "' + message.get("docTitle") + '"</b> ' + "was canceled by organizer" + ".";
+                                                        this.innerHTML = labels.get("snamed").toLowerCase() +  '<b> "' + message.get("docTitle") + '"</b> ' + labels.get("cclbyorg") + ".";
                                                         break;
                                                 case "SSTART":
-                                                        this.innerHTML = "The session" +  '<b> "' + message.get("docTitle") + '"</b> ' + "is now open" + ".";
+                                                        this.innerHTML = labels.get("snamed").toLowerCase() +  '<b> "' + message.get("docTitle") + '"</b> ' + labels.get("nowopen") + ".";
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("body").replace(/\n/g, "<br>");

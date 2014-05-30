@@ -585,7 +585,7 @@
 	"muinaday" : "You have an Ideafy session scheduled for tomorrow",
 	"mufifteen" : "Your Ideafy session will start in 15 minutes",
 	"ideafy" : "Ideafy",
-	"snamed" : "The session named",
+	"snamed" : "The session",
 	"stomorrow": "is set for tomorrow at ",
 	"sfifteen": "will start in 15 minutes",
 	"partcancel": "Are you sure you want to cancel your participation?",
@@ -593,5 +593,9 @@
 	"newpart": "New participant",
 	"partleft": "A participant left",
 	"scancel": "Session canceled",
-	"sstart": "Session is now open"
+	"sstart": "Session is now open",
+	"justreg": " just registered to ",
+	"unreg": " will no longer take part in ",
+	"cclbyorg" : "was canceled",
+	"nowopen": "is now open"
 }

@@ -102,7 +102,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                         }       
                                 }
                                 else {
-                                        Confirm.show();
+                                        _widget.leave();
                                 }
                         }
                	};

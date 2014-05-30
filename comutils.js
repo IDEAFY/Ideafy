@@ -321,7 +321,7 @@ function ComUtils(){
                                 message.docType = json.type;
                         }
                 
-                        if (json.type === "INV" || (json.type.search("MU") >-1)) {
+                        if (json.type === "INV" || (json.type.search("MU") >-1) || json.type === "SSTART" || json.type === "SCANCEL") {
                                 message.docId = json.docId;
                                 message.docTitle = json.docTitle;
                                 if (json.scheduled) message.scheduled = json.scheduled;

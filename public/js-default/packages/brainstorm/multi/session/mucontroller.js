@@ -140,6 +140,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 _widget.cancelSession();
                                         }
                                         else {
+                                                Confirm.hide();
                                                 _widget.leaveSession();
                                         }
                                 }

@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
- * Copyright (c) 2014 IDEAFY
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise", "Place.plugin", "attach/attachment", "attach/add"], 
@@ -191,9 +191,9 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                         
                         _widget.editVisibility = function(event, node){
                                 // confirmation
-                                var confirm = new Confirm(node, _labels.get("setpublicquestion"), function(decision){
+                                Confirm.reset(_labels.get("setpublicquestion"), function(decision){
                                         (decision) ? _store.set("visibility", "public") : _store.set("visibility", "private");
-                                        confirm.close();
+                                        Confirm.hide();
                                         });       
                         };
                         

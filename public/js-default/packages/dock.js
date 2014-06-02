@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Authors: Vincent Weyl <vincent.weyl@taiaut.com> - Olivier Wietrich <Olivier.Wietrich@taiaut.com
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", 
@@ -13,22 +13,23 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 
 		//declaration
 			var _widget = new Widget(),
-			    _newIdea, _new2q, _tips, _notify = new Notify(),
+			    _new2q, _new2c, _tips, _notify = new Notify(),
 			    _public, _library, _brainstorm, _connect, _dashboard,
 			    _control = new Control(this),
 			    _observer = Config.get("observer"),
 			    _user = Config.get("user"),
 			    _stack = new Stack();
-
-		//setup
+                
+                
+                //setup
 			//labels have to configurable
 			_widget.plugins.addAll({
 				"dockstack" : _stack,
 				"dockcontrol" : _control,
-				"place" : new Place({"notify":_notify})
+				"place" : new Place({"notify":_notify, "newidea": NewIdea, "new2q": New2Q, "new2c": New2C, "help": Help, "tips": Tips})
 			});
 			
-			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,mousedown,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div id="notify" data-place="place:notify"></div></div>';
+			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,mousedown,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div data-place="place:notify"></div><div data-place="place:newidea"></div><div data-place="place:new2q"></div><div data-place="place:new2c"></div><div data-place="place:help"></div><div data-place="place:tips"></div><div id="cache"></div></div>';
 			
 			_widget.place(Map.get("dock"));
 			
@@ -39,8 +40,6 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			           h = _widget.dom.clientHeight || 748,
 			           style = "";
 			         
-			     console.log(W, w);
-			           
 			     if (W>w) style += "left:50%; margin-left:-"+ w/2 +"px;";
 			     if (H>h) style += "top:50%; margin-top:-"+ h/2 +"px;";
 			     
@@ -68,13 +67,9 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 				_stack.getStack().add("#brainstorm", _brainstorm);
 				_stack.getStack().add("#connect", _connect);
 				_stack.getStack().add("#dashboard", _dashboard);
-				// init notification engine
-				_notify.init();
 				
-				// initialize popups
-				_newIdea = new NewIdea();
-                                _new2q = new New2Q();
-                                _tips = new Tips();
+                                // init notification engine
+                                _notify.init();
 			};
 			
 			/*
@@ -110,9 +105,15 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                                         _tips.init(firstStart);
                                 } 
                                 
-                                // set user connection status
+                                
+                                /*
+                                 // set user connection status
                                 _user.set("online", true);
-                                _user.upload();       
+                                _user.upload()
+                                .then(function(){
+                                        console.log("user upload successful -- dock init");
+                                });
+                                */       
 
 			};
 			
@@ -192,6 +193,19 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                         
                         // display session waiting room (join)
                         _observer.watch("join-musession", function(sid){
+                                var prev = document.querySelector(".dock-item.selected"),
+                                    bs = document.querySelector(".dock-item[href='#brainstorm']");
+                                
+                                // this event can be called from and outside of the brainstorm UI -- we only need to change views if it's called from outside
+                                if (_stack.getStack().getCurrentName() !== "#brainstorm") {
+                                        _stack.getStack().show("#brainstorm");
+                                        _control.radioClass(bs, prev, "selected");
+                                        _control.init(bs);
+                                }        
+                        });
+                        
+                        // display session preview (prior to join)
+                        _observer.watch("show-mupreview", function(sid){
                                 var prev = document.querySelector(".dock-item.selected"),
                                     bs = document.querySelector(".dock-item[href='#brainstorm']");
                                 

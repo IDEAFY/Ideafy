@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils", "CouchDBView"],
@@ -12,8 +12,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
 
                         var _store = new Store({"img":"", "online": false}),
                             _avatars = Config.get("avatars"),
+                            _transport = Config.get("transport"),
+                            _online = Utils.online,
                             _cdb = new CouchDBView([]),
-                            _id = $array[0]; 
+                            _id = $array[0],
+                            interval,
+                            bool = false; 
                         
                         // setup
                         _cdb.setTransport(Config.get("transport"));
@@ -35,20 +39,20 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         // set template
                         this.template='<div class="avatar" data-avatar="bind: setStyle, img; bind: setStatus, online"></div>';
                         
-                        // init
-                        // check if user is online
+                        // INIT
+                        
+                        
+                        // Manage presence status
                         _cdb.sync(Config.get("db"), "users", "_view/online", {key: '"'+_id+'"'})
                         .then(function(){
-                                console.log(cdb.toJSON());
-                                (_cdb.get(0)) ? _store.set("online", true) : _store.set("online", false);       
-                        });
-                        // watch for updates
-                        ["added", "deleted", "updated"].forEach(function(change){
-                                _cdb.watch(change, function(){
-                                        (_cdb.get(0)) ? _store.set("online", true) : _store.set("online", false);
+                                if (_cdb.getNbItems()) _store.set("online", true);
+                                
+                                Config.get("socket").on("Presence", function(data){
+                                        if (data.presenceData.id === _id) _store.set("online", data.presenceData.online);
                                 });
                         });
                         
+                        // get picture
                         if ($array.length>1) {
                                 _store.set("img", "img/avatars/deedee6.png");
                         }
@@ -79,6 +83,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         _store.set("img", _avatars.get(_id));
                                 });
                         }
+                        
+                        Config.get("observer").watch("signout", function(){
+                                clearInterval(interval);
+                        });
                              
                 }
                 

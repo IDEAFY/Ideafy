@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+ 	<meta charset="utf-8">
+    <title>TAIAUT development platform</title>
+    <link rel="shortcut icon" href="http://ideafy.taiaut.net/favicon.ico?v=2"/>
+ </head>
+ <body>
+ 	<script>
+ 		var touchDevice = false,
+ 		    agent = navigator.userAgent.toLowerCase(),
+ 		    isChrome = /chrome/.test(agent) && /Google Inc/.test(navigator.vendor),
+			isSafari = /safari/.test(agent) && /Apple Computer/.test(navigator.vendor);
+
+ 		
+ 		if (agent.search("ipad")>-1 || agent.search("android")>-1) touchDevice = true;
+ 		
+ 		if (touchDevice) {
+ 			window.open ('index-tide.html','_self',false);
+ 		}
+ 		else{
+ 			(isChrome || isSafari) ? window.open ('index-tide.html','_self',false) : window.open ('index-denied.html','_self',false);
+ 		}
+ 		
+ 	</script>
+ </body>
+ </html>

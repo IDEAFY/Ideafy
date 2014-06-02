@@ -17,14 +17,25 @@ html, body, ul {
   padding:0;
 }
 
-html, body {
+body {
   font-family:Helvetica;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  background:rgba(0,0,0,0.35) url('../img/bg.png') repeat;
   overflow: auto;
-  width: 100%;
+  background: #f6f6f6;
   height: 100%;
   z-index: -15;
+}
+
+#banner{
+    background-image: url('../img/ideafy.png');
+    height: 280px;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    float: left;
+    -webkit-box-shadow: inset 0px 0px 10px 15px #f6f6f6;
+    /* border-radius: 25px; */
+    z-index: -15;
 }
 
 ::-webkit-any-link:hover, ::-webkit-any-link:active {
@@ -72,7 +83,7 @@ input::-webkit-file-upload-button{
     overflow-y: hidden;
     overflow-x: hidden;
     /*top: 50%;*/
-    position: relative;
+    position: fixed;
     /*margin-top: -374px;
     margin-left: -512px;*/
 }
@@ -133,21 +144,70 @@ input::-webkit-file-upload-button{
     font-weight: normal;
     font-style: normal;
     }
-
-    .spinner{
-        -webkit-animation: myRotate 1s linear infinite;
+    
+    .main{
+        background: rgba(128,128,128,0.9);
+        width: 100%;
+        height: 100%;
+        display: block;
+        position: fixed;
+        background-image: url('../img/bg.png');
+        background-repeat: repeat;
     }
     
-    .waiting:before{
-        content: "\e000";
-        display: inline-block;
-        font-size:4em;
-        height: 1em;
-        font-family: Ideafy;
-        color: whitesmoke;
+    #banner{
+        background-image: url('../img/ideafy.png');
+        height: 305px;
+        width: 100%;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
     }
 
-    @-webkit-keyframes myRotate {
+    #apploading{
+        /*background: url('../img/appicon.png') no-repeat center center;*/
+       width: 60px;
+        height: 60px;
+        position: absolute;
+        top: 50%;
+        margin-top: -30px;
+        -webkit-animation-name: slideout;
+        -webkit-animation-duration: 5s;
+         -webkit-animation-iteration-count: infinite;
+    }
+    
+    #apploading:before{
+        content: "\e000";
+        display: inline-block;
+        font-size: 2em;
+        line-height: 60px;
+        font-family: Ideafy;
+        color: #657b99;
+    }
+    
+    @-webkit-keyframes slideout {
+        from {
+            left: 20%;
+        }
+        to {
+            left: 80%;
+        }
+    }
+    
+    #logo{
+        position: fixed;
+        top: 100%;
+        left: 100%;
+        margin-left: -150px;
+        margin-top: -50px;
+        background: url('../img/logoLogInPage-beta.png') no-repeat center center;
+        background-size: cover;
+        width: 150px;
+        height: 50px;
+        z-index: -15;
+    }
+
+/*    @-webkit-keyframes myRotate {
         from {
             -webkit-transform:rotate(0);
         }
@@ -155,6 +215,162 @@ input::-webkit-file-upload-button{
             -webkit-transform:rotate(360deg);
         }
     }
+*/
+    
+/* LOGIN */
+#login{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    text-align:center;
+    overflow: auto;
+/*    background-image: url('../img/logoLogInPage-beta.png');
+    background-position: bottom right;
+    background-size: 150px;
+    background-repeat: no-repeat;*/
+}
+
+#login-stack    {
+    margin-top: -110px;
+    width: 410px;
+    height: 440px;
+    margin-left: -205px;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}
+
+.login-fields{
+    width:410px;
+    border-radius: 5px;
+    background: white;
+    -webkit-box-shadow: 0 0 3px 3px #657b99;
+    margin-bottom:30px;
+}
+
+#login-form input {
+    height:60px;
+}
+
+#signup-form input {
+    height:45px;
+}
+
+.login-fields input {
+    background:none;
+    width:375px;
+    outline:0;
+    margin:0;
+    border:0;
+    padding-left:30px;
+    font-size:14px;
+    color:darkblue;
+}
+
+.login-fields input::-webkit-input-placeholder{
+    color: #657b99;
+}
+
+.login-fields input:nth-child(n+2) {
+    border-top:1px solid #657b99;
+}
+
+.login-button, .signup-button {
+    display:inline-block;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.login-button {
+    margin-bottom:20px;
+    font-size: 14px;
+    line-height: 40px;
+    color: #4D4D4D;
+    width: 400px;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #e5e5e5), color-stop(100%, #e6e6e6));
+    -webkit-box-shadow: 0 0 3px #0B173B;
+}
+
+.pressed {
+    -webkit-box-shadow:inset 0 0 5px 1px rgba(0,0,0,0.6);
+    background:#0B173B;
+}
+
+.login-button.pressed{
+    color: white;
+    border: 1px inset #CCCCCC;
+    height: 38px;
+    line-height: 38px;
+    text-shadow: 2px 2px 2px black;
+}
+
+#login-form p.login-error{
+    height:154px;
+    line-height:77px;
+}
+
+#signup-form .login-error {
+    margin-bottom:10px;
+    height:40px;
+}
+
+.login-error {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: #657b99;
+    line-height: 1.3em;
+    height: 77px;
+}
+
+.signup-button {
+    width: 270px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #E6E6E6;
+    -webkit-box-shadow: 0 0 1px 1px rgba(37,64,102, 0.6);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #8c9aa8), color-stop(100%, #707e8e));
+}
+
+.signup-button.pressed{    
+    color: black;
+    border: 1px inset #CCCCCC;
+    text-shadow: 2px 2px 2px white;    
+}
+
+.pressed-btn{
+    opacity: 0.7;
+    -webkit-transition: opacity 3s linear;
+}
+
+.btn-ready{
+    opacity: 1;
+    color: black;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #e5e5e5), color-stop(100%, #e6e6e6))
+}
+
+.loginvisible{
+    display: none;
+}
+
+.forgotpwd{
+    font-size: 12px;
+    color: #404040;
+}
+
+.forgotpwd.pressed{
+    color: white;
+    background: transparent;
+    -webkit-box-shadow: none;
+}
+
+#EULA{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #657b99;
+}
 
 /* utils */
 .blue-light {
@@ -210,6 +426,9 @@ input::-webkit-file-upload-button{
     background-size: 60px;
     background-repeat: no-repeat;
     background-position: 20px center;
+    vertical-align: middle;
+    display: table-cell;
+    height: 80px;
 }
 
 #loadingspin{
@@ -5051,7 +5270,7 @@ li.color-item{
 }
 
 .enterDesc, .enterSol{
-    width: 330px;
+    width: 326px;
     height: 100px;
     margin-top: 15px;    
 }
@@ -5969,7 +6188,7 @@ li.color-item{
     line-height: 150%;    
 }
 
-#addcontact .contactinvite div{
+#addcontact .contactinvite .invitebuttons{
     height: 26px;
     margin: 10px auto;
     width: 200px;
@@ -7268,17 +7487,17 @@ li.my2q{
 
 #newmub form{
     width: 851px;
-    height: 437px;
+    height: 427px;
     overflow-y: scroll;
     border-radius: 5px;
-    margin-top: 10px;
+    margin: 10px 0px;
 }
 
 #newmub-content hr, #mulist-content hr{
     -webkit-margin-before: 0.2em;
 }
 
-#newmub form > label, #mulist legend{
+#newmub form > label, #mulist legend, #newmub-content label{
     font-family: Pacifico;
     color: #657B99;
     font-size: 20px;
@@ -7290,6 +7509,7 @@ li.my2q{
     font-family: Helvetica;
     color: black;
     letter-spacing: 0px;
+    font-size: 11px;
 }
 
 #newmub .select-mode{
@@ -7317,7 +7537,7 @@ li.my2q{
 }
 
 #newmub textarea{
-    width: 831px;
+    width: 811px;
     font-size: 16px;
 }
 
@@ -7417,7 +7637,6 @@ li.my2q{
     margin-left: -300px;
     top: 50%;
     margin-top: -120px;
-    top: 240px;
     background: white;
 }
 
@@ -7472,6 +7691,10 @@ li.my2q{
     margin-top: 20px;
 }
 
+#mupreview .contentarea{
+    height: 410px;
+}
+
 #mubwait .mubwait-title, #mupreview .mubwait-title, #mustart .mubwait-title{
     font-size: 20px;
     text-align: center;
@@ -7524,14 +7747,25 @@ li.my2q{
 }
 
 #mubwait .start-button, #mupreview .start-button{
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    line-height: 50px;
     font-size: 14px;
     background: #5F8B28;
     color: white;
     text-align: center;
+}
+
+#mubwait .start-button{
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+    line-height: 40px;
+    margin: 5px auto;  
+}
+
+#mupreview .start-button{
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    line-height: 50px;
     margin: 0 auto;
 }
 
@@ -7678,6 +7912,7 @@ li.my2q{
     height: 40px;
     padding-left:5px;
     padding-right: 5px;
+    font-size: 14px;
 }
 
 .mulistheader{
@@ -7697,7 +7932,7 @@ li.my2q{
 
 
 .mutitle{
-    width: 399px;
+    width: 309px;
     border-right: 1px solid #CCCCCC;
 }
 
@@ -7756,14 +7991,15 @@ li.my2q{
     top: 189px;
     left: 139px;
     background: white;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 #mupreview .infopreview{
-    margin: 20px auto;
+    margin: 10px auto;
     text-align: center;
     color: #292929;
     font-weight: bold;
+    font-size: 13px;
 }
 
 #mupreview .close{
@@ -7771,8 +8007,9 @@ li.my2q{
     width: 60px;
     height: 60px;
     display: block;
+    background-color: white;
     background-image: url('../img/brainstorm/delete28.png');
-    background-size: contain;
+    background-size: 40px;
     background-position: center center;
     background-repeat: no-repeat;
     border-radius: 30px;

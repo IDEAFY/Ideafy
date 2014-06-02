@@ -1,14 +1,15 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
- * Copyright (c) 2014 IDEAFY
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument"], function(Config, Observable, Promise, LocalStore, Transport, Store){
+define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument", "CouchDBView"], function(Config, Observable, Promise, LocalStore, Transport, Store, CouchDBView){
         var _utils = {},
               user = Config.get("user"),
-              transport = Config.get("transport");
+              transport = Config.get("transport"),
+              socket = Config.get("socket");
 	
 	_utils.formatDate = function(array){
 	       var month = array[1] + 1;
@@ -67,6 +68,19 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 sec<10 ? res += "0"+sec : res+= sec;
                                                 
                 return res;
+        };
+        
+        /*
+         * Compute a time stamp from a date and/or time, adding time zone offset
+         */
+        _utils.computeTimeStamp = function(date, time){
+                var now = new Date(),
+                      offSet = now.getTimezoneOffset(),
+                      d = date ||now.getTime(),
+                      t = time || 0,
+                      stamp;
+                stamp = d+t+offSet;
+                return stamp;
         };
 		
         /* 
@@ -319,12 +333,8 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         * Disconnect the socket
         */
         _utils.disconnectSocket = function(){
-                user.set("online", false);
-                user.upload()
-                .then(function(){
-                         Config.get("socket").socket.disconnect();
-                        Config.get("observer").notify("disconnect");        
-                });       
+                Config.get("socket").socket.disconnect();
+                Config.get("observer").notify("disconnect");      
         };
                 
         /**
@@ -450,6 +460,17 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 });
                 return res;
         };
+        
+        /*
+        *  A function that extracts a list of all contact usernames from a user document
+        */
+        _utils.getContactUsernames = function(){
+                var res = [], contacts = user.get("connections").concat();
+                contacts.forEach(function(contact){
+                        if (contact.type === "user") {res.push(contact.username);}        
+                });
+                return res;
+        };
                 
         /*
         * A function to check if user profile is completed
@@ -523,17 +544,18 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 var listener = function(e){
                         var element;
                         for (element = e.target; element; element = element.parentNode) {
-                                if (element.id === id) {
+                                if (element.id && element.id === id) {
                                         return;
                                 }
                         }
-                                
+                        
                         // else allow touch events to display/close the notification list and do nothing if event target is an empty place in the dock
-                        if (!e.target.classList.contains("deedee") && !e.target.classList.contains("notify-header") && e.target.id !== "dock" && !e.target.classList.contains("close-help")){
+                        if (e.target.classList.contains("deedee") || e.target.classList.contains("notify-header") || e.target.classList.contains("exit-brainstorm") || e.target.classList.contains("dock-item")){
                                 e.stopPropagation();
                                 callback(e.target);        
                         }       
                 };
+                
                 document.addEventListener("mousedown", listener, true);
                 return listener;      
         };
@@ -576,6 +598,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 });
                 return promise;        
         };
-        
+      
         return _utils;
 });

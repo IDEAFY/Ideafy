@@ -8,30 +8,41 @@
  * Copyright (c) 2013-2014 TAIAUT
  * 
  */
+
+var follow = require('follow');
         
 function ComUtils(){
         
-        var _smtpTransport, _supportEmail,
-                _CouchDBDocument, _Store,
-                _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP;
+        var _db, _smtpTransport, _supportEmail, _mailSender, transport, _dbInfo, _io,
+                _CouchDBDocument, _CouchDBView, _Store,
+                _getDocAsAdmin, _updateDocAsAdmin, _updateUserIP, _getViewAsAdmin,
+                _updatePresence;
  
-        this.setVar = function(smtpTransport, supportEmail, mailSender){
+        this.setVar = function(db, smtpTransport, supportEmail, mailSender, transport, io){
+                _db = db;
                 _smtpTransport = smtpTransport;
                 _supportEmail = supportEmail;
                 _mailSender = mailSender;
+                _transport = transport;
+                _io = io;
         };
         
-        this.setConstructors = function(CouchDBDocument, Store){
+        this.setConstructors = function(CouchDBDocument, CouchDBView, Store){
                 _CouchDBDocument = CouchDBDocument;
+                _CouchDBView = CouchDBView;
                 _Store = Store;
         };
         
         this.setFunctions = function(CDBAdmin, checkInvited, addInvited){
                 _getDocAsAdmin = CDBAdmin.getDoc;
                 _updateDocAsAdmin = CDBAdmin.updateDoc;
+                _getViewAsAdmin = CDBAdmin.getView;
                 _updateUserIP = CDBAdmin.updateUserIP;        
                 _checkInvited = checkInvited;
                 _addInvited = addInvited;
+                
+                // full db info for presence feed
+                _dbInfo = CDBAdmin.getDB();
         };
         
         // Sending email messages from Ideafy
@@ -310,9 +321,10 @@ function ComUtils(){
                                 message.docType = json.type;
                         }
                 
-                        if (json.type === "INV") {
+                        if (json.type === "INV" || (json.type.search("MU") >-1) || json.type === "SSTART" || json.type === "SCANCEL") {
                                 message.docId = json.docId;
                                 message.docTitle = json.docTitle;
+                                if (json.scheduled) message.scheduled = json.scheduled;
                         }
 
                         // send message to all recipients
@@ -415,7 +427,71 @@ function ComUtils(){
                         }        
                 });  
         };
-       
+        
+        _updatePresence = function(id, status){
+                var reqData = {
+                                eventId: Date.now() + Math.floor(Math.random()*1e6),
+                                presenceData: ({id:id, online: status})
+                              };
+                _io.sockets.emit("Presence", reqData, function(res){
+                        console.log("socket emit callback: ", res);
+                });   
+        };
+        
+        this.initPresence = function initPresence(){
+                var options = {
+                                heartbeat: 20000,
+                                since: 200,
+                                include_docs: true
+                      },
+                      feed = new follow.Feed(options);
+                      
+                 feed.db = 'http://' + _dbInfo.credentials + '@' + _dbInfo.ip + ':' + _dbInfo.port + '/' + _dbInfo.name;
+                 
+                 feed.filter = function(doc, req){
+                       if (doc.type === 7) return true;
+                       else return false;
+                 };
+                 
+                 feed.on('change', function(change) {
+                        _updatePresence(change.id, change.doc.online);
+                });
+
+                feed.on('error', function(er) {
+                        console.error('Since Follow always retries on errors, this must be serious');
+                        throw er;
+                });
+
+                feed.follow();     
+                
+                /*        
+                _transport.listen("CouchDB", options, function (changes) {
+                        var json, cdb;
+                        if (changes == "\n") {
+                                return false;
+                        }
+                        else{
+                                try{
+                                        json = JSON.parse(changes);        
+                                }
+                                catch (e){
+                                        json = null;
+                                        console.error(e, "error parsing change feed -- presence update");
+                                }
+                                
+                                if (json && json.id && json.id.search("@") > -1){
+                                        console.log(json.id);
+                                        _updatePresence(json.id);
+                                }
+                        }
+                });
+                */
+        };
+
+        // get presence updates from couchdb
+        this.sendPresenceUpdates = function(payload, onEnd, onData){
+                      
+        };
 };
 
 exports.ComUtils = ComUtils;

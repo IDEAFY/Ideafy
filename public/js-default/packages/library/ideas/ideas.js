@@ -1,15 +1,15 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Amy/Control-plugin" ,
 	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Store", "service/map", "service/config",
-	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin", "lib/spin.min"], 
+	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin", "lib/spin.min", "service/newidea"], 
 	function(Widget, Control, Model, Place, Delegate, Store, Map, 
-		Config, Detail, List, Stack, Spinner){
+		Config, Detail, List, Stack, Spinner, NewIdea){
 		return function IdeasConstructor(){
 		//declaration
 			var _widget = new Widget(),
@@ -188,8 +188,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			_widget.plus = function(){
-			        Map.get("newidea-popup").classList.add("appear");
-			        Map.get("cache").classList.add("appear");        
+			        NewIdea.reset();       
 			};
 			
 			_widget.search = function (event, node){

@@ -798,15 +798,17 @@ textarea.a-desc::-webkit-input-placeholder{
 }
 
 .a-delconfirm{
-    top: 20%;
-    left: 0;
+    top: 50%;
+    left: 50%;
     width: 550px;
     background: #657b99;
     color: black;
     text-align: center;
     padding: 40px;
     -webkit-box-shadow: inset 0px 0px 1px 15px white;
-    margin: 0px 15px;
+    margin-top: -60px;
+    margin-left: -315px;
+    border-radius: 20px;
 }
 
 .a-delconfirm .help-doctor{
@@ -903,3 +905,144 @@ textarea.a-desc::-webkit-input-placeholder{
 .idea-edit .a-zoom{
     float: right;
 }
+
+#newmub .dateandtime{
+    width: 100%;
+    display: inline-block;
+    margin: 10px 0;
+}
+
+#newmub .dateui, #newmub .timeui{
+    float:left;
+}
+
+#newmub input[name="schedule"]{
+    margin: 10px;
+}
+
+.dateui .dateicon, .timeui .timeicon{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    background: url('../img/decks/creationDate14.png') no-repeat left top;
+    background-size: 20px;
+    float: left;
+}
+
+.timeui .timeicon{
+    background: url('../img/decks/time.png') no-repeat center top;
+    background-size: 20px;
+}
+
+#newmub .dateui select{
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+}
+
+#newmub .dateui select[name="year"]{
+    width: 80px;     
+}
+
+#newmub .dateui select[name="month"]{
+    width: 130px;     
+}
+
+#newmub .dateui select[name="day"]{
+    width: 70px;     
+}
+
+.timeui input{
+    float:left;
+    width: 35px;
+    line-height: 20px;
+    font-size: 14px;
+    text-align: center;
+    margin: 0 5px;
+    border: none;
+    background: #e5e5e5;
+    border-radius: 3px;
+    -webkit-box-shadow: inset 0px 0px 3px #ccc;
+    height: 25px;
+    padding: 0;
+}
+
+.timeui span{
+    float: left;
+    height: 30px;
+    line-height: 25px;
+}
+
+.timeui select, #newmub .timeui select{
+    height: 25px;
+    float: left;
+    width: 50px;
+    font-size: 12px;
+    background-size: 25px;
+    padding-right: 25px;
+    line-height: 25px;
+}
+
+.timeui select.now{
+    -webkit-box-shadow: none;
+    width: 15px;
+}
+
+#mupreview .datetime{
+    width: 100%;
+    height: 20px;
+    background-color:rgba(101,123,153,0.3);
+    margin-bottom: 5px;
+}
+
+#mupreview .date, #mupreview .time{
+    float: left;
+    background-image: url('../img/decks/creationDate14.png');
+    background-position: left top;
+    padding-left: 20px;
+    background-size: 15px;
+    background-repeat: no-repeat;
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    color: #404040;
+    margin-left: 10px;
+}
+
+#mupreview .time{
+    margin-left: 10px;
+    background-image: url('../img/decks/time_transparent.png');
+    background-size:17px;
+}
+
+.mudate{
+    width: 80px;
+    border-right: 1px solid #CCC;
+    font-size: 12px;
+}
+
+.mulistheader .mudate{
+    font-size: 16px;
+}
+
+#mubwait .exit-brainstorm{
+    position: absolute;
+    left: 715px;
+    margin-top: -60px;
+}
+
+#mubwait .contact, #mupreview .contact{
+    min-height: 40px;
+    height: 40px;
+}
+
+#mupreview .cancelsession{
+    float: right;
+    color: red;
+    margin-right: 10px;
+}
+
+#mupreview .cancelpart{
+    margin-top: -40px;
+}
+

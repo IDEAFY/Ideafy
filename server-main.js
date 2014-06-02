@@ -12,17 +12,18 @@
 // Required middleware
 var http = require("http"), 
     socketIO = require("socket.io"),
-    connect = require("connect"), 
+    connect = require("connect"),
     olives = require("olives"),
     CouchDBTools = require("couchdb-emily-tools"),
     cookie = require("cookie"), 
     RedisStore = require("connect-redis")(connect), 
     nodemailer = require("nodemailer"), 
-    fs = require("fs"),
-    path = require("path"), 
-    qs = require("querystring"), 
-    url = require("url"), 
-    redirect = require('connect-redirection'), 
+//    fs = require("fs"),
+//    path = require("path"), 
+//     qs = require("querystring"), 
+ //   url = require("url"), 
+    st = require("st"),
+//    redirect = require('connect-redirection'), 
     sessionStore = new RedisStore({
         hostname : "127.0.0.1",
         port : "6379"
@@ -32,12 +33,14 @@ var http = require("http"),
     apputils = require("./apputils.js"),
     comutils = require("./comutils.js"),
     loginutils = require("./loginutils.js"),
+    taskutils = require("./taskutils.js"),
     cdbadmin = require("./cdbadmin.js");
     
 var srvUtils = new srvutils.SrvUtils(),
       appUtils = new apputils.AppUtils(),
       comUtils = new comutils.ComUtils(),
       loginUtils = new loginutils.LoginUtils(),
+      taskUtils = new taskutils.TaskUtils(),
       CDBAdmin = new cdbadmin.CDBAdmin();
   
 // create reusable transport method (opens pool of SMTP connections)
@@ -77,6 +80,9 @@ contentPath = __dirname;
 badges;
 
 
+// Mount the static directory to be cached
+var mount = st({path: __dirname + '/public/', index: true, index: 'index.html'});
+
 /*****************************
  *  APPLICATION SERVER
  ******************************/
@@ -84,18 +90,12 @@ badges;
 CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
         var transport = new Transport(olives.handlers),
             app = http.createServer(connect()
-                .use(connect.logger())
+                //.use(connect.logger())
                 .use(connect.compress())
                 .use(connect.responseTime())
-                .use(redirect())
                 .use(connect.bodyParser({ uploadDir:contentPath+'/upload', keepExtensions: true }))
                 .use('/upload', srvUtils.uploadFunc)
-                .use('/downloads', srvUtils.downloadFunc)   
-                .use(function(req, res, next) {
-                        res.setHeader("Ideady Server", "node.js/" + process.versions.node);
-                        res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
-                        next();
-                })
+                .use('/downloads', srvUtils.downloadFunc)
                 .use(connect.cookieParser())
                 .use(connect.session({
                         secret : "olives&vin2012AD",
@@ -106,8 +106,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 httpOnly : true,
                                 path : "/"
                         }
-                }))
-                .use(connect.static(__dirname + "/public"))).listen(1664),
+                }))   
+                .use(function(req, res, next) {
+                        res.setHeader("Ideady Server", "node.js/" + process.versions.node);
+                        res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
+                        next();
+                })
+                //.use(connect.static(__dirname + "/public"))).listen(1664),
+                .use(mount)).listen(1664),
                 io = socketIO.listen(app, {
                         log : true
                 });
@@ -116,16 +122,12 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         io.enable('browser client minification');  // send minified client
         io.enable('browser client etag');          // apply etag caching logic based on version number
         io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 3);                    // reduce logging
+        io.set('log level', 0);                    // reduce logging
         io.set("close timeout", 300);
         io.set("heartbeat interval", 25);
         
         // we need lots of sockets
         http.globalAgent.maxSockets = Infinity;
-        
-        setInterval(function(){
-                console.log("number of sockets used : ", Object.keys(io.connected).length, "socket names : ", JSON.stringify(Object.keys(io.connected)));
-        }, 60000);
         
         // register transport
         olives.registerSocketIO(io);
@@ -174,13 +176,14 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("ResetPWD", loginUtils.resetPassword);
         
         // communication utilities (mail and application notifications)
-        comUtils.setVar(smtpTransport, supportEmail, mailSender);
-        comUtils.setConstructors(CouchDBDocument, Store);
+        comUtils.setVar(_db, smtpTransport, supportEmail, mailSender, transport, io);
+        comUtils.setConstructors(CouchDBDocument, CouchDBView, Store);
         comUtils.setFunctions(CDBAdmin, checkInvited, addInvited);
         olives.handlers.set("SendMail", comUtils.sendMail);
         olives.handlers.set("Support", comUtils.support);
         olives.handlers.set("Notify", comUtils.notify);
         olives.handlers.set("Invite", comUtils.invite);
+        olives.handlers.set("Presence", comUtils.sendPresenceUpdates);
         
         // application utilities and handlers
         appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
@@ -204,6 +207,15 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
         olives.handlers.set("SendTwocent", appUtils.sendTwocent);
         olives.handlers.set("UpdateUIP", appUtils.updateUIP);
         olives.handlers.set("UpdateSessionScore", appUtils.updateSessionScore);
+        
+        // scheduled tasks
+        taskUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
+        taskUtils.setFunctions(CDBAdmin, comUtils);
+        
+        
+        // initialize tasks and presence
+        taskUtils.initTasks(io);
+        comUtils.initPresence();
         
         // disconnection events
         io.sockets.on("connection", function(socket){

@@ -1,12 +1,12 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config", "Promise", "Store", "service/utils", "lib/spin.min", "Place.plugin", "./mupreview"],
-        function(Widget, Model, Event, CouchDBView, Config, Promise, Store, Utils, Spinner, UIPlugin, MUPreview){
+define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config", "Promise", "Store", "service/utils", "lib/spin.min", "Place.plugin", "./mupreview", "service/utils"],
+        function(Widget, Model, Event, CouchDBView, Config, Promise, Store, Utils, Spinner, UIPlugin, MUPreview, Utils){
                 
            return function MuListConstructor($exit){
            
@@ -23,7 +23,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                     _languages = new Store([{name:"*"}]),
                     _usrLg = Config.get("userLanguages"),
                     currentList = "mulistall",
-                    contacts = Utils.getUserContactIds(), // array of user ids
+                    contacts, // array of user names
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 6, radius:10, top: 200}).spin();
                 
                 // build languages & flags
@@ -86,6 +86,21 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                         break;        
                                         }
                                 },
+                                setDate : function(scheduled){
+                                        var now, sched;
+                                        if (scheduled){
+                                                now = new Date();
+                                                sched = new Date(scheduled);
+                                                if (now.toDateString() === sched.toDateString()){
+                                                        if ((sched.getTime() - now.getTime()) <= 300000) this.innerHTML = labels.get("now");
+                                                        else this.innerHTML = sched.toLocaleTimeString();
+                                                }
+                                                else {
+                                                        this.innerHTML = Utils.formatDate([sched.getFullYear(), sched.getMonth(), sched.getDate()]);
+                                                }       
+                                        }
+                                        else this.innerHTML = labels.get("now"); 
+                                },
                                 setLang : function(lang){
                                         this.setAttribute("style", "background-image: url('img/flags/"+lang.substring(0,2)+".png');");
                                         this.innerHTML = " ";
@@ -113,6 +128,23 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                         break;        
                                         }        
                                 },
+                                setDate : function(scheduled){
+                                        // couchdb-lucene fields returned as string -- convert to number first
+                                        scheduled = parseInt(scheduled, 10);
+                                        var now, sched;
+                                        if (scheduled){
+                                                now = new Date();
+                                                sched = new Date(scheduled);
+                                                if (now.toDateString() === sched.toDateString()){
+                                                        if ((sched.getTime() - now.getTime()) <= 300000) this.innerHTML = labels.get("now");
+                                                        else this.innerHTML = sched.toLocaleTimeString();
+                                                }
+                                                else {
+                                                        this.innerHTML = Utils.formatDate([sched.getFullYear(), sched.getMonth(), sched.getDate()]);
+                                                }        
+                                        }
+                                        else this.innerHTML = labels.get("now"); 
+                                },
                                 setLang : function(lang){
                                         var l = lang.substring(0,2);
                                         this.setAttribute("style", "background-image:url('img/flags/"+l+".png');");
@@ -123,12 +155,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         "mulistevent" : new Event(widget)
                 });
                 
-                widget.template = '<div id="mulist"><div id="mulist-content"><div id="mulistspinner"></div><div data-mupreview = "place: preview"></div><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><select class="modes" data-options="bind: setMode, modes" data-mulistevent="listen:change, filterMode"></select><div class="selectlang"><div data-options="bind:setBg, selectedLang"></div><button data-mulistevent = "listen:mouseup, displayLang"></button></div><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-mulistevent="listen: mouseup, filterLang"></li></ul></div><hr/><div class="mulistheader"><div class="mumode" data-labels="bind:innerHTML, mode"></div><div class="mutitle" data-labels="bind:innerHTML, title"></div><div class="mulang" data-labels="bind:innerHTML, lang"></div><div class="muleadername" data-labels="bind:innerHTML, leader"></div><div class="muparts" data-labels="bind:innerHTML, participants"></div></div><div class="noresult invisible" data-labels="bind:innerHTML, nosessionfound"></div><ul id="mulistall" data-muall="foreach"><li data-mulistevent="listen: mousedown, zoom"><div class="mumode" data-muall="bind:setMode, value.mode"></div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mulang" data-muall="bind:setLang, value.lang"></div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musearch" class="invisible" data-musearch="foreach"><li data-mulistevent="listen: mousedown, zoom"><div class="mumode" data-musearch="bind:setMode, fields.mode"></div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mulang" data-musearch="bind:setLang, fields.lang"></div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
+                widget.template = '<div id="mulist"><div id="mulist-content"><div id="mulistspinner"></div><div data-mupreview = "place: preview"></div><legend data-labels="bind:innerHTML, selectsession"></legend><div class="mulistoptions"><input class="search" type="search" data-mulistevent="listen: keypress, search"><select class="modes" data-options="bind: setMode, modes" data-mulistevent="listen:change, filterMode"></select><div class="selectlang"><div data-options="bind:setBg, selectedLang"></div><button data-mulistevent = "listen:mouseup, displayLang"></button></div><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-mulistevent="listen: mouseup, filterLang"></li></ul></div><hr/><div class="mulistheader"><div class="mumode" data-labels="bind:innerHTML, mode"></div><div class="mutitle" data-labels="bind:innerHTML, title"></div><div class=mudate data-labels="bind:innerHTML, sbydate"></div><div class="mulang" data-labels="bind:innerHTML, lang"></div><div class="muleadername" data-labels="bind:innerHTML, leader"></div><div class="muparts" data-labels="bind:innerHTML, participants"></div></div><div class="noresult invisible" data-labels="bind:innerHTML, nosessionfound"></div><ul id="mulistall" data-muall="foreach"><li data-mulistevent="listen: mousedown, zoom"><div class="mumode" data-muall="bind:setMode, value.mode"></div><div class="mutitle" data-muall="bind:innerHTML, value.title">Title</div><div class="mudate" data-muall="bind:setDate, value.scheduled"></div><div class="mulang" data-muall="bind:setLang, value.lang"></div><div class="muleadername" data-muall="bind:innerHTML, value.initiator.username">Leader</div><div class="muparts" data-muall="bind: setParticipants, value.participants"></div></li></ul><ul id="musearch" class="invisible" data-musearch="foreach"><li data-mulistevent="listen: mousedown, zoom"><div class="mumode" data-musearch="bind:setMode, fields.mode"></div><div class="mutitle" data-musearch="bind:innerHTML, fields.title">Title</div><div class="mudate" data-musearch="bind:setDate, fields.scheduled"></div><div class="mulang" data-musearch="bind:setLang, fields.lang"></div><div class="muleadername" data-musearch="bind:innerHTML, fields.initiator">Leader</div><div class="muparts" data-musearch="bind: setParticipants, fields.participants"></div></li></ul></div></div>';
                 
                 widget.reset = function reset(){
                        currentList = "mulistall";
                        // init spinner
-                       spinner.spin(document.getElementById("mulistspinner"));
+                       spinner.spin(widget.dom.querySelector("#mulistspinner"));
                        // reset options
                        muListOptions.set("selectedLang", "all");
                        muListOptions.set("selectedMode", "allmodes");
@@ -180,15 +212,16 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         var promise = new Promise(), cdb = new CouchDBView();
                         cdb.setTransport(transport);
                         cdb.sync("_fti/local/"+db, "indexedsessions", "waiting", {q: query, descending:true}).then(function(){
+                                contacts = Utils.getContactUsernames().join();
                                 cdb.loop(function(v,i){
                                         var add = false;
-                                        if (v.fields.mode === "roulette"){
+                                        if (v.fields.mode === "roulette" && v.score > 0.66){
                                                 add = true;
                                         }
-                                        else if (v.fields.mode === "campfire" && contacts.indexOf(v.fields.initiator.id) > -1){
+                                        else if (v.fields.mode === "campfire" && v.score > 0.66 && (v.fields.initiator === user.get("username") || contacts.search(v.fields.initiator) > -1)){
                                                 add =true;
                                         }
-                                        else if (v.fields.mode === "boardroom" && v.fields.invited.search(user.get("_id"))>-1){
+                                        else if (v.fields.mode === "boardroom" && v.score > 0.66 && (v.fields.initiator === user.get("username") || v.fields.invited.search(user.get("_id"))>-1)){
                                                 add = true;
                                         }
                                         if (add){
@@ -197,6 +230,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                         if (v.fields.mode.search(filter.mode)>-1 && v.fields.lang.search(filter.lang)>-1) {arr.push(v);}
                                                 }
                                         }
+                                }, function(err){
+                                        alert(err);
                                 });
                                 promise.fulfill();
                         });
@@ -219,7 +254,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         }
                         cdb.sync(db, "library", view, query).then(function(){
                                 cdb.loop(function(v,i){
-                                        arr.unshift(v);
+                                        var now = new Date();
+                                        // do not display sessions more than 15 min older than scheduled date
+                                        if (!v.value.scheduled || ((now - v.value.scheduled) <= 900000)) arr.unshift(v);
                                 });
                                 promise.fulfill();
                                 cdb.unsync();
@@ -285,9 +322,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         });
                 };
                 
-                widget.filterList = function filterList(){
-                        var arr=[], query = document.getElementById("mulist-content").querySelector("input").value,
+                widget.filterList = function filterList($query){
+                        var arr=[], query = $query || widget.dom.querySelector("#mulist-content input").value,
                             promise = new Promise(), mode = "", lang = "";
+                        
+                        
+                        // escape : characters in query - used in doc._id
+                        query = query.replace(/:/g, '\\:');
                         
                         if (muListOptions.get("selectedMode") !== "allmodes"){mode = muListOptions.get("selectedMode");}
                         if (muListOptions.get("selectedLang") !== "all"){lang = muListOptions.get("selectedLang");}
@@ -366,18 +407,37 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 
                 widget.toggleList = function toggleList(list){
                         if (list !== currentList){
-                                document.getElementById(currentList).classList.add("invisible");
-                                document.getElementById(list).classList.remove("invisible");
+                                widget.dom.querySelector("#"+currentList).classList.add("invisible");
+                                widget.dom.querySelector("#"+list).classList.remove("invisible");
                                 currentList = list;
                         }
-                        spinner.spin(document.getElementById("mulistspinner"));
+                        spinner.spin(widget.dom.querySelector("#mulistspinner"));
                         widget.filterList().then(function(){
                                 spinner.stop();
                         });
                 };
                 
                 widget.refreshList = function refreshList(){
+                        if (!widget.dom.querySelector("#mulist-content input").value) currentList = "mulistall";
                         widget.toggleList(currentList);
+                };
+                
+                widget.showPreview = function showPreview(id){
+                        // display search window with session id
+                        if (currentList !== "musearch"){
+                                widget.dom.querySelector("#mulistall").classList.add("invisible");
+                                widget.dom.querySelector("#musearch").classList.remove("invisible");
+                                currentList = "musearch";
+                        }
+                        spinner.spin(widget.dom.querySelector("#mulistspinner"));
+                        
+                        widget.filterList(id).then(function(){
+                                widget.dom.querySelector("#mulist-content input").value = muSearch.get(0).fields.title;
+                                spinner.stop();
+                        });
+                        
+                        // display pop up
+                        muPreviewUI.reset(id);        
                 };
                 
                 
@@ -395,6 +455,18 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         muListOptions.set("lang", arr);     
                 });
                 
+                // if a new scheduled session was created display it
+                Config.get("observer").watch("show-session", function(session){
+                        widget.dom.querySelector("#mulist-content input").value = session.get("title");
+                        widget.toggleList("musearch");
+                });
+                
+                // a session was exited - refresh the list
+                Config.get('observer').watch("session-exited", function(){
+                        widget.refreshList();
+                });
+                
+                MULISTSPI = spinner;
                 
                 return widget;
                    

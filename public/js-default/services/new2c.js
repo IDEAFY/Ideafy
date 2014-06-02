@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
@@ -32,10 +32,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "new2cevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><span data-dest="bind: setHeader, username"></span><div class="close-popup" data-new2cevent="listen:mousedown, cancel"></div></div><form class="form"><p><textarea class="description input" data-labels="bind:placeholder, twocentplaceholder" data-new2c="bind: value, message"></textarea></p><div><span class="errormsg" data-errormsg="bind:innerHTML, error"></span><div class="sendmail" data-new2cevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, sendlbl"></div></div></form></div>';
+                        _widget.template = '<div id="new2c-popup"><div class = "header blue-dark"><span data-dest="bind: setHeader, username"></span><div class="close-popup" data-new2cevent="listen:mousedown, cancel"></div></div><form class="form"><p><textarea class="description input" data-labels="bind:placeholder, twocentplaceholder" data-new2c="bind: value, message"></textarea></p><div><span class="errormsg" data-errormsg="bind:innerHTML, error"></span><div class="sendmail" data-new2cevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, sendlbl"></div></div></form></div>';
                         
                         _widget.render();
-                        _widget.place(Map.get("new2c-popup"));
                         
                         _widget.press = function(event, node){
                                 node.classList.add("pressed");
@@ -43,7 +42,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.closePopup = function closePopup(){
                                 // hide window
-                                document.getElementById("new2c-popup").classList.remove("appear");
+                                _widget.dom.classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
                                 // reset _store, _dest and _error
                                 _store.reset();
@@ -53,8 +52,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.reset = function reset($contact){
                                 contact = $contact;
-                                Map.get("new2c-popup").classList.add("appear");
-                                Map.get("cache").classList.add("appear");  
+                                _widget.dom.classList.add("appear");
+                                document.getElementById("cache").classList.add("appear");  
                                 _dest.set("userid", contact.userid);
                                 _dest.set("username", contact.username);
                                 _store.reset({

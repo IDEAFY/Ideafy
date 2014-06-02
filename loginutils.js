@@ -251,19 +251,16 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                         });
                                                 }
                                                 else {
-                                                        console.log("no session auth and/or right login name not found");
                                                         onEnd({authenticated : false});
                                                 }
                                         } 
                                 });
                         }
                         else {
-                                console.log("no sessionID");
                                 onEnd({authenticated : false});
                         }
                 },
                 function(){
-                        console.log("failed getdocasadmin");
                         onEnd({authenticated: false});
                 });
         };

@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/config", "Promise", "Store", "./init/newmub", "./init/mulist"],
@@ -49,12 +49,22 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/c
                         muList.reset();
                 };
                 
+                widget.showPreview = function showPreview(id){
+                        muList.showPreview(id);
+                        stack.getStack().show("list");
+                        widget.dom.querySelector("#muinitslider").value = 0; 
+                };
+                
                 // init
                 stack.getStack().add("new", newMub);
                 stack.getStack().add("list", muList);
                 stack.getStack().show("new");
                 
-                
+                // watch for events
+                Config.get("observer").watch("show-session", function(session){
+                        stack.getStack().show("list");
+                        widget.dom.querySelector("#muinitslider").value = 0;              
+                });
                 return widget;
                    
            };

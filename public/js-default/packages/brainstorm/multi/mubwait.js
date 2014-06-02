@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise", "service/avatar", "./session/mubchat", "lib/spin.min"],
@@ -17,7 +17,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                             user = Config.get("user"),
                             labels = Config.get("labels"),
                             chatUI = new Chat(),
-                            confirmUI, confirmCallBack,
+                            confirmCallBack,
                             exitListener = {"listener": null},
                             exitDest,
                             spinner = new Spinner({color:"#5F8F28", lines:10, length: 10, width: 6, radius:10, left: 269, top: 306}).spin();
@@ -80,14 +80,19 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         },
                                         setIntro : function(intro){
                                                 (intro) ? this.innerHTML = intro : this.innerHTML= " ";
+                                        },
+                                        setPresent : function(present){
+                                                var idx = this.getAttribute("data-participant_id") || 0;
+                                                (present || (user.get("_id") === participants.get(idx).id) ) ? this.setAttribute("style", "opacity: 1;") : this.setAttribute("style", "opacity: 0.4;");
                                         }
+                                        
                                 }),
                                 info: new Model(info),
                                 place : new Place({"chat": chatUI}),
                                 mubwaitevent : new Event(widget)
                         });
                         
-                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:mousedown, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-labels="bind:innerHTML, startbutton" data-model="bind: showStartButton, participants" data-mubwaitevent="listen: mousedown, press; listen:mouseup, start"></div></form><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></span></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        widget.template = '<div id="mubwait"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, waitingroomlbl"></div><div class="help-brainstorm" data-mubwaitevent="listen:mousedown, help"></div><form class="mubwait-form"><div class="mubwait-title" name="title" data-model="bind:setTitle, title" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></div><div class="mubdesc"><label data-labels="bind:innerHTML, quickstepstart"></label><p name="description" data-model="bind:setDescription, description" data-mubwaitevent="listen: keypress, checkUpdate; listen:blur, updateField"></p></div><div class="mubroster"><label data-labels="bind:innerHTML, participants">Participants</label><div class="mubleader contact"><div data-model="bind:setAvatar, initiator.id"></div><p class="contact-name" data-model="bind:innerHTML, initiator.username"></p><p class="contact-intro" data-model="bind:setIntro, initiator.intro"></p></div><ul class="participants" data-participant="foreach"><li class="contact" data-participant="bind:setPresent, present"><div data-participant="bind:setAvatar, id"></div><p class="contact-name" data-participant="bind:innerHTML, username"></p><p class="contact-intro" data-participant="bind:setIntro, intro"></p></li></ul></div><div class="start-button invisible" data-labels="bind:innerHTML, startbutton" data-model="bind: showStartButton, participants" data-mubwaitevent="listen: mousedown, press; listen:mouseup, start"></div></form><div class="exit-brainstorm" data-mubwaitevent="listen: mousedown, press; listen:mouseup, exit"></div><div class="sessionmsg invisible"><span data-info="bind:innerHTML, msg"></span></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         widget.place(document.getElementById("mubwait"));
                         
@@ -97,9 +102,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 document.getElementById("help-popup").classList.add("appear");
                          };
                         
-                        // create confirmation UI
-                        confirmUI = new Confirm(document.body,null,null, "musession-confirm");
-                     
                         widget.reset = function reset(sid){
                                 // clear previous UI (chat and main window)
                                 chatUI.clear();
@@ -107,36 +109,12 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 session.reset({});
                                 participants.reset([]);
                                 
-                                // create confirmation UI
-                                confirmCallBack = function(decision){
-                                        if (!decision){
-                                                confirmUI.hide();
-                                        }
-                                        else{
-                                                user.set("sessionInProgress", "");
-                                                user.upload();
-                                                if (session.get("initiator").id === user.get("_id")){
-                                                        widget.cancelSession();
-                                                }
-                                                else {
-                                                        widget.leaveSession();
-                                                }
-                                        }
-                                };
-                                
-                                // create listener
-                                exitListener.listener = Utils.exitListener("mubwait", widget.leave);
-                                
                                 // get session info
                                 session.sync(Config.get("db"), sid).then(function(){
-                                        // manage exit event
-                                        // step 1 init confirmation UI
-                                        if (session.get("initiator").id === user.get("_id")){
-                                                confirmUI.reset(labels.get("leaderleave"), confirmCallBack);        
-                                        }
-                                        else {
-                                                confirmUI.reset(labels.get("participantleave"), confirmCallBack);        
-                                        }
+                                        
+                                        // activate exit listener
+                                        exitListener.listener = Utils.exitListener("mubwait", widget.leave);
+                                        
                                         // reset participants store
                                         participants.reset(session.get("participants")); 
                                         
@@ -149,51 +127,129 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 });
                         };
                         
-                        // initiator or a participant decides to leave the waiting room
+                        widget.press = function(event,node){
+                                node.classList.add("press");    
+                        };
+                        
+                        widget.exit = function(event, node){
+                                var now = new Date().getTime(),
+                                      sched = session.get("scheduled") || null;
+                                node.classList.remove("pressed");
+                                if (sched && (sched - now) > 300000) $exit();
+                                else {
+                                        // init confirmation UI content
+                                        if (session.get("initiator").id === user.get("_id")){
+                                                Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
+                                        }
+                                        else {
+                                                Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
+                                        }
+                                        Confirm.show("musession-confirm");
+                                }
+                        };
+                        
+                        /*
+                         *  Function called by event listener
+                         * If it's an immediate session or a scheduled session about to begin then display confirmation popup
+                         */
+                        
                         widget.leave = function leave(target){
+                                var now = new Date().getTime();
                                 exitDest = target.getAttribute("href") || target;
-                                // href exists it is one of the nav options else probably a notify message (or future use)
-                                confirmUI.show();       
+                                
+                                // init confirmation UI content
+                                if (session.get("initiator").id === user.get("_id")){
+                                        Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
+                                }
+                                else {
+                                        Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
+                                }
+                                
+                                // href exists it is one of the nav options else probably a notify message or future use
+                                if (!session.get("scheduled") ||((session.get("scheduled") - now) < 300000)) Confirm.show("musession-confirm");
+                        };
+                        
+                        // manage exit event : init confirm callback
+                        confirmCallBack = function confirmCallback(decision){
+                                if (!decision){
+                                        Confirm.hide();
+                                }
+                                else{
+                                        user.set("sessionInProgress", "");
+                                        user.upload();
+                                        if (session.get("initiator").id === user.get("_id")){
+                                                widget.cancelSession();
+                                        }
+                                        else {
+                                                widget.leaveSession();
+                                        }
+                                }
                         };
                         
                         // participant decides to leave session
-                        widget.leaveSession = function leaveSession(){
+                        widget.leaveSession = function leaveSession() {
                                 var p = session.get("participants"), i;
-                                
-                                for (i=p.length-1; i>=0; i--){
-                                        if (p[i].id === user.get("_id")){
-                                               p.splice(i, 1);
-                                               break; 
+
+                                for ( i = p.length - 1; i >= 0; i--) {
+                                         if (p[i].id === user.get("_id")) {
+                                                p.splice(i, 1);
+                                                break;
                                         }
                                 }
+                                
                                 session.set("participants", p);
+                                
                                 // set session status to waiting as it may have been "full" before participant left
-                                session.set("status", "waiting"); 
-                                session.upload()
-                                .then(function(){
+                                session.set("status", "waiting");
+                                
+                                session.upload().then(function() {
                                         return chatUI.leave();
                                 })
-                                .then(function(){
-                                        //widget.goToScreen();
+                                .then(function() {
+                                        widget.goToScreen();
                                         session.unsync();
-                                        session.reset({});        
-                                }); 
+                                        session.reset({});
+                                });
                                 // no need to wait for upload result to leave session
-                                widget.goToScreen();             
-                        };
+                                $exit();
+                                // remove confirm UI if present
+                                Confirm.hide();
+                        }; 
+
                         
                         // initiator decides to cancel the session
-                        widget.cancelSession = function cancelSession(){
+                       widget.cancelSession = function cancelSession(){
                                 var countdown = 5000;
-                                if (!session.get("participants").length) {countdown = 2000;}
-                                widget.displayInfo("deleting", countdown).then(function(){
+                                
+                                // if there are no participants, exit and delete right away
+                                
+                                if (!session.get("participants").length) {
+                                        widget.goToScreen();
+                                        
+                                        // remove confirm UI if present
+                                        Confirm.hide(); 
+                                        
+                                        // cancel chat and delete session
+                                        chatUI.cancel();
+                                        
+                                        session.remove()
+                                        .then(function(res){
+                                                console.log("session remove result : ", res);
+                                        },
+                                        function(err){
+                                                console.log("session removal error: ", err)
+                                        });
+                                }
+                                else widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
-                                        widget.goToScreen();    
+                                        // remove confirm UI if present
+                                        Confirm.hide();
+                                        widget.goToScreen();
                                 });        
                         };
                         
                         // display info popup
-                        widget.displayInfo = function displayInfo(message, timeout){
+                       widget.displayInfo = function displayInfo(message, timeout){
                                 var timer, infoUI = document.querySelector(".sessionmsg"),
                                     promise = new Promise(),
                                     clearInfo = function(){
@@ -203,8 +259,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                             promise.fulfill();
                                     };
                                 
-                                confirmUI.hide();
-                                document.body.removeChild(document.querySelector(".confirm"));
+                                Confirm.hide();
                                 infoUI.classList.remove("invisible");
                                 timer = setInterval(function(){
                                                 if (message !== "deleting") {info.set("msg", message);}
@@ -229,13 +284,12 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         // switch screen to destination if user confirms exit
                         widget.goToScreen = function goToScreen(){
                                 var id;
+                                $exit();
+                                document.removeEventListener("mousedown", exitListener.listener, true); 
+                                
                                 // if dest is specified (e.g. notify popup)
-                                if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
-                                        confirmUI.hide();
-                                        document.body.removeChild(document.querySelector(".confirm"));
-                                        $exit();
-                                        Config.get("observer").notify("goto-screen", "#connect");
-                                        document.removeEventListener("mousedown", exitListener.listener, true);   
+                                if (exitDest && exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
+                                        Config.get("observer").notify("goto-screen", "#connect");  
                                         id = exitDest.getAttribute("data-notify_id");
                                         observer.notify("display-message", parseInt(id, 10));     
                                 }
@@ -243,16 +297,10 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 else {
                                         ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
                                                 if (exitDest === name){
-                                                        confirmUI.hide();
-                                                        document.body.removeChild(document.querySelector(".confirm"));
-                                                        $exit();
                                                         Config.get("observer").notify("goto-screen", name);
-                                                        document.removeEventListener("mousedown", exitListener.listener, true);
                                                 }
                                         });
                                 }
-                                participants.reset([]);
-                                session.reset({});
                         };
                         
                         // handle edit events
@@ -283,8 +331,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         
                         widget.start = function(event, node){
                                 var now = new Date(), chat = session.get("chat");
-                                // remove confirmUI if any
-                                document.body.removeChild(document.querySelector(".confirm"));
                                 // notify session start in chat window
                                 chatUI.conclude("start");
                                 node.classList.add("invisible");
@@ -305,11 +351,14 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         return session.upload();
                                 })
                                 .then(function(){
-                                        // unsync session & remove exit listener
-                                        document.removeEventListener("mousedown", exitListener.listener, true);
                                         session.unsync();
                                         spinner.stop();
                                         node.classList.remove("invisible");
+                                        
+                                        // remove exitListener
+                                        document.removeEventListener("mousedown", exitListener.listener, true); 
+                                        
+                                        // start session
                                         $start(session.get("_id"));        
                                 });
                         };
@@ -343,16 +392,17 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         session.watchValue("status", function(value){
                                 // if session is deleted (in case initiator decides to cancel)
                                 if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
+                                        session.unsync();
                                         widget.displayInfo(labels.get("canceledbyleader"), 2000).then(function(){
-                                                session.unsync();
-                                                $exit();
-                                                document.removeEventListener("mousedown", exitListener.listener, true);      
+                                                // remove exitListener
+                                                document.removeEventListener("mousedown", exitListener.listener, true); 
+                                                $exit();     
                                         });
                                 }
                                 if (value === "in progress" && session.get("initiator").id !== user.get("_id")){
-                                        // unsync session & remove exit listener
-                                        document.removeEventListener("mousedown", exitListener.listener, true);
                                         session.unsync();
+                                        // remove exitListener
+                                        document.removeEventListener("mousedown", exitListener.listener, true); 
                                         $start(session.get("_id"));
                                         session.reset({});
                                         participants.reset([]);
@@ -361,11 +411,11 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         
                         // watch participant changes (new participant, departure etc.)
                         session.watchValue("participants", function(array){
-                                participants.reset(array);        
+                               participants.reset(array);        
                         });
                         
                         return widget;
                 
                 };
         
-})
+});

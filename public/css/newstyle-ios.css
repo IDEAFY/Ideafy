@@ -30,6 +30,7 @@ html, body {
 body{
     /*top: 20px;*/
     height:748px;
+    top: 20px;
     -webkit-box-shadow: 0px -5px 40px #292929;
     background-image: url('../img/bg.png');
     background-attachment: fixed;
@@ -7194,6 +7195,7 @@ li.my2q{
     font-family: Helvetica;
     color: black;
     letter-spacing: 0px;
+    font-size: 11px;
 }
 
 #newmub .select-mode{

@@ -1,12 +1,12 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils", "./leaderboard", "./editprofile", "Promise"],
-        function(Widget, Map, Model, Event, Config, Store, Utils, Leaderboard, EditProfile, Promise){
+define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils", "./leaderboard", "./editprofile", "./calendar", "Promise"],
+        function(Widget, Map, Model, Event, Config, Store, Utils, Leaderboard, EditProfile, Calendar, Promise){
                 
            return function ProfileConstructor(){
 
@@ -253,12 +253,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    profileUI.switchLeaderboard = function(event, node){
                         var lb = document.getElementById("leaderboard"), pc = document.getElementById("profile-content");
                         
-                        // init Leaderboard
-                        if (!LB){
-                                LB = new Leaderboard();
-                                LB.init(lb);
+                       if (node.value == 1){
+                                stats.set("view", "leaderboard");
+                                if (LB) LB.refresh();
+                                else {
+                                        LB = new Leaderboard();
+                                        LB.init(lb);
+                                }
                         }
-                        (node.value == 1) ? stats.set("view", "leaderboard"):stats.set("view", "info");
+                        else stats.set("view", "info");
                    };
                    
                    profileUI.edit = function(event, node){
@@ -392,19 +395,22 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    };
                    
                    profileUI.cleanOldNews = function cleanOldNew(){
-                        var now = new Date(), n = user.get("news"), i, then,
+                        var now = new Date(), n = user.get("news"), l = n.length, i, then,
                             promise = new Promise();
-                        if (n.length){
-                                for (i = n.length-1; i>=0; i--){
+                        if (l){
+                                for (i = l-1; i>=0; i--){
                                         then = new Date(n[i].date[0],n[i].date[1],n[i].date[2]);
                                         if (now.getTime()-then.getTime() > 1296000000){
                                                 n.splice(i, 1);
                                         }       
                                 }
-                                user.set("news", n);
-                                user.upload().then(function(){
-                                        promise.fulfill();
-                                });
+                                if (n.length !== l) {
+                                        user.set("news", n);
+                                        user.upload().then(function(){
+                                                promise.fulfill();
+                                        });
+                                }
+                                else promise.fulfill();
                         }
                         return promise;
                    };
@@ -431,6 +437,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    };
                    
                    profileUI.init();
+                   Calendar.init();
+                   
                    return profileUI;
            };    
         });

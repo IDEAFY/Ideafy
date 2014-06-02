@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
- * Copyright (c) 2014 IDEAFY
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "Place.plugin", "service/utils", "service/confirm", "Promise", "lib/spin.min"],
@@ -23,10 +23,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                             user = Config.get("user"),
                             _cat = Config.get("cat"),
                             vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
-                            _voted = false,
-                            ConfirmUI;
-                        
-                        cdb.setTransport(transport);
+                            _voted = false;
+                       
+                       cdb.setTransport(transport);
                         // define plugins and methods
                         ui.plugins.addAll({
                                 "labels" : new Model(labels),
@@ -195,11 +194,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 
                                 ui.dom.classList.remove("invisible");
                                 _twocentWriteUI.place(_domWrite);
-                                
-                                if (!ConfirmUI){
-                                        ConfirmUI = new Confirm(ui.dom, labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
-                                        ConfirmUI.hide();
-                                }
                                 
                                 // retrieve attachment document form database
                                 cdb.unsync();
@@ -442,8 +436,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         
                         ui.confirmDelete = function(event, node){
                                 node.classList.remove("a-pressed");
-                                ConfirmUI.reset(labels.get("deleteattachment"), ui.deleteAttachment);
-                                ConfirmUI.show();
+                                Confirm.reset(labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
+                                Confirm.show();
                         };
                         
                         ui.deleteAttachmentFile = function(fileName){
@@ -495,7 +489,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         });
                                 }
                                 else{
-                                        ConfirmUI.hide();                
+                                        Confirm.hide();                
                                 }     
                         };
                         

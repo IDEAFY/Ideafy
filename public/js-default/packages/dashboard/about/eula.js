@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/config", "Bind.plugin", "CouchDBDocument", "Store"],
@@ -30,7 +30,8 @@ define(["OObject", "service/config", "Bind.plugin", "CouchDBDocument", "Store"],
                                        else {
                                                model.set("title", cdb.get("translations")[lang].title);
                                                model.set("body", cdb.get("translations")[lang].body);
-                                        }      
+                                        }
+                                        cdb.unsync();   
                                 });
                         };
                 

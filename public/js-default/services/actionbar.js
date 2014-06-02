@@ -1,9 +1,9 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
- */ 
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
+ */
 
 define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min", "service/confirm", "service/utils"],
         function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner, Confirm, Utils){
@@ -249,13 +249,14 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         scope.hide();
                                                 }
                                                 else{
-							document.getElementById("cache").classList.add("appear");
-                                                        confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
+							Confirm.reset(labels.get("deldeckwarning"), function(decision){
                                                                 var spinner = new Spinner({lines:10, length: 20, width: 8, radius:10}).spin();
                                                                 if (!decision) {
+                                                                        Confirm.hide();
                                                                         scope.hide();
                                                                 }
                                                                 else{
+                                                                        Confirm.hide();
                                                                         spinner.spin(document.getElementById("deckview"));
                                                                         document.getElementById("cache").classList.add("appear");
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
@@ -314,8 +315,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 });
                                                                         }
                                                                 }
-                                                                document.body.removeChild(document.querySelector(".confirm"));
                                                         }, "importcard-confirm");
+                                                        Confirm.show();
                                                 }
                                                 break;
                                         case "message":

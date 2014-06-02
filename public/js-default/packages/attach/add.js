@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/utils", "Promise", "lib/spin.min"],
@@ -71,19 +71,31 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         setAttachmentCat : function(uploaded){
                                                 if (!uploaded){
                                                         var custom = [], arr, i, l, key,
-                                                                res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
-                                                        if (user.get("categories")) custom = user.get("categories");
+                                                                res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>",
+                                                                node =this;
+                                                        
                                                         for (i=0, l=cats.length; i<l;i++){
-                                                                key = cats[i];
-                                                                res+="<option>"+_labels.get(key)+"</option>";
-                                                        }
-                                                        if (custom.length){
-                                                                for (i=0, l=custom.length; i<l;i++){
-                                                                        res+="<option>"+custom[i]+"</option>";
+                                                                        key = cats[i];
+                                                                        res+="<option>"+_labels.get(key)+"</option>";
+                                                        };
+                                                        
+                                                        node.innerHTML = res;
+                                                        
+                                                        user.watchValue("categories", function(){
+                                                                res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
+                                                                if (user.get("categories")) custom = user.get("categories");
+                                                                for (i=0, l=cats.length; i<l;i++){
+                                                                        key = cats[i];
+                                                                        res+="<option>"+_labels.get(key)+"</option>";
                                                                 }
-                                                        }
-                                                        res+="<option>"+_labels.get("other")+"</option>";
-                                                        this.innerHTML = res;
+                                                                if (custom.length){
+                                                                        for (i=0, l=custom.length; i<l;i++){
+                                                                                res+="<option>"+custom[i]+"</option>";
+                                                                        }
+                                                                }
+                                                                res+="<option>"+_labels.get("other")+"</option>";
+                                                                node.innerHTML = res;        
+                                                        });
                                                 }
                                         }   
                                 }),

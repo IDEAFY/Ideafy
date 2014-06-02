@@ -1,14 +1,14 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
- * Copyright (c) 2014 IDEAFY
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils", "Promise", "attach/add"],
         function(Widget, Map, Model, Event, Place, Config, Store, Spinner, Utils, Promise, AddAttachment){
                 
-                return function newIdeaConstructor(){
+                return new function newIdeaConstructor(){
                 
                         var _widget = new Widget(),
                               _addAttachmentUI = new AddAttachment(),
@@ -33,7 +33,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         _store.setTransport(_transport);
                         
                         // reset languages
-                        _resetLang();
+                        _user.watchValue("lang", function(){
+                                _resetLang();
+                        });
                        
                        _widget.plugins.addAll({
                                 "newidea" : new Model(_store, {
@@ -116,11 +118,52 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 "newideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend" data-labels="bind:innerHTML, alegend"></legend><div data-place="place:AddAttachment"></div><ul class="a-list" data-alist="foreach" style="display:none"><li data-alist="bind:setBg, category"><label class="a-type" data-alist="bind:setType, type"></label><label class="a-name" data-alist="bind:innerHTML, name"></label><div class="a-del" data-newideaevent="listen:mousedown, removeAttachment"></div></li></ul><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility" data-wbtools="bind:setReadonly, readonly"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-newidea="bind: setWarning, visibility"><div data-labels="bind: innerHTML, publicwarning"></div><div class="close-warning" data-newideaevent="listen:mousedown, closeWarning"></div></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
+                        _widget.template = '<div id="newidea-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend" data-labels="bind:innerHTML, alegend"></legend><div data-place="place:AddAttachment"></div><ul class="a-list" data-alist="foreach" style="display:none"><li data-alist="bind:setBg, category"><label class="a-type" data-alist="bind:setType, type"></label><label class="a-name" data-alist="bind:innerHTML, name"></label><div class="a-del" data-newideaevent="listen:mousedown, removeAttachment"></div></li></ul><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-newidea="bind: setWarning, visibility"><div data-labels="bind: innerHTML, publicwarning"></div><div class="close-warning" data-newideaevent="listen:mousedown, closeWarning"></div></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
-                        _widget.render();
-                        _widget.place(Map.get("newidea-popup"));
-                        
+                       _widget.reset = function(){
+                                document.getElementById("cache").classList.add("appear");
+                                
+                                _store.reset({
+                                        "title": "",
+                                        "sessionId": "",
+                                        "sessionReplay": false,
+                                        "authors": [],
+                                        "description": "",
+                                        "solution": "",
+                                        "creation_date": [],
+                                        "character": "",
+                                        "problem": "",
+                                        "lang": "en-us",
+                                        "context": "",
+                                        "techno": [],
+                                        "type": 6,
+                                        "sharedwith": [],
+                                        "modification_date": [],
+                                        "inspired_by": "",
+                                        "visibility": "private",
+                                        "votes": [],
+                                        "rating": "",
+                                        "authornames": "",
+                                        "twocents": [],
+                                        "attachments":[]
+                                });
+                                _resetLang();
+                                _error.reset({"error":""});
+                                _alist.reset([]);
+                                
+                                _widget.resetAttachment();
+                                
+                                //reset visibility slider
+                                _widget.dom.querySelector(".visibility-slider").value = 1;
+                                
+                                // hide flag list
+                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");
+                                
+                                // display popup
+                                _widget.dom.classList.add("appear");
+                                         
+                       };
+                       
                        _widget.showLang = function(event, node){
                                 event.stopPropagation();
                                 event.preventDefault();
@@ -202,7 +245,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 document.getElementById("newidea-popup").classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
                                 
-                                
                                 // reset attachment UI and delete file from server if applicable
                                 if (_addAttachmentUI.getFileName()) Utils.deleteAttachmentFile(_store.get("_id"), _addAttachmentUI.getFileName());
                                 _widget.resetAttachment();
@@ -212,39 +254,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 
                                 // reset _store and _error
                                 _store.unsync();
-                                _store.reset({
-                                        "title": "",
-                                        "sessionId": "",
-                                        "sessionReplay": false,
-                                        "authors": [],
-                                        "description": "",
-                                        "solution": "",
-                                        "creation_date": [],
-                                        "character": "",
-                                        "problem": "",
-                                        "lang": "en-us",
-                                        "context": "",
-                                        "techno": [],
-                                        "type": 6,
-                                        "sharedwith": [],
-                                        "modification_date": [],
-                                        "inspired_by": "",
-                                        "visibility": "private",
-                                        "votes": [],
-                                        "rating": "",
-                                        "authornames": "",
-                                        "twocents": [],
-                                        "attachments":[]
-                                });
-                                _resetLang();
-                                _error.reset({"error":""});
-                                _alist.reset([]);
                                 
-                                //reset visibility slider
-                                _widget.dom.querySelector(".visibility-slider").value = 1;
-                                
-                                // hide flag list
-                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");
                                       
                         };
                         
@@ -341,8 +351,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         });
                                 }
                         };
-                        
-                        _widget.resetAttachment();
                         
                         ["added", "updated", "deleted"].forEach(function(val){
                                 _alist.watch(val, function(){

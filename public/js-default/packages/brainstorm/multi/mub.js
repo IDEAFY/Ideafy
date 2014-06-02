@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDocument", "CouchDBView", "service/config", "Promise", "Store", "./mubinit", "./mubwait", "./session/mucontroller", "lib/spin.min"],
@@ -23,12 +23,15 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 widget.place(document.getElementById("ideafy-multi"));
                 
                  widget.reset = function reset(sip){ 
-                        if (!sip){
+                         if (!sip){
                                 muInit.reset();
                                 stack.getStack().show("mubinit");        
                         }
                         else if (sip.mode === "join"){
                                 widget.join(sip.id);        
+                        }
+                        else if (sip.mode === "preview"){
+                                widget.showPreview(sip.id);
                         }
                         else{
                                 widget.replayMUSession(sip.id);
@@ -41,6 +44,12 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                         stack.getStack().show("musession");       
                 };
                 
+                // displaying a session preview
+                widget.showPreview = function showPreview(id){
+                        muInit.showPreview(id);
+                        stack.getStack().show("mubinit");        
+                };
+                
                 // joining an existing session
                 
                 widget.join = function join(sid){
@@ -48,16 +57,21 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                         
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), sid).then(function(){
-                                var p = cdb.get("participants"), join = false;
-                                // if not already joined (rejoin possible)
-                                p.forEach(function(participant){
-                                        if (participant.id === user.get("_id")){
-                                                join = true;
-                                        }        
-                                });
+                                var p = cdb.get("participants").concat(), join = false;
+                                
+                                if (cdb.get("initiator").id === user.get("_id")) join = true;
+                                
+                                else p.forEach(function(part){
+                                                if (part.id === user.get("_id")){
+                                                        join = true;
+                                                        part.present = true;
+                                                        cdb.set("participants", p);
+                                                        cdb.upload();
+                                                }
+                                        });
                                 
                                 if (!join){
-                                        p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro")});
+                                        p.push({"id": user.get("_id"), "username": user.get("username"), "intro": user.get("intro"), "present": true});
                                         cdb.set("participants", p);
                                         // set session to full if there are 3 participants + leader
                                         if (p.length === 3) {cdb.set("status", "full");}
@@ -69,8 +83,9 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                                                 alert("failed to join session");
                                         }); 
                                 }
+                                
                                 else{
-                                        if (cdb.get("step") === "mustart"){
+                                        if (!cdb.get("step") || cdb.get("step") === "mustart"){
                                                 muWait.reset(sid);
                                                 stack.getStack().show("mubwait");        
                                         }
@@ -109,6 +124,9 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 else {
                         if ($sip.mode === "join"){
                                 widget.join($sip.id);        
+                        }
+                        else if ($sip.mode === "preview"){
+                                widget.showPreview($sip.id);
                         }
                         else{
                                 widget.replayMUSession($sip.id);

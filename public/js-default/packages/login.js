@@ -1,13 +1,13 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject" ,"Amy/Stack-plugin", 
-        "service/map", "Event.plugin", "service/config", "Bind.plugin", "Store", "lib/spin.min", "Promise", "CouchDBDocument", "service/confirm"],
-        function(Widget, Stack, Map, Event, Config, Model, Store, Spinner, Promise, CouchDBDocument, Confirm){
+        "service/map", "Event.plugin", "service/config", "Bind.plugin", "Store", "lib/spin.min", "Promise", "CouchDBDocument"],
+        function(Widget, Stack, Map, Event, Config, Model, Store, Spinner, Promise, CouchDBDocument){
                 return function LoginConstructor($init, $reload, $local){
                 //declaration
                         var _login = new Widget(),
@@ -32,13 +32,14 @@ define(["OObject" ,"Amy/Stack-plugin",
                              spinner,
                              loginSpinner = new Spinner({color:"#657B99", lines:10, length: 10, width: 8, radius:15, top: 270}).spin(),
                              reload = false,  // boolean to differentiate between initial start and usbsequent logout/login
-                             ConfirmUI,
-                             _EULA;
+                             _EULA = new Store({"eula":""});
                 
                 //setup && UI DEFINITIONS               
                          _login.plugins.addAll({
                                 "loginstack" : _stack
                         });
+                        
+                        _login.template = '<div id="login"><div class="squirrel"></div><div id="login-stack" data-loginstack="destination"></div></div>';
                         
                         
                         // loading UI
@@ -48,20 +49,21 @@ define(["OObject" ,"Amy/Stack-plugin",
                         
                         // maintenance UI
                         _serverdown.plugins.add("label", new Model(_labels));
-                        _serverdown.template = '<div id="serverdown"><p data-label="bind: innerHTML, maintenancemessage"></p><div id="loadingspin"></div></div>';
+                        _serverdown.template = '<div id="serverdown"><p data-label="bind: innerHTML, maintenancemessage"></p></div>';
                         
                         // no connection UI
                         _internetdown.plugins.add("label", new Model(_labels));
-                        _internetdown.template = '<div id="nointernt"><p data-label="bind: innerHTML, nointernet"></p><div id="loadingspin"></div></div>';
+                        _internetdown.template = '<div id="nointernt"><p data-label="bind: innerHTML, nointernet"></p></div>';
                         
                         // signup form
                         _signupForm.plugins.addAll({
                                 "label": new Model(_labels),
                                 "loginmodel" : new Model(_store),
+                                "eula" : new Model(_EULA),
                                 "signupevent" : new Event(_signupForm)
                         });
                         
-                        _signupForm.template = '<form id="signup-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: input, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: input, resetError"><input name="confirm-password" data-loginmodel="bind:value,confirm-password" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: input, resetError"><input name="firstname" data-loginmodel="bind:value,firstname" type="text" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: input, resetError"><input name="lastname" data-loginmodel="bind:value,lastname" type="text" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:input, resetError; listen:keypress, entersignup"></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: mousedown, press; listen: mouseup, release; listen:mouseup, signup"></label></p><p><label class="login-button pressed-btn" name="#login-screen" data-signupevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form>';
+                        _signupForm.template = '<div><form id="signup-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: input, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: input, resetError"><input name="confirm-password" data-loginmodel="bind:value,confirm-password" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: input, resetError"><input name="firstname" data-loginmodel="bind:value,firstname" type="text" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: input, resetError"><input name="lastname" data-loginmodel="bind:value,lastname" type="text" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:input, resetError; listen:keypress, entersignup"></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: mousedown, press; listen: mouseup, release; listen:mouseup, signup"></label></p><p><label class="signup-button pressed-btn" name="#login-screen" data-signupevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form><div id="EULA" class="invisible"><div class = "confirm EULA"><div class="help-doctor"></div><p class="confirm-question" data-eula="bind:innerHTML,eula"></p><div class="option left" data-signupevent="listen:mousedown, press; listen:mouseup, acceptEULA" data-label="bind: innerHTML, accept"></div><div class="option right" data-signupevent="listen:mousedown, press; listen:mouseup, rejectEULA" data-label="bind:innerHTML, reject"></div></div></div><div>';
                         
                         _signupForm.press = function(event, node){
                                 node.focus();
@@ -102,29 +104,39 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 _transport.request("GetEULA", {}, function(result){
                                         var _eula = JSON.parse(result),
                                               lang = _labels.get("language"), 
-                                              translation;
+                                              translation, res;
                                         if (_eula.translations) translation = _eula.translations[lang];
                                         if (translation){
-                                                _EULA = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
+                                                res = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
                                         }
-                                        else _EULA = "<h4>" + _eula.title + "</h4></div>" + _eula.body + "</div>";
+                                        else res = "<h4>" + _eula.title + "</h4></div>" + _eula.body + "</div>";
+                                       _EULA.set("eula", res);
                                         
                                         _labels.watchValue("language", function(val){
+                                                res = "";
                                                 translation = _eula.translations[val];
                                                 if (translation){
-                                                _EULA = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
+                                                res = "<h4>" + translation.title + "</h4></div>" + translation.body + "</div>";
                                                 }
-                                                else _EULA = "<h4>" + _eula.title + "</h4></div>" + _eula.body + "</div>";        
+                                                else res = "<h4>" + _eula.title + "</h4></div>" + _eula.body + "</div>";
+                                                _EULA.set("eula", res);        
                                         });
                                                         
                                 });
                         };
                         
                         _signupForm.showEULA = function(event, node){
-                                if (!ConfirmUI){
-                                        ConfirmUI = new Confirm(_signupForm.dom, _EULA, _signupForm.completeSignup, "EULA");
-                                }
-                               ConfirmUI.show();   
+                               _signupForm.dom.querySelector("#EULA").classList.remove("invisible");  
+                        };
+                        
+                        _signupForm.acceptEULA = function(event, node){
+                                node.classList.remove("pressed");
+                                _signupForm.completeSignup(true);        
+                        };
+                        
+                        _signupForm.rejectEULA = function(event, node){
+                                node.classList.remove("pressed");
+                                _signupForm.completeSignup(false);        
                         };
                         
                         _signupForm.completeSignup = function(accept){
@@ -136,7 +148,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                       user = new CouchDBDocument();
                                 
                                 if (accept){
-                                        ConfirmUI.hide();
+                                        _signupForm.dom.querySelector("#EULA").classList.add("invisible");  
                                         loginSpinner.spin(_signupForm.dom);
                                                         _transport.request("Signup", {name : userid, password : password, fn : fn, ln: ln, lang: Config.get("lang")}, function(result) {
                                                                 if (result.signup === "ok") {
@@ -201,7 +213,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                         }, this);
                                 }
                                 else{
-                                        ConfirmUI.hide();
+                                        _signupForm.dom.querySelector("#EULA").classList.add("invisible");  
                                         _store.set("error", _labels.get("EULArejected"));
                                 }      
                         };
@@ -262,7 +274,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "loginevent" : new Event(_loginForm)
                         });
                         
-                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:input, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: input, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:mousedown, press; listen: mouseup, release; listen:mouseup, login"></label></p><p class="login-error"><label data-loginmodel="bind:innerHTML,error" class="login-error"></label><label class="forgotpwd" data-loginmodel="bind:forgotpwd,reset" data-label="bind:innerHTML, forgotpwd"  data-loginevent="listen:mousedown, press; listen:mouseup, release; listen:mouseup, resetPassword">Forgot your password?</label></p><p><label id="signup-button" class="pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showSignup"></label></p></form>';
+                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" autofocus="autofocus" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:input, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: input, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:mousedown, press; listen: mouseup, release; listen:mouseup, login"></label></p><p class="login-error"><label data-loginmodel="bind:innerHTML,error" class="login-error"></label><label class="forgotpwd" data-loginmodel="bind:forgotpwd,reset" data-label="bind:innerHTML, forgotpwd"  data-loginevent="listen:mousedown, press; listen:mouseup, release; listen:mouseup, resetPassword">Forgot your password?</label></p><p><label class="signup-button pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showSignup"></label></p></form>';
                         
                         _loginForm.press = function(event, node){
                                 node.classList.add("pressed");        
@@ -353,7 +365,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _stack.getStack().add("#maintenance-screen", _serverdown);
                         _stack.getStack().add("#nointernet", _internetdown);
                         
-                        _login.alive(Map.get("login"));
+                        _login.place(Map.get("login"));
                         
                         // Initialization
                         _login.init = function init(){

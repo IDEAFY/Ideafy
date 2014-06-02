@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "Store", "CouchDBDocument", "service/cardpopup", "../../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min", "./mubchat"],
@@ -435,7 +435,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 $session.set("scenario", [cdbScen]);
                                                 $session.upload()
                                                 .then(function(success){
-                                                        console.log("scenario updated in CouchDB");
                                                         return true;
                                                 }, function(err){
                                                         console.log("failed to update scenario", err);
@@ -455,7 +454,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         "scenario": _scenario.toJSON()
                                 };
                                 _transport.request("UpdateSessionScore", json, function(result){
-                                        console.log(result);
                                         if (result.res === "ok"){
                                                 $session.unsync();
                                                 $session.sync(_db, $session.get("_id"))
@@ -599,7 +597,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                         $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
                                                         $session.upload()
                                                         .then(function(response){
-                                                                console.log("success : ", response);
+                                                                return true;
                                                         }, function(response){
                                                                 console.log("failure : ", response);
                                                         });

@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply", "lib/spin.min"],
@@ -20,7 +20,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                     observer = Config.get("observer"),
                     transport = Config.get("transport");
                 
-                msgDetailUI.template = '<div id="msgdetail"><div class="header blue-dark"><span class="subjectlbl" data-label="bind:innerHTML, subjectlbl"></span><span data-message="bind:setObject, type"></span></div><div class="msgdetailarea"><div class = "detail-contents"><div class="detail-header"><div class="msgoptions" data-message="bind: showOptions, type"><div class="defaultmsgoption"><div name="reply" class="msgreply" data-messageevent="listen:mousedown, press; listen:mouseup, action"></div><div name="more" class="more" data-messageevent="listen:mousedown, press; listen:mouseup, action"></div></div><div class="msgoptionlist invisible"><div name="replyall" class="replyall sort-button" data-label="bind:innerHTML, replyalllbl" data-messageevent="listen:mousedown, press; listen:mouseup, action"></div><div name="forward" class="forward sort-button" data-label="bind:innerHTML, forwardlbl" data-messageevent="listen:mousedown, press; listen:mouseup, action"></div><div name="deletemsg" class="deletemsg sort-button" data-label="bind:innerHTML, deletelbl" data-messageevent="listen:mousedown, press; listen:mouseup, action"></div></div></div><div data-message="bind:setAvatar, author"></div><p data-message="bind:innerHTML, username"></p><p class="toList"><span data-label="bind: innerHTML, tolbl"></span><span data-message="bind: setToList, toList"></span></p><p class="toList invisible" data-message="bind:showCcList, ccList"><span data-label="bind: innerHTML, cclbl"></span><span data-message="bind: innerHTML, ccList"></span></p><p class="msgdate"><span class="date" data-message="bind: date, date"></span></p></div><div class="detail-body"><p data-message="bind:setBody, type"></p><p data-message="bind:setSignature, type"></p><p class="invisible" data-message="bind:setJoinMsg, sessionStatus"></p><div class="showdoc" data-message="bind: showDocBtn, type" data-messageevent="listen:mousedown, press; listen:mouseup, showDoc"></div><div class="gotosession invisible" data-message="bind: showSessionBtn, sessionStatus" data-messageevent="listen:mousedown, press; listen:mouseup, gotoSession"></div><div class="goto2q invisible" data-message = "bind: showTwoQ, type" data-messageevent="listen: mousedown, press; listen: mouseup, showTwoQ"></div><div class="acceptrejectCXR invisible" data-message="bind:showCXRbtn, type"><div class="acceptCXR" data-label="bind:innerHTML, accept" data-messageevent="listen:mousedown, press; listen:mouseup, acceptCXR"></div><div class="rejectCXR" data-label="bind:innerHTML, reject" data-messageevent="listen:mousedown, press; listen:mouseup, rejectCXR"></div></div></div></div><div id="msgreply" class="invisible"></div><div id="CXRconfirm" class="invisible" data-cxr="bind:setVisibility, response"><span class="CXRconfirmed" data-cxr="bind:setResponseMessage, response"></span></div></div></div>';
+                msgDetailUI.template = '<div id="msgdetail"><div class="header blue-dark"><span class="subjectlbl" data-label="bind:innerHTML, subjectlbl"></span><span data-message="bind:setObject, type"></span></div><div class="msgdetailarea"><div class = "detail-contents"><div class="detail-header"><div class="msgoptions" data-message="bind: showOptions, type"><div class="defaultmsgoption"><div name="reply" class="msgreply" data-messageevent="listen:mousedown, press; listen:mouseup, action"></div><div name="more" class="more" data-messageevent="listen:mousedown, press; listen:mouseup, action"></div></div><div class="msgoptionlist invisible"><div name="replyall" class="replyall sort-button" data-label="bind:innerHTML, replyalllbl" data-messageevent="listen:mousedown, press; listen:mouseup, action"></div><div name="forward" class="forward sort-button" data-label="bind:innerHTML, forwardlbl" data-messageevent="listen:mousedown, press; listen:mouseup, action"></div><div name="deletemsg" class="deletemsg sort-button" data-label="bind:innerHTML, deletelbl" data-messageevent="listen:mousedown, press; listen:mouseup, action"></div></div></div><div data-message="bind:setAvatar, author"></div><p data-message="bind:innerHTML, username"></p><p class="toList"><span data-label="bind: innerHTML, tolbl"></span><span data-message="bind: setToList, toList"></span></p><p class="toList invisible" data-message="bind:showCcList, ccList"><span data-label="bind: innerHTML, cclbl"></span><span data-message="bind: innerHTML, ccList"></span></p><p class="msgdate"><span class="date" data-message="bind: date, date"></span></p></div><div class="detail-body"><p data-message="bind:setBody, type"></p><p data-message="bind:setSignature, type"></p><div class="showdoc" data-message="bind: showDocBtn, type" data-messageevent="listen:mousedown, press; listen:mouseup, showDoc"></div><div class="gotosession invisible" data-message="bind: showSessionBtn, sessionStatus" data-messageevent="listen:mousedown, press; listen:mouseup, gotoSession"></div><div class="goto2q invisible" data-message = "bind: showTwoQ, type" data-messageevent="listen: mousedown, press; listen: mouseup, showTwoQ"></div><div class="acceptrejectCXR invisible" data-message="bind:showCXRbtn, type"><div class="acceptCXR" data-label="bind:innerHTML, accept" data-messageevent="listen:mousedown, press; listen:mouseup, acceptCXR"></div><div class="rejectCXR" data-label="bind:innerHTML, reject" data-messageevent="listen:mousedown, press; listen:mouseup, rejectCXR"></div></div></div></div><div id="msgreply" class="invisible"></div><div id="CXRconfirm" class="invisible" data-cxr="bind:setVisibility, response"><span class="CXRconfirmed" data-cxr="bind:setResponseMessage, response"></span></div></div></div>';
                 
                 msgDetailUI.plugins.addAll({
                         "label": new Model(labels),
@@ -66,6 +66,24 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 case "REF":
                                                         this.innerHTML = message.get("username") + labels.get("joinedideafy");
                                                         break;
+                                                case "MUD-":
+                                                        this.innerHTML = labels.get("muinaday");
+                                                        break;
+                                                case "MUQ-":
+                                                        this.innerHTML = labels.get("mufifteen");
+                                                        break;
+                                                case "MUP+":
+                                                        this.innerHTML = labels.get("newpart");
+                                                        break;
+                                                case "MUP-":
+                                                        this.innerHTML = labels.get("partleft");
+                                                        break;
+                                                case "SCANCEL":
+                                                        this.innerHTML = labels.get("scancel");
+                                                        break;
+                                                case "SSTART":
+                                                        this.innerHTML = labels.get("sstart");
+                                                        break;
                                                 default :
                                                         this.innerHTML = message.get("object");
                                         }        
@@ -85,6 +103,24 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 case "REF":
                                                         this.innerHTML = labels.get("referral");
                                                         break;
+                                                case "MUD-":
+                                                        this.innerHTML = labels.get("snamed") + '<b> "' + message.get("docTitle") + '"</b> ' + labels.get("stomorrow")  + new Date(message.get("scheduled")).toLocaleTimeString() + ".<br/><br/>";
+                                                        break;
+                                                case "MUQ-":
+                                                        this.innerHTML = labels.get("snamed") + '<b> "'  + message.get("docTitle") + '"</b> ' + labels.get("sfifteen") + ".<br/><br/>";
+                                                        break;
+                                                 case "MUP+":
+                                                        this.innerHTML = message.get("username") + labels.get("justreg") + labels.get("snamed").toLowercase() + ' <b> "'  + message.get("docTitle") + '"</b>.';
+                                                        break;
+                                                case "MUP-":
+                                                        this.innerHTML = message.get("username") + labels.get("unreg") + labels.get("snamed").toLowercase() + ' <b> "'  + message.get("docTitle") + '"</b>.'; 
+                                                        break;
+                                                case "SCANCEL":
+                                                        this.innerHTML = labels.get("snamed").toLowerCase() +  '<b> "' + message.get("docTitle") + '"</b> ' + labels.get("cclbyorg") + ".";
+                                                        break;
+                                                case "SSTART":
+                                                        this.innerHTML = labels.get("snamed").toLowerCase() +  '<b> "' + message.get("docTitle") + '"</b> ' + labels.get("nowopen") + ".";
+                                                        break;
                                                 default :
                                                         this.innerHTML = message.get("body").replace(/\n/g, "<br>");
                                                         break;
@@ -98,7 +134,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         else {this.classList.add("invisible");}
                                 },
                                 showOptions : function(type){
-                                        ((type.search("CX")>-1) || (type === "2Q+") || (type === "INV") || (type === "REF")) ? this.classList.add("invisible") : this.classList.remove("invisible");        
+                                        ((type.search("CX")>-1) || (type === "2Q+") || (type === "INV") || (type === "REF") || (type.search("MU") > -1)) ? this.classList.add("invisible") : this.classList.remove("invisible");        
                                 },
                                 setToList : function(toList){
                                         (toList) ? this.innerHTML = toList : this.innerHTML = labels.get("melbl");        
@@ -126,22 +162,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 showSessionBtn : function(sessionStatus){
-                                        (sessionStatus && sessionStatus === "waiting" && !message.get("joined"))?this.classList.remove("invisible"):this.classList.add("invisible");   
-                                },
-                                setJoinMsg : function(sessionStatus){
-                                        if (!sessionStatus) {this.classList.add("invisible");}
-                                        else {
-                                                this.classList.remove("invisible");
-                                                if (sessionStatus === "unavailable"){
-                                                        this.innerHTML = labels.get("nolongerjoin");
-                                                }
-                                                else if (sessionStatus === "joined"){
-                                                        this.innerHTML = labels.get("joinedsession");
-                                                }
-                                                else if (sessionStatus === "waiting"){
-                                                        this.innerHTML = labels.get("clicktojoin");
-                                                }
-                                        }
+                                        (sessionStatus &&(sessionStatus === "waiting" || sessionStatus === "scheduled")) ? this.classList.remove("invisible") : this.classList.add("invisible");   
                                 },
                                 showTwoQ : function(type){
                                         (type === "2Q+" || type === "2C+") ? this.classList.remove("invisible"):this.classList.add("invisible");        
@@ -341,8 +362,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         var cdb = new CouchDBDocument();
                         cdb.setTransport(transport);
                         cdb.sync(Config.get("db"), sid).then(function(){
-                                if (cdb.get("status") === "waiting"){
-                                        message.set("sessionStatus", "waiting");
+                                if (cdb.get("status")){
+                                        message.set("sessionStatus", cdb.get("status"));
                                 }
                                 else{message.set("sessionStatus", "unavailable");}
                                 cdb.unsync();
@@ -350,20 +371,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 };
                 
                 msgDetailUI.gotoSession = function(event, node){
-                        var arr = user.get("notifications");
                         node.classList.remove("pushed");
-                        message.set("joined", true);
-                        Config.get("observer").notify("join-musession", message.get("docId"));
-                        
-                        // can only join a session once
-                        for (i=0, l=arr.length; i<l; i++){
-                                if (arr[i].type === "INV" && arr[i].docId === message.get("docId")){
-                                        arr[i].joined = true;
-                                        break;
-                                }
-                        }
-                        user.set("notifications", arr);
-                        user.upload();               
+                        Config.get("observer").notify("show-mupreview", message.get("docId"));               
                 };
                 
                 //init
@@ -373,18 +382,11 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         message.reset(msg);
                         msgReplyUI.reset(msg, "reply");
                         // check if message type is a session invite and if so check session status
-                        if (message.get("type") === "INV"){
-                                if (message.get("joined")){
-                                        message.set("joined", true);
-                                }
-                                else{
-                                        message.set("sessionStatus", null);
-                                        msgDetailUI.checkSessionStatus(message.get("docId"));
-                                }
+                        if (message.get("type") === "INV" || (message.get("type").search("MU") > -1)){
+                                message.set("sessionStatus", null);
+                                msgDetailUI.checkSessionStatus(message.get("docId"));
                         }
                 };
-                
-                CSPI = cxrSpinner;
                 
                 return msgDetailUI;
             };      

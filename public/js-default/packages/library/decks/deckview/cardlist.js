@@ -1,8 +1,8 @@
 /**
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "CouchDBDocument", "Store", "service/cardpopup", "Promise"],
@@ -87,7 +87,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                 "cardlistevent": new Event(cardList)
                         });
                         
-                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:mousedown, setStart; listen:dblclick, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:mousedown, push; listen:mouseup, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:mousedown, push; listen:mouseup, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:mousedown, highlight; listen:mouseup, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div><div class="cardbtnbar invisible"><div class="editcardbtn" data-cardlistevent="listen: mousedown, press; listen:mouseup, editCard"></div><div class="deletecardbtn " data-cardlistevent="listen: mousedown, press; listen:mouseup, deleteCard"></div></div></li></ul></div></div>';
+                        cardList.template = '<div class="cardlist"><div id="cardlist-popup" class="invisible"></div><div class="cardpage" data-cardlistevent="listen:dblclick, changePage"><div class="pagenb"><div class="leftcaret" data-pagination="bind: setLeft, currentPage" data-cardlistevent="listen:mousedown, push; listen:mouseup, previousPage"></div><span data-pagination="bind: setPage, currentPage"></span><div class = "rightcaret" data-pagination="bind: setRight, currentPage" data-cardlistevent="listen:mousedown, push; listen:mouseup, nextPage"></div></div><ul data-cards="foreach"><li class="card" data-cardlistevent="listen:mousedown, highlight; listen:mouseup, zoom"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div><div class="cardbtnbar invisible"><div class="editcardbtn" data-cardlistevent="listen: mousedown, press; listen:mouseup, editCard"></div><div class="deletecardbtn " data-cardlistevent="listen: mousedown, press; listen:mouseup, deleteCard"></div></div></li></ul></div></div>';
                         
                         cardList.reset = function reset(deck){
                                 //reset highlight

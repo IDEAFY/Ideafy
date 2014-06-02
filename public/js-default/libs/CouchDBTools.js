@@ -236,8 +236,9 @@ function CouchDBBase(Store, Tools, Promise) {
 		 * This function will be called when the Store is unsynched
 		 */
 		this.onUnsync = function onUnsync() {
-			this.stopListening && this.stopListening();
-			delete this.stopListening;
+			/*this.stopListening && this.stopListening();
+                        delete this.stopListening;*/
+                        if (this.stopListening) delete this.stopListening;
 		};
 
 		this.unsync = function unsync() {

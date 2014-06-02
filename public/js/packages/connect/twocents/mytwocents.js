@@ -89,7 +89,7 @@ define(["Olives/OObject", "service/map", "service/config", "Olives/Model-plugin"
                         // ask a twoquestion
                         myTwocentUI.plus = function(){
                                 Map.get("new2q-popup").classList.add("appear");
-                                Map.get("cache").classList.add("appear");        
+                                document.getElementById("cache").classList.add("appear");        
                         };
                         
                         // manage button events

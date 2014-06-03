@@ -90,7 +90,8 @@ var mount = st({path: __dirname + '/public/', index: true, index: 'index.html'})
  *  APPLICATION SERVER
  ******************************/
 
-var transport = new Transport(olives.handlers),
+var handlers = new Store(),
+      transport = new Transport(handlers),
       app = http.createServer(connect()
                 //.use(connect.logger())
                 .use(connect.compress())
@@ -132,10 +133,10 @@ http.globalAgent.maxSockets = Infinity;
         
 // register transport
 //olives.registerSocketIO(io);
-socketIOTransport(io, olives.handlers);    
+socketIOTransport(io, handlers);    
 
 CouchDBTools.configuration.sessionStore = sessionStore;
- olives.handlers.set("CouchDB", CouchDBTools.handler);
+handlers.set("CouchDB", CouchDBTools.handlers);
         
 /*
   *  Application utility functions

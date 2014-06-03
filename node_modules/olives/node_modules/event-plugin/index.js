@@ -7,8 +7,6 @@
 */
 "use strict";
 
-var matchesSelector = require("matches-selector");
-
 /**
 * @class
 * @requires Utils
@@ -26,6 +24,12 @@ module.exports = function EventPluginConstructor($parent, $isMobile) {
      * @private
      */
     var _parent = null,
+
+    /**
+     * Load the tool at runtime so that it doesn't throw an error
+     * when not loaded in a browser
+     */
+    matchesSelector = require("matches-selector"),
 
     /**
      * The mapping object.

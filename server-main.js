@@ -20,10 +20,6 @@ var http = require("http"),
     RedisStore = require("connect-redis")(connect), 
     nodemailer = require("nodemailer"), 
     st = require("st"),
-    sessionStore = new RedisStore({
-        hostname : "127.0.0.1",
-        port : "6379"
-    }),
     srvutils = require("./srvutils.js"),
     apputils = require("./apputils.js"),
     comutils = require("./comutils.js"),
@@ -63,8 +59,11 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
  *  APPLICATION CONFIGURATION
  ****************************************/
 
-var _db, _dbIP, _dbPort, cdbAdminCredentials, supportEmail, currentVersion, contentPath, badges;
-     
+var sessionStore, _db, _dbIP, _dbPort, cdbAdminCredentials, supportEmail, currentVersion, contentPath, badges;
+sessionStore = new RedisStore({
+        hostname : "127.0.0.1",
+        port : "6379"
+    }),
 // Name and IP address of the application database
 _db = "ideafy";
 _dbIP = "127.0.0.1";
@@ -81,7 +80,6 @@ currentVersion = "1.2.3";
 contentPath = __dirname;
 // Rules to grant special badges and achievements
 badges;
-
 
 // Mount the static directory to be cached
 var mount = st({path: __dirname + '/public/', index: true, index: 'index.html'});

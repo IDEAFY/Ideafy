@@ -135,10 +135,8 @@ http.globalAgent.maxSockets = Infinity;
 //olives.registerSocketIO(io);
 socketIOTransport(io, handlers);    
 
-console.log(CouchDBTools);
-
 CouchDBTools.configuration.sessionStore = sessionStore;
-handlers.set("CouchDB", CouchDBTools.handlers);
+handlers.set("CouchDB", CouchDBTools.handler);
         
 /*
   *  Application utility functions

@@ -222,7 +222,9 @@ io.sockets.on("connection", function(socket){
     socket.on("disconnect", function(){
             appUtils.setOffline(socket);       
      });  
-});       
+});
+
+console.log(handlers.toJSON(), handlers.get("CouchDB"));
 
 process.on('uncaughtException', function(error) {
         console.log(error.stack);

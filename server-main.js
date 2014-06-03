@@ -135,6 +135,8 @@ http.globalAgent.maxSockets = Infinity;
 //olives.registerSocketIO(io);
 socketIOTransport(io, handlers);    
 
+console.log(CouchDBTools);
+
 CouchDBTools.configuration.sessionStore = sessionStore;
 handlers.set("CouchDB", CouchDBTools.handlers);
         
@@ -223,8 +225,6 @@ io.sockets.on("connection", function(socket){
             appUtils.setOffline(socket);       
      });  
 });
-
-console.log(handlers.toJSON(), handlers.get("CouchDB"));
 
 process.on('uncaughtException', function(error) {
         console.log(error.stack);

@@ -34,6 +34,7 @@ var http = require("http"),
 var Store = emily.Store,
       Promise = emily.Promise,
       Transport = emily.Transport,
+      socketIOTransport = olives.SocketIOTransport.Server,
       CouchDBDocument = CouchDBTools.CouchDBDocument,
       CouchDBView = CouchDBTools.CouchDBView,
       CouchDBUser = CouchDBTools.CouchDBUser,
@@ -130,8 +131,8 @@ io.set("heartbeat interval", 25);
 http.globalAgent.maxSockets = Infinity;
         
 // register transport
-olives.registerSocketIO(io);
-        
+//olives.registerSocketIO(io);
+socketIOTransport(io, olives.handlers);    
 
 CouchDBTools.configuration.sessionStore = sessionStore;
  olives.handlers.set("CouchDB", CouchDBTools.handler);

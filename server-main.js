@@ -158,56 +158,56 @@ var updateUserIP = CDBAdmin.updateUserIP,
                        
 // utility handlers (no couchdb)
 srvUtils.setVar(contentPath, currentVersion);
-olives.handlers.set("CheckVersion", srvUtils.checkVersion);
-olives.handlers.set("GetFile", srvUtils.getFile);
-olives.handlers.set("Lang", srvUtils.getLabels);
-olives.handlers.set("GetLanguages", srvUtils.getLanguages);
-olives.handlers.set("cleanUpSession", srvUtils.cleanUpSession);
-olives.handlers.set("DeleteAttachment", srvUtils.deleteAttachment);
+handlers.set("CheckVersion", srvUtils.checkVersion);
+handlers.set("GetFile", srvUtils.getFile);
+handlers.set("Lang", srvUtils.getLabels);
+handlers.set("GetLanguages", srvUtils.getLanguages);
+handlers.set("cleanUpSession", srvUtils.cleanUpSession);
+handlers.set("DeleteAttachment", srvUtils.deleteAttachment);
         
 // login utilities
 loginUtils.setConstructors(CouchDBDocument, CouchDBUser, Promise);
 loginUtils.setFunctions(sendSignupEmail, checkInvited, CDBAdmin, comUtils.sendMail);
 loginUtils.setVar(cookie, sessionStore, transport, _db, cdbAdminCredentials, supportEmail);
         
-olives.handlers.set("Signup", loginUtils.signup);
-olives.handlers.set("CheckLogin", loginUtils.checkLogin);
-olives.handlers.set("Login", loginUtils.login);
-olives.handlers.set("ChangePWD", loginUtils.changePassword);
-olives.handlers.set("ResetPWD", loginUtils.resetPassword);
+handlers.set("Signup", loginUtils.signup);
+handlers.set("CheckLogin", loginUtils.checkLogin);
+handlers.set("Login", loginUtils.login);
+handlers.set("ChangePWD", loginUtils.changePassword);
+handlers.set("ResetPWD", loginUtils.resetPassword);
         
 // communication utilities (mail and application notifications)
 comUtils.setVar(_db, smtpTransport, supportEmail, mailSender, transport, io);
 comUtils.setConstructors(CouchDBDocument, CouchDBView, Store);
 comUtils.setFunctions(CDBAdmin, checkInvited, addInvited);
-olives.handlers.set("SendMail", comUtils.sendMail);
-olives.handlers.set("Support", comUtils.support);
-olives.handlers.set("Notify", comUtils.notify);
-olives.handlers.set("Invite", comUtils.invite);
-olives.handlers.set("Presence", comUtils.sendPresenceUpdates);
+handlers.set("SendMail", comUtils.sendMail);
+handlers.set("Support", comUtils.support);
+handlers.set("Notify", comUtils.notify);
+handlers.set("Invite", comUtils.invite);
+handlers.set("Presence", comUtils.sendPresenceUpdates);
         
 // application utilities and handlers
 appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
 appUtils.setVar(transport, _db, _dbIP, _dbPort, cdbAdminCredentials, badges, contentPath);
 appUtils.setCDBAdmin(CDBAdmin);
-olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
-olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
-olives.handlers.set("ShareDeck", appUtils.shareDeck);
-olives.handlers.set("GetEULA", appUtils.getEULA);
-olives.handlers.set("GetFavList", appUtils.getFavList);
-olives.handlers.set("GetAvatar", appUtils.getAvatar);
-olives.handlers.set("GetUserDetails", appUtils.getUserDetails);
-olives.handlers.set("GetGrade", appUtils.getGrade);
-olives.handlers.set("GetAchievements", appUtils.getAchievements);
-olives.handlers.set("GetUserNames", appUtils.getUserNames);
-olives.handlers.set("Welcome", appUtils.welcome);
-olives.handlers.set("CheckRecipientList", appUtils.checkRecipientList);
-olives.handlers.set("Vote", appUtils.vote);
-olives.handlers.set("RemoveFromLibrary", appUtils.removeFromLibrary);
-olives.handlers.set("WriteTwocent", appUtils.writeTwocent);
-olives.handlers.set("SendTwocent", appUtils.sendTwocent);
-olives.handlers.set("UpdateUIP", appUtils.updateUIP);
-olives.handlers.set("UpdateSessionScore", appUtils.updateSessionScore);
+handlers.set("DeleteDeck", appUtils.deleteDeck);
+handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
+handlers.set("ShareDeck", appUtils.shareDeck);
+handlers.set("GetEULA", appUtils.getEULA);
+handlers.set("GetFavList", appUtils.getFavList);
+handlers.set("GetAvatar", appUtils.getAvatar);
+handlers.set("GetUserDetails", appUtils.getUserDetails);
+handlers.set("GetGrade", appUtils.getGrade);
+handlers.set("GetAchievements", appUtils.getAchievements);
+handlers.set("GetUserNames", appUtils.getUserNames);
+handlers.set("Welcome", appUtils.welcome);
+handlers.set("CheckRecipientList", appUtils.checkRecipientList);
+handlers.set("Vote", appUtils.vote);
+handlers.set("RemoveFromLibrary", appUtils.removeFromLibrary);
+handlers.set("WriteTwocent", appUtils.writeTwocent);
+handlers.set("SendTwocent", appUtils.sendTwocent);
+handlers.set("UpdateUIP", appUtils.updateUIP);
+handlers.set("UpdateSessionScore", appUtils.updateSessionScore);
         
 // scheduled tasks
 taskUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);

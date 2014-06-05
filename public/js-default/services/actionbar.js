@@ -11,15 +11,15 @@ var olives = require("../libs/olives"),
       Widget = olives.OObject,
       Model = olives(["Bind.plugin"]),
       Event = olives(["Event.plugin"]),
-      Config = require("../services/config"),
+      Config = require("./config"),
       Store = emily.Store,
       CouchDBView = CouchDBTools.CouchDBView,
       CouchDBDocument = CouchDBTools.CouchDBDocument,
       Promise = emily.Promise,
-      New2C = require("../services/new2c"),
+      New2C = require("./new2c"),
       Spinner = require("../libs/spin.min"),
-      Confirm = require("../services/confirm"),
-      Utils = require("../services/utils");
+      Confirm = require("./confirm"),
+      Utils = require("./utils");
 
 var ActionBarConstructor = function($type, $parent, $data){
 

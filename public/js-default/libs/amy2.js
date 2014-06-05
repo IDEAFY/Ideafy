@@ -6,14 +6,31 @@
  */
 var olives = require("./olives"),
       emily = require("./emily"),
-       DomUtils = olives.DomUtils,
-       Tools = emily.tools,
+       Tools = emily.Tools,
        Amy = {};
        
-Amy.DomUtils = function(DomUtils, Tools){
+Amy.DomUtils = function(Tools){
         return {
                 hasQuerySelector : function(parent, node, selector) {
-                        return Tools.toArray(Utils.getNodes(parent, selector)).indexOf(node) > -1;
+                        var getNodes = function getNodes(parent, selector) {
+                                var isAcceptedType = function(type){
+                                        if (type instanceof HTMLElement || type instanceof SVGElement) {
+                                                return true;
+                                        } else {
+                                                return false;
+                                        }
+                                };
+                                if isAcceptedType(parent)) {
+                                        if (!parent.parentNode) {
+                                                document.createDocumentFragment().appendChild(parent);
+                                        }
+
+                                        return parent.parentNode.querySelectorAll(selector || "*");
+                                } else {
+                                        return false;
+                                }
+                        };
+                        return Tools.toArray(getNodes(parent, selector)).indexOf(node) > -1;
                 };
 };
 
@@ -249,7 +266,7 @@ Amy.Stack = function Screens($uis, $default) {
 			
 
 	       this.setDestination = function setDestination(destination) {
-		      if (DomUtils.isAcceptedType(destination)) {
+		      if (destination instanceof HTMLElement || destination instanceof SVGElement) {
 			     _destination = destination;
 			     return true;
 		      } else {

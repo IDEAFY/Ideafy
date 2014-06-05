@@ -178,7 +178,7 @@ Amy.Delegate-plugin = function(){
         };
 };
 
-Amy/Control-plugin =  function(){
+Amy.Control-plugin =  function(){
         var Controller = Amy.Event-controller,
 	      Utils = Amy.DomUtils;
         function ControlPluginConstructor(){

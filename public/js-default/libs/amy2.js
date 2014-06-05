@@ -13,14 +13,7 @@ Amy.DomUtils = function(Tools){
         return {
                 hasQuerySelector : function(parent, node, selector) {
                         var getNodes = function getNodes(parent, selector) {
-                                var isAcceptedType = function(type){
-                                        if (type instanceof HTMLElement || type instanceof SVGElement) {
-                                                return true;
-                                        } else {
-                                                return false;
-                                        }
-                                };
-                                if isAcceptedType(parent)) {
+                                if (parent instanceof HTMLElement || parent instanceof SVGElement) {
                                         if (!parent.parentNode) {
                                                 document.createDocumentFragment().appendChild(parent);
                                         }
@@ -253,7 +246,6 @@ Amy.ControlPlugin =  function(){
 Amy.Stack = function Screens($uis, $default) {
         var Store = emily.Store,
 	       OObject = olives.OObject,
-	       DomUtils = olives.DomUtils,
 	       Tools = emily.Tools,
 	       Observer = emily.Observable;
         return function ScreensConstructor($uis, $default) {

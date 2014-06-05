@@ -50,7 +50,7 @@ Amy.TestUtils = function(){
         };
 };
 
-Amy.Stack-plugin = function(){
+Amy.StackPlugin = function(){
         return function StackPluginConstructor($uis, $destination){
 	       var _stack = new Amy.Stack($uis, $destination);
 	       this.getStack = function(){
@@ -73,7 +73,7 @@ Amy.Stack-plugin = function(){
         };
 };
 
-Amy.Event-controller = function($scope, $touch){
+Amy.EventController = function($scope, $touch){
         var Utils = Amy.TestUtils,
 	      Tools = emily.Tools;
         return function EventControllerConstructor($scope, $touch){
@@ -148,8 +148,8 @@ Amy.Event-controller = function($scope, $touch){
         };
 };
 
-Amy.Delegate-plugin = function(){
-        var Controller = Amy.Event-controller,
+Amy.DelegatePlugin = function(){
+        var Controller = Amy.EventController,
 	       Utils = Amy.DomUtils;
         function DelegatePluginConstructor(){
 
@@ -178,8 +178,8 @@ Amy.Delegate-plugin = function(){
         };
 };
 
-Amy.Control-plugin =  function(){
-        var Controller = Amy.Event-controller,
+Amy.ControlPlugin =  function(){
+        var Controller = Amy.EventController,
 	      Utils = Amy.DomUtils;
         function ControlPluginConstructor(){
 

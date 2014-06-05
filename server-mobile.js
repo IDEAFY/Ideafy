@@ -2,28 +2,24 @@
  * IDEAFY server
  * =============
  * 
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
- *
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY
+ * 
  */
 
 // Required middleware
 var http = require("http"), 
     socketIO = require("socket.io"),
-    connect = require("connect"), 
+    connect = require("connect"),
     olives = require("olives"),
+    emily = require("emily"),
     CouchDBTools = require("couchdb-emily-tools"),
     cookie = require("cookie"), 
     RedisStore = require("connect-redis")(connect), 
     nodemailer = require("nodemailer"), 
-    fs = require("fs"),
-    path = require("path"), 
-    qs = require("querystring"), 
-    url = require("url"), 
-    redirect = require('connect-redirection'), 
-    wrap = require("./wrap"),
+    st = require("st"),
     srvutils = require("./srvutils.js"),
     apputils = require("./apputils.js"),
     comutils = require("./comutils.js"),
@@ -31,7 +27,15 @@ var http = require("http"),
     taskutils = require("./taskutils.js"),
     cdbadmin = require("./cdbadmin.js");
     
-var srvUtils = new srvutils.SrvUtils(),
+var Store = emily.Store,
+      Promise = emily.Promise,
+      Transport = emily.Transport,
+      socketIOTransport = olives.SocketIOTransport.Server,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      CouchDBView = CouchDBTools.CouchDBView,
+      CouchDBUser = CouchDBTools.CouchDBUser,
+      CouchDBBulkDocuments = CouchDBTools.CouchDBBulkDocuments,
+      srvUtils = new srvutils.SrvUtils(),
       appUtils = new apputils.AppUtils(),
       comUtils = new comutils.ComUtils(),
       loginUtils = new loginutils.LoginUtils(),
@@ -85,22 +89,31 @@ contentPath = "/shared";
 // Rules to grant special badges and achievements
 badges;
 
+// Mount the static directory to be cached
+var mount = st({path: __dirname + '/public/', index: true, index: 'index.html'});
 
 /*****************************
  *  APPLICATION SERVER
  ******************************/
 
-CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBView", "CouchDBBulkDocuments", "Store", "Promise"], function(CouchDBUser, Transport, CouchDBDocument, CouchDBView, CouchDBBulkDocuments, Store, Promise) {
-        var transport = new Transport(olives.handlers),
-            app = http.createServer(connect()
+var handlers = new Store(),
+      transport = new Transport(handlers),
+      app = http.createServer(connect()
+                .use(connect.compress())
 		.use(connect.responseTime())
-                .use(redirect())
                 .use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
                 .use('/upload', srvUtils.uploadFunc)
 		.use('/downloads', srvUtils.downloadFunc)      
                 .use(function(req, res, next) {
+                        var ori = req.headers.origin || "http://app.ideafy.com";
+                        res.setHeader("Access-Control-Allow-Origin", ori);
+                        res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
+                        res.setHeader("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE,OPTIONS');
                         res.setHeader("Ideady Server", "node.js/" + process.versions.node);
                         res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
+                        if ('OPTIONS' == req.method) {
+                                res.send(200);
+                        }
                         next();
                 })
                 .use(connect.cookieParser())
@@ -114,112 +127,115 @@ CouchDBTools.requirejs(["CouchDBUser", "Transport", "CouchDBDocument", "CouchDBV
                                 path : "/"
                         }
                 }))
-                .use(connect.static(__dirname + "/public"))).listen(3113),
-                io = socketIO.listen(app, {
-                        log : true
-                });
+                .use(mount)).listen(3113),
+    io = socketIO.listen(app, {
+        log : true
+     });
                 
-        // Socket.io configuration
-        io.enable('browser client minification');  // send minified client
-        io.enable('browser client etag');          // apply etag caching logic based on version number
-        io.enable('browser client gzip');          // gzip the file
-        io.set('log level', 0);                    // reduce logging
-        io.set("close timeout", 60);
-        io.set("heartbeat interval", 25);
+// Socket.io configuration
+io.enable('browser client minification');  // send minified client
+io.enable('browser client etag');          // apply etag caching logic based on version number
+io.enable('browser client gzip');          // gzip the file
+io.set('log level', 0);                    // reduce logging
+ io.set("close timeout", 60);
+io.set("heartbeat interval", 25);
         
-        // we need lots of sockets
-        http.globalAgent.maxSockets = Infinity;
+// we need lots of sockets
+http.globalAgent.maxSockets = Infinity;
         
-        // register transport
-        olives.registerSocketIO(io);
+// register transport
+socketIOTransport(io, handlers); 
         
-        // couchdb config update (session authentication)
-        //olives.config.update("CouchDB", "sessionStore", sessionStore);
-        CouchDBTools.configuration.sessionStore = sessionStore;
-        olives.handlers.set("CouchDB", CouchDBTools.handler);
+// couchdb config update (session authentication)
+CouchDBTools.configuration.sessionStore = sessionStore;
+handlers.set("CouchDB", CouchDBTools.handler);
         
-        /*
-         *  Application utility functions
-         */
+/*
+*  Application utility functions
+*/
         
-        // cdbadmin utilities
-       CDBAdmin.setVar(_db, _dbIP, _dbPort, cdbAdminCredentials, transport);
-       CDBAdmin.setConstructors(Promise, CouchDBDocument);
+// cdbadmin utilities
+CDBAdmin.setVar(_db, _dbIP, _dbPort, cdbAdminCredentials, transport);
+CDBAdmin.setConstructors(Promise, CouchDBDocument);
         
-        var updateUserIP = CDBAdmin.updateUserIP,
-              updateDocAsAdmin = CDBAdmin.updateDoc,
-              getDocAsAdmin = CDBAdmin.getDoc,
-              createDocAsAdmin = CDBAdmin.createDoc,
-              getViewAsAdmin = CDBAdmin.getView,
-              removeDocAsAdmin = CDBAdmin.removeDoc,
-              sendSignupEmail = comUtils.sendSignupEmail,
-              checkInvited = appUtils.checkInvited,
-              addInvited = appUtils.addInvited; 
+var updateUserIP = CDBAdmin.updateUserIP,
+      updateDocAsAdmin = CDBAdmin.updateDoc,
+      getDocAsAdmin = CDBAdmin.getDoc,
+      createDocAsAdmin = CDBAdmin.createDoc,
+      getViewAsAdmin = CDBAdmin.getView,
+      removeDocAsAdmin = CDBAdmin.removeDoc,
+      sendSignupEmail = comUtils.sendSignupEmail,
+      checkInvited = appUtils.checkInvited,
+      addInvited = appUtils.addInvited; 
                        
-        // utility handlers (no couchdb)
-        srvUtils.setVar(contentPath, currentVersion);
-        olives.handlers.set("CheckVersion", srvUtils.checkVersion);
-        olives.handlers.set("GetFile", srvUtils.getFile);
-        olives.handlers.set("Lang", srvUtils.getLabels);
-        olives.handlers.set("GetLanguages", srvUtils.getLanguages);
-        olives.handlers.set("cleanUpSession", srvUtils.cleanUpSession);
-        olives.handlers.set("DeleteAttachment", srvUtils.deleteAttachment);
+// utility handlers (no couchdb)
+srvUtils.setVar(contentPath, currentVersion);
+handlers.set("CheckVersion", srvUtils.checkVersion);
+handlers.set("GetFile", srvUtils.getFile);
+handlers.set("Lang", srvUtils.getLabels);
+handlers.set("GetLanguages", srvUtils.getLanguages);
+handlers.set("cleanUpSession", srvUtils.cleanUpSession);
+handlers.set("DeleteAttachment", srvUtils.deleteAttachment);
         
-        // login utilities
-        loginUtils.setConstructors(CouchDBDocument, CouchDBUser, Promise);
-        loginUtils.setFunctions(sendSignupEmail, checkInvited, CDBAdmin, comUtils.sendMail);
-        loginUtils.setVar(cookie, sessionStore, transport, _db, cdbAdminCredentials, supportEmail);
+ // login utilities
+loginUtils.setConstructors(CouchDBDocument, CouchDBUser, Promise);
+loginUtils.setFunctions(sendSignupEmail, checkInvited, CDBAdmin, comUtils.sendMail);
+loginUtils.setVar(cookie, sessionStore, transport, _db, cdbAdminCredentials, supportEmail);
         
-        olives.handlers.set("Signup", loginUtils.signup);
-        olives.handlers.set("CheckLogin", loginUtils.checkLogin);
-        olives.handlers.set("Login", loginUtils.login);
-        olives.handlers.set("ChangePWD", loginUtils.changePassword);
-        olives.handlers.set("ResetPWD", loginUtils.resetPassword);
+handlers.set("Signup", loginUtils.signup);
+handlers.set("CheckLogin", loginUtils.checkLogin);
+handlers.set("Login", loginUtils.login);
+handlers.set("ChangePWD", loginUtils.changePassword);
+handlers.set("ResetPWD", loginUtils.resetPassword);
         
-        // communication utilities (mail and application notifications)
-        comUtils.setVar(smtpTransport, supportEmail, mailSender);
-        comUtils.setConstructors(CouchDBDocument, Store);
-        comUtils.setFunctions(CDBAdmin, checkInvited, addInvited);
-        olives.handlers.set("SendMail", comUtils.sendMail);
-        olives.handlers.set("Support", comUtils.support);
-        olives.handlers.set("Notify", comUtils.notify);
-        olives.handlers.set("Invite", comUtils.invite);
+// communication utilities (mail and application notifications)
+comUtils.setVar(_db, smtpTransport, supportEmail, mailSender, transport, io);
+comUtils.setConstructors(CouchDBDocument, CouchDBView, Store);
+comUtils.setFunctions(CDBAdmin, checkInvited, addInvited);
+handlers.set("SendMail", comUtils.sendMail);
+handlers.set("Support", comUtils.support);
+handlers.set("Notify", comUtils.notify);
+handlers.set("Invite", comUtils.invite);
+handlers.set("Presence", comUtils.sendPresenceUpdates);
         
-        // application utilities and handlers
-        appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
-        appUtils.setVar(transport, _db, _dbIP, _dbPort, cdbAdminCredentials, badges, contentPath);
-        appUtils.setCDBAdmin(CDBAdmin);
-        olives.handlers.set("DeleteDeck", appUtils.deleteDeck);
-        olives.handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
-        olives.handlers.set("ShareDeck", appUtils.shareDeck);
-        olives.handlers.set("GetFavList", appUtils.getFavList);
-        olives.handlers.set("GetAvatar", appUtils.getAvatar);
-        olives.handlers.set("GetUserDetails", appUtils.getUserDetails);
-        olives.handlers.set("GetGrade", appUtils.getGrade);
-        olives.handlers.set("GetAchievements", appUtils.getAchievements);
-        olives.handlers.set("GetUserNames", appUtils.getUserNames);
-        olives.handlers.set("Welcome", appUtils.welcome);
-        olives.handlers.set("CheckRecipientList", appUtils.checkRecipientList);
-        olives.handlers.set("Vote", appUtils.vote);
-        olives.handlers.set("RemoveFromLibrary", appUtils.removeFromLibrary);
-        olives.handlers.set("WriteTwocent", appUtils.writeTwocent);
-        olives.handlers.set("SendTwocent", appUtils.sendTwocent);
-        olives.handlers.set("UpdateUIP", appUtils.updateUIP);
-        olives.handlers.set("UpdateSessionScore", appUtils.updateSessionScore);
+// application utilities and handlers
+appUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
+appUtils.setVar(transport, _db, _dbIP, _dbPort, cdbAdminCredentials, badges, contentPath);
+appUtils.setCDBAdmin(CDBAdmin);
+handlers.set("DeleteDeck", appUtils.deleteDeck);
+handlers.set("DeleteCards", appUtils.removeCardsFromDatabase);
+handlers.set("ShareDeck", appUtils.shareDeck);
+handlers.set("GetEULA", appUtils.getEULA);
+handlers.set("GetFavList", appUtils.getFavList);
+handlers.set("GetAvatar", appUtils.getAvatar);
+handlers.set("GetUserDetails", appUtils.getUserDetails);
+handlers.set("GetGrade", appUtils.getGrade);
+handlers.set("GetAchievements", appUtils.getAchievements);
+handlers.set("GetUserNames", appUtils.getUserNames);
+handlers.set("Welcome", appUtils.welcome);
+handlers.set("CheckRecipientList", appUtils.checkRecipientList);
+handlers.set("Vote", appUtils.vote);
+handlers.set("RemoveFromLibrary", appUtils.removeFromLibrary);
+handlers.set("WriteTwocent", appUtils.writeTwocent);
+handlers.set("SendTwocent", appUtils.sendTwocent);
+handlers.set("UpdateUIP", appUtils.updateUIP);
+handlers.set("UpdateSessionScore", appUtils.updateSessionScore);
         
-        // scheduled tasks
-        taskUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
-        taskUtils.setFunctions(CDBAdmin, comUtils);
+// scheduled tasks
+taskUtils.setConstructors(CouchDBDocument, CouchDBView, Promise);
+taskUtils.setFunctions(CDBAdmin, comUtils);
         
-        taskUtils.initTasks(io);
+// initialize tasks and presence
+taskUtils.initTasks(io);
+comUtils.initPresence();
         
-        // disconnection events
-        io.sockets.on("connection", function(socket){
-                socket.on("disconnect", function(){
-                        appUtils.setOffline(socket);       
-                });  
-        });       
-});
+// disconnection events
+io.sockets.on("connection", function(socket){
+        socket.on("disconnect", function(){
+                appUtils.setOffline(socket);       
+        });  
+});       
+
 
 process.on('uncaughtException', function(error) {
         console.log(error.stack);

@@ -103,7 +103,6 @@ var handlers  = new Store(),
         .use(connect.logger())
         .use(connect.compress())
         .use(connect.responseTime())
-        .use(redirect())
         .use(connect.bodyParser({ uploadDir:contentPath+'/public/upload', keepExtensions: true }))
         .use('/upload', srvUtils.uploadFunc)
         .use('/downloads', srvUtils.downloadFunc)     
@@ -179,8 +178,8 @@ handlers.set("cleanUpSession", srvUtils.cleanUpSession);
 handlers.set("DeleteAttachment", srvUtils.deleteAttachment);
         
  // login utilities
- loginUtils.setConstructors(CouchDBDocument, CouchDBUser, Promise);
- loginUtils.setFunctions(sendSignupEmail, checkInvited, CDBAdmin, comUtils.sendMail);
+loginUtils.setConstructors(CouchDBDocument, CouchDBUser, Promise);
+loginUtils.setFunctions(sendSignupEmail, checkInvited, CDBAdmin, comUtils.sendMail);
 loginUtils.setVar(cookie, sessionStore, transport, _db, cdbAdminCredentials, supportEmail);
         
 handlers.set("Signup", loginUtils.signup);
@@ -190,8 +189,8 @@ handlers.set("ChangePWD", loginUtils.changePassword);
 handlers.set("ResetPWD", loginUtils.resetPassword);
         
 // communication utilities (mail and application notifications)
-comUtils.setVar(smtpTransport, supportEmail, mailSender, transport, io);
-comUtils.setConstructors(CouchDBDocument, Store);
+comUtils.setVar(_db, smtpTransport, supportEmail, mailSender, transport, io);
+comUtils.setConstructors(CouchDBDocument, CouchDBView, Store);
 comUtils.setFunctions(CDBAdmin, checkInvited, addInvited);
 handlers.set("SendMail", comUtils.sendMail);
 handlers.set("Support", comUtils.support);

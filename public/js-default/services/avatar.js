@@ -16,7 +16,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                             _online = Utils.online,
                             _cdb = new CouchDBView([]),
                             _id = $array[0],
-                            interval,
                             bool = false; 
                         
                         // setup
@@ -83,11 +82,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         _store.set("img", _avatars.get(_id));
                                 });
                         }
-                        
-                        Config.get("observer").watch("signout", function(){
-                                clearInterval(interval);
-                        });
-                             
                 }
                 
                 return function AvatarFactory($id){

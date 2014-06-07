@@ -1,14 +1,14 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView"],
         function(Widget, Map, Model, Event, Config, Store, CouchDBView){
                 
-                return function TipsConstructor($firstStart){
+                return new function TipsConstructor($firstStart){
                 
                         var _widget = new Widget(),
                             _labels = Config.get("labels"),
@@ -31,7 +31,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "tipevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class="help-doctor"></div><div class="close-tip" data-tipevent="listen:touchstart, close"></div><div class="tip-screen"><legend data-tip="bind:setTitle, id"></legend><p data-tip = "bind: innerHTML, body"></p><div class="next-button" data-labels = "bind: innerHTML, nextbutton" data-tipevent="listen: touchstart, press; listen:touchend, next"></div></div><div class="tip-footer"><input type="checkbox" data-tipevent="listen: change, doNotShow"><label data-labels="bind: innerHTML, notips"></label></div></div>';
+                        _widget.template = '<div id="tip-popup"><div class="help-doctor"></div><div class="close-tip" data-tipevent="listen:touchstart, close"></div><div class="tip-screen"><legend data-tip="bind:setTitle, id"></legend><p data-tip = "bind: innerHTML, body"></p><div class="next-button" data-labels = "bind: innerHTML, nextbutton" data-tipevent="listen: touchstart, press; listen:touchend, next"></div></div><div class="tip-footer"><input type="checkbox" data-tipevent="listen: change, doNotShow"><label data-labels="bind: innerHTML, notips"></label></div></div>';
                         
                         
                         _widget.init = function init(firstStart){
@@ -49,6 +49,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                         _allTips.alter("push", {"id": doc._id, "title": doc.translations[lang].title, "body": doc.translations[lang].body});
                                                 }
                                         });
+                                        
+                                        _cdb.unsync();
                                         
                                         if (firstStart){
                                                 _tip.reset(_allTips.get(0));

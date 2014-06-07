@@ -330,7 +330,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 user.upload();
                                                 break;
                                         case "contact":
-                                                var arr = user.get("connections")concat(), now = new Date(), date=[now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
+                                                var arr = user.get("connections").concat(), now = new Date(), date=[now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
                                                 // if deleted contact is of type user
                                                 if ($data.type ==="user"){
                                                         for (i=arr.length-1; i>=0; i--){

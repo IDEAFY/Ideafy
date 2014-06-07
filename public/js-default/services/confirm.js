@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -11,9 +11,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                 return new function ConfirmConstructor(){
                 
                         var _labels = Config.get("labels"),
-                                _widget = new Widget(),
-                                _content = new Store({"question":""}),
-                                _callback, _class;
+                              _widget = new Widget(),
+                              _content = new Store({"question":""}),
+                              _callback,
+                              _class;
                         
                         _widget.plugins.addAll({
                                 "label" : new Model(_labels),
@@ -24,8 +25,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.template = '<div  id="confirm-popup" class = "confirm invisible"><div class="help-doctor"></div><p class="confirm-question" data-confirm="bind:innerHTML,question"></p><div class="option left" data-confirmevent="listen:mousedown, press; listen:mouseup, ok" data-label="bind: innerHTML, continuelbl">Continue</div><div class="option right" data-confirmevent="listen:mousedown, press; listen:mouseup, cancel" data-label="bind:innerHTML, cancellbl">Cancel</div></div>';
                         
                         _widget.press = function(event, node){
-                                node.classList.add("pressed");
                                 event.stopPropagation();
+                                node.classList.add("pressed");
                         };
                         
                         _widget.ok = function(event, node){
@@ -42,7 +43,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.hide = function hide(){
                                 document.getElementById("cache").classList.remove("appear");
-                                _widget.dom.classList.add("invisible");        
+                                _widget.dom.classList.add("invisible");
                         };
                         
                         _widget.show = function show($class){
@@ -55,7 +56,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 
                                 document.getElementById("cache").classList.add("appear");
                                 _widget.dom.classList.remove("invisible");
-                                setTimeout(function(){_widget.close;}, 15000);      
                         };
                         
                         _widget.reset = function reset($question, $callback, $class){
@@ -69,7 +69,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _class = $class;
                                 
                                 // applying new class if any
-                                _class && _widget.dom.classList.add(_class);      
+                                _class && _widget.dom.classList.add(_class);
                         };
                         
                         return _widget;

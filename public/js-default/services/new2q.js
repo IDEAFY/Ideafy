@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -119,7 +119,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // hide window
                                 document.getElementById("new2q-popup").classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
-                                    
                         };
                         
                         _widget.cancel = function(event, node){

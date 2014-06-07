@@ -1,14 +1,14 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "Promise", "lib/spin.min"],
         function(Widget, Map, Model, Event, Config, Store, Promise, Spinner){
                 
-                return function new2QConstructor(){
+                return new function new2QConstructor(){
                 
                         var _widget = new Widget(),
                             _store = new Store(Config.get("TQTemplate")),
@@ -29,7 +29,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _store.setTransport(Config.get("transport"));
                         
                         // reset languages
-                        _resetLang();
+                        _user.watchValue("lang", function(){
+                                _resetLang();
+                        });
                         
                         _widget.plugins.addAll({
                                 "new2q" : new Model(_store, {
@@ -70,10 +72,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _widget.template = '<div><div class = "header blue-dark"><span data-labels="bind: innerHTML, createquestion"></span><div class="close-popup" data-new2qevent="listen:touchstart, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-new2q="bind: displayLang, lang" data-new2qevent="listen: touchstart, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-new2qevent="listen: touchstart, selectFlag; listen: touchend, setLang"></li></ul></div><p><textarea class="description input" data-labels="bind:placeholder, questionplaceholder" data-new2q="bind: value, question; bind: setLength, type" data-new2qevent="listen:input, checkLength"></textarea></p><div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-new2qevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
-                        _widget.render();
-                        _widget.place(Map.get("new2q-popup"));
-                        
                         _widget.showLang = function(event, node){
+                                event.stopPropagation();
+                                event.preventDefault();
                                 _widget.dom.querySelector(".idealang ul").classList.remove("invisible");        
                         };
                         
@@ -99,17 +100,25 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _widget.dom.querySelector(".description").blur();
                         };
                         
-                        _widget.closePopup = function closePopup(){
-                                // hide window
-                                document.getElementById("new2q-popup").classList.remove("appear");
-                                document.getElementById("cache").classList.remove("appear");
+                        _widget.reset = function(){
+                                
+                                document.getElementById("cache").classList.add("appear");
+                                
                                 // reset _store and _error
                                 _store.unsync();
                                 _store.reset(Config.get("TQTemplate"));
                                 _resetLang();
                                 _error.reset({"error":""});
                                 // hide flag list
-                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");     
+                                _widget.dom.querySelector(".idealang ul").classList.add("invisible");
+                                 
+                                _widget.dom.classList.add("appear");       
+                        };
+                        
+                        _widget.closePopup = function closePopup(){
+                                // hide window
+                                document.getElementById("new2q-popup").classList.remove("appear");
+                                document.getElementById("cache").classList.remove("appear");
                         };
                         
                         _widget.cancel = function(event, node){

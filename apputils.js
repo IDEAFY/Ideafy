@@ -225,7 +225,7 @@ function AppUtils(){
                 
                 _getViewAsAdmin("library", "decksinuse", {key: '"'+deckId+'"'}, deckView)
                 .then(function(){
-                        if (deckView.getNbItems()){
+                        if (deckView.count()){
                                 // simply remove deck from user document
                                 onEnd("ok");     
                         }
@@ -523,7 +523,7 @@ function AppUtils(){
                         return _getViewAsAdmin("achievements", "publicideas", {key: '"'+json.userid+'"'}, userIdeasCDB);
                 })
                 .then(function(){
-                        var idea_count = userIdeasCDB.getNbItems();
+                        var idea_count = userIdeasCDB.count();
                         // update user doc if needed
                         if (user.ideas_count !== idea_count){
                                 user.ideas_count = idea_count;
@@ -584,7 +584,7 @@ function AppUtils(){
                         return _getViewAsAdmin("achievements", "singlesessions", {key: '"'+json.userid+'"'}, ssCDB);
                 })
                 .then(function(){
-                        var ss_count = ssCDB.getNbItems();
+                        var ss_count = ssCDB.count();
                         // update user doc if needed
                         if (user.su_sessions_count !== ss_count){
                                 user.su_sessions_count = ss_count;
@@ -624,7 +624,7 @@ function AppUtils(){
                        return _getViewAsAdmin("achievements", "multisessions", {key: '"'+json.userid+'"'}, msCDB);
                 })
                 .then(function(){
-                        var ms_count = msCDB.getNbItems();
+                        var ms_count = msCDB.count();
                         // update user doc if needed
                         if (user.mu_sessions_count !== ms_count){
                                 user.mu_sessions_count = ms_count;
@@ -664,7 +664,7 @@ function AppUtils(){
                         return _getViewAsAdmin("achievements", "twoquestions", {key: '"'+json.userid+'"'}, questionsCDB);
                 })
                 .then(function(){
-                        var tq_count = questionsCDB.getNbItems();
+                        var tq_count = questionsCDB.count();
                          // update user doc if needed
                         if (user.twoquestions_count !== tq_count){
                                 user.twoquestions_count = tq_count;
@@ -1273,7 +1273,7 @@ function AppUtils(){
                       
                 _getViewAsAdmin("users", "sockets", {key: '"'+socket.id+'"'}, cdbView)
                 .then(function(){
-                        if (cdbView.getNbItems()){
+                        if (cdbView.count()){
                                 _getDocAsAdmin(cdbView.get(0).id, cdbDoc)
                                 .then(function(){
                                         cdbDoc.set("online", false);

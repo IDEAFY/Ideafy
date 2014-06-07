@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -53,7 +53,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         
                         // no connection UI
                         _internetdown.plugins.add("label", new Model(_labels));
-                        _internetdown.template = '<div id="nointernt"><p data-label="bind: innerHTML, nointernet"></p></div>';
+                        _internetdown.template = '<div id="nointernet"><p data-label="bind: innerHTML, nointernet"></p></div>';
                         
                         // signup form
                         _signupForm.plugins.addAll({
@@ -164,7 +164,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         // add welcome notification
                                                                         var now = new Date();
                                                                         
-                                                                        user.set("regdate", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                                                        user.set("regdate", [now.getTime()]);
                                                                         user.set("notifications", [{
                                                                                 "type" : "MSG",
                                                                                 "toList": fn + " " + ln,

@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -258,7 +258,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                 else{
                                                                         Confirm.hide();
                                                                         spinner.spin(document.getElementById("deckview"));
-                                                                        document.getElementById("cache").classList.add("appear");
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
                                                                         if (user.get("taiaut_decks").indexOf($data) > -1){
                                                                                 var arr = user.get("taiaut_decks");
@@ -267,7 +266,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 user.upload()
                                                                                 .then(function(){
                                                                                         spinner.stop();
-                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                         promise.fulfill();
                                                                                 });
                                                                         }
@@ -289,7 +287,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                 })
                                                                                                 .then(function(){
                                                                                                         spinner.stop();
-                                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                                         promise.fulfill();
                                                                                                 });
                                                                                         }
@@ -303,7 +300,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                                 user.upload()
                                                                                                                 .then(function(){
                                                                                                                         spinner.stop();
-                                                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                                                         promise.fulfill();
                                                                                                                 });        
                                                                                                         }

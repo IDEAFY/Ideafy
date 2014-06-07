@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Place.plugin", "Event.plugin", "service/avatar"],
@@ -120,6 +120,24 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                                                         case "REF":
                                                                 this.innerHTML = messages.get(id).username + labels.get("joinedideafy");
                                                                 break;
+                                                        case "MUD-":
+                                                                this.innerHTML = labels.get("muinaday");
+                                                                break;
+                                                        case "MUQ-":
+                                                                this.innerHTML = labels.get("mufifteen");
+                                                                break;
+                                                        case "MUP+":
+                                                                this.innerHTML = labels.get("newpart");
+                                                                break;
+                                                        case "MUP-":
+                                                                this.innerHTML = labels.get("partleft");
+                                                                break;
+                                                        case "SCANCEL":
+                                                                this.innerHTML = labels.get("scancel");
+                                                                break;
+                                                        case "SSTART":
+                                                                this.innerHTML = labels.get("sstart");
+                                                                break;
                                                         default :
                                                                 this.innerHTML = messages.get(id).object;
                                                 }
@@ -127,6 +145,10 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                                 },
                                 setStyle : function(status){
                                         (status === "unread") ? this.setAttribute("style", "font-weight: bold;") : this.setAttribute("style", "font-weight: normal;");
+                                },
+                                setFirstname : function(firstname){
+                                        if (firstname) this.innerHTML = firstname;
+                                        else this.innerHTML = labels.get("ideafy");        
                                 },
                                 setAvatar : function(author){
                                         var _frag, _ui, node = this;
@@ -141,7 +163,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                         "notifyevent" : new Event(notifyPopup)
                 });
                 
-                notifyPopup.template = '<div class="invisible"><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:touchstart, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:touchstart, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:innerHTML, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
+                notifyPopup.template = '<div class="invisible"><div class="notify-header" data-labels="bind:innerHTML, notificationlbl" data-notifyevent="listen:touchstart, closePopup"></div><ul class="notify-list" data-notify="foreach: messages, 0, 7"><li data-notify="bind: setStyle, status" data-notifyevent="listen:touchstart, displayComCenter"><div data-notify="bind:setAvatar, author"></div><p><span class="notify-name" data-notify="bind:setFirstname, firstname"></span> : <span class="notify-body" data-notify="bind:setObject, type"></span></p></li></ul></div>';
                 
                 notifyPopup.closePopup = function closePopup(event, node){
                         notifyPopup.dom.classList.add("invisible");        
@@ -192,7 +214,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                                 notif.set("unread", unread);
                                 currentUnread = unread;
                         }
-                        messages.reset(n);                       
+                        messages.reset(n);
                 });
                 
                 return notify;

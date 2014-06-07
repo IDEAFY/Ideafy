@@ -1,143 +1,173 @@
-
-
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
-require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "service/utils", "Promise"],
-        function(Widget, LocalStore, Map, Stack, Model, Event, Dock, Login, Config, Utils, Promise) {
+require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "service/utils", "Promise", "service/confirm"],
+        function(Widget, LocalStore, Map, Stack, Model, Event, Dock, Login, Config, Utils, Promise, Confirm) {
         
         //declaration
-        var _body = new Widget(), _login = null, _stack = new Stack({"#login" : _login}), _dock = new Dock(), _local = new LocalStore(), updateLabels = Utils.updateLabels, checkServerStatus = Utils.checkServerStatus, _labels = Config.get("labels"), _db = Config.get("db"), _transport = Config.get("transport"), _user = Config.get("user"), _currentVersion;
+        var _body = new Widget(),
+              _stack = new Stack({}),
+              _dock = new Dock(),
+              _login,
+              _local = new LocalStore(),
+              updateLabels = Utils.updateLabels,
+              checkServerStatus = Utils.checkServerStatus,
+              _labels = Config.get("labels"),
+              _db = Config.get("db"),
+              _transport = Config.get("transport"),
+              _user = Config.get("user"),
+              _currentVersion = Config.get("version");
         
-        _currentVersion = Config.get("version");
-        
-        //setup
-        _body.plugins.addAll({
-                "stack" : _stack
-        });
+        //SETUP
         
         //logic
+        _body.startDock = function startDock(firstStart){
+                document.getElementById("main").classList.add("main");
+                document.getElementById("logo").classList.remove("invisible");
+                _stack.getStack().show("#dock");
+                _dock.start(firstStart);         
+        };
+        
         _body.init = function init(firstStart) {
         
-        // add dock UI to the stack
-        _stack.getStack().add("#dock", _dock);
-        // check db
-        if (_local.get("db") && _local.get("db") !== _db){
-        _db = _local.get("db");
-        }
-        // synchronize user document
-        _user.sync(_db, _local.get("currentLogin"))
-        .then(function() {
-              var lblUpdate = new Promise();
-              // set uid for future queries
-              Config.set("uid", '"' + _user.get("_id") + '"');
-              // check user defined language
-              if (_user.get("lang") !== Config.get("lang")) {
-              updateLabels(_user.get("lang")).then(function(){
-                                                   lblUpdate.fulfill();
-                                                   });
-              }
-              else {lblUpdate.fulfill();}
-              return lblUpdate;
-              })
-        .then(function(){
-              var loadAvatar = new Promise();
-              // get user avatar and labels if necessary
-              if (_user.get("picture_file").search("img/avatars/deedee")>-1){
-                        Config.set("avatar", _user.get("picture_file"));
-                        loadAvatar.fulfill();
-              }
-              else if (_local.get("userAvatar")){
-                        Config.set("avatar", _local.get("userAvatar"));
-                        loadAvatar.fulfill();
-              }
-              else{
-                        _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
-                                 if (!result.error) {
-                                        Config.set("avatar", result);
-                                 }
-                                 else {
-                                        console.log(result.error);
-                                        Config.set("avatar", "img/avatars/deedee1.png");
-                                 }
+                // add dock UI to the stack
+                _stack.getStack().add("#dock", _dock);
+                // check db
+                if (_local.get("db") && _local.get("db") !== _db){
+                        _db = _local.get("db");
+                }
+                // synchronize user document
+                _user.sync(_db, _local.get("currentLogin"))
+                .then(function() {
+                        var lblUpdate = new Promise();
+                        // set uid for future queries
+                        Config.set("uid", '"' + _user.get("_id") + '"');
+                        // check user defined language
+                        if (_user.get("lang") !== Config.get("lang")) {
+                                updateLabels(_user.get("lang")).then(function(){
+                                        lblUpdate.fulfill();
+                                });
+                        }
+                        else {lblUpdate.fulfill();}
+                        return lblUpdate;
+                })
+                .then(function(){
+                        var loadAvatar = new Promise();
+                        // get user avatar and labels if necessary
+                        if (_user.get("picture_file").search("img/avatars/deedee")>-1){
+                                Config.set("avatar", _user.get("picture_file"));
                                 loadAvatar.fulfill();
-                        });
-              }
-              return loadAvatar;
-              })
-        .then(function(){
-              _dock.init();
-              _login.stopSpinner();
-              _stack.getStack().show("#dock");
-              _dock.start(firstStart);
+                        }
+                        else if (_local.get("userAvatar")){
+                                Config.set("avatar", _local.get("userAvatar"));
+                                loadAvatar.fulfill();
+                        }
+                        else{
+                                _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
+                                        if (!result.error) {
+                                                Config.set("avatar", result);
+                                        }
+                                        else {
+                                                console.log(result.error);
+                                                Config.set("avatar", "img/avatars/deedee1.png");
+                                        }
+                                        loadAvatar.fulfill();
+                                });
+                        }
+                        return loadAvatar;
+                })
+                .then(function(){
+                        _dock.init();
+                        _login.stopSpinner();
+                        _body.startDock(firstStart);
               });
         };
         
         _body.reload = function reload(firstStart) {
-        _user.unsync();
-        _user.reset();
+                _user.unsync();
+                _user.reset();
         
-        // synchronize user document
-        _user.sync(_db, _local.get("currentLogin"))
-        .then(function() {
-              var lblUpdate = new Promise();
-              // set uid for future queries
-              Config.set("uid", '"' + _user.get("_id") + '"');
-              // check user defined language
-              if (_user.get("lang") !== Config.get("lang")) {
-              updateLabels(_user.get("lang")).then(function(){
-                                                   lblUpdate.fulfill();
-                                                   });
-              }
-              else {lblUpdate.fulfill();}
-              return lblUpdate;
-              })
-        .then(function(){
-              var loadAvatar = new Promise();
-              // get user avatar and labels if necessary
-              if (_user.get("picture_file").search("img/avatars/deedee")>-1){
-              Config.set("avatar", _user.get("picture_file"));
-              loadAvatar.fulfill();
-              }
-              else if (_local.get("userAvatar")){
-              Config.set("avatar", _local.get("userAvatar"));
-              loadAvatar.fulfill();
-              }
-              else{
-              _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
-                                 if (!result.error) {
-                                 Config.set("avatar", result);
-                                 }
-                                 else {
-                                 console.log(result.error);
-                                 Config.set("avatar", "img/avatars/deedee1.png");
-                                 }
-                                 loadAvatar.fulfill();
-                                 });
-              }
-              return loadAvatar;
-              })
-        .then(function(){
-              _dock.reset();
-              _login.stopSpinner();
-              _stack.getStack().show("#dock");
-              _dock.start(firstStart);
-              });
+                // synchronize user document
+                _user.sync(_db, _local.get("currentLogin"))
+                .then(function() {
+                        var lblUpdate = new Promise();
+                        // set uid for future queries
+                        Config.set("uid", '"' + _user.get("_id") + '"');
+                        // check user defined language
+                        if (_user.get("lang") !== Config.get("lang")) {
+                                updateLabels(_user.get("lang")).then(function(){
+                                        lblUpdate.fulfill();
+                                });
+                        }
+                        else lblUpdate.fulfill();
+                        return lblUpdate;
+                })
+                .then(function(){
+                        var loadAvatar = new Promise();
+                        // get user avatar and labels if necessary
+                        if (_user.get("picture_file").search("img/avatars/deedee")>-1){
+                                Config.set("avatar", _user.get("picture_file"));
+                                loadAvatar.fulfill();
+                        }
+                        else if (_local.get("userAvatar")){
+                                Config.set("avatar", _local.get("userAvatar"));
+                                loadAvatar.fulfill();
+                        }
+                        else{
+                                _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
+                                        if (!result.error){
+                                                Config.set("avatar", result);
+                                        }
+                                        else {
+                                                console.log(result.error);
+                                                Config.set("avatar", "img/avatars/deedee1.png");
+                                        }
+                                        loadAvatar.fulfill();
+                                });
+                        }
+                        return loadAvatar;
+                })
+                .then(function(){
+                        _dock.reset();
+                        _login.stopSpinner();
+                        _body.startDock(firstStart);
+                });
         };
         
-        _body.alive(Map.get("body"));
+        // uis declaration
+        _dock = new Dock();
+        _login = new Login(_body.init, _body.reload, _local);
+        
+        // add login to the stack
+        _stack.getStack().add("#login", _login);
+        
+        // Widget definition
+        
+        _body.plugins.addAll({
+                "stack" : _stack,
+                "place": new Place({confirm: Confirm})
+        });
+        
+        _body.template = '<div id="main"><div data-stack="destination"></div><div data-place="place:confirm"></div><div id="logo" class="invisible"></div></div>';
+        
+        _body.place(document.body);
         
         // INITIALIZATION
         
         // retrieve local data
         _local.sync("ideafy-data");
-        _login = new Login(_body.init, _body.reload, _local);
+        
+        // stop apploading
+        document.getElementById("apploading").classList.add("invisible");
+        
+        // display login screen
         _stack.getStack().show("#login");
         _stack.getStack().setCurrentScreen(_login);
+        
         _login.init();
         
         // check connection
@@ -162,10 +192,10 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
               
                         // check client version
                         _transport.request("CheckVersion", {version: _currentVersion}, function(result){
-                                 var msg = _labels.get("outdated") || "Please update your application";
+                                var msg = _labels.get("outdated") || "Please update your application";
                                  if (result === "outdated"){
                                         alert(msg);
-                                 }
+                                }
                         });
               
                         var current = _local.get("currentLogin") || "";
@@ -176,39 +206,42 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                                 _login.setScreen("#signup-screen");
                         }
                         else {
-                        _transport.request("CheckLogin", {"id" : current, "sock" : Config.get("socket").socket.sessionid}, function(result) {
+                                _transport.request("CheckLogin", {"id" : current, "sock" : Config.get("socket").socket.sessionid}, function(result) {
                                         if (result.authenticated) {_body.init();}
                                         else {
                                                 _login.setScreen("#login-screen");
                                         }
-                        });
-              }
-              }, function(error){
+                                });
+                        }
+                }, function(error){
                         (_local.get("labels")) ? _labels.reset(_local.get("labels")) : _labels.reset(Config.get("defaultLabels"));
                         _login.setScreen("#maintenance-screen");
-              });
+                });
         }
         
         /*
          * Watch for signout events
          */
         Config.get("observer").watch("signout", function(){
-                // change user status
-                _user.set("online", false);
-                _user.set("sock", "");
-                _user.upload();
-                                     
+                // disconnect socket (will change presence status)
+                Config.get("socket").disconnect();                    
                 // clear local store
-                 _local.set("currentLogin", "");
-                 _local.set("userAvatar", "");
+                _local.set("currentLogin", "");
+                _local.set("userAvatar", "");
                 _local.sync("ideafy-data");
-                                     
+                
+                // reset login UI
                 _stack.getStack().add("#login", _login);
                 _login.reset(true);
+                
+                // hide dock and cache
+                _body.dom.classList.remove("main");
+                document.getElementById("cache").classList.remove("appear");
+                
+                // show loogin screen
                 _stack.getStack().show("#login");
                 _stack.getStack().setCurrentScreen(_login);
                 _login.setScreen("#login-screen");
-                document.getElementById("cache").classList.remove("appear");
         });
         
         /*

@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject" ,"Amy/Stack-plugin", 
@@ -50,7 +50,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         
                         // no connection UI
                         _internetdown.plugins.add("label", new Model(_labels));
-                        _internetdown.template = '<div id="nointernt"><p data-label="bind: innerHTML, nointernet"></p><div id="loadingspin"></div></div>';
+                        _internetdown.template = '<div id="nointernet"><p data-label="bind: innerHTML, nointernet"></p><div id="loadingspin"></div></div>';
                         
                         // signup form
                         _signupForm.plugins.addAll({
@@ -151,7 +151,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         // add welcome notification
                                                                         var now = new Date();
                                                                         
-                                                                        user.set("regdate", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                                                        user.set("regdate", [now.getTime()]);
                                                                         user.set("notifications", [{
                                                                                 "type" : "MSG",
                                                                                 "toList": fn + " " + ln,
@@ -305,7 +305,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _stack.getStack().add("#maintenance-screen", _serverdown);
                         _stack.getStack().add("#nointernet", _internetdown);
                         
-                        _login.alive(Map.get("login"));
+                        _login.place(Map.get("login"));
                         
                         // Initialization
                         _login.init = function init(){

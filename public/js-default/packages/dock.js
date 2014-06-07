@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -7,18 +7,22 @@
 
 define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", 
 	"public/public", "library/library", "brainstorm/brainstorm", "connect/connect", "dashboard/dashboard",
-	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips"], 
-	function(Widget, Place, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips){
+	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips", "attach/attachment"], 
+	function(Widget, Place, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips, Attachment){
 		return function DockConstructor(){
 
 		//declaration
 			var _widget = new Widget(),
-			    _new2q, _new2c, _tips, _notify = new Notify(),
-			    _public, _library, _brainstorm, _connect, _dashboard,
-			    _control = new Control(this),
-			    _observer = Config.get("observer"),
-			    _user = Config.get("user"),
-			    _stack = new Stack();
+			      _notify = new Notify(),
+			      _public,
+			      _library,
+			      _brainstorm,
+			      _connect,
+			      _dashboard,
+			      _control = new Control(this),
+			      _observer = Config.get("observer"),
+			      _user = Config.get("user"),
+			      _stack = new Stack();
                 
                 
                 //setup
@@ -79,8 +83,8 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			_widget.start = function start(firstStart){
 			        var pub = _widget.dom.querySelector('a[href="#public"]'),
 			              dash = _widget.dom.querySelector('a[href="#dashboard"]'),
-			             current = _widget.dom.querySelector('a.selected'),
-			             startScreen = _widget.dom.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
+			              current = _widget.dom.querySelector('a.selected'),
+			              startScreen = _widget.dom.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
 			        //set current stack view
                                 if (!_user.get("settings").startupScreen && !_user.get("resetPWD")){
                                         if (current !== pub) {
@@ -103,19 +107,8 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 // show tips if applicable
                                 if (firstStart || _user.get("settings").showTips !== false){
                                         _tips.init(firstStart);
-                                } 
-                                
-                                
-                                /*
-                                 // set user connection status
-                                _user.set("online", true);
-                                _user.upload()
-                                .then(function(){
-                                        console.log("user upload successful -- dock init");
-                                });
-                                */       
-
-			};
+                                }    
+                        };
 			
 			_widget.reset = function reset(){
 			     _public.reset();

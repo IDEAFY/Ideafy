@@ -256,8 +256,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                         scope.hide();
                                                                 }
                                                                 else{
-                                                                        spinner.spin(document.getElementById("deckview"));
                                                                         Confirm.hide();
+                                                                        spinner.spin(document.getElementById("deckview"));
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
                                                                         if (user.get("taiaut_decks").indexOf($data) > -1){
                                                                                 var arr = user.get("taiaut_decks");

@@ -337,7 +337,7 @@ function ComUtils(){
                 
                         // return sendResults if all messages have been delivered
                         sendResults.watch("added", function() {
-                                if (sendResults.getNbItems() === dest.length) {
+                                if (sendResults.count() === dest.length) {
                                         //adding some post-treatment
                                         if (json.type === "CXRaccept"){
                                                 insertContact(json.dest[0], json.contactInfo, function(result){

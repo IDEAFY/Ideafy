@@ -52,7 +52,7 @@ function TaskUtils(){
                               list = Object.keys(_io.connected);
                         _getViewAsAdmin("users", "sockets", null, cdbSocks)
                         .then(function(){
-                                if (cdbSocks.getNbItems()) cdbSocks.loop(function(v,i){
+                                if (cdbSocks.count()) cdbSocks.loop(function(v,i){
                                         var cdb = new _CouchDBDocument();
                                         if (list.indexOf(v.key) <0){
                                                 _getDocAsAdmin(v.id, cdb)
@@ -97,7 +97,7 @@ function TaskUtils(){
                                         // for each session -- set status to deleted
                                         // upload then remove chat document
                                         // remove session document
-                                        if (sessions.getNbItems()){
+                                        if (sessions.count()){
                                                 sessions.loop(function(v,i){
                                                         var session = new _CouchDBDocument(),
                                                                 chatId,

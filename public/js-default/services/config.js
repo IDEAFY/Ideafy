@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -50,9 +50,9 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                                 "connections" : [],
                                 "taiaut_decks" : ["INT"],
                                 "custom_decks" : [],
+                                "active_deck": "INT",
                                 "categories": [],
                                 "calendar": [],
-                                "active_deck": "INT",
                                 "occupation" : {
                                         "situation" : "",
                                         "job" : "",

@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -11,12 +11,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                 function AvatarConstructor($array){
 
                         var _store = new Store({"img":"", "online": false}),
-                            _avatars = Config.get("avatars"),
-                            _transport = Config.get("transport"),
-                            _online = Utils.online,
-                            _cdb = new CouchDBView([]),
-                            _id = $array[0],
-                            bool = false; 
+                              _avatars = Config.get("avatars"),
+                              _cdb = new CouchDBView([]),
+                              _id = $array[0],
+                              bool = false; 
                         
                         // setup
                         _cdb.setTransport(Config.get("transport"));

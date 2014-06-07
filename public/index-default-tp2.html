@@ -16,9 +16,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>Ideafy</title>
-	<link rel="shortcut icon" href="http://37.153.97.128:3113/favicon.ico"/>
-  	<link rel="stylesheet" href="css/login-default-min.css">
-  	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/concat-min.css">
+	<link rel="shortcut icon" href="http://app.ideafy.com:3113/favicon.ico"/>
+  	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/ideafy-min.css">
   	<script type="text/javascript" src="cordova-2.8.1-min.js" charset="utf-8"></script>
   	<script type="text/javascript" charset="utf-8">
         
@@ -37,19 +36,8 @@
         }
 </script>
 </head>
-<body onload="onLoad()" data-stack="destination" data-event="selector:.pressed-btn, touchstart, press; selector:.pressed-btn, touchend, release; listen: orientationchange, forceLandscape">
-	<iframe src="http://37.153.97.128:3113/blank.html" style="display:none" frameborder="0"></iframe>
-	<div id="login">
-		<img src="img/logoLogInPage.png">
-		<div class = "spinner waiting"></div>
-		<div id="login-stack" data-loginstack="destination"></div>
-  	</div>
-	<div id="newidea-popup"></div>
-	<div id="new2q-popup"></div>
-	<div id="new2c-popup"></div>
-	<div id="help-popup"></div>
-	<div id = "tip-popup"></div>
-	<div id="notify-popup"></div>
-	<div id="cache"></div>
+<body onload="onLoad()">
+	<iframe src="http://app.ideafy.com:3113/blank.html" style="display:none" frameborder="0"></iframe>
+	<div id = "apploading"></div>
 </body>
 </html>

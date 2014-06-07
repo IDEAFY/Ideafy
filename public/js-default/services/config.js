@@ -10,10 +10,10 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
         var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "", _categories = [];
         
         this.reset = function(){
-                //_location = "http://app.ideafy.com:1664"; 
-                _location = "http://8.19.34.68:1664";
+                _location = "http://app.ideafy.com:1664"; 
+                //_location = "http://8.19.34.68:1664";
                 //_location = location.origin;
-                _version = "1.2.3";
+                _version = "1.2.4";
                 _socket = io.connect(_location);
                 _transport = new Transport(_socket);
                 _user =  new CouchDBDocument();
